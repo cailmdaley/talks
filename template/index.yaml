@@ -1,0 +1,26 @@
+to: revealjs
+template: revealjs_template.pandoc
+css:
+    - css/cail.css
+
+slide-level: 2
+
+standalone:   true
+
+html-math-method:
+    method: mathjax
+    url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js"
+
+variables:
+    mainfont: "Calibri"
+    theme_url: ivory.css
+    revealjs-url: https://unpkg.com/reveal.js@^4/
+    width:  1512
+    height: 982
+    margin: 0.05
+    center: false
+    slideNumber: true
+    pdfSeparateFragments : true
+    pdfMaxPagesPerSlide : 1
+    history : "false"
+    hash : "true"
