@@ -246,6 +246,42 @@ $$\Xi = \Theta(\vb n_1, \alpha_1, z_1) \Theta(\vb n_2, \alpha_2, z_2)$$
 
 [POSSUM:](https://possum-survey.org) Polarization -->
 
-# Relevance to TOSCA 
+# Summary {.center}
 
+Observables:
+
+- Optical photometric shape
+
+- Radio intensity shape
+
+- Optical kinematics 
+
+- Radio kinematics
+
+- Radio polarization
+
+::: {.fragment}
+Seems not-quite-there with current datasets..
+
+- perhaps estimator proof-of-concept / recovery of null shear
+
+- could hand-pick systems, <br> but probably not yet interesting for cosmology in the near future
+
+:::
+
+# Relevance to TOSCA  {.center}
+
+What interesting things can we do in the timescale of TOSCA?
+
+- Joint shear reconstruction (with ML?)
+
+    - ASKAP pathfinders (WALLABY, POSSUM)
+
+    - ALMA proposal, or archival data scraping?
+
+- Calibration
+
+    - what can we do if we know something about the intrinsic shape <br>of 0.1% of Euclid galaxies?
+
+# Thank you! {.center}
 
