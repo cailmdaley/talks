@@ -316,6 +316,9 @@ section.has-dark-background h6 {
 
 .reveal img {
   margin: 20px 0;
+  background:none; 
+  border:none; 
+  box-shadow:none; 
 }
 
 /*********************************************
