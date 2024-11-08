@@ -87,7 +87,7 @@ In cosmic shear analyses, intrinsic galaxy shape is unknown.
 
 ## KL Symmetries (Hopp & Witmann 2024)
 
-![](figures/hopp&witmann_fig3.png){.fragment .current-visible .preload}
+![](figures/hopp&witmann_fig3.jpg){.fragment .current-visible .preload}
 ![](figures/hopp&witmann_fig13.png){.fragment}
 
 ## Almost Feasible with [WALLABY](https://wallaby-survey.org/beta-science/)? 
