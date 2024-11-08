@@ -6,6 +6,14 @@ date: Nice TOSCA Meeting <br> <br> November 8th, 2024
 
 # Outline {.center}
 
+- Motivation
+  
+- Kinematic Lensing (KL)
+
+- Radio Galaxy Polarization
+
+- Relevance to TOSCA
+
 # Motivation {.center}
 
 In cosmic shear analyses, intrinsic galaxy shape is unknown.
