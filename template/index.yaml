@@ -6,6 +6,7 @@ css:
 slide-level: 2
 
 standalone:   true
+# embed-resources: true
 
 html-math-method:
     method: mathjax

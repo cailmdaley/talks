@@ -43,9 +43,330 @@
   <p class="date">Nice TOSCA Meeting <br> <br> November 8th, 2024</p>
 </section>
 
-<section class="slide level2">
+<section id="outline" class="title-slide slide level1 center">
+<h1 class="center">Outline</h1>
 
-<p>x</p>
+</section>
+
+<section id="motivation" class="title-slide slide level1 center">
+<h1 class="center">Motivation</h1>
+<p>In cosmic shear analyses, intrinsic galaxy shape is unknown.</p>
+<ul>
+<li><p>Shape noise: source of variance</p>
+<ul>
+<li>need lots of galaxies to beat down noise</li>
+</ul></li>
+<li><p>Intrinsic alignments: source of bias</p></li>
+</ul>
+<div class="fragment">
+<p><strong>Estimates of intrinsic shape can mitigate both!</strong></p>
+<ul>
+<li><p>Kinematics: intrinsic position angle / ellipticity /
+symmetries</p></li>
+<li><p>Polarization: intrinsic position angle</p></li>
+</ul>
+</div>
+</section>
+
+<section>
+<section id="kinematic-lensing-kl"
+class="title-slide slide level1 center">
+<h1 class="center">Kinematic Lensing (KL)</h1>
+
+</section>
+<section id="intuitive-picture" class="slide level2">
+<h2>Intuitive Picture</h2>
+<p><a href="https://arxiv.org/abs/2410.00098">Hopp &amp; Witmann
+(2024)</a></p>
+<p><img data-src="figures/hopp&amp;witmann_fig1a.png"
+class="fragment preload current-visible" /> <img
+data-src="figures/hopp&amp;witmann_fig1b.png"
+class="fragment current-visible" /> <img
+data-src="figures/hopp&amp;witmann_fig2.png" class="fragment"
+style="width:55.0%" /></p>
+</section>
+<section id="a-bit-of-history" class="slide level2 center">
+<h2 class="center">A Bit of History</h2>
+<div style="text-align: left">
+<ul>
+<li><a href="https://arxiv.org/abs/astro-ph/0204138">Blain et
+al. (2002)</a>: first proposal of KL
+<ul>
+<li>ideal instruments predicted to be ALMA &amp; SKA! <br><br></li>
+</ul></li>
+<li><a href="https://arxiv.org/abs/astro-ph/0608494">Morales (2006)</a>:
+proposed KL with HI surveys
+<ul>
+<li>relative to continuum surveys:
+<ul>
+<li>line-to-continuum, HI <span class="math inline">\(\dd N / \dd
+S\)</span>, low-SNR estimators <br><br></li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p><a href="https://arxiv.org/abs/2009.10067">Gurri et
+al. (2020)</a>: first KL measurement <br><br></p></li>
+<li><p><a href="https://arxiv.org/abs/2409.08367">R.S. et
+al. (2024)</a>: first detection of cluster lensing with KL
+<br><br></p></li>
+<li><p><a href="https://arxiv.org/abs/2410.00098">Hopp &amp; Witmann
+(2024):</a> model-independent KL method <br> leveraging kinematic
+symmetries <br><br></p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="first-kl-measurement-gurri-et-al.-2020"
+class="slide level2">
+<h2>First KL Measurement (Gurri et al. 2020)</h2>
+<ul>
+<li><p>18 hand-picked galaxy-galaxy systems: <span
+class="math inline">\(\ev{\gamma} = 0.0201 \pm 0.0079\)</span></p>
+<ul>
+<li>primarily sensitive to <span
+class="math inline">\(\gamma_\times\)</span>; <span
+class="math inline">\(\gamma_+\)</span> degenerate with inclination and
+scale radius</li>
+</ul></li>
+<li><p>kinematic shape noise dominates uncertainty: <br> <span
+class="math inline">\(\sigma_k \sim 0.03\)</span> vs. <span
+class="math inline">\(\sigma_p \sim 0.2\)</span>, so need <span
+class="math inline">\(\sim\)</span> 50 times fewer galaxies*</p></li>
+</ul>
+<p><img data-src="figures/gurri_etal24_figure6.png"
+class="fragment current-visible preload" style="width:75.0%" /> <img
+data-src="figures/gurri_etal24_figure8.png"
+class="fragment current-visible" /></p>
+<div class="fragment" style="margin-top:180px">
+<ul>
+<li><p>Lower kinematic shape noise when gas &amp; stellar velocity
+fields match</p></li>
+<li><p>Point to SKA as enabler of KL at scale!</p></li>
+</ul>
+</div>
+</section>
+<section id="kl-state-of-the-art-r.-s.-et-al.-2024"
+class="slide level2">
+<h2>KL State of the Art (R. S. et al. 2024)</h2>
+<ul>
+<li>141 target galaxies <span class="math inline">\(\to\)</span> 3 after
+cuts.</li>
+<li>use Tully-Fisher to estimate inclination <span
+class="math inline">\(\implies\)</span> intrinsic ellipticity
+<ul>
+<li><span class="math inline">\(\gamma_+\)</span> constrained via
+Tully-Fisher</li>
+<li><span class="math inline">\(\gamma_\times\)</span> via
+kinematic-photometric misalignment</li>
+</ul></li>
+<li>per-galaxy SNR &gt; 1, and 10<span
+class="math inline">\(\times\)</span> reduction in shape noise!</li>
+</ul>
+<p><img data-src="figures/rs_etal24_fig5.png"
+class="fragment current-visible preload" style="width:85.0%" /></p>
+<p><img data-src="figures/rs_etal24_fig6.png" class="fragment" /></p>
+</section>
+<section id="kl-symmetries-hopp-witmann-2024" class="slide level2">
+<h2>KL Symmetries (Hopp &amp; Witmann 2024)</h2>
+<p><img data-src="figures/hopp&amp;witmann_fig3.png"
+class="fragment current-visible preload" /> <img
+data-src="figures/hopp&amp;witmann_fig13.png" class="fragment" /></p>
+</section>
+<section id="almost-feasible-with-wallaby" class="slide level2">
+<h2>Almost Feasible with <a
+href="https://wallaby-survey.org/beta-science/">WALLABY</a>?</h2>
+<p>21 CM H1 survey, 30” resolution, up to z=0.1</p>
+<div class="fragment preload current-visible">
+<p><img data-src="figures/ASAP_WALLABy_vels1.png" style="width:18.0%" />
+<img data-src="figures/ASAP_WALLABy_vels2.png"
+style="width:18.0%" /></p>
+<p>WALLABY website, data from Serra et al. (2015)</p>
+</div>
+<div class="fragment">
+<figure>
+<img data-src="figures/murugheshan_etal24_fig7.png" style="width:95.0%"
+alt="Murugeshan et al (2024)" />
+<figcaption aria-hidden="true">Murugeshan et al (2024)</figcaption>
+</figure>
+</div>
+</section>
+<section id="feasible-with-alma" class="slide level2">
+<h2>Feasible with ALMA</h2>
+<p><a href="https://arxiv.org/abs/2303.16227">The ALMA-ALPAKA survey I
+(Rizzo et al. 2023)</a></p>
+<p>high-resolution CO and [CI] kinematics of star-forming galaxies at z
+= 0.5-3.5</p>
+<p><img data-src="figures/rizzo_etal23_fig7.png" /></p>
+<p><img data-src="figures/rizzo_etal23_fig13.png" /></p>
+</section></section>
+<section>
+<section id="radio-galaxy-polarization"
+class="title-slide slide level1 center">
+<h1 class="center">Radio Galaxy Polarization</h1>
+
+</section>
+<section id="intuition" class="slide level2">
+<h2>Intuition</h2>
+<ul>
+<li><p>Star-forming galaxies dominate observed sources</p>
+<ul>
+<li>synchrotron emission driven by large-scale galactic magnetic fields
+<br> <span class="math inline">\(\implies\)</span> polarization position
+angle</li>
+</ul></li>
+<li><p>Nearby spiral polarization fractions: 1-10% (Stil et
+al. 2008)</p></li>
+<li><p>polarization angle not affected by lensing</p>
+<ul>
+<li>but Faraday effect, and cosmic birefringence..</li>
+</ul></li>
+</ul>
+<div class="fragment" style="margin-left:500px;margin-top:-150px">
+<p><img data-src="figures/stil_etal08_fig4.png" style="width:35.0%" />
+<img data-src="figures/stil_etal08_fig2.png" style="width:55.0%" /></p>
+<p>Stil et al. (2008)</p>
+</div>
+</section>
+<section id="polarization-some-examples"
+class="slide level2 scrollable">
+<h2 class="scrollable">Polarization: Some Examples</h2>
+<p><a
+href="https://www.mpifr-bonn.mpg.de/1281929/Beck_Galaxies.pdf">Slides
+from a presentation by David Mulcahy</a></p>
+<p><img data-src="figures/mulcahy_slide1.png" /> <img
+data-src="figures/mulcahy_slide2.png" /> <img
+data-src="figures/mulcahy_slide3.png" /></p>
+<p><strong>Polarized thermal emission from dust in a galaxy at redshift
+2.6</strong> <br> <a href="https://arxiv.org/abs/2309.02034">(Geach et
+al. 2023)</a></p>
+<div class="columns">
+<div class="column" style="width:50%">
+<p><img data-src="figures/geach_etal23_data.png" /></p>
+</div><div class="column" style="width:50%">
+<p><img data-src="figures/geach_etal23_sourceplane.png"
+style="width:75.0%" /></p>
+</div>
+</div>
+</section>
+<section id="a-bit-of-history-1" class="slide level2">
+<h2>A Bit of History</h2>
+<ul>
+<li>Kronberg et al. 1991, Kronberg, Dyer &amp; Roeser 1996, Burns et
+al. 2004: <br> lensing measurements with polarized radio jets</li>
+</ul>
+<p><img data-src="figures/burns_etal04.png" style="width:100.0%" /></p>
+</section>
+<section id="a-bit-of-history-2" class="slide level2">
+<h2>A Bit of History</h2>
+<ul>
+<li>Brown &amp; Battye (<a
+href="https://arxiv.org/abs/1005.1926">2011a</a>, <a
+href="https://arxiv.org/abs/1106.0816">2011b</a>): first polarization
+shear estimator</li>
+</ul>
+<p><img data-src="figures/brown&amp;battye11.png"
+style="width:70.0%" /></p>
+</section>
+<section id="a-bit-of-history-3" class="slide level2">
+<h2>A Bit of History</h2>
+<ul>
+<li>Whitaker et al. (<a
+href="https://arxiv.org/abs/1503.00061">2015</a>, <a
+href="https://arxiv.org/abs/1702.01700">2018</a>):
+<ul>
+<li>improve upon B&amp;B11 estimator</li>
+<li><strong>quadratic estimator</strong> <br>using pol. vectors combined
+with finite-difference gradients of Stokes I</li>
+<li>estimates of rotation from birefringence: <br> 2.03º <span
+class="math inline">\(\pm\)</span> 0.75º (authors caution Farrady
+rotation systematics)</li>
+</ul></li>
+</ul>
+<figure>
+<img data-src="figures/whittaker_etal18.png" style="width:70.0%"
+alt="2PCF upper limits from 30 sources" />
+<figcaption aria-hidden="true">2PCF upper limits from 30
+sources</figcaption>
+</figure>
+</section>
+<section id="weak-lensing-rotation" class="slide level2">
+<h2>Weak Lensing Rotation</h2>
+<p><a href="https://arxiv.org/abs/1612.01533">Thomas et al. 2016</a></p>
+<ul>
+<li><p>Tensor &amp; vector gravitational potentials allow for <br> a
+rotation mode <span class="math inline">\(\omega\)</span> in addition to
+<span class="math inline">\(\gamma\)</span> and <span
+class="math inline">\(\kappa\)</span>: <img
+data-src="figures/thomas_etal16_eq1.png" style="width:75.0%" /></p>
+<ul>
+<li>only measurable if source-plane position angle can be
+estimated<br><br></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>Second-order effect in <span
+class="math inline">\(\Lambda\)</span>CDM, post-Born/lens-lens
+coupling<br />
+</p>
+<ul>
+<li>should be equivalent to shear <span
+class="math inline">\(B\)</span>-modes <br> <span
+class="math inline">\(\implies\)</span> systematics (or <span
+class="math inline">\(\Lambda\)</span>CDM) null test<br><br></li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Can solve simultaneously for shear and rotation from lensing</li>
+</ul>
+</div>
+</section>
+<section id="a-new-observable-for-cosmic-shear" class="slide level2">
+<h2>A new observable for cosmic shear</h2>
+<p><a href="https://arxiv.org/abs/2203.13634">Francfort, Durrer, &amp;
+Cusin (2022)</a></p>
+<p>Estimator based on correlation function of lensing-induced rotation
+itself.</p>
+<div class="fragment">
+<p><strong>For a single galaxy:</strong> <br> <span
+class="math inline">\(\alpha\)</span> is position angle; <span
+class="math inline">\(\delta \alpha\)</span> is lensing-induced rotation
+<span class="math display">\[\Theta = \frac{2 - \epsilon^2}{\epsilon^2}
+\delta \alpha = \gamma_2 \cos 2 \alpha - \gamma_1 \sin 2
+\alpha\]</span></p>
+</div>
+<div class="fragment">
+<p><strong>For a pair of galaxies 1,2:</strong> <span
+class="math display">\[\Xi = \Theta(\vb n_1, \alpha_1, z_1) \Theta(\vb
+n_2, \alpha_2, z_2)\]</span></p>
+</div>
+<div class="fragment">
+<p><strong>Estimator averaging over <span class="math inline">\(\Xi,
+\Xi&#39;\)</span> pairs (4-pt?):</strong> <br> <img
+data-src="figures/francfort_etal22_xi.png" /></p>
+</div>
+<!-- # Observational Prospects {.scrollable}
+
+[EMU](http://emu-survey.org/index.html): 10" resolution,  10-15 mJy/beam sensitivity
+
+
+![ASKAP EMU Survey](figures/ASKAP_EMU_sample.png)
+
+[Gupta et al (2024):](https://arxiv.org/abs/2403.14235) 10 414 **resolved** radio galaxies in 270 deg²
+
+![](figures/Gupta_etal24_fig1.png)
+
+![](figures/Gupta_etal24_fig2.png)
+
+[POSSUM:](https://possum-survey.org) Polarization -->
+</section></section>
+<section id="systematics" class="title-slide slide level1">
+<h1>Systematics?</h1>
+
 </section>
     </div>
   </div>
