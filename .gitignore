@@ -2,4 +2,4 @@
 /.quarto/
 /_site/
 **/*_files
-index.html
+# index.html
