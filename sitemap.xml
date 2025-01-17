@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://cailmdaley.github.io/talks/about.html</loc>
-    <lastmod>2025-01-17T11:24:08.816Z</lastmod>
-  </url>
-  <url>
     <loc>https://cailmdaley.github.io/talks/template_quarto/index.html</loc>
-    <lastmod>2025-01-17T10:57:21.733Z</lastmod>
+    <lastmod>2025-01-17T14:31:59.623Z</lastmod>
   </url>
   <url>
-    <loc>https://cailmdaley.github.io/talks/24_TOSCA_Nice/index.html</loc>
-    <lastmod>2025-01-16T13:59:07.233Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cailmdaley.github.io/talks/index.html</loc>
-    <lastmod>2025-01-17T11:24:43.680Z</lastmod>
+    <loc>https://cailmdaley.github.io/talks/about.html</loc>
+    <lastmod>2025-01-17T14:31:59.540Z</lastmod>
   </url>
   <url>
     <loc>https://cailmdaley.github.io/talks/25_CosmoStatDeepDays/index.html</loc>
-    <lastmod>2025-01-17T11:20:51.740Z</lastmod>
+    <lastmod>2025-01-17T14:31:59.540Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cailmdaley.github.io/talks/index.html</loc>
+    <lastmod>2025-01-17T14:31:59.623Z</lastmod>
   </url>
 </urlset>
