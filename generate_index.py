@@ -4,7 +4,7 @@ from datetime import datetime
 
 def generate_index_html():
     base_dir = '.'
-    exclude_dirs = {'assets', 'template', 'unused_assets', '.git'}
+    exclude_dirs = {'images', 'template', 'unused_images', '.git'}
     index_file_path = os.path.join(base_dir, 'index.html')
     talks = []
 
