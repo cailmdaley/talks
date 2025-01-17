@@ -1,0 +1,41 @@
+---
+title: Title
+author: 
+    name: <br> Cail Daley
+    affiliation: CEA Paris-Saclay  <br> <br>
+date: today
+date-format: long
+format: 
+    revealjs:
+        theme: [default, custom.scss]
+        slide-number: true
+        fig-align: center
+        html-math-method: 
+            method: mathjax
+            url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+
+        include-after-body: 
+            - file: assets/no_footer_on_titleslide.html
+            - text: |
+                <script>
+                window.MathJax = {
+                    loader: {load: ['[tex]/physics']},
+                    tex: {
+                        packages: {'[+]': ['physics']},
+                        macros: {
+                            vbell: '{ \\vb*{\\ell} }',
+                            vun:   '{ \\vu{n} }',
+                            inv:   '{ ^{-1} }'
+                        }
+                    }
+                };
+                </script>
+        menu: false
+logo: images/CosmoStat-Logo_WhiteBK.jpg
+footer: Cail Daley
+width:  1920
+height: 1080
+---
+
+
+## Slide 1 
