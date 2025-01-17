@@ -1,0 +1,102 @@
+/*********************************************
+ * GLOBAL STYLES
+ *********************************************/
+
+.fragment.current-visible.visible:not(.current-fragment) {
+    display: none;
+    height: 0px;
+    line-height: 0px;
+    font-size: 0px;
+}
+
+
+
+.align-left p,
+.align-left ul,
+.align-left ol {
+    text-align: left;
+}
+
+
+.reveal .slides .full {
+    top: 0 !important;
+    padding: 0 0;
+    margin-top: 0px;
+}
+
+.scrollable {
+    bottom: 0px;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+.credit {
+    font-size: 0.7em;
+    position: relative;
+    display: block;
+    text-align: center;
+}
+
+.credit.right {
+    text-align: right;
+}
+
+.credit.left {
+    text-align: left;
+}
+
+.reveal img {
+    vertical-align: middle;
+    max-width: 100%;
+    padding: 10px 10px;
+    margin: 0
+}
+
+.reveal img.nopad {
+    padding: 0;
+}
+
+
+
+figure {
+    display: table;
+    /* ADD Me */
+    margin: 0 auto;
+    /* ADD Me */
+}
+
+figcaption {
+    font-size: 0.8em;
+    /* padding-bottom: 0.5em; */
+    display: block;
+}
+
+.reveal blockquote {
+    width: 95%;
+    margin-bottom: 5px;
+}
+
+.reveal section {
+    height: 100%;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.reveal section.center {
+    height: unset;
+}
+
+.reveal .center h1 {
+    height: 2.5em;
+}
+
+.container {
+    height: 90%;
+    display: flex;
+    flex: 1;
+    overflow: auto;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,346 @@
+---
+title: "South Pole Telescope <br> Foreground Mitigation Challenges"
+author: 
+    name: <br> Cail Daley
+    affiliation: CEA Paris-Saclay  <br> <br>
+date: January 17, 2025
+date-format: long
+format: 
+    revealjs:
+        theme: [default, custom.scss]
+        slide-number: true
+        fig-align: center
+        html-math-method: 
+            method: mathjax
+            url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+
+        include-after-body: 
+            - file: assets/no_footer_on_titleslide.html
+            - text: |
+                <script>
+                window.MathJax = {
+                    loader: {load: ['[tex]/physics']},
+                    tex: {
+                        packages: {'[+]': ['physics']},
+                        macros: {
+                            vbell: '{ \\vb*{\\ell} }',
+                            vun:   '{ \\vu{n} }',
+                            inv:   '{ ^{-1} }'
+                        }
+                    }
+                };
+                </script>
+        menu: false
+logo: images/CosmoStat-Logo_WhiteBK.jpg
+footer: Cail Daley | Deep CosmoStat Days 2025 
+width:  1920
+height: 1080
+---
+
+
+## 
+
+<br>
+<br>
+
+- Introductions:
+
+  - The Cosmic Microwave Background (CMB)
+
+  - The South Pole Telescope (SPT) <br><br>
+
+- SPT map processing:
+
+    - point source mitigation
+
+    - component separation  <br><br>
+
+## The Cosmic Microwave Background {.center}
+
+<!-- ::: {layout="[[-1, 1, -1], [-1, 1, -1]]" style="text-align:center"} -->
+<!-- ::: {layout="[[1], [1]]" style="text-align:center"} -->
+
+ <!-- style="margin-left:-1180px;margin-top:-30px" -->
+
+::: {.fitcenter .text-left}
+![NAOJ](images/cosmic_history.jpg)
+:::
+
+::: {style="text-align:right"}
+
+::: {.r-stack}
+
+![[ESA and the Planck Collaboration]{.credit style="margin-right:-305px;margin-top:-108px"}](images/Planck_2018_T_CMB.png){.fragment .fade-out fragment-index=0 style="margin-top:-30px;width:48%"}
+
+::: {.fragment fragment-index=0 .current-visible style="margin-top:-30px"}
+![[]{.credit style="margin-right:-245px;margin-top:-82px"}](images/Planck_2018_lens_v3.png){width=46.08%}
+:::
+
+:::
+
+:::
+
+## {data-background="images/Lunar-Eclipse-South-Pole.png" data-background-size="cover" data-background-position="center" footer='false'}
+
+:::::::::::::: {.columns}
+::: {.column width=35%}
+### [The South Pole <br> Telescope]{style="font-size:1.1em;margin-left:-60px;margin-top:-50px;color:white;float:left"} 
+:::
+::: {.column width=65%}
+<!-- ![](figures/survey_footprints.png){style="width:400px;float:right;margin-right:20px;margin-top:-40px;"} -->
+![](images/251216_edfs_survey_footprints.png){style="width:53%;float:right;margin-right:-70px;margin-top:-90px;"}
+:::
+::::::::::::::
+
+:::::::::::::: {.columns}
+::: {.column width=50%}
+
+:::
+::: {.column style="width:50%;;margin-top:050px;text-align:right;color:white"}
+
+3 bands: \ \ \ \  95, \ &thinsp; 150, &thinsp;  220 GHz &thinsp;  \ \ 
+resolution:\  1.6, &thinsp; &thinsp; 1.2, \ \ \  1.0 arcmin
+:::
+::::::::::::::
+
+[Photo Credit: Aman Chokshi]{.credit style='color:white;text-align:left;font-size:0.7em;margin-top:290px'}
+
+
+## SPT maps
+
+![](images/250114_edfs_patch_t_90GHz.png){style="width:53.5%;z-index:2;position:relative"} ![](images/250114_edfs_patch_e_90GHz.png){style="width:53.5%;z-index:1;margin-left:-148px;position:relative"}
+
+## SPT maps
+
+![](images/250114_edfs_patch_t_150GHz.png){style="width:53.5%;z-index:2;position:relative"} ![](images/250114_edfs_patch_e_150GHz.png){style="width:53.5%;z-index:1;margin-left:-148px;position:relative"}
+
+
+## SPT maps
+
+![](images/250114_edfs_patch_t_220GHz.png){style="width:53.5%;z-index:2;position:relative"} ![](images/250114_edfs_patch_e_220GHz.png){style="width:53.5%;z-index:1;margin-left:-148px;position:relative"}
+
+## Extragalactic CMB foregrounds
+
+:::::::::::::: {.columns}
+::: {.column style="width:40%;margin-top:100px"}
+
+### Components:
+
+- point-sources
+
+    - radio (falling spectrum)
+
+    - dusty (rising spectrum; CIB)
+
+- Sunyaev Zel'dovich (clusters)
+
+    - temperature (falling*)
+    
+    - polarization (same as CMB)
+
+:::
+::: {.column style="width:60%;text-align:center"}
+![ [[Dunkley et al. (2013)](https://arxiv.org/abs/1301.0776)]{.credit style="margin-top:-30px"}](images/dunkley_etal13.png)
+:::
+::::::::::::::
+
+
+## SPT map filtering
+
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+SPT performs constant-decl. scans of the sky; scans recorded as 1D '**timestreams**'.
+
+<br> 
+
+Timestreams are binned into pixels after various filters are applied:
+
+- Low-pass
+
+- High-pass (fit sines & cosines)
+
+- Polynomial fit
+
+
+:::
+::: {.column style="width:50%;margin-top:-110px"}
+
+::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=0}
+![](images/250116_edfs_patch_onlinemaps_90GHz.png)
+:::
+
+::: {.fragment fragment-index=0 .current-visible}
+![](images/250116_edfs_patch_pointsource_masking_90GHz.png)
+:::
+
+::: {.fragment fragment-index=1 .current-visible}
+![](images/250116_edfs_patch_source_template_90GHz_vlim=300uK.png)
+:::
+
+::: {.fragment fragment-index=2 .current-visible}
+![](images/250116_edfs_patch_source_template_90GHz_vlim=30uK.png)
+:::
+
+::: {.fragment fragment-index=3 .current-visible}
+![](images/250116_edfs_patch_source_template_90GHz_vlim=3uK.png)
+:::
+
+
+:::
+
+:::
+
+::::::::::::::
+
+[Ignore point source regions when applying filters to avoid "filtering wings."]{.fragment fragment-index=0}
+
+::: {.fragment fragment-index=1}
+- but doing so couples effective filtering and CMB!
+:::
+
+
+## Point source mitigation: inpainting
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%;margin-top:30px"}
+
+Replace point sources with Gaussian constrained realization of the CMB:
+
+::: {style="margin-left:-30px;margin-top:80px"}
+$$
+X_1^{\rm inp} = X_1^{\rm sim} + \vb C_{12} \vb C_{22} ^{-1} \qty(X_1^{\rm data} - X_1^{\rm sim})
+$$
+:::
+
+:::
+::: {.column style="width:50%;"}
+![[Before & after inpainting (credit: Yuuki Omori, thesis)]{.credit .caption-left style="text-align:left"}](images/omori_thesis17_inpainting.png)
+
+[1]{style="display:block;position:relative;color:red;margin-top:-280px;margin-left:220px"}
+
+[2]{style="display:block;position:relative;color:red;margin-top:-215px;margin-left:220px"}
+
+:::
+::::::::::::::
+
+<br>
+
+::: {.fragment}
+Preserves 2-point statistics by construction, but not higher-order information...
+
+$\implies$ lensing (4-pt) estimator is biased towards zero.
+
+<br>
+
+Instead, subtract source template and bias-harden against point sources in the lensing estimator.
+
+:::
+
+
+## Component separation
+
+Scale-dependent linear combination (LC) of frequency bands to:
+
+- minimize variance noise and foregrounds (MV-LC)
+
+\ \ \ \ and optionally,
+
+- null contribution from a specific frequency response (constrained-LC)
+
+:::::::::::::: {.columns}
+::: {.column .fragment  style="width:50%"}
+
+$$
+X_{\vbell}^\textrm{MV-LC} = \sum_{i} \mathbb W_{\vbell}^{i} X_{\vbell}^{i}
+$$
+
+::: {style="text-align:center"}
+where
+:::
+
+$$
+\mathbb W_{\vbell}  = \frac{\mathbb C_{\vbell} \inv \mathbb A_s}{\mathbb A_s^\dagger \mathbb C_{\vbell} \inv \mathbb A_s},
+\qquad \sum_i \mathbb W_{\vbell}^{i} = 1.
+$$
+
+:::
+::: {.column .fragment style="width:50%;margin-top:40px"}
+
+::: {style="margin-left:250px;text-align:left"}
+$\mathbb A_s = [1 \ 1 \ 1]$ <br>
+frequency response of the CMB
+
+<br>
+
+$\mathbb C_{\vbell}$: \ $3 \times 3 \times \ell_{\rm max}$ <br>
+per-frequency foreground & noise covariance at each $\ell$
+
+:::
+
+:::
+::::::::::::::
+
+## Component separation covariance
+
+![](images/reichardt_etal21_spectra_bestfit.png){width=67%} [Reichardt et al. (2021)](https://arxiv.org/abs/2002.06197)
+
+## Component separation weights
+
+::: {.fitcenter}
+![](images/ilc_weights_1d.png){width=80%}
+:::
+
+## Component separation noise {visibility="hidden"}
+::: {.fitcenter}
+
+
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=0}
+![](images/ilc_residuals_1d_TT.png){width=80%}
+:::
+
+::: {.fragment fragment-index=0}
+![](images/ilc_residuals_1d_EE.png){width=80%}
+:::
+:::
+
+:::
+
+## Component separation spectra
+
+::: {.fitcenter}
+
+
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=0}
+![](images/ilc_spectra_comparison_TT.png){width=80%}
+:::
+
+::: {.fragment fragment-index=0}
+![](images/ilc_spectra_comparison_EE.png){width=80%}
+:::
+:::
+
+:::
+
+
+## Summary
+
+::: {style="line-height:2em"}
+
+- Most CMB foregrounds have different spectral response than CMB.
+
+- SPT foregrounds should be extragalactic, allowing for simple component separation techniques.
+
+    - linear combination of bands using analytic weights
+
+- Solutions are less obvious for point sources (and interaction with our filtering) 
+
+    - exploring source template subtraction
+
+- If you have critiques of or suggestions to improve these approaches, <br> I want to hear them!
+:::
