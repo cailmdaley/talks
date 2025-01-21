@@ -344,3 +344,5 @@ per-frequency foreground & noise covariance at each $\ell$
 
 - If you have critiques of or suggestions to improve these approaches, <br> I want to hear them!
 :::
+
+## Backup
