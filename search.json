@@ -11,7 +11,7 @@
     "href": "25_CosmoStatDeepDays/index.html#the-cosmic-microwave-background",
     "title": "South Pole Telescope  Foreground Mitigation Challenges",
     "section": "The Cosmic Microwave Background",
-    "text": "The Cosmic Microwave Background\n\n\n\n\n\n\n\nNAOJ\n\n\n\n\n\n\n\n\nESA and the Planck Collaboration"
+    "text": "The Cosmic Microwave Background\n\n\n\n\nNAOJ\n\n\n\n\n\n\n\n\nESA and the Planck Collaboration"
   },
   {
     "objectID": "25_CosmoStatDeepDays/index.html#section-1",
@@ -107,9 +107,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "talks",
+    "title": "Cail Daley’s Talks",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "South Pole Telescope  Foreground Mitigation Challenges\n\n\nDeep CosmoStat Days 2025\n\n\n\n\n\nJan 17, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n Shear with Radio Galaxy  Polarization & Kinematics\n\n\nNice TOSCA Meeting 2024\n\n\n\n\n\nNov 8, 2024\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "24_TOSCA_Nice/index.html#intuitive-picture",
@@ -215,5 +215,26 @@
     "title": "About",
     "section": "",
     "text": "About this site"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html",
+    "href": "24_TOSCA_Nice/index.html",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "",
+    "text": "Motivation\nKinematic Lensing (KL)\nRadio Galaxy Polarization\nRelevance to TOSCA"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html",
+    "href": "25_CosmoStatDeepDays/index.html",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "",
+    "text": "Introductions:\n\nThe Cosmic Microwave Background (CMB)\nThe South Pole Telescope (SPT) \n\nSPT map processing:\n\npoint source mitigation\ncomponent separation"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#component-separation-noise",
+    "href": "25_CosmoStatDeepDays/index.html#component-separation-noise",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "Component separation noise",
+    "text": "Component separation noise"
   }
 ]

@@ -11,7 +11,7 @@
 
   <meta name="author" content="  Cail Daley">
   <meta name="dcterms.date" content="2024-11-08">
-  <title>talks –   Shear with Radio Galaxy   Polarization &amp; Kinematics</title>
+  <title>Talks –   Shear with Radio Galaxy   Polarization &amp; Kinematics</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -122,6 +122,18 @@
       margin-right: 0; 
     }
   </style>
+  <script>
+  window.MathJax = {
+      loader: {load: ['[tex]/physics']},
+      tex: {
+          packages: {'[+]': ['physics']},
+          macros: {
+              vbell: '{ \\vb*{\\ell} }',
+              vun:   '{ \\vu{n} }',
+              inv:   '{ ^{-1} }'
+          },
+      }}
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -129,6 +141,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title"><br><br> Shear with Radio Galaxy <br> Polarization &amp; Kinematics</h1>
+  <p class="subtitle">Nice TOSCA Meeting 2024</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -136,7 +149,7 @@
 <br> Cail Daley 
 </div>
         <p class="quarto-title-affiliation">
-            CEA Paris-Saclay <br> Nice TOSCA Meeting
+            CEA Paris-Saclay
           </p>
     </div>
 </div>
@@ -250,7 +263,7 @@
 <section id="kl-symmetries-hopp-witmann-2024" class="slide level2">
 <h2>KL Symmetries (Hopp &amp; Witmann 2024)</h2>
 <div class="r-stack fitcenter">
-<p><img data-src="images/hopp&amp;witmann_fig3.jpg" class="fragment fade-out" data-fragment-index="0"></p>
+<p><img data-src="images/hopp&amp;witmann_fig3.jpg" class="fragment fade-out" style="width:100.0%" data-fragment-index="0"></p>
 <p><img data-src="images/hopp&amp;witmann_fig13.png" class="fragment current-visible" data-fragment-index="0"></p>
 </div>
 </section>
@@ -651,6 +664,22 @@
         ]
       });
     </script>
+    <script type="text/javascript">
+    Reveal.addEventListener('ready', (event) => {
+    if (event.indexh === 0) {
+        document.querySelector("div.footer-default").style.display = "none";
+    } else {
+        document.querySelector("div.footer-default").style.display = "block";
+    }
+    });
+    Reveal.addEventListener('slidechanged', (event) => {
+    if (event.indexh === 0) {
+        document.querySelector("div.footer-default").style.display = "none";
+    } else {
+        document.querySelector("div.footer-default").style.display = "block";
+    }
+    });
+    </script>
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
@@ -835,35 +864,6 @@
         }
       }
     });
-    </script>
-    <script type="text/javascript">
-    Reveal.addEventListener('ready', (event) => {
-    if (event.indexh === 0) {
-        document.querySelector("div.footer-default").style.display = "none";
-    } else {
-        document.querySelector("div.footer-default").style.display = "block";
-    }
-    });
-    Reveal.addEventListener('slidechanged', (event) => {
-    if (event.indexh === 0) {
-        document.querySelector("div.footer-default").style.display = "none";
-    } else {
-        document.querySelector("div.footer-default").style.display = "block";
-    }
-    });
-    </script>
-    <script>
-    window.MathJax = {
-        loader: {load: ['[tex]/physics']},
-        tex: {
-            packages: {'[+]': ['physics']},
-            macros: {
-                vbell: '{ \\vb*{\\ell} }',
-                vun:   '{ \\vu{n} }',
-                inv:   '{ ^{-1} }'
-            }
-        }
-    };
     </script>
     
 
