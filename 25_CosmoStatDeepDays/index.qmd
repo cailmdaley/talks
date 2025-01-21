@@ -80,7 +80,7 @@ height: 1080
 
 :::
 
-## {data-background="images/Lunar-Eclipse-South-Pole.png" data-background-size="cover" data-background-position="center" footer='false'}
+## {data-background="images/Lunar-Eclipse-South-Pole.png" data-background-size="cover" data-background-position="center"}
 
 :::::::::::::: {.columns}
 ::: {.column width=35%}
