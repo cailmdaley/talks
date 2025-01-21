@@ -1,7 +1,40 @@
 ---
 title: <br><br> Shear with Radio Galaxy <br> Polarization & Kinematics
-author: Cail Daley
-date: Nice TOSCA Meeting <br> <br> November 8th, 2024
+author: 
+    name: <br> Cail Daley
+    affiliation: CEA Paris-Saclay  <br> Nice TOSCA Meeting 
+date: November 8, 2024
+date-format: long
+format: 
+    revealjs:
+        theme: [default, custom.scss]
+        slide-number: true
+        fig-align: center
+        html-math-method: 
+            method: mathjax
+            url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+
+        include-after-body: 
+            - file: assets/no_footer_on_titleslide.html
+            - text: |
+                <script>
+                window.MathJax = {
+                    loader: {load: ['[tex]/physics']},
+                    tex: {
+                        packages: {'[+]': ['physics']},
+                        macros: {
+                            vbell: '{ \\vb*{\\ell} }',
+                            vun:   '{ \\vu{n} }',
+                            inv:   '{ ^{-1} }'
+                        }
+                    }
+                };
+                </script>
+        menu: false
+logo: images/CosmoStat-Logo_WhiteBK.jpg
+footer: Cail Daley | Nice TOSCA Meeting 2024 
+width:  1512
+height: 982
 ---
 
 # Outline {.center}
@@ -39,9 +72,14 @@ In cosmic shear analyses, intrinsic galaxy shape is unknown.
 
 [Hopp & Witmann (2024)](https://arxiv.org/abs/2410.00098)
 
-![](images/hopp&witmann_fig1a.png){.fragment .preload .current-visible}
-![](images/hopp&witmann_fig1b.png){.fragment .current-visible}
+::: {.r-stack .fitcenter}
+
+![](images/hopp&witmann_fig1a.png){.fragment .fade-out fragment-index=0}
+
+![](images/hopp&witmann_fig1b.png){.fragment .current-visible fragment-index=0}
+
 ![](images/hopp&witmann_fig2.png){.fragment width=55%}
+:::
 
 ## A Bit of History {.center}
 
@@ -62,7 +100,7 @@ In cosmic shear analyses, intrinsic galaxy shape is unknown.
 :::
 :::
 
-## First KL Measurement (Gurri et al. 2020) 
+## First KL Measurement (Gurri et al. 2020)
 
 - 18 hand-picked galaxy-galaxy systems: $\ev{\gamma} = 0.0201 \pm 0.0079$ 
 
@@ -70,14 +108,20 @@ In cosmic shear analyses, intrinsic galaxy shape is unknown.
 
 - kinematic shape noise dominates uncertainty: <br> $\sigma_k \sim 0.03$ vs. $\sigma_p \sim 0.2$, so need $\sim$ 50 times fewer galaxies*
 
-![](images/gurri_etal24_figure6.png){width=75% .fragment .current-visible .preload}
-![](images/gurri_etal24_figure8.png){.fragment .current-visible}
+::: {.r-stack .fitcenter}
 
-::: {.fragment style="margin-top:180px"}
+![](images/gurri_etal24_figure6.png){width=75% .fragment fragment-index=0 .fade-out}
+
+![](images/gurri_etal24_figure8.png){.fragment fragment-index=0 .current-visible }
+
+::: {.fragment}
 - Lower kinematic shape noise when gas & stellar velocity fields match
 
 - Point to SKA as enabler of KL at scale!
 :::
+
+:::
+
 
  
 
@@ -89,28 +133,39 @@ In cosmic shear analyses, intrinsic galaxy shape is unknown.
     - $\gamma_\times$ via kinematic-photometric misalignment
 - per-galaxy SNR > 1, and 10$\times$ reduction in shape noise!
 
-![](images/rs_etal24_fig5.png){.fragment .current-visible .preload  width=85%}
+::: {.r-stack .fitcenter}
+![](images/rs_etal24_fig5.png){.fragment .fade-out fragment-index=0  width=72%}
 
-![](images/rs_etal24_fig6.png){.fragment}
+![](images/rs_etal24_fig6.png){.fragment .current-visible fragment-index=0 width=90%}
+:::
 
 ## KL Symmetries (Hopp & Witmann 2024)
 
-![](images/hopp&witmann_fig3.jpg){.fragment .current-visible .preload}
-![](images/hopp&witmann_fig13.png){.fragment}
+::: {.r-stack .fitcenter}
+![](images/hopp&witmann_fig3.jpg){.fragment .fade-out fragment-index=0 }
+
+![](images/hopp&witmann_fig13.png){.fragment .current-visible fragment-index=0}
+:::
+
 
 ## Almost Feasible with [WALLABY](https://wallaby-survey.org/beta-science/)? 
 
  21 CM H1 survey, 30" resolution, up to z=0.1
 
-::: {.fragment .preload .current-visible}
-![](images/ASAP_WALLABy_vels1.png){width=18%} ![](images/ASAP_WALLABy_vels2.png){width=18%}
+::: {.r-stack .fitcenter}
+
+::: {.fragment .fade-out fragment-index=0 }
+![](images/ASAP_WALLABy_vels1.png){width=280px} ![](images/ASAP_WALLABy_vels2.png){width=280px style="margin-top:10px"}
 
 WALLABY website, data from Serra et al. (2015)
 :::
 
-::: {.fragment}
+::: {.fragment .current-visible fragment-index=0}
 ![Murugeshan et al (2024)](images/murugheshan_etal24_fig7.png){width=95%}
 :::
+ 
+:::
+
 
 
 ## Feasible with ALMA
@@ -121,8 +176,6 @@ high-resolution CO and [CI] kinematics of star-forming galaxies at z = 0.5-3.5
 
 
 ![](images/rizzo_etal23_fig7.png)
-
-![](images/rizzo_etal23_fig13.png)
 
 
 # Radio Galaxy Polarization  {.center}
@@ -139,11 +192,14 @@ high-resolution CO and [CI] kinematics of star-forming galaxies at z = 0.5-3.5
 
   - but Faraday effect, and cosmic birefringence..
 
-::: {.fragment style="margin-left:500px;margin-top:-150px"}
+::: {.fragment style="margin-left:580px;margin-top:-100px"}
 ![](images/stil_etal08_fig4.png){width=35%}
 ![](images/stil_etal08_fig2.png){width=55%}
 
+::: {style="margin-top:-50px;margin-left:100px"}
 Stil et al. (2008)
+:::
+
 :::
 
 ## Polarization: Some Examples {.scrollable}
@@ -178,7 +234,9 @@ Stil et al. (2008)
 
 - Brown & Battye ([2011a](https://arxiv.org/abs/1005.1926), [2011b](https://arxiv.org/abs/1106.0816)): first polarization shear estimator
 
+::: {.fitcenter}
 ![](images/brown&battye11.png){width=70%}
+:::
 
 ## A Bit of History
 
