@@ -1,0 +1,112 @@
+
+/*-- scss:defaults --*/
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300..500;1,300..500&display=swap');
+
+
+$font-family-sans-serif: Raleway, sans-serif;
+
+$presentation-font-size-root: 40px;
+$presentation-h1-font-size: 2.5em;
+$presentation-h2-font-size: 2em;
+$presentation-h3-font-size: 1.5em;
+$presentation-h4-font-size: 1.3em;
+
+
+/*-- scss:rules --*/
+
+// /* Custom CSS for aligning figure captions */
+.caption-left {
+    text-align: left;
+    margin-left: 30px;        /* Remove default margins */
+}
+.fitcenter {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    text-align:center;
+
+    &.text-left {
+        text-align: left;
+        figcaption {
+            margin-left: 30px;        /* Remove default margins */
+        }
+    }
+    
+    &.text-right {
+        text-align: right;
+        figcaption {
+            margin-right: 30px;        /* Remove default margins */
+        }
+    }
+}
+
+.credit {
+    // font-size: 0.7em;
+    position: relative;
+    display: block;
+    // text-align: center;
+}
+
+.reveal img {
+    vertical-align: middle;
+    // max-width: 100%;
+    // padding: 10px 10px;
+    margin: 0
+}
+
+.quarto-figure {
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.reveal .footer {
+    font-size: 2vh !important;
+    bottom: 2vh !important
+}
+
+
+// .reveal img.nopad {
+//     padding: 0;
+// }
+
+figcaption {
+    display: block;
+    position: relative;
+}
+
+// .align-left p,
+// .align-left ul,
+// .align-left ol {
+//     text-align: left;
+// }
+
+// .reveal blockquote {
+//     width: 95%;
+//     margin-bottom: 5px;
+// }
+
+// .reveal section {
+//     height: 100%;
+//     display: flex;
+//     flex: 1;
+//     align-items: center;
+//     justify-content: center;
+// }
+
+// .reveal section.center {
+//     height: unset;
+// }
+
+// .reveal .center h1 {
+//     height: 2.5em;
+// }
+
+// .container {
+//     height: 90%;
+//     display: flex;
+//     flex: 1;
+//     overflow: auto;
+//     align-items: center;
+//     justify-content: center;
+// }
