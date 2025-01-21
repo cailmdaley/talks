@@ -1,8 +1,5 @@
 project:
   type: website
-  render:
-    - "*.qmd"
-    - "!24_TOSCA_Nice/index.md"
 
 
 website:
