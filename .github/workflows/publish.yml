@@ -1,15 +1,19 @@
 on:
-  workflow_dispatch:
   push:
-    branches: main
+    branches: 
+      - main
 
 name: Quarto Publish
+
+# you need these permissions to publish to GitHub pages
+permissions: 
+    contents: write
+    pages: write
+
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -21,6 +25,5 @@ jobs:
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
-          render: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
