@@ -1,7 +1,9 @@
 ---
-title: "talks"
+title: "Cail Daley's Talks"
+listing: 
+    type: default
+    sort: "date desc"
+    fields: [title, subtitle, date, image]
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+---

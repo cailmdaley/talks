@@ -1,5 +1,6 @@
 ---
 title: "South Pole Telescope <br> Foreground Mitigation Challenges"
+subtitle: Deep CosmoStat Days 2025 
 author: 
     name: <br> Cail Daley
     affiliation: CEA Paris-Saclay  <br> <br>
@@ -7,36 +8,25 @@ resources:
     - "images/Lunar-Eclipse-South-Pole.png"
 date: January 17, 2025
 date-format: long
+
 format: 
     revealjs:
+        width:  1920
+        height: 1080
         theme: [default, custom.scss]
         slide-number: true
         fig-align: center
-        html-math-method: 
-            method: mathjax
-            url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
-
-        include-after-body: 
-            - file: assets/no_footer_on_titleslide.html
-            - text: |
-                <script>
-                window.MathJax = {
-                    loader: {load: ['[tex]/physics']},
-                    tex: {
-                        packages: {'[+]': ['physics']},
-                        macros: {
-                            vbell: '{ \\vb*{\\ell} }',
-                            vun:   '{ \\vu{n} }',
-                            inv:   '{ ^{-1} }'
-                        }
-                    }
-                };
-                </script>
         menu: false
+        include-after-body: assets/no_footer_on_titleslide.html
+
+image: images/Lunar-Eclipse-South-Pole.png
 logo: images/CosmoStat-Logo_WhiteBK.jpg
 footer: Cail Daley | Deep CosmoStat Days 2025 
-width:  1920
-height: 1080
+
+html-math-method: 
+    method: mathjax
+    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
 ---
 
 
@@ -58,11 +48,6 @@ height: 1080
     - component separation  <br><br>
 
 ## The Cosmic Microwave Background {.center}
-
-<!-- ::: {layout="[[-1, 1, -1], [-1, 1, -1]]" style="text-align:center"} -->
-<!-- ::: {layout="[[1], [1]]" style="text-align:center"} -->
-
- <!-- style="margin-left:-1180px;margin-top:-30px" -->
 
 ::: {.fitcenter .text-left}
 ![NAOJ](images/cosmic_history.jpg)
@@ -346,5 +331,3 @@ per-frequency foreground & noise covariance at each $\ell$
 
 - If you have critiques of or suggestions to improve these approaches, <br> I want to hear them!
 :::
-
-## Backup

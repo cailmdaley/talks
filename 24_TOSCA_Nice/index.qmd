@@ -1,40 +1,30 @@
 ---
 title: <br><br> Shear with Radio Galaxy <br> Polarization & Kinematics
+subtitle: Nice TOSCA Meeting 2024
 author: 
     name: <br> Cail Daley
-    affiliation: CEA Paris-Saclay  <br> Nice TOSCA Meeting 
+    affiliation: CEA Paris-Saclay
 date: November 8, 2024
 date-format: long
+
 format: 
     revealjs:
+        width:  1512
+        height: 982
         theme: [default, custom.scss]
         slide-number: true
         fig-align: center
-        html-math-method: 
-            method: mathjax
-            url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
-
-        include-after-body: 
-            - file: assets/no_footer_on_titleslide.html
-            - text: |
-                <script>
-                window.MathJax = {
-                    loader: {load: ['[tex]/physics']},
-                    tex: {
-                        packages: {'[+]': ['physics']},
-                        macros: {
-                            vbell: '{ \\vb*{\\ell} }',
-                            vun:   '{ \\vu{n} }',
-                            inv:   '{ ^{-1} }'
-                        }
-                    }
-                };
-                </script>
         menu: false
+        include-after-body: assets/no_footer_on_titleslide.html
+
+image: images/hopp&witmann_fig2.png
 logo: images/CosmoStat-Logo_WhiteBK.jpg
 footer: Cail Daley | Nice TOSCA Meeting 2024 
-width:  1512
-height: 982
+
+html-math-method: 
+    method: mathjax
+    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
 ---
 
 # Outline {.center}
@@ -142,9 +132,10 @@ In cosmic shear analyses, intrinsic galaxy shape is unknown.
 ## KL Symmetries (Hopp & Witmann 2024)
 
 ::: {.r-stack .fitcenter}
-![](images/hopp&witmann_fig3.jpg){.fragment .fade-out fragment-index=0 }
 
-![](images/hopp&witmann_fig13.png){.fragment .current-visible fragment-index=0}
+![](images/hopp&witmann_fig3.jpg){width=100% .fragment  fragment-index=0 .fade-out}
+
+![](images/hopp&witmann_fig13.png){.fragment fragment-index=0 .current-visible}
 :::
 
 
