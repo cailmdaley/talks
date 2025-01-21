@@ -3,6 +3,8 @@ title: "South Pole Telescope <br> Foreground Mitigation Challenges"
 author: 
     name: <br> Cail Daley
     affiliation: CEA Paris-Saclay  <br> <br>
+resources:
+    - "images/Lunar-Eclipse-South-Pole.png"
 date: January 17, 2025
 date-format: long
 format: 
