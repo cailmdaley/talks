@@ -6,8 +6,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.40">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-494121dfa8658343c03537e94414993d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-99.9.9">
 
   <meta name="author" content="  Cail Daley">
   <meta name="dcterms.date" content="2024-11-08">
@@ -30,7 +30,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-847b28a766c79b76f46bbbfa44878c56.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-8a71c9d896b02f074897cd780bd3e716.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -668,16 +668,12 @@
     Reveal.addEventListener('ready', (event) => {
     if (event.indexh === 0) {
         document.querySelector("div.footer-default").style.display = "none";
-    } else {
-        document.querySelector("div.footer-default").style.display = "block";
-    }
+    } 
     });
     Reveal.addEventListener('slidechanged', (event) => {
     if (event.indexh === 0) {
         document.querySelector("div.footer-default").style.display = "none";
-    } else {
-        document.querySelector("div.footer-default").style.display = "block";
-    }
+    } 
     });
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
@@ -767,7 +763,7 @@
       }
         var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
         var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
+          var filterRegex = new RegExp("https:\/\/cailmdaley\.github\.io\/talks\/");
         var isInternal = (href) => {
             return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
