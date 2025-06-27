@@ -157,7 +157,7 @@
 
   <br>
 
-    <p class="occasion">SPT Face-to-Face</p>
+    <p class="occasion">SPT Face-to-Face Meeting</p>
   
     <p class="date">July 2, 2025</p>
   
@@ -178,12 +178,31 @@
 
 <section id="euclid-q1-edf-s" class="title-slide slide level1">
 <h1>Euclid Q1 &amp; EDF-S</h1>
-
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>Euclid’s “Quick Data Release 1” (Q1) is the first public data from Euclid, and includes 3 fields (EDF-S, EDF-F, EDF-N) totaling 63 deg².</p>
+<ul>
+<li>More observations will be conducted to turn the Q1 fields in Deep Fields (50x deeper than the Wide Survey) for legacy science.</li>
+</ul></li>
+<li><p>SPT observed EDF-S last fall, and did a <a href="https://arxiv.org/abs/2506.00298">data release</a> of catalogs, temperature maps, and associated data products at the beginning of June.</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div style="margin-top:-200px;margin-right:-130px">
+<p><img data-src="images/survey_footprints_edfs.png" style="width:100.0%"></p>
+</div>
+</div></div>
 </section>
 
 <section id="cmb-lensing-with-edf-s" class="title-slide slide level1">
 <h1>CMB Lensing with EDF-S</h1>
-
+<ul>
+<li><p>EDF-S will become a legacy deep field, and CMB lensing lensing maps will be a useful data product for the community.</p></li>
+<li><p>While Q1 data was nominally not intended for cosmology, the galaxy clustering signal is very strong. Giulio Fabbian has been leading a 2x2pt galaxy clustering <span class="math inline">\(\ev{\delta_g\delta_g}\)</span> &amp; CMB lensing <span class="math inline">\(\ev{\delta_g \kappa_{\rm CMB}}\)</span> analysis with ACT and Planck lensing maps.</p>
+<ul>
+<li>The ACT cross-correlation SNR is about 6—we can do much better with SPT!</li>
+</ul></li>
+</ul>
 </section>
 
 <section id="edf-s-analysis-mapmaking" class="title-slide slide level1">
@@ -203,6 +222,11 @@
 
 <section id="edf-s-lensing-maps" class="title-slide slide level1">
 <h1>EDF-S: Lensing Maps</h1>
+
+</section>
+
+<section id="edf-s-cross-correlations-with-euclid" class="title-slide slide level1">
+<h1>EDF-S: Cross-correlations with Euclid</h1>
 
 </section>
 
@@ -526,7 +550,7 @@
       }
         var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
         var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp("https:\/\/cailmdaley\.github\.io\/talks\/");
+          var filterRegex = new RegExp('/' + window.location.host + '/');
         var isInternal = (href) => {
             return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
