@@ -197,23 +197,61 @@
 <section id="cmb-lensing-with-edf-s" class="title-slide slide level1">
 <h1>CMB Lensing with EDF-S</h1>
 <ul>
-<li><p>EDF-S will become a legacy deep field, and CMB lensing lensing maps will be a useful data product for the community.</p></li>
-<li><p>While Q1 data was nominally not intended for cosmology, the galaxy clustering signal is very strong. Giulio Fabbian has been leading a 2x2pt galaxy clustering <span class="math inline">\(\ev{\delta_g\delta_g}\)</span> &amp; CMB lensing <span class="math inline">\(\ev{\delta_g \kappa_{\rm CMB}}\)</span> analysis with ACT and Planck lensing maps.</p>
-<ul>
-<li>The ACT cross-correlation SNR is about 6—we can do much better with SPT!</li>
-</ul></li>
+<li>EDF-S will become a legacy deep field, and CMB lensing lensing maps will be a useful data product for the community.</li>
 </ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>While Q1 data was nominally not intended for cosmology, the galaxy clustering signal is very strong. Giulio Fabbian has been leading a 2x2pt galaxy clustering <span class="math inline">\(\ev{\delta_g\delta_g}\)</span> &amp; CMB lensing <span class="math inline">\(\ev{\delta_g \kappa_{\rm CMB}}\)</span> analysis with ACT and Planck lensing maps.</p></li>
+<li><p>The ACT cross-correlation SNR is about 6—we can do much better with SPT!</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="images/spt3g_edfs_lensing_nl.png"></p>
+</div></div>
 </section>
 
-<section id="edf-s-analysis-mapmaking" class="title-slide slide level1">
-<h1>EDF-S Analysis: Mapmaking</h1>
-
+<section id="edf-s-mapmaking" class="title-slide slide level1">
+<h1>EDF-S: Mapmaking</h1>
+<ul>
+<li><code>cosmo-v1</code> map run started in December thanks to the DPCs</li>
+<li>Similar mapmaking settings to 2-year winter maps.</li>
+<li>Noise realizations, mocks, and source template produced by Srini.</li>
+<li>Since the field is small, working at 0.5’ resolution.</li>
+</ul>
 </section>
 
 <section id="edf-s-source-templates" class="title-slide slide level1">
 <h1>EDF-S: Source Templates</h1>
-
+<ul>
+<li><p>Using a higher mapmaking threshold of 20 mJy in combination with a <strong>source template</strong> to reduce number of holes in the map and filtering artifacts.</p>
+<ul>
+<li>Source template: mock-observed map of beam-convoled sources made from the EDF-S source catalog.</li>
+</ul></li>
+<li><p>Sources &gt; 20 mJy and clusters will still be inpainted.</p></li>
+<li><p>Only sources &gt; 6 mJy are included in the template, to match the foreground power in the 2-year Gaussian lensing sims.</p></li>
+<li><p>This approach has required several iterations, but seems to be working well.</p></li>
+</ul>
 </section>
+
+<section id="edf-s-source-templates-1" class="title-slide slide level1">
+<h1>EDF-S: Source Templates</h1>
+
+<img data-src="images/spt3g_edfs_250630_source_map.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+
+<section id="edf-s-source-templates-2" class="title-slide slide level1">
+<h1>EDF-S: Source Templates</h1>
+
+<img data-src="images/spt3g_edfs_250630_source_template_thumbnails_95GHz.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+
+<section id="edf-s-source-templates-3" class="title-slide slide level1">
+<h1>EDF-S: Source Templates</h1>
+
+<img data-src="images/spt3g_edfs_250630_source_template_thumbnails_150GHz.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+
+<section id="edf-s-source-templates-4" class="title-slide slide level1">
+<h1>EDF-S: Source Templates</h1>
+
+<img data-src="images/spt3g_edfs_250630_source_template_thumbnails_220GHz.png" class="quarto-figure quarto-figure-center r-stretch"></section>
 
 <section id="edf-s-ilc" class="title-slide slide level1">
 <h1>EDF-S: ILC</h1>
