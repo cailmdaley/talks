@@ -30,7 +30,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-a96b78855dbec468f1f11654abd96137.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7eadb67c0486cfcd30588d66fb36f919.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -210,14 +210,15 @@
 </div></div>
 </section>
 
-<section id="mapmaking" class="title-slide slide level1">
-<h1>Mapmaking</h1>
+<section id="mapmaking-analysis" class="title-slide slide level1">
+<h1>Mapmaking &amp; Analysis</h1>
 <ul>
 <li><code>cosmo-v1</code> map run started in December thanks to the DPCs</li>
 <li>Similar mapmaking settings to 2-year winter maps.</li>
-<li>Noise realizations, mocks, and source template produced by Srini.</li>
+<li>Noise realizations, mocks, and source templates produced by Srini.</li>
 <li>Since the field is small, working at 0.5’ resolution.</li>
 </ul>
+<p><br><br> Analysis wiki: <a href="https://pole.uchicago.edu/spt3g/index.php/EDFS_Lensing">https://pole.uchicago.edu/spt3g/index.php/EDFS_Lensing</a></p>
 </section>
 
 <section id="source-templates" class="title-slide slide level1">
@@ -273,15 +274,36 @@
 <p><img data-src="images/spt3g_edfs250630_ilc_weights_1d.png" style="width:96%;margin-top:-30px"></p>
 </div><div class="column" style="width:48%;margin-top:-25px">
 <div class="r-stack">
-<div class="fade-out">
+<div class="fragment" data-fragment-index="0">
 <p><img data-src="images/spt3g_edfs_250630_ilc_residuals_TT_1d.png" class="nopad"></p>
 <p><img data-src="images/spt3g_edfs_250630_ilc_residuals_EE_1d.png" class="nopad" style="width:100%;margin-top:-75px"></p>
 </div>
-<div class="fragment" data-fragment-index="0">
+<div class="fragment" data-fragment-index="1">
 <p><img data-src="images/spt3g_edfs_250630_ilc_spectra_comparison_TT_1d.png" class="nopad"></p>
 <p><img data-src="images/spt3g_edfs_250630_ilc_spectra_comparison_EE_1d.png" class="nopad" style="width:100%;margin-top:-75px"></p>
 </div>
 </div>
+</div></div>
+</section>
+
+<section id="the-noise-line" class="title-slide slide level1">
+<h1>The Noise Line</h1>
+<ul>
+<li><p>Apparent feature around <span class="math inline">\(\ell\)</span> ~ 600 in BB; doesn’t show up in signflips so seems to be stable across observations, but averages down in ILC?</p></li>
+<li><p>Easy to mask, but this seems to be a new feature in the mapmaker (also present in 2-yr winter <span class="math inline">\(\tau\)</span>-decon) that we may want to understand for e.g.&nbsp;5-yr winter maps.</p></li>
+</ul>
+<div class="columns">
+<div class="column" style="margin-top:-50px;width:50%">
+<div class="r-stack">
+<div class="fade-out" data-fragment-index="0">
+<p><img data-src="images/spt3g_edfs_250630_ilc_spectra_comparison_BB_1d.png"></p>
+</div>
+<div class="fragment" data-fragment-index="0">
+<p><img data-src="images/spt3g_edfs_250226_edfs_wf_B_noiseline.png"></p>
+</div>
+</div>
+</div><div class="column" style="margin-top:-30px;width:50%">
+<p><img data-src="images/spt3g_edfs_cosmo-v1_BB_noise_2d.png" class="quarto-figure quarto-figure-right" style="width:52.0%"> <img data-src="images/spt3g_edfs_cosmo-v1_BB_noise_2d_masked.png" class="quarto-figure quarto-figure-right" style="width:44.0%"></p>
 </div></div>
 </section>
 
@@ -302,21 +324,145 @@
 </figure>
 </div>
 </div>
+<div class="fragment" data-fragment-index="1">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/spt3g_edfs_250702_wf_T.png" class="quarto-figure quarto-figure-center" style="margin-left:-17px;width:85.2%"></p>
+</figure>
+</div>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/spt3g_edfs_250702_wf_E.png" class="quarto-figure quarto-figure-center" style="margin-left:-32px;width:84.5%"></p>
+</figure>
+</div>
+</div>
+<div class="fragment" data-fragment-index="3">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/spt3g_edfs_250702_wf_B.png" class="quarto-figure quarto-figure-center" style="margin-left:-8px;width:85.7%"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 
-<section id="edf-s-lensing-maps" class="title-slide slide level1">
-<h1>EDF-S: Lensing Maps</h1>
-
+<section id="lensing-reconstruction" class="title-slide slide level1">
+<h1>Lensing Reconstruction</h1>
+<ul>
+<li><p>Adapting pipeline from the 2-year winter flat-sky QE analysis.</p></li>
+<li><p>So far only running on data; so no mean-field, Monte-Carlo response, etc.</p></li>
+</ul>
+<div class="r-stack" style="margin-top:-30px">
+<div class="fade-out">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images//spt3g_edfs_250702_edfs_kappa_wf_Phi_TT.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+<div class="fragment" data-fragment-index="0">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images//spt3g_edfs_250702_edfs_kappa_wf_Phi_TT_srchard.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+<div class="fragment" data-fragment-index="1">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images//spt3g_edfs_250702_edfs_kappa_wf_Phi_pol_set.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images//spt3g_edfs_250702_edfs_kappa_wf_Phi_set.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+<div class="fragment" data-fragment-index="3">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images//spt3g_edfs_250702_edfs_kappa_wf_Phi_set_srchard.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 
-<section id="edf-s-cross-correlations-with-euclid" class="title-slide slide level1">
-<h1>EDF-S: Cross-correlations with Euclid</h1>
-
+<section id="cross-correlations-with-euclid" class="title-slide slide level1">
+<h1>Cross-correlations with Euclid</h1>
+<ul>
+<li>Galaxy density maps and ACT bandpowers kindly provided by Giulio.</li>
+<li>Error bars calculated with <code>NaMaster</code>.</li>
+</ul>
+<div class="r-stack" style="margin-top:-30px">
+<div class="fragment fade-out" data-fragment-index="0">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/spt3g_edfs_250702_euclid_density.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+<div class="fragment fade-in-then-out" data-fragment-index="0">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/spt3g_edfs_250702_edfs_euclid_joint_mask.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+<div class="fragment" data-fragment-index="1">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/spt3g_edfs_250702_spt_act_euclid_cross_Phi_pol_set.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/spt3g_edfs_250702_spt_act_euclid_cross_Phi_set_srchard.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 
-<section id="edf-s-next-steps-timeline" class="title-slide slide level1">
-<h1>EDF-S: Next Steps &amp; Timeline</h1>
+<section id="summary-next-steps" class="title-slide slide level1">
+<h1>Summary &amp; Next Steps</h1>
+<ul>
+<li>Data processing aspects largely wrapped up.</li>
+<li>Lensing maps maps look sensible but amplitude seems to be 40-50% low.</li>
+<li>Cross-correlation with Euclid is already higher-SNR than ACT (6.8 vs 8.2), <br> and will improve after maps are properly normalized.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Next steps:
+<ul>
+<li>Run on sims to get response, mean-field, and noise bias corrections. <br> <span class="math inline">\(\implies\)</span> some level of lensing power spectrum validation.</li>
+<li>Map calibration (Pcal, T<span class="math inline">\(\to\)</span>P, EB nulling…)</li>
+<li>Try Julien’s lensing reconstruction code</li>
+</ul></li>
+</ul>
+</div>
+</section>
+
+<section id="timeline-euclid-dr1" class="title-slide slide level1">
+<h1>Timeline &amp; Euclid DR1</h1>
+<ul>
+<li><p>Planning to have a draft in the fall.</p></li>
+<li><p>One paper on lensing maps <strong>and</strong> x-corr? Or two separate ones? <br><br></p></li>
+<li><p>Euclid RR2 (preview of DR1) is here and cross-correlations with ACT have begun.</p></li>
+<li><p>Margherita Lembo &amp; I have submitted a <a href="https://docs.google.com/document/d/15DQXRbbZy2_vf-X9P20gE2yMEhHOMILsiutv364CCBA/edit?tab=t.0">EC/MoU proposal</a> for a Euclid-SPT <br> 3 <span class="math inline">\(\times\)</span> 2pt (<span class="math inline">\(\delta_g \kappa, \gamma \kappa, \delta_g \gamma\)</span>) project. <strong>Let me know if you’re interested in joining!</strong></p></li>
+</ul>
+
+<img data-src="images/euclid_cmbx_rr2dr1_footprints.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+
+<section id="thanks" class="title-slide slide level1 center">
+<h1>Thanks!</h1>
 
 
 </section>
