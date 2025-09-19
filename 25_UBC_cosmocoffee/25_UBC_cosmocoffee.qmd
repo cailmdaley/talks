@@ -1,0 +1,1016 @@
+---
+title: Cosmology with SPT-3G
+occasion: UBC Cosmo Coffee
+description: UBC Cosmo Coffee
+author: 
+    name: Cail Daley
+    affiliation: "CosmoStat, CEA Paris-Saclay  <br> <br> [on behalf of the SPT-3G collaboration]{style=font-size:1.3em}"
+resources:
+    - "images/Lunar-Eclipse-South-Pole.png"
+date: April 11, 2025
+date-format: long
+
+format: 
+    revealjs:
+        width:  1920
+        height: 1080
+        theme: [default, custom.scss]
+        slide-number: true
+        fig-align: center
+        menu: false
+        include-after-body: assets/no_footer_on_titleslide.html
+        footer: Cail Daley | UBC Cosmo Coffee | April 11, 2025
+        history: false
+        hash : true
+        pdf-separate-fragments : true
+        pdf-max-pages-per-slide	 : 1
+        template-partials:
+            - title-slide.html
+        center-title-slide: false
+image: images/Lunar-Eclipse-South-Pole.png
+# logo: images/CosmoStat-Logo_WhiteBK.jpg
+# decktape: decktape reveal --fragments -s 1920x1080 _site/25_ESLAB_Leiden/25_ESLAB_Leiden.html 25_ESLAB_Leiden/25_ESLAB_Leiden.pdf
+
+
+html-math-method: 
+    method: mathjax
+    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+# Outline
+
+::: {style="line-height:1.5em"}
+-   Cosmology with the Cosmic Microwave Background (CMB)
+
+-   The South Pole Telescope (SPT) and the SPT-3G camera
+
+<br>
+
+-   Recent and upcoming 2019+2020 SPT-3G results:
+    - **Three analyses:** MUSE, TT/TE/EE, and CMB lensing ($\phi\phi$)
+
+-  Beyond 2019+2020: the Ext-10k survey
+
+<br>
+
+- SPT-3G and Euclid
+
+:::
+
+
+
+## Cosmology with the CMB
+
+
+::: {style="margin-top:40px"}
+most distant observable electromagnetic radiation $\implies$ early-Universe physics
+
+illuminates the Universe's evolution: reionization, structure growth, astrophysics..
+
+:::
+
+![NAOJ](images/cosmic_history.jpg)
+
+
+## Cosmology with the CMB 
+
+
+<br>
+
+![](images/FIRAS.png){width=45% style="margin-left:-100px"} ![](images/COBEWMAPPlanck.png){width=62% style="margin-right:-100px"}
+
+::: {style="text-align:center;font-size:0.7em"}
+Turner (2022): [The Road to Precision Cosmology](https://arxiv.org/abs/2201.04741) 
+:::
+
+:::notes
+- spatially flat universe 
+- matter responsible for the growth of structure in the universe, radiation (photons and relativistic neutrinos)
+    - (baryons, non-relativistic neutrinos, and cold dark matter–CDM) 
+- dark energy parameterized by a constant Λ responsible for the accelerating expansion of the universe. 
+- on cosmological scales, the universe is statistically isotropic and homogeneous,
+- GR
+-   and that the behavior of gravity can be
+described by Albert Einstein’s theory of General Relativity (Einstein, 1916)
+:::
+
+
+## $\Lambda$CDM Concordance 
+
+six-parameter model predicts a wide range of cosmic observables:
+
+:::::::::::::: {.columns}
+::: {.column style="width:63%"}
+![](images/LSS.png){width=100% fig-align="center"} 
+:::
+::: {.column style="width:37%;font-size:0.8em"}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+[Planck Collaboration (2018)](https://arxiv.org/abs/1807.06205)
+:::
+::::::::::::::
+
+
+
+
+<!-- :::::::::::::: {.columns}
+::: {.column style="width:46%"}
+![](images/planck2020_power_spectra_compendium.png)
+:::
+::: {.column style="width:54%;margin-top:8px"}
+
+![](images/LSS.png){width=100%}
+
+::: {style="font-size:0.7em;margin-left:0px"}
+:::
+
+:::
+:::::::::::::: -->
+
+
+<!-- ## $\Lambda$CDM Phenomenology 
+
+:::::::::::::: {.columns}
+::: {.column style="width:40%"}
+
+<br>
+<br>
+<br>
+
+::: {style="color:crimson"}
+we don't know much about the dominant components of the Universe!
+:::
+
+::: {style="text-align:right;font-size:0.7em;margin-top:520px;margin-right:-220px"}
+[Riess & Breuval et al. (2023)](https://arxiv.org/abs/2308.10954)
+:::
+
+:::
+::: {.column style="width:60%"}
+![](images/riess&breuval23_expansionhistory.png){.r-stretch style="margin-left:90px;width:1500px"}
+:::
+:::::::::::::: -->
+
+
+## $\Lambda$CDM Phenomenology 
+
+![[David Spergel / AAAS / Science]{style="margin-top:30px"}](images/Spergel_components.png){width=75% .nostretch fig-align=left}
+
+::: {.fragment style="text-align:right;margin-right:300px;margin-top:-600px;z-index:1;position:relative;color:crimson;"}
+but we don't much about $\Lambda$ *or* CDM!
+:::
+
+
+## $\Lambda$CDM Cracks 
+
+:::::::::::::: {.columns}
+
+::: {.column style="width:50%"}
+
+- Tensions between early- and late-time measurements of $H_0$ [and $S_8$:]{.fragment fragment-index="0"}
+
+::: {.fragment fragment-index=1 style="margin-top:-40px"}
+- Low neutrino masses?
+:::
+
+![](images/H0_whisker_y1kp7.png){style="margin-top:-00px;margin-left:-50px"}
+
+::: {style="font-size:0.6em;text-align:right;margin-top:-220px;margin-right:-260px;"}
+[DESI Collaboration (2024)](https://arxiv.org/abs/2404.03002)
+:::
+:::
+
+::: {.column style="width:50%;margin-top:-170px"}
+
+::: {.fragment fragment-index=0 }
+![](images/ACT_lensing_fig_s8_paper_a.png){width=82% style="margin-left:00px"}
+
+:::{style="margin-top:-100px;margin-left:350px;font-size:0.6em"}
+[Madhavacheril et al. (2023)](https://arxiv.org/abs/2304.05203)
+:::
+:::
+
+![](images/desi2024_mnu_bounds.png){.fragment fragment-index=1 fig-align="left" width=75% style="margin-left:250px;margin-top:59px"}
+:::
+::::::::::::::
+
+## The CMB Beyond Planck
+
+:::::::::::::: {.columns}
+::: {.column style="width:55%"}
+Planck is [noise-variance-limited]{style="color:maroon"} beyond: 
+
+- $\ell > 1800$ in TT, $\ell > 1100$ in TE;
+- **everywhere**    in EE and lensing ($\phi\phi$).
+
+::: {.fragment}
+
+CMB experiments filling this niche:
+
+:::::::::::::: {.columns}
+::: {.column style="width:55%;margin-top:0px"}
+
+
+![](images/SPT_pano.jpg){.nopad}
+
+::: {style="font-size:0.7em;margin-top:-250px;margin-left:120px"}
+SPT  \ \ \ \  BICEP/Keck
+:::
+
+::: {style="font-size:0.7em;margin-top:150px;margin-left:10px"}
+Aman Chokshi
+:::
+
+:::
+::: {.column style="width:44.5%;margin-left:-44px;margin-top:-0px"}
+![](images/Atacama-Cosmology-Telescope.jpg){.nopad}
+
+::: {style="font-size:0.7em;margin-top:-180px;margin-left:330px;color:white"}
+ACT
+:::
+
+::: {style="font-size:0.7em;margin-top:80px;margin-left:15px;color:white"}
+Debra Kellner
+:::
+
+:::
+::::::::::::::
+
+:::::::::::::: {.columns}
+::: {.column .fitcenter style="width:50%"}
+
+::: {style="margin-left:30px"}
+![](images/SO_logo.jpeg){height=240px}
+:::
+
+:::
+::: {.column .fitcenter style="width:50%"}
+
+::: {style="margin-right:50px"}
+![](images/CMBS4_logo.png){height=240px}
+:::
+
+:::
+::::::::::::::
+
+
+
+<!-- ::: {style="font-size:0.7em;width:970px"}
+
+|              | $f_{\rm sky}$ <br> (effective) | resolution (arcmin) | sensitivity <br> ($\mu$K-arcmin) |
+|---------|----------|---------|-----------|
+| Planck       | 0.67    | 5.0    | 27       |
+| ACT          | 0.23    | 1.0    | 12       |
+| SPT          | 0.035   | 1.0    | 1.9      |
+| B/K          | 0.014   | 21     | 3        |
+
+::: {style="font-size:0.8em;margin-top:-10px"}
+\ \ ***crude** summary of CMB experiments
+:::
+
+::: -->
+
+:::
+
+
+:::
+::: {.column style="width:45%;margin-top:-25px"}
+
+![](images/planck2020_power_spectra_compendium_noiselimited.png){.r-stretch width=950px}
+:::
+::::::::::::::
+
+##  {data-background="images/Lunar-Eclipse-South-Pole.png" data-background-size="cover" data-background-position="center" footer="false"} 
+
+::::: columns
+::: {.column width="35%"}
+### [The South Pole <br> Telescope ]{style="font-size:1.1em;margin-left:-60px;margin-top:-50px;color:white;float:left"}
+:::
+
+::: {.column width="65%"}
+![](images/survey_footprints_edfs.png){style="width:53%;float:right;margin-right:-95px;margin-top:-86px;"}
+:::
+:::::
+
+:::::: columns
+::: {.column width="50%"}
+:::
+
+:::: {.column style="width:50%;text-align:left;color:white"}
+
+::: {style="margin-top:-150px;margin-left:-235px"}
+3 bands:      95,    150,   220 GHz      <br> 
+resolution:  1.6,     1.2,     1.0 arcmin
+:::
+
+
+::: {style="margin-top:20px;margin-left:-465px;color:white"}
+SPT-SZ (2007) \ \ \ \ \ \ \ \ \ \ \ \  SPTpol (2012) \ \ \ \ \ \ \ \ \ \ \ \ SPT-3G (2017)
+
+~1000 detectors \ \ \ \ \ \ \ \   ~1500 detectors \ \ \ \ &thinsp; &thinsp; ~16,000 detectors
+:::
+
+::::
+::::::
+
+[Photo Credit: Aman Chokshi]{.credit style="color:white;text-align:left;font-size:0.7em;margin-top:300px"}
+
+
+## SPT-3G 2019+2020 Analyses {background-image="images/spt3g_pink_zagorski.jpg" footer="false" style="background-size: 100% 100%; background-repeat: no-repeat; background-position: bottom;margin-top:450px"}
+
+::: {.fragment style="margin-top:140px"}
+*successful cosmology analyses already published with SPT-3G 2018 data
+:::
+
+
+::: {style="font-size: 0.8em;margin-top:300px;margin-left:-60px"}
+Kevin Zagorski
+:::
+
+## 2019+2020 Analyses
+
+::: {style="margin-left:"}
+
+:::
+:::::::::::::: {.columns}
+::: {.column style="width:80%;margin-left:-90px"}
+<br>
+![](images/spt3g_1920_maps.png){height=740px} ![](images/bracket.png){height=810px style="margin-left:-330px;margin-right:-1000px;margin-top:40px"}
+:::
+::: {.column style="width:20%;margin-top:000px"}
+
+
+::: {style="margin-left:-150px;margin-right:-150px"}
+
+::: {style="text-align:center;font-size:1.1em;margin-left:-70px"}
+**Same 9 maps used by three <br> independent pipelines:**
+:::
+
+
+::: {.incremental}
+1. [MUSE: Bayesian joint inference of cosmology, systematics, and pixels]{style="display:block;margin-bottom:63px"}
+
+2. [Traditional TT/TE/EE power spectrum]{style="display:block;margin-bottom:100px"}
+
+3. [Traditional quadratic estimator (QE) lensing]{style="display:block"}
+:::
+
+:::
+
+:::
+::::::::::::::
+
+## 1. MUSE
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+
+Recently accepted! [arxiv:2411.06000](https://arxiv.org/abs/2411.06000)
+
+- Likelihood publicly available: [[https://pole.uchicago.edu/public/data/ge25/index.html](https://pole.uchicago.edu/public/data/ge25/index.html)]{style="font-size:0.85em"}
+
+::: {.fragment fragment-index=0 style="margin-top:120px"}
+Methods in the spirit of <br> simulation-based inference (SBI).
+<br>
+<br>
+<br>
+EE & $\phi\phi$ bandpowers [*probe new scales*]{style="color:red"} and are in agreement with Planck $\Lambda$CDM:
+:::
+
+
+:::
+::: {.column style="width:50%"}
+
+::: {style="font-size:0.7em;margin-top:-50px;margin-left:280px"}
+![](images/fei.png){.nostretch width=250px} ![](images/marius.png){.nostretch width=250px}
+
+\ \ \ \ \ \ \ \ Fei Ge \ \ \ \ \ \ \ \ \ \ \ Marius Millea
+:::
+
+
+![](images/muse_spectra_compare_with_other_obs_phiphi_noresiduals.jpeg){.fragment fragment-index=0}
+
+:::
+::::::::::::::
+
+## 1. MUSE Blinding
+
+Blinded analysis with post-unblinding beam change:
+
+::: {.r-stack}
+![](images/muse_v1_v3_comparison_EEonly.png)
+
+![](images/muse_v1_v3_comparison.png){.fragment fragment-index=1}
+:::
+
+
+- Evidence for different beam in temperature vs. polarization, <br>
+  constrained by inter-frequency EE agreement.
+
+::: {.fragment fragment-index=1}
+- Added polarized beam model after unblinding:
+
+  - Reduced EE tilt, with no effect on $\phi\phi$.
+
+  - shifted cosmological parameters by up to 1$\sigma$ (not necessarily closer to Planck).
+:::
+
+## 1. MUSE Blinding
+
+Similar slope seen by ACT DR6:
+
+:::::::::::::: {.columns}
+::: {.column style="width:70%"}
+![](images/actdr6_ee_slope.png){fig-align="center"}
+:::
+::: {.column style="width:30%;margin-top:650px"}
+[Louis et al. 2025](https://arxiv.org/abs/2503.14452)
+:::
+::::::::::::::
+
+
+
+
+<!--  -->
+
+
+
+## 1. MUSE Results: $H_0$
+
+::: {style="margin-top:-80px"}
+![](images/muse_H0.png)
+:::
+
+## 1. MUSE Results: $S_8$
+
+::: {style="margin-top:-80px;margin-left:50px"}
+![](images/muse_S8.png){.r-stretch width=95.5%}
+:::
+
+::: {.fragment style="margin-top:-300px;margin-left:650px;font-size:0.9em;color:red"}
+Joint ACT-SPT-Planck $S_8$ <br> measurement in the works!
+:::
+
+## 1. MUSE Insights on Structure Growth
+
+:::::::::::::: {.columns}
+::: {.column style="width:46%"}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+**Scales** and **redshifts** that <br> contribute to MUSE constraints: <br>
+[total]{style="color:red"} and [non-linear]{style="color:cornflowerblue"} contributions.
+
+
+:::
+::: {.column style="width:54%;margin-top:15px"}
+![](images/muse_lensing_k_z.png)
+:::
+::::::::::::::
+
+
+## 1. MUSE Insights on Structure Growth
+
+$A_{\rm mod}$ to scale the [non-linear]{style="color:cornflowerblue"} matter power spectrum:
+
+![](images/spt3g_muse_Amod.png){.nostretch fig-align="center" width=80%}
+
+::: {style="text-align:center"}
+Planck T&E + SPT$\phi\phi$ gives first $3\sigma$ detection of <br> [non-linear structure]{style="color:cornflowerblue"} with CMB lensing!
+:::
+
+## 1. MUSE Insights on $A_{\rm lens}$
+
+:::::::::::::: {.columns}
+::: {.column style="width:52.5%"}
+
+**CMB lensing more lensing power** than predicted by $\Lambda$CDM given BAO.
+
+<br>
+
+**Decreasing** neutrino mass **enhances** structure (measured by lensing).
+<br> $\implies$ low $\sum m_{\nu}$ when allowed to vary.
+
+<br>
+
+::: {.fragment}
+$A_{...}$ scales $\Lambda$CDM lensing power that is used to predict:
+
+- $A_{\rm recon}$: reconstructed **lensing** spectrum
+
+- $A_{\rm 2pt}$:  **CMB** power spectra
+
+- $A_{\rm lens}$: if $A_{\rm recon} = A_{\rm 2pt}$
+:::
+
+
+:::
+::: {.column style="width:47.5%;margin-top:15px"}
+![](images/muse_lcdm_A2pt_Arecon_contours_triangle.png)
+:::
+::::::::::::::
+
+
+## 1. MUSE vs. Planck and ACT
+
+:::::::::::::: {.columns}
+::: {.column style="width:48%;"}
+
+::: {style="text-align: center;"}
+Comparison of **polarization-only**  <br> 
+(EE + $\phi \phi_{\rm pol}$) constraints from <br> 
+[SPT]{style="color:royalblue"}, [Planck]{style="color:darkorange"}, and [ACT]{style="color:grey"}:
+
+:::
+
+
+::: {.fragment style="margin-top:110px"}
+
+SPT-3G polarization data is incredible!
+
+<br>
+
+::: {style="margin-right:50px"}
+but, this isn't a complete picture of the constraining power of these instruments: <br>
+:::
+
+<br>
+
+$\implies$ upcoming SPT TT/TE/EE/$\phi\phi$
+
+:::
+
+
+:::
+::: {.column style="width:52%"}
+![](images/muse_lcdm_ponly_comparison.png)
+:::
+::::::::::::::
+
+
+## 2. Upcoming 19+20: TT/TE/EE 
+
+:::::::::::::: {.columns}
+::: {.column style="width:75%"}
+![](images/spt3g_tteete1920_experiments.png){fig-align="left"}
+:::
+::: {.column style="width:25%;margin-top:75px"}
+
+![Etienne Camphuis](images/etienne.png){.nostretch width=290px fig-align="left"} 
+
+<br>
+
+![Wei Quan](images/wei.png){.nostretch width=290px fig-align="left"}
+
+:::
+::::::::::::::
+
+
+## 2. Upcoming: TT/TE/EE + MUSE $\phi\phi$
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+Targeting publication this summer.
+
+<br>
+<br>
+
+As a taste, [SPT-3G TT/EE/TE + MUSE $\phi\phi$ <br> (**mock!**)]{style="color:red"} vs. [ACT DR6]{style="color:green"}, [MUSE]{style="color:grey"} and [Planck]{style="color:blue"}.
+
+<br>
+<br>
+
+With the addition of full QE $\phi\phi$ (see following slides), **joint constraints on $\Lambda CDM$ parameters will be <br> comparable to Planck!**
+
+:::
+::: {.column style="width:50%"}
+![](images/spt3g_ttteee_musepp_forecast.png){.r-stretch width=100% fig-align="right"}
+
+:::
+::::::::::::::
+
+
+## 3. Upcoming 19+20: QE Lensing 
+
+::: {style="text-align: center;"}
+
+
+:::::::::::::: {.columns}
+::: {.column style="width:66%"}
+![](images/spt3g_lensing1920_nl_comparison.png){fig-align="center" width=84%}
+:::
+::: {.column style="width:33%;margin-top:15px"}
+
+:::::::::::::: {.columns}
+::: {.column style="width:47%"}
+![Yuuki Omori](images/yuuki.png)
+:::
+::: {.column style="width:51%;margin-top:0px"}
+![Myself](images/cail.png){width=100%}
+:::
+::::::::::::::
+
+
+:::::::::::::: {.columns style="margin-left:-10px"}
+::: {.column style="width:50%"}
+![Federico Bianchini](images/federico.png)
+:::
+::: {.column style="width:45%"}
+![Yuka Nakato](images/yuka.png)
+:::
+::::::::::::::
+
+
+
+:::
+::::::::::::::
+:::
+
+[**forecast:** 1.5% measurement $\sigma_8 \Omega_m^{0.25}$ from SPT-3G lensing alone! <br>
+vs. 2.7% for Planck lensing]{style="font-size:1em"}
+
+## 3. Upcoming 19+20: QE Lensing
+
+::: {.r-stack}
+![](images/spt3g_lensing1920_planck_lensing_map_WFed.png){width=88% fig-align=center .fragment .fade-out fragment-index=0}
+
+![](images/spt3g_lensing1920_spt_planck_combined_WFed.png){width=88% fig-align=center .fragment fragment-index=0}
+:::
+
+<!-- ## Upcoming 19+20: QE Lensing
+
+![](images/spt3g_lensing1920_bianchini_bandpower_forecast.png)
+
+::: {style="margin-top:-70px;margin-bottom:70px;margin-left:800px;font-size:0.rem;"}
+Federico Bianchini
+::: -->
+
+## 3. Upcoming 19+20: Cross-correlations
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%;margin-top:100px"}
+
+[SPT-3G lensing]{style="color:steelblue"}: large scales, high $z$ <br> (mostly linear)
+
+<br>
+
+[Cosmic shear:]{style="color:LightSeaGreen"} smaller scales, low $z$ <br> (mostly non-linear)
+
+<br>
+
+[[Cross-correlation]{style="color:orange"} bridges the gap ]{.fragment fragment-index=0}
+
+![[Aaron Ouellette]{style="margin-left:10px"}](images/ouellette_headshot.aspx.jpeg){width=260px fig-align="center" style="margin-left:670px;z-index:1;margin-top:30px"}
+:::
+::: {.column style="width:50%;margin-left:-100px"}
+
+::: {.r-stack}
+![](images/spt3g_ouellette_xcorr_countours_b.png){width=1100px .r-stretch fig-align="right" .fragment .fade-out fragment-index=0}
+
+![](images/spt3g_ouellette_xcorr_countours_a.png){width=1100px .r-stretch fig-align="right" .fragment fragment-index=0} 
+
+::: {style="margin-top:150px;margin-left:230px;color:steelblue;z-index:1;font-size:0.8em"}
+SPT-3G lensing
+:::
+
+::: {style="margin-top:650px;margin-left:630px;color:LightSeaGreen;z-index:1;font-size:0.8em"}
+DES Y3 bin 4
+:::
+
+:::
+
+:::
+::::::::::::::
+
+::: notes
+
+the total snr is ~18 for mv and ~16 for pol (and just to be clear, the contours are only plotted for bin 4 of DES, which is the highest snr, but not all of it)
+
+and the contours show the differential contributions to the total chi^2: (d^2 chi) / (d ln z d ln k)
+
+the steps are 0.25, 0.5, and 0.75 relative to the max value
+
+:::
+
+## Beyond 2019+2020: the Ext-10k survey {background-image="images/spt3g_pink_zagorski.jpg" footer="false" style="background-size: 100% 100%; background-repeat: no-repeat; background-position: bottom;margin-top:450px"}
+
+::: {style="font-size: 0.8em;margin-top:500px;margin-left:-60px"}
+Kevin Zagorski
+:::
+
+
+## Beyond 2019+2020: the Ext-10k survey 
+
+:::::::::::::: {.columns}
+::: {.column style="width:35%;margin-top:130px"}
+
+
+::: {style="margin-right:-100px"}
+
+| Survey | Area <br> (deg²) | Depth <br> ($\mu$K-arcmin) |
+|--------|--------------|---------------------|
+| [Main  ]{style="color:darkgreen"} | 1,500  | 2.1 |
+| [Summer]{style="color:goldenrod"} | 2,600  | 9 |
+| [Wide  ]{style="color:orangered"} | 6,000  | 12  |
+
+Ext-10k = [Main  ]{style="color:darkgreen"} + [Summer]{style="color:goldenrod"} + [Wide  ]{style="color:orangered"}
+:::
+
+
+:::
+::: {.column style="width:65%;margin-top:80px"}
+![](images/spt3g_ext10k_footprint.png){fig-align="center" width=100% style="margin-right:-60px"}
+:::
+::::::::::::::
+
+
+::: {style="width: 100%; text-align: right;"}
+
+![](images/spt3g_ext10k_timeline.png)
+
+:::
+
+::: {.fragment}
+Combined Ext-10k survey will improve on Planck constraints by as much as: <br>
+**2x for $\Lambda$CDM parameters, 3x for single-parameter extensions!**
+:::
+
+::: {style="margin-top:-280px;text-align:right;font-size:0.8em"}
+Credit: Federica Guidi
+:::
+
+<!-- ## The present and future of SPT-3G <br> TT/TE/EE measurements <br> (in one plot) {background-image="images/spt3g_pink_zagorski.jpg" footer="false" style="background-size: 100% 100%; background-repeat: no-repeat; background-position: bottom;margin-top:200px"}
+
+::: {style="font-size: 0.8em;margin-top:500px;margin-left:-60px"}
+Kevin Zagorski
+:::
+
+## 
+
+:::::::::::::: {.columns}
+::: {.column style="width:40%"}
+
+<br>
+<br>
+
+::: {.fragment fragment-index=1}
+[MUSE EE]{style="color:red"} deepened our understanding of the *unlensed* power spectrum on small scales.
+:::
+
+<br>
+
+::: {.fragment fragment-index=2}
+[SPT-3G 2019/2020 TT/TE/EE]{style="color:darkorange"} adds TT and TE on small scales.
+:::
+
+
+<br>
+
+::: {.fragment fragment-index=3}
+Extra sky coverage of <br>
+[SPT-3G Ext-10k TT/TE/EE]{style="color:darkorange"} 
+reduces sample variance.
+:::
+
+
+::: {style="font-size:0.8em;text-align:right;margin-top:80px;margin-right:-10px"}
+Credit: Srini Raghunathan
+:::
+
+
+:::
+::: {.column style="width:60%"}
+
+::: {.r-stack style="margin-right:-100px"}
+
+![](images/spt3g_2_cmbpowerspectra_with_None_errors.png)
+
+![](images/spt3g_3_cmbpowerspectra_with_None_errors_withunlensed.png){.fragment fragment-index=1}
+
+![](images/spt3g_4_cmbpowerspectra_with_winter_2y_errors_withunlensed.png){.fragment fragment-index=2}
+
+![](images/spt3g_5_cmbpowerspectra_with_ext10k_errors_withunlensed.png){.fragment fragment-index=3}
+
+:::
+
+:::
+:::::::::::::: -->
+
+<!-- ## Cosmology from Foregrounds {background-image="images/spt3g_pink_zagorski.jpg" footer="false" style="background-size: 100% 100%; background-repeat: no-repeat; background-position: bottom;margin-top:450px"}
+
+::: {style="font-size: 0.8em;margin-top:500px;margin-left:-60px"}
+Kevin Zagorski
+::: -->
+
+## Cosmology from CMB Secondaries
+
+Foreground signals also contain rich cosmological information.
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+<br>
+<br>
+<br>
+
+SPT has provided the best constraints on the Epoch of Reionization to-date from kinetic Sunyaev-Zel’dovich 4-pt:
+
+:::
+::: {.column style="width:50%"}
+
+![](images/spt3g_ksz4pt_reionization.png)
+
+::: {style="font-size:0.8em;text-align:right;margin-top:-3333"}
+Raghunathan et al. (2024)
+:::
+
+:::
+::::::::::::::
+
+## Cosmology from CMB Secondaries
+
+Foreground signals also contain rich cosmological information.
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+<br>
+<br>
+
+100 deg² SPT-deep cluster catalog on arXiv as of last week: [arXiv:2503.17271](https://arxiv.org/abs/2503.17271)
+
+<br>
+
+Looking forward to cluster cosmology with SPT-3G + Euclid!
+
+
+:::
+::: {.column style="width:50%"}
+
+![](images/spt_deep_cluster_mass_vs_redshift.png)
+
+::: {style="font-size:0.8em;text-align:right;"}
+Kornoelje et al. (2025)
+:::
+
+:::
+::::::::::::::
+
+
+
+
+## SPT-3G and Euclid {background-image="images/spt3g_pink_zagorski.jpg" footer="false" style="background-size: 100% 100%; background-repeat: no-repeat; background-position: bottom;margin-top:450px"}
+
+::: {style="font-size: 0.8em;margin-top:500px;margin-left:-60px"}
+Kevin Zagorski
+:::
+
+
+## SPT-3G and Euclid
+
+Joint analyses of SPT-3G and Euclid data will be incredibly powerful! <br>
+
+- DR1 largely overlaps SPT-3G Main and Summer fields.
+
+:::::::::::::: {.columns}
+::: {.column style="width:40%"}
+
+::: {.fragment style="margin-right:-300px;margin-top:100px"}
+SPT has conducted dedicated observations <br>
+of Euclid Deep Field South (EDFS) <br>
+and is planning a release of: 
+
+- temperature maps & analysis products 
+- emissive source catalogs 
+- cluster catalogs.
+
+:::
+
+
+:::
+::: {.column style="width:60%;margin-top:-100px"}
+
+<!-- ![](images/spt3g_edfs_datarelease_detections_150GHz.png){fig-align="right"} -->
+![](images/survey_footprints_edfs.png){width=75% fig-align="center" style='margin-right:-400px'}
+:::
+::::::::::::::
+
+## SPT-3G and Euclid
+
+I am working on EDFS lensing maps to be cross-correlated with Euclid Q1 data:
+
+:::::::::::::: {.columns}
+::: {.column style="width:30%;margin-top:150px"}
+Will provide useful pathfinding for Euclid DR1 $\times$ CMB analyses.
+
+<br>
+
+Euclid-CMB $6 \times 2$pt <br>  will be among Euclid's most powerful cosmological probes!
+
+:::
+::: {.column style="width:70%"}
+
+::: {.r-stack}
+![](images/250304_qe_Phi_pol_set.png){width=100% .fragment .fade-out fragment-index=0}
+
+![](images/250313_euclid_density.png){width=90% .fragment fragment-index=0}
+:::
+
+:::
+::::::::::::::
+
+## SPT-3G and Euclid
+
+I am working on EDFS lensing maps to be cross-correlated with Euclid Q1 data:
+
+:::::::::::::: {.columns}
+::: {.column style="width:25%"}
+<br>
+<br>
+<br>
+[Preliminary!]{style="color:red"} <br> Lensing maps aren't normalized, mean-field subtracted, etc.
+:::
+::: {.column style="width:75%"}
+![](images/250313_spt_act_euclid_cross.png){fig-align="center"}
+:::
+::::::::::::::
+
+
+
+
+## Summary & Looking Forward
+
+- The CMB still has a lot to tell us about the Universe:
+
+    - **small scales, polarization, & lensing.**
+
+::: {style="margin-top:50px"}
+- SPT-3G Main 2019+2020:
+
+  - MUSE polarization-only results probe new scales & are consistent with $\Lambda$CDM
+
+  - **coming temperature+polarization constraints will be comparable to Planck!**
+:::
+
+::: {style="margin-top:50px"}
+- SPT-3G Ext-10k will improve on Planck constraints by as much as <br> 
+**2x for $\Lambda$CDM parameters, 3x for single-parameter extensions.**
+:::
+
+::: {style="margin-top:50px"}
+- Joint SPT-3G + Euclid cosmology constraints will be incredible!
+:::
+
+
+
+## Thank You! {.fitcenter}
+
+![](images/collaboration_photo_2024.jpeg)
+
+
+## Backup {background-image="images/spt3g_pink_zagorski.jpg" footer="false" style="background-size: 100% 100%; background-repeat: no-repeat; background-position: bottom;margin-top:450px"}
+
+::: {style="font-size: 0.8em;margin-top:500px;margin-left:-60px"}
+Kevin Zagorski
+:::
+
+## MUSE Algorithm
+
+:::::::::::::: {.columns}
+::: {.column style="width:60%"}
+
+
+<br>
+<br>
+
+Marginalize over CMB $f$ and lensing $\phi$ <br> maps/pixels to determine parameters $\theta$:
+
+::: {style="margin-left:-320px"}
+$$
+\mathcal{P}(\theta \mid d)=\int \mathrm{d} f \mathrm{~d} \phi \, \mathcal{P}(f, \phi, \theta \mid d)
+$$
+:::
+
+::: {.fragment}
+Algorithm similar to simulation-based inference (SBI) with semi-analytic compression statistic.
+:::
+
+
+:::
+::: {.column style="width:40%;margin-top:-70px"}
+
+![](images/muse_MAPs.png){width=1000px}
+
+:::
+::::::::::::::

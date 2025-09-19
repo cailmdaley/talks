@@ -1,0 +1,39 @@
+---
+title: Cosmology with SPT-3G
+occasion: UBC Cosmo Coffee
+author: 
+    name: Cail Daley
+    affiliation: "CosmoStat, CEA Paris-Saclay  <br> <br> [on behalf of the SPT-3G collaboration]{style=font-size:1.3em}"
+resources:
+    - "images/Lunar-Eclipse-South-Pole.png"
+date: March 25, 2025
+date-format: long
+
+format: 
+    revealjs:
+        width:  1920
+        height: 1080
+        theme: [default, custom.scss]
+        slide-number: true
+        fig-align: center
+        menu: false
+        include-after-body: assets/no_footer_on_titleslide.html
+        footer: Cail Daley | UBC Cosmo Coffee | April 11, 2025
+        history: false
+        hash : true
+        pdf-separate-fragments : true
+        pdf-max-pages-per-slide	 : 1
+        template-partials:
+            - title-slide.html
+        center-title-slide: false
+image: images/Lunar-Eclipse-South-Pole.png
+# logo: images/CosmoStat-Logo_WhiteBK.jpg
+# decktape: decktape reveal --fragments -s 1920x1080 _site/25_ESLAB_Leiden/25_ESLAB_Leiden.html 25_ESLAB_Leiden/25_ESLAB_Leiden.pdf
+
+
+html-math-method: 
+    method: mathjax
+    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+

@@ -3,7 +3,10 @@ title: "Cail Daley's Talks"
 listing: 
     type: default
     sort: "date desc"
-    fields: [title, subtitle, date, image]
+    fields: [title, description, date, image]
+project:
+    render:
+        - 
 ---
 
 ---

@@ -1,6 +1,7 @@
 ---
 title: "South Pole Telescope <br> Foreground Mitigation Challenges"
 subtitle: Deep CosmoStat Days 2025 
+description: Deep CosmoStat Days 2025 
 author: 
     name: <br> Cail Daley
     affiliation: CEA Paris-Saclay  <br> <br>
