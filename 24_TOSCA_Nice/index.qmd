@@ -1,6 +1,7 @@
 ---
 title: <br><br> Shear with Radio Galaxy <br> Polarization & Kinematics
 subtitle: Nice TOSCA Meeting 2024
+description: Nice TOSCA Meeting 2024
 author: 
     name: <br> Cail Daley
     affiliation: CEA Paris-Saclay
