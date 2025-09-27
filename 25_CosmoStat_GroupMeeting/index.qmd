@@ -1,0 +1,326 @@
+---
+title: "Work Update: EDF-S"
+occasion: CosmoStat Group Meeting
+description: CosmoStat Group Meeting
+author: 
+    name: Cail Daley
+resources:
+    - "images/Lunar-Eclipse-South-Pole.png"
+date: September 23, 2025
+date-format: long
+
+output-file: 25_CosmoStat_Group_Meeting.html
+
+format: 
+    revealjs:
+        width:  1920
+        height: 1080
+        theme: [default, custom.scss]
+        slide-number: true
+        fig-align: center
+        # menu: false
+        include-after-body: assets/no_footer_on_titleslide.html
+        footer: Cail Daley | Work Update | CosmoStat Group Meeting | September 23, 2025
+        history: false
+        hash : true
+        pdf-separate-fragments : true
+        pdf-max-pages-per-slide	 : 1
+        template-partials:
+            - title-slide.html
+        center-title-slide: false
+image: images/survey_footprints_edfs.png 
+# logo: images/CosmoStat-Logo_WhiteBK.jpg
+# decktape: decktape reveal --fragments -s 1920x1080 _site/25_ESLAB_Leiden/25_ESLAB_Leiden.html 25_ESLAB_Leiden/25_ESLAB_Leiden.pdf
+
+
+html-math-method: 
+    method: mathjax
+    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+# Outline {.center}
+
+- Background on Euclid Q1 and EDF-S 
+
+- EDF-S CMB lensing motivation
+
+- Current status of lensing analysis
+
+- Next steps & timeline
+
+# <span style="background-color:#f97316;color:#fff;display:block;padding:0.05em 0.1em;border-radius:0.2em;font-size:0.7em;margin-top:-70px;text-align:center;width:1800px">Why this presentation may not be the best</span> {.notthebest-slide background-image="images/notthebest.png" background-size="100% 100%" background-position="center"}
+
+
+# Euclid Q1 & EDF-S
+
+:::::::::::::: {.columns}
+::: {.column width=50%}
+
+- Euclid's "Quick Data Release 1" (Q1) is the first public data from Euclid, and includes 3 fields (EDF-S, EDF-F, EDF-N) totaling 63 deg².
+
+  - More observations will be conducted to turn the Q1 fields in Deep Fields (50x deeper than the Wide Survey) for legacy science. 
+
+- SPT observed EDF-S last fall, and did a [data release](https://arxiv.org/abs/2506.00298) of catalogs, temperature maps, and associated data products at the beginning of June.
+
+:::
+::: {.column width=50%}
+
+::: {style="margin-top:-200px;margin-right:-130px"}
+![](images/survey_footprints_edfs.png){width=100%}
+:::
+
+:::
+::::::::::::::
+
+
+# CMB Lensing with EDF-S
+
+- EDF-S will become a legacy deep field, and CMB lensing lensing maps will be a useful data product for the community.
+
+
+
+:::::::::::::: {.columns}
+::: {.column width=50%}
+
+- While Q1 data was nominally not intended for cosmology, the galaxy clustering signal is very strong. Giulio Fabbian has been leading a 2x2pt galaxy clustering $\ev{\delta_g\delta_g}$ & CMB lensing $\ev{\delta_g \kappa_{\rm CMB}}$ analysis with ACT and Planck lensing maps.
+
+- The ACT cross-correlation SNR is about 6---we can do much better with SPT! 
+
+:::
+::: {.column width=50%}
+![](images/spt3g_edfs_lensing_nl.png)
+:::
+::::::::::::::
+
+
+# Mapmaking
+
+:::::::::::::: {.columns}
+::: {.column style="width:23%;"}
+![](images/timestreams_2.png){.nopad}
+
+![](images/timestreams_1.png){.nopad style="margin-top:-20px"}
+
+[Aman Chokshi]{.credit style="font-size:0.7em;margin-left:110px;margin-top:-30px"}
+
+
+:::
+::: {.column width=70%}
+SPT takes data by performing constant-declination <br> scans across the sky:
+
+- 72 scans in a given 2-hour observation,
+- 12.5 arcmin elevation step between scans,
+- 0.3-0.6 arcmin$^{-1}$ sampling rate,
+- ~14 000 useable detectors
+
+<br>
+
+Fundamental data product: **timestreams**. 
+
+- To get to a map: filter timestreams, bin into pixels.
+
+:::
+::::::::::::::
+
+::: notes
+ - scan speed: 1 deg/s in azimuth
+ - scan length: ~2 min
+ - sampling rate: 76.3 Hz downsample  d
+:::
+
+# Mapmaking 
+
+![](images/mapmaking_flowchart.png){fig-align="center" width=90% style="margin-top:-30px"}
+
+![](images/filtering_wings.png){fig-align="center" style="width:80%;margin-left:-0px;margin-top:-150px"}
+
+# Source Templates
+
+-  Using a higher mapmaking threshold of 20 mJy in combination with a **source template** to reduce number of holes in the map and filtering artifacts.
+
+    - Source template: mock-observed map of beam-convoled sources made from the EDF-S source catalog.
+
+- Sources > 20 mJy and clusters will still be inpainted.
+
+- Only sources > 6 mJy are included in the template, to match the foreground power in the 2-year Gaussian lensing sims.
+
+- This approach has required several iterations, but seems to be working well.
+
+
+# Source Templates
+
+![](images/spt3g_edfs_250630_source_map.png){fig-align="center" width=96%}
+
+# Source Templates
+
+::: {.r-stack}
+
+::: {.fade-out}
+![](images/spt3g_edfs_250630_source_template_thumbnails_95GHz.png){fig-align="center" .nostretch}
+:::
+
+::: {.fragment fragment-index=0}
+![](images/spt3g_edfs_250630_source_template_thumbnails_150GHz.png){fig-align="center"}
+:::
+
+::: {.fragment fragment-index=1}
+![](images/spt3g_edfs_250630_source_template_thumbnails_220GHz.png){fig-align="center"}
+:::
+
+:::
+
+# Component Separation
+
+:::::::::::::: {.columns}
+::: {.column width=50%}
+Leverage frequency-dependence of noise and foregrounds to make <br> a cleaner estimate of the CMB:
+$$X_{\vbell}^{\rm MV} = \sum_{i} \mathbb W_{\vbell}^{i} X_{\vbell}^{i}.$$
+
+![](images/spt3g_edfs250630_ilc_weights_1d.png){style="width:96%;margin-top:-30px"}
+:::
+::: {.column style="width:48%;margin-top:-25px"}
+
+::: {.r-stack}
+
+::: {.fragment fragment-index=0}
+![](images/spt3g_edfs_250630_ilc_residuals_TT_1d.png){.nopad}
+
+![](images/spt3g_edfs_250630_ilc_residuals_EE_1d.png){.nopad style="width:100%;margin-top:-75px"}
+:::
+
+::: {.fragment fragment-index=1}
+![](images/spt3g_edfs_250630_ilc_spectra_comparison_TT_1d.png){.nopad}
+
+![](images/spt3g_edfs_250630_ilc_spectra_comparison_EE_1d.png){.nopad style="width:100%;margin-top:-75px"}
+:::
+
+:::
+
+:::
+::::::::::::::
+
+# Component Separation
+
+- I shared these data products with Victor over the summer and he kindly sent me back ML-seperated maps. 
+
+- but I haven't had a chance to look at them yet 😔
+
+#
+
+::: {.r-stack style="margin-top:-50px"}
+
+::: {.fade-out}
+![](images/spt3g_edfs_250630_edfs_150GHz_T_original.png){fig-align="center" width=86%}
+:::
+
+::: {.fragment fragment-index=0}
+![](images/spt3g_edfs_250630_edfs_ilcGHz_T.png){fig-align="center" width=86%}
+:::
+
+::: {.fragment fragment-index=1}
+![](images/spt3g_edfs_250702_wf_T.png){fig-align="center" width=85.2% style="margin-left:-17px"}
+:::
+
+::: {.fragment fragment-index=2}
+![](images/spt3g_edfs_250702_wf_E.png){fig-align="center" width=84.5% style="margin-left:-32px"}
+:::
+
+::: {.fragment fragment-index=3}
+![](images/spt3g_edfs_250702_wf_B.png){fig-align="center" width=85.7% style="margin-left:-8px"}
+:::
+
+:::
+
+
+# Lensing Reconstruction
+
+- Adapting pipeline from the 2-year winter flat-sky QE analysis.
+
+- So far only running on data; so no mean-field, Monte-Carlo response, etc.
+
+::: {.r-stack style="margin-top:-30px"}
+
+::: {.fade-out}
+![](images//spt3g_edfs_250702_edfs_kappa_wf_Phi_TT.png){width=65% fig-align="center"}
+:::
+
+::: {.fragment fragment-index=0}
+![](images//spt3g_edfs_250702_edfs_kappa_wf_Phi_TT_srchard.png){width=65% fig-align="center"}
+:::
+
+::: {.fragment fragment-index=1}
+![](images//spt3g_edfs_250702_edfs_kappa_wf_Phi_pol_set.png){width=65% fig-align="center"}
+:::
+
+::: {.fragment fragment-index=2}
+![](images//spt3g_edfs_250702_edfs_kappa_wf_Phi_set.png){width=65% fig-align="center"}
+:::
+
+::: {.fragment fragment-index=3}
+![](images//spt3g_edfs_250702_edfs_kappa_wf_Phi_set_srchard.png){width=65% fig-align="center"}
+:::
+
+:::
+
+# Cross-correlations with Euclid
+
+- Galaxy density maps and ACT bandpowers kindly provided by Giulio.
+- Error bars calculated with `NaMaster`.
+
+::: {.r-stack style="margin-top:-30px"}
+
+::: {.fragment .fade-out fragment-index=0}
+![](images/spt3g_edfs_250702_euclid_density.png){width=65% fig-align="center"}
+:::
+
+::: {.fragment fragment-index=0 .fade-in-then-out}
+![](images/spt3g_edfs_250702_edfs_euclid_joint_mask.png){width=65% fig-align="center"}
+:::
+
+::: {.fragment fragment-index=1}
+![](images/spt3g_edfs_250702_spt_act_euclid_cross_Phi_pol_set.png){width=65% fig-align="center"}
+:::
+
+::: {.fragment fragment-index=2}
+![](images/spt3g_edfs_250702_spt_act_euclid_cross_Phi_set_srchard.png){width=65% fig-align="center"}
+:::
+
+:::
+
+
+# Summary & Next Steps
+
+- Data processing aspects largely wrapped up.
+- Lensing maps maps look sensible but amplitude seems to be 40-50% low, <br> likely due to missing Monte Carlo correction.
+- Cross-correlation SNR ~20% higher than ACT <br> (6.8 vs 8.2 for single tomographic bin).
+
+::: {.fragment}
+- Next steps: 
+  - Run on sims to get response, mean-field, and noise bias corrections. <br> $\implies$ some level of lensing power spectrum validation.
+  - Map calibration (Pcal, T$\to$P, EB nulling...)
+  - Try Julien Carron's lensing reconstruction code
+
+:::
+
+
+
+# Timeline & Euclid DR1
+
+- Planning to have a draft this fall: currently halway through map calibration.
+- One paper on lensing maps **and** x-corr? Or two separate ones? 
+  - If the latter, could add a public shear catalog and do a mini 3x2pt <br> ($\delta_g\kappa_{\rm CMB}$, $\delta_g\gamma$, $\gamma \kappa_{\rm CMB}$)
+
+- Euclid CMBX RR2 Hands-On Meeting Oct 7-8 in Paris
+- DR1 [EC/MoU proposal](https://docs.google.com/document/d/15DQXRbbZy2_vf-X9P20gE2yMEhHOMILsiutv364CCBA/edit?tab=t.0) for a Euclid-SPT 3 $\times$ 2pt accepted by respective committees (waiting for final ECEB approval).
+
+![](images/euclid_cmbx_rr2dr1_footprints.png){fig-align="center"}
+
+
+[Credit: Margherita Lembo]{.credit style="text-align:left;font-size:0.7em;margin-top:-120px;margin-left:100px"}
+
+
+
+
+ 
+# Thanks! {.center}
