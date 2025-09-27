@@ -1,0 +1,62 @@
+---
+title: "Lessons Learned <br> from CMBX RR2"
+occasion: Euclid Weak Lensing Meeting, Marseille
+description: Rapid notes on Euclid-CMBX RR2 mask products feeding the upcoming cross-correlation analysis.
+author:
+  name: Cail Daley
+  affiliation: CosmoStat, CEA Paris-Saclay
+resources:
+  - images/euclidwl_coverage_mask.png
+date: October 3, 2025
+date-format: long
+
+format:
+  revealjs:
+    width: 1920
+    height: 1080
+    theme: [default, custom.scss]
+    slide-number: true
+    fig-align: center
+    menu: false
+    include-after-body: assets/no_footer_on_titleslide.html
+    footer: "Cail Daley | CMBX RR2 | April 2025"
+    history: false
+    hash: true
+    pdf-separate-fragments: true
+    pdf-max-pages-per-slide: 1
+    template-partials:
+      - title-slide.html
+    center-title-slide: false
+image: images/euclidwl_coverage_mask.png
+# logo: images/CosmoStat-Logo_WhiteBK.jpg
+# decktape: decktape reveal --fragments -s 1920x1080 _site/25_EuclidWL_Marseille/25_EuclidWL_Marseille.html 25_EuclidWL_Marseille/25_EuclidWL_Marseille.pdf
+
+html-math-method:
+  method: mathjax
+  url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## RR2 Mask Products Overview
+
+- Comparing weighted counts in the catalog to coverage and visibility masks.
+- Largely similar, but there are regions with no countes that aren't masked.
+- TODO: show both lensmc and metacal weights
+
+## Source Counts (Weighted)
+
+- Applying `she_lensmc_weight` to build an effective number-density map:
+
+![](images/euclidwl_weighted_counts.png){width=90%}
+
+## Effective Coverage Mask
+
+- Not a subset of the weighted counts! Best to take the intersection?
+
+![](images/euclidwl_coverage_mask.png){width=90%}
+
+## Combined W Mask
+
+- Fold together coverage and visibility masks:
+
+![](images/euclidwl_W_mask.png){width=90%}

@@ -1,31 +1,40 @@
 ---
 title: Title
-subtitle: Occasion
-author: 
-    name: <br> Cail Daley
-    affiliation: CEA Paris-Saclay  <br> <br>
+occasion: Occasion
+description: One-line description
+author:
+  name: Cail Daley
+  affiliation: "CosmoStat, CEA Paris-Saclay  <br> <br> [on behalf of the SPT-3G collaboration]{style=font-size:1.3em}"
+resources:
+  - images/CosmoStat-Logo_WhiteBK.jpg
 date: today
 date-format: long
 
-format: 
-    revealjs:
-        width:  1920
-        height: 1080
-        theme: [default, custom.scss]
-        slide-number: true
-        fig-align: center
-        menu: false
-        include-after-body: assets/no_footer_on_titleslide.html
-
+format:
+  revealjs:
+    width: 1920
+    height: 1080
+    theme: [default, custom.scss]
+    slide-number: true
+    fig-align: center
+    menu: false
+    include-after-body: assets/no_footer_on_titleslide.html
+    footer: "Cail Daley | Occasion | today"
+    history: false
+    hash: true
+    pdf-separate-fragments: true
+    pdf-max-pages-per-slide: 1
+    template-partials:
+      - title-slide.html
+    center-title-slide: false
 image: images/CosmoStat-Logo_WhiteBK.jpg
-logo: images/CosmoStat-Logo_WhiteBK.jpg
-footer: Cail Daley
+# logo: images/CosmoStat-Logo_WhiteBK.jpg
+# decktape: decktape reveal --fragments -s 1920x1080 _site/TALK/TALK.html TALK/TALK.pdf
 
-html-math-method: 
-    method: mathjax
-    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+html-math-method:
+  method: mathjax
+  url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
 include-in-header: assets/mathjax.html
 ---
 
-
-## Slide 1 
+## Slide 1

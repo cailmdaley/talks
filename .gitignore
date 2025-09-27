@@ -3,3 +3,5 @@
 /_site/
 **/*_files
 # index.html
+
+**/*.quarto_ipynb
