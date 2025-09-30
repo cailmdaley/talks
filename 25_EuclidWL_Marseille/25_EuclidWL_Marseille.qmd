@@ -40,8 +40,8 @@ include-in-header: assets/mathjax.html
 ## RR2 Mask Products Overview
 
 - Comparing weighted counts in the catalog to coverage and visibility masks.
-- Largely similar, but there are regions with no countes that aren't masked.
-- TODO: show both lensmc and metacal weights
+- Largely similar, but there are regions with no counts that aren't masked.
+- Track ISD weight convergence and lensing-source n(z) consistency alongside the mask products.
 
 ## Source Counts (Weighted)
 
@@ -60,3 +60,64 @@ include-in-header: assets/mathjax.html
 - Fold together coverage and visibility masks:
 
 ![](images/euclidwl_W_mask.png){width=90%}
+
+## ISD Weight Iterations
+
+- Iterative spatial down-sampler (ISD) weights converge within six passes across tomographic bins; the residual wiggles flag masks that still need smoothing.
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem;">
+  <figure style="margin: 0;">
+    <img src="images/isd_weights_iterations_bin_1.gif" alt="ISD weight iterations for tomographic bin 1" style="width: 100%;" />
+    <figcaption style="text-align: center; font-size: 0.75em;">Bin 1</figcaption>
+  </figure>
+  <figure style="margin: 0;">
+    <img src="images/isd_weights_iterations_bin_2.gif" alt="ISD weight iterations for tomographic bin 2" style="width: 100%;" />
+    <figcaption style="text-align: center; font-size: 0.75em;">Bin 2</figcaption>
+  </figure>
+  <figure style="margin: 0;">
+    <img src="images/isd_weights_iterations_bin_3.gif" alt="ISD weight iterations for tomographic bin 3" style="width: 100%;" />
+    <figcaption style="text-align: center; font-size: 0.75em;">Bin 3</figcaption>
+  </figure>
+  <figure style="margin: 0;">
+    <img src="images/isd_weights_iterations_bin_4.gif" alt="ISD weight iterations for tomographic bin 4" style="width: 100%;" />
+    <figcaption style="text-align: center; font-size: 0.75em;">Bin 4</figcaption>
+  </figure>
+  <figure style="margin: 0;">
+    <img src="images/isd_weights_iterations_bin_5.gif" alt="ISD weight iterations for tomographic bin 5" style="width: 100%;" />
+    <figcaption style="text-align: center; font-size: 0.75em;">Bin 5</figcaption>
+  </figure>
+  <figure style="margin: 0;">
+    <img src="images/isd_weights_iterations_bin_6.gif" alt="ISD weight iterations for tomographic bin 6" style="width: 100%;" />
+    <figcaption style="text-align: center; font-size: 0.75em;">Bin 6</figcaption>
+  </figure>
+</div>
+
+## n(z) Comparisons (Unweighted)
+
+- Comparing RR2 unweighted tomographic redshift histograms against the Flagship mocks in both coarse and fine binning.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+![](images/nz_comparison_unweighted_dz010.png){width=70%}
+:::
+::: {.column width="50%"}
+
+![](images/nz_comparison_unweighted_dz050.png){width=70%}
+:::
+::::
+
+## n(z) Comparisons (Weighted)
+
+- LensMC-weighted distributions smooth the mid-z mismatch but highlight a persistent low-z tilt that the ISD runs will need to address.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+![](images/nz_comparison_weighted_dz010.png){width=70%}
+:::
+::: {.column width="50%"}
+
+![](images/nz_comparison_weighted_dz050.png){width=70%}
+:::
+::::
