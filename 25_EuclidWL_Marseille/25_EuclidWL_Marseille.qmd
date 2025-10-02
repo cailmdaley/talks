@@ -1,5 +1,5 @@
 ---
-title: "Lessons Learned <br> from CMBX RR2"
+title: "Learning Lessons <br> from CMBX RR2"
 occasion: Euclid Weak Lensing Meeting, Marseille
 description: Rapid notes on Euclid-CMBX RR2 mask products feeding the upcoming cross-correlation analysis.
 author:
@@ -19,7 +19,7 @@ format:
     fig-align: center
     menu: false
     include-after-body: assets/no_footer_on_titleslide.html
-    footer: "Cail Daley | CMBX RR2 | April 2025"
+    footer: "Cail Daley | CMBX RR2 | October 2025"
     history: false
     hash: true
     pdf-separate-fragments: true
@@ -37,60 +37,88 @@ html-math-method:
 include-in-header: assets/mathjax.html
 ---
 
-## RR2 Mask Products Overview
+## Overview
 
-- Comparing weighted counts in the catalog to coverage and visibility masks.
-- Largely similar, but there are regions with no counts that aren't masked.
-- Track ISD weight convergence and lensing-source n(z) consistency alongside the mask products.
+- Introduction to CMBX-2/3 projects
+- Analysis ingredients
+- Ways CMBX can contribute to WL
+- Lessons learned/learning ffrom RR2
 
-## Source Counts (Weighted)
+## Project Information
 
-- Applying `she_lensmc_weight` to build an effective number-density map:
+**CMB Lensing × Euclid Cross-Correlations**
+**DR1-KP-CMBX-2/3**
 
-![](images/euclidwl_weighted_counts.png){width=90%}
+- **CMBX-2**: CMB lensing cross-correlation with Euclid observables
 
-## Effective Coverage Mask
+- **CMBX-3**: Cosmology with Euclid photometric probes <br> and CMB lensing (3×2pt + CMB lensing block)
 
-- Not a subset of the weighted counts! Best to take the intersection?
+**Communication**
 
-![](images/euclidwl_coverage_mask.png){width=90%}
+- [Wiki](https://euclid.roe.ac.uk/projects/dr1-kp-cmbx-3/wiki/Wiki) | [GitLab](https://gitlab.euclid-sgs.uk/SWG/SWG-CMBX) (`dr1_cmbx` becoming main analysis repo) 
+- Bi-weekly telecons: Thursdays 14:00 CET (alternates with CMBX-SWG)
+- Slack: #dr1-kp-cmbx3_2
+- [Meeting notes](https://docs.google.com/document/d/1Qq6zh-lNxLnTD0eyKs6VasRJ5ELbgmMKdQ88kMZxGoE/) | [Slide deck](https://docs.google.com/presentation/d/1sxCQnp2zRyyd5Zz-Si0FJz7kpVjmUlOjq1iaQYkstO0/)
 
-## Combined W Mask
+Many other CMBX projects & people that I don't have space to acknowledge!
 
-- Fold together coverage and visibility masks:
+## Euclid × SPT-3G MoU Project
+
+Cross-correlation analysis between SPT-3G CMB lensing and Euclid DR1 galaxy density and shear, targeting the CMB lensing block of the 6×2pt data vector $\delta_{\rm g} \kappa_{\rm CMB}, \gamma \kappa_{\rm CMB}, \kappa_{\rm CMB} \kappa_{\rm CMB}$.
+
+**Expected Impact**:
+
+- $\gamma \kappa_{\rm CMB}$: ~14% improvement in $\Omega_m, \sigma_8$ figure of merit for SPT-3G × DR1 South
+- $\delta_{\rm g} \kappa_{\rm CMB}$: Combined SNR ~60 across Main and Summer fields
+
+![Credit: Margherita Lembo](images/euclid_cmbx_rr2dr1_footprints.png){width=90%}
+
+## Analysis Ingredients:
+
+- Euclid data: shear & position catalogs, mass maps, $n(z)$s
+- SPT data: ACT, SPT, Planck covergence maps & masks 
+- Correlated simulations:
+  - for covariance: something simple & cheap
+  - for bias characterization: something realistic & expensive
+    - Euclid side: FS2 | CMB side: [Agora (Omori 2024)](https://arxiv.org/abs/2212.07420) | how to combine TBD...
+  
+- Harmonic space analysis
+  - `namaster`, `polspice`, `heracles`
+  - pixel- and catalog-based
+
+## Masking: what to use?
+
+Inititally thought `W = coverage * (1 + visibility)`
 
 ![](images/euclidwl_W_mask.png){width=90%}
 
-## ISD Weight Iterations
+## Masking: coverage map vs. catalog weights
 
-- Iterative spatial down-sampler (ISD) weights converge within six passes across tomographic bins; the residual wiggles flag masks that still need smoothing.
+- comparing coverage to binned shear weights, there are some unmasked regions with 0 weight:
 
-<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem;">
-  <figure style="margin: 0;">
-    <img src="images/isd_weights_iterations_bin_1.gif" alt="ISD weight iterations for tomographic bin 1" style="width: 100%;" />
-    <figcaption style="text-align: center; font-size: 0.75em;">Bin 1</figcaption>
-  </figure>
-  <figure style="margin: 0;">
-    <img src="images/isd_weights_iterations_bin_2.gif" alt="ISD weight iterations for tomographic bin 2" style="width: 100%;" />
-    <figcaption style="text-align: center; font-size: 0.75em;">Bin 2</figcaption>
-  </figure>
-  <figure style="margin: 0;">
-    <img src="images/isd_weights_iterations_bin_3.gif" alt="ISD weight iterations for tomographic bin 3" style="width: 100%;" />
-    <figcaption style="text-align: center; font-size: 0.75em;">Bin 3</figcaption>
-  </figure>
-  <figure style="margin: 0;">
-    <img src="images/isd_weights_iterations_bin_4.gif" alt="ISD weight iterations for tomographic bin 4" style="width: 100%;" />
-    <figcaption style="text-align: center; font-size: 0.75em;">Bin 4</figcaption>
-  </figure>
-  <figure style="margin: 0;">
-    <img src="images/isd_weights_iterations_bin_5.gif" alt="ISD weight iterations for tomographic bin 5" style="width: 100%;" />
-    <figcaption style="text-align: center; font-size: 0.75em;">Bin 5</figcaption>
-  </figure>
-  <figure style="margin: 0;">
-    <img src="images/isd_weights_iterations_bin_6.gif" alt="ISD weight iterations for tomographic bin 6" style="width: 100%;" />
-    <figcaption style="text-align: center; font-size: 0.75em;">Bin 6</figcaption>
-  </figure>
-</div>
+::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=0}
+![](images/euclid_rr2_mask_vs_counts_method=lensmc.png){width=80%}
+:::
+
+::: {.fragment fragment-index=0}
+![](images/euclid_rr2_mask_vs_counts_method=metacal.png){width=80%}
+:::
+
+:::
+
+## Masking: using catalog weights directly
+
+- binning `metacal` weights into pixels:
+
+![](images/animated_weights_method=metacal.gif){width=90%}
+
+## Masking: using catalog weights directly
+
+- binning `lensmc` weights into pixels:
+
+![](images/animated_weights_method=lensmc.gif){width=90%}
 
 ## n(z) Comparisons (Unweighted)
 
@@ -121,3 +149,31 @@ include-in-header: assets/mathjax.html
 ![](images/nz_comparison_weighted_dz050.png){width=70%}
 :::
 ::::
+
+## Systematics: Survey Property Map Cross-Correlations
+
+- Following DES × SPT methodology: quantify potential systematic contamination
+- If a contaminant affects both CMB lensing and galaxy fields, it produces spurious cross-correlation signal
+
+**Cross-correlation score**:
+$$X^{f}_{\mathcal{S}}(\theta) = \frac{\langle \kappa_{\rm CMB} \mathcal{S}(\theta)\rangle \, \langle f \mathcal{S}(\theta)\rangle}{\langle \mathcal{S} \mathcal{S}(\theta)\rangle}$$
+
+where $\mathcal{S}$ is a survey property map and $f$ is either $\delta_g$ (galaxy density) or $\gamma_t$ (tangential shear)
+
+- $X^{f}_{\mathcal{S}} \approx 0$ unless systematic correlates with **both** fields
+- Compare magnitude to statistical uncertainty of cross-correlation
+
+## Systematics Templates for DR1
+
+**For galaxy-CMB lensing ($\delta_g \times \kappa_{\rm CMB}$)**:
+
+- Stellar density (from Gaia)
+- Galactic extinction
+
+**For shear-CMB lensing ($\gamma_t \times \kappa_{\rm CMB}$)**:
+
+- Stellar density and extinction
+- PSF model errors: $q = e_* - e_{\rm model}$ (ellipticity residuals)
+- PSF model errors: $w = e_*(T_* - T_{\rm model})/T_*$ (size-dependent)
+
+**Connection to DR1 WL validation**: Euclid DR1 validation tests include similar systematic map cross-correlations—natural integration point for CMBX analysis pipeline
