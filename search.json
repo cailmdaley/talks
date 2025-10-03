@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Cail Daley’s Talks",
+    "section": "",
+    "text": "Cosmology with SPT-3G\n\n\nNRC-HAA-DAO Colloquium\n\n\n\n\n\nApr 15, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\nUBC Cosmo Coffee\n\n\n\n\n\nApr 11, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\nESLAB Euclid Symposium\n\n\n\n\n\nMar 25, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\nSéminaire postdoc du DAp\n\n\n\n\n\nMar 11, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nSouth Pole Telescope  Foreground Mitigation Challenges\n\n\nDeep CosmoStat Days 2025\n\n\n\n\n\nJan 17, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n Shear with Radio Galaxy  Polarization & Kinematics\n\n\nNice TOSCA Meeting 2024\n\n\n\n\n\nNov 8, 2024\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "25_NRC-HAA-DAO-Colloquium/25_NRC-HAA-DAO-Colloquium.html#cosmology-with-the-cmb",
     "href": "25_NRC-HAA-DAO-Colloquium/25_NRC-HAA-DAO-Colloquium.html#cosmology-with-the-cmb",
     "title": "Cosmology with SPT-3G",
@@ -243,6 +250,370 @@
     "title": "Cosmology with SPT-3G",
     "section": "MUSE Algorithm",
     "text": "MUSE Algorithm\n\n\n \nMarginalize over CMB \\(f\\) and lensing \\(\\phi\\)  maps/pixels to determine parameters \\(\\theta\\):\n\n\\[\n\\mathcal{P}(\\theta \\mid d)=\\int \\mathrm{d} f \\mathrm{~d} \\phi \\, \\mathcal{P}(f, \\phi, \\theta \\mid d)\n\\]\n\n\nAlgorithm similar to simulation-based inference (SBI) with semi-analytic compression statistic."
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#cosmology-with-the-cmb",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#cosmology-with-the-cmb",
+    "title": "Cosmology with SPT-3G",
+    "section": "Cosmology with the CMB",
+    "text": "Cosmology with the CMB\n\nmost distant observable electromagnetic radiation \\(\\implies\\) early-Universe physics\nilluminates the Universe’s evolution: reionization, structure growth, astrophysics..\n\n\nNAOJ"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#cosmology-with-the-cmb-1",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#cosmology-with-the-cmb-1",
+    "title": "Cosmology with SPT-3G",
+    "section": "Cosmology with the CMB",
+    "text": "Cosmology with the CMB\n\n \n\nTurner (2022): The Road to Precision Cosmology\n\n\n\nspatially flat universe\nmatter responsible for the growth of structure in the universe, radiation (photons and relativistic neutrinos)\n\n(baryons, non-relativistic neutrinos, and cold dark matter–CDM)\n\ndark energy parameterized by a constant Λ responsible for the accelerating expansion of the universe.\non cosmological scales, the universe is statistically isotropic and homogeneous,\nGR\nand that the behavior of gravity can be described by Albert Einstein’s theory of General Relativity (Einstein, 1916)"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-concordance",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-concordance",
+    "title": "Cosmology with SPT-3G",
+    "section": "\\(\\Lambda\\)CDM Concordance",
+    "text": "\\(\\Lambda\\)CDM Concordance\nsix-parameter model predicts a wide range of cosmic observables:\n\n\n\n\n\n\nPlanck Collaboration (2018)"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-phenomenology",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-phenomenology",
+    "title": "Cosmology with SPT-3G",
+    "section": "\\(\\Lambda\\)CDM Phenomenology",
+    "text": "\\(\\Lambda\\)CDM Phenomenology\n\n\n\nDavid Spergel / AAAS / Science\n\n\n\nbut we don’t much about \\(\\Lambda\\) or CDM!"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-cracks",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-cracks",
+    "title": "Cosmology with SPT-3G",
+    "section": "\\(\\Lambda\\)CDM Cracks",
+    "text": "\\(\\Lambda\\)CDM Cracks\n\n\n\nTensions between early- and late-time measurements of \\(H_0\\) and \\(S_8\\):\n\n\n\nLow neutrino masses?\n\n\n\n\nDESI Collaboration (2024)\n\n\n\n\n\nMadhavacheril et al. (2023)"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#the-cmb-beyond-planck",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#the-cmb-beyond-planck",
+    "title": "Cosmology with SPT-3G",
+    "section": "The CMB Beyond Planck",
+    "text": "The CMB Beyond Planck\n\n\nPlanck is noise-variance-limited beyond:\n\n\\(\\ell &gt; 1800\\) in TT, \\(\\ell &gt; 1100\\) in TE;\neverywhere in EE and lensing (\\(\\phi\\phi\\)).\n\n\n\n\n\n\nSPT      BICEP/Keck\n\n\nAman Chokshi\n\n\n\n\nACT\n\n\nDebra Kellner\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\(f_{\\rm sky}\\)  (effective)\nresolution (arcmin)\nsensitivity  (\\(\\mu\\)K-arcmin)\n\n\n\n\nPlanck\n0.67\n5.0\n27\n\n\nACT\n0.23\n1.0\n12\n\n\nSPT\n0.035\n1.0\n1.9\n\n\nB/K\n0.014\n21\n3\n\n\n\n\n  *crude summary of CMB experiments"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#section",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#section",
+    "title": "Cosmology with SPT-3G",
+    "section": "",
+    "text": "The South Pole  Telescope\n\n\n\n\n\n\n\n\n3 bands:      95,    150,   220 GHz       resolution:  1.6,     1.2,     1.0 arcmin\n\n\nSPT-SZ (2007)              SPTpol (2012)             SPT-3G (2017)\n~1000 detectors          ~1500 detectors         ~16,000 detectors\n\n\nPhoto Credit: Aman Chokshi"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#analyses",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#analyses",
+    "title": "Cosmology with SPT-3G",
+    "section": "2019+2020 Analyses",
+    "text": "2019+2020 Analyses\n\n\n\n\n\n\n\n\n\nMaps used by three  independent pipelines:\n\n\n\nTraditional TT/TE/EE power spectrum\nTraditional quadratic estimator (QE) lensing\nMUSE: Bayesian joint inference of cosmology, systematics, and pixels"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse",
+    "title": "Cosmology with SPT-3G",
+    "section": "MUSE",
+    "text": "MUSE\n\n\n(Marginal Unbiased Score Expansion)\n\nAccepted as of last week! arxiv:2411.06000\n\n\nMarginalize over CMB \\(f\\) and lensing \\(\\phi\\)  maps/pixels to determine parameters \\(\\theta\\):\n\n\\[\n\\mathcal{P}(\\theta \\mid d)=\\int \\mathrm{d} f \\mathrm{~d} \\phi \\, \\mathcal{P}(f, \\phi, \\theta \\mid d)\n\\]\n\n\n\nAlgorithm similar to simulation-based inference (SBI) with semi-analytic compression statistic.\n\n\n\n\n \n            Fei Ge                Marius Millea"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-bandpowers",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-bandpowers",
+    "title": "Cosmology with SPT-3G",
+    "section": "MUSE Results: Bandpowers",
+    "text": "MUSE Results: Bandpowers\n\n\n EE & \\(\\phi\\phi\\) bandpowers in agreement  with \\(\\Lambda\\)CDM and Planck.\n \nBlinded analysis  with post-unblinding beam change:"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-h_0",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-h_0",
+    "title": "Cosmology with SPT-3G",
+    "section": "MUSE Results: \\(H_0\\)",
+    "text": "MUSE Results: \\(H_0\\)"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-s_8",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-s_8",
+    "title": "Cosmology with SPT-3G",
+    "section": "MUSE Results: \\(S_8\\)",
+    "text": "MUSE Results: \\(S_8\\)"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-insights-on-structure-growth",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-insights-on-structure-growth",
+    "title": "Cosmology with SPT-3G",
+    "section": "MUSE Insights on Structure Growth",
+    "text": "MUSE Insights on Structure Growth\n\n\n\n\\(A_{\\rm mod}\\) to scale the non-linear  matter power spectrum:\n\nPlanck T&E + SPT\\(\\phi\\phi\\) gives first \\(3\\sigma\\) detection of non-linear structure  with CMB lensing!"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-insights-on-neutrino-mass",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-insights-on-neutrino-mass",
+    "title": "Cosmology with SPT-3G",
+    "section": "MUSE Insights on Neutrino Mass",
+    "text": "MUSE Insights on Neutrino Mass\n\n\nDecreasing neutrino mass enhances structure (measured by \\(\\phi \\phi\\)).\n\nCMB prefers more lensing power than predicted by \\(\\Lambda\\)CDM given BAO.  \\(\\implies\\) low \\(\\sum m_{\\nu}\\) when allowed to vary.\n\n\n\\(A_{\\rm recon}\\): scales lensing power used to predict lensed CMB power spectra\n\\(A_{\\rm 2pt}\\): scales lensing power used to predict lensed CMB power spectra\n\\(A_{\\rm lens}\\): if \\(A_{\\rm recon} = A_{\\rm 2pt}\\)"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-1920-results-ttteee",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-1920-results-ttteee",
+    "title": "Cosmology with SPT-3G",
+    "section": "Upcoming 19+20 Results: TT/TE/EE",
+    "text": "Upcoming 19+20 Results: TT/TE/EE\n\n\n\n\n\n\n\n\n\n\n\nEtienne Camphuis\n\n\n\n\n\n\nWei Quan"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-eeteeephiphi",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-eeteeephiphi",
+    "title": "Cosmology with SPT-3G",
+    "section": "Upcoming Results: EE/TE/EE/\\(\\phi\\phi\\)",
+    "text": "Upcoming Results: EE/TE/EE/\\(\\phi\\phi\\)\n\n\nTargeting publication this summer.\n \nAs a taste, mock SPT-3G TT/EE/TE + polarization-only lensing compared to MUSE and Planck.\n \nJoint constraints on \\(\\Lambda\\)CDM parameters will be comparable to Planck!"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing",
+    "title": "Cosmology with SPT-3G",
+    "section": "Upcoming Results: 19+20 QE Lensing",
+    "text": "Upcoming Results: 19+20 QE Lensing\n\n\n\n\n\n\n\n\n\nYuuki Omori\n\n\n\nMyself\n\n\n\n\n\n\nFederico Bianchini\n\n\n\n\n\n\nYuka Nakato"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing-1",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing-1",
+    "title": "Cosmology with SPT-3G",
+    "section": "Upcoming Results: 19+20 QE Lensing",
+    "text": "Upcoming Results: 19+20 QE Lensing"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing-2",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing-2",
+    "title": "Cosmology with SPT-3G",
+    "section": "Upcoming Results: 19+20 QE Lensing",
+    "text": "Upcoming Results: 19+20 QE Lensing\n\n\nFederico Bianchini\n\n1.3% measurement of \\(\\sigma_8\\) from SPT-3G lensing + DESI BAO alone!"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-cross-correlations",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-cross-correlations",
+    "title": "Cosmology with SPT-3G",
+    "section": "Upcoming Results: Cross-correlations",
+    "text": "Upcoming Results: Cross-correlations\n\n\nSPT-3G lensing: large scales, high \\(z\\)  (mostly linear)\n\nCosmic shear: smaller scales, low \\(z\\)  (mostly non-linear)\n\nCross-correlation bridges the gap\n\n\n\nAaron Ouellette\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSPT-3G lensing\n\n\nDES Y3 bin 4\n\n\n\n\nthe total snr is ~18 for mv and ~16 for pol (and just to be clear, the contours are only plotted for bin 4 of DES, which is the highest snr, but not all of it)\nand the contours show the differential contributions to the total chi^2: (d^2 chi) / (d ln z d ln k)\nthe steps are 0.25, 0.5, and 0.75 relative to the max value"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#spt-3g-and-euclid",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#spt-3g-and-euclid",
+    "title": "Cosmology with SPT-3G",
+    "section": "SPT-3G and Euclid",
+    "text": "SPT-3G and Euclid\nSPT has observed Euclid Deep Field South (EDFS) and is planning a release of:\n\ntemperature maps and general products\nemissive source catalogs\ncluster catalogs\n\n~alongside the Euclid Q1 release."
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#spt-3g-and-euclid-1",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#spt-3g-and-euclid-1",
+    "title": "Cosmology with SPT-3G",
+    "section": "SPT-3G and Euclid",
+    "text": "SPT-3G and Euclid\nI am working on lensing maps to be cross-correlated with Euclid Q1 data:\n\n \n\nWill be useful pathfinding for Euclid DR1+ cross CMB analyses."
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#summary-looking-forward",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#summary-looking-forward",
+    "title": "Cosmology with SPT-3G",
+    "section": "Summary & Looking Forward",
+    "text": "Summary & Looking Forward\n\nThe CMB still has a lot to tell us about the Universe:\n\nsmall scales, polarization, lensing\n\n\n\n\nSPT-3G Main 2019+2020:\n\nMUSE polarization-only results are consistent with Planck \\(\\Lambda\\)CDM\n\nsharpens questions on neutrino mass/lensing amplitude/structure growth\n\ncoming temperature+polarization constraints will be comparable to Planck!\n\n\n\n\nACT DR6 results next Tuesday! (March 18th 4 pm CET)"
+  },
+  {
+    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#thank-you",
+    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#thank-you",
+    "title": "Cosmology with SPT-3G",
+    "section": "Thank You!",
+    "text": "Thank You!"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#intuitive-picture",
+    "href": "24_TOSCA_Nice/index.html#intuitive-picture",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "Intuitive Picture",
+    "text": "Intuitive Picture\nHopp & Witmann (2024)"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#a-bit-of-history",
+    "href": "24_TOSCA_Nice/index.html#a-bit-of-history",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "A Bit of History",
+    "text": "A Bit of History\n\n\nBlain et al. (2002): first proposal of KL\n\nideal instruments predicted to be ALMA & SKA! \n\nMorales (2006): proposed KL with HI surveys\n\nrelative to continuum surveys:\n\nline-to-continuum, HI \\(\\dd N / \\dd S\\), low-SNR estimators \n\n\n\n\n\nGurri et al. (2020): first KL measurement \nR.S. et al. (2024): first detection of cluster lensing with KL \nHopp & Witmann (2024): model-independent KL method  leveraging kinematic symmetries"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#first-kl-measurement-gurri-et-al.-2020",
+    "href": "24_TOSCA_Nice/index.html#first-kl-measurement-gurri-et-al.-2020",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "First KL Measurement (Gurri et al. 2020)",
+    "text": "First KL Measurement (Gurri et al. 2020)\n\n18 hand-picked galaxy-galaxy systems: \\(\\ev{\\gamma} = 0.0201 \\pm 0.0079\\)\n\nprimarily sensitive to \\(\\gamma_\\times\\); \\(\\gamma_+\\) degenerate with inclination and scale radius\n\nkinematic shape noise dominates uncertainty:  \\(\\sigma_k \\sim 0.03\\) vs. \\(\\sigma_p \\sim 0.2\\), so need \\(\\sim\\) 50 times fewer galaxies*\n\n\n\n\n\n\nLower kinematic shape noise when gas & stellar velocity fields match\nPoint to SKA as enabler of KL at scale!"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#kl-state-of-the-art-r.-s.-et-al.-2024",
+    "href": "24_TOSCA_Nice/index.html#kl-state-of-the-art-r.-s.-et-al.-2024",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "KL State of the Art (R. S. et al. 2024)",
+    "text": "KL State of the Art (R. S. et al. 2024)\n\n141 target galaxies \\(\\to\\) 3 after cuts.\nuse Tully-Fisher to estimate inclination \\(\\implies\\) intrinsic ellipticity\n\n\\(\\gamma_+\\) constrained via Tully-Fisher\n\\(\\gamma_\\times\\) via kinematic-photometric misalignment\n\nper-galaxy SNR &gt; 1, and 10\\(\\times\\) reduction in shape noise!"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#kl-symmetries-hopp-witmann-2024",
+    "href": "24_TOSCA_Nice/index.html#kl-symmetries-hopp-witmann-2024",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "KL Symmetries (Hopp & Witmann 2024)",
+    "text": "KL Symmetries (Hopp & Witmann 2024)"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#almost-feasible-with-wallaby",
+    "href": "24_TOSCA_Nice/index.html#almost-feasible-with-wallaby",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "Almost Feasible with WALLABY?",
+    "text": "Almost Feasible with WALLABY?\n21 CM H1 survey, 30” resolution, up to z=0.1\n\n\n \nWALLABY website, data from Serra et al. (2015)\n\n\n\n\n\nMurugeshan et al (2024)"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#feasible-with-alma",
+    "href": "24_TOSCA_Nice/index.html#feasible-with-alma",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "Feasible with ALMA",
+    "text": "Feasible with ALMA\nThe ALMA-ALPAKA survey I (Rizzo et al. 2023)\nhigh-resolution CO and [CI] kinematics of star-forming galaxies at z = 0.5-3.5"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#intuition",
+    "href": "24_TOSCA_Nice/index.html#intuition",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "Intuition",
+    "text": "Intuition\n\nStar-forming galaxies dominate observed sources\n\nsynchrotron emission driven by large-scale galactic magnetic fields  \\(\\implies\\) polarization position angle\n\nNearby spiral polarization fractions: 1-10% (Stil et al. 2008)\npolarization angle not affected by lensing\n\nbut Faraday effect, and cosmic birefringence..\n\n\n\n \n\nStil et al. (2008)"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#polarization-some-examples",
+    "href": "24_TOSCA_Nice/index.html#polarization-some-examples",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "Polarization: Some Examples",
+    "text": "Polarization: Some Examples\nSlides from a presentation by David Mulcahy\n  \nPolarized thermal emission from dust in a galaxy at redshift 2.6  (Geach et al. 2023)"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#a-bit-of-history-1",
+    "href": "24_TOSCA_Nice/index.html#a-bit-of-history-1",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "A Bit of History",
+    "text": "A Bit of History\n\nKronberg et al. 1991, Kronberg, Dyer & Roeser 1996, Burns et al. 2004:  lensing measurements with polarized radio jets"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#a-bit-of-history-2",
+    "href": "24_TOSCA_Nice/index.html#a-bit-of-history-2",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "A Bit of History",
+    "text": "A Bit of History\n\nBrown & Battye (2011a, 2011b): first polarization shear estimator"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#a-bit-of-history-3",
+    "href": "24_TOSCA_Nice/index.html#a-bit-of-history-3",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "A Bit of History",
+    "text": "A Bit of History\n\nWhitaker et al. (2015, 2018):\n\nimprove upon B&B11 estimator\nquadratic estimator using pol. vectors combined with finite-difference gradients of Stokes I\nestimates of rotation from birefringence:  2.03º \\(\\pm\\) 0.75º (authors caution Farrady rotation systematics)\n\n\n\n2PCF upper limits from 30 sources"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#weak-lensing-rotation",
+    "href": "24_TOSCA_Nice/index.html#weak-lensing-rotation",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "Weak Lensing Rotation",
+    "text": "Weak Lensing Rotation\nThomas et al. 2016\n\nTensor & vector gravitational potentials allow for  a rotation mode \\(\\omega\\) in addition to \\(\\gamma\\) and \\(\\kappa\\): \n\nonly measurable if source-plane position angle can be estimated\n\n\n\n\nSecond-order effect in \\(\\Lambda\\)CDM, post-Born/lens-lens coupling\n\n\nshould be equivalent to shear \\(B\\)-modes  \\(\\implies\\) systematics (or \\(\\Lambda\\)CDM) null test\n\n\n\n\n\nCan solve simultaneously for shear and rotation from lensing"
+  },
+  {
+    "objectID": "24_TOSCA_Nice/index.html#a-new-observable-for-cosmic-shear",
+    "href": "24_TOSCA_Nice/index.html#a-new-observable-for-cosmic-shear",
+    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
+    "section": "A new observable for cosmic shear",
+    "text": "A new observable for cosmic shear\nFrancfort, Durrer, & Cusin (2022)\nEstimator based on correlation function of lensing-induced rotation itself.\n\nFor a single galaxy:  \\(\\alpha\\) is position angle; \\(\\delta \\alpha\\) is lensing-induced rotation \\[\\Theta = \\frac{2 - \\epsilon^2}{\\epsilon^2} \\delta \\alpha = \\gamma_2 \\cos 2 \\alpha - \\gamma_1 \\sin 2 \\alpha\\]\n\n\nFor a pair of galaxies 1,2: \\[\\Xi = \\Theta(\\vb n_1, \\alpha_1, z_1) \\Theta(\\vb n_2, \\alpha_2, z_2)\\]\n\n\nEstimator averaging over \\(\\Xi, \\Xi'\\) pairs (4-pt?):"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#section",
+    "href": "25_CosmoStatDeepDays/index.html#section",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "",
+    "text": "Introductions:\n\nThe Cosmic Microwave Background (CMB)\nThe South Pole Telescope (SPT) \n\nSPT map processing:\n\npoint source mitigation\ncomponent separation"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#the-cosmic-microwave-background",
+    "href": "25_CosmoStatDeepDays/index.html#the-cosmic-microwave-background",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "The Cosmic Microwave Background",
+    "text": "The Cosmic Microwave Background\n\n\n\n\nNAOJ\n\n\n\n\n\n\n\n\nESA and the Planck Collaboration"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#section-1",
+    "href": "25_CosmoStatDeepDays/index.html#section-1",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "",
+    "text": "The South Pole  Telescope\n\n\n\n\n\n\n\n\n3 bands:      95,    150,   220 GHz      resolution:  1.6,     1.2,     1.0 arcmin\n\nPhoto Credit: Aman Chokshi"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#spt-maps",
+    "href": "25_CosmoStatDeepDays/index.html#spt-maps",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "SPT maps",
+    "text": "SPT maps"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#spt-maps-1",
+    "href": "25_CosmoStatDeepDays/index.html#spt-maps-1",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "SPT maps",
+    "text": "SPT maps"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#spt-maps-2",
+    "href": "25_CosmoStatDeepDays/index.html#spt-maps-2",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "SPT maps",
+    "text": "SPT maps"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#extragalactic-cmb-foregrounds",
+    "href": "25_CosmoStatDeepDays/index.html#extragalactic-cmb-foregrounds",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "Extragalactic CMB foregrounds",
+    "text": "Extragalactic CMB foregrounds\n\n\nComponents:\n\npoint-sources\n\nradio (falling spectrum)\ndusty (rising spectrum; CIB)\n\nSunyaev Zel’dovich (clusters)\n\ntemperature (falling*)\npolarization (same as CMB)\n\n\n\n\n\n\nDunkley et al. (2013)"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#spt-map-filtering",
+    "href": "25_CosmoStatDeepDays/index.html#spt-map-filtering",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "SPT map filtering",
+    "text": "SPT map filtering\n\n\nSPT performs constant-decl. scans of the sky; scans recorded as 1D ‘timestreams’.\n\nTimestreams are binned into pixels after various filters are applied:\n\nLow-pass\nHigh-pass (fit sines & cosines)\nPolynomial fit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIgnore point source regions when applying filters to avoid “filtering wings.”\n\n\nbut doing so couples effective filtering and CMB!"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#point-source-mitigation-inpainting",
+    "href": "25_CosmoStatDeepDays/index.html#point-source-mitigation-inpainting",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "Point source mitigation: inpainting",
+    "text": "Point source mitigation: inpainting\n\n\nReplace point sources with Gaussian constrained realization of the CMB:\n\n\\[\nX_1^{\\rm inp} = X_1^{\\rm sim} + \\vb C_{12} \\vb C_{22} ^{-1} \\qty(X_1^{\\rm data} - X_1^{\\rm sim})\n\\]\n\n\n\n\n\nBefore & after inpainting (credit: Yuuki Omori, thesis)\n\n\n1\n2\n\n\n\nPreserves 2-point statistics by construction, but not higher-order information…\n\\(\\implies\\) lensing (4-pt) estimator is biased towards zero.\n\nInstead, subtract source template and bias-harden against point sources in the lensing estimator."
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#component-separation",
+    "href": "25_CosmoStatDeepDays/index.html#component-separation",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "Component separation",
+    "text": "Component separation\nScale-dependent linear combination (LC) of frequency bands to:\n\nminimize variance noise and foregrounds (MV-LC)\n\n    and optionally,\n\nnull contribution from a specific frequency response (constrained-LC)\n\n\n\n\\[\nX_{\\vbell}^\\textrm{MV-LC} = \\sum_{i} \\mathbb W_{\\vbell}^{i} X_{\\vbell}^{i}\n\\]\n\nwhere\n\n\\[\n\\mathbb W_{\\vbell}  = \\frac{\\mathbb C_{\\vbell} \\inv \\mathbb A_s}{\\mathbb A_s^\\dagger \\mathbb C_{\\vbell} \\inv \\mathbb A_s},\n\\qquad \\sum_i \\mathbb W_{\\vbell}^{i} = 1.\n\\]\n\n\n\\(\\mathbb A_s = [1 \\ 1 \\ 1]\\)  frequency response of the CMB\n\n\\(\\mathbb C_{\\vbell}\\):  \\(3 \\times 3 \\times \\ell_{\\rm max}\\)  per-frequency foreground & noise covariance at each \\(\\ell\\)"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#component-separation-covariance",
+    "href": "25_CosmoStatDeepDays/index.html#component-separation-covariance",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "Component separation covariance",
+    "text": "Component separation covariance\n Reichardt et al. (2021)"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#component-separation-weights",
+    "href": "25_CosmoStatDeepDays/index.html#component-separation-weights",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "Component separation weights",
+    "text": "Component separation weights"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#component-separation-spectra",
+    "href": "25_CosmoStatDeepDays/index.html#component-separation-spectra",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "Component separation spectra",
+    "text": "Component separation spectra"
+  },
+  {
+    "objectID": "25_CosmoStatDeepDays/index.html#summary",
+    "href": "25_CosmoStatDeepDays/index.html#summary",
+    "title": "South Pole Telescope  Foreground Mitigation Challenges",
+    "section": "Summary",
+    "text": "Summary\n\n\nMost CMB foregrounds have different spectral response than CMB.\nSPT foregrounds should be extragalactic, allowing for simple component separation techniques.\n\nlinear combination of bands using analytic weights\n\nSolutions are less obvious for point sources (and interaction with our filtering)\n\nexploring source template subtraction\n\nIf you have critiques of or suggestions to improve these approaches,  I want to hear them!"
   },
   {
     "objectID": "25_ESLAB_Leiden/25_ESLAB_Leiden.html#cosmology-with-the-cmb",
@@ -490,111 +861,6 @@
     "text": "MUSE Insights on \\(A_{\\rm lens}\\)\n\n\nDecreasing neutrino mass enhances structure (measured by \\(\\phi \\phi\\)).\n\nCMB prefers more lensing power than predicted by \\(\\Lambda\\)CDM given BAO.  \\(\\implies\\) low \\(\\sum m_{\\nu}\\) when allowed to vary.\n\n\n\\(A_{\\rm recon}\\): scales lensing power used to predict lensed CMB power spectra\n\\(A_{\\rm 2pt}\\): scales lensing power used to predict lensed CMB power spectra\n\\(A_{\\rm lens}\\): if \\(A_{\\rm recon} = A_{\\rm 2pt}\\)"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Cail Daley’s Talks",
-    "section": "",
-    "text": "Repository Guidelines\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRepository Guidelines\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLessons Learned  from CMBX RR2\n\n\nRapid notes on Euclid-CMBX RR2 mask products feeding the upcoming cross-correlation analysis.\n\n\n\n\n\nOct 3, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nWork Update: EDF-S\n\n\nCosmoStat Group Meeting\n\n\n\n\n\nSep 23, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nEDF-S Lensing\n\n\nSPT Face-to-Face Meeting\n\n\n\n\n\nJul 3, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\nNRC-HAA-DAO Colloquium\n\n\n\n\n\nApr 15, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\nUBC Cosmo Coffee\n\n\n\n\n\nApr 11, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\nESLAB Euclid Symposium\n\n\n\n\n\nMar 25, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\nSéminaire postdoc du DAp\n\n\n\n\n\nMar 11, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nSouth Pole Telescope  Foreground Mitigation Challenges\n\n\nDeep CosmoStat Days 2025\n\n\n\n\n\nJan 17, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n Shear with Radio Galaxy  Polarization & Kinematics\n\n\nNice TOSCA Meeting 2024\n\n\n\n\n\nNov 8, 2024\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#intuitive-picture",
-    "href": "24_TOSCA_Nice/index.html#intuitive-picture",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "Intuitive Picture",
-    "text": "Intuitive Picture\nHopp & Witmann (2024)"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#a-bit-of-history",
-    "href": "24_TOSCA_Nice/index.html#a-bit-of-history",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "A Bit of History",
-    "text": "A Bit of History\n\n\nBlain et al. (2002): first proposal of KL\n\nideal instruments predicted to be ALMA & SKA! \n\nMorales (2006): proposed KL with HI surveys\n\nrelative to continuum surveys:\n\nline-to-continuum, HI \\(\\dd N / \\dd S\\), low-SNR estimators \n\n\n\n\n\nGurri et al. (2020): first KL measurement \nR.S. et al. (2024): first detection of cluster lensing with KL \nHopp & Witmann (2024): model-independent KL method  leveraging kinematic symmetries"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#first-kl-measurement-gurri-et-al.-2020",
-    "href": "24_TOSCA_Nice/index.html#first-kl-measurement-gurri-et-al.-2020",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "First KL Measurement (Gurri et al. 2020)",
-    "text": "First KL Measurement (Gurri et al. 2020)\n\n18 hand-picked galaxy-galaxy systems: \\(\\ev{\\gamma} = 0.0201 \\pm 0.0079\\)\n\nprimarily sensitive to \\(\\gamma_\\times\\); \\(\\gamma_+\\) degenerate with inclination and scale radius\n\nkinematic shape noise dominates uncertainty:  \\(\\sigma_k \\sim 0.03\\) vs. \\(\\sigma_p \\sim 0.2\\), so need \\(\\sim\\) 50 times fewer galaxies*\n\n\n\n\n\n\nLower kinematic shape noise when gas & stellar velocity fields match\nPoint to SKA as enabler of KL at scale!"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#kl-state-of-the-art-r.-s.-et-al.-2024",
-    "href": "24_TOSCA_Nice/index.html#kl-state-of-the-art-r.-s.-et-al.-2024",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "KL State of the Art (R. S. et al. 2024)",
-    "text": "KL State of the Art (R. S. et al. 2024)\n\n141 target galaxies \\(\\to\\) 3 after cuts.\nuse Tully-Fisher to estimate inclination \\(\\implies\\) intrinsic ellipticity\n\n\\(\\gamma_+\\) constrained via Tully-Fisher\n\\(\\gamma_\\times\\) via kinematic-photometric misalignment\n\nper-galaxy SNR &gt; 1, and 10\\(\\times\\) reduction in shape noise!"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#kl-symmetries-hopp-witmann-2024",
-    "href": "24_TOSCA_Nice/index.html#kl-symmetries-hopp-witmann-2024",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "KL Symmetries (Hopp & Witmann 2024)",
-    "text": "KL Symmetries (Hopp & Witmann 2024)"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#almost-feasible-with-wallaby",
-    "href": "24_TOSCA_Nice/index.html#almost-feasible-with-wallaby",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "Almost Feasible with WALLABY?",
-    "text": "Almost Feasible with WALLABY?\n21 CM H1 survey, 30” resolution, up to z=0.1\n\n\n \nWALLABY website, data from Serra et al. (2015)\n\n\n\n\n\nMurugeshan et al (2024)"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#feasible-with-alma",
-    "href": "24_TOSCA_Nice/index.html#feasible-with-alma",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "Feasible with ALMA",
-    "text": "Feasible with ALMA\nThe ALMA-ALPAKA survey I (Rizzo et al. 2023)\nhigh-resolution CO and [CI] kinematics of star-forming galaxies at z = 0.5-3.5"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#intuition",
-    "href": "24_TOSCA_Nice/index.html#intuition",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "Intuition",
-    "text": "Intuition\n\nStar-forming galaxies dominate observed sources\n\nsynchrotron emission driven by large-scale galactic magnetic fields  \\(\\implies\\) polarization position angle\n\nNearby spiral polarization fractions: 1-10% (Stil et al. 2008)\npolarization angle not affected by lensing\n\nbut Faraday effect, and cosmic birefringence..\n\n\n\n \n\nStil et al. (2008)"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#polarization-some-examples",
-    "href": "24_TOSCA_Nice/index.html#polarization-some-examples",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "Polarization: Some Examples",
-    "text": "Polarization: Some Examples\nSlides from a presentation by David Mulcahy\n  \nPolarized thermal emission from dust in a galaxy at redshift 2.6  (Geach et al. 2023)"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#a-bit-of-history-1",
-    "href": "24_TOSCA_Nice/index.html#a-bit-of-history-1",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "A Bit of History",
-    "text": "A Bit of History\n\nKronberg et al. 1991, Kronberg, Dyer & Roeser 1996, Burns et al. 2004:  lensing measurements with polarized radio jets"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#a-bit-of-history-2",
-    "href": "24_TOSCA_Nice/index.html#a-bit-of-history-2",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "A Bit of History",
-    "text": "A Bit of History\n\nBrown & Battye (2011a, 2011b): first polarization shear estimator"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#a-bit-of-history-3",
-    "href": "24_TOSCA_Nice/index.html#a-bit-of-history-3",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "A Bit of History",
-    "text": "A Bit of History\n\nWhitaker et al. (2015, 2018):\n\nimprove upon B&B11 estimator\nquadratic estimator using pol. vectors combined with finite-difference gradients of Stokes I\nestimates of rotation from birefringence:  2.03º \\(\\pm\\) 0.75º (authors caution Farrady rotation systematics)\n\n\n\n2PCF upper limits from 30 sources"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#weak-lensing-rotation",
-    "href": "24_TOSCA_Nice/index.html#weak-lensing-rotation",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "Weak Lensing Rotation",
-    "text": "Weak Lensing Rotation\nThomas et al. 2016\n\nTensor & vector gravitational potentials allow for  a rotation mode \\(\\omega\\) in addition to \\(\\gamma\\) and \\(\\kappa\\): \n\nonly measurable if source-plane position angle can be estimated\n\n\n\n\nSecond-order effect in \\(\\Lambda\\)CDM, post-Born/lens-lens coupling\n\n\nshould be equivalent to shear \\(B\\)-modes  \\(\\implies\\) systematics (or \\(\\Lambda\\)CDM) null test\n\n\n\n\n\nCan solve simultaneously for shear and rotation from lensing"
-  },
-  {
-    "objectID": "24_TOSCA_Nice/index.html#a-new-observable-for-cosmic-shear",
-    "href": "24_TOSCA_Nice/index.html#a-new-observable-for-cosmic-shear",
-    "title": " Shear with Radio Galaxy  Polarization & Kinematics",
-    "section": "A new observable for cosmic shear",
-    "text": "A new observable for cosmic shear\nFrancfort, Durrer, & Cusin (2022)\nEstimator based on correlation function of lensing-induced rotation itself.\n\nFor a single galaxy:  \\(\\alpha\\) is position angle; \\(\\delta \\alpha\\) is lensing-induced rotation \\[\\Theta = \\frac{2 - \\epsilon^2}{\\epsilon^2} \\delta \\alpha = \\gamma_2 \\cos 2 \\alpha - \\gamma_1 \\sin 2 \\alpha\\]\n\n\nFor a pair of galaxies 1,2: \\[\\Xi = \\Theta(\\vb n_1, \\alpha_1, z_1) \\Theta(\\vb n_2, \\alpha_2, z_2)\\]\n\n\nEstimator averaging over \\(\\Xi, \\Xi'\\) pairs (4-pt?):"
-  },
-  {
     "objectID": "25_UBC_cosmocoffee/25_UBC_cosmocoffee.html#cosmology-with-the-cmb",
     "href": "25_UBC_cosmocoffee/25_UBC_cosmocoffee.html#cosmology-with-the-cmb",
     "title": "Cosmology with SPT-3G",
@@ -838,320 +1104,5 @@
     "title": "Cosmology with SPT-3G",
     "section": "MUSE Algorithm",
     "text": "MUSE Algorithm\n\n\n \nMarginalize over CMB \\(f\\) and lensing \\(\\phi\\)  maps/pixels to determine parameters \\(\\theta\\):\n\n\\[\n\\mathcal{P}(\\theta \\mid d)=\\int \\mathrm{d} f \\mathrm{~d} \\phi \\, \\mathcal{P}(f, \\phi, \\theta \\mid d)\n\\]\n\n\nAlgorithm similar to simulation-based inference (SBI) with semi-analytic compression statistic."
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#section",
-    "href": "25_CosmoStatDeepDays/index.html#section",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "",
-    "text": "Introductions:\n\nThe Cosmic Microwave Background (CMB)\nThe South Pole Telescope (SPT) \n\nSPT map processing:\n\npoint source mitigation\ncomponent separation"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#the-cosmic-microwave-background",
-    "href": "25_CosmoStatDeepDays/index.html#the-cosmic-microwave-background",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "The Cosmic Microwave Background",
-    "text": "The Cosmic Microwave Background\n\n\n\n\nNAOJ\n\n\n\n\n\n\n\n\nESA and the Planck Collaboration"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#section-1",
-    "href": "25_CosmoStatDeepDays/index.html#section-1",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "",
-    "text": "The South Pole  Telescope\n\n\n\n\n\n\n\n\n3 bands:      95,    150,   220 GHz      resolution:  1.6,     1.2,     1.0 arcmin\n\nPhoto Credit: Aman Chokshi"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#spt-maps",
-    "href": "25_CosmoStatDeepDays/index.html#spt-maps",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "SPT maps",
-    "text": "SPT maps"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#spt-maps-1",
-    "href": "25_CosmoStatDeepDays/index.html#spt-maps-1",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "SPT maps",
-    "text": "SPT maps"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#spt-maps-2",
-    "href": "25_CosmoStatDeepDays/index.html#spt-maps-2",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "SPT maps",
-    "text": "SPT maps"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#extragalactic-cmb-foregrounds",
-    "href": "25_CosmoStatDeepDays/index.html#extragalactic-cmb-foregrounds",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "Extragalactic CMB foregrounds",
-    "text": "Extragalactic CMB foregrounds\n\n\nComponents:\n\npoint-sources\n\nradio (falling spectrum)\ndusty (rising spectrum; CIB)\n\nSunyaev Zel’dovich (clusters)\n\ntemperature (falling*)\npolarization (same as CMB)\n\n\n\n\n\n\nDunkley et al. (2013)"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#spt-map-filtering",
-    "href": "25_CosmoStatDeepDays/index.html#spt-map-filtering",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "SPT map filtering",
-    "text": "SPT map filtering\n\n\nSPT performs constant-decl. scans of the sky; scans recorded as 1D ‘timestreams’.\n\nTimestreams are binned into pixels after various filters are applied:\n\nLow-pass\nHigh-pass (fit sines & cosines)\nPolynomial fit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIgnore point source regions when applying filters to avoid “filtering wings.”\n\n\nbut doing so couples effective filtering and CMB!"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#point-source-mitigation-inpainting",
-    "href": "25_CosmoStatDeepDays/index.html#point-source-mitigation-inpainting",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "Point source mitigation: inpainting",
-    "text": "Point source mitigation: inpainting\n\n\nReplace point sources with Gaussian constrained realization of the CMB:\n\n\\[\nX_1^{\\rm inp} = X_1^{\\rm sim} + \\vb C_{12} \\vb C_{22} ^{-1} \\qty(X_1^{\\rm data} - X_1^{\\rm sim})\n\\]\n\n\n\n\n\nBefore & after inpainting (credit: Yuuki Omori, thesis)\n\n\n1\n2\n\n\n\nPreserves 2-point statistics by construction, but not higher-order information…\n\\(\\implies\\) lensing (4-pt) estimator is biased towards zero.\n\nInstead, subtract source template and bias-harden against point sources in the lensing estimator."
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#component-separation",
-    "href": "25_CosmoStatDeepDays/index.html#component-separation",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "Component separation",
-    "text": "Component separation\nScale-dependent linear combination (LC) of frequency bands to:\n\nminimize variance noise and foregrounds (MV-LC)\n\n    and optionally,\n\nnull contribution from a specific frequency response (constrained-LC)\n\n\n\n\\[\nX_{\\vbell}^\\textrm{MV-LC} = \\sum_{i} \\mathbb W_{\\vbell}^{i} X_{\\vbell}^{i}\n\\]\n\nwhere\n\n\\[\n\\mathbb W_{\\vbell}  = \\frac{\\mathbb C_{\\vbell} \\inv \\mathbb A_s}{\\mathbb A_s^\\dagger \\mathbb C_{\\vbell} \\inv \\mathbb A_s},\n\\qquad \\sum_i \\mathbb W_{\\vbell}^{i} = 1.\n\\]\n\n\n\\(\\mathbb A_s = [1 \\ 1 \\ 1]\\)  frequency response of the CMB\n\n\\(\\mathbb C_{\\vbell}\\):  \\(3 \\times 3 \\times \\ell_{\\rm max}\\)  per-frequency foreground & noise covariance at each \\(\\ell\\)"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#component-separation-covariance",
-    "href": "25_CosmoStatDeepDays/index.html#component-separation-covariance",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "Component separation covariance",
-    "text": "Component separation covariance\n Reichardt et al. (2021)"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#component-separation-weights",
-    "href": "25_CosmoStatDeepDays/index.html#component-separation-weights",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "Component separation weights",
-    "text": "Component separation weights"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#component-separation-spectra",
-    "href": "25_CosmoStatDeepDays/index.html#component-separation-spectra",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "Component separation spectra",
-    "text": "Component separation spectra"
-  },
-  {
-    "objectID": "25_CosmoStatDeepDays/index.html#summary",
-    "href": "25_CosmoStatDeepDays/index.html#summary",
-    "title": "South Pole Telescope  Foreground Mitigation Challenges",
-    "section": "Summary",
-    "text": "Summary\n\n\nMost CMB foregrounds have different spectral response than CMB.\nSPT foregrounds should be extragalactic, allowing for simple component separation techniques.\n\nlinear combination of bands using analytic weights\n\nSolutions are less obvious for point sources (and interaction with our filtering)\n\nexploring source template subtraction\n\nIf you have critiques of or suggestions to improve these approaches,  I want to hear them!"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#cosmology-with-the-cmb",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#cosmology-with-the-cmb",
-    "title": "Cosmology with SPT-3G",
-    "section": "Cosmology with the CMB",
-    "text": "Cosmology with the CMB\n\nmost distant observable electromagnetic radiation \\(\\implies\\) early-Universe physics\nilluminates the Universe’s evolution: reionization, structure growth, astrophysics..\n\n\nNAOJ"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#cosmology-with-the-cmb-1",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#cosmology-with-the-cmb-1",
-    "title": "Cosmology with SPT-3G",
-    "section": "Cosmology with the CMB",
-    "text": "Cosmology with the CMB\n\n \n\nTurner (2022): The Road to Precision Cosmology\n\n\n\nspatially flat universe\nmatter responsible for the growth of structure in the universe, radiation (photons and relativistic neutrinos)\n\n(baryons, non-relativistic neutrinos, and cold dark matter–CDM)\n\ndark energy parameterized by a constant Λ responsible for the accelerating expansion of the universe.\non cosmological scales, the universe is statistically isotropic and homogeneous,\nGR\nand that the behavior of gravity can be described by Albert Einstein’s theory of General Relativity (Einstein, 1916)"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-concordance",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-concordance",
-    "title": "Cosmology with SPT-3G",
-    "section": "\\(\\Lambda\\)CDM Concordance",
-    "text": "\\(\\Lambda\\)CDM Concordance\nsix-parameter model predicts a wide range of cosmic observables:\n\n\n\n\n\n\nPlanck Collaboration (2018)"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-phenomenology",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-phenomenology",
-    "title": "Cosmology with SPT-3G",
-    "section": "\\(\\Lambda\\)CDM Phenomenology",
-    "text": "\\(\\Lambda\\)CDM Phenomenology\n\n\n\nDavid Spergel / AAAS / Science\n\n\n\nbut we don’t much about \\(\\Lambda\\) or CDM!"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-cracks",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#lambdacdm-cracks",
-    "title": "Cosmology with SPT-3G",
-    "section": "\\(\\Lambda\\)CDM Cracks",
-    "text": "\\(\\Lambda\\)CDM Cracks\n\n\n\nTensions between early- and late-time measurements of \\(H_0\\) and \\(S_8\\):\n\n\n\nLow neutrino masses?\n\n\n\n\nDESI Collaboration (2024)\n\n\n\n\n\nMadhavacheril et al. (2023)"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#the-cmb-beyond-planck",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#the-cmb-beyond-planck",
-    "title": "Cosmology with SPT-3G",
-    "section": "The CMB Beyond Planck",
-    "text": "The CMB Beyond Planck\n\n\nPlanck is noise-variance-limited beyond:\n\n\\(\\ell &gt; 1800\\) in TT, \\(\\ell &gt; 1100\\) in TE;\neverywhere in EE and lensing (\\(\\phi\\phi\\)).\n\n\n\n\n\n\nSPT      BICEP/Keck\n\n\nAman Chokshi\n\n\n\n\nACT\n\n\nDebra Kellner\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\(f_{\\rm sky}\\)  (effective)\nresolution (arcmin)\nsensitivity  (\\(\\mu\\)K-arcmin)\n\n\n\n\nPlanck\n0.67\n5.0\n27\n\n\nACT\n0.23\n1.0\n12\n\n\nSPT\n0.035\n1.0\n1.9\n\n\nB/K\n0.014\n21\n3\n\n\n\n\n  *crude summary of CMB experiments"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#section",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#section",
-    "title": "Cosmology with SPT-3G",
-    "section": "",
-    "text": "The South Pole  Telescope\n\n\n\n\n\n\n\n\n3 bands:      95,    150,   220 GHz       resolution:  1.6,     1.2,     1.0 arcmin\n\n\nSPT-SZ (2007)              SPTpol (2012)             SPT-3G (2017)\n~1000 detectors          ~1500 detectors         ~16,000 detectors\n\n\nPhoto Credit: Aman Chokshi"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#analyses",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#analyses",
-    "title": "Cosmology with SPT-3G",
-    "section": "2019+2020 Analyses",
-    "text": "2019+2020 Analyses\n\n\n\n\n\n\n\n\n\nMaps used by three  independent pipelines:\n\n\n\nTraditional TT/TE/EE power spectrum\nTraditional quadratic estimator (QE) lensing\nMUSE: Bayesian joint inference of cosmology, systematics, and pixels"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse",
-    "title": "Cosmology with SPT-3G",
-    "section": "MUSE",
-    "text": "MUSE\n\n\n(Marginal Unbiased Score Expansion)\n\nAccepted as of last week! arxiv:2411.06000\n\n\nMarginalize over CMB \\(f\\) and lensing \\(\\phi\\)  maps/pixels to determine parameters \\(\\theta\\):\n\n\\[\n\\mathcal{P}(\\theta \\mid d)=\\int \\mathrm{d} f \\mathrm{~d} \\phi \\, \\mathcal{P}(f, \\phi, \\theta \\mid d)\n\\]\n\n\n\nAlgorithm similar to simulation-based inference (SBI) with semi-analytic compression statistic.\n\n\n\n\n \n            Fei Ge                Marius Millea"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-bandpowers",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-bandpowers",
-    "title": "Cosmology with SPT-3G",
-    "section": "MUSE Results: Bandpowers",
-    "text": "MUSE Results: Bandpowers\n\n\n EE & \\(\\phi\\phi\\) bandpowers in agreement  with \\(\\Lambda\\)CDM and Planck.\n \nBlinded analysis  with post-unblinding beam change:"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-h_0",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-h_0",
-    "title": "Cosmology with SPT-3G",
-    "section": "MUSE Results: \\(H_0\\)",
-    "text": "MUSE Results: \\(H_0\\)"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-s_8",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-results-s_8",
-    "title": "Cosmology with SPT-3G",
-    "section": "MUSE Results: \\(S_8\\)",
-    "text": "MUSE Results: \\(S_8\\)"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-insights-on-structure-growth",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-insights-on-structure-growth",
-    "title": "Cosmology with SPT-3G",
-    "section": "MUSE Insights on Structure Growth",
-    "text": "MUSE Insights on Structure Growth\n\n\n\n\\(A_{\\rm mod}\\) to scale the non-linear  matter power spectrum:\n\nPlanck T&E + SPT\\(\\phi\\phi\\) gives first \\(3\\sigma\\) detection of non-linear structure  with CMB lensing!"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-insights-on-neutrino-mass",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#muse-insights-on-neutrino-mass",
-    "title": "Cosmology with SPT-3G",
-    "section": "MUSE Insights on Neutrino Mass",
-    "text": "MUSE Insights on Neutrino Mass\n\n\nDecreasing neutrino mass enhances structure (measured by \\(\\phi \\phi\\)).\n\nCMB prefers more lensing power than predicted by \\(\\Lambda\\)CDM given BAO.  \\(\\implies\\) low \\(\\sum m_{\\nu}\\) when allowed to vary.\n\n\n\\(A_{\\rm recon}\\): scales lensing power used to predict lensed CMB power spectra\n\\(A_{\\rm 2pt}\\): scales lensing power used to predict lensed CMB power spectra\n\\(A_{\\rm lens}\\): if \\(A_{\\rm recon} = A_{\\rm 2pt}\\)"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-1920-results-ttteee",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-1920-results-ttteee",
-    "title": "Cosmology with SPT-3G",
-    "section": "Upcoming 19+20 Results: TT/TE/EE",
-    "text": "Upcoming 19+20 Results: TT/TE/EE\n\n\n\n\n\n\n\n\n\n\n\nEtienne Camphuis\n\n\n\n\n\n\nWei Quan"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-eeteeephiphi",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-eeteeephiphi",
-    "title": "Cosmology with SPT-3G",
-    "section": "Upcoming Results: EE/TE/EE/\\(\\phi\\phi\\)",
-    "text": "Upcoming Results: EE/TE/EE/\\(\\phi\\phi\\)\n\n\nTargeting publication this summer.\n \nAs a taste, mock SPT-3G TT/EE/TE + polarization-only lensing compared to MUSE and Planck.\n \nJoint constraints on \\(\\Lambda\\)CDM parameters will be comparable to Planck!"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing",
-    "title": "Cosmology with SPT-3G",
-    "section": "Upcoming Results: 19+20 QE Lensing",
-    "text": "Upcoming Results: 19+20 QE Lensing\n\n\n\n\n\n\n\n\n\nYuuki Omori\n\n\n\nMyself\n\n\n\n\n\n\nFederico Bianchini\n\n\n\n\n\n\nYuka Nakato"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing-1",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing-1",
-    "title": "Cosmology with SPT-3G",
-    "section": "Upcoming Results: 19+20 QE Lensing",
-    "text": "Upcoming Results: 19+20 QE Lensing"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing-2",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-1920-qe-lensing-2",
-    "title": "Cosmology with SPT-3G",
-    "section": "Upcoming Results: 19+20 QE Lensing",
-    "text": "Upcoming Results: 19+20 QE Lensing\n\n\nFederico Bianchini\n\n1.3% measurement of \\(\\sigma_8\\) from SPT-3G lensing + DESI BAO alone!"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-cross-correlations",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#upcoming-results-cross-correlations",
-    "title": "Cosmology with SPT-3G",
-    "section": "Upcoming Results: Cross-correlations",
-    "text": "Upcoming Results: Cross-correlations\n\n\nSPT-3G lensing: large scales, high \\(z\\)  (mostly linear)\n\nCosmic shear: smaller scales, low \\(z\\)  (mostly non-linear)\n\nCross-correlation bridges the gap\n\n\n\nAaron Ouellette\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSPT-3G lensing\n\n\nDES Y3 bin 4\n\n\n\n\nthe total snr is ~18 for mv and ~16 for pol (and just to be clear, the contours are only plotted for bin 4 of DES, which is the highest snr, but not all of it)\nand the contours show the differential contributions to the total chi^2: (d^2 chi) / (d ln z d ln k)\nthe steps are 0.25, 0.5, and 0.75 relative to the max value"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#spt-3g-and-euclid",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#spt-3g-and-euclid",
-    "title": "Cosmology with SPT-3G",
-    "section": "SPT-3G and Euclid",
-    "text": "SPT-3G and Euclid\nSPT has observed Euclid Deep Field South (EDFS) and is planning a release of:\n\ntemperature maps and general products\nemissive source catalogs\ncluster catalogs\n\n~alongside the Euclid Q1 release."
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#spt-3g-and-euclid-1",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#spt-3g-and-euclid-1",
-    "title": "Cosmology with SPT-3G",
-    "section": "SPT-3G and Euclid",
-    "text": "SPT-3G and Euclid\nI am working on lensing maps to be cross-correlated with Euclid Q1 data:\n\n \n\nWill be useful pathfinding for Euclid DR1+ cross CMB analyses."
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#summary-looking-forward",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#summary-looking-forward",
-    "title": "Cosmology with SPT-3G",
-    "section": "Summary & Looking Forward",
-    "text": "Summary & Looking Forward\n\nThe CMB still has a lot to tell us about the Universe:\n\nsmall scales, polarization, lensing\n\n\n\n\nSPT-3G Main 2019+2020:\n\nMUSE polarization-only results are consistent with Planck \\(\\Lambda\\)CDM\n\nsharpens questions on neutrino mass/lensing amplitude/structure growth\n\ncoming temperature+polarization constraints will be comparable to Planck!\n\n\n\n\nACT DR6 results next Tuesday! (March 18th 4 pm CET)"
-  },
-  {
-    "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#thank-you",
-    "href": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#thank-you",
-    "title": "Cosmology with SPT-3G",
-    "section": "Thank You!",
-    "text": "Thank You!"
-  },
-  {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#rr2-mask-products-overview",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#rr2-mask-products-overview",
-    "title": "Lessons Learned  from CMBX RR2",
-    "section": "RR2 Mask Products Overview",
-    "text": "RR2 Mask Products Overview\n\nComparing weighted counts in the catalog to coverage and visibility masks.\nLargely similar, but there are regions with no counts that aren’t masked.\nTrack ISD weight convergence and lensing-source n(z) consistency alongside the mask products."
-  },
-  {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#source-counts-weighted",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#source-counts-weighted",
-    "title": "Lessons Learned  from CMBX RR2",
-    "section": "Source Counts (Weighted)",
-    "text": "Source Counts (Weighted)\n\nApplying she_lensmc_weight to build an effective number-density map:"
-  },
-  {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#effective-coverage-mask",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#effective-coverage-mask",
-    "title": "Lessons Learned  from CMBX RR2",
-    "section": "Effective Coverage Mask",
-    "text": "Effective Coverage Mask\n\nNot a subset of the weighted counts! Best to take the intersection?"
-  },
-  {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#combined-w-mask",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#combined-w-mask",
-    "title": "Lessons Learned  from CMBX RR2",
-    "section": "Combined W Mask",
-    "text": "Combined W Mask\n\nFold together coverage and visibility masks:"
-  },
-  {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#isd-weight-iterations",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#isd-weight-iterations",
-    "title": "Lessons Learned  from CMBX RR2",
-    "section": "ISD Weight Iterations",
-    "text": "ISD Weight Iterations\n\nIterative spatial down-sampler (ISD) weights converge within six passes across tomographic bins; the residual wiggles flag masks that still need smoothing.\n\n\n\n\n\nBin 1\n\n\n\n\n\nBin 2\n\n\n\n\n\nBin 3\n\n\n\n\n\nBin 4\n\n\n\n\n\nBin 5\n\n\n\n\n\nBin 6"
-  },
-  {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#nz-comparisons-unweighted",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#nz-comparisons-unweighted",
-    "title": "Lessons Learned  from CMBX RR2",
-    "section": "n(z) Comparisons (Unweighted)",
-    "text": "n(z) Comparisons (Unweighted)\n\nComparing RR2 unweighted tomographic redshift histograms against the Flagship mocks in both coarse and fine binning."
-  },
-  {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#nz-comparisons-weighted",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#nz-comparisons-weighted",
-    "title": "Lessons Learned  from CMBX RR2",
-    "section": "n(z) Comparisons (Weighted)",
-    "text": "n(z) Comparisons (Weighted)\n\nLensMC-weighted distributions smooth the mid-z mismatch but highlight a persistent low-z tilt that the ISD runs will need to address."
   }
 ]
