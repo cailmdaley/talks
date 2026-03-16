@@ -400,14 +400,14 @@ The important thing is not the error bar: it's that two independent pipelines la
 ![](images_local/whisker_unblinded.png){width=88% fig-align="center"}
 
 ::: {style="font-size:0.82em;line-height:1.5em;margin-top:8px"}
-- **(i)** Three blinds and both pipelines — blind A is the physical $n(z)$; configuration and harmonic space agree within ${\lesssim}0.6\sigma$
-- **(ii)** Broadly consistent with *Planck* and other Stage-III shear surveys
-- **(iii–v)** Robustness tests: scale cuts, non-linear model, covariance — all shifts $< 0.7\sigma$
+- **(i)** Three blinds and both pipelines — blind A is the physical $n(z)$; configuration and harmonic space agree within ${\sim}0.4\sigma$
+- **(ii)** Broadly consistent with *Planck* ($0.7\sigma$) and other Stage-III shear surveys
+- **(iii–vi)** Robustness tests: scale cuts, non-linear model, covariance, leakage correction — all shifts $< 0.2\sigma$
 :::
 
 ::: notes
-This is the summary figure. At the top: our three blinds, showing that the unblinding procedure is clean. Below: UNIONS compared to Planck, DES, KiDS, and HSC. We're consistent with all of them — the error bars are large, but the consistency across pipelines and across surveys is the message.
-The bottom section shows robustness: changing the scale cuts, switching from HMCode to Halofit, using a different covariance — none of these shifts the answer by more than 0.7 sigma.
+This is the summary figure. At the top: our three blinds plus the configuration-space result, showing that both pipelines agree to within half a sigma. Below: UNIONS compared to Planck, DES, KiDS, HSC — we sit comfortably within the lensing family, 0.7 sigma from Planck.
+The lower sections are robustness: scale cuts, non-linear model, covariance, and leakage correction. Every shift is under 0.2 sigma. The result is stable.
 :::
 
 
@@ -555,8 +555,8 @@ $\Omega_m$–$S_8$ contours for all three blinded $n(z)$ realizations (harmonic 
 
 ## UNIONS vs Stage III surveys {.smaller}
 
-![](images_local/contours_survey_comparison.png){width=55% fig-align="center"}
+![](images_local/contours_stage3_surveys_current.png){width=55% fig-align="center"}
 
 ::: {style="font-size:0.8em;text-align:center"}
-$\Omega_m$–$S_8$ contours: UNIONS (harmonic + config-space) compared to DES Y3, KiDS-1000, HSC Y3, and *Planck* 2018.
+$\Omega_m$–$S_8$ contours: UNIONS (harmonic + config-space) compared to DES Y3, KiDS-1000, HSC Y3, DES+KiDS combined.
 :::
