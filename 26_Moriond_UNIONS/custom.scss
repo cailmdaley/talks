@@ -140,6 +140,29 @@ figcaption > span {
     margin-top: 0px;
 }
 
+.pte-table-container {
+    position: relative;
+
+    .quarto-figure {
+        position: relative;
+    }
+
+    .quarto-figure::after {
+        content: "";
+        position: absolute;
+        // Size cuts / Fiducial row highlight
+        top: 43%;
+        left: 12%;
+        width: 76%;
+        height: 7.5%;
+        border: 3px solid rgba(0, 128, 128, 0.85);
+        background: rgba(0, 128, 128, 0.08);
+        border-radius: 4px;
+        pointer-events: none;
+        z-index: 10;
+    }
+}
+
 
 // .align-left p,
 // .align-left ul,
