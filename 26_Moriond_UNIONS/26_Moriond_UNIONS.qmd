@@ -39,7 +39,7 @@ include-in-header: assets/mathjax.html
 
 ::: {style="line-height:1.6em"}
 
-Gravitational lensing distorts galaxy shapes as light traverses the large-scale matter distribution. Correlating those shapes measures the **matter power spectrum** — a direct probe of structure growth under dark matter and dark energy.
+Gravitational lensing distorts galaxy shapes as light traverses the large-scale matter distribution. Correlating those shapes measures the **matter power spectrum** — a direct probe of structure growth under dark matter and dark energy. Getting $S_8$ right is one of the open problems in cosmology: cosmic shear surveys have consistently measured lower values than the CMB.
 
 <br>
 
@@ -57,7 +57,7 @@ A careful first result: tomography, $3{\times}2$pt, and cross-correlations will 
 
 ::: notes
 Cosmic shear is one of the cleanest probes of the matter distribution we have — you're measuring the distortion of galaxy shapes by all the intervening mass along the line of sight.
-The key parameter is S₈, which encodes the amplitude of structure growth. The tension between cosmic shear and CMB estimates of S₈ is one of the open questions in the field.
+S₈ encodes the amplitude of structure growth. Most cosmic shear surveys find values about 2–3 sigma lower than Planck — is that new physics, or systematic error? A new survey in a different hemisphere with different instruments is exactly the kind of independent check we need.
 This release is three companion papers from a single blinded catalogue.
 :::
 
@@ -308,7 +308,7 @@ No single statistic gets to dominate the decision on its own.
 ![](images_local/config_space_pte_fiducial.png){width=98% fig-align="center"}
 
 ::: {style="font-size:0.72em;text-align:center;margin-top:-6px"}
-2D PTE scan used to define the fiducial angular cuts.
+2D $p$-value (PTE) scan used to define the fiducial angular cuts.
 :::
 
 ::: {style="font-size:0.79em;line-height:1.4em;margin-top:12px"}
@@ -335,8 +335,8 @@ This is the bridge from Paper III into the cosmology papers.
 
 ::: notes
 This is the compressed B-mode story.
-The top plot shows the direct pure-mode decomposition, where the residual problem sits at the CCD scale.
-The lower plot shows how that turns into an objective scale-cut choice.
+The colour map is a p-value — probability to exceed the observed chi-squared under the null hypothesis of no B-modes — computed for every combination of minimum and maximum angular scale. Green means the B-modes are consistent with zero; red means they're not.
+The residual problem sits at the MegaCam CCD scale, around 9 arcminutes. Above that, the field is clean.
 The cosmology papers inherit these cuts rather than tuning them themselves.
 :::
 
