@@ -122,7 +122,7 @@ Core members in alphabetical order (many others have contributed as well):
 ## Overall analysis {.smaller}
 
 ::: {style="margin-top:16px;font-size:0.9em"}
-This release turns one blinded weak-lensing catalogue into 2D cosmic-shear constraints in configuration and harmonic space.
+Before we can do cosmology, we need to know which scales and which catalogue version are clean. That's the job of Paper III.
 :::
 
 ### Paper III
@@ -137,14 +137,14 @@ This release turns one blinded weak-lensing catalogue into 2D cosmic-shear const
 
 ::: notes
 Sacha has just covered the catalogue and image-simulation papers, so I pick up at the analysis level.
-Paper III is the gatekeeper: it decides which catalogue version and which scales are clean enough for cosmology.
+Paper III is the gatekeeper: it decides which catalogue version and which scales are clean enough for cosmology. You'll see the details in a few slides — for now, the punchline is that only one version passes all three B-mode tests.
 :::
 
 
 ## Overall analysis {.smaller}
 
 ::: {style="margin-top:16px;font-size:0.9em"}
-This release turns one blinded weak-lensing catalogue into 2D cosmic-shear constraints in configuration and harmonic space.
+With clean scales in hand, Paper IV fits cosmology to the angular correlation functions $\xi_\pm(\theta)$.
 :::
 
 ### Paper IV
@@ -157,14 +157,14 @@ This release turns one blinded weak-lensing catalogue into 2D cosmic-shear const
 ![](images_local/SP_v1.4.6_xi_with_bestfit.png){width=90% fig-align="center"}
 
 ::: notes
-Paper IV is the configuration-space cosmology result.
+Paper IV takes the validated catalogue and scale cuts from Paper III and fits a cosmological model to the shear correlation functions.
 :::
 
 
 ## Overall analysis {.smaller}
 
 ::: {style="margin-top:16px;font-size:0.9em"}
-This release turns one blinded weak-lensing catalogue into 2D cosmic-shear constraints in configuration and harmonic space.
+Paper V repeats the exercise in harmonic space — a second, independent constraint from the same data.
 :::
 
 :::::::::::::: {.columns style="margin-top:24px"}
@@ -183,8 +183,7 @@ This release turns one blinded weak-lensing catalogue into 2D cosmic-shear const
 ::::::::::::::
 
 ::: notes
-Paper V is the harmonic-space cosmology result and robustness study.
-Paper IV and Paper V then run two cosmology pipelines on the same blinded inputs.
+Paper V is the harmonic-space cosmology result — same catalogue, same blinding, same scale cuts, but an independent analysis pipeline. The fact that both spaces give consistent results is one of the key messages of this release.
 :::
 
 
@@ -342,47 +341,33 @@ The cosmology papers inherit these cuts rather than tuning them themselves.
 :::
 
 
-## Photo-$z$ calibration
+## Photo-$z$, covariance, likelihoods
 
-::: {style="line-height:1.6em;font-size:0.92em"}
-- No tomographic bins yet: this release uses a single 2D source distribution $n(z)$
-- $n(z)$ is estimated with a SOM-based colour--redshift calibration using CFHTLenS W3 spectroscopy
-- Both analyses marginalize over a mean redshift shift $\Delta z$
-- Full multi-bin photo-$z$ calibration is the main prerequisite for tomographic UNIONS shear cosmology
+::: {style="font-size:0.82em;margin-top:10px;margin-bottom:8px;color:#555"}
+The ingredients that connect the validated shear catalogue to cosmological contours.
+:::
+
+::: {style="line-height:1.55em;font-size:0.88em"}
+
+**Redshift distribution** — a single 2D source $n(z)$, estimated with a SOM-based colour–redshift calibration. Both analyses marginalize over a mean shift $\Delta z$. Full multi-bin photo-$z$ is the main prerequisite for tomographic follow-up.
+
+**Covariance** — analytical in both spaces (CosmoCov for $\xi_\pm$, iNKA-style for $C_\ell$), cross-checked with jackknife and GLASS mocks.
+
+**Likelihoods** — common cosmological model, common $n(z)$, common scale cuts from Paper III, but separate likelihood codes. Nuisance treatment covers intrinsic alignments, baryons, and $\Delta z$.
+
+:::
+
+::: {style="font-size:0.84em;margin-top:18px"}
+The two pipelines share the same blinded inputs and validated scales — only the basis and likelihood machinery differ.
 :::
 
 ::: notes
-This release is 2D because the full multi-bin photo-z calibration is not ready yet.
-The redshift distribution is still carefully estimated and carried into both analyses with a Delta-z nuisance parameter.
+I'm compressing the ingredients into one slide so we can spend more time on the results.
+The key point: both pipelines share inputs and scale cuts from Paper III. The only difference is the statistical basis — real-space correlation functions versus harmonic-space power spectra — and the likelihood machinery built around each.
+The redshift distribution is 2D, which is why this release is less constraining than tomographic surveys, but it's a deliberate choice: get the systematics right first.
 :::
 
 
-## Covariance
-
-::: {style="line-height:1.6em;font-size:0.92em"}
-- **Configuration space:** analytical two-point covariance, cross-checked against jackknife and GLASS mock validation
-- **Harmonic space:** iNKA / OneCovariance-style analytical covariance with robustness tests
-- Blind-to-blind covariance differences are driven only by the shifted $n(z)$ and remain small
-- Covariance choices are propagated as robustness tests rather than tuned after the fact
-:::
-
-::: notes
-The two analyses do not share exactly the same covariance machinery, but both are analytical predictions validated against additional checks.
-:::
-
-
-## Likelihoods and systematics
-
-::: {style="line-height:1.6em;font-size:0.92em"}
-- Common cosmology model, common $n(z)$ inputs, common scale cuts from Paper III
-- Separate likelihood implementations in configuration and harmonic space
-- Nuisance treatment includes intrinsic alignments, baryons / nonlinear modelling, and $\Delta z$
-- The comparison between the two pipelines is part of the robustness story, not an afterthought
-:::
-
-::: notes
-This is the final setup before showing contours: same scientific assumptions, different analysis basis.
-:::
 
 ## Cosmological contours
 
