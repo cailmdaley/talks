@@ -128,12 +128,14 @@ Before we can do cosmology, we need to know which scales and which catalogue ver
 ### Paper III
 **Validation**
 
-::: {style="font-size:0.88em;line-height:1.5em;margin-top:26px;margin-bottom:18px"}
+::: {style="font-size:0.88em;line-height:1.5em;margin-top:16px;margin-bottom:10px"}
 - Four catalogue versions tested across fiducial and full-range cuts
 - Only the fiducial size-cuts catalogue remains acceptable across all three statistics
 :::
 
-![](images_local/pte_table_appendix_paper3.png){width=94% fig-align="center"}
+::: {.pte-table-container}
+![](images_local/pte_table_appendix_paper3.png){width=80% fig-align="center"}
+:::
 
 ::: notes
 Sacha has just covered the catalogue and image-simulation papers, so I pick up at the analysis level.
@@ -389,8 +391,8 @@ The redshift distribution is 2D, which is why this release is less constraining 
 ::::::::::::::
 
 ::: notes
-Here are the unblinded UNIONS contours — configuration space in orange, harmonic space in blue, and Planck in pink.
-Both UNIONS analyses are consistent with each other and with Planck. The contours are wide because we're fitting a single source redshift bin — tomography will tighten these substantially.
+Here are the unblinded UNIONS contours — configuration space in orange, harmonic space in blue, and Planck in pink. Blind B turned out to be the physical n(z).
+Both UNIONS analyses are consistent with each other and with Planck — about 1 sigma. The contours are wide because we're fitting a single source redshift bin — tomography will tighten these substantially.
 The important thing is not the error bar: it's that two independent pipelines land in the same place.
 :::
 
@@ -400,13 +402,13 @@ The important thing is not the error bar: it's that two independent pipelines la
 ![](images_local/whisker_unblinded.png){width=88% fig-align="center"}
 
 ::: {style="font-size:0.82em;line-height:1.5em;margin-top:8px"}
-- **(i)** Three blinds and both pipelines — blind A is the physical $n(z)$; configuration and harmonic space agree within ${\sim}0.4\sigma$
-- **(ii)** Broadly consistent with *Planck* ($0.7\sigma$) and other Stage-III shear surveys
+- **(i)** Three blinds and both pipelines — blind B is the physical $n(z)$; configuration and harmonic space agree within ${\sim}0.5\sigma$
+- **(ii)** Broadly consistent with *Planck* (${\sim}1\sigma$) and other Stage-III shear surveys
 - **(iii–vi)** Robustness tests: scale cuts, non-linear model, covariance, leakage correction — all shifts $< 0.2\sigma$
 :::
 
 ::: notes
-This is the summary figure. At the top: our three blinds plus the configuration-space result, showing that both pipelines agree to within half a sigma. Below: UNIONS compared to Planck, DES, KiDS, HSC — we sit comfortably within the lensing family, 0.7 sigma from Planck.
+This is the summary figure. At the top: our three blinds plus the configuration-space result, showing that both pipelines agree to within half a sigma. Below: UNIONS compared to Planck, DES, KiDS, HSC — we sit comfortably within the lensing family, about 1 sigma from Planck.
 The lower sections are robustness: scale cuts, non-linear model, covariance, and leakage correction. Every shift is under 0.2 sigma. The result is stable.
 :::
 
