@@ -371,65 +371,43 @@ The redshift distribution is 2D, which is why this release is less constraining 
 
 ## Cosmological contours
 
-<!-- TODO: replace with unblinded contours after Monday 2026-03-16 -->
-
 :::::::::::::: {.columns}
 ::: {.column style="width:60%"}
 
-![](images_local/contours_s8_omegam_config_harm_planck.png){width=84% fig-align="center"}
+![](images_local/contours_unblinded.png){width=84% fig-align="center"}
 
 :::
 ::: {.column style="width:40%"}
 
 <br>
 
-- Compact view of the first UNIONS 2D cosmic-shear constraints
-- Configuration and harmonic space are broadly consistent with each other
-- Error bars remain large because this release is non-tomographic
-
-::: {style="font-size:0.9em;margin-top:30px;color:crimson"}
-**Placeholder (Blind A / current working figure).** Final unblinded contours to be inserted.
-:::
+- First UNIONS 2D cosmic-shear constraints on $\Omega_m$ and $S_8$
+- Configuration and harmonic space are broadly consistent with each other and with *Planck*
+- Error bars are wide — this is a non-tomographic release by design
 
 :::
 ::::::::::::::
 
 ::: notes
-This is the compact cosmology view I actually want people to remember.
-Configuration and harmonic space are both there, along with Planck, in one clean panel.
-[After unblinding: quote the S₈ value and compare to Planck and other shear surveys.]
+Here are the unblinded UNIONS contours — configuration space in orange, harmonic space in blue, and Planck in pink.
+Both UNIONS analyses are consistent with each other and with Planck. The contours are wide because we're fitting a single source redshift bin — tomography will tighten these substantially.
+The important thing is not the error bar: it's that two independent pipelines land in the same place.
 :::
 
 
 ## $S_8$ comparison
 
-<!-- TODO: replace with unblinded whisker plot after Monday 2026-03-16 -->
+![](images_local/whisker_unblinded.png){width=88% fig-align="center"}
 
-:::::::::::::: {.columns}
-::: {.column style="width:60%"}
-
-![](images_local/contours_stage3_surveys_current.png){width=96% fig-align="center"}
-
+::: {style="font-size:0.82em;line-height:1.5em;margin-top:8px"}
+- **(i)** Three blinds and both pipelines — blind A is the physical $n(z)$; configuration and harmonic space agree within ${\lesssim}0.6\sigma$
+- **(ii)** Broadly consistent with *Planck* and other Stage-III shear surveys
+- **(iii–v)** Robustness tests: scale cuts, non-linear model, covariance — all shifts $< 0.7\sigma$
 :::
-::: {.column style="width:40%"}
-
-<br>
-
-- Harmonic and configuration-space UNIONS contours shown against DES Y3, KiDS-1000, and HSC Y3
-- Broad consistency with other Stage-III weak-lensing surveys
-- Current release is less constraining because it is intentionally conservative and non-tomographic
-
-::: {style="font-size:0.85em;margin-top:20px;color:crimson"}
-**Placeholder (Blind A / current working figure).**
-:::
-
-:::
-::::::::::::::
 
 ::: notes
-This is the external comparison view.
-It situates UNIONS among existing Stage-III shear surveys without pretending this release is already maximally constraining.
-[After unblinding: decide whether the whisker plot belongs in the main deck or backup.]
+This is the summary figure. At the top: our three blinds, showing that the unblinding procedure is clean. Below: UNIONS compared to Planck, DES, KiDS, and HSC. We're consistent with all of them — the error bars are large, but the consistency across pipelines and across surveys is the message.
+The bottom section shows robustness: changing the scale cuts, switching from HMCode to Halofit, using a different covariance — none of these shifts the answer by more than 0.7 sigma.
 :::
 
 
@@ -577,10 +555,8 @@ $\Omega_m$–$S_8$ contours for all three blinded $n(z)$ realizations (harmonic 
 
 ## UNIONS vs Stage III surveys {.smaller}
 
-<!-- TODO: update with unblinded contours -->
-
-![](images_local/contours_weak_lensing_surveys.png){width=55% fig-align="center"}
+![](images_local/contours_survey_comparison.png){width=55% fig-align="center"}
 
 ::: {style="font-size:0.8em;text-align:center"}
-$\Omega_m$–$S_8$ contours: UNIONS (harmonic + config-space) compared to DES Y3, KiDS-1000, HSC Y3, and DES+KiDS. Blind A shown.
+$\Omega_m$–$S_8$ contours: UNIONS (harmonic + config-space) compared to DES Y3, KiDS-1000, HSC Y3, and *Planck* 2018.
 :::
