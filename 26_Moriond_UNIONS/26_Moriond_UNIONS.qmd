@@ -232,11 +232,12 @@ I should be transparent: the authors of Papers IV and V were inadvertently unbli
 ## Different B-mode statistics do not always agree
 
 - Over the full range ($1$–$250'$, $\ell \lesssim 2000$): $\xi_\pm^B$ and $C_\ell^{BB}$ pass, but COSEBIs fail
-- Not config vs harmonic: COSEBIs from $\xi_\pm$ and from $C_\ell$ both fail
-- Filter functions set the sensitivity: COSEBIs concentrate it on contaminated scales
-- Residual systematics are present; mitigated through sample selection and scale cuts
+- Not config vs harmonic: COSEBIs from $\xi_\pm$ and from $C_\ell$ both fail:
 
 ![](images/cosebis_bsigma_talk.png){width=85% fig-align="center"}
+
+- Filter functions set the sensitivity: COSEBIs concentrate it on contaminated scales
+- Mitigated through sample selection and scale cuts
 
 ::: notes
 This is the main finding of Paper III. Pure E/B and Cl pass the null test on the full angular range — but COSEBIs fail. The B-modes show an oscillating structure that Asgari et al. 2019 associated with repeating additive shear bias at the CCD scale.
@@ -283,8 +284,6 @@ The adopted scale cuts weren't chosen from B-mode PTEs alone — they also incor
 
 - **Intrinsic alignments** — $A_\mathrm{IA}$ degenerate with $S_8$ in one bin; Gaussian prior from red/blue split ($0.83 \pm 0.7$)
 
-- **Covariance** — analytical (CosmoCov, iNKA); validated with jackknife and 350 GLASS mocks
-
 - All nuisance priors inflated to be conservative: $\Delta z$ by ${\times}1.4$, $A_\mathrm{IA}$ by ${\times}2$, $m$ by ${\times}3$
 
 :::
@@ -324,10 +323,10 @@ Finally, we inflate all nuisance priors to be conservative — 1.4 times on delt
 
 :::: {.r-stack}
 ::: {.fragment .fade-out fragment-index=0}
-![](images/contour_survey_comparison.png){width=95% fig-align="right"}
+![](images/contour_survey_comparison.png){width=100% fig-align="right"}
 :::
 ::: {.fragment fragment-index=0}
-![](images/s8_convergence_with_unions.png){width=95% fig-align="right"}
+![](images/s8_convergence_with_unions.png){width=100% fig-align="right"}
 :::
 ::::
 
@@ -373,7 +372,7 @@ The exception is the intrinsic alignment treatment. A_IA is essentially unconstr
 
 <br>
 
-- Shared inputs — mocks calibrate the expected scatter between analyses
+- Shared inputs: mocks calibrate the expected scatter between analyses
 - 2.6% of mocks show a smaller $\Delta S_8$
 - An unblinding criterion, to our knowledge a first for cosmic shear
 
