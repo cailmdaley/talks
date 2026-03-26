@@ -282,7 +282,7 @@ The adopted scale cuts weren't chosen from B-mode PTEs alone — they also incor
 
 ::: {style="line-height:2.4em;margin-top:50px"}
 
-- **Covariance** — analytical (CosmoCov, iNKA); validated with jackknife and 350 GLASS mocks
+- **Covariance** — analytical (CosmoCov, iNKA);<br>validated with jackknife and 350 GLASS mocks
 - **PSF leakage** — $\alpha$, $\beta$ inferred from $\rho$/$\tau$ diagnostics, jointly fit with cosmology (Paper IV)
 - **Redshifts** — $r$-band only; $n(z)$ from CFHTLenS cross-match + SOM. Marginalize over $\Delta z$
 - **Intrinsic alignments** — NLA model; $A_\mathrm{IA}$ degenerate with $S_8$ in one bin; Gaussian prior from red/blue split ($0.83 \pm 0.7$)
@@ -308,7 +308,7 @@ We also inflate the priors on delta-z, A_IA, and m-bias by factors of 1.4, 2, an
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
 
-::: {style="text-align:center"}
+::: {style="text-align:center;margin-top:100px"}
 | | $S_8$ | $\Omega_m$ |
 |---|---|---|
 | $\xi_\pm$ | $0.858^{+0.082}_{-0.081}$ | $0.267^{+0.141}_{-0.072}$ |
@@ -344,11 +344,11 @@ The contours are wide — with a single redshift bin, A_IA and S8 are nearly deg
 :::::::::::::: {.columns}
 ::: {.column style="width:40%"}
 
-<br>
-
+::: {style="margin-top:120px"}
 - Most robustness tests shift $S_8$ by $< 0.4\sigma$
 
 - $A_\mathrm{IA}$ is the dominant nuisance: largely unconstrained, removing it shifts $S_8$ by $0.7\sigma$
+:::
 
 :::
 ::: {.column style="width:60%"}
@@ -369,11 +369,11 @@ The exception is the intrinsic alignment treatment. A_IA is essentially unconstr
 :::::::::::::: {.columns}
 ::: {.column style="width:45%"}
 
-<br>
-
+::: {style="margin-top:100px"}
 - Shared inputs: mocks calibrate the expected scatter between analyses
 - 2.6% of mocks show a smaller $\Delta S_8$
 - An unblinding criterion, to our knowledge a first for cosmic shear
+:::
 
 :::
 ::: {.column style="width:55%"}
