@@ -1,12 +1,12 @@
 ---
-title: "UNIONS-3500:<br>First Cosmological Constraints from 2D Cosmic Shear"
+title: "UNIONS-3500:<br>First Cosmological Constraints<br>from 2D Cosmic Shear"
 occasion: Rencontres de Moriond — Cosmology
 description: "UNIONS-3500 weak lensing: B-mode validation and S₈ constraints"
 author:
     name: Cail Daley
     affiliation: "CosmoStat, CEA Paris-Saclay  <br> <br> [on behalf of the UNIONS weak lensing team]{style=font-size:1.3em}"
 resources:
-    - "images_local/unions_lensed_logo.png"
+    - "images/unions_lensed_logo.png"
 date: March 27, 2026
 date-format: long
 
@@ -27,7 +27,7 @@ format:
         template-partials:
             - title-slide.html
         center-title-slide: false
-        logo: images_local/unions_wl_logo.png
+        logo: images/unions_wl_logo.png
 
 html-math-method:
     method: mathjax
@@ -35,420 +35,432 @@ html-math-method:
 include-in-header: assets/mathjax.html
 ---
 
-## Why cosmic shear?
+## Cosmic shear benefits from independent measurements
 
-::: {style="line-height:1.8em;margin-top:30px"}
+:::::::::::::: {.columns}
+::: {.column style="width:25%"}
 
-- Correlating galaxy shapes measures **structure growth** — dark matter and dark energy
-- The field needs **independent datasets** from different instruments and hemispheres
-- Careful systematic validation prepares the ground for Stage IV
+::: {style="margin-top:110px;margin-left:45px;margin-right:-15px"}
+![](images/s8_convergence_whisker.png){width=115% fig-align="center"}
+:::
 
 :::
+::: {.column style="width:75%;overflow:hidden"}
+
+::: {.fragment fragment-index=0 style="position:relative;margin-left:-3%;margin-right:-6%"}
+![](images/des_y6_footprints.png){width=130% fig-align="center"}
+
+::: {style="position:absolute;bottom:12px;right:8%;font-size:0.6em;opacity:0.8"}
+Credit: DES Collaboration
+:::
+:::
+
+:::
+::::::::::::::
+
+:::: {.r-stack}
+::: {.fragment .fade-out fragment-index=0 style="margin:0;width:100%"}
+- $S_8$ seems to be converging as systematics improve; consensus is important!
+:::
+::: {.fragment fragment-index=0 style="margin:0;width:100%"}
+- $S_8$ seems to be converging as systematics improve; consensus is important!
+- But the northern sky has no wide-field lensing surveys
+:::
+::::
+
+::: notes
+Cosmic shear surveys are now mature enough to produce percent-level constraints. DES Y6 is consistent with Planck at 1.1 sigma in the full parameter space. KiDS-Legacy is converging. The S8 tension appears to be resolving — and it's resolving because systematics are getting better controlled: redshift calibration accounts for two-thirds of the KiDS shift, updated nonlinear modeling for DES.
+But consensus requires genuinely independent measurements — not just more data from overlapping footprints. This map shows the current landscape: DES, KiDS, and HSC all overlap each other on the sky. Jefferson et al. 2025 explicitly states "overlaps between all pairs." But look at the north — there's nothing there.
+:::
+
+
+## UNIONS adds deep wide-field lensing constraints in the North
+
+:::::::::::::: {.columns}
+::: {.column style="width:25%"}
+
+::: {style="margin-top:110px;margin-left:45px;margin-right:-15px"}
+![](images/s8_convergence_whisker.png){width=115% fig-align="center"}
+:::
+
+:::
+::: {.column style="width:75%;overflow:hidden"}
+
+::: {style="position:relative;margin-left:-3%;margin-right:-6%"}
+![](images/des_y6_footprints_unions.png){width=130% fig-align="center"}
+
+::: {style="position:absolute;bottom:12px;right:8%;font-size:0.6em;opacity:0.8"}
+Credit: DES Collaboration
+:::
+:::
+
+:::
+::::::::::::::
+
+- Different instrument, on-sky systematics, sample variance
+- New cross-correlation opportunities (DESI, Planck, BOSS)
+
+::: notes
+UNIONS covers the northern sky at declination above 30 degrees, extending to 15. Zero overlap with DES, KiDS, or HSC. That means independent large-scale structure, independent sample variance, different Galactic foreground, different atmospheric conditions, and a completely different instrument — CFHT MegaCam versus DECam, OmegaCAM, and Hyper Suprime-Cam.
+This is the only Stage III cosmic shear survey that doesn't share sky with any of the others. And that northern footprint is what makes it uniquely valuable for cross-correlations — DESI spectroscopy and Planck CMB lensing at high declination are all in the north.
+:::
+
+
+## UNIONS-3500 constraints are<br>the culmination of ~10 years of work
+
+- A small team of ~10 people
+- Non-tomographic; multi-bin redshift calibration in preparation
+- Inference with correlation functions $\xi_\pm(\theta)$ and band powers $C_\ell$
 
 ::: {style="margin-top:40px"}
-This talk: the first UNIONS 2D cosmic shear release
+Building on the catalog described in Sacha's talk:
 
-- **Paper III** — B-mode validation (Daley et al.)
-- **Paper IV** — Configuration-space constraints (Goh et al.)
-- **Paper V** — Harmonic-space constraints (Guerrini et al.)
+- **Paper III**: B-mode validation (Daley et al.)
+- **Paper IV**: configuration-space constraints (Goh et al.)
+- **Paper V**: harmonic-space constraints (Guerrini et al.)
 :::
 
 ::: notes
-Cosmic shear is one of the cleanest probes of the matter distribution we have — you're measuring the distortion of galaxy shapes by all the intervening mass along the line of sight.
-As the field matures — DES Y6, KiDS-Legacy, HSC — we're reaching the point where systematic validation matters as much as constraining power. A new survey in a different hemisphere with different instruments is exactly the kind of independent cross-check we need, and a proving ground for the techniques that Stage IV will require.
-This release is three companion papers from a single blinded catalogue, built by a team of fewer than ten people.
-:::
-
-
-## Northern-sky cosmic shear
-
-::: {style="margin-top:40px;line-height:1.6em"}
-
-- Only deep wide-field lensing survey in the northern sky — cross-correlations with DESI, Euclid, and CMB lensing
-
-- Non-tomographic: get the systematics right first, then add redshift bins
-
-- Two independent data vectors: $\xi_\pm(\theta)$ and pseudo-$C_\ell$ — same catalog, different bases
-
-- A small team ($< 10$ people) building the infrastructure for future constraints
-
-:::
-
-::: notes
-Sacha has just walked you through the catalogue — the survey properties, the PSF model, the systematics tests.
-Now I'll take that catalogue and show you what the shear field tells us about cosmology.
-UNIONS is the only deep wide-field lensing survey in the north, which opens up cross-correlations that the southern surveys can't do — spectroscopic overlap with DESI, photometric overlap with Euclid, and CMB lensing from ACT and Planck at high northern declination.
+Sacha has just walked you through the catalog — the survey properties, the PSF model, the systematics tests. Now I'll take that catalog and show you what the shear field tells us about cosmology.
+This release is three companion papers from a single blinded catalog, built by about ten people over roughly a decade of survey development.
 :::
 
 
 ## The 2D cosmic shear team
 
-::: {style="text-align:center"}
-Core members in alphabetical order (many others have contributed as well):
+::: {style="text-align:center;font-size:1.1em"}
+Core members in alphabetical order (many others have contributed over the years):
 :::
 
 :::::::::::::: {.columns style="text-align:center"}
 ::: {.column style="width:25%"}
-![Anna Wittje <br> (redshift estimation)](images_local/photo_anna.jpg){width=195px}
+![Anna Wittje <br> (redshift estimation)](images/photo_anna.jpg){width=260px}
 :::
 ::: {.column style="width:25%"}
-![Cail Daley <br> (B-modes, covariance, masking)](images_local/photo_cail.png){width=195px}
+![Cail Daley <br> (B-modes, covariance, <br> masking)](images/photo_cail.png){width=260px}
 :::
 ::: {.column style="width:25%"}
-![Calum Murray <br> (catalog validation, systematics)](images_local/photo_calum.jpg){width=195px}
+![Calum Murray <br> (catalog validation, <br> systematics)](images/photo_calum.jpg){width=260px}
 :::
 ::: {.column style="width:25%"}
-![Fabian Hervas Peters <br> (catalog, image simulations)](images_local/photo_fabian.jpg){height=195px}
+![Fabian Hervas Peters <br> (catalog, image <br> simulations)](images/photo_fabian_summer.jpeg){width=260px}
 :::
 ::::::::::::::
+
+::: {style="margin-top:50px"}
+:::
 
 :::::::::::::: {.columns style="text-align:center"}
 ::: {.column style="width:33%"}
-![Lisa Goh <br> (inference, covariance, masking)](images_local/photo_lisa.jpg){width=220px}
+![Lisa Goh <br> (inference, covariance, <br> masking)](images/photo_lisa.jpg){width=280px}
 :::
 ::: {.column style="width:33%"}
-![Martin Kilbinger <br> (catalog, wisdom)](images_local/photo_martin.jpg){width=220px}
+![Martin Kilbinger <br> (catalog, wisdom)](images/photo_martin.jpg){width=280px}
 :::
 ::: {.column style="width:33%"}
-![Sacha Guerrini <br> (inference, PSF systematics)](images_local/photo_sacha.jpg){width=220px}
+![Sacha Guerrini <br> (inference, PSF <br> systematics)](images/photo_sacha.jpg){width=280px}
 :::
 ::::::::::::::
 
 
-## Overall analysis — Paper III {.smaller}
+## Paper III uses B-modes to select the catalog and set scale cuts
 
-::: {style="margin-top:16px;font-size:0.92em"}
-Before cosmology, we need clean scales and a validated catalogue version.
-:::
+- To leading order, B-modes serve as a systematics null test
+- Synthesize null tests from $\xi_\pm^B$, COSEBIs, and $C_\ell$s to inform scale cuts and sample selection
 
-::: {style="font-size:0.92em;line-height:1.5em;margin-top:16px;margin-bottom:10px"}
-- Four catalogue versions tested across fiducial and full-range cuts
-- Only the fiducial size-cuts catalogue passes all three B-mode statistics
-:::
-
-![](images_local/pte_table_appendix_paper3.png){width=1700px fig-align="center"}
+![](images/pure_eb_data_vector.png){width=85% fig-align="center"}
 
 ::: notes
-Sacha has just covered the catalogue and image-simulation papers, so I pick up at the analysis level.
-Paper III is the gatekeeper: it decides which catalogue version and which scales are clean enough for cosmology. The punchline is that only one version passes all three B-mode tests.
+Paper III is the gatekeeper: it decides which catalog version and which scales are clean enough for cosmology.
+This is the pure E/B decomposition — the total shear correlation function split into its E-mode, B-mode, and ambiguous components. E-modes carry the lensing signal, B-modes diagnose residual systematics, and ambiguous modes arise from masking. The gray bands mark where we cut — scales where B-modes are too large.
+We use three statistics in different bases — pure E/B in angular space, COSEBIs as discrete modes, and Cl in harmonic space — and look for convergence across all three.
 :::
 
 
-## Overall analysis — Paper IV {.smaller}
+## Paper IV jointly fits cosmology and PSF leakage in real space
 
-::: {style="margin-top:16px;font-size:0.9em"}
-With clean scales in hand, Paper IV fits cosmology to $\xi_\pm(\theta)$.
-:::
+- $\xi_\pm(\theta)$ with PSF leakage parameters ($\alpha$, $\beta$) inferred from $\rho$/$\tau$ diagnostics<br>— uncertainty propagates into the error budget
 
-::: {style="font-size:0.88em;line-height:1.5em;margin-top:20px;margin-bottom:10px"}
-- Jointly fits cosmology, intrinsic alignments, and PSF leakage
-- PSF leakage ($\alpha$, $\beta$) inferred from diagnostic statistics and marginalized in the cosmological likelihood <br> — uncertainty in the PSF model propagates into the error budget
-:::
-
-![](images_local/best_fit_xipm.png){width=90% fig-align="center"}
+![](images/best_fit_xipm.png){width=90% fig-align="center"}
 
 ::: notes
-Paper IV takes the validated catalogue and scale cuts from Paper III and fits a cosmological model to the shear correlation functions.
+Paper IV takes the validated catalog and scale cuts from Paper III and fits a cosmological model to the shear correlation functions.
 What's distinctive here: rather than just correcting for PSF leakage at the catalog level, the leakage parameters are inferred from rho and tau statistics and carried into the cosmological likelihood as Gaussian priors. The PSF uncertainty propagates into the cosmological error budget. This is not standard practice.
 :::
 
 
-## Overall analysis — Paper V {.smaller}
+## Paper V provides harmonic-space constraints from the same data
 
-::: {style="margin-top:16px;font-size:0.9em"}
-Paper V provides an independent constraint in harmonic space — same data, different statistical basis.
-:::
+- Same catalog, $n(z)$, and blinding — different basis and weighting of scales
 
-::: {style="font-size:0.88em;line-height:1.5em;margin-top:20px;margin-bottom:10px"}
-- 2D cosmic-shear constraint using pseudo-$C_\ell$
-- An independent cross-check: same catalog, $n(z)$, blinding; different likelihood machinery
-:::
-
-![](images_local/Cell_EE_bestfit.png){width=80% fig-align="center"}
+![](images/Cell_EE_bestfit.png){width=80% fig-align="center"}
 
 ::: notes
-Paper V is the harmonic-space constraint — same catalogue, same blinding, same scale cuts, but an entirely independent analysis pipeline. Having two pipelines agree is not just a nice-to-have: we used their consistency as a criterion for unblinding.
+Paper V analyzes the same catalog in harmonic space — same blinding, same scale cuts, but a different basis and likelihood code. Having the two analyses agree is not just a nice-to-have: we used their consistency as a criterion for unblinding.
 :::
 
 
-## Blinding strategy
+## Conservative priors on $n(z)$ and shear bias — both will improve
+
+::: {style="line-height:1.8em"}
+
+- **Redshift distribution** — $r$-band only, so no colors; cross-match with CFHTLenS for $ugriz$, calibrate with SOM + spectroscopic sample. Marginalize over $\Delta z$ with $\mathcal{N}(0.033, 0.018)$
+
+- **Shear multiplicative bias** — MetaCalibration corrects most; residual from blending calibrated with image simulations (Paper II). Marginalize over $m$ with $\mathcal{N}(-0.057, 0.014)$
+
+- We inflate uncertainties to be conservative: $\Delta z$ by ${\times}1.4$, $A_\mathrm{IA}$ by ${\times}2$, $m$ by ${\times}3$ from measured values
+
+:::
+
+::: notes
+Two important inputs to the inference that deserve a moment.
+
+First, redshifts. We only use the r-band for shape measurement — that's the CFIS r-band with 0.7 arcsecond seeing. Because we're only measuring shapes in one band, we don't have colors for the full 61-million-galaxy sample. So how do we get a redshift distribution?
+
+We use a small overlap region: the CFHTLenS W3 field, which is 44 square degrees with deep ugriz photometry from five bands. Essentially all our detected sources have CFHTLenS counterparts in that overlap. We cross-match and adopt their ugriz magnitudes.
+
+Then we train a self-organizing map — a SOM — on a spectroscopic sample of about 65,000 galaxies from DEEP2, VVDS, and VIPERS. These are deep spectroscopic surveys that were all observed with the same CFHTLenS filter set, so the colors are directly comparable. The SOM tiles the color-magnitude space, and we assign each UNIONS galaxy to its best-matching cell based on its ugriz photometry. The redshift distribution falls out from the spectroscopic galaxies in each cell, weighted to account for selection biases.
+
+We validate this by building mock catalogs from the MICE2 simulation, running them through the same SOM pipeline, and comparing the recovered n(z) to the true redshifts. This gives us a calibration bias of delta-z = 0.033 — the SOM slightly overestimates the mean redshift. The uncertainty of plus or minus 0.018 comes from jackknife resampling of the spectroscopic calibration sample. We marginalize over this shift as a nuisance parameter in the inference.
+
+The key limitation: we're relying on a 44 square degree overlap to represent 3500 square degrees. Multi-band UNIONS photometry is being assembled across the full footprint, which will give us proper photometric redshifts and enable tomographic bins.
+
+Second, shear calibration. MetaCalibration corrects most of the multiplicative bias by applying known shears to galaxy images and measuring the response. But it can't fully capture the effect of blending — when galaxies overlap, the shape measurement is biased in ways that MetaCalibration doesn't model. Fabian's image simulations in Paper II estimate this residual. The prior on m is uniform from about minus 6 to plus 1 percent — it's not Gaussian because the systematic is one-sided (blending tends to bias shapes in one direction).
+
+Neither parameter — delta-z nor m — is constrained by the data. The posteriors just follow the priors. That's fine for a non-tomographic analysis: we're marginalizing over the uncertainty honestly. Both will tighten with future work: full-footprint photo-z for redshifts, and improved image simulations for shear calibration.
+:::
+
+
+## All analysis choices fixed before unblinding
 
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
 
-![](images_local/blind_nz_ABC.png){width=88% fig-align="center"}
+- Blind by shifting the mean of $n(z)$: three realizations A/B/C
 
-::: {style="font-size:0.72em;text-align:center;margin-top:-8px;margin-bottom:12px"}
+- We froze catalog version, scale cuts, and robustness criteria before reveal
+
+:::
+::: {.column style="width:50%"}
+
+![](images/blind_nz_ABC.png){width=88% fig-align="center"}
+
+::: {style="font-size:0.75em;text-align:center;margin-top:-8px;margin-bottom:12px"}
 Three blinded $n(z)$ realizations used during analysis.
 :::
 
 :::
-::: {.column style="width:50%;font-size:0.86em"}
-
-- Blind the mean of the source $n(z)$: three realizations A/B/C
-- Fix all analysis choices before unblinding: catalogue version, scale cuts, robustness criteria
-- Both pipelines run on all three blinds
-
-::: {style="font-size:0.78em;margin-top:24px"}
-The blinding lives in $n(z)$, not in post-processing. The cosmology-paper authors were inadvertently partially unblinded during final validation checks — this is discussed openly in the papers, and we believe it did not affect the analysis choices.
-:::
-
-:::
 ::::::::::::::
+
+::: {style="font-size:0.85em"}
+Caveat: the cosmology-paper authors were inadvertently partially unblinded ~2 weeks before the ceremony. No analysis choices were changed after this point.
+:::
 
 ::: notes
 We blind by shifting the source redshift distribution, not by hiding the final number after the fact. That means the full machinery is exercised on each blind. The B-mode cuts are fixed before unblinding, so the cosmology is not tuned to the answer.
-I should be transparent: the authors of Papers IV and V were inadvertently partially unblinded a couple of weeks before the official ceremony. What happened is that the maximum likelihood estimate — which isn't penalized by priors — peaked at the same S8 for all three blinds, because the n(z) shift maps onto S8 the same way intrinsic alignment does, and the ML was free to compensate with extreme A_IA values that the MAP would have rejected. So they could infer which blind was physical. We believe this didn't affect analysis choices since those were already frozen, but we want to be honest about it.
+I should be transparent: the authors of Papers IV and V were inadvertently partially unblinded about two weeks before the ceremony. The maximum likelihood estimate — which isn't penalized by priors — peaked at the same S8 for all three blinds, because the S8–A_IA degeneracy allowed A_IA to compensate the n(z) shift. So they could infer which blind was physical. No significant analysis choices were changed after this point — catalog version, scale cuts, and robustness criteria were already frozen.
 :::
 
 
-## B-mode statistics: Pure E/B
+## Different B-mode statistics do not always agree
 
-::: {style="font-size:0.88em;line-height:1.5em;margin-top:16px"}
-**E-modes** = lensing signal. **B-modes** = residual systematics. We use three statistics to separate them.
-:::
+- Over the full range ($1$–$250'$, $\ell \lesssim 2000$): $\xi_\pm^B$ and $C_\ell^{BB}$ pass, but COSEBIs fail
+- Not config vs harmonic: COSEBIs from $\xi_\pm$ and from $C_\ell$ both fail
+- Filter functions set the sensitivity — COSEBIs concentrate it on contaminated scales
+- Residual systematics are present; mitigated through sample selection and scale cuts
 
-::: {style="font-size:0.88em;font-weight:700;margin-top:16px;margin-bottom:6px"}
-Configuration space: $\xi_\pm^{E/B}(\theta)$
-:::
-
-::: {style="font-size:0.84em"}
-Isolates ambiguous-mode-free E and B in angle. Gray shading marks the adopted scale cuts.
-:::
-
-![](images_local/pure_eb_data_vector.png){width=82% fig-align="center"}
+![](images/cosebis_bsigma_talk.png){width=85% fig-align="center"}
 
 ::: notes
-The shear field is spin-2 — like CMB polarization, it splits into E-modes and B-modes. Lensing produces only E-modes, so B-modes diagnose residual systematics. The complication is ambiguous modes from masking — you need statistics designed to handle this. We use three.
-Pure E/B is the most direct angular-space decomposition. The gray bands mark the configuration-space scale cuts: 12 to 83 arcmin.
+This is the main finding of Paper III. Pure E/B and Cl pass the null test on the full angular range — but COSEBIs fail. The B-modes show an oscillating structure that Asgari et al. 2019 associated with repeating additive shear bias at the CCD scale.
+The key insight: this is not a matter of configuration versus harmonic space. We compute COSEBIs from both xi_pm and from the Cl bandpowers — they agree with each other, and they both fail. Yet the Cls themselves pass. The sensitivity to contamination is set by the filter functions, not the basis. COSEBIs concentrate sensitivity on the contaminated scales through their filter functions W_n.
+This matters because COSEBIs are designed to compress cosmological information — they're arguably the most informative B-mode diagnostic. The synthesis of multiple statistics is how you understand the systematics in the data.
 :::
 
 
-## B-mode statistics: Pseudo-$C_\ell$
-
-:::::::::::::: {.columns}
-::: {.column style="width:36%"}
-
-::: {style="font-size:0.88em;font-weight:700;margin-top:32px;margin-bottom:6px"}
-Harmonic space: $C_\ell^{BB}$, $C_\ell^{EB}$
-:::
-
-::: {style="font-size:0.84em;line-height:1.5em"}
-NaMaster band-power estimation with mode-coupling correction.
-
-Gray shading marks the harmonic-space scale cuts: $\ell = 300$--$1600$.
-:::
-
-:::
-::: {.column style="width:64%"}
-
-![](images_local/cl_data_vector.png){width=98% fig-align="center"}
-
-:::
-::::::::::::::
-
-::: notes
-The pseudo-Cl estimator gives the harmonic-space view. The gray bands mark the harmonic-space cuts at ell 300 to 1600. Both BB and EB are consistent with zero at these scales.
-:::
-
-
-## B-mode statistics: COSEBIs
-
-::: {style="font-size:0.88em;line-height:1.5em;margin-top:16px"}
-COSEBIs computed from both configuration-space $\xi_\pm$ and harmonic-space band powers — the two paths agree.
-:::
-
-![](images_local/harmonic_config_cosebis_fiducial.png){width=90% fig-align="center"}
-
-::: {style="font-size:0.78em;text-align:center;margin-top:-4px"}
-$E_n$ (top) and $B_n/\sigma_n$ (bottom) at fiducial scale cuts. Filled: config-space. Open: harmonic-space.
-:::
-
-::: notes
-This is the consistency test from the paper discussion. We compute COSEBIs from both the configuration-space correlation functions and the harmonic-space band powers. They agree — the filled circles are config-space, open squares are harmonic-space.
-The key insight is that the sensitivity to systematic contamination is set by the filter functions, not the basis in which the two-point function is measured. At fiducial cuts, B-modes are consistent with zero from both paths.
-:::
-
-
-## From B-modes to scale cuts
-
-:::::::::::::: {.columns}
-::: {.column style="width:64%"}
-
-![](images_local/config_space_pte_fiducial.png){width=98% fig-align="center"}
-
-::: {style="font-size:0.72em;text-align:center;margin-top:-6px"}
-2D $p$-value (PTE) scan across angular cuts.
-:::
-
-::: {style="font-size:0.79em;line-height:1.4em;margin-top:12px"}
-Three statistics converge on the same clean region. Only v1.4.6.3 passes all of them.
-
-Adopted cuts: $[12, 83]$ arcmin and $\ell = 300$--$1600$.
-:::
-
-:::
-::: {.column style="width:36%;font-size:0.84em"}
-
-<br>
-
-- Three estimators, different bases, same conclusion
-- We look for broad, consistent passage — not any single plot
-- Small-scale failures at the MegaCam CCD scale (${\sim}9.4$ arcmin)
-
-::: {style="font-size:0.75em;margin-top:20px"}
-The cosmology papers inherit these cuts — they don't choose their own.
-:::
-
-:::
-::::::::::::::
-
-::: notes
-This is the compressed B-mode story.
-The colour map is a p-value — computed for every combination of minimum and maximum angular scale. Green means B-modes consistent with zero; red means they're not.
-The residual problem sits at the MegaCam CCD scale, around 9 arcminutes. Above that, the field is clean.
-The cosmology papers inherit these cuts rather than tuning them themselves.
-:::
-
-
-## Inference ingredients
-
-::: {style="font-size:0.82em;margin-top:10px;margin-bottom:8px;color:#555"}
-What connects the validated shear catalogue to cosmological contours.
-:::
-
-::: {style="line-height:1.55em;font-size:0.88em"}
-
-**Redshift distribution** — a single 2D source $n(z)$ from SOM-based colour–redshift calibration. Both analyses marginalize over a mean shift $\Delta z$.
-
-**Covariance** — analytical in both spaces (CosmoCov for $\xi_\pm$, iNKA for $C_\ell$), cross-checked with jackknife and GLASS mocks.
-
-**Intrinsic alignments** — with a single redshift bin, $A_\mathrm{IA}$ is degenerate with $S_8$: the data cannot separate them. We construct a Gaussian prior from red/blue galaxy fractions in overlapping spectroscopic data ($A_\mathrm{IA} = 0.83 \pm 0.7$). If this prior is wrong, $S_8$ shifts accordingly — tomography will break the degeneracy.
-
-**Likelihoods** — common model, common $n(z)$, common scale cuts, but separate codes. Both pipelines also marginalize over baryonic feedback and $\Delta z$.
-
-:::
-
-::: notes
-I want to be honest about the intrinsic alignment situation. With one redshift bin, the IA amplitude and S8 are almost perfectly degenerate. We can't fit A_IA from the data — so we build a prior from external measurements: splitting galaxies into red and blue populations using spectroscopic overlap, measuring the IA amplitude for each, and combining weighted by the UNIONS colour fractions. The prior is conservatively widened. But this is the main caveat of the non-tomographic analysis: if the prior is wrong, S8 moves. Tomography breaks this because different redshift bins see different ratios of lensing to intrinsic alignment.
-The two pipelines share everything except the statistical basis and the likelihood code.
-:::
-
-
-
-## Cosmological contours
-
-:::::::::::::: {.columns}
-::: {.column style="width:60%"}
-
-![](images_local/contours_config_vs_harmonic.png){width=84% fig-align="center"}
-
-:::
-::: {.column style="width:40%"}
-
-<br>
-
-- First UNIONS 2D cosmic-shear constraints on $\Omega_m$ and $S_8$
-- Two independent pipelines land in the same place — and both are consistent with *Planck*
-- Broad contours by design: a single redshift bin. Tomography will tighten these substantially
-
-:::
-::::::::::::::
-
-::: notes
-Here are the unblinded UNIONS contours — configuration space in orange, harmonic space in red, and Planck in pink. Blind B turned out to be the physical n(z).
-The contours are wide — that's the reality of a single redshift bin. We're consistent with Planck at about 1 sigma, but honestly our error bars are broad enough that we're consistent with most cosmic shear surveys. The point of this slide isn't the width of the contours — it's that two fully independent pipelines, sharing only the blinded inputs and scale cuts, land in the same place.
-:::
-
-
-## $S_8$ comparison
-
-![](images_local/whisker_plot.png){width=95% fig-align="center"}
-
-::: notes
-This is the summary figure. At the top: our three blinds plus the configuration-space result, showing that both pipelines agree to within half a sigma. Below: UNIONS compared to Planck, DES, KiDS, HSC — we sit comfortably within the lensing family, about 1 sigma from Planck.
-The lower sections are robustness: scale cuts, non-linear model, covariance, and leakage correction. Every shift is under 0.2 sigma. The result is stable.
-:::
-
-
-## Configuration vs harmonic space
+## Joint B-mode passage constrains scales more tightly than any single test
 
 :::::::::::::: {.columns}
 ::: {.column style="width:55%"}
 
-![](images_local/S8_joint_config_harm.png){width=80% fig-align="center"}
-
-::: {style="font-size:0.75em;text-align:center;margin-bottom:10px"}
-$S_8$ from config vs harmonic space on 350 GLASS mocks.
-:::
+- Three estimators weight scales differently — different sensitivity to the same contamination
+- Cuts chosen jointly from B-mode PTEs and blinded inference stability (Papers IV/V)
+- Adopted cuts: $[12, 83]'$, $\ell = 300$–$1600$<br>($k_\mathrm{max} \approx 2.6\;h\,\mathrm{Mpc}^{-1}$); all PTEs $> 0.18$
 
 :::
 ::: {.column style="width:45%"}
 
-<br>
+![](images/pte_cosebis_talk.png){width=98% fig-align="center"}
 
-- Same catalog, $n(z)$, and blinding
-- Independent pipelines: $\xi_\pm$ vs pseudo-$C_\ell$
-- Consistency ${\sim}0.4\sigma$ across 350 GLASS mocks
-- Validates that both analyses measure the same cosmology
-
-::: {style="font-size:0.8em;margin-top:30px"}
-This consistency test was an unblinding criterion.
+::: {style="font-size:0.75em;text-align:center;margin-top:-6px"}
+COSEBIS $B_n$ PTE scan. Square: adopted cuts.
 :::
 
 :::
 ::::::::::::::
 
 ::: notes
-A crucial robustness question: do configuration-space and harmonic-space analyses agree?
-We test this on 350 GLASS mock catalogs — same catalog run through both pipelines.
-The scatter plot shows the S₈ estimates from both spaces are tightly correlated, with consistency at the 0.4 sigma level.
-This validates that the two analyses are measuring the same underlying cosmology.
+This is the compressed B-mode story. The colour map is a p-value — computed for every combination of minimum and maximum angular scale. Red means B-modes consistent with zero; blue means they're not.
+The three statistics weight scales differently: a feature narrow in angle maps onto a broad range in ell, so harmonic cuts can't isolate it. COSEBIs concentrate sensitivity at the contaminated scales through their filter functions.
+The adopted scale cuts weren't chosen from B-mode PTEs alone — they also incorporate inference-stability checks and PSF leakage considerations from Papers IV and V.
 :::
 
 
-## Summary & outlook
+## PSF uncertainty propagates into the cosmological error budget
 
-- **UNIONS**: first deep wide-field lensing survey of the northern sky — unique cross-correlation potential with DESI, Euclid, and CMB lensing
+::: {style="line-height:1.8em"}
 
-- **Systematic rigor**: three B-mode statistics converge on clean scales; PSF leakage marginalized in inference; intrinsic alignment prior constructed from external data, honestly acknowledging the single-bin degeneracy
+- **PSF leakage** — $\alpha$, $\beta$ inferred from $\rho$/$\tau$ diagnostics, jointly fit with cosmology (Paper IV)
 
-- **Two pipelines agree**: configuration-space and harmonic-space constraints are consistent (${\sim}0.5\sigma$), validated on 350 GLASS mocks
+- **Covariance** — analytical (CosmoCov, iNKA); validated with jackknife and 350 GLASS mocks
 
-- **Next:** tomography and $3{\times}2$pt will sharpen these constraints substantially — the infrastructure we're building transfers directly to Stage IV
+- **Intrinsic alignments** — $A_\mathrm{IA}$ degenerate with $S_8$ in one bin; conservative Gaussian prior from red/blue split ($0.83 \pm 0.7$)
+
+- **Likelihoods** — common model and $n(z)$, separate codes; marginalize over baryonic feedback, $\Delta z$, $m$
+
+:::
 
 ::: notes
-To summarize: UNIONS provides the first northern-sky cosmic shear constraints from a small, focused team.
-The constraints are broad — this is a non-tomographic release. What we're showing is that the systematic validation is thorough: three B-mode statistics, PSF leakage propagated into the error budget, and two independent pipelines landing in the same place.
-The real deliverable isn't one S8 number — it's the infrastructure and lessons for the Stage IV era. Tomographic analysis, 3x2pt with DESI, and CMB lensing cross-correlations will turn this into a competitive cosmology dataset.
+I want to highlight two things here. First, the PSF leakage treatment in Paper IV: rather than correcting at the catalog level, the leakage parameters are inferred from rho and tau statistics and carried into the cosmological likelihood as Gaussian priors. The PSF model uncertainty propagates into the error budget.
+Second, the intrinsic alignment situation. With one redshift bin, A_IA and S8 are almost perfectly degenerate. We can't fit A_IA from the data — so we build a prior from external measurements. This is the main caveat of the non-tomographic analysis: if the prior is wrong, S8 moves. Tomography breaks this because different redshift bins see different ratios of lensing to intrinsic alignment.
 :::
 
 
-## Thank you! {.team-photo-slide background-image="images_local/unions_team.jpg" background-size="cover" background-position="center"}
+
+## UNIONS constraints agree with Planck and Stage III at ~1σ
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+<br>
+
+- Conservative priors — uncertainties inflated ${\times}1.4$/${\times}2$/${\times}3$ on $\Delta z$, $A_\mathrm{IA}$, $m$
+- Single redshift bin — tomography will tighten constraints substantially
+
+::: {style="text-align:center"}
+| | $S_8$ | $\Omega_m$ |
+|---|---|---|
+| $\xi_\pm$ | $0.858^{+0.082}_{-0.081}$ | $0.267^{+0.141}_{-0.072}$ |
+| $C_\ell$ | $0.917^{+0.077}_{-0.079}$ | $0.221^{+0.175}_{-0.058}$ |
+:::
+
+:::
+::: {.column style="width:50%"}
+
+:::: {.r-stack}
+::: {.fragment .fade-out fragment-index=0}
+![](images/contour_survey_comparison.png){width=95% fig-align="right"}
+:::
+::: {.fragment fragment-index=0}
+![](images/s8_convergence_with_unions.png){width=95% fig-align="right"}
+:::
+::::
+
+:::
+::::::::::::::
+
+::: notes
+Here are the UNIONS contours in context. Configuration space in orange, harmonic space in red — you can see KiDS-Legacy, HSC-Y3, and Planck for comparison.
+The contours are wide — with a single redshift bin, A_IA and S8 are nearly degenerate. The Gaussian prior we build from external data keeps the constraints finite, but a flat prior would essentially erase them. Multi-bin redshift calibration is in progress and will break this degeneracy.
+[CLICK] And here's where UNIONS sits in the S8 landscape — consistent with everyone. The error bars span the entire range. That's the cost of one redshift bin. Tomography will fix it.
+:::
+
+
+## $S_8$ is robust to analysis choices but sensitive to the IA prior
+
+:::::::::::::: {.columns}
+::: {.column style="width:40%"}
+
+<br>
+
+- Most robustness tests shift $S_8$ by $< 0.4\sigma$
+
+- $A_\mathrm{IA}$ is the dominant nuisance: largely unconstrained, removing it shifts $S_8$ by $0.7\sigma$
+
+- We set the lower scale cut from B-mode validation + $S_8$ stability
+
+:::
+::: {.column style="width:60%"}
+
+![](images/whisker_plot.png){width=105% fig-align="right"}
+
+:::
+::::::::::::::
+
+::: notes
+This is the robustness summary. The whisker plot shows our result is stable: scale cuts, non-linear model, covariance, and leakage correction all shift S8 by less than 0.2 sigma.
+The exception is the intrinsic alignment treatment. A_IA is essentially unconstrained by our single-bin data — the posterior just follows the degeneracy direction. Turning off IA or switching to a flat prior produces the largest shifts. That's the main caveat of this release, and it's what tomography will resolve.
+:::
+
+
+## Two analyses agree to ~2σ, calibrated on 350 GLASS mocks
+
+:::::::::::::: {.columns}
+::: {.column style="width:45%"}
+
+<br>
+
+- Shared inputs — mocks calibrate the expected scatter between analyses
+- 2.6% of mocks show a smaller $\Delta S_8$
+- An unblinding criterion — to our knowledge, a first for cosmic shear
+
+:::
+::: {.column style="width:55%"}
+
+![](images/S8_difference_config_harm.png){width=90% fig-align="center"}
+
+::: {style="font-size:0.75em;text-align:center;margin-bottom:10px"}
+$\Delta S_8$ between config and harmonic space:<br>data vs 350 GLASS mocks.
+:::
+
+:::
+::::::::::::::
+
+::: notes
+The two analyses share nearly everything — same catalog, same n(z), same blinding, overlapping inference code. So you can't just compare their error bars as if they were independent. A half-sigma shift in uncorrelated posteriors means nothing; a half-sigma shift in highly correlated measurements might mean a lot.
+We calibrate this by running both pipelines on 350 GLASS mocks. The observed S8 difference is about 2 sigma relative to the mock distribution. Not alarming, but not negligible — and this is something we decided to check before unblinding, not after.
+:::
+
+
+## Thank you! {.team-photo-slide background-image="images/unions_team.jpg" background-size="cover" background-position="center"}
 
 ::: {style="margin-top:150px;text-align:center"}
 
 ::: {style="display:inline-block;padding:22px 36px;background:rgba(255,255,255,0.8);border-radius:18px"}
-### Thank you
+[**Thank you!**]{style="font-size:1.5em"}
 
-::: {style="font-size:0.9em;margin-top:12px"}
-**cail.daley@cea.fr**
-:::
+[cail.daley@cea.fr]{style="font-size:0.9em;margin-top:12px"}
 :::
 
 :::
 
 ::: notes
 Thank you! Happy to take questions.
-The five companion papers will be on arXiv in April. Please reach out if you're interested in the catalog or in cross-correlation opportunities.
 These slides were made with Claude — I did the thinking, Claude did the typing.
 :::
+
+
+## UNIONS delivers the first northern-sky cosmic shear constraints
+
+- **Key result**: $S_8 = 0.86$ (real space), $0.92$ (harmonic), consistent with Planck at ${\sim}1\sigma$; systematic uncertainties inflated ${\times}1.4$–${\times}3$ to be conservative
+
+- **Systematic validation**: three B-mode statistics converge on clean scales; PSF leakage marginalized in the likelihood
+
+- **Pipeline agreement**: real-space and harmonic-space analyses agree, calibrated on 350 GLASS mocks — an unblinding criterion
+
+- **Next**: tomography will break the $A_\mathrm{IA}$–$S_8$ degeneracy; $3{\times}2$pt with DESI and CMB lensing cross-correlations will sharpen constraints
+
+::: notes
+Five companion papers on arXiv in April. Please reach out if you're interested in the catalog or in cross-correlation opportunities.
+:::
+
+<!-- Summary stays visible during Q&A -->
 
 
 ## Backup {background-color="black" style="color:white"}
 
 
-## E-modes and B-modes {.smaller}
+## Masking creates ambiguous modes that require E/B-separable statistics
 
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
@@ -463,51 +475,142 @@ $\implies$ need **E/B-separable** statistics
 
 :::
 ::: {.column style="width:50%"}
-![](images_local/emode_pattern.jpg){width=80%}
-![](images_local/bmode_pattern.jpg){width=80%}
+![](images/emode_pattern.jpg){width=80%}
+![](images/bmode_pattern.jpg){width=80%}
 :::
 ::::::::::::::
 
 
-## Config–harmonic $\Delta S_8$ distribution {.smaller}
+## Only the PSF size-corrected catalog passes across all statistics and scale cuts
 
-![](images_local/S8_comparison_config_harm.png){width=55% fig-align="center"}
+![](images/pte_table_appendix_paper3.png){width=1700px fig-align="center"}
 
 ::: {style="font-size:0.8em;text-align:center"}
-$\Delta \langle S_8 \rangle$ between configuration and harmonic space across 350 GLASS mocks. Centered on zero — no systematic bias.
+$p$-values for four catalog versions across fiducial and full-range cuts. Only the fiducial (PSF size-corrected) passes all three statistics.
 :::
 
 
-## Pipeline validation on GLASS mocks {.smaller}
+## $C_\ell^{BB}$ and $C_\ell^{EB}$ are consistent with zero within the adopted scale cuts
 
 :::::::::::::: {.columns}
-::: {.column style="width:50%"}
+::: {.column style="width:36%"}
 
-![](images_local/Omega_m_sigma_8_joint_config.png){width=90% fig-align="center"}
+::: {style="font-size:0.95em;line-height:1.5em;margin-top:32px"}
+NaMaster band-power estimation with mode-coupling correction.
 
-::: {style="font-size:0.8em;text-align:center"}
-$\Omega_m$–$\sigma_8$ from 350 GLASS mocks (configuration space). Dashed: input cosmology.
+Gray shading marks the harmonic-space scale cuts: $\ell = 300$--$1600$.
 :::
 
 :::
-::: {.column style="width:50%"}
+::: {.column style="width:64%"}
 
-<br>
-<br>
-
-- 350 GLASS mock catalogs with realistic UNIONS geometry
-- Full inference pipeline run on each mock
-- Input cosmology recovered without bias
-- Validates covariance, likelihood, and sampling
+![](images/cl_data_vector.png){width=98% fig-align="center"}
 
 :::
 ::::::::::::::
 
 
-## UNIONS vs Stage III surveys {.smaller}
+## $A_\mathrm{IA}$ is unconstrained by the data but strongly affects $S_8$
 
-![](images_local/contours_weak_lensing_surveys.png){width=55% fig-align="center"}
+:::::::::::::: {.columns}
+::: {.column style="width:35%"}
 
-::: {style="font-size:0.8em;text-align:center"}
-$\Omega_m$–$S_8$ contours: UNIONS (harmonic + config-space) compared to DES Y3, KiDS-1000, HSC Y3, DES+KiDS combined.
+<br>
+
+$S_8$–$\Omega_m$–$A_\mathrm{IA}$ from configuration-space inference.
+
+- Gaussian $A_\mathrm{IA}$ prior (orange) vs flat prior (blue) vs no IA (green)
+- $A_\mathrm{IA}$ is largely unconstrained by the data but strongly affects $S_8$
+- A lower $A_\mathrm{IA}$ gives lower $S_8$
+
 :::
+::: {.column style="width:65%"}
+
+![](images/contour_ia_treatments.png){height=920px fig-align="center"}
+
+:::
+::::::::::::::
+
+
+## $S_8$ is robust to $k_\mathrm{max}$: nonlinear scale cuts shift constraints by $< 0.2\sigma$
+
+:::::::::::::: {.columns}
+::: {.column style="width:35%"}
+
+<br>
+
+- Fiducial $\ell_\mathrm{max} = 1600$ ($k_\mathrm{max} \approx 2.6\;h\,\mathrm{Mpc}^{-1}$)
+- Tested $k_\mathrm{max} \in [1, 3, 5]\;h\,\mathrm{Mpc}^{-1}$
+- All shifts $< 0.2\sigma$ from fiducial
+
+:::
+::: {.column style="width:65%"}
+
+![](images/contours_kmax_scale_cuts.png){height=920px fig-align="center"}
+
+:::
+::::::::::::::
+
+
+## Angular scale cuts map to different $k_\mathrm{max}$ for $\xi_+$ and $\xi_-$
+
+:::::::::::::: {.columns}
+::: {.column style="width:35%"}
+
+<br>
+
+- Color: fraction of $C_\ell$ signal from $k < k_\mathrm{max}$ at each $\theta$
+- Red curve: 90% signal boundary
+- $\xi_+$ at $12'$: $k_\mathrm{max} = 0.43\;h\,\mathrm{Mpc}^{-1}$
+- $\xi_-$ at $12'$: $k_\mathrm{max} = 2.85\;h\,\mathrm{Mpc}^{-1}$
+
+:::
+::: {.column style="width:65%"}
+
+![](images/theta_k_xip_xim.png){height=920px fig-align="center"}
+
+:::
+::::::::::::::
+
+
+## The $\Omega_m$ difference between pipelines is unremarkable
+
+:::::::::::::: {.columns}
+::: {.column style="width:40%"}
+
+<br>
+
+- $\Delta\Omega_m = 0.046$, PTE $= 0.20$, $N_\sigma = 0.83$
+- The tension is in $S_8$ specifically, not a general disagreement
+- Broad $\Omega_m$ posteriors mean almost any difference is consistent
+
+:::
+::: {.column style="width:60%"}
+
+![](images/omega_m_difference_config_harm.png){width=98% fig-align="center"}
+
+:::
+::::::::::::::
+
+
+## Config and harmonic posteriors agree across all parameters
+
+:::::::::::::: {.columns}
+::: {.column style="width:18%"}
+
+::: {style="font-size:0.95em;line-height:1.5em"}
+UNIONS $C_\ell$ (red) vs $\xi_\pm$ (orange).
+
+- Same blinded inputs
+- Agreement across all parameters
+:::
+
+:::
+::: {.column style="width:82%"}
+
+![](images/contours_config_vs_harmonic_full.png){height=920px fig-align="center"}
+
+:::
+::::::::::::::
+
+
