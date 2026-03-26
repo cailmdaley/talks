@@ -1,4 +1,5 @@
 ---
+draft: true
 title: "Work Update: EDF-S"
 occasion: CosmoStat Group Meeting
 description: CosmoStat Group Meeting

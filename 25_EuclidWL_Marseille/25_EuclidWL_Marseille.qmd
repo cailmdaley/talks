@@ -1,4 +1,5 @@
 ---
+draft: true
 title: "Learning Lessons <br> from CMBX RR2"
 occasion: Euclid Weak Lensing Meeting, Marseille
 description: Rapid notes on Euclid-CMBX RR2 mask products feeding the upcoming cross-correlation analysis.
