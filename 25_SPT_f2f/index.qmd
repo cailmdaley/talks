@@ -1,5 +1,4 @@
 ---
-draft: true
 title: EDF-S Lensing
 occasion: SPT Face-to-Face Meeting
 description: SPT Face-to-Face Meeting
