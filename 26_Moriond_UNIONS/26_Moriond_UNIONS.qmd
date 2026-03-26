@@ -2,6 +2,7 @@
 title: "UNIONS-3500:<br>First Cosmological Constraints<br>from 2D Cosmic Shear"
 occasion: Rencontres de Moriond — Cosmology
 description: "UNIONS-3500 weak lensing: B-mode validation and S₈ constraints"
+image: images/contour_survey_comparison.png
 author:
     name: Cail Daley
     affiliation: "CosmoStat, CEA Paris-Saclay  <br> <br> [on behalf of the UNIONS weak lensing team]{style=font-size:1.3em}"
