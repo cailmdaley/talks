@@ -131,5 +131,5 @@ cd docs/talks && quarto render 26_Moriond_UNIONS/26_Moriond_UNIONS.qmd --to reve
 snakemake talk_figures -j4 --nolock
 
 # Screenshot for QA
-cd 26_Moriond_UNIONS && npx decktape reveal "file://$(pwd)/../_site/26_Moriond_UNIONS/26_Moriond_UNIONS.html" screenshots/qa/deck.pdf --screenshots --screenshots-directory screenshots/qa --size 1920x1080
+cd 26_Moriond_UNIONS && decktape reveal "file://$(pwd)/../_site/26_Moriond_UNIONS/26_Moriond_UNIONS.html" screenshots/qa/deck.pdf --screenshots --screenshots-directory screenshots/qa --size 1920x1080
 ```
