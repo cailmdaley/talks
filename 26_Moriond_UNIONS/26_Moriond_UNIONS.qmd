@@ -284,7 +284,7 @@ The adopted scale cuts weren't chosen from B-mode PTEs alone — they also incor
 
 - **Intrinsic alignments** — $A_\mathrm{IA}$ degenerate with $S_8$ in one bin; Gaussian prior from red/blue split ($0.83 \pm 0.7$)
 
-- All nuisance priors inflated to be conservative: $\Delta z$ by ${\times}1.4$, $A_\mathrm{IA}$ by ${\times}2$, $m$ by ${\times}3$
+- **Covariance** — analytical (CosmoCov, iNKA); validated with jackknife and 350 GLASS mocks
 
 :::
 
@@ -297,7 +297,7 @@ Second, PSF leakage. Paper IV goes beyond catalog-level correction: the leakage 
 
 Third, intrinsic alignments. With one redshift bin, A_IA and S8 are almost perfectly degenerate. We can't fit A_IA from the data — so we build a prior from external measurements. This is the main caveat of the non-tomographic analysis: if the prior is wrong, S8 moves. Tomography breaks this.
 
-Finally, we inflate all nuisance priors to be conservative — 1.4 times on delta-z, doubled on A_IA, tripled on m from the measured values. These will all tighten with future work.
+We also inflate the priors on delta-z, A_IA, and m-bias by factors of 1.4, 2, and 3 from the measured values — that's why the contours on the next slide are so wide. These will all tighten with future work.
 :::
 
 
@@ -309,7 +309,7 @@ Finally, we inflate all nuisance priors to be conservative — 1.4 times on delt
 
 <br>
 
-- Single redshift bin; tomography will tighten constraints substantially
+- Priors on $\Delta z$, $A_\mathrm{IA}$, $m$-bias inflated by ${\times}1.4$/${\times}2$/${\times}3$ to be conservative
 
 ::: {style="text-align:center"}
 | | $S_8$ | $\Omega_m$ |
@@ -322,11 +322,11 @@ Finally, we inflate all nuisance priors to be conservative — 1.4 times on delt
 ::: {.column style="width:50%"}
 
 :::: {.r-stack}
-::: {.fragment .fade-out fragment-index=0}
-![](images/contour_survey_comparison.png){width=100% fig-align="right"}
+::: {.fragment .fade-out fragment-index=0 style="margin-right:-8%"}
+![](images/contour_survey_comparison.png){width=115% fig-align="right"}
 :::
-::: {.fragment fragment-index=0}
-![](images/s8_convergence_with_unions.png){width=100% fig-align="right"}
+::: {.fragment fragment-index=0 style="margin-right:-8%"}
+![](images/s8_convergence_with_unions.png){width=115% fig-align="right"}
 :::
 ::::
 
