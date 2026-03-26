@@ -1,10 +1,5 @@
 project:
   type: website
-  render:
-    - "*.qmd"
-    - "25_*/*.qmd"
-    - "26_Moriond_UNIONS/*.qmd"
-    - "!sasha_talks/"
 
 website:
   title: "Talks"
