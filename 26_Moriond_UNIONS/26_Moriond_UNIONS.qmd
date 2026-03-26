@@ -205,31 +205,27 @@ Paper V analyzes the same catalog in harmonic space — same blinding, same scal
 ## All analysis choices fixed before unblinding
 
 :::::::::::::: {.columns}
-::: {.column style="width:50%"}
+::: {.column style="width:45%"}
 
-- Blind by modifying $n(z)$: three realizations A/B/C
+<br>
 
-- We froze catalog version, scale cuts, and robustness criteria before reveal
+- Blind by modifying $n(z)$: three realizations A/B/C, one unshifted
+
+- Catalog version, scale cuts, and robustness criteria frozen before collaboration-wide unblinding
+
+- Caveat: cosmology-paper authors were inadvertently unblinded ~2 weeks before — no analysis choices changed after this point
 
 :::
-::: {.column style="width:50%"}
+::: {.column style="width:55%"}
 
-![](images/blind_nz_ABC.png){width=88% fig-align="center"}
-
-::: {style="font-size:0.75em;text-align:center;margin-top:-8px;margin-bottom:12px"}
-Three blinded $n(z)$ realizations used during analysis.
-:::
+![](images/blind_nz_ABC.png){width=95% fig-align="center"}
 
 :::
 ::::::::::::::
 
-::: {style="font-size:0.85em"}
-Caveat: the cosmology-paper authors were inadvertently partially unblinded ~2 weeks before the ceremony. No analysis choices were changed after this point.
-:::
-
 ::: notes
 We blind by modifying the source redshift distribution, not by hiding the final number after the fact. That means the full machinery is exercised on each blind. The B-mode cuts are fixed before unblinding, so the cosmology is not tuned to the answer.
-I should be transparent: the authors of Papers IV and V were inadvertently partially unblinded about two weeks before the ceremony. The maximum likelihood estimate — which isn't penalized by priors — peaked at the same S8 for all three blinds, because the S8–A_IA degeneracy allowed A_IA to compensate the n(z) shift. So they could infer which blind was physical. No significant analysis choices were changed after this point — catalog version, scale cuts, and robustness criteria were already frozen.
+I should be transparent: the authors of Papers IV and V were inadvertently unblinded about two weeks before the collaboration-wide unblinding. The maximum likelihood estimate — which isn't penalized by priors — peaked at the same S8 for all three blinds, because the S8–A_IA degeneracy allowed A_IA to compensate the n(z) modification. So they could infer which blind was physical. No significant analysis choices were changed after this point — catalog version, scale cuts, and robustness criteria were already frozen.
 :::
 
 
