@@ -109,11 +109,13 @@ This is the only Stage III cosmic shear survey that doesn't share sky with any o
 
 ## UNIONS-3500 constraints are<br>the culmination of ~10 years of work
 
+::: {style="margin-top:60px"}
 - A small team of ~10 people
 - Non-tomographic; multi-bin redshift calibration in preparation
 - Inference with correlation functions $\xi_\pm(\theta)$ and band powers $C_\ell$
+:::
 
-::: {style="margin-top:40px"}
+::: {style="margin-top:80px"}
 Building on the catalog described in Sacha's talk:
 
 - **Paper III**: B-mode validation (Daley et al.)
@@ -207,18 +209,18 @@ Paper V analyzes the same catalog in harmonic space — same blinding, same scal
 :::::::::::::: {.columns}
 ::: {.column style="width:45%"}
 
-<br>
-
+::: {style="margin-top:80px;line-height:2.0em"}
 - Blind by modifying $n(z)$: three realizations A/B/C, one unshifted
-
 - Catalog version, scale cuts, and robustness criteria frozen before collaboration-wide unblinding
-
 - Caveat: cosmology-paper authors were inadvertently unblinded ~2 weeks before. No analysis choices changed after this point
+:::
 
 :::
 ::: {.column style="width:55%"}
 
+::: {style="margin-top:40px"}
 ![](images/blind_nz_ABC.png){width=95% fig-align="center"}
+:::
 
 :::
 ::::::::::::::
@@ -276,15 +278,12 @@ The adopted scale cuts weren't chosen from B-mode PTEs alone — they also incor
 
 ## Inference marginalizes over nuisance parameters with conservative priors
 
-::: {style="line-height:1.8em"}
-
-- **Redshifts** — $r$-band only; $n(z)$ from CFHTLenS cross-match + SOM. Marginalize over $\Delta z$
-
-- **PSF leakage** — $\alpha$, $\beta$ inferred from $\rho$/$\tau$ diagnostics, jointly fit with cosmology (Paper IV)
-
-- **Intrinsic alignments** — $A_\mathrm{IA}$ degenerate with $S_8$ in one bin; Gaussian prior from red/blue split ($0.83 \pm 0.7$)
+::: {style="line-height:2.4em;margin-top:50px"}
 
 - **Covariance** — analytical (CosmoCov, iNKA); validated with jackknife and 350 GLASS mocks
+- **PSF leakage** — $\alpha$, $\beta$ inferred from $\rho$/$\tau$ diagnostics, jointly fit with cosmology (Paper IV)
+- **Redshifts** — $r$-band only; $n(z)$ from CFHTLenS cross-match + SOM. Marginalize over $\Delta z$
+- **Intrinsic alignments** — NLA model; $A_\mathrm{IA}$ degenerate with $S_8$ in one bin; Gaussian prior from red/blue split ($0.83 \pm 0.7$)
 
 :::
 
@@ -307,16 +306,14 @@ We also inflate the priors on delta-z, A_IA, and m-bias by factors of 1.4, 2, an
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
 
-<br>
-
-- Priors on $\Delta z$, $A_\mathrm{IA}$, $m$-bias inflated by ${\times}1.4$/${\times}2$/${\times}3$ to be conservative
-
 ::: {style="text-align:center"}
 | | $S_8$ | $\Omega_m$ |
 |---|---|---|
 | $\xi_\pm$ | $0.858^{+0.082}_{-0.081}$ | $0.267^{+0.141}_{-0.072}$ |
 | $C_\ell$ | $0.917^{+0.077}_{-0.079}$ | $0.221^{+0.175}_{-0.058}$ |
 :::
+
+- Priors on $\Delta z$, $A_\mathrm{IA}$, $m$-bias inflated by<br>${\times}1.4$/${\times}2$/${\times}3$ to be conservative
 
 :::
 ::: {.column style="width:50%"}
@@ -414,13 +411,14 @@ These slides were made with Claude — I did the thinking, Claude did the typing
 
 ## UNIONS delivers the first northern-sky cosmic shear constraints
 
+::: {style="line-height:2.2em;margin-top:40px"}
+
 - **Key result**: $S_8 = 0.86$ (real space), $0.92$ (harmonic), consistent with Planck at ${\sim}1\sigma$; systematic uncertainties inflated ${\times}1.4$–${\times}3$ to be conservative
-
 - **Systematic validation**: three B-mode statistics converge on clean scales; PSF leakage marginalized in the likelihood
-
 - **Pipeline agreement**: real-space and harmonic-space analyses agree, calibrated on 350 GLASS mocks. An unblinding criterion
-
 - **Next**: tomography will break the $A_\mathrm{IA}$–$S_8$ degeneracy; $3{\times}2$pt with DESI and CMB lensing cross-correlations will sharpen constraints
+
+:::
 
 ::: notes
 Five companion papers on arXiv in April. Please reach out if you're interested in the catalog or in cross-correlation opportunities.
@@ -518,7 +516,9 @@ $S_8$–$\Omega_m$–$A_\mathrm{IA}$ from configuration-space inference.
 :::
 ::: {.column style="width:65%"}
 
-![](images/contour_ia_treatments.png){height=920px fig-align="center"}
+::: {style="margin-top:40px"}
+![](images/contour_ia_treatments.png){height=880px fig-align="center"}
+:::
 
 :::
 ::::::::::::::
