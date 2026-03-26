@@ -17,9 +17,9 @@ body {
 }
 
 
-$presentation-font-size-root: 50px;
+$presentation-font-size-root: 45px;
 $presentation-h1-font-size: 2.5em;
-$presentation-h2-font-size: 2em;
+$presentation-h2-font-size: 1.35em;
 $presentation-h3-font-size: 1.5em;
 $presentation-h4-font-size: 1.3em;
 
@@ -66,7 +66,7 @@ $presentation-h4-font-size: 1.3em;
 }
 
 .reveal .footer {
-    font-size: 1.35vh !important;
+    font-size: 2.7vh !important;
     bottom: 0.45vh !important;
     line-height: 1 !important;
     opacity: 0.9;
@@ -83,7 +83,7 @@ $presentation-h4-font-size: 1.3em;
 
 .cea-logo {
     position: absolute;
-    bottom: -55px;
+    bottom: -125px;
     left: -110px;
     width: 92px;
     z-index: 2;
@@ -91,18 +91,30 @@ $presentation-h4-font-size: 1.3em;
 
 .cosmostat-logo {
     position: absolute;
-    bottom: -76px;
+    bottom: -146px;
     left: -17px;
     width: 300px;
     z-index: 1;
 }
 
+.moriond-logo {
+    position: absolute;
+    bottom: -85px;
+    right: -115px;
+    width: 220px;
+    z-index: 2;
+}
+
+.quarto-title-block .quarto-title-authors {
+    margin-top: 0.3em;
+}
+
 .quarto-title-block .occasion {
-    margin-top: 0.45em;
+    margin-top: 0.8em;
 }
 
 .quarto-title-block .date {
-    margin-top: 0.2em;
+    margin-top: 0.3em;
 }
 
 .reveal .team-photo-slide h2 {
