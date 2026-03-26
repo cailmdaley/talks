@@ -39,7 +39,7 @@ ax.axvspan(cmb_s8 - cmb_lo, cmb_s8 + cmb_hi, color="#d4a0a0", alpha=0.3, zorder=
 ax.axvline(cmb_s8, color="#b04040", ls="-", lw=1.5, alpha=0.5, zorder=0,
            ymin=0, ymax=0.92)
 
-ax.text(cmb_s8, -1.0, "CMB SPA", fontsize=16, fontweight="bold",
+ax.text(cmb_s8, -1.0, "CMB SPA", fontsize=19, fontweight="bold",
         color="#b04040", va="bottom", ha="center")
 
 # Stage III surveys
@@ -52,7 +52,7 @@ for i in range(len(surveys)):
     )
 
 for i, name in enumerate(surveys):
-    ax.text(0.648, y[i] - 0.18, name, fontsize=14, fontweight="bold",
+    ax.text(0.648, y[i] - 0.18, name, fontsize=17, fontweight="bold",
             va="bottom", ha="left", color=colors[i])
 
 # Separator line
@@ -69,25 +69,22 @@ for i in range(len(unions_surveys)):
     )
 
 for i, name in enumerate(unions_surveys):
-    ax.text(0.648, y_unions[i] - 0.18, name, fontsize=14, fontweight="bold",
+    ax.text(0.648, y_unions[i] - 0.18, name, fontsize=17, fontweight="bold",
             va="bottom", ha="left", color=unions_colors[i])
 
-ax.set_xlabel(r"$S_8$ from cosmic shear", fontsize=17, labelpad=8)
+ax.set_xlabel(r"$S_8$ from cosmic shear", fontsize=20, labelpad=8)
 ax.set_xlim(0.645, 1.02)
 ax.set_ylim(-1.3, y_unions[-1] + 0.5)
 ax.invert_yaxis()
 ax.set_yticks([])
 ax.set_xticks([0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00])
-ax.tick_params(axis="x", labelsize=16, length=5)
+ax.tick_params(axis="x", labelsize=18, length=5)
 ax.spines["top"].set_visible(False)
 ax.spines["right"].set_visible(False)
 ax.spines["left"].set_visible(False)
 
 plt.tight_layout()
-try:
-    outpath = snakemake.output[0]
-except NameError:
-    outpath = "docs/talks/images/s8_convergence_with_unions.png"
+outpath = "docs/talks/images/s8_convergence_with_unions.png"
 
 plt.savefig(outpath, dpi=130, bbox_inches="tight", facecolor="white")
 print("Saved")
