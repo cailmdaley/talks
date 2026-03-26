@@ -308,7 +308,7 @@ We also inflate the priors on delta-z, A_IA, and m-bias by factors of 1.4, 2, an
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
 
-::: {style="text-align:center;margin-top:100px"}
+::: {style="text-align:center;margin-top:200px"}
 | | $S_8$ | $\Omega_m$ |
 |---|---|---|
 | $\xi_\pm$ | $0.858^{+0.082}_{-0.081}$ | $0.267^{+0.141}_{-0.072}$ |
@@ -344,7 +344,7 @@ The contours are wide — with a single redshift bin, A_IA and S8 are nearly deg
 :::::::::::::: {.columns}
 ::: {.column style="width:40%"}
 
-::: {style="margin-top:120px"}
+::: {style="margin-top:220px"}
 - Most robustness tests shift $S_8$ by $< 0.4\sigma$
 
 - $A_\mathrm{IA}$ is the dominant nuisance: largely unconstrained, removing it shifts $S_8$ by $0.7\sigma$
@@ -369,7 +369,7 @@ The exception is the intrinsic alignment treatment. A_IA is essentially unconstr
 :::::::::::::: {.columns}
 ::: {.column style="width:45%"}
 
-::: {style="margin-top:100px"}
+::: {style="margin-top:180px"}
 - Shared inputs: mocks calibrate the expected scatter between analyses
 - 2.6% of mocks show a smaller $\Delta S_8$
 - An unblinding criterion, to our knowledge a first for cosmic shear
