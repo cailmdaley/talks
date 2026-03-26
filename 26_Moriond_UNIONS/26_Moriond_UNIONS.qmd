@@ -192,7 +192,7 @@ What's distinctive here: rather than just correcting for PSF leakage at the cata
 
 ## Paper V provides harmonic-space constraints from the same data
 
-- Same catalog, $n(z)$, and blinding — different basis and weighting of scales
+- Same catalog, $n(z)$, and blinding; different basis and weighting of scales
 
 ![](images/Cell_EE_bestfit.png){width=80% fig-align="center"}
 
@@ -213,7 +213,7 @@ Paper V analyzes the same catalog in harmonic space — same blinding, same scal
 
 - Catalog version, scale cuts, and robustness criteria frozen before collaboration-wide unblinding
 
-- Caveat: cosmology-paper authors were inadvertently unblinded ~2 weeks before — no analysis choices changed after this point
+- Caveat: cosmology-paper authors were inadvertently unblinded ~2 weeks before. No analysis choices changed after this point
 
 :::
 ::: {.column style="width:55%"}
@@ -233,7 +233,7 @@ I should be transparent: the authors of Papers IV and V were inadvertently unbli
 
 - Over the full range ($1$–$250'$, $\ell \lesssim 2000$): $\xi_\pm^B$ and $C_\ell^{BB}$ pass, but COSEBIs fail
 - Not config vs harmonic: COSEBIs from $\xi_\pm$ and from $C_\ell$ both fail
-- Filter functions set the sensitivity — COSEBIs concentrate it on contaminated scales
+- Filter functions set the sensitivity: COSEBIs concentrate it on contaminated scales
 - Residual systematics are present; mitigated through sample selection and scale cuts
 
 ![](images/cosebis_bsigma_talk.png){width=85% fig-align="center"}
@@ -250,7 +250,7 @@ This matters because COSEBIs are designed to compress cosmological information �
 :::::::::::::: {.columns}
 ::: {.column style="width:55%"}
 
-- Three estimators weight scales differently — different sensitivity to the same contamination
+- Three estimators weight scales differently, with different sensitivity to the same contamination
 - Cuts chosen jointly from B-mode PTEs and blinded inference stability (Papers IV/V)
 - Adopted cuts: $[12, 83]'$, $\ell = 300$–$1600$<br>($k_\mathrm{max} \approx 2.6\;h\,\mathrm{Mpc}^{-1}$); all PTEs $> 0.18$
 
@@ -310,7 +310,7 @@ Finally, we inflate all nuisance priors to be conservative — 1.4 times on delt
 
 <br>
 
-- Single redshift bin — tomography will tighten constraints substantially
+- Single redshift bin; tomography will tighten constraints substantially
 
 ::: {style="text-align:center"}
 | | $S_8$ | $\Omega_m$ |
@@ -375,7 +375,7 @@ The exception is the intrinsic alignment treatment. A_IA is essentially unconstr
 
 - Shared inputs — mocks calibrate the expected scatter between analyses
 - 2.6% of mocks show a smaller $\Delta S_8$
-- An unblinding criterion — to our knowledge, a first for cosmic shear
+- An unblinding criterion, to our knowledge a first for cosmic shear
 
 :::
 ::: {.column style="width:55%"}
@@ -419,7 +419,7 @@ These slides were made with Claude — I did the thinking, Claude did the typing
 
 - **Systematic validation**: three B-mode statistics converge on clean scales; PSF leakage marginalized in the likelihood
 
-- **Pipeline agreement**: real-space and harmonic-space analyses agree, calibrated on 350 GLASS mocks — an unblinding criterion
+- **Pipeline agreement**: real-space and harmonic-space analyses agree, calibrated on 350 GLASS mocks. An unblinding criterion
 
 - **Next**: tomography will break the $A_\mathrm{IA}$–$S_8$ degeneracy; $3{\times}2$pt with DESI and CMB lensing cross-correlations will sharpen constraints
 
@@ -431,26 +431,6 @@ Five companion papers on arXiv in April. Please reach out if you're interested i
 
 
 ## Backup {background-color="black" style="color:white" visibility="uncounted"}
-
-
-## The ML peaks at the same $S_8$ for all three blinds {visibility="uncounted"}
-
-:::::::::::::: {.columns}
-::: {.column style="width:35%"}
-
-<br>
-
-- Dashed lines: maximum likelihood (no prior penalty)
-- ML free to push $\Delta z$ and $A_\mathrm{IA}$ to extreme values that compensate the $n(z)$ modification
-- MAP (contours) rejects these — but ML reveals which blind is physical
-
-:::
-::: {.column style="width:65%"}
-
-![](images/contours_blind_ml_convergence.png){height=920px fig-align="center"}
-
-:::
-::::::::::::::
 
 
 ## Masking creates ambiguous modes that require E/B-separable statistics {visibility="uncounted"}
@@ -470,6 +450,26 @@ $\implies$ need **E/B-separable** statistics
 ::: {.column style="width:50%"}
 ![](images/emode_pattern.jpg){width=80%}
 ![](images/bmode_pattern.jpg){width=80%}
+:::
+::::::::::::::
+
+
+## The ML peaks at the same $S_8$ for all three blinds {visibility="uncounted"}
+
+:::::::::::::: {.columns}
+::: {.column style="width:35%"}
+
+<br>
+
+- Dashed lines: maximum likelihood (no prior penalty)
+- ML free to push $\Delta z$ and $A_\mathrm{IA}$ to extreme values that compensate the $n(z)$ modification
+- MAP (contours) rejects these, but ML reveals which blind is physical
+
+:::
+::: {.column style="width:65%"}
+
+![](images/contours_blind_ml_convergence.png){height=920px fig-align="center"}
+
 :::
 ::::::::::::::
 
@@ -566,6 +566,25 @@ $S_8$–$\Omega_m$–$A_\mathrm{IA}$ from configuration-space inference.
 ::::::::::::::
 
 
+## Harmonic-space $S_8$ is robust to scale cuts and analysis choices {visibility="uncounted"}
+
+:::::::::::::: {.columns}
+::: {.column style="width:30%"}
+
+<br>
+
+- Scale cuts, nonlinear model, covariance, and leakage choices all shift $S_8$ by $< 0.2\sigma$
+- Consistent across all three blinds
+
+:::
+::: {.column style="width:70%"}
+
+![](images/whisker_plot_harmonic.png){width=98% fig-align="center"}
+
+:::
+::::::::::::::
+
+
 ## The $\Omega_m$ difference between pipelines is unremarkable {visibility="uncounted"}
 
 :::::::::::::: {.columns}
@@ -581,25 +600,6 @@ $S_8$–$\Omega_m$–$A_\mathrm{IA}$ from configuration-space inference.
 ::: {.column style="width:60%"}
 
 ![](images/omega_m_difference_config_harm.png){width=98% fig-align="center"}
-
-:::
-::::::::::::::
-
-
-## Harmonic-space $S_8$ is robust to scale cuts and analysis choices {visibility="uncounted"}
-
-:::::::::::::: {.columns}
-::: {.column style="width:30%"}
-
-<br>
-
-- Scale cuts, nonlinear model, covariance, and leakage choices all shift $S_8$ by $< 0.2\sigma$
-- Consistent across all three blinds
-
-:::
-::: {.column style="width:70%"}
-
-![](images/whisker_plot_harmonic.png){width=98% fig-align="center"}
 
 :::
 ::::::::::::::
