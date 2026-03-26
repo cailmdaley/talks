@@ -253,9 +253,11 @@ This matters because COSEBIs are designed to compress cosmological information â
 :::::::::::::: {.columns}
 ::: {.column style="width:55%"}
 
+::: {style="line-height:2.2em;margin-top:30px"}
 - Three estimators weight scales differently, with different sensitivity to the same contamination
 - Cuts chosen jointly from B-mode PTEs and blinded inference stability (Papers IV/V)
 - Adopted cuts: $[12, 83]'$, $\ell = 300$â€“$1600$<br>($k_\mathrm{max} \approx 2.6\;h\,\mathrm{Mpc}^{-1}$); all PTEs $> 0.18$
+:::
 
 :::
 ::: {.column style="width:45%"}
