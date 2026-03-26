@@ -201,36 +201,6 @@ Paper V analyzes the same catalog in harmonic space — same blinding, same scal
 :::
 
 
-## Conservative priors on $n(z)$ and shear bias — both will improve
-
-::: {style="line-height:1.8em"}
-
-- **Redshift distribution** — $r$-band only, so no colors; cross-match with CFHTLenS for $ugriz$, calibrate with SOM + spectroscopic sample. Marginalize over $\Delta z$ with $\mathcal{N}(0.033, 0.018)$
-
-- **Shear multiplicative bias** — MetaCalibration corrects most; residual from blending calibrated with image simulations (Paper II). Marginalize over $m$ with $\mathcal{N}(-0.057, 0.014)$
-
-- We inflate uncertainties to be conservative: $\Delta z$ by ${\times}1.4$, $A_\mathrm{IA}$ by ${\times}2$, $m$ by ${\times}3$ from measured values
-
-:::
-
-::: notes
-Two important inputs to the inference that deserve a moment.
-
-First, redshifts. We only use the r-band for shape measurement — that's the CFIS r-band with 0.7 arcsecond seeing. Because we're only measuring shapes in one band, we don't have colors for the full 61-million-galaxy sample. So how do we get a redshift distribution?
-
-We use a small overlap region: the CFHTLenS W3 field, which is 44 square degrees with deep ugriz photometry from five bands. Essentially all our detected sources have CFHTLenS counterparts in that overlap. We cross-match and adopt their ugriz magnitudes.
-
-Then we train a self-organizing map — a SOM — on a spectroscopic sample of about 65,000 galaxies from DEEP2, VVDS, and VIPERS. These are deep spectroscopic surveys that were all observed with the same CFHTLenS filter set, so the colors are directly comparable. The SOM tiles the color-magnitude space, and we assign each UNIONS galaxy to its best-matching cell based on its ugriz photometry. The redshift distribution falls out from the spectroscopic galaxies in each cell, weighted to account for selection biases.
-
-We validate this by building mock catalogs from the MICE2 simulation, running them through the same SOM pipeline, and comparing the recovered n(z) to the true redshifts. This gives us a calibration bias of delta-z = 0.033 — the SOM slightly overestimates the mean redshift. The uncertainty of plus or minus 0.018 comes from jackknife resampling of the spectroscopic calibration sample. We marginalize over this shift as a nuisance parameter in the inference.
-
-The key limitation: we're relying on a 44 square degree overlap to represent 3500 square degrees. Multi-band UNIONS photometry is being assembled across the full footprint, which will give us proper photometric redshifts and enable tomographic bins.
-
-Second, shear calibration. MetaCalibration corrects most of the multiplicative bias by applying known shears to galaxy images and measuring the response. But it can't fully capture the effect of blending — when galaxies overlap, the shape measurement is biased in ways that MetaCalibration doesn't model. Fabian's image simulations in Paper II estimate this residual. The prior on m is uniform from about minus 6 to plus 1 percent — it's not Gaussian because the systematic is one-sided (blending tends to bias shapes in one direction).
-
-Neither parameter — delta-z nor m — is constrained by the data. The posteriors just follow the priors. That's fine for a non-tomographic analysis: we're marginalizing over the uncertainty honestly. Both will tighten with future work: full-footprint photo-z for redshifts, and improved image simulations for shear calibration.
-:::
-
 
 ## All analysis choices fixed before unblinding
 
@@ -307,23 +277,32 @@ The adopted scale cuts weren't chosen from B-mode PTEs alone — they also incor
 :::
 
 
-## PSF uncertainty propagates into the cosmological error budget
+## Inference marginalizes over nuisance parameters with conservative priors
 
 ::: {style="line-height:1.8em"}
 
+- **Redshifts** — $r$-band only; $n(z)$ from CFHTLenS cross-match + SOM. Marginalize over $\Delta z$
+
 - **PSF leakage** — $\alpha$, $\beta$ inferred from $\rho$/$\tau$ diagnostics, jointly fit with cosmology (Paper IV)
+
+- **Intrinsic alignments** — $A_\mathrm{IA}$ degenerate with $S_8$ in one bin; Gaussian prior from red/blue split ($0.83 \pm 0.7$)
 
 - **Covariance** — analytical (CosmoCov, iNKA); validated with jackknife and 350 GLASS mocks
 
-- **Intrinsic alignments** — $A_\mathrm{IA}$ degenerate with $S_8$ in one bin; conservative Gaussian prior from red/blue split ($0.83 \pm 0.7$)
-
-- **Likelihoods** — common model and $n(z)$, separate codes; marginalize over baryonic feedback, $\Delta z$, $m$
+- All nuisance priors inflated to be conservative: $\Delta z$ by ${\times}1.4$, $A_\mathrm{IA}$ by ${\times}2$, $m$ by ${\times}3$
 
 :::
 
 ::: notes
-I want to highlight two things here. First, the PSF leakage treatment in Paper IV: rather than correcting at the catalog level, the leakage parameters are inferred from rho and tau statistics and carried into the cosmological likelihood as Gaussian priors. The PSF model uncertainty propagates into the error budget.
-Second, the intrinsic alignment situation. With one redshift bin, A_IA and S8 are almost perfectly degenerate. We can't fit A_IA from the data — so we build a prior from external measurements. This is the main caveat of the non-tomographic analysis: if the prior is wrong, S8 moves. Tomography breaks this because different redshift bins see different ratios of lensing to intrinsic alignment.
+Let me walk through the main ingredients going into the inference.
+
+First, redshifts. We only use the r-band for shape measurement, so we don't have colors for the full sample. We get the redshift distribution by cross-matching with CFHTLenS in a 44 square degree overlap and training a self-organizing map on ~65,000 spectroscopic galaxies from DEEP2, VVDS, and VIPERS. The calibration bias is delta-z = 0.033, which we marginalize over. The key limitation: we're relying on 44 square degrees to represent 3500. Full-footprint multi-band photometry is in preparation.
+
+Second, PSF leakage. Paper IV goes beyond catalog-level correction: the leakage parameters are inferred from rho and tau statistics and carried into the cosmological likelihood as Gaussian priors, so the PSF model uncertainty propagates into the error budget.
+
+Third, intrinsic alignments. With one redshift bin, A_IA and S8 are almost perfectly degenerate. We can't fit A_IA from the data — so we build a prior from external measurements. This is the main caveat of the non-tomographic analysis: if the prior is wrong, S8 moves. Tomography breaks this.
+
+Finally, we inflate all nuisance priors to be conservative — 1.4 times on delta-z, doubled on A_IA, tripled on m from the measured values. These will all tighten with future work.
 :::
 
 
@@ -335,7 +314,6 @@ Second, the intrinsic alignment situation. With one redshift bin, A_IA and S8 ar
 
 <br>
 
-- Conservative priors — uncertainties inflated ${\times}1.4$/${\times}2$/${\times}3$ on $\Delta z$, $A_\mathrm{IA}$, $m$
 - Single redshift bin — tomography will tighten constraints substantially
 
 ::: {style="text-align:center"}
@@ -377,8 +355,6 @@ The contours are wide — with a single redshift bin, A_IA and S8 are nearly deg
 - Most robustness tests shift $S_8$ by $< 0.4\sigma$
 
 - $A_\mathrm{IA}$ is the dominant nuisance: largely unconstrained, removing it shifts $S_8$ by $0.7\sigma$
-
-- We set the lower scale cut from B-mode validation + $S_8$ stability
 
 :::
 ::: {.column style="width:60%"}
@@ -458,10 +434,10 @@ Five companion papers on arXiv in April. Please reach out if you're interested i
 <!-- Summary stays visible during Q&A -->
 
 
-## Backup {background-color="black" style="color:white"}
+## Backup {background-color="black" style="color:white" visibility="uncounted"}
 
 
-## Masking creates ambiguous modes that require E/B-separable statistics
+## Masking creates ambiguous modes that require E/B-separable statistics {visibility="uncounted"}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
@@ -482,7 +458,7 @@ $\implies$ need **E/B-separable** statistics
 ::::::::::::::
 
 
-## Only the PSF size-corrected catalog passes across all statistics and scale cuts
+## Only the PSF size-corrected catalog passes across all statistics and scale cuts {visibility="uncounted"}
 
 ![](images/pte_table_appendix_paper3.png){width=1700px fig-align="center"}
 
@@ -491,7 +467,7 @@ $p$-values for four catalog versions across fiducial and full-range cuts. Only t
 :::
 
 
-## $C_\ell^{BB}$ and $C_\ell^{EB}$ are consistent with zero within the adopted scale cuts
+## $C_\ell^{BB}$ and $C_\ell^{EB}$ are consistent with zero within the adopted scale cuts {visibility="uncounted"}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:36%"}
@@ -511,7 +487,7 @@ Gray shading marks the harmonic-space scale cuts: $\ell = 300$--$1600$.
 ::::::::::::::
 
 
-## $A_\mathrm{IA}$ is unconstrained by the data but strongly affects $S_8$
+## $A_\mathrm{IA}$ is unconstrained by the data but strongly affects $S_8$ {visibility="uncounted"}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:35%"}
@@ -533,7 +509,7 @@ $S_8$–$\Omega_m$–$A_\mathrm{IA}$ from configuration-space inference.
 ::::::::::::::
 
 
-## $S_8$ is robust to $k_\mathrm{max}$: nonlinear scale cuts shift constraints by $< 0.2\sigma$
+## $S_8$ is robust to $k_\mathrm{max}$: nonlinear scale cuts shift constraints by $< 0.2\sigma$ {visibility="uncounted"}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:35%"}
@@ -553,7 +529,7 @@ $S_8$–$\Omega_m$–$A_\mathrm{IA}$ from configuration-space inference.
 ::::::::::::::
 
 
-## Angular scale cuts map to different $k_\mathrm{max}$ for $\xi_+$ and $\xi_-$
+## Angular scale cuts map to different $k_\mathrm{max}$ for $\xi_+$ and $\xi_-$ {visibility="uncounted"}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:35%"}
@@ -574,7 +550,7 @@ $S_8$–$\Omega_m$–$A_\mathrm{IA}$ from configuration-space inference.
 ::::::::::::::
 
 
-## The $\Omega_m$ difference between pipelines is unremarkable
+## The $\Omega_m$ difference between pipelines is unremarkable {visibility="uncounted"}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:40%"}
@@ -594,7 +570,26 @@ $S_8$–$\Omega_m$–$A_\mathrm{IA}$ from configuration-space inference.
 ::::::::::::::
 
 
-## Config and harmonic posteriors agree across all parameters
+## Harmonic-space $S_8$ is robust to scale cuts and analysis choices {visibility="uncounted"}
+
+:::::::::::::: {.columns}
+::: {.column style="width:30%"}
+
+<br>
+
+- Scale cuts, nonlinear model, covariance, and leakage choices all shift $S_8$ by $< 0.2\sigma$
+- Consistent across all three blinds
+
+:::
+::: {.column style="width:70%"}
+
+![](images/whisker_plot_harmonic.png){width=98% fig-align="center"}
+
+:::
+::::::::::::::
+
+
+## Config and harmonic posteriors agree across all parameters {visibility="uncounted"}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:18%"}

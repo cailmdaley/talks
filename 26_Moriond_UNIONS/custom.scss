@@ -4,7 +4,7 @@
 
 
 // font settings
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300..500;1,300..500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300..700;1,300..700&display=swap');
 $font-family-sans-serif: Raleway, sans-serif;
 body {
     font-variant-numeric: lining-nums;
@@ -25,6 +25,11 @@ $presentation-h4-font-size: 1.3em;
 
 
 /*-- scss:rules --*/
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    font-weight: 600 !important;
+    font-synthesis: none;
+}
 
 // /* Custom CSS for aligning figure captions */
 .caption-left {
