@@ -433,6 +433,26 @@ Five companion papers on arXiv in April. Please reach out if you're interested i
 ## Backup {background-color="black" style="color:white" visibility="uncounted"}
 
 
+## The ML peaks at the same $S_8$ for all three blinds {visibility="uncounted"}
+
+:::::::::::::: {.columns}
+::: {.column style="width:35%"}
+
+<br>
+
+- Dashed lines: maximum likelihood (no prior penalty)
+- ML free to push $\Delta z$ and $A_\mathrm{IA}$ to extreme values that compensate the $n(z)$ modification
+- MAP (contours) rejects these — but ML reveals which blind is physical
+
+:::
+::: {.column style="width:65%"}
+
+![](images/contours_blind_ml_convergence.png){height=920px fig-align="center"}
+
+:::
+::::::::::::::
+
+
 ## Masking creates ambiguous modes that require E/B-separable statistics {visibility="uncounted"}
 
 :::::::::::::: {.columns}
