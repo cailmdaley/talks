@@ -454,26 +454,6 @@ $\implies$ need **E/B-separable** statistics
 ::::::::::::::
 
 
-## The ML peaks at the same $S_8$ for all three blinds {visibility="uncounted"}
-
-:::::::::::::: {.columns}
-::: {.column style="width:35%"}
-
-<br>
-
-- Dashed lines: maximum likelihood (no prior penalty)
-- ML free to push $\Delta z$ and $A_\mathrm{IA}$ to extreme values that compensate the $n(z)$ modification
-- MAP (contours) rejects these, but ML reveals which blind is physical
-
-:::
-::: {.column style="width:65%"}
-
-![](images/contours_blind_ml_convergence.png){height=920px fig-align="center"}
-
-:::
-::::::::::::::
-
-
 ## Only the PSF size-corrected catalog passes across all statistics and scale cuts {visibility="uncounted"}
 
 ![](images/pte_table_appendix_paper3.png){width=1700px fig-align="center"}
@@ -498,6 +478,26 @@ Gray shading marks the harmonic-space scale cuts: $\ell = 300$--$1600$.
 ::: {.column style="width:64%"}
 
 ![](images/cl_data_vector.png){width=98% fig-align="center"}
+
+:::
+::::::::::::::
+
+
+## The ML peaks at the same $S_8$ for all three blinds {visibility="uncounted"}
+
+:::::::::::::: {.columns}
+::: {.column style="width:35%"}
+
+<br>
+
+- Dashed lines: maximum likelihood (no prior penalty)
+- ML free to push $\Delta z$ and $A_\mathrm{IA}$ to extreme values that compensate the $n(z)$ modification
+- MAP (contours) rejects these, but ML reveals which blind is physical
+
+:::
+::: {.column style="width:65%"}
+
+![](images/contours_blind_ml_convergence.png){height=920px fig-align="center"}
 
 :::
 ::::::::::::::
