@@ -207,7 +207,7 @@ Paper V analyzes the same catalog in harmonic space — same blinding, same scal
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
 
-- Blind by shifting the mean of $n(z)$: three realizations A/B/C
+- Blind by modifying $n(z)$: three realizations A/B/C
 
 - We froze catalog version, scale cuts, and robustness criteria before reveal
 
@@ -228,7 +228,7 @@ Caveat: the cosmology-paper authors were inadvertently partially unblinded ~2 we
 :::
 
 ::: notes
-We blind by shifting the source redshift distribution, not by hiding the final number after the fact. That means the full machinery is exercised on each blind. The B-mode cuts are fixed before unblinding, so the cosmology is not tuned to the answer.
+We blind by modifying the source redshift distribution, not by hiding the final number after the fact. That means the full machinery is exercised on each blind. The B-mode cuts are fixed before unblinding, so the cosmology is not tuned to the answer.
 I should be transparent: the authors of Papers IV and V were inadvertently partially unblinded about two weeks before the ceremony. The maximum likelihood estimate — which isn't penalized by priors — peaked at the same S8 for all three blinds, because the S8–A_IA degeneracy allowed A_IA to compensate the n(z) shift. So they could infer which blind was physical. No significant analysis choices were changed after this point — catalog version, scale cuts, and robustness criteria were already frozen.
 :::
 
