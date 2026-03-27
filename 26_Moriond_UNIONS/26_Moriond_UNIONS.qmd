@@ -166,7 +166,7 @@ Core members in alphabetical order (many others have contributed over the years)
 ::::::::::::::
 
 
-## Paper III uses B-modes to select the catalog and set scale cuts
+## Paper III uses B-mode estimators to characterize systematics
 
 - To leading order, B-modes serve as a systematics null test
 - Synthesize $\xi_\pm^B$, COSEBIs, and $C_\ell$ statistics to inform scale cuts and sample selection
@@ -258,10 +258,10 @@ This matters because COSEBIs are designed to compress cosmological information �
 :::::::::::::: {.columns}
 ::: {.column style="width:55%"}
 
-::: {.spaced-bullets style="margin-top:120px"}
-- Scale cuts informed by B-mode PTEs, PSF leakage, and blinded $S_8$ dependence<br>(Papers IV/V)
-- Adopted cuts: $[12, 83]'$, $\ell = 300$–$1600$<br>($k_\mathrm{max} \approx 2.6\;h\,\mathrm{Mpc}^{-1}$); all PTEs $> 0.18$
-:::
+<ul style="margin-top:120px">
+<li style="margin-bottom:1.8em">Scale cuts informed by B-mode PTEs, PSF leakage, and blinded $S_8$ dependence<br>(Papers IV/V)</li>
+<li>Adopted cuts: $[12, 83]'$, $\ell = 300$–$1600$<br>($k_\mathrm{max} \approx 2.6\;h\,\mathrm{Mpc}^{-1}$); all PTEs $> 0.18$</li>
+</ul>
 
 :::
 ::: {.column style="width:45%"}
@@ -284,12 +284,12 @@ The adopted scale cuts weren't chosen from B-mode PTEs alone — they also incor
 
 ## We marginalize over nuisance parameters<br>with conservative priors
 
-::: {.spaced-bullets style="margin-top:80px"}
-- **Covariance** — CosmoCov for $\xi_\pm$, iNKA for $C_\ell$; validated with jackknife and 350 GLASS mocks
-- **Redshifts** — $r$-band only; $n(z)$ from CFHTLenS cross-match + SOM (**prior inflated ${\times}1.4$**)
-- **Intrinsic alignments** — NLA model; $A_\mathrm{IA}$ degenerate with $S_8$ especially with one bin; Gaussian prior from red/blue split, $0.83 \pm 0.7$ (**width ${\times}2$**)
-- **$m$-bias** — from image simulations (Paper II); $\mathcal{N}(-0.057, 0.014)$ (**inflated ${\times}3$**)
-:::
+<ul style="margin-top:80px">
+<li style="margin-bottom:1.4em">**Covariance** — CosmoCov for $\xi_\pm$, iNKA for $C_\ell$; validated with jackknife and 350 GLASS mocks</li>
+<li style="margin-bottom:1.4em">**Redshifts** — $r$-band only; $n(z)$ from CFHTLenS cross-match + SOM (**prior inflated ${\times}1.4$**)</li>
+<li style="margin-bottom:1.4em">**Intrinsic alignments** — NLA model; $A_\mathrm{IA}$ degenerate with $S_8$ especially with one bin; Gaussian prior from red/blue split, $0.83 \pm 0.7$ (**width ${\times}2$**)</li>
+<li style="margin-bottom:1.4em">**$m$-bias** — from image simulations (Paper II); $\mathcal{N}(-0.057, 0.014)$ (**inflated ${\times}3$**)</li>
+</ul>
 
 ::: notes
 Let me walk through the main ingredients going into the inference.
@@ -310,7 +310,7 @@ We also inflate the priors on delta-z, A_IA, and m-bias by factors of 1.4, 2, an
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
 
-::: {style="text-align:center;margin-top:250px"}
+::: {style="text-align:center;margin-top:300px"}
 | | $S_8$ | $\Omega_m$ |
 |---|---|---|
 | $\xi_\pm$ | $0.86 \pm 0.08$ | $0.27^{+0.14}_{-0.07}$ |
@@ -324,8 +324,8 @@ We also inflate the priors on delta-z, A_IA, and m-bias by factors of 1.4, 2, an
 ::: {.fragment .fade-out fragment-index=0 style="margin-right:-8%"}
 ![](images/contour_survey_comparison.png){width=115% fig-align="right"}
 :::
-::: {.fragment fragment-index=0 style="margin-right:-8%"}
-![](images/s8_convergence_with_unions.png){width=115% fig-align="right"}
+::: {.fragment fragment-index=0 style="margin-right:-8%;margin-left:-10%"}
+![](images/s8_convergence_with_unions.png){width=130% fig-align="right"}
 :::
 ::::
 
@@ -339,16 +339,15 @@ The contours are wide — with a single redshift bin, A_IA and S8 are nearly deg
 :::
 
 
-## $S_8$ is robust to analysis choices but sensitive to the IA prior
+## $S_8$ is robust to analysis choices<br>but sensitive to the IA prior
 
 :::::::::::::: {.columns}
 ::: {.column style="width:40%"}
 
-::: {style="margin-top:220px"}
-- Most robustness tests shift $S_8$ by $< 0.4\sigma$
-
-- $A_\mathrm{IA}$ is the dominant nuisance: largely unconstrained, removing it shifts $S_8$ by $0.7\sigma$
-:::
+<ul style="margin-top:220px">
+<li style="margin-bottom:1.8em">Most robustness tests shift $S_8$ by $< 0.4\sigma$</li>
+<li>$A_\mathrm{IA}$ is the dominant nuisance: largely unconstrained, removing it shifts $S_8$ by $0.7\sigma$</li>
+</ul>
 
 :::
 ::: {.column style="width:60%"}
@@ -413,14 +412,14 @@ These slides were made with Claude — I did the thinking, Claude did the typing
 
 ## UNIONS delivers the first northern-sky cosmic shear constraints
 
-::: {.spaced-bullets style="margin-top:40px"}
-- **Key result**: $S_8 = 0.86$ (real space), $0.92$ (harmonic), consistent with CMB at ${\sim}1\sigma$; systematic uncertainties inflated ${\times}1.4$–${\times}3$ to be conservative
-- **Systematic validation**: three B-mode statistics converge on clean scales;<br>PSF leakage marginalized in the likelihood
-- **Pipeline agreement**: real-space and harmonic-space analyses agree,<br>calibrated on 350 GLASS mocks. An unblinding criterion
-- **Next**:
-    - Tomography and shape measurement improvements will tighten our constraints
-    - Looking forward to $3{\times}2$pt and cross-correlations with DESI and CMB lensing
-:::
+<ul style="margin-top:40px">
+<li style="margin-bottom:1.2em">**Key result**: $S_8 = 0.86$ (real space), $0.92$ (harmonic), consistent with CMB at ${\sim}1\sigma$; systematic uncertainties inflated ${\times}1.4$–${\times}3$ to be conservative</li>
+<li style="margin-bottom:1.2em">**Systematic validation**: three B-mode statistics converge on clean scales;<br>PSF leakage marginalized in the likelihood</li>
+<li style="margin-bottom:1.2em">**Pipeline agreement**: real-space and harmonic-space analyses marginally consistent,<br>calibrated on 350 GLASS mocks. An unblinding criterion</li>
+<li>**Next**:
+<ul><li>Tomography and shape measurement improvements will tighten our constraints</li>
+<li>Looking forward to $3{\times}2$pt and cross-correlations with DESI and CMB lensing</li></ul></li>
+</ul>
 
 ::: notes
 Five companion papers on arXiv in April. Please reach out if you're interested in the catalog or in cross-correlation opportunities.
@@ -482,7 +481,7 @@ Gray shading marks the harmonic-space scale cuts: $\ell = 300$--$1600$.
 ::::::::::::::
 
 
-## The ML peaks at the same $S_8$ for all three blinds {visibility="uncounted"}
+## Accidental unblinding by comparing maximum likelihood across blinds {visibility="uncounted"}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:35%"}
@@ -621,7 +620,7 @@ UNIONS $C_\ell$ (red) vs $\xi_\pm$ (orange).
 :::
 ::: {.column style="width:82%"}
 
-![](images/contours_config_vs_harmonic_full.png){height=920px fig-align="center"}
+![](images/contours_config_vs_harmonic_full.png){height=960px fig-align="center"}
 
 :::
 ::::::::::::::
