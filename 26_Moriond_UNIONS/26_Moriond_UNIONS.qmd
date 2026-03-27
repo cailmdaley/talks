@@ -211,11 +211,9 @@ Paper V analyzes the same catalog in harmonic space — same blinding, same scal
 :::::::::::::: {.columns}
 ::: {.column style="width:45%"}
 
-::: {style="margin-top:80px"}
+::: {.spaced-bullets style="margin-top:80px"}
 - Blind by modifying $n(z)$: three realizations A/B/C, one unshifted
-
 - Catalog version, scale cuts, and robustness criteria frozen before collaboration-wide unblinding
-
 - Caveat: cosmology-paper authors were inadvertently unblinded ~2 weeks before. No analysis choices changed after this point
 :::
 
@@ -260,9 +258,8 @@ This matters because COSEBIs are designed to compress cosmological information �
 :::::::::::::: {.columns}
 ::: {.column style="width:55%"}
 
-::: {style="margin-top:120px"}
+::: {.spaced-bullets style="margin-top:120px"}
 - Scale cuts informed by B-mode PTEs, PSF leakage, and blinded $S_8$ dependence<br>(Papers IV/V)
-
 - Adopted cuts: $[12, 83]'$, $\ell = 300$–$1600$<br>($k_\mathrm{max} \approx 2.6\;h\,\mathrm{Mpc}^{-1}$); all PTEs $> 0.18$
 :::
 
@@ -287,16 +284,11 @@ The adopted scale cuts weren't chosen from B-mode PTEs alone — they also incor
 
 ## We marginalize over nuisance parameters<br>with conservative priors
 
-::: {style="margin-top:120px"}
-
+::: {.spaced-bullets style="margin-top:80px"}
 - **Covariance** — CosmoCov for $\xi_\pm$, iNKA for $C_\ell$; validated with jackknife and 350 GLASS mocks
-
 - **Redshifts** — $r$-band only; $n(z)$ from CFHTLenS cross-match + SOM (**prior inflated ${\times}1.4$**)
-
 - **Intrinsic alignments** — NLA model; $A_\mathrm{IA}$ degenerate with $S_8$ especially with one bin; Gaussian prior from red/blue split, $0.83 \pm 0.7$ (**width ${\times}2$**)
-
 - **$m$-bias** — from image simulations (Paper II); $\mathcal{N}(-0.057, 0.014)$ (**inflated ${\times}3$**)
-
 :::
 
 ::: notes
@@ -421,18 +413,13 @@ These slides were made with Claude — I did the thinking, Claude did the typing
 
 ## UNIONS delivers the first northern-sky cosmic shear constraints
 
-::: {style="margin-top:40px"}
-
+::: {.spaced-bullets style="margin-top:40px"}
 - **Key result**: $S_8 = 0.86$ (real space), $0.92$ (harmonic), consistent with CMB at ${\sim}1\sigma$; systematic uncertainties inflated ${\times}1.4$–${\times}3$ to be conservative
-
 - **Systematic validation**: three B-mode statistics converge on clean scales;<br>PSF leakage marginalized in the likelihood
-
 - **Pipeline agreement**: real-space and harmonic-space analyses agree,<br>calibrated on 350 GLASS mocks. An unblinding criterion
-
 - **Next**:
     - Tomography and shape measurement improvements will tighten our constraints
     - Looking forward to $3{\times}2$pt and cross-correlations with DESI and CMB lensing
-
 :::
 
 ::: notes
