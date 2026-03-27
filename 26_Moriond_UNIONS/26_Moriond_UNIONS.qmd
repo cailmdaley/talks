@@ -240,12 +240,11 @@ I should be transparent: the authors of Papers IV and V were inadvertently unbli
 ## Different B-mode statistics do not always agree
 
 - Over the full range ($1$–$250'$, $\ell \lesssim 2000$): $\xi_\pm^B$ and $C_\ell^{BB}$ pass, but COSEBIs fail
-- Not config vs harmonic: COSEBIs from $\xi_\pm$ and from $C_\ell$ both fail:
 
 ![](images/cosebis_bsigma_talk.png){width=85% fig-align="center"}
 
-- Filter functions set the sensitivity: COSEBIs concentrate it on contaminated scales
-- Mitigated through sample selection and scale cuts
+- Each statistic weights scales differently; we require all three to pass
+- Not able to decisively identify the origin of these B-modes
 
 ::: notes
 This is the main finding of Paper III. Pure E/B and Cl pass the null test on the full angular range — but COSEBIs fail. The B-modes show an oscillating structure that Asgari et al. 2019 associated with repeating additive shear bias at the CCD scale.
@@ -254,14 +253,14 @@ This matters because COSEBIs are designed to compress cosmological information �
 :::
 
 
-## Joint B-mode passage constrains scales more tightly than any single test
+## Sample selection and scale cuts informed by B-mode tests
 
 :::::::::::::: {.columns}
 ::: {.column style="width:55%"}
 
-::: {style="line-height:2.2em;margin-top:30px"}
-- Three estimators weight scales differently, with different sensitivity to the same contamination
-- Cuts chosen jointly from B-mode PTEs and blinded inference stability (Papers IV/V)
+::: {style="margin-top:30px"}
+- Scale cuts informed by B-mode PTEs, PSF leakage, and blinded $S_8$ dependence (Papers IV/V)
+
 - Adopted cuts: $[12, 83]'$, $\ell = 300$–$1600$<br>($k_\mathrm{max} \approx 2.6\;h\,\mathrm{Mpc}^{-1}$); all PTEs $> 0.18$
 :::
 
