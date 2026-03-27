@@ -318,11 +318,11 @@ We also inflate the priors on delta-z, A_IA, and m-bias by factors of 1.4, 2, an
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
 
-::: {style="text-align:center;margin-top:200px"}
+::: {style="text-align:center;margin-top:250px"}
 | | $S_8$ | $\Omega_m$ |
 |---|---|---|
-| $\xi_\pm$ | $0.858^{+0.082}_{-0.081}$ | $0.267^{+0.141}_{-0.072}$ |
-| $C_\ell$ | $0.917^{+0.077}_{-0.079}$ | $0.221^{+0.175}_{-0.058}$ |
+| $\xi_\pm$ | $0.86 \pm 0.08$ | $0.27^{+0.14}_{-0.07}$ |
+| $C_\ell$ | $0.92 \pm 0.08$ | $0.22^{+0.18}_{-0.06}$ |
 :::
 
 :::
