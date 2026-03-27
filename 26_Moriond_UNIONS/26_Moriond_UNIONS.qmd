@@ -423,13 +423,15 @@ These slides were made with Claude — I did the thinking, Claude did the typing
 
 ::: {style="margin-top:40px"}
 
-- **Key result**: $S_8 = 0.86$ (real space), $0.92$ (harmonic), consistent with Planck at ${\sim}1\sigma$; systematic uncertainties inflated ${\times}1.4$–${\times}3$ to be conservative
+- **Key result**: $S_8 = 0.86$ (real space), $0.92$ (harmonic), consistent with CMB at ${\sim}1\sigma$; systematic uncertainties inflated ${\times}1.4$–${\times}3$ to be conservative
 
-- **Systematic validation**: three B-mode statistics converge on clean scales; PSF leakage marginalized in the likelihood
+- **Systematic validation**: three B-mode statistics converge on clean scales;<br>PSF leakage marginalized in the likelihood
 
-- **Pipeline agreement**: real-space and harmonic-space analyses agree, calibrated on 350 GLASS mocks. An unblinding criterion
+- **Pipeline agreement**: real-space and harmonic-space analyses agree,<br>calibrated on 350 GLASS mocks. An unblinding criterion
 
-- **Next**: tomography and improvements to our shape measurement pipeline will reduce our error bars.<br>$3{\times}2$pt and cross-correlations with DESI and CMB lensing
+- **Next**:
+    - Tomography and shape measurement improvements will tighten our constraints
+    - Looking forward to $3{\times}2$pt and cross-correlations with DESI and CMB lensing
 
 :::
 
