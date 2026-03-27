@@ -260,7 +260,7 @@ This matters because COSEBIs are designed to compress cosmological information �
 :::::::::::::: {.columns}
 ::: {.column style="width:55%"}
 
-::: {style="margin-top:60px"}
+::: {style="margin-top:120px"}
 - Scale cuts informed by B-mode PTEs, PSF leakage, and blinded $S_8$ dependence<br>(Papers IV/V)
 
 - Adopted cuts: $[12, 83]'$, $\ell = 300$–$1600$<br>($k_\mathrm{max} \approx 2.6\;h\,\mathrm{Mpc}^{-1}$); all PTEs $> 0.18$
@@ -285,13 +285,17 @@ The adopted scale cuts weren't chosen from B-mode PTEs alone — they also incor
 :::
 
 
-## Inference marginalizes over nuisance parameters with conservative priors
+## We marginalize over nuisance parameters<br>with conservative priors
 
-::: {style="line-height:2.4em;margin-top:50px"}
+::: {style="margin-top:120px"}
 
-- **Covariance** — CosmoCov for $\xi_\pm$, iNKA for $C_\ell$;<br>validated with jackknife and 350 GLASS mocks
-- **Redshifts** — $r$-band only; $n(z)$ from CFHTLenS cross-match + SOM. Marginalize over $\Delta z$
-- **Intrinsic alignments** — NLA model; $A_\mathrm{IA}$ degenerate with $S_8$ especially with one bin;<br>Gaussian prior from red/blue split ($0.83 \pm 0.7$)
+- **Covariance** — CosmoCov for $\xi_\pm$, iNKA for $C_\ell$; validated with jackknife and 350 GLASS mocks
+
+- **Redshifts** — $r$-band only; $n(z)$ from CFHTLenS cross-match + SOM (**prior inflated ${\times}1.4$**)
+
+- **Intrinsic alignments** — NLA model; $A_\mathrm{IA}$ degenerate with $S_8$ especially with one bin; Gaussian prior from red/blue split, $0.83 \pm 0.7$ (**width ${\times}2$**)
+
+- **$m$-bias** — from image simulations (Paper II); $\mathcal{N}(-0.057, 0.014)$ (**inflated ${\times}3$**)
 
 :::
 
@@ -320,8 +324,6 @@ We also inflate the priors on delta-z, A_IA, and m-bias by factors of 1.4, 2, an
 | $\xi_\pm$ | $0.858^{+0.082}_{-0.081}$ | $0.267^{+0.141}_{-0.072}$ |
 | $C_\ell$ | $0.917^{+0.077}_{-0.079}$ | $0.221^{+0.175}_{-0.058}$ |
 :::
-
-- Priors on $\Delta z$, $A_\mathrm{IA}$, $m$-bias inflated by<br>${\times}1.4$/${\times}2$/${\times}3$ to be conservative
 
 :::
 ::: {.column style="width:50%"}
