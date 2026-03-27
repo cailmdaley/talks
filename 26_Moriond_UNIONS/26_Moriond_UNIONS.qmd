@@ -209,9 +209,11 @@ Paper V analyzes the same catalog in harmonic space — same blinding, same scal
 :::::::::::::: {.columns}
 ::: {.column style="width:45%"}
 
-::: {style="margin-top:80px;line-height:2.0em"}
+::: {style="margin-top:80px"}
 - Blind by modifying $n(z)$: three realizations A/B/C, one unshifted
+
 - Catalog version, scale cuts, and robustness criteria frozen before collaboration-wide unblinding
+
 - Caveat: cosmology-paper authors were inadvertently unblinded ~2 weeks before. No analysis choices changed after this point
 :::
 
@@ -220,6 +222,10 @@ Paper V analyzes the same catalog in harmonic space — same blinding, same scal
 
 ::: {style="margin-top:40px"}
 ![](images/blind_nz_ABC.png){width=95% fig-align="center"}
+
+::: {style="font-size:0.75em;text-align:center;margin-top:-8px"}
+Three redshift blinds used in this analysis. B turned out to be real.
+:::
 :::
 
 :::
