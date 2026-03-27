@@ -169,7 +169,7 @@ Core members in alphabetical order (many others have contributed over the years)
 ## Paper III uses B-modes to select the catalog and set scale cuts
 
 - To leading order, B-modes serve as a systematics null test
-- Synthesize null tests from $\xi_\pm^B$, COSEBIs, and $C_\ell$s to inform scale cuts and sample selection
+- Synthesize $\xi_\pm^B$, COSEBIs, and $C_\ell$ statistics to inform scale cuts and sample selection
 
 ![](images/pure_eb_data_vector.png){width=85% fig-align="center"}
 
@@ -182,9 +182,9 @@ We use three statistics in different bases — pure E/B in angular space, COSEBI
 
 ## Paper IV jointly fits cosmology and PSF leakage in real space
 
-- $\xi_\pm(\theta)$ with PSF leakage parameters ($\alpha$, $\beta$) inferred from $\rho$/$\tau$ diagnostics<br>— uncertainty propagates into the error budget
-
 ![](images/best_fit_xipm.png){width=90% fig-align="center"}
+
+- $\xi_\pm(\theta)$ with best-fit model and leakage systematics
 
 ::: notes
 Paper IV takes the validated catalog and scale cuts from Paper III and fits a cosmological model to the shear correlation functions.
@@ -194,7 +194,7 @@ What's distinctive here: rather than just correcting for PSF leakage at the cata
 
 ## Paper V provides harmonic-space constraints from the same data
 
-- Same catalog, $n(z)$, and blinding; different basis and weighting of scales
+- Same catalog, $n(z)$, and blinding, but different basis and weighting of scales
 
 ![](images/Cell_EE_bestfit.png){width=80% fig-align="center"}
 
