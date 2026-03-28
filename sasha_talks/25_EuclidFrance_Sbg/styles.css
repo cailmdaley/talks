@@ -1,0 +1,39 @@
+.small-text {
+  font-size: 0.8em; /* or 80%, 12pt, etc. */
+}
+
+.footer-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Move the footer lower */
+.reveal .footer-logos {
+  position: absolute;    /* Keep it positioned relative to the slide */
+  bottom: -50px;          /* Distance from the bottom of the slide */
+  width: 100%;           /* Ensure it stretches across the slide */
+  text-align: center;    /* Optional: center the logos */
+}
+
+/* cropping wrapper */
+.logo-crop {
+  height: 82px;     /* visible height */
+  width: 474px;
+  overflow: hidden; /* hides overflow */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-white-bg img {
+  background-color: white;
+  height: 82px;           /* adjust as needed */
+  width: auto;
+}
+
+.logo-cea img {
+    height: 82px;
+    width: auto;
+}

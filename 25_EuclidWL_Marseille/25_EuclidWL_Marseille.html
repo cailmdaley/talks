@@ -6,12 +6,12 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-494121dfa8658343c03537e94414993d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-99.9.9">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.40">
 
   <meta name="author" content="Cail Daley">
   <meta name="dcterms.date" content="2025-10-03">
-  <title>Talks – Learning Lessons   from RR2 with CMBX</title>
+  <title>Talks – Learning Lessons   from CMBX RR2</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -30,7 +30,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-c96ebf0057020aac55e1b647c3a1f46a.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-b95c88b9e8b542b6426f0f37eeb075a0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -141,7 +141,7 @@
 
 <section id="title-slide" class="quarto-title-block">
   <br>
-    <h1 class="title">Learning Lessons <br> from RR2 with CMBX</h1>
+    <h1 class="title">Learning Lessons <br> from CMBX RR2</h1>
   <br>
     
   <div class="quarto-title-authors">
@@ -169,154 +169,16 @@
 </section>
 <section id="overview" class="slide level2">
 <h2>Overview</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p><br> <br></p>
 <ul>
-<li>CMB lensing <span class="math inline">\(\kappa\)</span> as a structure probe</li>
 <li>Introduction to CMBX-2/3 projects</li>
 <li>Analysis ingredients</li>
-<li>Overlap between CMBX and 3x2pt</li>
-<li>Learning lessons from RR2</li>
+<li>Ways CMBX can contribute to WL</li>
+<li>Lessons learned/learning ffrom RR2</li>
 </ul>
-</div><div class="column fragment" style="width:40%;">
-<div style="text-align:center;margin-top:-130px">
-<p><span style="color:maroon">Galaxy 3x2pt</span> vs.&nbsp;<span style="color:teal">CMBX 3x2pt</span></p>
-</div>
-<div class="six2pt-wrapper">
-<table class="six2pt-grid">
-<thead>
-<tr>
-<th>
-</th>
-<th>
-<span class="math inline">\(\delta_g\)</span>
-</th>
-<th>
-<span class="math inline">\(\gamma\)</span>
-</th>
-<th>
-<span class="math inline">\(\kappa\)</span>
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>
-<span class="math inline">\(\delta_g\)</span>
-</th>
-<td class="wl-term">
-<span class="math inline">\(\delta_g\,\delta_g\)</span>
-</td>
-<td class="wl-term">
-<span class="math inline">\(\delta_g\,\gamma\)</span>
-</td>
-<td class="cmb-term">
-<span class="math inline">\(\delta_g\,\kappa\)</span>
-</td>
-</tr>
-<tr>
-<th>
-<span class="math inline">\(\gamma\)</span>
-</th>
-<td>
-—
-</td>
-<td class="wl-term">
-<span class="math inline">\(\gamma\,\gamma\)</span>
-</td>
-<td class="cmb-term">
-<span class="math inline">\(\gamma\,\kappa\)</span>
-</td>
-</tr>
-<tr>
-<th>
-<span class="math inline">\(\kappa\)</span>
-</th>
-<td>
-—
-</td>
-<td>
-—
-</td>
-<td class="cmb-term">
-<span class="math inline">\(\kappa\,\kappa\)</span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div style="text-align:center">
-<p>or <span style="color:maroon">auto-</span> vs.&nbsp;<span style="color:teal">cross-</span> correlations</p>
-</div>
-<div class="six2pt-wrapper">
-<table class="six2pt-grid">
-<thead>
-<tr>
-<th>
-</th>
-<th>
-<span class="math inline">\(\delta_g\)</span>
-</th>
-<th>
-<span class="math inline">\(\gamma\)</span>
-</th>
-<th>
-<span class="math inline">\(\kappa\)</span>
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>
-<span class="math inline">\(\delta_g\)</span>
-</th>
-<td class="auto-term">
-<span class="math inline">\(\delta_g\,\delta_g\)</span>
-</td>
-<td class="cross-term">
-<span class="math inline">\(\delta_g\,\gamma\)</span>
-</td>
-<td class="cross-term">
-<span class="math inline">\(\delta_g\,\kappa\)</span>
-</td>
-</tr>
-<tr>
-<th>
-<span class="math inline">\(\gamma\)</span>
-</th>
-<td>
-—
-</td>
-<td class="auto-term">
-<span class="math inline">\(\gamma\,\gamma\)</span>
-</td>
-<td class="cross-term">
-<span class="math inline">\(\gamma\,\kappa\)</span>
-</td>
-</tr>
-<tr>
-<th>
-<span class="math inline">\(\kappa\)</span>
-</th>
-<td>
-—
-</td>
-<td>
-—
-</td>
-<td class="auto-term">
-<span class="math inline">\(\kappa\,\kappa\)</span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div></div>
 </section>
 <section id="project-information" class="slide level2">
 <h2>Project Information</h2>
-<p><strong>DR1-KP-CMBX-2/3</strong></p>
+<p><strong>CMB Lensing × Euclid Cross-Correlations</strong> <strong>DR1-KP-CMBX-2/3</strong></p>
 <ul>
 <li><p><strong>CMBX-2</strong>: CMB lensing cross-correlation with Euclid observables</p></li>
 <li><p><strong>CMBX-3</strong>: Cosmology with Euclid photometric probes <br> and CMB lensing (3×2pt + CMB lensing block)</p></li>
@@ -332,142 +194,118 @@
 </section>
 <section id="euclid-spt-3g-mou-project" class="slide level2">
 <h2>Euclid × SPT-3G MoU Project</h2>
-<p>Cross-correlation between SPT-3G CMB lensing and Euclid DR1: <span class="math inline">\(\delta_{\rm g} \kappa, \gamma \kappa, \kappa \kappa\)</span>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/euclid_rr2_cmb_experiment_footprints_Nl.png" class="quarto-figure quarto-figure-center" height="900"></p>
-</figure>
-</div>
-</section>
-<section id="euclid-spt-3g-mou-project-1" class="slide level2">
-<h2>Euclid × SPT-3G MoU Project</h2>
-<p>Cross-correlation between SPT-3G CMB lensing and Euclid DR1: <span class="math inline">\(\delta_{\rm g} \kappa, \gamma \kappa, \kappa \kappa\)</span>.</p>
-<p><strong>Rough forecasts</strong>:</p>
+<p>Cross-correlation analysis between SPT-3G CMB lensing and Euclid DR1 galaxy density and shear, targeting the CMB lensing block of the 6×2pt data vector <span class="math inline">\(\delta_{\rm g} \kappa_{\rm CMB}, \gamma \kappa_{\rm CMB}, \kappa_{\rm CMB} \kappa_{\rm CMB}\)</span>.</p>
+<p><strong>Expected Impact</strong>:</p>
 <ul>
-<li><span class="math inline">\(\gamma \kappa\)</span>: ~14% improvement in <span class="math inline">\(\Omega_m, \sigma_8\)</span> FoM relative to WL alone <br> for SPT-3G × DR1 South (M. Gatti)</li>
-<li><span class="math inline">\(\delta_{\rm g} \kappa\)</span>: Combined SNR ~60 across Main and Summer fields</li>
+<li><span class="math inline">\(\gamma \kappa_{\rm CMB}\)</span>: ~14% improvement in <span class="math inline">\(\Omega_m, \sigma_8\)</span> figure of merit for SPT-3G × DR1 South</li>
+<li><span class="math inline">\(\delta_{\rm g} \kappa_{\rm CMB}\)</span>: Combined SNR ~60 across Main and Summer fields</li>
 </ul>
 
-<img data-src="images/euclid_cmbx_rr2dr1_footprints.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><div style="font-size:0.7em;margin-top:-100px;z-index:1;position:relative">
-<p>Credit: Margherita Lembo</p>
-</div>
-</section>
+<img data-src="images/euclid_cmbx_rr2dr1_footprints.png" style="width:90.0%" class="r-stretch quarto-figure-center"><p class="caption">Credit: Margherita Lembo</p></section>
 <section id="analysis-ingredients" class="slide level2">
 <h2>Analysis Ingredients:</h2>
-<p>(non-exhaustive)</p>
 <ul>
-<li><strong>Euclid data:</strong> ~ everything used by 3x2pt</li>
-<li><strong>CMB data:</strong> ACT, SPT, Planck covergence maps &amp; masks</li>
-<li><strong>Correlated simulations:</strong>
+<li>Euclid data: shear &amp; position catalogs, mass maps, <span class="math inline">\(n(z)\)</span>s</li>
+<li>SPT data: ACT, SPT, Planck covergence maps &amp; masks</li>
+<li>Correlated simulations:
 <ul>
-<li>larger number of simple realizations for covariance</li>
-<li>small number of more realistic realizations for bias characterization
+<li>for covariance: something simple &amp; cheap</li>
+<li>for bias characterization: something realistic &amp; expensive
 <ul>
-<li><strong>Euclid side:</strong> Flagship | <strong>CMB side:</strong> <a href="https://arxiv.org/abs/2212.07420">Agora (Omori 2024)</a> | how to combine TBD…</li>
+<li>Euclid side: FS2 | CMB side: <a href="https://arxiv.org/abs/2212.07420">Agora (Omori 2024)</a> | how to combine TBD…</li>
 </ul></li>
 </ul></li>
-<li>Harmonic space analysis: <code>namaster</code>, <code>polspice</code>, <code>heracles</code>
+<li>Harmonic space analysis
 <ul>
-<li>would like to try both pixel- and catalog-based approaches</li>
+<li><code>namaster</code>, <code>polspice</code>, <code>heracles</code></li>
+<li>pixel- and catalog-based</li>
 </ul></li>
-<li>Blinding TBD, but would like to coordinate with WL to avoid siloing ourselves</li>
 </ul>
-</section>
-<section id="overlap-between-cmbx-and-3x2pt" class="slide level2">
-<h2>Overlap between CMBX and 3x2pt</h2>
-<ul>
-<li><p>Crosschecks on shear calibration and galaxy bias</p></li>
-<li><p>Splits (blue/red, North/South)</p></li>
-<li><p>Consistency between 2D-MASS and shear maps?</p></li>
-<li><p>Systematics cross-correlations</p></li>
-</ul>
-
-<img data-src="images/chang_2022_X_nk_redmagic.png" class="r-stretch quarto-figure-center"><p class="caption">redMaGiC galaxy bias estimates with cosmology fixed, from Chang et al.&nbsp;2022</p></section>
-<section id="systematics-cross-correlations" class="slide level2">
-<h2>Systematics Cross-Correlations</h2>
-<ul>
-<li>Following DES × SPT methodology: quantify potential systematic contamination <strong>Cross-correlation score for systematic field <span class="math inline">\(\mathcal{S}\)</span>:</strong> <span class="math display">\[X^{f}_{\mathcal{S}}(\theta) = \frac{\langle \kappa_{\rm CMB} \mathcal{S}(\theta)\rangle \, \langle f \mathcal{S}(\theta)\rangle}{\langle \mathcal{S} \mathcal{S}(\theta)\rangle}, \qquad f \in \{\delta_g, \gamma\}\]</span></li>
-</ul>
-<p><span class="math inline">\(X^{f}_{\mathcal{S}} \approx 0\)</span> unless systematic correlates with <strong>both</strong> fields</p>
-<ul>
-<li>so a less restrictive version of FDQA tests</li>
-</ul>
-<p><br></p>
-<p>originally planned to use only stellar extinction/density and PSF ellipticity and size errors; but may as well use all the FDQA systematics.</p>
-</section>
-<section>
-<section id="learning-lessons-from-rr2" class="title-slide slide level1 center">
-<h1>Learning Lessons from RR2</h1>
-
 </section>
 <section id="masking-what-to-use" class="slide level2">
 <h2>Masking: what to use?</h2>
 <p>Inititally thought <code>W = coverage * (1 + visibility)</code></p>
 
-<img data-src="images/euclid_rr2_coverage_visibility_mask.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
-<section id="masking-coverage-vs.-catalog-weights" class="slide level2">
-<h2>Masking: coverage vs.&nbsp;catalog weights</h2>
-<p>but comparing to shear weights, there are <span style="color:crimson">unmasked regions with 0 weight:</span></p>
-
-<img data-src="images/euclid_rr2_mask_vs_counts_method=lensmc.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
-<section id="masking-coverage-vs.-catalog-weights-1" class="slide level2">
-<h2>Masking: coverage vs.&nbsp;catalog weights</h2>
-<p>but comparing to shear weights, there are <span style="color:crimson">unmasked regions with 0 weight:</span></p>
-
-<img data-src="images/euclid_rr2_mask_vs_counts_method=metacal.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
-<section id="masking-using-catalog-weights" class="slide level2">
-<h2>Masking: using catalog weights</h2>
-<p>binning <code>metacal</code> weights into pixels; note bin-dependent feature at (71, -34)</p>
-
-<img data-src="images/animated_weights_method=metacal.gif" style="width:100.0%" class="r-stretch"></section>
-<section id="masking-using-catalog-weights-1" class="slide level2">
-<h2>Masking: using catalog weights</h2>
-<p>binning <code>lensmc</code> weights into pixels; note bin-dependent feature at (71, -34)</p>
-
-<img data-src="images/animated_weights_method=lensmc.gif" style="width:100.0%" class="r-stretch"></section>
-<section id="isd-weights" class="slide level2">
-<h2>ISD Weights</h2>
-<p>feature at (71, -34) appears in a couple of the ISD iterations</p>
-
-<!-- ## n(z) Comparisons
-
-:::: {.columns}
-::: {.column width="50%"}
-
-- Comparing RR2 unweighted tomographic redshift histograms against the Flagship mocks in both coarse and fine binning.
-
-:::
-::: {.column width="50%"}
-
-![](images/nz_comparison_weighted_dz010.png){width=100%}
-
-:::
-:::: -->
-<img data-src="images/euclid_rr2_isd_weights_iterations_bin_1.gif" style="width:100.0%" class="r-stretch"></section></section>
-<section>
-<section id="section" class="title-slide slide level1" data-background-image="images/euclid_rr2_gc_slide.png" data-background-size="contain">
-<h1></h1>
-<div style="margin-top:930px;margin-left:1300px;color:maroon;font-size:1.3em">
-<p>All credit to Margherita Lembo</p>
+<img data-src="images/euclidwl_W_mask.png" style="width:90.0%" class="r-stretch"></section>
+<section id="masking-coverage-map-vs.-catalog-weights" class="slide level2">
+<h2>Masking: coverage map vs.&nbsp;catalog weights</h2>
+<ul>
+<li>comparing coverage to binned shear weights, there are some unmasked regions with 0 weight:</li>
+</ul>
+<div class="r-stack">
+<div class="fragment fade-out" data-fragment-index="0">
+<p><img data-src="images/euclid_rr2_mask_vs_counts_method=lensmc.png" style="width:80.0%"></p>
 </div>
-<div class="footer">
-
+<div class="fragment" data-fragment-index="0">
+<p><img data-src="images/euclid_rr2_mask_vs_counts_method=metacal.png" style="width:80.0%"></p>
+</div>
 </div>
 </section>
-<section id="looking-forward" class="slide level2">
-<h2>Looking forward</h2>
-<p>All the ingredients needed for us (CMBX) to build a full pipeline <br> with RR2 are coming together:</p>
+<section id="masking-using-catalog-weights-directly" class="slide level2">
+<h2>Masking: using catalog weights directly</h2>
 <ul>
-<li><p>working familiarity with majority of the CosmoHub products</p></li>
-<li><p>our shear pipeline is lagging behind galaxy clustering, <br> so the former is our immediate priority</p></li>
+<li>binning <code>metacal</code> weights into pixels:</li>
 </ul>
-<p>CMBX (<strong>not</strong> just CMB lensing) RR2 hands-on meeting in Paris &amp; Ferrara next week:</p>
+
+<img data-src="images/animated_weights_method=metacal.gif" style="width:90.0%" class="r-stretch"></section>
+<section id="masking-using-catalog-weights-directly-1" class="slide level2">
+<h2>Masking: using catalog weights directly</h2>
 <ul>
-<li>Oct 7-8 @ IAP, UNIFE; <a href="https://euclid.roe.ac.uk/projects/cxswg/wiki/CMBX_RR2_Hands-on_Meeting#section-4">meeting wiki</a></li>
+<li>binning <code>lensmc</code> weights into pixels:</li>
 </ul>
-</section></section>
-<section id="thank-you" class="title-slide slide level1 center">
-<h1>Thank you!</h1>
+
+<img data-src="images/animated_weights_method=lensmc.gif" style="width:90.0%" class="r-stretch"></section>
+<section id="nz-comparisons-unweighted" class="slide level2">
+<h2>n(z) Comparisons (Unweighted)</h2>
+<ul>
+<li>Comparing RR2 unweighted tomographic redshift histograms against the Flagship mocks in both coarse and fine binning.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="images/nz_comparison_unweighted_dz010.png" style="width:70.0%"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="images/nz_comparison_unweighted_dz050.png" style="width:70.0%"></p>
+</div></div>
+</section>
+<section id="nz-comparisons-weighted" class="slide level2">
+<h2>n(z) Comparisons (Weighted)</h2>
+<ul>
+<li>LensMC-weighted distributions smooth the mid-z mismatch but highlight a persistent low-z tilt that the ISD runs will need to address.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="images/nz_comparison_weighted_dz010.png" style="width:70.0%"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="images/nz_comparison_weighted_dz050.png" style="width:70.0%"></p>
+</div></div>
+</section>
+<section id="systematics-survey-property-map-cross-correlations" class="slide level2">
+<h2>Systematics: Survey Property Map Cross-Correlations</h2>
+<ul>
+<li>Following DES × SPT methodology: quantify potential systematic contamination</li>
+<li>If a contaminant affects both CMB lensing and galaxy fields, it produces spurious cross-correlation signal</li>
+</ul>
+<p><strong>Cross-correlation score</strong>: <span class="math display">\[X^{f}_{\mathcal{S}}(\theta) = \frac{\langle \kappa_{\rm CMB} \mathcal{S}(\theta)\rangle \, \langle f \mathcal{S}(\theta)\rangle}{\langle \mathcal{S} \mathcal{S}(\theta)\rangle}\]</span></p>
+<p>where <span class="math inline">\(\mathcal{S}\)</span> is a survey property map and <span class="math inline">\(f\)</span> is either <span class="math inline">\(\delta_g\)</span> (galaxy density) or <span class="math inline">\(\gamma_t\)</span> (tangential shear)</p>
+<ul>
+<li><span class="math inline">\(X^{f}_{\mathcal{S}} \approx 0\)</span> unless systematic correlates with <strong>both</strong> fields</li>
+<li>Compare magnitude to statistical uncertainty of cross-correlation</li>
+</ul>
+</section>
+<section id="systematics-templates-for-dr1" class="slide level2">
+<h2>Systematics Templates for DR1</h2>
+<p><strong>For galaxy-CMB lensing (<span class="math inline">\(\delta_g \times \kappa_{\rm CMB}\)</span>)</strong>:</p>
+<ul>
+<li>Stellar density (from Gaia)</li>
+<li>Galactic extinction</li>
+</ul>
+<p><strong>For shear-CMB lensing (<span class="math inline">\(\gamma_t \times \kappa_{\rm CMB}\)</span>)</strong>:</p>
+<ul>
+<li>Stellar density and extinction</li>
+<li>PSF model errors: <span class="math inline">\(q = e_* - e_{\rm model}\)</span> (ellipticity residuals)</li>
+<li>PSF model errors: <span class="math inline">\(w = e_*(T_* - T_{\rm model})/T_*\)</span> (size-dependent)</li>
+</ul>
+<p><strong>Connection to DR1 WL validation</strong>: Euclid DR1 validation tests include similar systematic map cross-correlations—natural integration point for CMBX analysis pipeline</p>
 
 
 </section>
@@ -786,7 +624,7 @@
       }
         var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
         var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
+          var filterRegex = new RegExp("https:\/\/cailmdaley\.github\.io\/talks\/");
         var isInternal = (href) => {
             return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
