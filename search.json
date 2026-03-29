@@ -1,108 +1,192 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Cail Daley’s Talks",
-    "section": "",
-    "text": "Cosmology with SPT-3G\n\n\nUBC Cosmo Coffee\n\n\n\n\n\nApr 11, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\nESLAB Euclid Symposium\n\n\n\n\n\nMar 25, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\nSéminaire postdoc du DAp\n\n\n\n\n\nMar 11, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nSouth Pole Telescope  Foreground Mitigation Challenges\n\n\nDeep CosmoStat Days 2025\n\n\n\n\n\nJan 17, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n Shear with Radio Galaxy  Polarization & Kinematics\n\n\nNice TOSCA Meeting 2024\n\n\n\n\n\nNov 8, 2024\n\n\n\n\n\nNo matching items"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#cosmic-shear-benefits-from-independent-measurements",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#cosmic-shear-benefits-from-independent-measurements",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Cosmic shear benefits from independent measurements",
+    "text": "Cosmic shear benefits from independent measurements\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCredit: DES Collaboration\n\n\n\n\n\n\n\\(S_8\\) seems to be converging as systematics improve; consensus is important!\n\n\n\n\n\\(S_8\\) seems to be converging as systematics improve; consensus is important!\nBut the northern sky has no wide-field lensing surveys\n\n\n\n\nCosmic shear surveys are now mature enough to produce percent-level constraints. DES Y6 is consistent with Planck at 1.1 sigma in the full parameter space. KiDS-Legacy is converging. The S8 tension appears to be resolving — and it’s resolving because systematics are getting better controlled: redshift calibration accounts for two-thirds of the KiDS shift, updated nonlinear modeling for DES. But consensus requires genuinely independent measurements — not just more data from overlapping footprints. This map shows the current landscape: DES, KiDS, and HSC all overlap each other on the sky. Jefferson et al. 2025 explicitly states “overlaps between all pairs.” But look at the north — there’s nothing there."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#overview",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#overview",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Overview",
-    "text": "Overview\n\n\n \n\nCMB lensing \\(\\kappa\\) as a structure probe\nIntroduction to CMBX-2/3 projects\nAnalysis ingredients\nOverlap between CMBX and 3x2pt\nLearning lessons from RR2\n\n\n\nGalaxy 3x2pt vs. CMBX 3x2pt\n\n\n\n\n\n\n\n\n\\(\\delta_g\\)\n\n\n\\(\\gamma\\)\n\n\n\\(\\kappa\\)\n\n\n\n\n\n\n\\(\\delta_g\\)\n\n\n\\(\\delta_g\\,\\delta_g\\)\n\n\n\\(\\delta_g\\,\\gamma\\)\n\n\n\\(\\delta_g\\,\\kappa\\)\n\n\n\n\n\\(\\gamma\\)\n\n\n—\n\n\n\\(\\gamma\\,\\gamma\\)\n\n\n\\(\\gamma\\,\\kappa\\)\n\n\n\n\n\\(\\kappa\\)\n\n\n—\n\n\n—\n\n\n\\(\\kappa\\,\\kappa\\)\n\n\n\n\n\n\nor auto- vs. cross- correlations\n\n\n\n\n\n\n\n\n\\(\\delta_g\\)\n\n\n\\(\\gamma\\)\n\n\n\\(\\kappa\\)\n\n\n\n\n\n\n\\(\\delta_g\\)\n\n\n\\(\\delta_g\\,\\delta_g\\)\n\n\n\\(\\delta_g\\,\\gamma\\)\n\n\n\\(\\delta_g\\,\\kappa\\)\n\n\n\n\n\\(\\gamma\\)\n\n\n—\n\n\n\\(\\gamma\\,\\gamma\\)\n\n\n\\(\\gamma\\,\\kappa\\)\n\n\n\n\n\\(\\kappa\\)\n\n\n—\n\n\n—\n\n\n\\(\\kappa\\,\\kappa\\)"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#unions-adds-deep-wide-field-lensing-constraints-in-the-north",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#unions-adds-deep-wide-field-lensing-constraints-in-the-north",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "UNIONS adds deep wide-field lensing constraints in the North",
+    "text": "UNIONS adds deep wide-field lensing constraints in the North\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCredit: DES Collaboration\n\n\n\n\nDifferent instrument, on-sky systematics, sample variance\nNew cross-correlation opportunities (DESI, Planck, BOSS)\n\n\nUNIONS covers the northern sky at declination above 30 degrees, extending to 15. Zero overlap with DES, KiDS, or HSC. That means independent large-scale structure, independent sample variance, different Galactic foreground, different atmospheric conditions, and a completely different instrument — CFHT MegaCam versus DECam, OmegaCAM, and Hyper Suprime-Cam. This is the only Stage III cosmic shear survey that doesn’t share sky with any of the others. And that northern footprint is what makes it uniquely valuable for cross-correlations — DESI spectroscopy and Planck CMB lensing at high declination are all in the north."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#project-information",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#project-information",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Project Information",
-    "text": "Project Information\nDR1-KP-CMBX-2/3\n\nCMBX-2: CMB lensing cross-correlation with Euclid observables\nCMBX-3: Cosmology with Euclid photometric probes  and CMB lensing (3×2pt + CMB lensing block)\n\nCommunication\n\nWiki | GitLab (dr1_cmbx becoming main analysis repo)\nBi-weekly telecons: Thursdays 14:00 CET (alternates with CMBX-SWG)\nSlack: #dr1-kp-cmbx3_2\nMeeting notes | Slide deck\n\nMany other CMBX projects & people that I don’t have space to acknowledge!"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#unions-3500-constraints-are-the-culmination-of-10-years-of-work",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#unions-3500-constraints-are-the-culmination-of-10-years-of-work",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "UNIONS-3500 constraints arethe culmination of ~10 years of work",
+    "text": "UNIONS-3500 constraints arethe culmination of ~10 years of work\n\n\nA small team of ~10 people\nNon-tomographic; multi-bin redshift calibration in preparation\nInference with correlation functions \\(\\xi_\\pm(\\theta)\\) and band powers \\(C_\\ell\\)\n\n\n\nBuilding on the catalog described in Sacha’s talk:\n\nPaper III: B-mode validation (Daley et al.)\nPaper IV: configuration-space constraints (Goh et al.)\nPaper V: harmonic-space constraints (Guerrini et al.)\n\n\n\nSacha has just walked you through the catalog — the survey properties, the PSF model, the systematics tests. Now I’ll take that catalog and show you what the shear field tells us about cosmology. This release is three companion papers from a single blinded catalog, built by about ten people over roughly a decade of survey development."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#euclid-spt-3g-mou-project",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#euclid-spt-3g-mou-project",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Euclid × SPT-3G MoU Project",
-    "text": "Euclid × SPT-3G MoU Project\nCross-correlation between SPT-3G CMB lensing and Euclid DR1: \\(\\delta_{\\rm g} \\kappa, \\gamma \\kappa, \\kappa \\kappa\\)."
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#the-2d-cosmic-shear-team",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#the-2d-cosmic-shear-team",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "The 2D cosmic shear team",
+    "text": "The 2D cosmic shear team\n\nCore members in alphabetical order (many others have contributed over the years):\n\n\n\n\n\n\nAnna Wittje  (redshift estimation)\n\n\n\n\n\n\nCail Daley  (B-modes, covariance,  masking)\n\n\n\n\n\n\nCalum Murray  (catalog validation,  systematics)\n\n\n\n\n\n\nFabian Hervas Peters  (catalog, image  simulations)\n\n\n\n\n\n\n\n\n\n\n\nLisa Goh  (inference, covariance,  masking)\n\n\n\n\n\n\nMartin Kilbinger  (catalog, wisdom)\n\n\n\n\n\n\nSacha Guerrini  (inference, PSF  systematics)"
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#euclid-spt-3g-mou-project-1",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#euclid-spt-3g-mou-project-1",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Euclid × SPT-3G MoU Project",
-    "text": "Euclid × SPT-3G MoU Project\nCross-correlation between SPT-3G CMB lensing and Euclid DR1: \\(\\delta_{\\rm g} \\kappa, \\gamma \\kappa, \\kappa \\kappa\\).\nRough forecasts:\n\n\\(\\gamma \\kappa\\): ~14% improvement in \\(\\Omega_m, \\sigma_8\\) FoM relative to WL alone  for SPT-3G × DR1 South (M. Gatti)\n\\(\\delta_{\\rm g} \\kappa\\): Combined SNR ~60 across Main and Summer fields\n\n\n\nCredit: Margherita Lembo"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#paper-iii-uses-b-mode-estimators-to-characterize-systematics",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#paper-iii-uses-b-mode-estimators-to-characterize-systematics",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Paper III uses B-mode estimators to characterize systematics",
+    "text": "Paper III uses B-mode estimators to characterize systematics\n\nTo leading order, B-modes serve as a systematics null test\nSynthesize \\(\\xi_\\pm^B\\), COSEBIs, and \\(C_\\ell\\) statistics to inform scale cuts and sample selection\n\n\n\nPaper III is the gatekeeper: it decides which catalog version and which scales are clean enough for cosmology. This is the pure E/B decomposition — the total shear correlation function split into its E-mode, B-mode, and ambiguous components. E-modes carry the lensing signal, B-modes diagnose residual systematics, and ambiguous modes arise from masking. The gray bands mark where we cut — scales where B-modes are too large. We use three statistics in different bases — pure E/B in angular space, COSEBIs as discrete modes, and Cl in harmonic space — and look for convergence across all three."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#analysis-ingredients",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#analysis-ingredients",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Analysis Ingredients:",
-    "text": "Analysis Ingredients:\n(non-exhaustive)\n\nEuclid data: ~ everything used by 3x2pt\nCMB data: ACT, SPT, Planck covergence maps & masks\nCorrelated simulations:\n\nlarger number of simple realizations for covariance\nsmall number of more realistic realizations for bias characterization\n\nEuclid side: Flagship | CMB side: Agora (Omori 2024) | how to combine TBD…\n\n\nHarmonic space analysis: namaster, polspice, heracles\n\nwould like to try both pixel- and catalog-based approaches\n\nBlinding TBD, but would like to coordinate with WL to avoid siloing ourselves"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#paper-iv-jointly-fits-cosmology-and-psf-leakage-in-real-space",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#paper-iv-jointly-fits-cosmology-and-psf-leakage-in-real-space",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Paper IV jointly fits cosmology and PSF leakage in real space",
+    "text": "Paper IV jointly fits cosmology and PSF leakage in real space\n\n\n\\(\\xi_\\pm(\\theta)\\) with best-fit model and leakage systematics\n\n\nPaper IV takes the validated catalog and scale cuts from Paper III and fits a cosmological model to the shear correlation functions. What’s distinctive here: rather than just correcting for PSF leakage at the catalog level, the leakage parameters are inferred from rho and tau statistics and carried into the cosmological likelihood as Gaussian priors. The PSF uncertainty propagates into the cosmological error budget. This is not standard practice."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#overlap-between-cmbx-and-3x2pt",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#overlap-between-cmbx-and-3x2pt",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Overlap between CMBX and 3x2pt",
-    "text": "Overlap between CMBX and 3x2pt\n\nCrosschecks on shear calibration and galaxy bias\nSplits (blue/red, North/South)\nConsistency between 2D-MASS and shear maps?\nSystematics cross-correlations\n\n\nredMaGiC galaxy bias estimates with cosmology fixed, from Chang et al. 2022"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#paper-v-provides-harmonic-space-constraints-from-the-same-data",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#paper-v-provides-harmonic-space-constraints-from-the-same-data",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Paper V provides harmonic-space constraints from the same data",
+    "text": "Paper V provides harmonic-space constraints from the same data\n\nSame catalog, \\(n(z)\\), and blinding, but different basis and weighting of scales\n\n\n\nPaper V analyzes the same catalog in harmonic space — same blinding, same scale cuts, but a different basis and likelihood code. Having the two analyses agree is not just a nice-to-have: we used their consistency as a criterion for unblinding."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#systematics-cross-correlations",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#systematics-cross-correlations",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Systematics Cross-Correlations",
-    "text": "Systematics Cross-Correlations\n\nFollowing DES × SPT methodology: quantify potential systematic contamination Cross-correlation score for systematic field \\(\\mathcal{S}\\): \\[X^{f}_{\\mathcal{S}}(\\theta) = \\frac{\\langle \\kappa_{\\rm CMB} \\mathcal{S}(\\theta)\\rangle \\, \\langle f \\mathcal{S}(\\theta)\\rangle}{\\langle \\mathcal{S} \\mathcal{S}(\\theta)\\rangle}, \\qquad f \\in \\{\\delta_g, \\gamma\\}\\]\n\n\\(X^{f}_{\\mathcal{S}} \\approx 0\\) unless systematic correlates with both fields\n\nso a less restrictive version of FDQA tests\n\n\noriginally planned to use only stellar extinction/density and PSF ellipticity and size errors; but may as well use all the FDQA systematics."
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#all-analysis-choices-fixed-before-unblinding",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#all-analysis-choices-fixed-before-unblinding",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "All analysis choices fixed before unblinding",
+    "text": "All analysis choices fixed before unblinding\n\n\n\n\nBlind by modifying \\(n(z)\\): three realizations A/B/C, one unshifted\nCatalog version, scale cuts, and robustness criteria frozen before collaboration-wide unblinding\nCaveat: cosmology-paper authors were inadvertently unblinded ~2 weeks before. No analysis choices changed after this point\n\n\n\n\n\n\n\n\n\n\nThree redshift blinds used in this analysis. B turned out to be real.\n\n\n\n\nWe blind by modifying the source redshift distribution, not by hiding the final number after the fact. That means the full machinery is exercised on each blind. The B-mode cuts are fixed before unblinding, so the cosmology is not tuned to the answer. I should be transparent: the authors of Papers IV and V were inadvertently unblinded about two weeks before the collaboration-wide unblinding. The maximum likelihood estimate — which isn’t penalized by priors — peaked at the same S8 for all three blinds, because the S8–A_IA degeneracy allowed A_IA to compensate the n(z) modification. So they could infer which blind was physical. No significant analysis choices were changed after this point — catalog version, scale cuts, and robustness criteria were already frozen."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#masking-what-to-use",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#masking-what-to-use",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Masking: what to use?",
-    "text": "Masking: what to use?\nInititally thought W = coverage * (1 + visibility)"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#different-b-mode-statistics-do-not-always-agree",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#different-b-mode-statistics-do-not-always-agree",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Different B-mode statistics do not always agree",
+    "text": "Different B-mode statistics do not always agree\n\nOver the full range (\\(1\\)–\\(250'\\), \\(\\ell \\lesssim 2000\\)): \\(\\xi_\\pm^B\\) and \\(C_\\ell^{BB}\\) pass, but COSEBIs fail\n\n\n\nEach statistic weights scales differently; we require all three to pass\nNot able to decisively identify the origin of these B-modes\n\n\nThis is the main finding of Paper III. Pure E/B and Cl pass the null test on the full angular range — but COSEBIs fail. The B-modes show an oscillating structure that Asgari et al. 2019 associated with repeating additive shear bias at the CCD scale. The key insight: this is not a matter of configuration versus harmonic space. We compute COSEBIs from both xi_pm and from the Cl bandpowers — they agree with each other, and they both fail. Yet the Cls themselves pass. The sensitivity to contamination is set by the filter functions, not the basis. COSEBIs concentrate sensitivity on the contaminated scales through their filter functions W_n. This matters because COSEBIs are designed to compress cosmological information — they’re arguably the most informative B-mode diagnostic. The synthesis of multiple statistics is how you understand the systematics in the data."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#masking-coverage-vs.-catalog-weights",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#masking-coverage-vs.-catalog-weights",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Masking: coverage vs. catalog weights",
-    "text": "Masking: coverage vs. catalog weights\nbut comparing to shear weights, there are unmasked regions with 0 weight:"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#sample-selection-and-scale-cuts-informed-by-b-mode-tests",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#sample-selection-and-scale-cuts-informed-by-b-mode-tests",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Sample selection and scale cuts informed by B-mode tests",
+    "text": "Sample selection and scale cuts informed by B-mode tests\n\n\n\n\nScale cuts informed by B-mode PTEs, PSF leakage, and blinded \\(S_8\\) dependence(Papers IV/V)\n\n\nAdopted cuts: \\([12, 83]'\\), \\(\\ell = 300\\)–\\(1600\\)(\\(k_\\mathrm{max} \\approx 2.6\\;h\\,\\mathrm{Mpc}^{-1}\\)); all PTEs \\(&gt; 0.18\\)\n\n\n\n\n\n\n\n\n\nCOSEBIS PTEs as a function of lower and upper scale cut. Square: adopted cuts.\n\n\n\nThis is the compressed B-mode story. The colour map is a p-value — computed for every combination of minimum and maximum angular scale. Red means B-modes consistent with zero; blue means they’re not. The three statistics weight scales differently: a feature narrow in angle maps onto a broad range in ell, so harmonic cuts can’t isolate it. COSEBIs concentrate sensitivity at the contaminated scales through their filter functions. The adopted scale cuts weren’t chosen from B-mode PTEs alone — they also incorporate inference-stability checks and PSF leakage considerations from Papers IV and V."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#masking-coverage-vs.-catalog-weights-1",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#masking-coverage-vs.-catalog-weights-1",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Masking: coverage vs. catalog weights",
-    "text": "Masking: coverage vs. catalog weights\nbut comparing to shear weights, there are unmasked regions with 0 weight:"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#we-marginalize-over-nuisance-parameters-with-conservative-priors",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#we-marginalize-over-nuisance-parameters-with-conservative-priors",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "We marginalize over nuisance parameterswith conservative priors",
+    "text": "We marginalize over nuisance parameterswith conservative priors\n\n\nCovariance — CosmoCov for \\(\\xi_\\pm\\), iNKA for \\(C_\\ell\\); validated with jackknife and 350 GLASS mocks\n\n\nRedshifts — \\(r\\)-band only; \\(n(z)\\) from CFHTLenS cross-match + SOM (prior inflated \\({\\times}1.4\\))\n\n\nIntrinsic alignments — NLA model; \\(A_\\mathrm{IA}\\) degenerate with \\(S_8\\) especially with one bin; Gaussian prior from red/blue split, \\(0.83 \\pm 0.7\\) (width \\({\\times}2\\))\n\n\n\\(m\\)-bias — from image simulations (Paper II); \\(\\mathcal{N}(-0.057, 0.014)\\) (inflated \\({\\times}3\\))\n\n\n\nLet me walk through the main ingredients going into the inference.\nFirst, redshifts. We only use the r-band for shape measurement, so we don’t have colors for the full sample. We get the redshift distribution by cross-matching with CFHTLenS in a 44 square degree overlap and training a self-organizing map on ~65,000 spectroscopic galaxies from DEEP2, VVDS, and VIPERS. The calibration bias is delta-z = 0.033, which we marginalize over. The key limitation: we’re relying on 44 square degrees to represent 3500. Full-footprint multi-band photometry is in preparation.\nSecond, PSF leakage. Paper IV goes beyond catalog-level correction: the leakage parameters are inferred from rho and tau statistics and carried into the cosmological likelihood as Gaussian priors, so the PSF model uncertainty propagates into the error budget.\nThird, intrinsic alignments. With one redshift bin, A_IA and S8 are almost perfectly degenerate. We can’t fit A_IA from the data — so we build a prior from external measurements. This is the main caveat of the non-tomographic analysis: if the prior is wrong, S8 moves. Tomography breaks this.\nWe also inflate the priors on delta-z, A_IA, and m-bias by factors of 1.4, 2, and 3 from the measured values — that’s why the contours on the next slide are so wide. These will all tighten with future work."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#masking-using-catalog-weights",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#masking-using-catalog-weights",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Masking: using catalog weights",
-    "text": "Masking: using catalog weights\nbinning metacal weights into pixels; note bin-dependent feature at (71, -34)"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#unions-constraints-agree-with-planck-and-stage-iii-at-1σ",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#unions-constraints-agree-with-planck-and-stage-iii-at-1σ",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "UNIONS constraints agree with Planck and Stage III at ~1σ",
+    "text": "UNIONS constraints agree with Planck and Stage III at ~1σ\n\n\n\n\n\n\n\n\\(S_8\\)\n\\(\\Omega_m\\)\n\n\n\n\n\\(\\xi_\\pm\\)\n\\(0.86 \\pm 0.08\\)\n\\(0.27^{+0.14}_{-0.07}\\)\n\n\n\\(C_\\ell\\)\n\\(0.92 \\pm 0.08\\)\n\\(0.22^{+0.18}_{-0.06}\\)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHere are the UNIONS contours in context. Configuration space in orange, harmonic space in red — you can see KiDS-Legacy, HSC-Y3, and Planck for comparison. The contours are wide — with a single redshift bin, A_IA and S8 are nearly degenerate. The Gaussian prior we build from external data keeps the constraints finite, but a flat prior would essentially erase them. Multi-bin redshift calibration is in progress and will break this degeneracy. [CLICK] And here’s where UNIONS sits in the S8 landscape — consistent with everyone. The error bars span the entire range. That’s the cost of one redshift bin. Tomography will fix it."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#masking-using-catalog-weights-1",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#masking-using-catalog-weights-1",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Masking: using catalog weights",
-    "text": "Masking: using catalog weights\nbinning lensmc weights into pixels; note bin-dependent feature at (71, -34)"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#s_8-is-robust-to-analysis-choices-but-sensitive-to-the-ia-prior",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#s_8-is-robust-to-analysis-choices-but-sensitive-to-the-ia-prior",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "\\(S_8\\) is robust to analysis choicesbut sensitive to the IA prior",
+    "text": "\\(S_8\\) is robust to analysis choicesbut sensitive to the IA prior\n\n\n\n\nMost robustness tests shift \\(S_8\\) by \\(&lt; 0.4\\sigma\\)\n\n\n\\(A_\\mathrm{IA}\\) is the dominant nuisance: largely unconstrained, removing it shifts \\(S_8\\) by \\(0.7\\sigma\\)\n\n\n\n\n\n\n\n\n\n\nThis is the robustness summary. The whisker plot shows our result is stable: scale cuts, non-linear model, covariance, and leakage correction all shift S8 by less than 0.2 sigma. The exception is the intrinsic alignment treatment. A_IA is essentially unconstrained by our single-bin data — the posterior just follows the degeneracy direction. Turning off IA or switching to a flat prior produces the largest shifts. That’s the main caveat of this release, and it’s what tomography will resolve."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#isd-weights",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#isd-weights",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "ISD Weights",
-    "text": "ISD Weights\nfeature at (71, -34) appears in a couple of the ISD iterations"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#two-analyses-agree-to-2σ-calibrated-on-350-glass-mocks",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#two-analyses-agree-to-2σ-calibrated-on-350-glass-mocks",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Two analyses agree to ~2σ, calibrated on 350 GLASS mocks",
+    "text": "Two analyses agree to ~2σ, calibrated on 350 GLASS mocks\n\n\n\n\nShared inputs: mocks calibrate the expected scatter between analyses\n2.6% of mocks show a smaller \\(\\Delta S_8\\)\nAn unblinding criterion, to our knowledge a first for cosmic shear\n\n\n\n\n\n\n\n\n\n\\(\\Delta S_8\\) between config and harmonic space:data vs 350 GLASS mocks.\n\n\n\nThe two analyses share nearly everything — same catalog, same n(z), same blinding, overlapping inference code. So you can’t just compare their error bars as if they were independent. A half-sigma shift in uncorrelated posteriors means nothing; a half-sigma shift in highly correlated measurements might mean a lot. We calibrate this by running both pipelines on 350 GLASS mocks. The observed S8 difference is about 2 sigma relative to the mock distribution. Not alarming, but not negligible — and this is something we decided to check before unblinding, not after."
   },
   {
-    "objectID": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#looking-forward",
-    "href": "25_EuclidWL_Marseille/25_EuclidWL_Marseille.html#looking-forward",
-    "title": "Learning Lessons  from RR2 with CMBX",
-    "section": "Looking forward",
-    "text": "Looking forward\nAll the ingredients needed for us (CMBX) to build a full pipeline  with RR2 are coming together:\n\nworking familiarity with majority of the CosmoHub products\nour shear pipeline is lagging behind galaxy clustering,  so the former is our immediate priority\n\nCMBX (not just CMB lensing) RR2 hands-on meeting in Paris & Ferrara next week:\n\nOct 7-8 @ IAP, UNIFE; meeting wiki"
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#thank-you",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#thank-you",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Thank you!",
+    "text": "Thank you!\n\n\nThank you!\ncail.daley@cea.fr\n\n\n\nThank you! Happy to take questions. These slides were made with Claude — I did the thinking, Claude did the typing."
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#unions-delivers-the-first-northern-sky-cosmic-shear-constraints",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#unions-delivers-the-first-northern-sky-cosmic-shear-constraints",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "UNIONS delivers the first northern-sky cosmic shear constraints",
+    "text": "UNIONS delivers the first northern-sky cosmic shear constraints\n\n\nKey result: \\(S_8 = 0.86\\) (real space), \\(0.92\\) (harmonic), consistent with CMB at \\({\\sim}1\\sigma\\); systematic uncertainties inflated \\({\\times}1.4\\)–\\({\\times}3\\) to be conservative\n\n\nSystematic validation: three B-mode statistics converge on clean scales;PSF leakage marginalized in the likelihood\n\n\nPipeline agreement: real-space and harmonic-space analyses marginally consistent,calibrated on 350 GLASS mocks. An unblinding criterion\n\n\nNext:\n\n\nTomography and shape measurement improvements will tighten our constraints\n\n\nLooking forward to \\(3{\\times}2\\)pt and cross-correlations with DESI and CMB lensing\n\n\n\n\n\nFive companion papers on arXiv in April. Please reach out if you’re interested in the catalog or in cross-correlation opportunities."
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#backup",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#backup",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Backup",
+    "text": "Backup"
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#masking-creates-ambiguous-modes-that-require-eb-separable-statistics",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#masking-creates-ambiguous-modes-that-require-eb-separable-statistics",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Masking creates ambiguous modes that require E/B-separable statistics",
+    "text": "Masking creates ambiguous modes that require E/B-separable statistics\n\n\nSpin-2 shear fields can be decomposed into E-modes containing the vast majority of lensing information and B-modes, which are a probe of systematics at UNIONS noise levels.\n\nIn the presence of masking, some ambiguous modes cannot be cleanly attributed to E or B.\n\\(\\implies\\) need E/B-separable statistics"
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#only-the-psf-size-corrected-catalog-passes-across-all-statistics-and-scale-cuts",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#only-the-psf-size-corrected-catalog-passes-across-all-statistics-and-scale-cuts",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Only the PSF size-corrected catalog passes across all statistics and scale cuts",
+    "text": "Only the PSF size-corrected catalog passes across all statistics and scale cuts\n\n\n\\(p\\)-values for four catalog versions across fiducial and full-range cuts. Only the fiducial (PSF size-corrected) passes all three statistics."
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#c_ellbb-and-c_elleb-are-consistent-with-zero-within-the-adopted-scale-cuts",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#c_ellbb-and-c_elleb-are-consistent-with-zero-within-the-adopted-scale-cuts",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "\\(C_\\ell^{BB}\\) and \\(C_\\ell^{EB}\\) are consistent with zero within the adopted scale cuts",
+    "text": "\\(C_\\ell^{BB}\\) and \\(C_\\ell^{EB}\\) are consistent with zero within the adopted scale cuts\n\n\n\nNaMaster band-power estimation with mode-coupling correction.\nGray shading marks the harmonic-space scale cuts: \\(\\ell = 300\\)–\\(1600\\)."
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#accidental-unblinding-by-comparing-maximum-likelihood-across-blinds",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#accidental-unblinding-by-comparing-maximum-likelihood-across-blinds",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Accidental unblinding by comparing maximum likelihood across blinds",
+    "text": "Accidental unblinding by comparing maximum likelihood across blinds\n\n\n\n\nDashed lines: maximum likelihood (no prior penalty)\nML free to push \\(\\Delta z\\) and \\(A_\\mathrm{IA}\\) to extreme values that compensate the \\(n(z)\\) modification\nMAP (contours) rejects these, but ML reveals which blind is physical"
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#a_mathrmia-is-unconstrained-by-the-data-but-strongly-affects-s_8",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#a_mathrmia-is-unconstrained-by-the-data-but-strongly-affects-s_8",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "\\(A_\\mathrm{IA}\\) is unconstrained by the data but strongly affects \\(S_8\\)",
+    "text": "\\(A_\\mathrm{IA}\\) is unconstrained by the data but strongly affects \\(S_8\\)\n\n\n\n\\(S_8\\)–\\(\\Omega_m\\)–\\(A_\\mathrm{IA}\\) from configuration-space inference.\n\nGaussian \\(A_\\mathrm{IA}\\) prior (orange) vs flat prior (blue) vs no IA (green)\n\\(A_\\mathrm{IA}\\) is largely unconstrained by the data but strongly affects \\(S_8\\)\nA lower \\(A_\\mathrm{IA}\\) gives lower \\(S_8\\)"
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#s_8-is-robust-to-k_mathrmmax-nonlinear-scale-cuts-shift-constraints-by-0.2sigma",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#s_8-is-robust-to-k_mathrmmax-nonlinear-scale-cuts-shift-constraints-by-0.2sigma",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "\\(S_8\\) is robust to \\(k_\\mathrm{max}\\): nonlinear scale cuts shift constraints by \\(< 0.2\\sigma\\)",
+    "text": "\\(S_8\\) is robust to \\(k_\\mathrm{max}\\): nonlinear scale cuts shift constraints by \\(&lt; 0.2\\sigma\\)\n\n\n\n\nFiducial \\(\\ell_\\mathrm{max} = 1600\\) (\\(k_\\mathrm{max} \\approx 2.6\\;h\\,\\mathrm{Mpc}^{-1}\\))\nTested \\(k_\\mathrm{max} \\in [1, 3, 5]\\;h\\,\\mathrm{Mpc}^{-1}\\)\nAll shifts \\(&lt; 0.2\\sigma\\) from fiducial"
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#angular-scale-cuts-map-to-different-k_mathrmmax-for-xi_-and-xi_-",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#angular-scale-cuts-map-to-different-k_mathrmmax-for-xi_-and-xi_-",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Angular scale cuts map to different \\(k_\\mathrm{max}\\) for \\(\\xi_+\\) and \\(\\xi_-\\)",
+    "text": "Angular scale cuts map to different \\(k_\\mathrm{max}\\) for \\(\\xi_+\\) and \\(\\xi_-\\)\n\n\n\n\nColor: fraction of \\(C_\\ell\\) signal from \\(k &lt; k_\\mathrm{max}\\) at each \\(\\theta\\)\nRed curve: 90% signal boundary\n\\(\\xi_+\\) at \\(12'\\): \\(k_\\mathrm{max} = 0.43\\;h\\,\\mathrm{Mpc}^{-1}\\)\n\\(\\xi_-\\) at \\(12'\\): \\(k_\\mathrm{max} = 2.85\\;h\\,\\mathrm{Mpc}^{-1}\\)"
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#harmonic-space-s_8-is-robust-to-scale-cuts-and-analysis-choices",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#harmonic-space-s_8-is-robust-to-scale-cuts-and-analysis-choices",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Harmonic-space \\(S_8\\) is robust to scale cuts and analysis choices",
+    "text": "Harmonic-space \\(S_8\\) is robust to scale cuts and analysis choices\n\n\n\n\nScale cuts, nonlinear model, covariance, and leakage choices all shift \\(S_8\\) by \\(&lt; 0.2\\sigma\\)\nConsistent across all three blinds"
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#the-omega_m-difference-between-pipelines-is-unremarkable",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#the-omega_m-difference-between-pipelines-is-unremarkable",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "The \\(\\Omega_m\\) difference between pipelines is unremarkable",
+    "text": "The \\(\\Omega_m\\) difference between pipelines is unremarkable\n\n\n\n\n\\(\\Delta\\Omega_m = 0.046\\), PTE \\(= 0.20\\), \\(N_\\sigma = 0.83\\)\nThe tension is in \\(S_8\\) specifically, not a general disagreement\nBroad \\(\\Omega_m\\) posteriors mean almost any difference is consistent"
+  },
+  {
+    "objectID": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#config-and-harmonic-posteriors-agree-across-all-parameters",
+    "href": "26_Moriond_UNIONS/26_Moriond_UNIONS.html#config-and-harmonic-posteriors-agree-across-all-parameters",
+    "title": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear",
+    "section": "Config and harmonic posteriors agree across all parameters",
+    "text": "Config and harmonic posteriors agree across all parameters\n\n\n\nUNIONS \\(C_\\ell\\) (red) vs \\(\\xi_\\pm\\) (orange).\n\nSame blinded inputs\nAgreement across all parameters"
   },
   {
     "objectID": "25_DApPostdocSeminar/25_DApPostdocSeminar.html#cosmology-with-the-cmb",
@@ -369,6 +453,13 @@
     "title": "South Pole Telescope  Foreground Mitigation Challenges",
     "section": "Summary",
     "text": "Summary\n\n\nMost CMB foregrounds have different spectral response than CMB.\nSPT foregrounds should be extragalactic, allowing for simple component separation techniques.\n\nlinear combination of bands using analytic weights\n\nSolutions are less obvious for point sources (and interaction with our filtering)\n\nexploring source template subtraction\n\nIf you have critiques of or suggestions to improve these approaches,  I want to hear them!"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Cail Daley’s Talks",
+    "section": "",
+    "text": "UNIONS-3500:First Cosmological Constraintsfrom 2D Cosmic Shear\n\n\n\n\n\nUNIONS-3500 weak lensing: B-mode validation and S₈ constraints\n\n\n\n\n\nMar 27, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nEDF-S Lensing\n\n\n\n\n\nSPT Face-to-Face Meeting\n\n\n\n\n\nJul 3, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\n\n\n\nNRC-HAA-DAO Colloquium\n\n\n\n\n\nApr 15, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\n\n\n\nUBC Cosmo Coffee\n\n\n\n\n\nApr 11, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\n\n\n\nESLAB Euclid Symposium\n\n\n\n\n\nMar 25, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nCosmology with SPT-3G\n\n\n\n\n\nSéminaire postdoc du DAp\n\n\n\n\n\nMar 11, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nSouth Pole Telescope  Foreground Mitigation Challenges\n\n\nDeep CosmoStat Days 2025\n\n\nDeep CosmoStat Days 2025\n\n\n\n\n\nJan 17, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n Shear with Radio Galaxy  Polarization & Kinematics\n\n\nNice TOSCA Meeting 2024\n\n\nNice TOSCA Meeting 2024\n\n\n\n\n\nNov 8, 2024\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "24_TOSCA_Nice/index.html#intuitive-picture",
