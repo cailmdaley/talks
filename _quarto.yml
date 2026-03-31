@@ -2,7 +2,7 @@ project:
   type: website
   render:
     - index.qmd
-    - "2[0-9]_*/*.qmd"
+    - "2[0-9]*_*/*.qmd"
     - "!sasha_talks/"
     - "!CLAUDE.md"
     - "!AGENTS.md"
