@@ -1,0 +1,141 @@
+---
+title: "Euclid × CMB Lensing"
+occasion: SPT Secondaries and Cross-Correlations Call
+description: Status update on Euclid × ACT/SPT CMB lensing cross-correlations
+draft: false
+author:
+  name: Cail Daley & Euclid CMBX team
+date: March 30, 2026
+date-format: long
+
+output-file: 2603_CMBX_Update.html
+
+format:
+  revealjs:
+    width: 1920
+    height: 1080
+    theme: [default, custom.scss]
+    slide-number: true
+    fig-align: center
+    include-after-body: assets/no_footer_on_titleslide.html
+    footer: Cail Daley | Euclid × CMB-κ | SPT Secondaries & Cross-Correlations | March 30, 2026
+    history: false
+    hash: true
+    pdf-separate-fragments: true
+    pdf-max-pages-per-slide: 1
+    template-partials:
+      - title-slide.html
+    center-title-slide: false
+
+html-math-method:
+  method: mathjax
+  url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## Euclid DR1 targets October 2026, <br> but this will be extremely challenging
+
+- ESA hack, B-modes under investigation, unprecedented turnaround
+
+- The **CMBX group in Paris** meets for full-day hacks once a week:
+  - Cail Daley, Léa Dumilly, Margherita Lembo, Emma Ayçoberry, Vilasini Tinnaneri Sreekanth, Laura Salvati, Giulio Fabbian
+
+- Building a pipeline for Euclid × CMB lensing and tSZ
+
+- We haven't used SPT $y$-maps yet — Abhi's maps for DR1?
+
+- Giulio talked to someone at NERSC while in Santa Barbara: should be no problem to reserve 10s of GBs for at least the Euclid catalogs
+
+- Making progress but still waiting on a form to give SPT collaborators data access. Sorry!
+
+
+## Euclid RR2 is unblinded — we're building a full pipeline while we can still poke around
+
+:::::::::::::: {.columns}
+::: {.column style="width:55%"}
+
+- ~30% of DR1 area (385 deg²), **unblinded**
+
+- Cross-correlating with $\kappa$ from **ACT DR6** and **SPT-3G winter field**
+
+- Two tracers: $\delta_g \kappa$ and $\gamma \kappa$, **6 tomographic bins**
+
+- Pseudo-$C_\ell$ estimation with NaMaster, Gaussian covariance
+
+:::
+::: {.column style="width:45%"}
+
+::: {style="margin-top:-40px"}
+![](images/shared_map_conventions_south.png){width=100%}
+:::
+
+:::
+::::::::::::::
+
+::: {style="margin-top:-70px;position:relative"}
+![](images/euclid_cmbx_rr2dr1_footprints.png){fig-align="center" width=90%}
+::: {style="font-size:0.72em;text-align:right;margin-top:-35px;margin-right:60px"}
+Credit: M. Lembo
+:::
+:::
+
+
+## Six tomographic bins
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+![](images/euclid_nz_wl.png){width=100%}
+
+- **WL**: ~50M galaxies, two shear pipelines (lensmc, metacal)
+
+:::
+::: {.column style="width:50%"}
+
+![](images/euclid_nz_gc.png){width=100%}
+
+- **GC**: ~30M galaxies, 6 bins to $z \sim 0.9$
+
+:::
+::::::::::::::
+
+
+## Galaxy density × CMB lensing ($\delta_g \kappa$)
+
+![](images/signal_overview_density.png){fig-align="center" width=90%}
+
+
+## Cosmic shear × CMB lensing ($\gamma \kappa$)
+
+![](images/signal_overview_metacal.png){fig-align="center" width=90%}
+
+
+## tSZ × galaxy clustering with Planck (Léa)
+
+![](images/tSZxGC.png){fig-align="center" width=85%}
+
+
+## Map vs catalog estimator agree at high $\ell$, diverge at low $\ell$
+
+![](images/euclid_cmbx_catalog_vs_map_lensmc.png){fig-align="center" width=85%}
+
+
+## Systematic contamination is well below the noise floor {.scrollable}
+
+::: {style="text-align:center"}
+$X_\ell^f = \ell \, C_\ell^{\kappa S} C_\ell^{fS} / C_\ell^{SS}$ where $f$ = galaxy field, $S$ = systematic map
+:::
+
+![](images/euclid_cmbx_contamination_overview.png){width=100% style="height:4252px"}
+
+
+## Eleven VMPZ-ID systematic maps track observational effects {.scrollable}
+
+![](images/systematic_maps_composite.png){width=100% style="height:9374px"}
+
+
+## $\ell$-dependence
+
+![](images/fig_ell_range_robustness.png){fig-align="center" width=70%}
+
+
