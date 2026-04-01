@@ -1,0 +1,344 @@
+---
+title: "Tapestry × ASTRA"
+occasion: Lightcone UX Hack
+description: Visualizing research decisions with progressive disclosure
+draft: true
+author:
+  name: Cail Daley
+date: March 31, 2026
+date-format: long
+
+output-file: 2603_Lightcone_UX.html
+
+format:
+  revealjs:
+    width: 1920
+    height: 1080
+    theme: [default, custom.scss]
+    slide-number: true
+    fig-align: center
+    include-after-body: assets/no_footer_on_titleslide.html
+    footer: Cail Daley | Tapestry × ASTRA | Lightcone UX Hack | March 31, 2026
+    history: false
+    hash: true
+    pdf-separate-fragments: true
+    pdf-max-pages-per-slide: 1
+    template-partials:
+      - title-slide.html
+    center-title-slide: false
+
+html-math-method:
+  method: mathjax
+  url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+
+## Getting out ahead of your skis
+
+::: {style="font-size:0.85em"}
+
+> I find if I am making progress on more than two or three architectural concepts at a time I can't hold the proper context in my own head, and **getting out ahead of your skis is the most dangerous thing in agent coding.** It is dangerous because it is tempting, and seemingly works at first, but very quickly breaks down in a way that is hard to recover from.
+>
+> If you care at all about what you're building, if you care to apply your own will to the result, if you are crafting a vision from your own mind and not the mind of the shoggoth, take care to not let your agents run ahead of you.
+
+::: {style="text-align:right;font-size:0.75em;opacity:0.7"}
+— @irl_danB
+:::
+
+:::
+
+::: {style="font-size:0.7em;opacity:0.7;margin-top:-0.3em"}
+[x.com/irl_danB/status/2038656769556373562](https://x.com/irl_danB/status/2038656769556373562)
+:::
+
+Back from Moriond...
+
+
+## A running analysis with ASTRA decisions and felt evidence
+
+- **Kinematic lensing** — extracting gravitational shear from galaxy velocity fields
+
+- ASTRA spec with **7 decisions** across 1 sub-analysis (`build_mocks`)
+
+- **Snakemake backend** generates scatter-gather rules from the spec
+  - 10-seed mock sweep runs end-to-end on SLURM
+
+- **Felt fibers** carry the evidence and reasoning — 19 closed tapestry nodes
+
+- The question: **how do decisions and evidence present together?**
+
+
+## The tapestry is a knowledge graph of research fibers
+
+- Each fiber is a concern: task, decision, question, finding — connected in a **DAG**
+
+- Evidence nodes carry **plots, metrics, judgment**; fog mechanic reveals on click
+
+- Already works — but **doesn't know about ASTRA decisions**
+
+```{=html}
+<pre style="font-size:0.55em;line-height:1.7;background:#f8f8f5;padding:1em 1.5em;border-left:4px solid #475569;border-radius:8px;box-shadow:none"><code>✓ Intensity profile          ✓ Galaxy generation          ? Sigma floor suspicious
+│                             │                            │
+├─ ✓ Noise model verified    ├─ ✓ MIRoRS residuals        └─ ○ Multiplicative bias
+│  └─ ✓ Likelihood peaks     └─ ✓ Shear reference frame
+│     at truth                   └─ ✓ Phi symmetry
+└─ ✓ Covariance matches
+   └─ ✓ Covariance model</code></pre>
+```
+
+
+## ASTRA decisions are formal; fibers are the reasoning behind them
+
+:::::::::::::: {.columns}
+::: {.column style="width:48%"}
+
+### ASTRA says *what*
+
+```{.yaml style="font-size:0.6em"}
+noise_scaling:
+  default: intensity_weighted
+  options:
+    intensity_weighted:
+      label: "σ = δv √(I_peak/I)"
+    constant:
+      excluded: true
+      excluded_reason: "Not physical"
+```
+
+:::
+::: {.column style="width:48%"}
+
+### Fibers say *why*
+
+```{style="font-size:0.6em"}
+● noise-model-correctly-2205184f
+  "Linear scaling exact (ratio=2.0),
+   spatial variation 5.3× from
+   inclination"
+  Status: closed
+  Evidence: 3 plots, 4 metrics
+```
+
+:::
+::::::::::::::
+
+- Decisions define **what was chosen**; fibers carry **the investigation and judgment**
+
+- **Complementary, not competing** — tags wire them together
+
+
+## Don't restructure the data — restructure the view
+
+::: {.spaced-bullets}
+
+- Fibers stay organic. **Tags wire them to decisions.**
+
+  `evidence:noise_scaling` on a fiber → it shows up under that decision
+
+- The tapestry dashboard **assembles views** from three sources:
+
+:::
+
+<br>
+
+:::::::::::::: {.columns}
+::: {.column style="width:33%;text-align:center"}
+
+### ASTRA spec
+decisions, alternatives,<br> insights
+
+*the structure*
+
+:::
+::: {.column style="width:34%;text-align:center"}
+
+### Felt fibers
+evidence, investigation,<br> judgment
+
+*the reasoning*
+
+:::
+::: {.column style="width:33%;text-align:center"}
+
+### Execution state
+outputs exist,<br> stale, running
+
+*the pipeline*
+
+:::
+::::::::::::::
+
+
+## The spine follows the structure of a scientific paper
+
+<br>
+
+```{=html}
+<pre style="font-size:0.65em;line-height:1.7;background:#f8f8f5;padding:1em 1.5em;border-left:4px solid #475569;border-radius:8px;box-shadow:none"><code>Introduction    →    Data & Methods    →    Results         →    Conclusions
+                          │                    │                      │
+                     build_mocks          likelihood             calibration
+                     methodology          inference              synthesis</code></pre>
+```
+
+<br>
+
+::: {.spaced-bullets}
+
+- **Horizontal axis** = scientific questions, aligned with sub-analyses
+
+- **Vertical axis** = investigation depth
+
+- More investigation makes it **taller**, not wider
+
+- The spine is **fixed, immovable** — branches expand below
+
+:::
+
+
+## Progressive disclosure: three levels, two clicks
+
+<br>
+
+| Level | Shows | Example |
+|:------|:------|:--------|
+| **L0 — Spine** | Sub-analysis verdict + status | `Mocks` [✓]{.status-resolved} `5/7 decisions resolved` |
+| **L1 — Decision** | Verdict sentence + evidence count | `noise_scaling: intensity_weighted` [✓]{.status-resolved} `— "Linear scaling exact"` |
+| **L2 — Evidence** | Full fiber: plots, metrics, upstream | The actual investigation |
+
+<br>
+
+::: {.spaced-bullets}
+
+- Fiber **outcomes ARE the declarative titles** — no extra writing
+
+- Collapsed branches show count + worst status, **never blank**
+
+- **URL-encoded state** — bookmarkable views
+
+:::
+
+
+## The default view is the delta
+
+::: {.spaced-bullets}
+
+- **Returning researcher**: what changed since I last looked?
+
+- Nodes with new evidence **start revealed**; everything else **starts fogged**
+
+- The existing fog mechanic already supports this — the change is making initial visibility **data-driven** (by recency) instead of interaction-driven (by click)
+
+- Items stay revealed until **reviewed and validated by a human**, then fold back
+
+- This is the **BLUF** (bottom line up front) pattern:
+
+:::
+
+```{=html}
+<pre style="font-size:0.6em;line-height:1.8;background:#f8f8f5;padding:1em 1.5em;border-left:4px solid #475569;border-radius:8px;box-shadow:none"><code>Since last session:
+  ✓  10 mocks generated (build_mocks complete)
+  ?  sigma_floor still unresolved — blocking calibration
+  ○  Next decision needed: mask_strategy</code></pre>
+```
+
+
+## Four epistemic states, shape over color
+
+<br>
+
+| State | Icon | Meaning |
+|:------|:----:|:--------|
+| Resolved | [✓]{.status-resolved} | Decision closed with evidence |
+| Open | [○]{.status-open} | No evidence yet / in progress |
+| Suspicious | [?]{.status-suspicious} | Evidence exists but judgment uncertain |
+| Blocked | [✕]{.status-blocked} | Depends on unresolved upstream |
+
+<br>
+
+::: {.spaced-bullets}
+
+- **Shape > color** — three channels: icon + muted color + text label
+
+- **Pipeline health ≠ scientific judgment** — a mock can be generated (pipeline ✓) but suspicious (science ?)
+
+- Reserve saturated red for **genuine failures only**
+
+:::
+
+
+## Overview first, zoom and filter, details on demand
+
+::: {.spaced-bullets}
+
+- **Shneiderman's visual information seeking mantra** (1996)
+
+  The three-level disclosure maps directly onto it
+
+- **Spine** = overview — what's decided, what's open
+
+- **Decisions** = zoom and filter — drill into what needs attention
+
+- **Evidence** = details on demand — plots, metrics, investigation chain
+
+- **Cross-cutting decisions just work**: `shear_frame` has evidence from 3 different sub-analyses — all tagged, all surface when drilling in
+
+:::
+
+::: {style="font-size:0.7em;opacity:0.7;margin-top:1em"}
+B. Shneiderman, "The Eyes Have It: A Task by Data Type Taxonomy for Information Visualizations," *IEEE Symposium on Visual Languages*, 1996
+:::
+
+
+## Conclusions first, evidence underneath
+
+::: {.spaced-bullets}
+
+- **Barbara Minto's Pyramid Principle**: lead with the answer, group supporting arguments, let evidence follow
+
+- Applied to every level of the tapestry:
+
+  - Spine headline: **verdict**, not description
+  - Decision title: **"Linear scaling exact (ratio=2.0)"**, not "Noise model"
+  - Evidence: the plots, only when you drill in
+
+- The headline sequence **reads as a coherent argument**
+
+- This is what makes it a **briefing**, not a dashboard
+
+:::
+
+
+## The tapestry is a briefing, not a dashboard
+
+::: {.spaced-bullets}
+
+- **Lead with science**, not pipeline — the overview shows decisions, not jobs
+
+- **Default to delta** — what changed since last session
+
+- **Group by question**, not pipeline step — "Are mocks physical?" not "Stage 1"
+
+- **The returning researcher** needs: what's decided, what changed, what needs my attention — and *judgment*, not just data
+
+- An agent could generate the entry briefing, walk the spine, flag what's new
+
+:::
+
+
+## Implementation: tags → spine → delta → drill-in
+
+| Phase | What | Effort |
+|:------|:-----|:-------|
+| **1. Tags** | `evidence:decision_id` on existing fibers | Data prep, no viewer changes |
+| **2. Spine** | Horizontal layout for tier-1 nodes in paper order | New layout mode in portolan |
+| **3. Delta** | Initial visibility driven by mtime recency | Small change to fog logic |
+| **4. Drill-in** | Click spine → show ASTRA decisions + evidence | Needs ASTRA metadata in export |
+
+::: {.spaced-bullets}
+
+- Build on **Tessera components**: InsightCard, EvidenceBlock, VerificationBadge
+
+- **ASTRA insights** bridge the formal claim and the full investigation
+
+:::

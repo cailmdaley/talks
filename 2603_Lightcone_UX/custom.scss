@@ -1,0 +1,129 @@
+
+/*-- scss:defaults --*/
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300..500;1,300..500&display=swap');
+
+$font-family-sans-serif: Raleway, sans-serif;
+
+body {
+    font-variant-numeric: lining-nums;
+    -moz-font-feature-settings: "lnum" 1;
+    -moz-font-feature-settings: "lnum=1";
+    -ms-font-feature-settings: "lnum" 1;
+    -o-font-feature-settings: "lnum" 1;
+    -webkit-font-feature-settings: "lnum" 1;
+    font-feature-settings: "lnum" 1;
+}
+
+$presentation-font-size-root: 45px;
+$presentation-h1-font-size: 2.5em;
+$presentation-h2-font-size: 1.35em;
+$presentation-h3-font-size: 1.5em;
+$presentation-h4-font-size: 1.3em;
+
+
+/*-- scss:rules --*/
+
+// Spaced bullets: more gap between bullets, normal line-height within
+.spaced-bullets li {
+    margin-bottom: 0.8em;
+}
+
+.caption-left {
+    text-align: left;
+    margin-left: 30px;
+}
+
+.fitcenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    &.text-left {
+        text-align: left;
+        figcaption {
+            margin-left: 30px;
+        }
+    }
+
+    &.text-right {
+        text-align: right;
+        figcaption {
+            margin-right: 30px;
+        }
+    }
+}
+
+.reveal img {
+    vertical-align: middle;
+    margin: 0;
+}
+
+.reveal img.nopad {
+    padding: 0;
+}
+
+.quarto-figure {
+    margin-bottom: 0;
+    padding: 0;
+}
+
+figcaption > span {
+    display: block !important;
+    position: relative !important;
+}
+
+.credit {
+    position: relative;
+    display: block;
+}
+
+.reveal .footer {
+    font-size: 2vh !important;
+    bottom: 2vh !important;
+}
+
+.reveal .slide-number > a[href*='title-slide'] {
+    display: none;
+}
+
+.reveal .slides .full {
+    top: 0 !important;
+    padding: 0;
+    margin-top: 0;
+}
+
+.reveal .slide.scrollable img {
+    max-height: none !important;
+}
+
+// Fix code blocks to show full height
+.reveal pre {
+    width: 100%;
+    box-shadow: none;
+}
+
+.reveal pre code {
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+// Diagram styling for text-based visuals
+.diagram {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65em;
+    line-height: 1.6;
+    background: #f8f8f5;
+    padding: 1.2em 1.5em;
+    border-radius: 8px;
+    border-left: 4px solid #475569;
+    white-space: pre;
+    overflow-x: auto;
+}
+
+// Status icons
+.status-resolved { color: #2E7D32; }
+.status-open { color: #5C6BC0; }
+.status-suspicious { color: #E65100; }
+.status-blocked { color: #C62828; }
