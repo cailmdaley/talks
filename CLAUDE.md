@@ -3,6 +3,9 @@
 ## Project Structure & Module Organization
 Slide decks live in date-prefixed directories such as `25_ESLAB_Leiden/`, each containing a primary `.qmd` file, supporting `images/`, and optional `assets/` overrides. Shared resources sit at the top level: `assets/` for HTML partials, `images/` for cross-talk figures, and `styles.css` for global Reveal.js tweaks. `_quarto.yml` configures the umbrella Quarto site, while `_site/` holds rendered output—never edit files there. `_template_quarto/` stores starter material when creating a new talk. Utility scripts like `generate_index.py` and `collect_unused_assets.py` automate housekeeping.
 
+## Publishing
+Push to `main` triggers GitHub Actions (`.github/workflows/publish.yml`) which renders the full site and deploys to GitHub Pages. **Never run `quarto publish` locally** — it overwrites gh-pages with whatever partial `_site/` exists on the current machine.
+
 ## Build, Test, and Development Commands
 - `quarto check`: confirm the Quarto CLI and required engines are available.
 - `quarto preview`: serve the full site locally with live reload for incremental edits.
