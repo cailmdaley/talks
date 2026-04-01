@@ -111,7 +111,7 @@ noise_scaling:
 
 ### Fibers say *why*
 
-```{style="font-size:0.6em"}
+```{.text style="font-size:0.6em"}
 ● noise-model-correctly-2205184f
   "Linear scaling exact (ratio=2.0),
    spatial variation 5.3× from
