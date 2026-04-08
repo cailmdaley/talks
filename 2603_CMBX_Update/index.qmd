@@ -125,7 +125,7 @@ Credit: M. Lembo
 ![](images/systematic_maps_composite.png){width=100% style="height:9374px"}
 
 
-## Systematic contamination is well below the noise floor {.scrollable}
+## Some signs of systematic contamination {.scrollable}
 
 ::: {style="text-align:center"}
 $X_\ell^f = \ell \, C_\ell^{\kappa S} C_\ell^{fS} / C_\ell^{SS}$ where $f$ = galaxy field, $S$ = systematic map
