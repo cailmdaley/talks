@@ -120,18 +120,18 @@ Credit: M. Lembo
 ![](images/euclid_cmbx_catalog_vs_map_lensmc.png){fig-align="center" width=85%}
 
 
-## Systematic contamination is well below the noise floor {.scrollable}
+## Eleven VMPZ-ID systematic maps track observational effects {.scrollable}
+
+![](images/systematic_maps_composite.png){width=100% style="height:9374px"}
+
+
+## Some signs of systematic contamination {.scrollable}
 
 ::: {style="text-align:center"}
 $X_\ell^f = \ell \, C_\ell^{\kappa S} C_\ell^{fS} / C_\ell^{SS}$ where $f$ = galaxy field, $S$ = systematic map
 :::
 
 ![](images/euclid_cmbx_contamination_overview.png){width=100% style="height:4252px"}
-
-
-## Eleven VMPZ-ID systematic maps track observational effects {.scrollable}
-
-![](images/systematic_maps_composite.png){width=100% style="height:9374px"}
 
 
 ## $\ell$-dependence

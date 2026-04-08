@@ -1,0 +1,329 @@
+---
+title: "Learning Lessons <br> from RR2 with CMBX"
+occasion: Euclid Pizza Lunch
+description: Rapid notes on Euclid-CMBX RR2 mask products feeding the upcoming cross-correlation analysis.
+author:
+  name: Cail Daley
+  affiliation: CosmoStat, CEA Paris-Saclay
+resources:
+  - images/euclidwl_coverage_mask.png
+date: October 28, 2025
+date-format: long
+unlisted: true
+
+format:
+  revealjs:
+    width: 1920
+    height: 1080
+    theme: [default, custom.scss]
+    slide-number: true
+    fig-align: center
+    menu: false
+    include-after-body: assets/no_footer_on_titleslide.html
+    footer: "Cail Daley | CMBX RR2 | October 2025"
+    history: false
+    hash: true
+    pdf-separate-fragments: true
+    pdf-max-pages-per-slide: 1
+    template-partials:
+      - title-slide.html
+    center-title-slide: false
+image: images/euclidwl_coverage_mask.png
+# logo: images/CosmoStat-Logo_WhiteBK.jpg
+# decktape: decktape reveal --fragments -s 1920x1080 _site/25_EuclidWL_Marseille/25_EuclidWL_Marseille.html 25_EuclidWL_Marseille/25_EuclidWL_Marseille.pdf
+
+html-math-method:
+  method: mathjax
+  url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## Overview
+
+:::::::::::::: {.columns}
+::: {.column width=60%}
+
+<br>
+<br>
+
+- CMB lensing $\kappa$ as a structure probe
+- Introduction to CMBX-2/3 projects
+- Analysis ingredients
+- Overlap between CMBX and 3x2pt
+- Learning lessons from RR2
+
+:::
+::: {.column .fragment width=40%}
+
+::: {style="text-align:center;margin-top:-130px"}
+[Galaxy 3x2pt]{style="color:maroon"} vs. [CMBX 3x2pt]{style="color:teal"}
+:::
+
+<div class="six2pt-wrapper">
+<table class="six2pt-grid">
+  <thead>
+    <tr>
+      <th></th>
+      <th>$\delta_g$</th>
+      <th>$\gamma$</th>
+      <th>$\kappa$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>$\delta_g$</th>
+      <td class="wl-term">$\delta_g\,\delta_g$</td>
+      <td class="wl-term">$\delta_g\,\gamma$</td>
+      <td class="cmb-term">$\delta_g\,\kappa$</td>
+    </tr>
+    <tr>
+      <th>$\gamma$</th>
+      <td>&mdash;</td>
+      <td class="wl-term">$\gamma\,\gamma$</td>
+      <td class="cmb-term">$\gamma\,\kappa$</td>
+    </tr>
+    <tr>
+      <th>$\kappa$</th>
+      <td>&mdash;</td>
+      <td>&mdash;</td>
+      <td class="cmb-term">$\kappa\,\kappa$</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+::: {style="text-align:center"}
+or [auto-]{style="color:maroon"} vs. [cross-]{style="color:teal"} correlations
+:::
+
+
+
+<div class="six2pt-wrapper">
+<table class="six2pt-grid">
+  <thead>
+    <tr>
+      <th></th>
+      <th>$\delta_g$</th>
+      <th>$\gamma$</th>
+      <th>$\kappa$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>$\delta_g$</th>
+      <td class="auto-term">$\delta_g\,\delta_g$</td>
+      <td class="cross-term">$\delta_g\,\gamma$</td>
+      <td class="cross-term">$\delta_g\,\kappa$</td>
+    </tr>
+    <tr>
+      <th>$\gamma$</th>
+      <td>&mdash;</td>
+      <td class="auto-term">$\gamma\,\gamma$</td>
+      <td class="cross-term">$\gamma\,\kappa$</td>
+    </tr>
+    <tr>
+      <th>$\kappa$</th>
+      <td>&mdash;</td>
+      <td>&mdash;</td>
+      <td class="auto-term">$\kappa\,\kappa$</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+:::
+::::::::::::::
+
+
+## Project Information
+
+**DR1-KP-CMBX-2/3**
+
+- **CMBX-2**: CMB lensing cross-correlation with Euclid observables
+
+- **CMBX-3**: Cosmology with Euclid photometric probes <br> and CMB lensing (3×2pt + CMB lensing block)
+
+**Communication**
+
+- [Wiki](https://euclid.roe.ac.uk/projects/dr1-kp-cmbx-3/wiki/Wiki) | [GitLab](https://gitlab.euclid-sgs.uk/SWG/SWG-CMBX) (`dr1_cmbx` becoming main analysis repo) 
+- Bi-weekly telecons: Thursdays 14:00 CET (alternates with CMBX-SWG)
+- Slack: #dr1-kp-cmbx3_2
+- [Meeting notes](https://docs.google.com/document/d/1Qq6zh-lNxLnTD0eyKs6VasRJ5ELbgmMKdQ88kMZxGoE/) | [Slide deck](https://docs.google.com/presentation/d/1sxCQnp2zRyyd5Zz-Si0FJz7kpVjmUlOjq1iaQYkstO0/)
+
+Many other CMBX projects & people that I don't have space to acknowledge!
+
+## Euclid × SPT-3G MoU Project
+
+Cross-correlation between SPT-3G CMB lensing and Euclid DR1: $\delta_{\rm g} \kappa, \gamma \kappa, \kappa \kappa$.
+
+![](images/euclid_rr2_cmb_experiment_footprints_Nl.png){height=900px fig-align="center"}
+
+## Euclid × SPT-3G MoU Project
+
+Cross-correlation between SPT-3G CMB lensing and Euclid DR1: $\delta_{\rm g} \kappa, \gamma \kappa, \kappa \kappa$.
+
+**Rough forecasts**:
+
+- $\gamma \kappa$: ~14% improvement in $\Omega_m, \sigma_8$ FoM relative to WL alone <br> for SPT-3G × DR1 South (M. Gatti)
+- $\delta_{\rm g} \kappa$: Combined SNR ~60 across Main and Summer fields
+
+![](images/euclid_cmbx_rr2dr1_footprints.png){width=100% fig-align="center"}
+
+::: {style="font-size:0.7em;margin-top:-100px;z-index:1;position:relative"}
+Credit: Margherita Lembo
+:::
+
+## Analysis Ingredients:
+
+(non-exhaustive)
+
+- **Euclid data:** ~ everything used by 3x2pt
+- **CMB data:** ACT, SPT, Planck covergence maps & masks
+- **Correlated simulations:** 
+  - larger number of simple realizations for covariance
+  - small number of more realistic realizations for bias characterization 
+    - **Euclid side:** Flagship | **CMB side:** [Agora (Omori 2024)](https://arxiv.org/abs/2212.07420) | how to combine TBD...
+  
+- Harmonic space analysis: `namaster`, `polspice`, `heracles`
+  - would like to try both pixel- and catalog-based approaches
+
+- Blinding TBD, but would like to coordinate with WL to avoid siloing ourselves
+
+## Overlap between CMBX and 3x2pt
+
+
+- Crosschecks on shear calibration and galaxy bias
+
+- Splits (blue/red, North/South)
+
+- Consistency between 2D-MASS and shear maps?
+
+- Systematics cross-correlations
+
+
+![redMaGiC galaxy bias estimates with cosmology fixed, from Chang et al. 2022](images/chang_2022_X_nk_redmagic.png)
+
+## Self-Calibration
+
+- Adding CMB lensing can provide independent constraints on $m$- and $\Delta z$-biases:
+
+![](images/shaikh-des-act-flask-theories-onepanel.png)
+
+Shaikh et al. 2023
+
+<br>
+
+>CMB lensing from S4 can calibrate the shear for the 10 Euclid source bins <br>
+down to 0.4%−2.4% 
+
+(Schaan et al. 2016)
+
+## Self-Calibration
+
+- Adding CMB lensing can provide independent constraints on $m$- and $\Delta z$-biases:
+
+:::::::::::::: {.columns}
+::: {.column width=40%}
+![](images/abbot_3x2_5x2_freem.png)
+:::
+::: {.column width=35%}
+![](images/abbot_3x2_5x2_freem2.png)
+
+Abbott et al. 2023
+:::
+::::::::::::::
+
+
+
+## Systematics Cross-Correlations
+
+- Following DES × SPT methodology: quantify potential systematic contamination
+**Cross-correlation score for systematic field $\mathcal{S}$:**
+$$X^{f}_{\mathcal{S}}(\theta) = \frac{\langle \kappa_{\rm CMB} \mathcal{S}(\theta)\rangle \, \langle f \mathcal{S}(\theta)\rangle}{\langle \mathcal{S} \mathcal{S}(\theta)\rangle}, \qquad f \in \{\delta_g, \gamma\}$$
+
+$X^{f}_{\mathcal{S}} \approx 0$ unless systematic correlates with **both** fields 
+
+- so a less restrictive version of FDQA tests
+
+<br>
+
+originally planned to use only stellar extinction/density and PSF ellipticity and size errors; but may as well use all the FDQA systematics.
+
+# Learning Lessons from RR2 {.center}
+
+## Masking: what to use?
+
+Inititally thought `W = coverage * (1 + visibility)`
+
+![](images/euclid_rr2_coverage_visibility_mask.png){width=100% fig-align="center"}
+
+## Masking: coverage vs. catalog weights
+
+but comparing to shear weights, there are [unmasked regions with 0 weight:]{style="color:crimson"}
+
+![](images/euclid_rr2_mask_vs_counts_method=lensmc.png){fig-align="center" width=100%}
+
+## Masking: coverage vs. catalog weights
+
+but comparing to shear weights, there are [unmasked regions with 0 weight:]{style="color:crimson"}
+
+![](images/euclid_rr2_mask_vs_counts_method=metacal.png){fig-align="center" width=100%}
+
+## Masking: using catalog weights
+
+binning `metacal` weights into pixels; note bin-dependent feature at (71, -34)
+
+![](images/animated_weights_method=metacal.gif){width=100%}
+
+## Masking: using catalog weights
+
+binning `lensmc` weights into pixels; note bin-dependent feature at (71, -34)
+
+![](images/animated_weights_method=lensmc.gif){width=100%}
+
+## ISD Weights
+
+feature at (71, -34) appears in a couple of the ISD iterations
+
+![](images/euclid_rr2_isd_weights_iterations_bin_1.gif){width=100%}
+
+<!-- ## n(z) Comparisons
+
+:::: {.columns}
+::: {.column width="50%"}
+
+- Comparing RR2 unweighted tomographic redshift histograms against the Flagship mocks in both coarse and fine binning.
+
+:::
+::: {.column width="50%"}
+
+![](images/nz_comparison_weighted_dz010.png){width=100%}
+
+:::
+:::: -->
+
+# {background-image="images/euclid_rr2_gc_slide.png" background-size="contain"}
+
+::: {style="margin-top:930px;margin-left:1300px;color:maroon;font-size:1.3em"}
+All credit to Margherita Lembo
+:::
+
+::: footer
+:::
+
+
+
+## Looking forward
+
+All the ingredients needed for us (CMBX) to build a full pipeline <br> with RR2 are coming together:
+
+- working familiarity with majority of the CosmoHub products
+
+- our shear pipeline is lagging behind galaxy clustering, <br> so the former is our immediate priority
+
+CMBX (**not** just CMB lensing) RR2 hands-on meeting in Paris & Ferrara next week:
+
+  - Oct 7-8 @ IAP, UNIFE; [meeting wiki](https://euclid.roe.ac.uk/projects/cxswg/wiki/CMBX_RR2_Hands-on_Meeting#section-4)
+
+
+# Thank you! {.center}

@@ -1,24 +1,8 @@
-# Render all talks and deploy to GitHub Pages.
-#
-# Why CI instead of local publish:
-# - Multi-machine: talks are authored on different machines, none has a
-#   complete _site/. CI always renders from the full repo.
-# - Re-rendering all talks is fast (~30s for pure markdown → reveal.js,
-#   no code execution involved). freeze doesn't help here — it only
-#   caches code execution, not pandoc rendering.
-# - quarto publish gh-pages overlays _site/ onto the branch but doesn't
-#   clean missing files. A partial _site/ (from rendering one talk)
-#   breaks the reveal.js runtime for all other talks.
-#
-# To publish: just push to main. No local quarto publish needed.
-# To preview locally: quarto preview (renders + watches for changes).
-
 name: Publish to GitHub Pages
 
 on:
   push:
     branches: [main]
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -27,7 +11,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
