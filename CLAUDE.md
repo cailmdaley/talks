@@ -17,4 +17,26 @@ YAML front matter uses two-space indentation and kebab-case keys; keep metadata 
 Testing and commit workflows are handled directly by the repository maintainer.
 
 ## Asset Management
-Each talk inherits `images/` and `assets/` as symlinks to the shared pools; keep them if you want centralized reuse, or replace the symlink with a real folder when slides demand bespoke art. Run `python collect_unused_assets.py` selectively (it moves orphaned top-level images into `unused_images/`; review before deleting). Store high-resolution figures under `images/` and downsample only within Quarto to preserve flexibility.
+Each talk inherits `images/` and `assets/` as symlinks to the shared pools; keep them if you want
+centralized reuse, or replace the symlink with a real folder when slides demand bespoke art.
+
+### What NOT to commit
+- **PDFs / pptx** — presentation exports. Gitignored. Re-export from `.qmd` source as needed
+  (`decktape` commands are in comments at the top of each `.qmd`).
+- **`_site/`** — rendered output. Gitignored.
+- **`unused_images/`** — images pruned by `collect_unused_assets.py`. Gitignored.
+
+### Image hygiene
+- **Size**: keep PNGs under ~2MB. Resize to max 2000px wide (projectors are 1920px). Use
+  `Pillow` or `pngquant` to compress before committing.
+- **Pruning**: `python collect_unused_assets.py` (dry run by default) scans all `.qmd`, `.md`,
+  `.html`, `.yml`, `.scss` files for `images/` references. Use `--move` to relocate orphans to
+  `unused_images/`.
+- **No git-lfs** — GitHub Pages cannot serve LFS-tracked files.
+- **History matters**: large binaries bloat `.git/` permanently. When removing images, also
+  consider `git filter-repo` to strip them from history (requires force push).
+
+### Rendered HTML for GitHub Pages
+Each talk needs a rendered `index.html` committed (alongside its `.qmd` source) for GH Pages to
+serve it. The per-talk `images/` and `assets/` symlinks must also be committed so the HTML can
+resolve its assets.
