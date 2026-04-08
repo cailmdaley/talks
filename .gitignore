@@ -6,3 +6,5 @@
 
 **/*.quarto_ipynb
 unused_images/
+*.pdf
+*.pptx
