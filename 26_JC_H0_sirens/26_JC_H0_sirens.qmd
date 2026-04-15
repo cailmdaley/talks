@@ -1,0 +1,442 @@
+---
+title: "H₀ from gravitational-wave ×<br>galaxy cross-correlations"
+occasion: CosmoStat Journal Club
+description: Two papers on standard-siren H₀ from cross-correlation
+author:
+  name: Cail Daley
+  affiliation: "CosmoStat, CEA Paris-Saclay"
+date: today
+date-format: long
+
+format:
+  revealjs:
+    width: 1920
+    height: 1080
+    theme: [default, custom.scss]
+    slide-number: true
+    fig-align: center
+    menu: false
+    include-after-body: assets/no_footer_on_titleslide.html
+    footer: "Cail Daley | CosmoStat JC | today"
+    history: false
+    hash: true
+    template-partials:
+      - title-slide.html
+    center-title-slide: false
+
+html-math-method:
+  method: mathjax
+  url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## Standard sirens measure $H_0$ without the distance ladder
+
+<br>
+
+**Hubble's law wants $d_L$ and $z$:**
+
+$$d_L(z) \;=\; (1+z)\,\frac{c}{H_0}\!\int_0^z\!\frac{dz'}{\sqrt{\Omega_m(1+z')^3 + \Omega_\Lambda}}$$
+
+::: {.spaced-bullets}
+- Traditional distance-ladder methods build $d_L(z)$ by measuring redshifts of objects of known absolute luminosity, thus inferring $d_L$ — with potentially compounding systematics.
+- The GW **inspiral** gives $d_L$ directly from GR, without assumptions of intrinsic brightness or a multi-step ladder of propagating systematics.
+- **But dark sirens** have no optically identifiable host, and thus no spectrum / no $z$.
+:::
+
+::: {.aside}
+[Schutz 1986](https://www.nature.com/articles/323310a0) — *Determining the Hubble constant from gravitational-wave observations*, Nature 323, 310.
+:::
+
+## A chirping waveform gives $d_L$ absolutely — but never $z$
+
+:::: {.columns}
+::: {.column width="62%"}
+![](images/gw150914_strain_full.png){fig-align="center" width="100%"}
+
+::: {.aside}
+GW150914: [Abbott+ 2016, PRL 116, 061102](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.116.061102), Fig. 1.
+:::
+:::
+::: {.column width="38%" .spaced-bullets}
+<div style="margin-top: -5%">
+
+**Amplitude alone is degenerate:**
+$$h \;\propto\; \mathcal{M}_z^{5/3}\, f^{2/3}\,/\,d_L$$
+
+**Chirp rate breaks it** — from *phase*, not amplitude:
+$$\dot f \;\propto\; \mathcal{M}_z^{5/3}\, f^{11/3} \;\;\Rightarrow\;\; \mathcal{M}_z$$
+
+Plug $\mathcal{M}_z$ back into $h$ → $d_L$ absolutely. GR-calibrated, no distance ladder.
+
+<br>
+
+**What's left:** $\mathcal{M}_z = (1+z)\,\mathcal{M}_\text{src}$. GW alone cannot separate mass from redshift → need external $z$.
+</div>
+:::
+::::
+
+## Siren H₀ landscape: precision driven by the **one** bright event
+
+| channel | $H_0$ (km/s/Mpc) | precision | |
+|---|---|---|---|
+| GW170817 only | $70^{+12}_{-8}$ | ~14% | [Abbott+ 2017](https://arxiv.org/abs/1710.05835) |
+| **GW170817 + jet** | $\mathbf{68.9^{+4.7}_{-4.6}}$ | **~7%** | [Hotokezaka+ 2019](https://arxiv.org/abs/1806.10596) |
+| Dark (galaxy catalog, GWTC-4) | $76.6^{+13.0}_{-9.5}$ | ~15% | [LVK 2025](https://arxiv.org/abs/2509.04348) |
+| Spectral (mass function, GWTC-4) | broad | ~20% | [LVK 2025](https://arxiv.org/abs/2509.04348) |
+
+<br>
+
+**Today's two papers:**
+
+- **Peak Sirens** ([2512.15380](https://arxiv.org/abs/2512.15380)): $67^{+18}_{-15}$ — *new channel*, first b_gw bound
+- **Andrade-Oliveira+** ([2601.04774](https://arxiv.org/abs/2601.04774)): $67.9^{+4.4}_{-4.3}$ — *posterior-level fusion* of spectral sirens + DES Y3 3×2pt + GW170817
+
+::: {.aside}
+Methodology: [Mastrogiovanni+ 2023](https://arxiv.org/abs/2305.10488) (unified `gwcosmo`). O4a result: [LVK GWTC-4 cosmology](https://arxiv.org/abs/2509.04348).
+:::
+
+## With a counterpart (**bright**) or without (**dark**)
+
+:::: {.columns .spaced-bullets}
+::: {.column width="50%"}
+![](images/holz_bright_panel.png){fig-align="center" height="620"}
+
+**Bright** — optical counterpart → host $z$.
+
+- **GW170817**: the one clean event so far, ~1 per few years.
+:::
+::: {.column width="50%"}
+![](images/holz_dark_panel.png){fig-align="center" height="620"}
+
+**Dark** — marginalize likelihood over every candidate host in the 3D localization volume.
+
+- **Systematic floor**: galaxy-catalog (in)completeness.
+:::
+::::
+
+::: {.aside}
+DECam + GW170814/DES localization images via D. Holz (KICC).
+:::
+
+## Spectral sirens: hierarchical modeling of the observed mass distribution
+
+:::: {.columns .spaced-bullets}
+::: {.column width="42%"}
+<br>
+
+- Observed and source-frame mass distributions $p(m_\text{obs})$ and $p(m_\text{src})$ are linked by the redshift distribution of the sources:
+$$m_z \;=\; (1+z)\,m_\text{src}$$
+
+- $p(m_\text{src})$ has **features** — power-law, peak near $\sim\!35\,M_\odot$, second peak / dip (top right).
+
+- Hierarchical Bayesian fit on $(d_L, m_\text{obs})$ per event → joint posterior on $(H_0, \Omega_m, \pi_\text{pop})$.
+:::
+::: {.column width="58%"}
+![](images/lvk_mass_models_schematic.png){fig-align="center" width="95%"}
+
+![](images/spectral_sirens_cartoon.png){fig-align="center" width="62%"}
+:::
+::::
+
+::: {.aside}
+Top: [LVK GWTC-4 cosmology (2509.04348)](https://arxiv.org/abs/2509.04348) Fig. 1. Bottom: [Chen, Fishbach & Holz 2024 (2402.03120)](https://arxiv.org/abs/2402.03120). Method: [Farr+ 2019](https://arxiv.org/abs/1908.09084).
+:::
+
+## Paper 1 {.center .paper-divider}
+
+::: {.subtitle}
+Andrade-Oliveira+ 2026 — spectral sirens × DES 3×2pt
+:::
+
+## Andrade-Oliveira+: break the $\Omega_m$ degeneracy by multiplying in DES 3×2pt
+
+:::: {.columns .spaced-bullets}
+::: {.column width="50%"}
+Three independent $(H_0, \Omega_m)$ likelihoods:
+
+- **Spectral sirens** — 142 CBCs from GWTC-4.0 (LVK 2025 posterior)
+- **DES Y3 3×2pt** — gg + gκ + κκ, standard photometric cosmology
+- **GW170817 + jet** — superluminal-motion inclination prior ($15^\circ\!<\theta_\text{jet}\!<\!29^\circ$)
+:::
+::: {.column width="50%"}
+Multiply posteriors:
+
+- Spectral sirens alone constrain both $H_0$ and $\Omega_m$ — weakly, and **correlated**
+- 3×2pt pins $\Omega_m$ tightly → breaks the degeneracy → sharpens $H_0$
+- GW170817+jet is the precision booster (6.4% → 9.9% without jet)
+:::
+::::
+
+<br>
+
+**Posterior-level only**: DES galaxies are *not* used as dark-siren hosts — that would make the likelihoods correlated.
+
+::: {.aside}
+[Andrade-Oliveira+ 2026 (2601.04774)](https://arxiv.org/abs/2601.04774). UZH.
+:::
+
+## Result: $H_0 = 67.9^{+4.4}_{-4.3}$, driven by the 3×2pt $\Omega_m$ prior
+
+:::: {.columns}
+::: {.column width="50%"}
+![](images/wlgw_h0_omm.png){fig-align="center" height="620"}
+:::
+::: {.column width="50%"}
+![](images/wlgw_h0.png){fig-align="center" height="620"}
+:::
+::::
+
+- **Left**: $(H_0, \Omega_m)$ 2D. 3×2pt (blue) × sirens (red) → tight joint contour (black).
+- **Right**: 1D $H_0$. "All" (black) is the 6.4% result, competitive with Planck/SH0ES width. $\Omega_m$ improved 22% over DES-only.
+
+::: {.aside}
+[Andrade-Oliveira+ 2026 (2601.04774)](https://arxiv.org/abs/2601.04774).
+:::
+
+## Paper 2 {.center .paper-divider}
+
+::: {.subtitle}
+Santiago de Matos+ 2025 — "Peak Sirens"
+:::
+
+## Cross-correlation sirens: GW shell at $d_L$ overlaps galaxy shell at $z$ — only when $H_0$ is right
+
+:::: {.columns}
+::: {.column width="38%"}
+![](images/ferri_gwgal_shells_cartoon.png){fig-align="center" height="550"}
+:::
+::: {.column width="62%"}
+![](images/ferri_clgb_cosmodep.png){fig-align="center" height="550"}
+:::
+::::
+
+- **3D GW density field** + galaxy field → cross-correlate. $C_\ell^{gb}(z, d_L)$ peaks along the true $d_L(z; H_0, \Omega_m)$; wrong $H_0$ washes it out.
+- No host ID: catalog incompleteness only enters through field statistics, much less sensitive.
+
+::: {.aside}
+[Ferri+ 2025 (2412.00202)](https://arxiv.org/abs/2412.00202), Fig. 1.
+:::
+
+## **First detection**: 5.9σ GW × galaxy cross-correlation
+
+:::: {.columns}
+::: {.column width="68%"}
+![](images/peaksirens_cl_data.png){fig-align="center" width="100%"}
+:::
+::: {.column width="32%" .spaced-bullets}
+<br>
+
+- GWTC-3.0 (90 events) × GLADE+ galaxy catalog
+- **Left**: observed $\sum_\ell w_\ell C_\ell^\text{obs}$ in $(z, d_L)$
+- **Right**: theory at $H_0=67.36$ — match along the magenta line
+:::
+::::
+
+::: {.aside}
+[Santiago de Matos+ 2025 (2512.15380)](https://arxiv.org/abs/2512.15380).
+:::
+
+## A new observable: **GW bias** $b_\text{gw}$
+
+$$\delta_\text{gw}(\mathbf{x}) \;=\; b_\text{gw}\, \delta_m(\mathbf{x}) \qquad\Longrightarrow\qquad C_\ell^{gb} \;\propto\; b_g\, b_\text{gw}\, P_m(k;\,\Omega_m)$$
+
+<br>
+
+:::: {.columns .spaced-bullets}
+::: {.column width="50%"}
+- Galaxies trace matter with bias $b_g$; so do BBH progenitors — but which hosts?
+- Massive / old populations? Dense environments?
+- Orthogonal to $H_0$ (amplitude vs. shape) → **co-fit**
+:::
+::: {.column width="50%"}
+- **First observational constraint**: $b_\text{gw} < 4.3$ at 95% CI
+- Prior was $[0, 10]$ uniform
+- Forecasts: next-gen detectors ([Einstein Telescope](https://www.et-gw.eu/) + [Cosmic Explorer](https://cosmicexplorer.org/)) will pin $b_\text{gw}$ to order unity
+:::
+::::
+
+::: {.aside}
+[Scelfo+ 2018](https://arxiv.org/abs/1809.03528); [Libanore+ 2022](https://arxiv.org/abs/2109.10857); [Ferri+ 2025](https://arxiv.org/abs/2412.00202).
+:::
+
+## Peak Sirens H₀ posterior: broad but detection is robust
+
+:::: {.columns}
+::: {.column width="55%"}
+![](images/peaksirens_mcmc.png){fig-align="center" height="750"}
+:::
+::: {.column width="45%" .spaced-bullets}
+<br>
+
+- Top: $H_0$ marginal. With GW190814 bright bonus, **peaks at 67**.
+- Bottom-right: $b_\text{gw}$ marginal. Consistent with 0, constrained $<4.3$.
+- Contour: **no degeneracy between $H_0$ and $b_\text{gw}$** — shape vs. amplitude.
+- LVK dark-sirens posterior (gray, dashed) shown for comparison.
+- $H_0 = 67^{+18}_{-15}$ km/s/Mpc — wide, but first of its kind.
+:::
+::::
+
+::: {.aside}
+[Santiago de Matos+ 2025 (2512.15380)](https://arxiv.org/abs/2512.15380).
+:::
+
+## Weak-lensing magnification adds a tail at $z_g < z_b$
+
+:::: {.columns}
+::: {.column width="58%"}
+![](images/ferri_lensed_vs_unlensed.png){fig-align="center" width="100%"}
+:::
+::: {.column width="42%" .spaced-bullets}
+<br>
+
+- GWs from distant BBHs are **magnified** by intervening structure → counted in foreground galaxy shells they didn't actually inhabit.
+- Lensing **lifts the tail** of $C^{gb}(z_g, z_b)$ at $z_g < z_b$ (right panel, dashed blue).
+- Peak is only slightly shifted → method is robust for LVK/O5, but next-gen precision will require modeling it.
+:::
+::::
+
+::: {.aside}
+[Ferri+ 2025 (2412.00202)](https://arxiv.org/abs/2412.00202), Fig. 7.
+:::
+
+## Inside the simulation machinery
+
+![](images/ferri_mock_lightcones.png){fig-align="center" width="78%"}
+
+A galaxy–BBH mock catalog pair for the ET+2CE network, built with `GLASS`. Left: galaxies. Center: true BBH positions. Right: BBH "event clouds" after convolving with the per-event distance and sky-localization uncertainties.
+
+::: {.aside}
+[Ferri+ 2025 (2412.00202)](https://arxiv.org/abs/2412.00202), Fig. 6.
+:::
+
+## Next-gen detectors push $H_0$ into the **sub-%** regime
+
+:::: {.columns}
+::: {.column width="50%" .v-center-col}
+![](images/ferri_et2ce_forecasts.png){fig-align="center" width="90%"}
+:::
+::: {.column width="50%" .spaced-bullets}
+<br>
+
+Ferri+ 2025 forecasts (ΛCDM, joint $(H_0, \Omega_m)$):
+
+| network | $\sigma(H_0)/H_0$ |
+|---|---|
+| LVK O5 | 4% (with external $\Omega_m$) |
+| **LVK + ET** | **~1%** |
+| **ET + 2CE** | **~0.6%** |
+
+- Adding **one** next-generation detector (e.g. ET alone) gives an **order-of-magnitude** improvement in both $H_0$ and $\Omega_m$.
+- Competitive $w_0 w_a$ constraints from the same data.
+:::
+::::
+
+::: {.aside}
+[Ferri+ 2025 (2412.00202)](https://arxiv.org/abs/2412.00202), Fig. 9 + Table 1.
+:::
+
+## Takeaway: siren cosmology is fanning out into three complementary channels
+
+:::: {.columns .spaced-bullets}
+::: {.column width="50%"}
+**Three paths to $z$:**
+
+- **Counterparts** — precision, but luck-limited
+- **Catalogs + mass function** — per-event, systematics from completeness / population priors
+- **Cross-correlation** — field-level, robust to incompleteness, gives $b_\text{gw}$ as a bonus
+:::
+::: {.column width="50%"}
+**Both papers, same 3 months:**
+
+- Peak Sirens: **first detection** of a new channel
+- Andrade-Oliveira+: **matches the bright-siren benchmark** by stacking independent probes
+
+Next: O5 will triple the event count. ET+CE forecasts promise **1% $H_0$**.
+:::
+::::
+
+## Acknowledgements & further reading
+
+:::: {.columns}
+::: {.column width="50%"}
+**Primary papers (today's JC):**
+
+- [Santiago de Matos+ 2025 — *Peak Sirens*, arXiv:2512.15380](https://arxiv.org/abs/2512.15380)
+- [Andrade-Oliveira+ 2026 — *3×2pt + sirens*, arXiv:2601.04774](https://arxiv.org/abs/2601.04774)
+
+**Methods companion:**
+
+- [Ferri+ 2025 — *A robust cosmic standard ruler*, arXiv:2412.00202](https://arxiv.org/abs/2412.00202) — shell cartoon and $C_\ell^{gb}(z,d_L)$ figure.
+
+**Pedagogical inspiration:**
+
+- [Daniel Holz, *Update on standard siren science* (KICC, Cambridge)](https://www.kicc.cam.ac.uk/system/files/documents/Holz.pdf) — bright/dark siren side-by-side, waveform framing.
+:::
+::: {.column width="50%"}
+**Foundational & landscape:**
+
+- Schutz 1986 — original standard-siren proposal
+- Chernoff & Finn 1993; Farr+ 2019 — spectral sirens
+- Mastrogiovanni+ 2021, 2024 — LVK O4a gwcosmo
+- Hotokezaka+ 2019 — GW170817 + superluminal jet
+- LVK 2025 — GWTC-4 cosmology
+- Scelfo+ 2018, Libanore+ 2022 — GW bias theory
+:::
+::::
+
+## Q: what redshifts are the GWTC-3 events actually at?
+
+:::: {.columns}
+::: {.column width="60%" .v-center-col}
+![](images/ferri_bbh_scatter.png){fig-align="center" width="100%"}
+:::
+::: {.column width="40%" .spaced-bullets}
+<br>
+
+- LVK O5 forecast BBHs live almost entirely at $z \lesssim 1$, concentrated in $z \sim 0.1\text{--}0.5$.
+- GWTC-3 (what Peak Sirens *actually* uses) is tighter still — most events at $z \lesssim 0.3$.
+- 3G pushes the accessible range to $z \sim 2$ in the cross-correlation analysis (even though ET alone *detects* BBHs to $z \sim 10$).
+:::
+::::
+
+::: {.aside}
+Scatter of sky-area and distance errors vs. $z$; [Ferri+ 2025 (2412.00202)](https://arxiv.org/abs/2412.00202), Fig. 3.
+:::
+
+## Q: how complete is the GLADE+ galaxy catalog?
+
+:::: {.columns .spaced-bullets}
+::: {.column width="50%"}
+GLADE+ stitches together 2MASS, GWGC, SDSS, HyperLEDA, WISE — ~23M galaxies.
+
+- Essentially complete at **$z \lesssim 0.03$** (~130 Mpc).
+- Usable, but increasingly sparse, to $z \sim 0.1$–0.3.
+- Beyond $z \sim 0.3$, incompleteness dominates.
+:::
+::: {.column width="50%"}
+- Most GWTC-3 BBHs live where GLADE+ is already thinning out.
+- **Catalog-dark analyses** have to marginalize over the missing population → the systematic floor.
+- **Cross-correlation sirens** only feel this through field statistics — much gentler dependence.
+- Deeper surveys (DESI, Euclid, LSST) are the obvious upgrade.
+:::
+::::
+
+## Q: could you use weak lensing or CMB lensing instead of galaxies?
+
+:::: {.columns .spaced-bullets}
+::: {.column width="50%"}
+**Weak lensing ($\kappa_\text{gal}$)**
+
+- Weighs *all* matter along the line of sight — clean on galaxy-catalog incompleteness.
+- Paper 2 already uses DES 3×2pt, but at the *posterior* level, not as a cross-correlation field.
+- A $C_\ell^{g\kappa b}$ field-level analysis is the natural next step.
+:::
+::: {.column width="50%"}
+**CMB lensing ($\kappa_\text{CMB}$)**
+
+- Kernel peaks at $z \sim 2$ — perfectly matched to 3G BBHs.
+- No catalog needed at all; use existing Planck / ACT / SO $\kappa$ maps.
+- Cross-correlating GW density with $\kappa_\text{CMB}$ is completely incompleteness-free — and as yet unmeasured.
+:::
+::::
