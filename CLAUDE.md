@@ -36,7 +36,9 @@ centralized reuse, or replace the symlink with a real folder when slides demand 
 - **History matters**: large binaries bloat `.git/` permanently. When removing images, also
   consider `git filter-repo` to strip them from history (requires force push).
 
-### Rendered HTML for GitHub Pages
-Each talk needs a rendered `index.html` committed (alongside its `.qmd` source) for GH Pages to
-serve it. The per-talk `images/` and `assets/` symlinks must also be committed so the HTML can
-resolve its assets.
+### Publishing
+GitHub Pages builds and deploys automatically on every push to `main`, via
+`.github/workflows/publish.yml` (Quarto Action runs `quarto render` and uploads
+`_site/` to Pages). Don't commit rendered HTML; don't run a publish script.
+The per-talk `images/` and `assets/` symlinks must be committed so the action's
+render step can resolve assets.
