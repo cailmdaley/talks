@@ -444,10 +444,13 @@ the frequency coverage. It's still running.
 
 ![](images/bonus_spt_dish_people.jpg){.nostretch .bigdish-img}
 
+[*Photo: Alex Polak*]{.bigdish-credit}
+
 ```{=html}
 <style>
 .reveal section.bigdish-slide h2 { text-align: center; }
 .reveal .bigdish-img { height: 920px !important; width: auto !important; max-height: 920px !important; max-width: 100% !important; object-fit: contain; display: block; margin: 0.2em auto 0; }
+.reveal .bigdish-credit { position: absolute; bottom: 70px; right: 32px; color: white; font-size: 0.45em; opacity: 0.85; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
 </style>
 ```
 
