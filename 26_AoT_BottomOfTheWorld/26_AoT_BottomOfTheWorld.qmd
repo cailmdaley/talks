@@ -1,0 +1,516 @@
+---
+title: "Astronomy at the Bottom<br>of the World"
+subtitle: "Part II: Observing & Living at the South Pole"
+occasion: Astronomy on Tap
+description: Public talk on observing the CMB from the South Pole
+author:
+  - name: Cail Daley
+date: April 2026
+date-format: long
+
+output-file: 26_AoT_BottomOfTheWorld.html
+
+format:
+  revealjs:
+    width: 1920
+    height: 1080
+    theme: [default, custom.scss]
+    slide-number: true
+    fig-align: center
+    menu: false
+    include-after-body: assets/no_footer_on_titleslide.html
+    footer: "Cail Daley | Astronomy on Tap | April 2026"
+    history: false
+    hash: true
+    pdf-separate-fragments: true
+    pdf-max-pages-per-slide: 1
+    template-partials:
+      - title-slide.html
+    center-title-slide: false
+image: images/Lunar-Eclipse-South-Pole.png
+resources:
+  - "images/Lunar-Eclipse-South-Pole.png"
+  - "images/spt_observing_clip.mp4"
+  - "images/spt_eht_pointing_clip.mp4"
+# decktape: decktape reveal --fragments -s 1920x1080 _site/26_AoT_BottomOfTheWorld/26_AoT_BottomOfTheWorld.html 26_AoT_BottomOfTheWorld/26_AoT_BottomOfTheWorld.pdf
+
+html-math-method:
+  method: mathjax
+  url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## Why can't we do astronomy here?
+
+:::{.paris-flex}
+<img class="paris-img" src="images/paris_eiffel_night.jpg">
+
+::: {.paris-bullets}
+::: {.incremental}
+- Lights
+- Clouds
+- Humidity
+:::
+:::
+:::
+
+```{=html}
+<style>
+.paris-flex { display: flex; align-items: stretch; justify-content: center; gap: 2em; height: 880px; }
+.paris-flex > p { margin: 0; height: 100%; display: flex; align-items: center; }
+.paris-flex .paris-img { height: 100% !important; width: auto !important; max-height: none !important; max-width: none !important; display: block; }
+.paris-bullets { font-size: 1.6em; display: flex; align-items: center; }
+</style>
+```
+
+
+## So we go *up* the mountain:
+
+![Pic du Midi de Bigorre (2877 m). *Credit: Matthieu Pinau*](images/pic_du_midi_clouds.webp){.r-stretch fig-align="center"}
+
+::: {.notes}
+Observatories have lived on mountain tops since the 1800s — above the lights,
+above the weather, above as much atmosphere as you can climb over.
+But clouds aren't even the real enemy.
+:::
+
+
+## The sky isn't transparent
+
+- Even on a perfectly clear day, the air is full of water vapor
+- Water vapor absorbs our CMB signal — and, worse, **glows back**
+
+::: {.sky-plot-wrap}
+<img class="opacity-plot" src="images/atmospheric_opacity_nasa.png" alt="">
+<div class="cmb-box"><span>CMB</span></div>
+<div class="sky-credit">Credit: NASA<br>via Wikimedia Commons</div>
+:::
+
+```{=html}
+<style>
+.reveal .sky-plot-wrap { position: relative; display: inline-block; max-width: 100%; }
+.reveal .opacity-plot { max-height: 738px !important; width: auto !important; max-width: 100% !important; display: block; }
+.reveal .cmb-box { position: absolute; left: 61.5%; width: 2.5%; top: 16%; height: 67%; border: 5px solid #e63946; border-radius: 4px; pointer-events: none; }
+.reveal .cmb-box > span { position: absolute; top: -1.4em; left: 50%; transform: translateX(-50%); color: #e63946; font-weight: 600; font-size: 0.8em; letter-spacing: 0.05em; }
+.reveal .sky-credit { position: absolute; left: calc(100% + 0.5em); bottom: 15%; font-size: 0.7em; line-height: 1.25; text-align: left; font-style: italic; color: #555; white-space: nowrap; }
+</style>
+```
+
+## Option 1: go to space
+
+- No atmosphere, no weather — can observe everything
+
+::: {.cmb-satellites}
+![COBE (1992)](images/cobe_cmb.png){.sat-panel}
+
+![WMAP (2001)](images/wmap_cmb.png){.sat-panel}
+
+![Planck (2009)](images/planck_cmb.png){.sat-panel}
+:::
+
+::: {.notes}
+**COBE (1989–1993)** — Discovered the CMB anisotropies (tiny one-part-in-100,000
+fluctuations — the seeds of all structure). FIRAS also measured the spectrum as a
+perfect blackbody at 2.725 K. Nobel Prize 2006 (Mather & Smoot). Resolution ~7° —
+too coarse to resolve the acoustic peaks.
+
+**WMAP (2001–2010)** — Measured the acoustic peaks and solidified our current model of
+the universe, ΛCDM. Age, composition, flatness — all pinned down precisely.
+
+**Planck (2009–2013)** — Perhaps the most successful cosmology experiment of all time.
+Ushered in *precision cosmology*: gold-standard CMB temperature and polarization maps,
+CMB lensing, galaxy-cluster catalogues via the SZ effect.
+
+Correction to a common misconception: COBE did NOT detect the first acoustic peak —
+that came from balloon experiments around 2000 (BOOMERanG, MAXIMA), then nailed by WMAP.
+:::
+
+```{=html}
+<style>
+.reveal .cmb-satellites { display: flex; gap: 0.5em; justify-content: space-between; align-items: center; margin-top: 0.5em; width: 100%; }
+.reveal .cmb-satellites > .quarto-figure { flex: 1 1 0; text-align: center; margin: 0; }
+.reveal .cmb-satellites figure { margin: 0; }
+.reveal .cmb-satellites figcaption { text-align: center !important; }
+.reveal .cmb-satellites img.sat-panel { max-height: 740px; max-width: 100%; width: auto; display: block; margin: 0 auto; }
+</style>
+```
+
+
+## From detection to precision
+
+![](images/cobe_wmap_planck_maps.jpg){.nostretch .precision-img}
+
+*Bigger telescope → sharper map. But rockets are expensive — any other options?*
+
+```{=html}
+<style>
+.reveal .precision-img { height: 850px !important; width: auto !important; max-height: none !important; max-width: none !important; display: block; margin: 0 auto; }
+</style>
+```
+
+::: {.notes}
+The iconic progression: CMB sky as measured by COBE (blurry), WMAP (sharper), Planck
+(razor-sharp). One part in 100,000 — colour scale pushed to the limit. In ~20 years
+we went from *seeing* structure to *measuring* it precisely enough to pin down the
+age, geometry, composition, and expansion of the universe.
+:::
+
+
+## {.no-title}
+
+![](images/project_cmbeer.png){.nostretch .cmbeer-img}
+
+```{=html}
+<style>
+.reveal section.no-title h2 { display: none; }
+.reveal .cmbeer-img { height: 950px !important; width: auto !important; max-height: none !important; max-width: 100% !important; display: block; margin: 0 auto; }
+</style>
+```
+
+
+## Option 2: fly a balloon
+
+- Rise above ~99% of the atmosphere — almost as good as space
+
+::: {.balloon-row}
+<iframe class="balloon-video" src="https://www.youtube-nocookie.com/embed/hK_kWN0BsKs?rel=0&autoplay=1&mute=1&loop=1&playlist=hK_kWN0BsKs&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+::: {.balloon-col}
+<img class="balloon-path" src="images/anita_flight_path.png" alt="">
+<div class="balloon-credit">ANITA-IV flight path. <em>Gorham et al. 2019</em></div>
+:::
+:::
+
+*Cheap, but you can only fly for weeks and the balloon has to land somewhere.*
+
+```{=html}
+<style>
+.reveal .balloon-row { display: flex; gap: 1em; align-items: center; justify-content: center; margin-top: 0.5em; }
+.reveal .balloon-video { flex: 0 0 62%; aspect-ratio: 16/9; border: 0; display: block; }
+.reveal .balloon-row > p { margin: 0; }
+.reveal .balloon-col { flex: 0 0 36%; }
+.reveal .balloon-path { width: 100% !important; max-width: 100% !important; max-height: none !important; height: auto !important; display: block; }
+.reveal .balloon-credit { font-size: 0.55em; color: #555; text-align: center; margin-top: 0.3em; }
+</style>
+```
+
+::: {.notes}
+This is ANITA-IV — a neutrino balloon experiment, not CMB, but the flight path is
+the perfect illustration: three full loops around Antarctica over 28 days before
+landing near the South Pole. Cheap, but this is why balloons aren't a permanent solution.
+Fig. 3 from Gorham et al., arXiv:1902.04005.
+:::
+
+
+## Option 3: stay on the ground
+
+- Ground-based telescopes can be enormous, run for years, be upgraded
+
+::: {.dry-question}
+*Where on Earth is dry enough?*
+:::
+
+::: {.fragment}
+::: {.dry-row}
+
+::: {.dry-place}
+<img class="dry-photo" src="images/atacama_simons.jpg" alt="">
+
+<p><strong>Atacama Desert, Chile</strong><br>5000 m · −20 °C to +10 °C<br>&lt; 20 mm precipitation / year</p>
+:::
+
+::: {.dry-place}
+<img class="dry-photo" src="images/spt_moon.jpg" alt="">
+
+<p><strong>Antarctic Plateau</strong><br>2835 m · −60 °C to −25 °C<br>&lt; 3 mm precipitation / year</p>
+:::
+
+:::
+:::
+
+```{=html}
+<style>
+.reveal .dry-question { text-align: center; margin: 0.4em 0 0.3em; font-size: 1.1em; }
+.reveal .dry-row { display: flex; gap: 1.5em; align-items: flex-start; justify-content: center; }
+.reveal .dry-place { flex: 0 0 48%; text-align: center; }
+.reveal .dry-photo { width: 100%; height: 460px; object-fit: cover; display: block; max-width: 100% !important; max-height: none !important; }
+.reveal .dry-place p { margin-top: 0.4em; font-size: 0.9em; line-height: 1.4; }
+</style>
+```
+
+::: {.notes}
+Two mountainous deserts. Atacama is the obvious one; Antarctica is the surprise —
+by area it's actually the largest desert on Earth. The Antarctic Plateau is lower
+than Chajnantor but far drier.
+
+Credits: Atacama — Deborah Kellner (Simons Observatory). South Pole — SPT collaboration.
+:::
+
+
+## Getting to the bottom of the world
+
+:::: {.bottom-2col}
+
+::: {.bottom-text-col}
+- The South Pole is only reachable by plane, and only during austral summer (October–February)
+- Christchurch<br>→ McMurdo<br>→ South Pole
+- Once winter closes in around February, you're frozen in until October
+
+*About 40 people spend the winter there.*
+:::
+
+::: {.bottom-map-col}
+<img class="bottom-map-img" src="images/antarctica_route_map.png" alt="">
+:::
+
+::::
+
+```{=html}
+<style>
+.reveal .bottom-2col { display: flex; gap: 1.5em; align-items: center; margin-top: 0.3em; height: 820px; }
+.reveal .bottom-text-col { flex: 0 0 50%; display: flex; flex-direction: column; justify-content: center; }
+.reveal .bottom-map-col { flex: 0 0 48%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.reveal .bottom-map-img { width: 100% !important; height: 100% !important; max-width: 100% !important; max-height: 100% !important; object-fit: contain; display: block; }
+</style>
+```
+
+
+## McMurdo: landing on sea ice
+
+![](images/mcmurdo_c130_seaice.jpg){.nostretch .mcmurdo-img}
+
+```{=html}
+<style>
+.reveal .mcmurdo-img { height: 900px !important; width: auto !important; max-height: none !important; max-width: 100% !important; display: block; margin: 0.3em auto 0; }
+</style>
+```
+
+::: {.notes}
+That plane is an LC-130 Hercules — the ski-equipped C-130, operated by the US
+109th Airlift Wing. It's the only aircraft that can land at the South Pole proper.
+Here it's on the McMurdo sea-ice runway with a marshaller in red ECW gear.
+:::
+
+
+## Big planes.
+
+::: {.planes-row}
+::: {.plane-panel}
+<img class="plane-img" src="images/c17_exterior.jpg" alt="">
+<div class="plane-cap">C-17 Globemaster III</div>
+:::
+
+::: {.plane-panel}
+<img class="plane-img" src="images/c17_interior.jpg" alt="">
+<div class="plane-cap">inside the C-17</div>
+:::
+:::
+
+```{=html}
+<style>
+.reveal .planes-row { display: flex; gap: 0.4em; align-items: center; justify-content: center; margin-top: 0.5em; }
+.reveal .plane-panel { text-align: center; }
+.reveal .plane-img { height: 740px !important; width: auto !important; max-width: none !important; max-height: 740px !important; display: block; margin: 0 auto; }
+.reveal .plane-cap { text-align: center; margin-top: 0.3em; font-size: 0.8em; font-style: italic; color: #444; }
+</style>
+```
+
+
+## The South Pole Telescope
+
+:::: {.spt-2col}
+
+::: {.spt-text-col}
+
+::: {.spt-tagline}
+*continuous night, for months*<br>
+*the coldest, driest air on Earth*
+:::
+
+- since 2007
+- 16,000 pixels
+- 10 m — 6× the size of space CMB telescopes
+:::
+
+::: {.spt-photo-col}
+<img class="spt-hero-img" src="images/spt_halo.jpg" alt="">
+:::
+
+::::
+
+```{=html}
+<style>
+.reveal .spt-2col { display: flex; gap: 1.5em; align-items: center; margin-top: 0.3em; height: 820px; }
+.reveal .spt-text-col { flex: 0 0 58%; display: flex; flex-direction: column; justify-content: center; }
+.reveal .spt-tagline { font-size: 1.15em; line-height: 1.5; margin-bottom: 1.5em; }
+.reveal .spt-photo-col { flex: 0 0 38%; position: relative; height: 100%; }
+.reveal .spt-hero-img { width: 100% !important; height: 100% !important; max-width: 100% !important; max-height: 100% !important; object-fit: contain; display: block; }
+.reveal .spt-credit-col { position: absolute; bottom: 6px; right: 10px; color: white; font-size: 0.45em; opacity: 0.75; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
+</style>
+```
+
+::: {.notes}
+Months of continuous night means stable observing: no day-night thermal cycles,
+no sun glare, a sky that just sits still. And the cold — about −60 °C in winter —
+means the air holds almost no water vapor, which is the real atmospheric enemy.
+High and dry we already established; here we add dark and cold.
+
+The telescope has carried three cameras over about 20 years, each one more
+sensitive. SPT-3G has 16× more pixels than the original SPT-SZ and three times
+the frequency coverage. It's still running.
+:::
+
+
+## The SPT-3G camera
+
+:::: {.camera-2col}
+
+::: {.camera-panel}
+<img class="camera-img" src="images/spt3g_team.jpg" alt="">
+<div class="camera-cap">camera & commissioning team, 2017</div>
+:::
+
+::: {.camera-panel}
+<img class="camera-img" src="images/spt3g_pixel.png" alt="">
+<div class="camera-cap">a SPT-3G pixel<br><span class="camera-credit">*Credit: Adam Anderson*</span></div>
+:::
+
+::::
+
+```{=html}
+<style>
+.reveal .camera-2col { display: flex; gap: 2em; align-items: center; justify-content: center; margin-top: 0.5em; height: 820px; }
+.reveal .camera-panel { flex: 0 0 48%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+.reveal .camera-img { max-height: 760px !important; max-width: 100% !important; width: auto !important; height: auto !important; object-fit: contain; display: block; }
+.reveal .camera-cap { text-align: center; margin-top: 0.4em; font-size: 0.85em; line-height: 1.3; }
+.reveal .camera-credit { font-size: 0.75em; color: #666; }
+</style>
+```
+
+
+## SPT observes by scanning
+
+<video class="obs-video" src="images/spt_observing_clip.mp4" autoplay loop muted playsinline></video>
+
+```{=html}
+<style>
+.reveal .obs-video { display: block; margin: 0.3em auto 0; height: 920px; width: auto; aspect-ratio: 16/9; object-fit: cover; max-width: 100%; max-height: 920px; background: transparent; }
+</style>
+```
+
+::: {.notes}
+The telescope rocks back and forth across the same patch of southern sky, hour
+after hour. Scanning modulates the sky signal above the atmosphere's and
+detectors' low-frequency drift noise. Thousands of hours of data combine into
+a single deep map.
+:::
+
+
+## Event Horizon Telescope calibration
+
+<video class="obs-video" src="images/spt_eht_pointing_clip.mp4" autoplay loop muted playsinline></video>
+
+::: {.notes}
+SPT participates in the Event Horizon Telescope — the global VLBI network that
+imaged the black holes at M87 and the Galactic Center. This clip shows a pointing
+calibration sequence.
+:::
+
+
+## SPT sees everything
+
+::: {.sees-row}
+::: {.sees-panel}
+<img class="sees-img" src="images/foster_fig10_starlink_150ghz.png" alt="">
+<div class="sees-cap">Starlink constellation<br><span class="sees-sub">*Credit: Allen Foster*</span></div>
+:::
+
+::: {.sees-panel}
+<img class="sees-img" src="images/foster_fig6_cobe_150ghz.png" alt="">
+<div class="sees-cap">COBE (detection)<br><span class="sees-sub">*Credit: Allen Foster*</span></div>
+:::
+
+::: {.sees-panel}
+<img class="sees-img" src="images/cobe_cmb.png" alt="">
+<div class="sees-cap">COBE (spacecraft)<br><span class="sees-sub">*Credit: NASA*</span></div>
+:::
+:::
+
+::: {.sees-tagline}
+*We've come a long way from the first blurry COBE maps in 1992.*
+:::
+
+```{=html}
+<style>
+.reveal .sees-row { display: flex; gap: 1.5em; align-items: center; justify-content: center; margin-top: 0.3em; }
+.reveal .sees-panel { flex: 1 1 0; text-align: center; max-width: 33%; }
+.reveal .sees-img { height: 640px !important; max-height: 640px !important; max-width: 100% !important; width: auto !important; object-fit: contain; display: block; margin: 0 auto; }
+.reveal .sees-cap { text-align: center; margin-top: 0.4em; font-size: 0.85em; font-style: italic; color: #444; line-height: 1.3; }
+.reveal .sees-sub { font-size: 0.75em; color: #666; }
+.reveal .sees-tagline { text-align: center; margin-top: 1em; font-size: 1.15em; }
+</style>
+```
+
+
+##  {data-background="images/Lunar-Eclipse-South-Pole.png" data-background-size="cover" data-background-position="center" footer="false"}
+
+[Thank you!]{.thankyou-text}
+
+[*Photo: Aman Chokshi*]{.thankyou-credit}
+
+```{=html}
+<style>
+.reveal .thankyou-text { display: block; color: white; font-size: 2.2em; font-weight: 500; text-align: center; margin-top: 900px; text-shadow: 0 2px 12px rgba(0,0,0,0.85); }
+.reveal .thankyou-credit { position: absolute; bottom: 20px; right: 40px; color: white; font-size: 0.4em; opacity: 0.7; }
+</style>
+```
+
+
+## Shrines {visibility="uncounted"}
+
+::: {.bonus-row}
+<img class="bonus-img" src="images/bonus_shrine_bottles.jpg" alt="">
+
+<img class="bonus-img" src="images/bonus_shrine_vanilla.jpg" alt="">
+:::
+
+
+## New Year's {visibility="uncounted"}
+
+![](images/bonus_new_year.jpg){.nostretch .bonus-solo}
+
+
+## {footer="false" visibility="uncounted"}
+
+![](images/bonus_spt_dish_people.jpg){.nostretch .bonus-solo}
+
+
+## Telescope maintenance {visibility="uncounted"}
+
+::: {.bonus-row}
+<img class="bonus-img" src="images/bonus_maintenance_grease.jpg" alt="">
+
+<img class="bonus-img" src="images/bonus_maintenance_dish.jpg" alt="">
+:::
+
+
+## {footer="false" visibility="uncounted"}
+
+::: {.bonus-row}
+<img class="bonus-img" src="images/bonus_lift_cage.jpg" alt="">
+
+<img class="bonus-img" src="images/bonus_lift_crane.jpg" alt="">
+:::
+
+```{=html}
+<style>
+.reveal .bonus-row { display: flex; gap: 1em; align-items: center; justify-content: center; margin-top: 0.3em; }
+.reveal .bonus-row > p { margin: 0; }
+.reveal .bonus-img { height: 820px !important; width: auto !important; max-height: 820px !important; max-width: 100% !important; object-fit: contain; display: block; }
+.reveal .bonus-solo { height: 920px !important; width: auto !important; max-height: 920px !important; max-width: 100% !important; object-fit: contain; display: block; margin: 0.2em auto 0; }
+</style>
+```
+
+::: {.notes}
+Bonus slides — all photos from Melanie Archipley's winter-over deck.
+:::

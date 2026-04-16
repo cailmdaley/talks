@@ -1,0 +1,77 @@
+---
+title: "Astronomy from the Bottom of the World"
+occasion: "Astronomy on Tap"
+description: "SPT and CMB cosmology for a general audience"
+author:
+  name: "Cail Daley & Lennart Balkenhol"
+  affiliation: "CosmoStat, CEA Paris-Saclay"
+date: 2026-04-15
+date-format: long
+
+format:
+  revealjs:
+    width: 1920
+    height: 1080
+    theme: [default, custom.scss]
+    slide-number: true
+    fig-align: center
+    menu: false
+    include-after-body: assets/no_footer_on_titleslide.html
+    footer: "Daley & Balkenhol | Astronomy on Tap | April 2026"
+    history: false
+    hash: true
+    pdf-separate-fragments: true
+    pdf-max-pages-per-slide: 1
+    template-partials:
+      - title-slide.html
+    center-title-slide: false
+# decktape: decktape reveal --fragments -s 1920x1080 _site/26_AoT_BottomOfTheWorld/index.html 26_AoT_BottomOfTheWorld/index.pdf
+
+html-math-method:
+  method: mathjax
+  url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+<!-- ============================================================ -->
+<!-- PART 1 — LENNART: The Universe & the CMB                     -->
+<!-- ============================================================ -->
+
+## The Big Bang left us a message {.full}
+
+<!-- Planck CMB temperature map — stunning full-bleed image -->
+<!-- images/Planck_2018_T_CMB.png -->
+
+## The Universe has a recipe {.full}
+
+<!-- Spergel components pie chart or similar -->
+<!-- images/Spergel_components.png -->
+
+## We can read it in the light {.full}
+
+<!-- CMB power spectrum — FIRAS or TT spectrum -->
+<!-- images/FIRAS.png -->
+
+<!-- ============================================================ -->
+<!-- PART 2 — CAIL: SPT — the instrument and the site            -->
+<!-- ============================================================ -->
+
+## Why go to the bottom of the world? {.full}
+
+<!-- SPT site photo — South Pole, polar plateau, atmosphere -->
+
+## The South Pole Telescope {.full}
+
+<!-- Wide-angle SPT photo from bbenson gallery -->
+
+## Inside the receiver {.full}
+
+<!-- Focal plane / detector array photo -->
+
+## The sky as SPT sees it {.full}
+
+<!-- SPT temperature map or survey footprint -->
+
+## What we're learning {.full}
+
+<!-- Science result — lensing map or cluster catalog -->
