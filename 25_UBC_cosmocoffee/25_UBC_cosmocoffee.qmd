@@ -1,5 +1,6 @@
 ---
 title: Cosmology with SPT-3G
+draft: true
 occasion: UBC Cosmo Coffee
 description: UBC Cosmo Coffee
 author: 

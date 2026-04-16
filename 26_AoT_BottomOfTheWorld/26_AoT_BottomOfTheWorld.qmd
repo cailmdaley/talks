@@ -5,7 +5,7 @@ occasion: Astronomy on Tap
 description: Public talk on observing the CMB from the South Pole
 author:
   - name: Cail Daley
-date: April 2026
+date: April 16, 2026
 date-format: long
 
 output-file: 26_AoT_BottomOfTheWorld.html
