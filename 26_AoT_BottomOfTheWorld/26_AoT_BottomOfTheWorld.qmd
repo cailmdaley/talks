@@ -27,7 +27,7 @@ format:
     template-partials:
       - title-slide.html
     center-title-slide: false
-image: images/Lunar-Eclipse-South-Pole.png
+image: images/project_cmbeer.png
 resources:
   - "images/Lunar-Eclipse-South-Pole.png"
   - "images/spt_observing_clip.mp4"
