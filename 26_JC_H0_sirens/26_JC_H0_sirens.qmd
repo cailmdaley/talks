@@ -225,6 +225,16 @@ Santiago de Matos+ 2025 — "Peak Sirens"
 [Ferri+ 2025 (2412.00202)](https://arxiv.org/abs/2412.00202), Fig. 1.
 :::
 
+## Inside the simulation machinery
+
+![](images/ferri_mock_lightcones.png){fig-align="center" width="78%"}
+
+A galaxy–BBH mock catalog pair for the ET+2CE network, built with `GLASS`. Left: galaxies. Center: true BBH positions. Right: BBH "event clouds" after convolving with the per-event distance and sky-localization uncertainties.
+
+::: {.aside}
+[Ferri+ 2025 (2412.00202)](https://arxiv.org/abs/2412.00202), Fig. 6.
+:::
+
 ## **First detection**: 5.9σ GW × galaxy cross-correlation
 
 :::: {.columns}
@@ -305,16 +315,6 @@ $$\delta_\text{gw}(\mathbf{x}) \;=\; b_\text{gw}\, \delta_m(\mathbf{x}) \qquad\L
 
 ::: {.aside}
 [Ferri+ 2025 (2412.00202)](https://arxiv.org/abs/2412.00202), Fig. 7.
-:::
-
-## Inside the simulation machinery
-
-![](images/ferri_mock_lightcones.png){fig-align="center" width="78%"}
-
-A galaxy–BBH mock catalog pair for the ET+2CE network, built with `GLASS`. Left: galaxies. Center: true BBH positions. Right: BBH "event clouds" after convolving with the per-event distance and sky-localization uncertainties.
-
-::: {.aside}
-[Ferri+ 2025 (2412.00202)](https://arxiv.org/abs/2412.00202), Fig. 6.
 :::
 
 ## Next-gen detectors push $H_0$ into the **sub-%** regime
