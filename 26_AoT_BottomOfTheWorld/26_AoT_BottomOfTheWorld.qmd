@@ -146,7 +146,7 @@ But clouds aren't even the real enemy.
 ## The sky isn't transparent
 
 - Even on a perfectly clear day, the air is full of water vapor
-- Water vapor absorbs the cosmic microwave background — and, worse, **glows back**
+- Water vapor absorbs the cosmic ~~microbrew~~ microwave background (CMB)<br>— and, worse, **glows back**
 
 ::: {.sky-plot-wrap}
 <img class="opacity-plot" src="images/atmospheric_opacity_nasa.png" alt="">
@@ -156,7 +156,7 @@ But clouds aren't even the real enemy.
 
 ```{=html}
 <style>
-.reveal .sky-plot-wrap { position: relative; display: inline-block; max-width: 100%; }
+.reveal .sky-plot-wrap { position: relative; display: inline-block; max-width: 100%; margin-top: -1.4em; }
 .reveal .opacity-plot { max-height: 738px !important; width: auto !important; max-width: 100% !important; display: block; }
 .reveal .cmb-box { position: absolute; left: 61.5%; width: 2.5%; top: 16%; height: 67%; border: 5px solid #e63946; border-radius: 4px; pointer-events: none; }
 .reveal .cmb-box > span { position: absolute; top: -1.4em; left: 50%; transform: translateX(-50%); color: #e63946; font-weight: 600; font-size: 0.8em; letter-spacing: 0.05em; }
@@ -212,7 +212,7 @@ that came from balloon experiments around 2000 (BOOMERanG, MAXIMA), then nailed 
 
 ![](images/cobe_wmap_planck_maps.jpg){.nostretch .precision-img}
 
-*Bigger telescope → sharper map. But rockets are expensive — any other options?*
+*Bigger telescope → sharper map. But rockets are expensive: there's a lighter way up.*
 
 [*Credit: NASA*]{.precision-credit}
 
@@ -231,21 +231,21 @@ age, geometry, composition, and expansion of the universe.
 :::
 
 
-## {.no-title}
+## {.no-title footer="false"}
 
 ![](images/project_cmbeer.png){.nostretch .cmbeer-img}
 
 ```{=html}
 <style>
 .reveal section.no-title h2 { display: none; }
-.reveal .cmbeer-img { height: 950px !important; width: auto !important; max-height: none !important; max-width: 100% !important; display: block; margin: 0 auto; }
+.reveal .cmbeer-img { height: 1080px !important; width: auto !important; max-height: 100% !important; max-width: 100% !important; display: block; margin: 0 auto; }
 </style>
 ```
 
 
 ## Option 2: fly a balloon
 
-- Rise above ~99% of the atmosphere — almost as good as space
+- Rise above ~99% of the atmosphere; almost as good as space
 
 ::: {.balloon-row}
 <iframe class="balloon-video" src="https://www.youtube-nocookie.com/embed/hK_kWN0BsKs?rel=0&autoplay=1&mute=1&loop=1&playlist=hK_kWN0BsKs&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -327,9 +327,8 @@ Credits: Atacama — Deborah Kellner (Simons Observatory). South Pole — SPT co
 :::: {.bottom-2col}
 
 ::: {.bottom-text-col}
-- The South Pole is only reachable by plane, and only during austral summer (October–February)
+- The South Pole is only reachable by plane, October through February
 - Christchurch<br>→ McMurdo<br>→ South Pole
-- Once winter closes in around February, you're frozen in until October
 
 *About 40 people spend the winter there.*
 :::
@@ -359,7 +358,7 @@ Credits: Atacama — Deborah Kellner (Simons Observatory). South Pole — SPT co
 ```{=html}
 <style>
 .reveal .mcmurdo-img { height: 900px !important; width: auto !important; max-height: none !important; max-width: 100% !important; display: block; margin: 0.3em auto 0; }
-.reveal .mcmurdo-credit { position: absolute; bottom: 16px; right: 24px; color: white; font-size: 0.45em; opacity: 0.85; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
+.reveal .mcmurdo-credit { position: absolute; bottom: 110px; right: 32px; color: #111; font-size: 0.5em; font-style: italic; opacity: 0.9; }
 </style>
 ```
 
@@ -441,6 +440,18 @@ the frequency coverage. It's still running.
 :::
 
 
+## It's big! {.bigdish-slide}
+
+![](images/bonus_spt_dish_people.jpg){.nostretch .bigdish-img}
+
+```{=html}
+<style>
+.reveal section.bigdish-slide h2 { text-align: center; }
+.reveal .bigdish-img { height: 920px !important; width: auto !important; max-height: 920px !important; max-width: 100% !important; object-fit: contain; display: block; margin: 0.2em auto 0; }
+</style>
+```
+
+
 ## The SPT-3G camera
 
 :::: {.camera-2col}
@@ -477,7 +488,7 @@ the frequency coverage. It's still running.
 ```{=html}
 <style>
 .reveal .obs-video { display: block; margin: 0.3em auto 0; height: 920px; width: auto; aspect-ratio: 16/9; object-fit: cover; max-width: 100%; max-height: 920px; background: transparent; }
-.reveal .obs-credit { position: absolute; bottom: 16px; right: 24px; color: white; font-size: 0.45em; opacity: 0.85; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
+.reveal .obs-credit { position: absolute; bottom: 70px; right: 260px; color: white; font-size: 0.45em; opacity: 0.85; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
 </style>
 ```
 
@@ -502,7 +513,7 @@ calibration sequence.
 :::
 
 
-## SPT sees everything
+## SPT sees its forerunner
 
 ::: {.sees-row}
 ::: {.sees-panel}
@@ -545,8 +556,8 @@ calibration sequence.
 
 ```{=html}
 <style>
-.reveal .thankyou-text { display: block; color: white; font-size: 2.2em; font-weight: 500; text-align: center; margin-top: 900px; text-shadow: 0 2px 12px rgba(0,0,0,0.85); }
-.reveal .thankyou-credit { position: absolute; bottom: 20px; right: 40px; color: white; font-size: 0.4em; opacity: 0.7; }
+.reveal .thankyou-text { display: block; color: white; font-size: 2.2em; font-weight: 500; text-align: center; margin-top: 720px; text-shadow: 0 2px 12px rgba(0,0,0,0.85); }
+.reveal .thankyou-credit { position: absolute; bottom: 20px; right: 12px; color: white; font-size: 0.4em; opacity: 0.7; }
 </style>
 ```
 
@@ -563,11 +574,6 @@ calibration sequence.
 ## New Year's {visibility="uncounted"}
 
 ![](images/bonus_new_year.jpg){.nostretch .bonus-solo}
-
-
-## {footer="false" visibility="uncounted"}
-
-![](images/bonus_spt_dish_people.jpg){.nostretch .bonus-solo}
 
 
 ## Telescope maintenance {visibility="uncounted"}
