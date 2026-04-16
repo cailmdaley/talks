@@ -411,6 +411,34 @@ Next: O5 will triple the event count. ET+CE forecasts promise **1% $H_0$**.
 Scatter of sky-area and distance errors vs. $z$; [Ferri+ 2025 (2412.00202)](https://arxiv.org/abs/2412.00202), Fig. 3.
 :::
 
+## Q: what's actually in GLADE+ — and why not DESI?
+
+:::: {.columns .spaced-bullets}
+::: {.column width="50%"}
+**GLADE+ = a purpose-built merger of six all-sky catalogs** (Dálya+ 2022):
+
+- **2MASS XSC** — NIR extended sources
+- **2MPZ** — 2MASS photo-z's
+- **WISE × SuperCOSMOS** — mid-IR photo-z's
+- **HyperLEDA** — morphologies, velocities
+- **GWGC** — original GW catalog
+- **SDSS-DR16Q** — quasars
+
+~23M galaxies, all-sky, heterogeneous $z$ quality.
+:::
+::: {.column width="50%"}
+**Why this, not DESI?**
+
+- GW events can land **anywhere on the sky**. DESI spectroscopic covers ~17 k deg² (~40% of sky) — you'd lose half your events.
+- GLADE+ is the heritage catalog for GW cosmology → direct comparability with prior `gwcosmo` results.
+- Authors flag shallowness as the main limitation; their stated next step is **DESI Legacy Imaging** (photo-z's, wider, deeper than GLADE+). Real all-sky+deep waits for **Euclid / LSST**.
+:::
+::::
+
+::: {.aside}
+[Dálya+ 2022 (2110.06184)](https://arxiv.org/abs/2110.06184); motivation quotes from [Santiago de Matos+ 2025 (2512.15380)](https://arxiv.org/abs/2512.15380) §2 and discussion.
+:::
+
 ## Q: how complete is the GLADE+ galaxy catalog?
 
 :::: {.columns .spaced-bullets}
