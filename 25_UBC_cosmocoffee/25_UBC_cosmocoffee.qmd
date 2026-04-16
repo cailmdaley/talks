@@ -1,5 +1,6 @@
 ---
 title: Cosmology with SPT-3G
+output-file: index.html
 draft: true
 occasion: UBC Cosmo Coffee
 description: UBC Cosmo Coffee

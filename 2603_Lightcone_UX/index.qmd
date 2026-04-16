@@ -8,7 +8,7 @@ author:
 date: March 31, 2026
 date-format: long
 
-output-file: 2603_Lightcone_UX.html
+output-file: index.html
 
 format:
   revealjs:

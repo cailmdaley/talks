@@ -8,7 +8,7 @@ author:
 date: April 16, 2026
 date-format: long
 
-output-file: 26_AoT_BottomOfTheWorld.html
+output-file: index.html
 
 format:
   revealjs:

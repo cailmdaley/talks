@@ -1,5 +1,6 @@
 ---
 title: "H₀ from gravitational-wave ×<br>galaxy cross-correlations"
+output-file: index.html
 occasion: CosmoStat Journal Club
 description: Two papers on standard-siren H₀ from cross-correlation
 author:

@@ -1,5 +1,6 @@
 ---
 title: Cosmology with SPT-3G
+output-file: index.html
 occasion: ESLAB Euclid Symposium
 description: ESLAB Euclid Symposium
 author: 

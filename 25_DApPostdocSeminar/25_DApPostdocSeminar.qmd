@@ -1,5 +1,6 @@
 ---
 title: Cosmology with SPT-3G
+output-file: index.html
 occasion: Séminaire postdoc du DAp
 description: Séminaire postdoc du DAp
 author: 

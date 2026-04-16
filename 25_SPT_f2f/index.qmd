@@ -9,7 +9,7 @@ resources:
 date: July 3, 2025
 date-format: long
 
-output-file: 25_SPT_f2f.html
+output-file: index.html
 
 format: 
     revealjs:

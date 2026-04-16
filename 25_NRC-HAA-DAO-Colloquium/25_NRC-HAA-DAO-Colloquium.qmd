@@ -10,7 +10,7 @@ resources:
 date: April 15, 2025
 date-format: long
 
-output-file: 25_NRC-HAA-DAO-Colloquium.html
+output-file: index.html
 
 format: 
     revealjs:

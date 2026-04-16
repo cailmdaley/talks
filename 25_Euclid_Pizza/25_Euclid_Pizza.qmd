@@ -1,5 +1,6 @@
 ---
 title: "Learning Lessons <br> from RR2 with CMBX"
+output-file: index.html
 draft: true
 occasion: Euclid Pizza Lunch
 description: Rapid notes on Euclid-CMBX RR2 mask products feeding the upcoming cross-correlation analysis.

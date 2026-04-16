@@ -10,7 +10,7 @@ resources:
 date: September 23, 2025
 date-format: long
 
-output-file: 25_CosmoStat_Group_Meeting.html
+output-file: index.html
 
 format: 
     revealjs:
