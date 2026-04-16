@@ -23,6 +23,7 @@ format:
     template-partials:
       - title-slide.html
     center-title-slide: false
+image: images/ferri_gwgal_shells_cartoon.png
 
 html-math-method:
   method: mathjax
@@ -135,13 +136,18 @@ $$m_z \;=\; (1+z)\,m_\text{src}$$
 ::: {.column width="58%"}
 ![](images/lvk_mass_models_schematic.png){fig-align="center" width="95%"}
 
-![](images/spectral_sirens_cartoon.png){fig-align="center" width="62%"}
+<div style="display: flex; align-items: center; gap: 0.2em;">
+<div style="flex: 0 0 62%;">
+<img src="images/spectral_sirens_cartoon.png" style="width: 100%;">
+</div>
+<div style="flex: 1; font-size: 0.7em; color: #555; line-height: 1.4;">
+Top: <a href="https://arxiv.org/abs/2509.04348">LVK GWTC-4 cosmology (2509.04348)</a> Fig. 1.<br><br>
+Bottom: <a href="https://arxiv.org/abs/2402.03120">Chen, Fishbach & Holz 2024 (2402.03120)</a>.<br><br>
+Method: <a href="https://arxiv.org/abs/1908.09084">Farr+ 2019</a>.
+</div>
+</div>
 :::
 ::::
-
-::: {.aside}
-Top: [LVK GWTC-4 cosmology (2509.04348)](https://arxiv.org/abs/2509.04348) Fig. 1. Bottom: [Chen, Fishbach & Holz 2024 (2402.03120)](https://arxiv.org/abs/2402.03120). Method: [Farr+ 2019](https://arxiv.org/abs/1908.09084).
-:::
 
 ## Paper 1 {.center .paper-divider}
 
