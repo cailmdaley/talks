@@ -19,10 +19,14 @@
 
 The ~15 slides walk the audience through the chain:
 
-1. *Why not here?* (Paris rooftops) — cities obviously don't work.
-2. *So we go up* (Pic du Midi) — mountaintops get us above lights and much of the weather.
-3. *But clouds aren't the real enemy* — the enemy is **invisible water vapor**, which absorbs
-   *and glows* at microwave wavelengths.
+1. *Why not here?* (Paris rooftops) — cities obviously don't work: lights, clouds, humidity.
+2. *Microwaves!* — pivot: microwaves are *light* too, and cities pollute the microwave sky
+   just like the visible one (wifi, phones, ovens, radar). Speaker-side double point: (a) RFI
+   would drown a CMB telescope in Paris, (b) atmospheric water vapor absorbs at the actual
+   observing bands (95/150/220 GHz, driven by the 183 GHz line). Parkes peryton anecdote in
+   speaker notes — but note: ovens at 2.45 GHz aren't directly in CMB bands; the real enemy
+   is atmospheric H₂O.
+3. *So we go up* (Pic du Midi) — mountaintops get us above lights and much of the weather.
 4. *The sky isn't transparent* — the broader story: the atmosphere blocks most of the EM spectrum.
 5. Three options: **space / balloons / ground** — tradeoffs, and we end up on the ground.
 6. *Driest places on Earth*: Atacama, Tibet, South Pole.

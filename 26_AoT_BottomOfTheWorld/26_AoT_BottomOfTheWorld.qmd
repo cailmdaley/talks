@@ -64,6 +64,74 @@ include-in-header: assets/mathjax.html
 ```
 
 
+## Microwaves!
+
+::: {.microwave-wrap}
+<img class="microwave-img" src="images/kitchen_microwave.jpg" alt="">
+<div class="microwave-credit">Illustration: Harney &amp; Sons Master Tea Blends</div>
+:::
+
+```{=html}
+<style>
+.reveal .microwave-wrap { position: relative; display: flex; justify-content: center; align-items: center; margin-top: 0.3em; }
+.reveal .microwave-img { height: 820px !important; width: auto !important; max-height: 820px !important; max-width: 100% !important; display: block; }
+.reveal .microwave-credit { position: absolute; bottom: 0.3em; right: 1em; font-size: 0.8em; font-style: italic; color: #555; }
+</style>
+```
+
+::: {.notes}
+Microwaves are light — the same electromagnetic radiation as visible light,
+just with wavelengths a million times longer (centimetres instead of nanometres).
+Our eyes can't see them, but they're everywhere: wifi, bluetooth, cell phones,
+radar, microwave ovens — and the light Lennart just showed you, the cosmic
+microwave background, photons left over from 380,000 years after the Big Bang.
+Same kind of light, broadly the same part of the spectrum.
+
+**Why a kitchen microwave heats your food.** A magnetron inside the oven emits
+at 2.45 GHz. Water is a polar molecule — lopsided charge distribution — so the
+oscillating field yanks it back and forth, and friction between molecules
+generates heat. (Pedantically: 2.45 GHz isn't a sharp water *resonance*; it's
+on the rising shoulder of liquid water's broad Debye relaxation, which peaks
+around 10–20 GHz. Water's sharp *rotational* lines sit higher up — 22 and
+183 GHz — and live in the atmosphere, where they matter to us. 2.45 GHz was
+chosen for ovens because it's an unregulated industrial band that heats food
+well and penetrates a few cm deep.)
+
+**The Parkes perytons.** From 1998, the 64-metre radio dish at Parkes in
+New South Wales — the same telescope that relayed the Apollo 11 moon-landing
+broadcast — started seeing bright millisecond-long bursts. They named them
+"perytons," after a mythical antlered deer that casts a human-shaped shadow.
+The timing was suspicious: the bursts clustered around lunchtime, almost
+always on weekdays. For over a decade no one knew what they were.
+
+It got worse in 2007 when Parkes also detected the first fast radio burst
+(FRB) — a millisecond flash from cosmological distances. Perytons looked
+close enough to FRBs to threaten the whole young field. Were FRBs even real?
+
+In 2015, Emily Petroff and collaborators (MNRAS 451, 3933) installed an RFI
+monitor on-site and cracked it: the culprit was the cafeteria microwave oven.
+If a hungry astronomer opened the door *before* the timer hit zero, the
+magnetron's shut-down transient leaked a broadband burst that the telescope,
+pointed just right, caught as a peryton. Two decades of mysterious signals,
+solved by a kitchen appliance.
+
+**The double point.** *First:* cities don't just pollute with visible light —
+they scream in microwaves too. Every wifi router, phone, radar, and oven
+pumps anthropogenic radiation into the microwave sky. Put a telescope like
+SPT in Paris and it would drown in RFI. *Second:* even if you shielded all
+that out, the atmosphere itself absorbs at our actual observation bands
+(SPT works at 95, 150, 220 GHz) — driven by the water-vapour rotational line
+at 183 GHz and its pressure-broadened wings. That's the "humidity" bullet
+from the last slide, now with teeth. Going up a mountain — and eventually
+to the driest place on Earth — solves both problems at once. Next slide.
+
+(Strictly: microwave ovens themselves aren't a direct problem for CMB
+telescopes — 2.45 GHz is ~40–90× below SPT's bands. The Parkes story works
+because their multibeam receiver was at 1.4 GHz, and magnetron shut-down
+leaks broadband. The real enemy for us is atmospheric water vapour.)
+:::
+
+
 ## So we go *up* the mountain:
 
 ![Pic du Midi de Bigorre (2877 m). *Credit: Matthieu Pinau*](images/pic_du_midi_clouds.webp){.r-stretch fig-align="center"}
@@ -78,7 +146,7 @@ But clouds aren't even the real enemy.
 ## The sky isn't transparent
 
 - Even on a perfectly clear day, the air is full of water vapor
-- Water vapor absorbs our CMB signal — and, worse, **glows back**
+- Water vapor absorbs the cosmic microwave background — and, worse, **glows back**
 
 ::: {.sky-plot-wrap}
 <img class="opacity-plot" src="images/atmospheric_opacity_nasa.png" alt="">
@@ -101,18 +169,22 @@ But clouds aren't even the real enemy.
 - No atmosphere, no weather — can observe everything
 
 ::: {.cmb-satellites}
-![COBE (1992)](images/cobe_cmb.png){.sat-panel}
+![COBE (1992) · *NASA*](images/cobe_cmb.png){.sat-panel}
 
-![WMAP (2001)](images/wmap_cmb.png){.sat-panel}
+![WMAP (2001) · *NASA*](images/wmap_cmb.png){.sat-panel}
 
-![Planck (2009)](images/planck_cmb.png){.sat-panel}
+![Planck (2009) · *ESA*](images/planck_cmb.png){.sat-panel}
 :::
 
 ::: {.notes}
-**COBE (1989–1993)** — Discovered the CMB anisotropies (tiny one-part-in-100,000
-fluctuations — the seeds of all structure). FIRAS also measured the spectrum as a
-perfect blackbody at 2.725 K. Nobel Prize 2006 (Mather & Smoot). Resolution ~7° —
-too coarse to resolve the acoustic peaks.
+**COBE (1989–1993)** — Discovered the cosmic microwave background anisotropies
+(tiny one-part-in-100,000 fluctuations — the seeds of all structure). FIRAS also
+measured the spectrum as a perfect blackbody at 2.725 K. Nobel Prize 2006 (Mather
+& Smoot). Resolution ~7° — too coarse to resolve the acoustic peaks.
+
+**Local hook:** George Smoot — one of the two COBE Nobelists — has been
+affiliated with Université Paris Cité since his prize. Worth a mention given
+the venue.
 
 **WMAP (2001–2010)** — Measured the acoustic peaks and solidified our current model of
 the universe, ΛCDM. Age, composition, flatness — all pinned down precisely.
@@ -142,9 +214,12 @@ that came from balloon experiments around 2000 (BOOMERanG, MAXIMA), then nailed 
 
 *Bigger telescope → sharper map. But rockets are expensive — any other options?*
 
+[*Credit: NASA*]{.precision-credit}
+
 ```{=html}
 <style>
-.reveal .precision-img { height: 850px !important; width: auto !important; max-height: none !important; max-width: none !important; display: block; margin: 0 auto; }
+.reveal .precision-img { height: 800px !important; width: auto !important; max-height: none !important; max-width: none !important; display: block; margin: 0 auto; }
+.reveal .precision-credit { display: block; text-align: center; font-size: 0.5em; color: #888; margin-top: 0.4em; }
 </style>
 ```
 
@@ -279,9 +354,12 @@ Credits: Atacama — Deborah Kellner (Simons Observatory). South Pole — SPT co
 
 ![](images/mcmurdo_c130_seaice.jpg){.nostretch .mcmurdo-img}
 
+[*Photo: Alex Polak*]{.mcmurdo-credit}
+
 ```{=html}
 <style>
 .reveal .mcmurdo-img { height: 900px !important; width: auto !important; max-height: none !important; max-width: 100% !important; display: block; margin: 0.3em auto 0; }
+.reveal .mcmurdo-credit { position: absolute; bottom: 16px; right: 24px; color: white; font-size: 0.45em; opacity: 0.85; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
 </style>
 ```
 
@@ -297,12 +375,12 @@ Here it's on the McMurdo sea-ice runway with a marshaller in red ECW gear.
 ::: {.planes-row}
 ::: {.plane-panel}
 <img class="plane-img" src="images/c17_exterior.jpg" alt="">
-<div class="plane-cap">C-17 Globemaster III</div>
+<div class="plane-cap">C-17 Globemaster III<br><span class="plane-credit">*Photo: Melanie Archipley*</span></div>
 :::
 
 ::: {.plane-panel}
 <img class="plane-img" src="images/c17_interior.jpg" alt="">
-<div class="plane-cap">inside the C-17</div>
+<div class="plane-cap">inside the C-17<br><span class="plane-credit">*Photo: Melanie Archipley*</span></div>
 :::
 :::
 
@@ -312,6 +390,7 @@ Here it's on the McMurdo sea-ice runway with a marshaller in red ECW gear.
 .reveal .plane-panel { text-align: center; }
 .reveal .plane-img { height: 740px !important; width: auto !important; max-width: none !important; max-height: 740px !important; display: block; margin: 0 auto; }
 .reveal .plane-cap { text-align: center; margin-top: 0.3em; font-size: 0.8em; font-style: italic; color: #444; }
+.reveal .plane-credit { font-size: 0.75em; color: #666; }
 </style>
 ```
 
@@ -334,6 +413,7 @@ Here it's on the McMurdo sea-ice runway with a marshaller in red ECW gear.
 
 ::: {.spt-photo-col}
 <img class="spt-hero-img" src="images/spt_halo.jpg" alt="">
+<div class="spt-credit-col">Photo: Aman Chokshi</div>
 :::
 
 ::::
@@ -392,9 +472,12 @@ the frequency coverage. It's still running.
 
 <video class="obs-video" src="images/spt_observing_clip.mp4" autoplay loop muted playsinline></video>
 
+[*Video: Aman Chokshi*]{.obs-credit}
+
 ```{=html}
 <style>
 .reveal .obs-video { display: block; margin: 0.3em auto 0; height: 920px; width: auto; aspect-ratio: 16/9; object-fit: cover; max-width: 100%; max-height: 920px; background: transparent; }
+.reveal .obs-credit { position: absolute; bottom: 16px; right: 24px; color: white; font-size: 0.45em; opacity: 0.85; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
 </style>
 ```
 
@@ -409,6 +492,8 @@ a single deep map.
 ## Event Horizon Telescope calibration
 
 <video class="obs-video" src="images/spt_eht_pointing_clip.mp4" autoplay loop muted playsinline></video>
+
+[*Video: Aman Chokshi*]{.obs-credit}
 
 ::: {.notes}
 SPT participates in the Event Horizon Telescope — the global VLBI network that
