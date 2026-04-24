@@ -9,11 +9,6 @@ author:
 date: April 27, 2026
 date-format: long
 
-bibliography: unions_bmodes.bib
-csl: https://raw.githubusercontent.com/citation-style-language/styles/master/harvard-cite-them-right.csl
-link-citations: false
-suppress-bibliography: true
-
 format:
     revealjs:
         width:  1920
@@ -64,13 +59,13 @@ Existing Stage-III cosmic shear surveys all live in the southern sky and overlap
 | | |
 |:-|:-|
 | **Imaging** | CFHT MegaCam $r$-band; $r_\mathrm{median} = 0.7''$ |
-| **Effective area** | $2894~\mathrm{deg}^2$ after masking (target $6250~\mathrm{deg}^2$) |
+| **Effective area** | $2894~\mathrm{deg}^2$ after masking<br>(target $6250~\mathrm{deg}^2$) |
 | **Source density** | $n_\mathrm{eff} \approx 5.0~\mathrm{arcmin}^{-2}$ |
 | **Shape noise** | $\sigma_e \approx 0.27$ per component |
 | **Shape measurement** | `ShapePipe` + metacalibration |
 :::
 
-::: {style="margin-top:90px;text-align:center;font-size:0.95em;opacity:0.85"}
+::: {style="margin-top:80px;text-align:center;font-size:0.95em;opacity:0.85"}
 Non-tomographic in this release; multi-bin calibration in preparation.
 :::
 
@@ -90,43 +85,69 @@ Paper II sets the scale cuts adopted in Papers III and IV.
 :::
 
 
-## B modes diagnose systematics at Stage III sensitivity
+## Cosmic shear produces $E$ modes; $B$ modes flag systematics
 
-::: {style="margin-top:80px"}
-- To leading order, cosmic shear produces only $E$ modes
-- Detected $B$-mode power indicates residual systematics, not cosmology
+:::::::::::::: {.columns}
+::: {.column style="width:55%"}
+
+::: {style="margin-top:120px;font-size:1.0em"}
+- Scalar potential → curl-free shear field → only $E$ modes to leading order
+- Higher-order lens-lens / source-clustering / IA terms produce $B$ modes orders of magnitude below current sensitivity
+- At Stage-III, **$B$-mode power = residual systematics**
 - Absence of $B$ modes does not rule out contamination
 :::
 
-::: {style="margin-top:70px;font-size:0.92em"}
-Stage-III $B$-mode failures have traced:
+:::
+::: {.column style="width:45%"}
 
-- Repeating additive shear bias — CFHTLenS, KiDS-450, DES-SV [@asgari.etal19a]
-- PSF higher-moment leakage — HSC-Y3 [@zhang.etal23]
-- Astrometric residuals — KiDS-Legacy [@wright.etal25]
+::: {style="margin-top:30px;text-align:center"}
+![](images/emode_pattern.jpg){width=62%}
+
+::: {style="font-size:0.8em;margin-top:-6px;margin-bottom:14px"}
+$E$ modes (gradient-like)
+:::
+
+![](images/bmode_pattern.jpg){width=62%}
+
+::: {style="font-size:0.8em;margin-top:-6px"}
+$B$ modes (curl-like)
+:::
+:::
+
+:::
+::::::::::::::
+
+
+## Stage-III B-mode failures trace detector, PSF, and astrometric effects
+
+::: {style="margin-top:90px;font-size:1.05em"}
+- **Repeating additive shear bias** — CFHTLenS, KiDS-450, DES-SV [[Asgari+19](https://arxiv.org/abs/1810.02353)]
+- **PSF higher-moment leakage** — HSC-Y3 [[Zhang+23](https://arxiv.org/abs/2212.03257)]
+- **Astrometric residuals** — KiDS-Legacy [[Wright+25](https://arxiv.org/abs/2503.19441)]
+- **Estimator-dependent passage/failure** — DES-Y3 / KiDS / HSC-Y3 under `HybridEB` [[Jefferson+25](https://arxiv.org/abs/2505.03964)]
+:::
+
+::: {style="margin-top:80px;text-align:center;font-size:0.95em;opacity:0.85"}
+Each estimator weights angular scales differently — the same data can pass one null test and fail another.
 :::
 
 
 ## We use three $E$/$B$-separable statistics with different filter supports
 
 ::: {style="margin-top:80px;font-size:1.05em"}
-- **Pure-mode correlation functions** $\xi_\pm^{\mathrm{E/B}}(\theta)$ — integral transforms of $\xi_\pm$; deproject ambiguous modes [@schneider.etal22]
-- **COSEBIs** $E_n, B_n$ — discrete orthogonal modes on $[\theta_\mathrm{min}, \theta_\mathrm{max}]$; deproject ambiguous modes [@schneider.eifler.krause10]
-- **Harmonic-space power spectra** $C_\ell^{EE}, C_\ell^{BB}$ — catalog-based estimator; residual $E{\to}B$ leakage absorbed into $C_\ell^{BB}$ [@wolz.etal25]
+- **Pure-mode correlation functions** $\xi_\pm^{\mathrm{E/B}}(\theta)$ — integral transforms of $\xi_\pm$; deproject ambiguous modes [[Schneider+22](https://arxiv.org/abs/2110.09774)]
+- **COSEBIs** $E_n, B_n$ — discrete orthogonal modes on $[\theta_\mathrm{min}, \theta_\mathrm{max}]$; deproject ambiguous modes [[Schneider+10](https://arxiv.org/abs/1002.2136)]
+- **Catalog-based $C_\ell^{EE}, C_\ell^{BB}$** — spin-2 SHT at source positions; residual $E{\to}B$ leakage absorbed into $C_\ell^{BB}$ [[Wolz+25](https://arxiv.org/abs/2407.21013)]
 :::
 
-::: {style="margin-top:80px;font-size:0.9em;text-align:center"}
-Gaussian-only covariance (CosmoCov + MC propagation; NaMaster iNKA). Validated on 350 GLASS mocks — our PTEs are conservative.
+::: {style="margin-top:70px;font-size:0.95em;text-align:center;opacity:0.85"}
+Gaussian-only covariance (CosmoCov + NaMaster iNKA), validated on 350 GLASS mocks [[Tessore+23](https://arxiv.org/abs/2302.01942)] — PTEs are conservative.
 :::
 
 
 ## Pure-mode $B$ modes show low-level structure outside the adopted cuts
 
 ![](images/pure_eb_data_vector.png){width=82% fig-align="center"}
-
-::: notes
-E-modes (teal) trace the lensing signal; B-modes (crimson) diagnose systematics; ambiguous modes (purple) capture boundary effects. Shaded regions: adopted scale cuts 12–83 arcmin. xi+^B shows a broad positive excess below 10 arcmin; xi-^B is elevated from 7 arcmin upward.
-:::
 
 
 ## COSEBIs show a $>4\sigma$ first-mode excess — suppressed by the adopted cuts
@@ -211,17 +232,17 @@ $E_n$ (top), $B_n/\sigma_n$ (bottom), from $\xi_\pm$ (circles) and $C_\ell$ (squ
 ::::::::::::::
 
 ::: notes
-The key methodological finding. Null tests in one representation cannot validate another — empirical support for Asgari et al. 2019a and Jefferson et al. 2025.
+Null tests in one representation cannot validate another — empirical support for Asgari+19 and Jefferson+25.
 :::
 
 
-## The oscillatory COSEBI pattern is consistent with repeating additive bias at CCD scales
+## The oscillatory COSEBI pattern tracks CCD-scale repeating additive bias
 
 :::::::::::::: {.columns}
 ::: {.column style="width:48%"}
 
 ::: {style="margin-top:40px;font-size:0.98em"}
-- Same signature found in CFHTLenS, KiDS-450, DES-SV [@asgari.etal19a]
+- Same signature in CFHTLenS, KiDS-450, DES-SV [[Asgari+19](https://arxiv.org/abs/1810.02353)]
 - A spatially varying $c$-term, fixed in focal-plane coordinates
 - **CFHTLenS also used MegaCam** — points to a detector-level phenomenon, not a pipeline artifact
 - MegaCam's 40 CCDs span $6$–$14'$; our lower cut of $12'$ excludes most CCD-scale pair separations
@@ -236,20 +257,34 @@ The key methodological finding. Null tests in one representation cannot validate
 ::::::::::::::
 
 ::: notes
-UNIONS dithers by ~1/3 field of view — larger than a single CCD — so each sky position averages the bias across several CCDs. This may attenuate but is unlikely to fully eliminate the pattern. Paper V also identifies a pipeline-specific exposure-offset effect that can imprint a coherent additive shear at CCD scales.
+UNIONS dithers by ~1/3 field of view — larger than a single CCD — so each sky position averages the bias across several CCDs. This may attenuate but is unlikely to fully eliminate the pattern. Paper V identifies an additional pipeline-specific source: improper propagation of exposure offsets within shape measurement, which imprints a coherent additive shear at CCD scales.
+:::
+
+
+## Paper V identifies an additional pipeline-level source at CCD scales
+
+::: {style="margin-top:90px;font-size:1.05em"}
+- Multi-exposure fitting assumes objects centered on each exposure's pixel grid
+- Consistent treatment would recenter using the WCS anchored at the tile-level detection position
+- Relative pixel offsets between exposures in overlapping CCDs induce a preferred orientation → **coherent additive shear at the CCD scale**
+- A fraction may be absorbed by multiplicative bias corrections; the adopted cuts remove the rest without fine-tuning
+:::
+
+::: notes
+So we have two candidate sources for the CCD-scale repeating additive bias: the detector-level c-term mechanism identified by Asgari+19 across multiple Stage-III surveys, and this pipeline-level effect from improper exposure-offset propagation that Paper V has now identified. The adopted cuts remove both without needing to model either.
 :::
 
 
 ## Multi-framework validation transfers directly to Euclid
 
-::: {style="margin-top:100px;font-size:1.05em"}
-- Different detectors, different dithers — but the filter-function principle is the same
+::: {style="margin-top:100px;font-size:1.1em"}
+- Different detectors and dithers, but the filter-function principle is unchanged
 - A $B$-mode failure in any one framework warrants scrutiny across all of them
-- Scale cuts that remove $B$-mode contamination also remove any corresponding contamination of the $E$-mode signal, without modeling the $E$/$B$ ratio
+- Scale cuts that remove $B$-mode contamination also remove any corresponding $E$-mode contamination — no need to model the $E/B$ ratio
 :::
 
-::: {style="margin-top:70px;font-size:0.9em;text-align:center;font-style:italic;opacity:0.85"}
-"As surveys become systematics-limited, disagreements between $B$-mode estimators will carry as much information as their agreements."
+::: {style="margin-top:80px;font-size:0.92em;text-align:center;font-style:italic;opacity:0.85"}
+"As surveys become systematics-limited, disagreements between $B$-mode estimators will<br>carry as much information as their agreements."
 :::
 
 
@@ -270,19 +305,19 @@ Paper II on arXiv soon — happy to discuss.<br>[cail.daley@cea.fr]{style="font-
 ## Backup {background-color="black" style="color:white" visibility="uncounted"}
 
 
-## $E$/$B$ decomposition: ambiguous modes on a finite interval {visibility="uncounted"}
+## Ambiguous modes arise on any finite interval {visibility="uncounted"}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
 
 ::: {style="margin-top:80px;font-size:0.98em"}
-Spin-2 shear fields decompose into **$E$-modes** (lensing signal) and **$B$-modes** (systematics at Stage-III noise levels).
+On a finite angular interval, shear patterns with functional forms
+$$\xi_+^{\mathrm{amb}}(\theta) = a + b\theta^2, \quad \xi_-^{\mathrm{amb}}(\theta) = c\theta^{-2} + d\theta^{-4}$$
+cannot be assigned pure $E$- or $B$-mode origin.
 
 <br>
 
-On a finite interval, some modes cannot be cleanly classified — the **ambiguous** modes.
-
-$\implies$ need $E$/$B$-separable statistics
+Pure-mode and COSEBI filters deproject these modes; the catalog-based $C_\ell$ estimator absorbs residual mask-induced leakage into $C_\ell^{BB}$.
 :::
 
 :::
@@ -310,26 +345,17 @@ $\xi_+^B$, $\xi_-^B$, and COSEBI $B_n$ PTEs vs. angular scale cuts, fiducial cat
 - COSEBIs: linear transformation $\mathbf{C}_{B_n B_m} = \mathbf{T}^{\mathsf{T}} \mathbf{C}_{\xi} \mathbf{T}$
 - Pure-mode: 2000 MC realizations of $\xi_\pm$, empirical covariance of the transformed data vector
 - All $B$-mode null tests use Gaussian-only covariance (conservative: no trispectrum, no super-sample terms)
-- Validated on 350 GLASS mocks [@tessore.etal23]: all three statistics recover $B$ modes consistent with zero
+- Validated on 350 GLASS mocks [[Tessore+23](https://arxiv.org/abs/2302.01942)]: all three statistics recover $B$ modes consistent with zero
 :::
 
 
 ## COSEBI mock validation {visibility="uncounted"}
 
 ::: {style="margin-top:80px"}
-- 350 lognormal GLASS catalogs [@tessore.etal23] at Planck 2018 cosmology, UNIONS footprint + galaxy positions + weights
+- 350 lognormal GLASS catalogs [[Tessore+23](https://arxiv.org/abs/2302.01942)] at Planck 2018 cosmology, UNIONS footprint + galaxy positions + weights
 - No PSF-related systematics — checks that the estimators don't generate spurious $B$ modes
 - COSEBIs: mean $B_n$ biased by $< 0.3\,\sigma$ per mode
 - Scatter comparable to fiducial error bars — uncertainty estimates of the right order
 :::
 
 
-## Stage-III B-mode landscape {visibility="uncounted"}
-
-::: {style="margin-top:80px;font-size:0.98em"}
-- **CFHTLenS / KiDS-450 / DES-SV** [@asgari.etal19a]: COSEBIs detect repeating additive bias at 2–5$\sigma$
-- **HSC-Y3** [@li.etal23]: large-scale $C_\ell^{BB}$ failure traced to PSF fourth-moment leakage [@zhang.etal23]
-- **KiDS-Legacy** [@wright.etal25]: initial COSEBI failure → astrometric origin → conservative masking
-- **DES Y3** [@abbott.etal22]: pseudo-$C_\ell$ and COSEBIs pass; [@jefferson.etal25] find \textsc{HybridEB} failures in specific tomographic bins
-- **DES Y6** [@abbott.etal26]: adopted \textsc{HybridEB} as the estimator; passes
-:::
