@@ -59,11 +59,11 @@ cd /tmp && decktape reveal \
   --size 1920x1080
 ```
 
-## Bibliography
+## Citations
 
-`unions_bmodes.bib` is copied from `../../unions_release/unions_bmodes/unions_bmodes.bib`. If the paper bib changes and those changes affect citations used here, re-copy.
+Main-deck citations are **manual markdown hyperlinks** to arXiv (e.g., `[Asgari+19](https://arxiv.org/abs/1810.02353)`), not `@citeprockey` syntax. This gives clickable references with zero dependency on a bib file or external CSL. The rendered citation is the link text; clicking opens arXiv.
 
-Citation style: A&A (via CSL). Keys use the `asgari.etal19a` / `schneider.etal22` convention from the paper.
+A copy of `unions_bmodes.bib` remains in this dir for convenience (looking up arXiv IDs when adding new references), but nothing in the qmd references it.
 
 ## Styling
 

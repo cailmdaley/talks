@@ -132,6 +132,62 @@ Each estimator weights angular scales differently — the same data can pass one
 :::
 
 
+## Three Stage-III surveys see the same oscillatory $B$-mode pattern
+
+:::::::::::::: {.columns}
+::: {.column style="width:62%"}
+
+![](images/asgari19_allsurveys_EnBn.png){width=100% fig-align="center"}
+
+::: {style="font-size:0.7em;text-align:center;margin-top:-6px"}
+COSEBIs $E_n$ / $B_n$ for DES-SV, KiDS-450, CFHTLenS. Three angular ranges. From [Asgari+19](https://arxiv.org/abs/1810.02353).
+:::
+
+:::
+::: {.column style="width:38%"}
+
+::: {style="margin-top:140px;font-size:1.0em"}
+- Three surveys, three pipelines
+- $B_n$ panels (right): same coherent oscillation
+- Survey $p$-values differ, the **shape** doesn't
+:::
+
+:::
+::::::::::::::
+
+::: notes
+The B-mode panels on the right tell the story: a non-random oscillating residual that looks similar across DES-SV, KiDS-450 and CFHTLenS. The p-values disagree because covariances and areas differ — but the shape is shared. This is the signature we'll see in UNIONS too.
+:::
+
+
+## Mock systematics in COSEBIs each leave a distinct fingerprint
+
+:::::::::::::: {.columns}
+::: {.column style="width:62%"}
+
+![](images/asgari19_mocksys_EnBn.png){width=100% fig-align="center"}
+
+::: {style="font-size:0.7em;text-align:center;margin-top:-6px"}
+COSEBIs response to four mock systematics on KiDS-450. From [Asgari+19](https://arxiv.org/abs/1810.02353).
+:::
+
+:::
+::: {.column style="width:38%"}
+
+::: {style="margin-top:140px;font-size:1.0em"}
+- Different systematics, different signatures
+- **Regular pattern** (black): chaotic high-$n$ oscillations — matches the surveys' data
+- High-$n$ COSEBIs carry the diagnostic
+:::
+
+:::
+::::::::::::::
+
+::: notes
+"Regular pattern" is a c-term that repeats on focal-plane scales — the CCD-scale repeating additive bias mechanism. Compare the black stars to the previous slide's right column: same kind of signature. So the field has both the empirical pattern across surveys and a candidate mechanism that reproduces it in mocks. Hold this in mind when we look at the UNIONS COSEBIs.
+:::
+
+
 ## We use three $E$/$B$-separable statistics with different filter supports
 
 ::: {style="margin-top:80px;font-size:1.05em"}
@@ -275,16 +331,17 @@ So we have two candidate sources for the CCD-scale repeating additive bias: the 
 :::
 
 
-## Multi-framework validation transfers directly to Euclid
+## When the source can't be fixed, multi-framework cuts are the path
 
-::: {style="margin-top:100px;font-size:1.1em"}
+::: {style="margin-top:80px;font-size:1.05em"}
+- UNIONS: systematic detected, source not yet localized — mitigated via scale cuts ($\theta_\mathrm{min}=12'$, $\ell_\mathrm{max}=1600$)
+- A $B$-mode failure in any framework warrants scrutiny across all of them
 - Different detectors and dithers, but the filter-function principle is unchanged
-- A $B$-mode failure in any one framework warrants scrutiny across all of them
-- Scale cuts that remove $B$-mode contamination also remove any corresponding $E$-mode contamination — no need to model the $E/B$ ratio
+- Scale cuts that remove $B$-mode contamination also remove the correlated $E$-mode bias — no need to model the $E/B$ ratio
 :::
 
-::: {style="margin-top:80px;font-size:0.92em;text-align:center;font-style:italic;opacity:0.85"}
-"As surveys become systematics-limited, disagreements between $B$-mode estimators will<br>carry as much information as their agreements."
+::: {style="margin-top:60px;font-size:0.92em;text-align:center;font-style:italic;opacity:0.85"}
+"As surveys become systematics-limited, disagreements between $B$-mode estimators<br>carry as much information as their agreements."
 :::
 
 
@@ -297,8 +354,38 @@ So we have two candidate sources for the CCD-scale repeating additive bias: the 
 <li>Filter functions — not basis — set sensitivity; multi-framework validation is not optional</li>
 </ul>
 
-::: {style="margin-top:60px;text-align:center"}
-Paper II on arXiv soon — happy to discuss.<br>[cail.daley@cea.fr]{style="font-size:0.9em"}
+
+## Thank you
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+::: {style="margin-top:140px;text-align:center"}
+![](images/llm_collab_bow.png){width=92% fig-align="center"}
+:::
+
+:::
+::: {.column style="width:50%"}
+
+::: {style="margin-top:200px;font-size:0.95em;line-height:1.45em"}
+The analysis, the paper, and these slides
+were produced through ongoing collaboration with Claude (Anthropic) and Codex (OpenAI).
+
+<br>
+
+I find it both possible and important to do thoughtful science this way.
+
+<br>
+<br>
+
+[Paper II on arXiv soon — happy to discuss.<br>cail.daley@cea.fr]{style="font-size:0.92em;opacity:0.85"}
+:::
+
+:::
+::::::::::::::
+
+::: notes
+The image and the message are deliberate. None of the prose in the paper, none of the analysis code, and none of these slides was typed by me directly — all of it was produced through close collaboration with Claude (left) and Codex (right). The work is mine in the sense that I directed it, made the scientific judgments, and own the conclusions. But the literal production happened in dialogue with these systems. I think we will look back on this period of cosmology as one in which a different mode of doing scientific work became viable, and I want to be transparent about it.
 :::
 
 
