@@ -177,7 +177,7 @@ COSEBIs response to four mock systematics on KiDS-450. From [Asgari+19](https://
 ::: {style="margin-top:140px;font-size:1.0em"}
 - Different systematics, different signatures
 - **Regular pattern** (black): chaotic high-$n$ oscillations — matches the surveys' data
-- High-$n$ COSEBIs carry the diagnostic
+- The high-$n$ response carries the systematics fingerprint
 :::
 
 :::
@@ -208,20 +208,19 @@ Gaussian-only covariance (CosmoCov + NaMaster iNKA), validated on 350 GLASS mock
 
 ## COSEBIs show a $>4\sigma$ first-mode excess — suppressed by the adopted cuts
 
-![](images/cosebis_data_vector.png){width=62% fig-align="center"}
+![](images/cosebis_data_vector.png){width=80% fig-align="center"}
 
-::: {style="margin-top:-12px;text-align:center;font-size:0.9em"}
-Full range $1$–$250'$ (orange) vs. fiducial cuts $12$–$83'$ (blue). $n\leq 6$ carries the cosmological information.
+::: {style="margin-top:-8px;text-align:center;font-size:0.9em"}
+Full range $1$–$250'$ (orange), fiducial cuts $12$–$83'$ (blue). The first six modes carry the cosmological signal.
 :::
 
 
 ## $C_\ell^{BB}$ has a low-level offset but passes within the adopted range
 
-![](images/cl_data_vector.png){width=68% fig-align="center"}
+![](images/cl_data_vector.png){width=80% fig-align="center"}
 
 ::: {style="margin-top:-8px;text-align:center;font-size:0.9em"}
-$C_\ell^{BB}/\sigma$ (top), $C_\ell^{EB}/\sigma$ (bottom); gray shading marks $\ell = 300$–$1600$.<br>
-$C_\ell^{EB}$ scatters around zero — any $B$-mode contamination is not strongly correlated with the lensing signal.
+$C_\ell^{BB}/\sigma$ (top), $C_\ell^{EB}/\sigma$ (bottom); gray shading marks the adopted range $\ell = 300$–$1600$. $C_\ell^{EB}$ scatters around zero.
 :::
 
 
@@ -263,16 +262,16 @@ COSEBIs PTE vs. lower/upper scale cut. Square: adopted cuts.
 ::::::::::::::
 
 
-## Filter functions, not basis, set sensitivity to contamination
+## Filter functions weight scales differently — cuts don't map between estimators
 
 :::::::::::::: {.columns}
 ::: {.column style="width:46%"}
 
 ::: {style="margin-top:60px;font-size:0.98em"}
-- COSEBIs can be computed from $\xi_\pm$ **or** from $C_\ell$ bandpowers via $W_n(\ell)$
-- Both paths agree for all twenty modes
-- $C_\ell^{BB}$ passes where COSEBIs computed from the same $C_\ell^{BB}$ fail
-- The COSEBI filter functions concentrate sensitivity on the contaminated scales
+- We computed COSEBIs two ways: from $\xi_\pm$, and from $C_\ell$ bandpowers via $W_n(\ell)$
+- Both paths agree across all twenty modes
+- $C_\ell^{BB}$ itself passes — but COSEBIs from the same $C_\ell$ do not
+- The COSEBI filter functions concentrate sensitivity where contamination sits
 :::
 
 :::
@@ -288,7 +287,7 @@ $E_n$ (top), $B_n/\sigma_n$ (bottom), from $\xi_\pm$ (circles) and $C_\ell$ (squ
 ::::::::::::::
 
 ::: notes
-Null tests in one representation cannot validate another — empirical support for Asgari+19 and Jefferson+25.
+The disagreement is not a matter of harmonic versus real space — both COSEBI paths fail together while $C_\ell^{BB}$ passes. Filter functions, not basis, drive what each estimator sees.
 :::
 
 
@@ -299,8 +298,8 @@ Null tests in one representation cannot validate another — empirical support f
 
 ::: {style="margin-top:40px;font-size:0.98em"}
 - Same signature in CFHTLenS, KiDS-450, DES-SV [[Asgari+19](https://arxiv.org/abs/1810.02353)]
-- A spatially varying $c$-term, fixed in focal-plane coordinates
-- **CFHTLenS also used MegaCam** — points to a detector-level phenomenon, not a pipeline artifact
+- Modeled as a spatially varying $c$-term, fixed in focal-plane coordinates
+- **CFHTLenS also used MegaCam** — suggests a detector-scale component
 - MegaCam's 40 CCDs span $6$–$14'$; our lower cut of $12'$ excludes most CCD-scale pair separations
 :::
 
@@ -319,11 +318,10 @@ UNIONS dithers by ~1/3 field of view — larger than a single CCD — so each sk
 
 ## Paper V identifies an additional pipeline-level source at CCD scales
 
-::: {style="margin-top:90px;font-size:1.05em"}
-- Multi-exposure fitting assumes objects centered on each exposure's pixel grid
-- Consistent treatment would recenter using the WCS anchored at the tile-level detection position
-- Relative pixel offsets between exposures in overlapping CCDs induce a preferred orientation → **coherent additive shear at the CCD scale**
-- A fraction may be absorbed by multiplicative bias corrections; the adopted cuts remove the rest without fine-tuning
+::: {style="margin-top:110px;font-size:1.05em"}
+- Multi-exposure fitting centers on each exposure's pixel grid independently, rather than the WCS-anchored tile-level detection
+- Pixel offsets between exposures in overlapping CCDs imprint a preferred orientation → **coherent additive shear at CCD scale**
+- Multiplicative bias absorbs part of it; the adopted cuts remove the rest
 :::
 
 ::: notes
@@ -335,10 +333,10 @@ So we have two candidate sources for the CCD-scale repeating additive bias: the 
 
 ::: {style="margin-top:80px;font-size:1.05em"}
 - We detected an oscillatory $B$-mode pattern in COSEBIs at the full angular range
-- We could not pin its origin to first principles in time for this release
+- We have not yet localized the source from first principles — two candidate mechanisms remain on the table
 - We adopted $\theta_\mathrm{min}=12'$, $\ell_\mathrm{max}=1600$, where pure-mode, COSEBIs, and $C_\ell$ all pass
-- We cross-checked any single-framework failure across the other two — only the fiducial catalog passes everywhere
-- We didn't model an $E/B$ ratio: the same cuts that remove $B$-mode contamination remove its correlated $E$-mode counterpart
+- We cross-checked single-framework failures across the other two — only the fiducial catalog passes in every representation
+- We treated $B$ modes as a diagnostic, not a bias to subtract: the cuts that remove $B$-mode contamination remove its $E$-mode counterpart too, with no $E/B$-ratio model
 :::
 
 
