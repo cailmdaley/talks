@@ -331,17 +331,14 @@ So we have two candidate sources for the CCD-scale repeating additive bias: the 
 :::
 
 
-## When the source can't be fixed, multi-framework cuts are the path
+## We couldn't localize the source, so we cut where all three statistics pass
 
 ::: {style="margin-top:80px;font-size:1.05em"}
-- UNIONS: systematic detected, source not yet localized — mitigated via scale cuts ($\theta_\mathrm{min}=12'$, $\ell_\mathrm{max}=1600$)
-- A $B$-mode failure in any framework warrants scrutiny across all of them
-- Different detectors and dithers, but the filter-function principle is unchanged
-- Scale cuts that remove $B$-mode contamination also remove the correlated $E$-mode bias — no need to model the $E/B$ ratio
-:::
-
-::: {style="margin-top:60px;font-size:0.92em;text-align:center;font-style:italic;opacity:0.85"}
-"As surveys become systematics-limited, disagreements between $B$-mode estimators<br>carry as much information as their agreements."
+- We detected an oscillatory $B$-mode pattern in COSEBIs at the full angular range
+- We could not pin its origin to first principles in time for this release
+- We adopted $\theta_\mathrm{min}=12'$, $\ell_\mathrm{max}=1600$, where pure-mode, COSEBIs, and $C_\ell$ all pass
+- We cross-checked any single-framework failure across the other two — only the fiducial catalog passes everywhere
+- We didn't model an $E/B$ ratio: the same cuts that remove $B$-mode contamination remove its correlated $E$-mode counterpart
 :::
 
 
@@ -349,43 +346,13 @@ So we have two candidate sources for the CCD-scale repeating additive bias: the 
 
 <ul style="margin-top:80px;font-size:1.05em">
 <li style="margin-bottom:1.2em">UNIONS-3500 $B$ modes pass at the adopted cuts across all three statistics</li>
-<li style="margin-bottom:1.2em">At full range, COSEBIs show an oscillatory pattern matching CFHTLenS-era repeating additive bias (same MegaCam)</li>
+<li style="margin-bottom:1.2em">At full range, our COSEBIs show an oscillatory pattern matching the CFHTLenS-era repeating additive bias (same MegaCam)</li>
 <li style="margin-bottom:1.2em">Only the fiducial (tightened-size-cut) catalog passes in every representation</li>
-<li>Filter functions — not basis — set sensitivity; multi-framework validation is not optional</li>
+<li>Filter functions, not basis, drove which estimators flagged the contamination in our data</li>
 </ul>
 
-
-## Thank you
-
-:::::::::::::: {.columns}
-::: {.column style="width:50%"}
-
-::: {style="margin-top:140px;text-align:center"}
-![](images/llm_collab_bow.png){width=92% fig-align="center"}
-:::
-
-:::
-::: {.column style="width:50%"}
-
-::: {style="margin-top:200px;font-size:0.95em;line-height:1.45em"}
-The analysis, the paper, and these slides
-were produced through ongoing collaboration with Claude (Anthropic) and Codex (OpenAI).
-
-<br>
-
-I find it both possible and important to do thoughtful science this way.
-
-<br>
-<br>
-
-[Paper II on arXiv soon — happy to discuss.<br>cail.daley@cea.fr]{style="font-size:0.92em;opacity:0.85"}
-:::
-
-:::
-::::::::::::::
-
-::: notes
-The image and the message are deliberate. None of the prose in the paper, none of the analysis code, and none of these slides was typed by me directly — all of it was produced through close collaboration with Claude (left) and Codex (right). The work is mine in the sense that I directed it, made the scientific judgments, and own the conclusions. But the literal production happened in dialogue with these systems. I think we will look back on this period of cosmology as one in which a different mode of doing scientific work became viable, and I want to be transparent about it.
+::: {style="margin-top:60px;text-align:center"}
+Paper II on arXiv soon — happy to discuss.<br>[cail.daley@cea.fr]{style="font-size:0.9em"}
 :::
 
 
