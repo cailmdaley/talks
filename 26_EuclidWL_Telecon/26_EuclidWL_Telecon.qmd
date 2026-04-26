@@ -92,9 +92,9 @@ Paper II sets the scale cuts adopted in Papers III and IV.
 
 ::: {style="margin-top:120px;font-size:1.0em"}
 - Scalar potential → curl-free shear field → only $E$ modes to leading order
-- Higher-order lens-lens / source-clustering / IA terms produce $B$ modes orders of magnitude below current sensitivity
-- At Stage-III, **$B$-mode power = residual systematics**
-- Absence of $B$ modes does not rule out contamination
+- Higher-order effects produce $B$ modes far below current sensitivity
+- At Stage-III, **$B$ modes flag residual systematics**
+- Null $B$ modes do not rule out contamination
 :::
 
 :::
@@ -124,11 +124,11 @@ $B$ modes (curl-like)
 - **Repeating additive shear bias** — CFHTLenS, KiDS-450, DES-SV [[Asgari+19](https://arxiv.org/abs/1810.02353)]
 - **PSF higher-moment leakage** — HSC-Y3 [[Zhang+23](https://arxiv.org/abs/2212.03257)]
 - **Astrometric residuals** — KiDS-Legacy [[Wright+25](https://arxiv.org/abs/2503.19441)]
-- **Estimator-dependent passage/failure** — DES-Y3 / KiDS / HSC-Y3 under `HybridEB` [[Jefferson+25](https://arxiv.org/abs/2505.03964)]
+- **`HybridEB` flips DES-Y3, KiDS, HSC-Y3 from pass to fail** [[Jefferson+25](https://arxiv.org/abs/2505.03964)]
 :::
 
 ::: {style="margin-top:80px;text-align:center;font-size:0.95em;opacity:0.85"}
-Each estimator weights angular scales differently — the same data can pass one null test and fail another.
+Each estimator weights angular scales differently; the same data can pass one and fail another.
 :::
 
 
@@ -140,7 +140,7 @@ Each estimator weights angular scales differently — the same data can pass one
 ![](images/asgari19_allsurveys_EnBn.png){width=100% fig-align="center"}
 
 ::: {style="font-size:0.7em;text-align:center;margin-top:-6px"}
-COSEBIs $E_n$ / $B_n$ for DES-SV, KiDS-450, CFHTLenS. Three angular ranges. From [Asgari+19](https://arxiv.org/abs/1810.02353).
+COSEBIs $E_n$ / $B_n$ — DES-SV, KiDS-450, CFHTLenS. From [Asgari+19](https://arxiv.org/abs/1810.02353).
 :::
 
 :::
@@ -175,9 +175,9 @@ COSEBIs response to four mock systematics on KiDS-450. From [Asgari+19](https://
 ::: {.column style="width:38%"}
 
 ::: {style="margin-top:140px;font-size:1.0em"}
-- Different systematics, different signatures
+- One systematic, one signature
 - **Regular pattern** (black): chaotic high-$n$ oscillations — matches the surveys' data
-- The high-$n$ response carries the systematics fingerprint
+- High-$n$ carries the fingerprint
 :::
 
 :::
@@ -211,7 +211,7 @@ Gaussian-only covariance (CosmoCov + NaMaster iNKA), validated on 350 GLASS mock
 ![](images/cosebis_data_vector.png){width=80% fig-align="center"}
 
 ::: {style="margin-top:-8px;text-align:center;font-size:0.9em"}
-Full range $1$–$250'$ (orange), fiducial cuts $12$–$83'$ (blue). The first six modes carry the cosmological signal.
+Full range $1$–$250'$ (orange), fiducial cuts $12$–$83'$ (blue). First six modes carry the cosmology.
 :::
 
 
@@ -220,7 +220,7 @@ Full range $1$–$250'$ (orange), fiducial cuts $12$–$83'$ (blue). The first s
 ![](images/cl_data_vector.png){width=80% fig-align="center"}
 
 ::: {style="margin-top:-8px;text-align:center;font-size:0.9em"}
-$C_\ell^{BB}/\sigma$ (top), $C_\ell^{EB}/\sigma$ (bottom); gray shading marks the adopted range $\ell = 300$–$1600$. $C_\ell^{EB}$ scatters around zero.
+$C_\ell^{BB}/\sigma$ (top), $C_\ell^{EB}/\sigma$ (bottom); shaded: adopted range $\ell = 300$–$1600$.
 :::
 
 
@@ -244,8 +244,8 @@ Bold: PTE $< 0.05$ (null-test failure).
 ::: {.column style="width:38%"}
 
 ::: {style="margin-top:180px;font-size:0.95em"}
-- $\chi^2$ vs. zero for each $(\theta_\mathrm{min}, \theta_\mathrm{max})$ pair
-- Adopted cuts: $12$–$83'$, $\ell = 300$–$1600$
+- $\chi^2$ vs. zero per $(\theta_\mathrm{min},\theta_\mathrm{max})$ cut
+- Adopted: $\theta\in[12',83']$, $\ell\in[300,1600]$
 - Moving cuts several bins either way doesn't change the outcome
 :::
 
@@ -269,9 +269,9 @@ COSEBIs PTE vs. lower/upper scale cut. Square: adopted cuts.
 
 ::: {style="margin-top:60px;font-size:0.98em"}
 - We computed COSEBIs two ways: from $\xi_\pm$, and from $C_\ell$ bandpowers via $W_n(\ell)$
-- Both paths agree across all twenty modes
+- Both paths agree across all 20 modes
 - $C_\ell^{BB}$ itself passes — but COSEBIs from the same $C_\ell$ do not
-- The COSEBI filter functions concentrate sensitivity where contamination sits
+- COSEBI filters concentrate sensitivity where contamination sits
 :::
 
 :::
@@ -346,7 +346,7 @@ So we have two candidate sources for the CCD-scale repeating additive bias: the 
 <li style="margin-bottom:1.2em">UNIONS-3500 $B$ modes pass at the adopted cuts across all three statistics</li>
 <li style="margin-bottom:1.2em">At full range, our COSEBIs show an oscillatory pattern matching the CFHTLenS-era repeating additive bias (same MegaCam)</li>
 <li style="margin-bottom:1.2em">Only the fiducial (tightened-size-cut) catalog passes in every representation</li>
-<li>Filter functions, not basis, drove which estimators flagged the contamination in our data</li>
+<li>Filter functions, not basis, drove which estimators flagged the contamination</li>
 </ul>
 
 ::: {style="margin-top:60px;text-align:center"}
