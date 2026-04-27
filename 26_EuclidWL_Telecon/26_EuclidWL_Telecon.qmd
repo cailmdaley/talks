@@ -207,9 +207,9 @@ Gaussian-only covariance (CosmoCov + NaMaster iNKA), validated on 350 GLASS mock
 ## COSEBIs and $C_\ell^{BB}$ also pass within the adopted range
 
 :::::::::::::: {.columns}
-::: {.column style="width:36%"}
+::: {.column style="width:62%"}
 
-::: {style="margin-top:80px;font-size:0.98em"}
+::: {style="margin-top:120px;font-size:1.0em"}
 - **COSEBIs** $B_n$
     - $>4\sigma$ first-mode excess at full range
     - Suppressed by the cuts; first six modes carry the cosmology
@@ -219,18 +219,18 @@ Gaussian-only covariance (CosmoCov + NaMaster iNKA), validated on 350 GLASS mock
 :::
 
 :::
-::: {.column style="width:64%"}
+::: {.column style="width:38%"}
 
-![](images/cosebis_data_vector.png){width=92% fig-align="center"}
+![](images/cosebis_data_vector.png){width=98% fig-align="center"}
 
-::: {style="font-size:0.72em;text-align:center;margin-top:-4px;margin-bottom:6px"}
-Full range $1$–$250'$ (orange), fiducial cuts $12$–$83'$ (blue).
+::: {style="font-size:0.7em;text-align:center;margin-top:-4px;margin-bottom:6px"}
+Full range (orange), fiducial cuts (blue).
 :::
 
-![](images/cl_data_vector.png){width=92% fig-align="center"}
+![](images/cl_data_vector.png){width=98% fig-align="center"}
 
-::: {style="font-size:0.72em;text-align:center;margin-top:-4px"}
-$C_\ell^{BB}/\sigma$ (top), $C_\ell^{EB}/\sigma$ (bottom); shaded: adopted range.
+::: {style="font-size:0.7em;text-align:center;margin-top:-4px"}
+$C_\ell^{BB}/\sigma$ top, $C_\ell^{EB}/\sigma$ bottom.
 :::
 
 :::
