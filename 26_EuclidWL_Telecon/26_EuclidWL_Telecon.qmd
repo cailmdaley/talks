@@ -239,29 +239,26 @@ $C_\ell^{BB}/\sigma$ (top), $C_\ell^{EB}/\sigma$ (bottom); shaded: adopted range
 
 ## Only the fiducial catalog passes all three statistics
 
-:::::::::::::: {.columns}
-::: {.column style="width:38%"}
-
-::: {style="margin-top:60px;font-size:0.98em"}
-Four `ShapePipe` v1.4 variants:
-
-- **initial** — loose size cut
-- **fiducial** — size cut $r_\mathrm{gal}/r_\mathrm{psf} > 0.707$
-- **masked** — fiducial + star-halo masks
-- **relaxed-flags** — $+23\%$ source density
+:::::::::::::: {.columns style="margin-top:40px;font-size:0.95em;text-align:center"}
+::: {.column width="25%"}
+**initial**<br>loose size cut
 :::
-
-::: {style="margin-top:40px;font-size:0.85em;opacity:0.85"}
-**Bold** entries fail the null test (PTE $< 0.05$).
+::: {.column width="25%"}
+**fiducial**<br>$r_\mathrm{gal}/r_\mathrm{psf} > 0.707$
 :::
-
+::: {.column width="25%"}
+**masked**<br>fiducial + star-halo masks
 :::
-::: {.column style="width:62%"}
-
-![](images/pte_table_appendix_paper3.png){width=100% fig-align="center"}
-
+::: {.column width="25%"}
+**relaxed-flags**<br>$+23\%$ source density
 :::
 ::::::::::::::
+
+![](images/pte_table_appendix_paper3.png){width=92% fig-align="center" style="margin-top:40px"}
+
+::: {style="margin-top:14px;text-align:center;font-size:0.85em;opacity:0.85"}
+**Bold** entries fail the null test (PTE $< 0.05$).
+:::
 
 
 ## The adopted cuts sit in broad PTE-pass regions
