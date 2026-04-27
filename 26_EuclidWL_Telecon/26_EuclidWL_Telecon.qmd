@@ -290,55 +290,49 @@ COSEBIs PTE vs. lower/upper scale cut. Square: adopted cuts.
 
 ## Filter functions weight scales differently —<br>cuts don't map between estimators
 
-:::::::::::::: {.columns}
-::: {.column style="width:46%"}
+![](images/harmonic_config_cosebis_full.png){width=72% fig-align="center"}
 
-::: {style="margin-top:60px;font-size:0.98em"}
-- We computed COSEBIs two ways: from $\xi_\pm$, and from $C_\ell$ bandpowers via $W_n(\ell)$
-- Both paths agree across all 20 modes
-- $C_\ell^{BB}$ itself passes — but COSEBIs from the same $C_\ell$ do not
-- COSEBI filters concentrate sensitivity where contamination sits
-:::
-
-:::
-::: {.column style="width:54%"}
-
-![](images/harmonic_config_cosebis_full.png){width=100% fig-align="center"}
-
-::: {style="font-size:0.75em;text-align:center;margin-top:-6px"}
+::: {style="font-size:0.78em;text-align:center;margin-top:-10px"}
 $E_n$ (top), $B_n/\sigma_n$ (bottom), from $\xi_\pm$ (circles) and $C_\ell$ (squares).
 :::
 
+::: {style="margin-top:30px;font-size:1.0em"}
+- COSEBIs computed from $\xi_\pm$ and from $C_\ell$ via $W_n(\ell)$ agree across all 20 modes
+- $C_\ell^{BB}$ itself passes — but COSEBIs from the same $C_\ell$ do not
+- COSEBI filters concentrate sensitivity where the contamination sits
 :::
-::::::::::::::
 
 ::: notes
 The disagreement is not a matter of harmonic versus real space — both COSEBI paths fail together while $C_\ell^{BB}$ passes. Filter functions, not basis, drive what each estimator sees.
 :::
 
 
-## The oscillatory COSEBI pattern tracks<br>CCD-scale repeating additive bias
+## Our oscillatory COSEBIs match a familiar<br>Stage-III B-mode signature
 
 :::::::::::::: {.columns}
-::: {.column style="width:48%"}
+::: {.column style="width:54%"}
 
-::: {style="margin-top:40px;font-size:0.98em"}
-- Same signature in CFHTLenS, KiDS-450, DES-SV [[Asgari+19](https://arxiv.org/abs/1810.02353)]
-- Modeled as a spatially varying $c$-term, fixed in focal-plane coordinates
-- **CFHTLenS also used MegaCam** — suggests a detector-scale component
-- MegaCam's 40 CCDs span $6$–$14'$; our lower cut of $12'$ excludes most CCD-scale pair separations
+::: {style="margin-top:30px;font-size:0.98em"}
+- The same oscillatory $B_n$ pattern recurs in CFHTLenS, KiDS-450, DES-SV [[Asgari+19](https://arxiv.org/abs/1810.02353)]
+- Asgari+19 model it as a spatially varying $c$-term fixed in focal-plane coordinates (right) — but the recurrence across detectors hints at something more general
+- A localized-in-$\theta$ contamination, viewed through orthogonal COSEBI filters, naturally produces oscillations in $B_n$
+- Either way, our $12'$ lower cut excludes the angular range where the pattern lives
 :::
 
 :::
-::: {.column style="width:52%"}
+::: {.column style="width:46%"}
 
-![](images/cosebis_data_vector.png){width=100% fig-align="center"}
+![](images/asgari19_regular_pattern.png){width=82% fig-align="center"}
+
+::: {style="font-size:0.72em;text-align:center;margin-top:-4px"}
+Repeating focal-plane $c$-term mock, $5\times$ amplified. From [Asgari+19](https://arxiv.org/abs/1810.02353).
+:::
 
 :::
 ::::::::::::::
 
 ::: notes
-UNIONS dithers by ~1/3 field of view — larger than a single CCD — so each sky position averages the bias across several CCDs. This may attenuate but is unlikely to fully eliminate the pattern. Paper V identifies an additional pipeline-specific source: improper propagation of exposure offsets within shape measurement, which imprints a coherent additive shear at CCD scales.
+The honest framing: we don't know the source from first principles. The pattern recurs across surveys with different detectors (CFHTLenS used MegaCam, but DES-SV did not), so a strict detector-scale story doesn't fit. What does fit is that any contamination localized at small θ projects through COSEBIs' orthogonal filters into oscillations at high n. Paper V identifies one such source in our own pipeline (next slide).
 :::
 
 
@@ -406,13 +400,53 @@ Pure-mode and COSEBI filters deproject these modes; the catalog-based $C_\ell$ e
 ::::::::::::::
 
 
-## Configuration-space PTE maps by catalog version {visibility="uncounted"}
+## Pure-mode $B$ modes: data vectors across catalog versions {visibility="uncounted"}
 
-![](images/config_space_pte_fiducial.png){width=95% fig-align="center"}
+![](images/pure_eb_versions.png){width=82% fig-align="center"}
 
-::: {style="font-size:0.8em;text-align:center"}
-$\xi_+^B$, $\xi_-^B$, and COSEBI $B_n$ PTEs vs. angular scale cuts, fiducial catalog. Black squares: adopted cuts.
+::: {style="font-size:0.82em;text-align:center;margin-top:6px"}
+$\xi_+$ (left), $\xi_-$ (right); $E$ (top), $B/\sigma$ (bottom). Initial (red), fiducial size cuts (gold), $+$masking (teal), relaxed flags (purple). Shaded: outside adopted range.
 :::
+
+
+## COSEBIs $B$ modes: data vectors across catalog versions {visibility="uncounted"}
+
+![](images/cosebis_bmode_stacked.png){width=82% fig-align="center"}
+
+::: {style="font-size:0.82em;text-align:center;margin-top:6px"}
+$B_n$ stacked across catalog versions. Same colors: initial (red), fiducial (gold), masking (teal), relaxed flags (purple).
+:::
+
+
+## $C_\ell^{BB}$: data vectors across catalog versions {visibility="uncounted"}
+
+![](images/cl_versions.png){width=82% fig-align="center"}
+
+::: {style="font-size:0.82em;text-align:center;margin-top:6px"}
+$C_\ell^{BB}/\sigma$ across catalog versions. Same colors as above.
+:::
+
+
+## PTE maps across all catalog versions and config-space statistics {visibility="uncounted"}
+
+:::::::::::::: {.columns}
+::: {.column style="width:42%"}
+
+![](images/config_space_pte_composite_appendix.png){fig-align="center" height="950"}
+
+:::
+::: {.column style="width:58%"}
+
+::: {style="margin-top:240px;font-size:1.0em"}
+- **Rows** — catalog versions:<br>initial · fiducial · $+$masking · relaxed flags
+- **Columns** — statistics: $\xi_+^B$, $\xi_-^B$, COSEBI $B_n$
+- **Color** — PTE (blue $\le 0.05$ fail, red $\ge 0.95$)
+- **Black squares** — adopted cuts
+- The fiducial row is the only one where the adopted-cut square sits in a pass region across all three statistics
+:::
+
+:::
+::::::::::::::
 
 
 ## Covariance: semi-analytic + MC propagation {visibility="uncounted"}
