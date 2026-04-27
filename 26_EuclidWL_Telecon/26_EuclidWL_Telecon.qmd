@@ -322,10 +322,12 @@ The disagreement is not a matter of harmonic versus real space — both COSEBI p
 :::
 ::: {.column style="width:46%"}
 
-![](images/asgari19_regular_pattern.png){width=82% fig-align="center"}
+::: {style="margin-top:-10px"}
+![](images/asgari19_regular_pattern.png){width=72% fig-align="center"}
+:::
 
-::: {style="font-size:0.72em;text-align:center;margin-top:-4px"}
-Repeating focal-plane $c$-term mock, $5\times$ amplified. From [Asgari+19](https://arxiv.org/abs/1810.02353).
+::: {style="font-size:0.78em;text-align:center;margin-top:-2px"}
+Repeating focal-plane $c$-term mock, $5\times$ amplified. Credit: [Asgari et al. 2019](https://arxiv.org/abs/1810.02353).
 :::
 
 :::
