@@ -18,28 +18,32 @@ Informal 20-min telecon talk on Paper II (B-modes) for the Euclid Weak Lensing S
 
 ## Talk Arc
 
-### Opening (slides 1-3)
-- Title + Paper II context within the five-paper release.
-- Motivation: B-modes as Stage-III systematics diagnostic. Stage-III failures have traced CCD additive bias, PSF higher moments, astrometric systematics. Frame as shared Stage-III/IV problem.
+### Opening
+- UNIONS in the northern sky → UNIONS-3500 at a glance → Paper II within the five-paper release (Catalogues, B-modes/this work, Config-space cosmology, Harmonic-space cosmology, **Image simulations**).
 
-### Methods (slides 4-5)
-- Three E/B-separable statistics in one slide: pure-mode ξ±^E/B, COSEBIs, C_ℓ^BB. Emphasize that pure-mode and COSEBIs deproject ambiguous modes; harmonic doesn't.
-- Covariance: Gaussian-only (conservative), CosmoCov + MC propagation in config, NaMaster iNKA in harmonic, validated on 350 GLASS mocks.
+### Why B modes, why this paper
+- E modes (gradient) vs. B modes (curl) on cropped pattern figures, full-width text + side-by-side images.
+- Stage-III failures have traced CCD additive bias (Asgari+19), PSF higher moments (Zhang+23), astrometric residuals (Wright+25), and HybridEB-driven flips (Jefferson+25). DES-Y6 is the counterexample — same HybridEB, passes, two-paragraph appendix. Filter functions, not estimators, set sensitivity.
+- Asgari+19 priors: same oscillatory B_n shape across CFHTLenS / KiDS-450 / DES-SV; mock systematics each leave a fingerprint. UNIONS will look like this.
 
-### Results (slides 6-10)
-- Three data-vector slides: pure E/B, COSEBIs (orange = full range oscillations; blue = after cuts), C_ℓ^BB.
-- Catalog versions PTE table: four variants tested, only fiducial passes all three.
+### Methods
+- Three E/B-separable statistics: pure-mode ξ±^E/B, COSEBIs, catalog-based C_ℓ^EE/BB. Pure-mode and COSEBIs deproject ambiguous modes; the C_ℓ estimator absorbs leakage into BB.
+- Gaussian-only covariance (CosmoCov + NaMaster iNKA), validated on 350 GLASS mocks. Conservative.
+
+### Results
+- Three data-vector slides: pure-mode (low-level structure outside cuts), COSEBIs (full-range >4σ first-mode excess, suppressed by cuts), C_ℓ^BB (low-level offset, passes adopted range).
+- Catalog versions PTE table: only fiducial (tightened-size-cut) passes all three.
 - Scale-cut PTE scan: adopted cuts sit in broad stable regions.
 
-### The punch line (slide 11)
-- Filter functions, not basis, set sensitivity. COSEBIs from ξ± and from C_ℓ agree for all twenty modes; both fail where C_ℓ passes. Empirical support for Asgari+19a and Jefferson+25.
+### The punch line
+- COSEBIs from ξ± vs from C_ℓ bandpowers agree for all twenty modes; both fail where C_ℓ passes. Filter functions, not basis. Empirical support for the Asgari+19 and Jefferson+25 line of argument.
 
-### Discussion (slides 12-13)
-- Repeating additive shear bias: MegaCam lineage with CFHTLenS. UNIONS dithers by ~1/3 FoV which may attenuate but not eliminate. Paper V identifies pipeline-specific exposure-offset source in addition.
-- Implications for Euclid: different detector geometry but same filter-function principle. Paper V identifies pipeline-specific exposure-offset source that could be informative.
+### Discussion
+- Repeating additive bias: MegaCam lineage with CFHTLenS; UNIONS dithers by ~1/3 FoV (attenuate, not eliminate). Paper V identifies a pipeline-specific source: improper exposure-offset propagation imprints coherent additive shear at CCD scales.
+- For Euclid: different detector geometry, same filter-function principle.
 
-### Close (slide 14)
-- Conclusions: consistent with zero at adopted cuts; oscillatory COSEBI pattern at full range; only fiducial passes everywhere; filter functions, not basis; any failure warrants scrutiny across all frameworks.
+### Close
+- B modes pass at adopted cuts across all three statistics; oscillatory COSEBI pattern at full range; only fiducial passes everywhere; filter functions, not basis. arXiv link on closing slide.
 
 ## Build
 

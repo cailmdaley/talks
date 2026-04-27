@@ -77,7 +77,7 @@ Non-tomographic in this release; multi-bin calibration in preparation.
 - **Paper II** — $B$-mode validation (this work)
 - **Paper III** — Configuration-space cosmology (Goh et al.)
 - **Paper IV** — Harmonic-space cosmology (Guerrini et al.)
-- **Paper V** — Simulations and validation (Hervas-Peters et al.)
+- **Paper V** — Image simulations (Hervas-Peters et al.)
 :::
 
 ::: {style="margin-top:80px;text-align:center"}
@@ -87,47 +87,42 @@ Paper II sets the scale cuts adopted in Papers III and IV.
 
 ## Cosmic shear produces $E$ modes; $B$ modes flag systematics
 
-:::::::::::::: {.columns}
-::: {.column style="width:55%"}
-
-::: {style="margin-top:120px;font-size:1.0em"}
+::: {style="margin-top:50px;font-size:1.0em"}
 - Scalar potential → curl-free shear field → only $E$ modes to leading order
 - Higher-order effects produce $B$ modes far below current sensitivity
 - At Stage-III, **$B$ modes flag residual systematics**
 - Null $B$ modes do not rule out contamination
 :::
 
-:::
-::: {.column style="width:45%"}
+:::::::::::::: {.columns style="margin-top:30px"}
+::: {.column .center style="width:50%;text-align:center"}
+![](images/emode_pattern.jpg){width=78%}
 
-::: {style="margin-top:30px;text-align:center"}
-![](images/emode_pattern.jpg){width=62%}
-
-::: {style="font-size:0.8em;margin-top:-6px;margin-bottom:14px"}
+::: {style="font-size:0.85em;margin-top:-4px"}
 $E$ modes (gradient-like)
 :::
+:::
+::: {.column .center style="width:50%;text-align:center"}
+![](images/bmode_pattern.jpg){width=78%}
 
-![](images/bmode_pattern.jpg){width=62%}
-
-::: {style="font-size:0.8em;margin-top:-6px"}
+::: {style="font-size:0.85em;margin-top:-4px"}
 $B$ modes (curl-like)
 :::
-:::
-
 :::
 ::::::::::::::
 
 
-## Stage-III B-mode failures trace detector, PSF, and astrometric effects
+## Stage-III B-mode failures trace<br>detector, PSF, and astrometric effects
 
-::: {style="margin-top:90px;font-size:1.05em"}
+::: {style="margin-top:70px;font-size:1.05em"}
 - **Repeating additive shear bias** — CFHTLenS, KiDS-450, DES-SV [[Asgari+19](https://arxiv.org/abs/1810.02353)]
 - **PSF higher-moment leakage** — HSC-Y3 [[Zhang+23](https://arxiv.org/abs/2212.03257)]
 - **Astrometric residuals** — KiDS-Legacy [[Wright+25](https://arxiv.org/abs/2503.19441)]
 - **`HybridEB` flips DES-Y3, KiDS, HSC-Y3 from pass to fail** [[Jefferson+25](https://arxiv.org/abs/2505.03964)]
+    - …yet DES-Y6 itself adopts `HybridEB` and passes — only one appendix figure and two paragraphs of discussion [[DES-Y6](https://arxiv.org/abs/2602.10065)]
 :::
 
-::: {style="margin-top:80px;text-align:center;font-size:0.95em;opacity:0.85"}
+::: {style="margin-top:60px;text-align:center;font-size:0.95em;opacity:0.85"}
 Each estimator weights angular scales differently; the same data can pass one and fail another.
 :::
 
@@ -135,21 +130,21 @@ Each estimator weights angular scales differently; the same data can pass one an
 ## Three Stage-III surveys see the same oscillatory $B$-mode pattern
 
 :::::::::::::: {.columns}
-::: {.column style="width:62%"}
-
-![](images/asgari19_allsurveys_EnBn.png){width=100% fig-align="center"}
-
-::: {style="font-size:0.7em;text-align:center;margin-top:-6px"}
-COSEBIs $E_n$ / $B_n$ — DES-SV, KiDS-450, CFHTLenS. From [Asgari+19](https://arxiv.org/abs/1810.02353).
-:::
-
-:::
 ::: {.column style="width:38%"}
 
 ::: {style="margin-top:140px;font-size:1.0em"}
 - Three surveys, three pipelines
 - $B_n$ panels (right): same coherent oscillation
 - Survey $p$-values differ, the **shape** doesn't
+:::
+
+:::
+::: {.column style="width:62%"}
+
+![](images/asgari19_allsurveys_EnBn.png){width=100% fig-align="center"}
+
+::: {style="font-size:0.7em;text-align:center;margin-top:-6px"}
+COSEBIs $E_n$ / $B_n$ — DES-SV, KiDS-450, CFHTLenS. From [Asgari+19](https://arxiv.org/abs/1810.02353).
 :::
 
 :::
@@ -163,21 +158,21 @@ The B-mode panels on the right tell the story: a non-random oscillating residual
 ## Mock systematics in COSEBIs each leave a distinct fingerprint
 
 :::::::::::::: {.columns}
-::: {.column style="width:62%"}
-
-![](images/asgari19_mocksys_EnBn.png){width=100% fig-align="center"}
-
-::: {style="font-size:0.7em;text-align:center;margin-top:-6px"}
-COSEBIs response to four mock systematics on KiDS-450. From [Asgari+19](https://arxiv.org/abs/1810.02353).
-:::
-
-:::
 ::: {.column style="width:38%"}
 
 ::: {style="margin-top:140px;font-size:1.0em"}
 - One systematic, one signature
 - **Regular pattern** (black): chaotic high-$n$ oscillations — matches the surveys' data
 - High-$n$ carries the fingerprint
+:::
+
+:::
+::: {.column style="width:62%"}
+
+![](images/asgari19_mocksys_EnBn.png){width=100% fig-align="center"}
+
+::: {style="font-size:0.7em;text-align:center;margin-top:-6px"}
+COSEBIs response to four mock systematics on KiDS-450. From [Asgari+19](https://arxiv.org/abs/1810.02353).
 :::
 
 :::
@@ -188,54 +183,85 @@ COSEBIs response to four mock systematics on KiDS-450. From [Asgari+19](https://
 :::
 
 
-## We use three $E$/$B$-separable statistics with different filter supports
+## We use three $E$/$B$-separable statistics<br>with different filter supports
 
-::: {style="margin-top:80px;font-size:1.05em"}
-- **Pure-mode correlation functions** $\xi_\pm^{\mathrm{E/B}}(\theta)$ — integral transforms of $\xi_\pm$; deproject ambiguous modes [[Schneider+22](https://arxiv.org/abs/2110.09774)]
-- **COSEBIs** $E_n, B_n$ — discrete orthogonal modes on $[\theta_\mathrm{min}, \theta_\mathrm{max}]$; deproject ambiguous modes [[Schneider+10](https://arxiv.org/abs/1002.2136)]
-- **Catalog-based $C_\ell^{EE}, C_\ell^{BB}$** — spin-2 SHT at source positions; residual $E{\to}B$ leakage absorbed into $C_\ell^{BB}$ [[Wolz+25](https://arxiv.org/abs/2407.21013)]
+::: {style="margin-top:50px;font-size:1.05em"}
+- **Pure-mode correlation functions** $\xi_\pm^{\mathrm{E/B}}(\theta)$ &nbsp; [[Schneider+22](https://arxiv.org/abs/2110.09774)]
+    - integral transforms of $\xi_\pm$; deproject ambiguous modes
+- **COSEBIs** $E_n, B_n$ &nbsp; [[Schneider+10](https://arxiv.org/abs/1002.2136)]
+    - discrete orthogonal modes on $[\theta_\mathrm{min}, \theta_\mathrm{max}]$; deproject ambiguous modes
+- **Catalog-based $C_\ell^{EE}, C_\ell^{BB}$** &nbsp; [[Wolz+25](https://arxiv.org/abs/2407.21013)]
+    - spin-2 SHT at source positions; residual $E{\to}B$ leakage absorbed into $C_\ell^{BB}$
 :::
 
-::: {style="margin-top:70px;font-size:0.95em;text-align:center;opacity:0.85"}
+::: {style="margin-top:50px;font-size:0.95em;text-align:center;opacity:0.85"}
 Gaussian-only covariance (CosmoCov + NaMaster iNKA), validated on 350 GLASS mocks [[Tessore+23](https://arxiv.org/abs/2302.01942)] — PTEs are conservative.
 :::
 
 
-## Pure-mode $B$ modes show low-level structure outside the adopted cuts
+## Pure-mode $B$ modes show low-level structure<br>outside the adopted cuts
 
 ![](images/pure_eb_data_vector.png){width=82% fig-align="center"}
 
 
-## COSEBIs show a $>4\sigma$ first-mode excess — suppressed by the adopted cuts
+## COSEBIs and $C_\ell^{BB}$ also pass within the adopted range
 
-![](images/cosebis_data_vector.png){width=80% fig-align="center"}
+:::::::::::::: {.columns}
+::: {.column style="width:36%"}
 
-::: {style="margin-top:-8px;text-align:center;font-size:0.9em"}
-Full range $1$–$250'$ (orange), fiducial cuts $12$–$83'$ (blue). First six modes carry the cosmology.
+::: {style="margin-top:80px;font-size:0.98em"}
+- **COSEBIs** $B_n$
+    - $>4\sigma$ first-mode excess at full range
+    - Suppressed by the cuts; first six modes carry the cosmology
+- **Harmonic-space** $C_\ell^{BB}$
+    - Low-level offset across $\ell$
+    - Passes within the adopted range $\ell\in[300,1600]$
 :::
 
-
-## $C_\ell^{BB}$ has a low-level offset but passes within the adopted range
-
-![](images/cl_data_vector.png){width=80% fig-align="center"}
-
-::: {style="margin-top:-8px;text-align:center;font-size:0.9em"}
-$C_\ell^{BB}/\sigma$ (top), $C_\ell^{EB}/\sigma$ (bottom); shaded: adopted range $\ell = 300$–$1600$.
 :::
+::: {.column style="width:64%"}
+
+![](images/cosebis_data_vector.png){width=92% fig-align="center"}
+
+::: {style="font-size:0.72em;text-align:center;margin-top:-4px;margin-bottom:6px"}
+Full range $1$–$250'$ (orange), fiducial cuts $12$–$83'$ (blue).
+:::
+
+![](images/cl_data_vector.png){width=92% fig-align="center"}
+
+::: {style="font-size:0.72em;text-align:center;margin-top:-4px"}
+$C_\ell^{BB}/\sigma$ (top), $C_\ell^{EB}/\sigma$ (bottom); shaded: adopted range.
+:::
+
+:::
+::::::::::::::
 
 
 ## Only the fiducial catalog passes all three statistics
 
-::: {style="font-size:0.9em;margin-top:30px;text-align:center"}
-Four catalog variants from `ShapePipe` v1.4:
-**initial** (loose size cut), **fiducial** (size cut $r_\mathrm{gal}/r_\mathrm{psf} > 0.707$), **masked** (adds star-halo masks), **relaxed-flags** ($+23\%$ density).
+:::::::::::::: {.columns}
+::: {.column style="width:38%"}
+
+::: {style="margin-top:60px;font-size:0.98em"}
+Four `ShapePipe` v1.4 variants:
+
+- **initial** — loose size cut
+- **fiducial** — size cut $r_\mathrm{gal}/r_\mathrm{psf} > 0.707$
+- **masked** — fiducial + star-halo masks
+- **relaxed-flags** — $+23\%$ source density
 :::
 
-![](images/pte_table_appendix_paper3.png){width=85% fig-align="center"}
-
-::: {style="font-size:0.78em;text-align:center;margin-top:4px"}
-Bold: PTE $< 0.05$ (null-test failure).
+::: {style="margin-top:40px;font-size:0.85em;opacity:0.85"}
+**Bold** entries fail the null test (PTE $< 0.05$).
 :::
+
+:::
+::: {.column style="width:62%"}
+
+![](images/pte_table_appendix_paper3.png){width=100% fig-align="center"}
+
+:::
+::::::::::::::
 
 
 ## The adopted cuts sit in broad PTE-pass regions
@@ -262,7 +288,7 @@ COSEBIs PTE vs. lower/upper scale cut. Square: adopted cuts.
 ::::::::::::::
 
 
-## Filter functions weight scales differently — cuts don't map between estimators
+## Filter functions weight scales differently —<br>cuts don't map between estimators
 
 :::::::::::::: {.columns}
 ::: {.column style="width:46%"}
@@ -291,7 +317,7 @@ The disagreement is not a matter of harmonic versus real space — both COSEBI p
 :::
 
 
-## The oscillatory COSEBI pattern tracks CCD-scale repeating additive bias
+## The oscillatory COSEBI pattern tracks<br>CCD-scale repeating additive bias
 
 :::::::::::::: {.columns}
 ::: {.column style="width:48%"}
@@ -329,7 +355,7 @@ So we have two candidate sources for the CCD-scale repeating additive bias: the 
 :::
 
 
-## We couldn't localize the source, so we cut where all three statistics pass
+## We couldn't localize the source,<br>so we cut where all three statistics pass
 
 ::: {style="margin-top:80px;font-size:1.05em"}
 - We detected an oscillatory $B$-mode pattern in COSEBIs at the full angular range
@@ -350,7 +376,7 @@ So we have two candidate sources for the CCD-scale repeating additive bias: the 
 </ul>
 
 ::: {style="margin-top:60px;text-align:center"}
-Paper II on arXiv soon — happy to discuss.<br>[cail.daley@cea.fr]{style="font-size:0.9em"}
+Paper II on arXiv: [arxiv.org/abs/2604.03227](https://arxiv.org/abs/2604.03227)<br>[cail.daley@cea.fr]{style="font-size:0.9em"}
 :::
 
 
