@@ -1,0 +1,322 @@
+---
+title: "B-mode systematics in<br>the UNIONS-3500 weak lensing survey"
+occasion: CNRS AI Rising Talents — Interview
+description: "Deep-dive: B-mode analysis, systematics characterisation, cosmological constraints"
+author:
+    name: Cail Daley
+    affiliation: "CosmoStat, CEA Paris-Saclay  <br> <br> [on behalf of the UNIONS weak lensing team]{style=font-size:1.3em}"
+date: June 25, 2026
+date-format: long
+
+format:
+    revealjs:
+        width:  1920
+        height: 1080
+        theme: [default, custom.scss]
+        slide-number: true
+        fig-align: center
+        menu: false
+        include-after-body: assets/no_footer_on_titleslide.html
+        footer: "Cail Daley | CNRS AI Rising Talents | June 25, 2026"
+        history: false
+        hash: true
+        pdf-separate-fragments: true
+        pdf-max-pages-per-slide: 1
+        template-partials:
+            - title-slide.html
+        center-title-slide: false
+        logo: images/unions_wl_logo.png
+
+html-math-method:
+    method: mathjax
+    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## Cosmic shear: what we measure {#shear-setup}
+
+:::::::::::::: {.columns}
+::: {.column style="width:60%"}
+
+Gravitational lensing distorts galaxy shapes. We measure the **two-point shear correlations** — the statistical signal of the large-scale matter distribution.
+
+::: {style="margin-top:0.6em"}
+The shear field decomposes into:
+
+- **E-modes** (curl-free): the cosmological lensing signal
+- **B-modes** (divergence-free): zero from gravity alone
+:::
+
+::: {style="margin-top:0.6em;font-style:italic"}
+Non-zero B-modes diagnose residual systematics:
+PSF leakage, additive shear bias, multiplicative calibration errors.
+:::
+
+:::
+::: {.column style="width:40%"}
+
+:::::: {.columns}
+::: {.column width="50%"}
+![E-mode pattern](../26_Moriond_UNIONS/images/emode_pattern.jpg){width=100%}
+:::
+::: {.column width="50%"}
+![B-mode pattern](../26_Moriond_UNIONS/images/bmode_pattern.jpg){width=100%}
+:::
+::::::
+
+:::
+::::::::::::::
+
+::: notes
+Establish the two-minute setup. The E/B decomposition is the key concept: E-modes are what we want, B-modes are what should be zero and tell us something is wrong when they aren't. The pattern images are intuitive.
+:::
+
+
+## UNIONS-3500 {#unions}
+
+:::::::::::::: {.columns}
+::: {.column style="width:55%"}
+
+::: {style="margin-top:0.5em"}
+- MegaCam/CFHT, **~3500 deg²**, $r$-band lensing
+- Deepest wide-field weak lensing survey of the northern sky
+- Gap-filler between KiDS and LSST: survey area + depth
+:::
+
+::: {style="margin-top:0.8em"}
+**Paper II is the gatekeeper.** It decides:
+
+- which catalog version passes the null tests
+- which angular scales are clean enough for cosmology
+
+These choices are locked before unblinding.
+:::
+
+:::
+::: {.column style="width:45%"}
+
+![](../26_Moriond_UNIONS/images/des_y6_footprints_unions.png){width=100%}
+
+:::
+::::::::::::::
+
+::: notes
+Brief. Key beats: northern sky (the gap), and Paper II as gatekeeper (establishes that this is methodologically principled — we're not fishing for a good S8 by choosing scales post-hoc).
+:::
+
+
+## Three statistics, one systematics test {#three-stats}
+
+:::::::::::::: {.columns}
+::: {.column style="width:58%"}
+
+::: {style="margin-top:0.5em"}
+We don't use one B-mode test — we use three, in different statistical bases:
+:::
+
+::: {style="margin-top:0.6em"}
+1. **$\xi_\pm^B$ (configuration space)** — pure E/B decomposition of the two-point correlation function; direct diagnostic
+
+2. **COSEBIs** (Complete Orthogonal Sets of E/B-separating Integrals) — discrete modes maximally sensitive to B-mode contamination on specific scales
+
+3. **$C_\ell^{BB}$ (harmonic space)** — power spectrum; different scale weighting than real-space statistics
+:::
+
+::: {style="margin-top:0.6em;font-style:italic"}
+Each weights angular scales differently. Requiring all three to pass is more conservative and more diagnostic than a single test.
+:::
+
+:::
+::: {.column style="width:42%"}
+
+![](../26_Moriond_UNIONS/images/cl_data_vector.png){width=100%}
+
+:::
+::::::::::::::
+
+::: notes
+Two minutes here. Emphasise that the three bases are complementary: they weight scales differently, so disagreement between them carries information about *where* the contamination lives. This is the key setup for the next slide.
+:::
+
+
+## The B-mode data vector {#data-vector}
+
+![](../26_Moriond_UNIONS/images/pure_eb_data_vector.png){width=85% fig-align="center"}
+
+::: notes
+Let the figure breathe. Row by row: xi_+ E and B (top), xi_- E and B, COSEBIs E and B, Cl E and B. The B-mode rows should be consistent with zero — or not, as the case may be.
+:::
+
+
+## Not all statistics agree {#disagreement}
+
+:::::::::::::: {.columns}
+::: {.column style="width:52%"}
+
+Over the **full angular range** (1–250 arcmin, $\ell \lesssim 2000$):
+
+::: {style="margin-top:0.5em"}
+- $\xi_\pm^B$: **passes** ✓
+- $C_\ell^{BB}$: **passes** ✓
+- **COSEBIs: fails** ✗
+:::
+
+::: {style="margin-top:0.8em"}
+The disagreement is **not** real-space vs. harmonic-space — we compute COSEBIs from both $\xi_\pm$ and from $C_\ell$ bandpowers and they agree with each other.
+
+The sensitivity is set by the **filter functions**, not the basis. COSEBIs' filters concentrate sensitivity on scales where there is contamination.
+:::
+
+::: {style="margin-top:0.6em;font-size:0.9em;font-style:italic"}
+The oscillating pattern is consistent with additive shear bias repeating at the CCD scale (Asgari et al. 2019). We cannot decisively identify the origin — this is an honest finding.
+:::
+
+:::
+::: {.column style="width:48%"}
+
+![](../26_Moriond_UNIONS/images/cosebis_bsigma_talk.png){width=100%}
+
+:::
+::::::::::::::
+
+::: notes
+This is the key finding, ~2 min. The intuition: COSEBIs are designed to be maximally sensitive to specific B-mode patterns, so when they fail and the others pass, we've localised the contamination. The oscillating pattern in the figure is the signature.
+The key intellectual move: "the statistics disagree, and that disagreement is information." It's not a failure of the analysis — it's the analysis working as designed.
+:::
+
+
+## Using disagreement to inform the analysis {#scale-cuts}
+
+::: {style="margin-top:0.5em"}
+The B-mode tests are not a binary pass/fail. They determine:
+:::
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+**1. Catalog version selection**
+
+Only the PSF size-corrected catalog passes across all statistics and scale cuts. This choice is locked before unblinding.
+
+**2. Angular scale cuts**
+
+COSEBIs pass after imposing:
+- $\theta \geq 3.5'$ (for $\xi_+$)
+- $\theta \geq 40'$ (for $\xi_-$)
+
+These become the analysis scale cuts for Papers IV and V.
+
+:::
+::: {.column style="width:50%"}
+
+![](../26_Moriond_UNIONS/images/config_space_pte_fiducial.png){width=100%}
+
+:::
+::::::::::::::
+
+::: notes
+1.5 min. The point is that the disagreement does work: it selects the catalog version and sets the scale cuts. Both decisions are made before the cosmology is revealed.
+:::
+
+
+## Cosmological constraints {#cosmology}
+
+:::::::::::::: {.columns}
+::: {.column style="width:55%"}
+
+::: {style="margin-top:0.5em"}
+With validated catalog and frozen scale cuts, Papers IV (real space) and V (harmonic space) find:
+
+- **S₈ = [value ± uncertainty]** — check paper for current blinded/unblinded value
+- Agreement between two independent analyses (calibrated on 350 GLASS mocks)
+- Agreement with Planck and Stage-III surveys at ~1σ
+:::
+
+::: {style="margin-top:0.8em;font-size:0.9em"}
+Dominant systematic: **intrinsic alignment prior** — S₈ is robust to most analysis choices but sensitive to the IA model. Marginalised conservatively.
+:::
+
+:::
+::: {.column style="width:45%"}
+
+![](../26_Moriond_UNIONS/images/contour_survey_comparison.png){width=100%}
+
+:::
+::::::::::::::
+
+::: notes
+1.5 min. Lead with the headline number. The key point: two independent analyses (real space and harmonic space) agree. The IA prior dominance is an honest accounting — flag it as such.
+:::
+
+
+## Produced with agentic AI {#agentic}
+
+:::::::::::::: {.columns}
+::: {.column style="width:55%"}
+
+::: {style="margin-top:0.5em"}
+This analysis was conducted in agentic mode. Under my direction:
+
+- ~10,000 lines of analysis code
+- Three independent statistical frameworks
+- ~120,000 lines edited by agents across the project
+- Full manuscript (Daley et al. 2026)
+:::
+
+::: {style="margin-top:0.7em"}
+What this enables:
+
+- Exploratory breadth impractical with hand-coding
+- Every decision recorded in a structured provenance graph
+- The verification question shifts: not "is the code correct" but "are the decisions correct" — where the astronomer's expertise belongs
+:::
+
+:::
+::: {.column style="width:45%"}
+
+::: {style="margin-top:1.5em;text-align:center;font-size:0.85em"}
+<!-- TODO: felt / ASTRA diagram showing decision graph structure -->
+*[Decision provenance diagram — felt/ASTRA]*
+:::
+
+:::
+::::::::::::::
+
+::: notes
+1 min. Not a detour — a forward pointer. This is how frontier cosmological analysis will be done in five years; we're already doing it.
+The key beat: the verification question shifts. That's the deep point. It's not "use AI to go faster" — it's "use AI to make the breadth tractable while keeping the scientific judgement where it belongs."
+:::
+
+
+## Summary and forward {#summary}
+
+:::::::::::::: {.columns}
+::: {.column style="width:55%"}
+
+**What we found**
+
+- UNIONS-3500 delivers the first northern-sky cosmic shear constraints
+- B-mode analysis: multiple statistics turn disagreement into diagnosis
+- Validated S₈ constraints consistent with the concordance model
+
+**What comes next**
+
+- Tomographic cosmic shear (Year 1)
+- Multi-probe analysis — shear + GGL + clustering (Year 3)
+- The B-mode framework becomes the template for deeper UNIONS analyses
+
+:::
+::: {.column style="width:45%"}
+
+![](../26_Moriond_UNIONS/images/s8_convergence_with_unions.png){width=100%}
+
+:::
+::::::::::::::
+
+::: {style="margin-top:0.8em;font-style:italic;text-align:center"}
+Thank you.
+:::
+
+::: notes
+1 min. Same three-beat structure: what we found, what comes next. The figure shows UNIONS joining the S8 landscape — use it to close the loop on the northern sky gap you opened on the UNIONS slide.
+:::

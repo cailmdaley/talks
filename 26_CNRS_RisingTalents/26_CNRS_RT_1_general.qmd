@@ -1,0 +1,337 @@
+---
+title: "Cosmology with Agentic AI:<br>Research Experience and<br>a Four-Year Program"
+occasion: CNRS AI Rising Talents — Interview
+description: "General presentation: trajectory, program, team"
+author:
+    name: Cail Daley
+    affiliation: "CosmoStat, CEA Paris-Saclay  <br> <br> [on behalf of the UNIONS weak lensing team]{style=font-size:1.3em}"
+date: June 25, 2026
+date-format: long
+
+format:
+    revealjs:
+        width:  1920
+        height: 1080
+        theme: [default, custom.scss]
+        slide-number: true
+        fig-align: center
+        menu: false
+        include-after-body: assets/no_footer_on_titleslide.html
+        footer: "Cail Daley | CNRS AI Rising Talents | June 25, 2026"
+        history: false
+        hash: true
+        pdf-separate-fragments: true
+        pdf-max-pages-per-slide: 1
+        template-partials:
+            - title-slide.html
+        center-title-slide: false
+
+html-math-method:
+    method: mathjax
+    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## Research arc: from CMB to weak lensing
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+**South Pole Telescope — CMB lensing**
+
+::: {style="margin-top:0.3em;font-size:0.85em"}
+- SPT-3G CMB power spectra and lensing reconstruction
+- Euclid × SPT cross-correlation MOU
+- Post-doctoral work at CEA, CosmoStat
+:::
+
+:::
+::: {.column style="width:50%"}
+
+**UNIONS-3500 — cosmic shear**
+
+::: {style="margin-top:0.3em;font-size:0.85em"}
+- UNIONS-3500 B-mode systematics → cosmology (Paper II, III–V)
+- Kinematic lensing (Hopp & Wittman 2026, co-supervision)
+- Euclid CMB cross-correlations working group (principal postdoc)
+:::
+
+:::
+::::::::::::::
+
+::: {style="margin-top:1.2em"}
+Three international collaborations: **UNIONS**, **Euclid**, **SPT-3G**. I lead analyses, not just contribute.
+:::
+
+::: notes
+Set the scope early: I'm a cosmologist who works across lensing probes, not a narrow specialist. The CMB→weak lensing trajectory shows methodological breadth. The three collaborations signal that I operate at scale.
+:::
+
+
+## UNIONS-3500: B-modes and northern-sky cosmology {#unions-result}
+
+:::::::::::::: {.columns}
+::: {.column style="width:52%"}
+
+![](../26_Moriond_UNIONS/images/pure_eb_data_vector.png){width=100%}
+
+:::
+::: {.column style="width:48%"}
+
+::: {style="margin-top:0.4em"}
+**UNIONS** — MegaCam/CFHT, ~3500 deg², first northern-sky wide-field weak lensing
+
+**Paper II (B-modes):**
+- Three independent statistics (COSEBIs, $\xi_\pm^B$, $C_\ell^{BB}$)
+- Key finding: statistics disagree over the full angular range
+- That disagreement is the information — forces scale cuts, identifies contamination
+:::
+
+::: {style="margin-top:0.6em"}
+**Papers III–V:** S₈ constraints consistent with Planck and Stage-III at ~1σ
+:::
+
+:::
+::::::::::::::
+
+::: notes
+This is the flagship result. The B-mode data vector panel is the centrepiece — it shows the three statistics diverging over the full angular range, which is exactly what led to the scale cuts and clean cosmology.
+Don't rush this slide. The finding ("statistics disagree") is counterintuitive at first but immediately compelling once explained.
+:::
+
+
+## The AI inflection point {#inflection}
+
+:::::::::::::: {.columns}
+::: {.column style="width:56%"}
+
+::: {style="margin-top:0.3em"}
+Sutton's bitter lesson: **general computation > encoded expertise**, every time.
+
+Applied to research:
+:::
+
+::: {style="margin-top:0.7em"}
+- Frontier models complete tasks requiring ~12 hours of human expert time (METR 2026)
+- Capability doubling time: ~4 months
+- If this holds: **~2,500× more capable in 4 years**
+:::
+
+::: {style="margin-top:0.9em;font-style:italic"}
+Expert time is better spent guiding computation than doing it.
+
+The researcher's role shifts: **specification, design, verification** — not implementation.
+:::
+
+:::
+::: {.column style="width:44%"}
+
+::: {style="margin-top:0.5em;text-align:center;font-size:0.75em"}
+<!-- TODO: insert METR capability trajectory figure here -->
+<!-- placeholder: the METR 2026 task-horizon graph -->
+*[METR capability trajectory — insert figure]*
+:::
+
+:::
+::::::::::::::
+
+::: notes
+This is the conceptual heart of the talk. Don't rush it. The key move is making the bitter lesson feel inevitable — general computation wins because it doesn't need to encode the specific assumptions that experts bring. Then connect to the doubling-time data, then land on what this means for the researcher's role.
+The "2,500×" number is striking — use it, but then immediately pivot to: "the researcher's job doesn't disappear; it upgrades."
+:::
+
+
+## The existence proof: UNIONS Paper II {#existence-proof}
+
+::: {style="margin-top:0.5em"}
+This analysis was produced almost entirely by AI agents under my direction:
+:::
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+::: {style="margin-top:0.5em"}
+- ~10,000 lines of analysis code
+- Three independent statistical frameworks
+- Full manuscript (Daley et al. 2026)
+- **~120,000 lines edited by agents** across the project
+:::
+
+:::
+::: {.column style="width:50%"}
+
+::: {style="margin-top:0.5em"}
+My role:
+
+- Designing the analysis architecture
+- Designing the validation tests
+- Verifying correctness at each stage
+:::
+
+:::
+::::::::::::::
+
+::: {style="margin-top:1em;font-style:italic"}
+This isn't a future method — it's how I already work.
+:::
+
+::: notes
+Build on the previous slide. The existence proof should feel like a landing: we said the role shifts to specification/design/verification — here's the evidence that this is already happening, in a paper that's been peer-reviewed.
+The 120k lines number always lands well. Use it.
+:::
+
+
+## Euclid × CMB: cross-correlation science
+
+:::::::::::::: {.columns}
+::: {.column style="width:58%"}
+
+::: {style="margin-top:0.4em"}
+- Principal postdoc in Euclid's **CMB cross-correlations** science working group
+- Lead the **SPT–Euclid MOU** project
+- DR1 (October 2026): first science coming
+:::
+
+::: {style="margin-top:0.8em"}
+Cross-correlations are robust: independent systematics between CMB lensing and galaxy lensing — neither contaminant appears in both probes.
+:::
+
+:::
+::: {.column style="width:42%"}
+
+![](../26_Moriond_UNIONS/images/euclid_rr2_cmb_experiment_footprints.png){width=100%}
+
+:::
+::::::::::::::
+
+::: notes
+Brief slide — 45 sec. The key beat is "principal postdoc" (not just a contributor) and DR1 in October. The independent systematics argument is the scientific justification for why these cross-correlations matter.
+:::
+
+
+## A four-year research program {#program}
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+**UNIONS — tomographic and multi-probe**
+
+::: {style="margin-top:0.3em;font-size:0.85em"}
+- **Year 1:** first tomographic cosmic shear constraints from UNIONS-3500
+- **Year 3:** multi-probe analysis (shear + GGL + clustering)
+- Outcome: percent-level S₈ constraints, independent of DES/KiDS
+:::
+
+:::
+::: {.column style="width:50%"}
+
+**Euclid × CMB — multi-probe cross-correlations**
+
+::: {style="margin-top:0.3em;font-size:0.85em"}
+- **Years 1–2:** DR1 cross-correlation science (SPT, ACT, Planck)
+- **Years 3–4:** comprehensive multi-probe cross-correlations with DR2
+- Foundation already in place: Euclid CMB WG role, SPT MOU
+:::
+
+:::
+::::::::::::::
+
+::: {style="margin-top:1em;font-style:italic"}
+Running through both: **agentic methods make the breadth tractable** — more systematic exploration, more validation checks, complete decision records.
+:::
+
+::: notes
+Two axes, one unifying thread. The key pitch: this isn't "more of the same" — the agentic methods open up a programme that would be impractical with hand-coding alone. Be specific about the years; milestones defined by scientific deliverables, not tooling.
+:::
+
+
+## Verification and benchmarks
+
+::: {style="margin-top:0.5em"}
+The risk that must be named: **AI systems hallucinate.** They optimize for plausibility over correctness.
+:::
+
+::: {style="margin-top:0.6em"}
+Tools in development (with François Lanusse, Lightcone Research):
+:::
+
+:::::::::::::: {.columns}
+::: {.column style="width:33%"}
+**`felt`**
+
+Traversable decision and progress graph — every analysis choice is traceable
+:::
+::: {.column style="width:33%"}
+**ASTRA specification**
+
+Structured, machine-readable analysis records; structured outputs for agent-written analyses
+:::
+::: {.column style="width:33%"}
+***Tapestries***
+
+Browsable provenance visualisation — the human can audit the agent's decisions
+:::
+::::::::::::::
+
+::: {style="margin-top:0.8em"}
+**Benchmarks** — real analysis tasks (messy, multiple defensible solutions), not isolated extractions. Year 2 deliverable; growing suite in collaboration with DATAIA and PostGenAI@Paris.
+:::
+
+::: notes
+Don't skip this slide. The committee will have concerns about hallucination and reproducibility — get ahead of it. The framing "risk that must be named" signals scientific maturity. The three tools show that we're not just using AI naively; we're building the verification layer alongside it.
+:::
+
+
+## Team, mentorship, and lab integration
+
+:::::::::::::: {.columns}
+::: {.column style="width:50%"}
+
+**Team**
+
+- 2 PhD students (Year 1), co-supervised with Martin Kilbinger + Samuel Farrens
+- 1 postdoc (Year 2), agentic methods focus
+- AI methods guidance: François Lanusse
+
+**Mentorship question**
+
+How do you develop verification instincts in students who haven't learned without AI? Early experiments in progress (M2 internship, Spring 2026).
+
+:::
+::: {.column style="width:50%"}
+
+**Lab integration**
+
+::: {style="margin-top:0.3em;font-size:0.85em"}
+- **UMR AIM (CosmoStat)** — UNIONS analyses, Lightcone Research: Kilbinger, Farrens, Lanusse
+- **IAS** — Euclid CMB cross-correlations: Fabbian, Salvati, Bonnaire
+- **Paris-Saclay ecosystem** — DATAIA, PostGenAI@Paris, Pleias (French Science Commons, sovereign AI)
+:::
+
+:::
+::::::::::::::
+
+::: notes
+"Agentic pedagogy" is a genuinely open question — surfacing it shows intellectual honesty and marks it as a research contribution, not just a side effect. The two lab homes map cleanly onto the two scientific axes (UMR AIM for UNIONS, IAS for Euclid-CMB).
+:::
+
+
+## Summary
+
+::: {style="margin-top:0.8em"}
+
+1. **Strong track record** — UNIONS Paper II (B-modes and cosmology), Euclid CMB cross-correlations (SPT MOU), SPT-3G work
+
+2. **Clear program** — UNIONS tomographic → multi-probe; Euclid-CMB DR1 → DR2; verification benchmarks
+
+3. **France is the right place** — CosmoStat + IAS + DATAIA: the research ecosystem is here
+
+:::
+
+::: {style="margin-top:1.5em;font-style:italic;text-align:center"}
+Thank you.
+:::
+
+::: notes
+Short, punchy close. Three lines, same order as the talk. Don't add new information here.
+:::
