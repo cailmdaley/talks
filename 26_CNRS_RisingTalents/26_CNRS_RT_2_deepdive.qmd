@@ -79,6 +79,7 @@ Establish the two-minute setup. The E/B decomposition is the key concept: E-mode
 
 ::: {style="margin-top:0.5em"}
 - MegaCam/CFHT, **~3500 deg²**, $r$-band lensing
+- **~61 million source galaxies**, $n_\mathrm{eff} \approx 5 \, \mathrm{arcmin}^{-2}$
 - Deepest wide-field weak lensing survey of the northern sky
 - Gap-filler between KiDS and LSST: survey area + depth
 :::
@@ -225,11 +226,11 @@ These become the analysis scale cuts for Papers IV and V.
 ::: {.column style="width:55%"}
 
 ::: {style="margin-top:0.5em"}
-With validated catalog and frozen scale cuts, Papers IV (real space) and V (harmonic space) find:
+With validated catalog and frozen scale cuts, Papers III (real space) and IV (harmonic space) find:
 
-- **S₈ = [value ± uncertainty]** — check paper for current blinded/unblinded value
-- Agreement between two independent analyses (calibrated on 350 GLASS mocks)
-- Agreement with Planck and Stage-III surveys at ~1σ
+- **S₈ = 0.86 ± 0.08** (real space) and **S₈ = 0.92 ± 0.08** (harmonic space)
+- Agreement between two independent analyses at ~0.5σ (calibrated on 350 GLASS mocks)
+- Agreement with Planck ($S_8 = 0.834 \pm 0.016$) and Stage-III surveys at ~1σ
 :::
 
 ::: {style="margin-top:0.8em;font-size:0.9em"}

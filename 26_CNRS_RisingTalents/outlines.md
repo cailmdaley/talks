@@ -289,10 +289,10 @@ The fiber body says "IAS or LISN" — the research programme and application say
 
 ### Key numbers to have ready for discussion
 - UNIONS area: ~3500 deg²
-- Number of source galaxies: [check paper]
-- S8 value and uncertainty: [check paper]
+- Number of source galaxies: **~61 million** (fiducial catalog v1.4.6.3), n_eff ≈ 5 arcmin⁻²
+- S8 values (from companion papers III/IV, Papers III + IV in series): **config-space S8 = 0.86 ± 0.08**, **harmonic-space S8 = 0.92 ± 0.08** — both ~1σ consistent with Planck (S8 = 0.834 ± 0.016); config-harmonic agreement ~0.5σ. (Note: the harmonic abstract was later corrected to 0.891 after n(z) calibration fix; the rounded CNRS application values 0.86/0.92 are the right reference for the jury.)
 - Agent capability doubling time: ~4 months (METR 2026)
-- 2025 task horizon: ~12 hours of expert time
+- 2025 task horizon: ~12 hours of expert time (METR 2026 benchmark)
 - Lines of code in UNIONS analysis: ~10,000 lines code, 120,000+ lines edited
 - PhD students proposed: 2 (Year 1), 1 postdoc (Year 2)
 - Program budget split: ~2/3 personnel, ~1/3 candidate position + compute + travel
