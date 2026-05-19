@@ -275,10 +275,7 @@ What this enables:
 :::
 ::: {.column style="width:45%"}
 
-::: {style="margin-top:1.5em;text-align:center;font-size:0.85em"}
-<!-- TODO: felt / ASTRA diagram showing decision graph structure -->
-*[Decision provenance diagram — felt/ASTRA]*
-:::
+![](images/astra_provenance_diagram.png){width=100%}
 
 :::
 ::::::::::::::

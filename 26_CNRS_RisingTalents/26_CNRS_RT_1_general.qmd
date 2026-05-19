@@ -126,11 +126,7 @@ The researcher's role shifts: **specification, design, verification** — not im
 :::
 ::: {.column style="width:44%"}
 
-::: {style="margin-top:0.5em;text-align:center;font-size:0.75em"}
-<!-- TODO: insert METR capability trajectory figure here -->
-<!-- placeholder: the METR 2026 task-horizon graph -->
-*[METR capability trajectory — insert figure]*
-:::
+![](images/metr_capability_trajectory.png){width=100%}
 
 :::
 ::::::::::::::
