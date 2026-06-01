@@ -76,7 +76,7 @@ A non-exhaustive list. Some pieces live on the CMB / large-scale-structure side,
 | **Agora** | coherent multi-probe **foreground** sky (CMB-side N-body) | "Euclidise" via GLASS (needs density shells + halo catalogs) |
 | **Flagship2** | — *(ΛCDM N-body, no κ_CMB)* | official Euclid **galaxy + WL** mock; gold-standard realism, the **bias & *n(z)* reference** |
 | **DEMNUni** | correlated **κ_CMB** + galaxies + WL (ΛCDM, massive-ν, *f(R)*) | bias & *n(z)* from **Flagship2** → **numerical covariances** |
-| **Contaminated GLASS** | — | inject **Euclid systematics**, watch the cross-spectrum |
+| **Contaminated GLASS** | — | inject **Euclid systematics**, measure effect on cross-spectrum & cosmology |
 | **Per-experiment recon suites** | each experiment's **κ-reconstruction sims** | **per-experiment noise** |
 
 
