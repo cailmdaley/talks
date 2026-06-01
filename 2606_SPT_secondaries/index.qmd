@@ -1,0 +1,123 @@
+---
+title: "Euclid × SPT: the simulation landscape"
+occasion: SPT Secondaries and Cross-Correlations Call
+description: The simulation landscape for Euclid × CMB lensing / secondaries cross-correlations
+draft: true
+author:
+  name: Cail Daley & Euclid CMBX team
+date: June 1, 2026
+date-format: long
+
+output-file: 2606_SPT_secondaries.html
+
+format:
+  revealjs:
+    width: 1920
+    height: 1080
+    theme: [default, custom.scss]
+    slide-number: true
+    fig-align: center
+    include-after-body: assets/no_footer_on_titleslide.html
+    footer: Cail Daley | Euclid × SPT simulations | SPT Secondaries & Cross-Correlations | June 1, 2026
+    history: false
+    hash: true
+    pdf-separate-fragments: true
+    pdf-max-pages-per-slide: 1
+    template-partials:
+      - title-slide.html
+    center-title-slide: false
+
+html-math-method:
+  method: mathjax
+  url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## What simulations have prior cross-correlation analyses used?
+
+Simulations do two jobs: <br>
+build or validate the **covariance**, and check for **foreground / pipeline bias**.
+
+::: {.r-stack style="min-height:780px;align-content:center"}
+
+::: {.fragment .fade-in-then-out style="width:1550px"}
+**DES Y3 × SPT + Planck**  ·  *Omori, Chang 2023*  ·  $\delta_g,\, \gamma \times \kappa$
+
+- **signal covariance:** halo-model for the DES 3×2pt block, lognormal for the κ cross-terms
+- **noise covariance:** 300 CMB-lensing reconstruction sims (recon − input)
+- **foregrounds:** tSZ-nulled lensing map; checked with κ × CIB and cluster stacks
+:::
+
+::: {.fragment .fade-in-then-out style="width:1550px"}
+**ACT-DR4 × DES shear**  ·  *Shaikh 2024*  ·  $\gamma \times \kappa$
+
+- **signal covariance:** 511 FLASK lognormal mocks
+- **noise covariance:** ACT reconstruction sims, added onto the FLASK signal
+- **foregrounds:** tSZ-deprojected map; tSZ-free vs. with-tSZ comparison
+:::
+
+::: {.fragment .fade-in-then-out style="width:1550px"}
+**SPT-3G D1 × DES Y3**  ·  *Ouellette+, in prep*  ·  $\gamma \times \kappa$
+
+- **covariance:** Gaussian term from NaMaster (iNKA) evaluated on the *measured* spectra (carries the real noise), plus analytic SSC + cNG
+- **foregrounds:** polarization-only reconstruction; temperature-estimator bias quantified in Agora
+:::
+
+:::
+
+
+## The Euclid CMBX simulation ecosystem {.smaller}
+
+A non-exhaustive list. Some pieces live on the CMB / large-scale-structure side, some on the Euclid side:
+
+| Mock | CMB / large-scale side | Euclid side |
+|---|---|---|
+| **Agora** | coherent multi-probe **foreground** sky (CMB-side N-body) | "Euclidise" via GLASS (needs density shells + halo catalogs) |
+| **Flagship2** | — *(ΛCDM N-body, no κ_CMB)* | official Euclid **galaxy + WL** mock; gold-standard realism, the **bias & *n(z)* reference** |
+| **DEMNUni** | correlated **κ_CMB** + galaxies + WL (ΛCDM, massive-ν, *f(R)*) | bias & *n(z)* from **Flagship2** → **numerical covariances** |
+| **Contaminated GLASS** | — | inject **Euclid systematics**, watch the cross-spectrum |
+| **Per-experiment recon suites** | each experiment's **κ-reconstruction sims** | **per-experiment noise** |
+
+
+## Euclid-like Agora for systematics characterization
+
+:::::::::::::: {.columns}
+::: {.column style="width:52%"}
+
+- I've been chatting with **Marco Gatti** about building **Euclid-like products from Agora** on NERSC
+
+- To do this we'd just need Agora's **density shells + halo catalogs**. Do those already exist on
+  NERSC, or do we download them from **Globus**?
+
+- We could even **inject Euclid-like systematics** into the Euclid side, for a suite with systematics
+  on **both the CMB and Euclid sides**
+
+:::
+::: {.column style="width:48%"}
+
+![](images/agora_maps.png){fig-align="center" width=100%}
+
+::: {style="font-size:0.6em;text-align:center;margin-top:-15px"}
+Omori (2024)
+:::
+
+:::
+::::::::::::::
+
+
+## How do we account for SPT × ACT × Planck correlations?
+
+- A joint data vector puts **SPT-κ × Euclid** and **ACT-κ × Euclid** side by side, so the two
+  measurements are correlated
+
+- **Qu et al (ACT DR6)** met this for the **auto-spectrum**: to combine ACT + Planck κκ they estimated
+  the ACT × Planck covariance from **shared CMB sims** (plus a conservative max-overlap bound to decide
+  what's negligible), finding it **small**, significant only where the bandpowers overlap in L
+
+<br>
+
+- But that's the **auto case**. In cross-correlation, both share the **same Euclid tracer**, so they're
+  correlated through its sample variance, which is *not* negligible
+
+- **So the open question:** how do we estimate the **SPT × ACT cross-covariance** for a
+  shared-Euclid-tracer data vector? (shared signal, independent reconstruction noise)

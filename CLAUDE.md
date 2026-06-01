@@ -26,8 +26,9 @@ centralized reuse, or replace the symlink with a real folder when slides demand 
 - **`unused_images/`** — images pruned by `collect_unused_assets.py`. Gitignored.
 
 ### Image hygiene
-- **Size**: keep PNGs under ~2MB. Resize to max 2000px wide (projectors are 1920px). Use
-  `Pillow` or `pngquant` to compress before committing.
+- **Resolution over file size**: use figures at full resolution — scientific figures need to stay
+  crisp on a projector, and degrading them to hit an arbitrary byte cap is the wrong tradeoff. Match
+  the source figure's native resolution; don't downsample or re-compress to save space.
 - **Pruning**: `python collect_unused_assets.py` (dry run by default) scans all `.qmd`, `.md`,
   `.html`, `.yml`, `.scss` files for `images/` references. Use `--move` to relocate orphans to
   `unused_images/`.
@@ -35,9 +36,17 @@ centralized reuse, or replace the symlink with a real folder when slides demand 
 - **History matters**: large binaries bloat `.git/` permanently. When removing images, also
   consider `git filter-repo` to strip them from history (requires force push).
 
-### Publishing
-GitHub Pages builds and deploys automatically on every push to `main`, via
-`.github/workflows/publish.yml` (Quarto Action runs `quarto render` and uploads
-`_site/` to Pages). Don't commit rendered HTML; don't run a publish script.
-The per-talk `images/` and `assets/` symlinks must be committed so the action's
-render step can resolve assets.
+### Deployment (GitHub Pages via Actions)
+Deployment is automatic: **pushing to `main` triggers `.github/workflows/publish.yml`**, which runs
+`quarto render` on the runner and publishes `_site` as a **Pages artifact**
+(`upload-pages-artifact` → `deploy-pages`). The repo's Pages source is `build_type: workflow`
+(deploy-from-Actions), **not** deploy-from-branch.
+
+- **Just commit source to `main`.** The Action renders everything — do **not** commit rendered HTML
+  or `_site` (gitignored). Only `.qmd` source, the `images/`/`assets/` symlinks, theme files, and any
+  figures the deck references need to be tracked.
+- **Do NOT run `quarto publish gh-pages`.** It pushes a local build to a `gh-pages` branch that Pages
+  ignores (because `build_type` is `workflow`), so it deploys nothing and just leaves orphan clutter.
+- **Drafts:** `draft: true` in a talk's front matter keeps it out of the index listing, but the Action
+  still renders it and serves it at its direct URL (`.../<talk>/<talk>.html`).
+- Live site: <https://cailmdaley.github.io/talks/>
