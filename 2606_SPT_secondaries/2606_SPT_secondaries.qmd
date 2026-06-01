@@ -104,8 +104,8 @@ Omori (2024)
 
 - For the **auto-spectra**, **Qu, Ge et al (2026)** could get away with an **analytic upper bound**:
   combining ACT + SPT + Planck κκ, the cross-experiment covariance is **small** (ACT–SPT
-  $\lesssim15\%$, Planck–SPT $\lesssim10\%$) — little sky overlap, and SPT is **polarization-only**
-  while ACT / Planck are temperature-dominated
+  $\lesssim15\%$, Planck–SPT $\lesssim10\%$), since sky overlap is limited and SPT is
+  **polarization-only** while ACT / Planck are temperature-dominated
 
 <br>
 
@@ -113,6 +113,6 @@ Omori (2024)
   (2024)** (ACT × DESI LRG) find the ACT–Planck correlation jumps to **40–50%**, because both
   cross-spectra share the *same galaxy sample*
 
-- So it's probably **even more important** to work out the SPT × ACT cross-covariance here — and it's
+- So it's probably **even more important** to work out the SPT × ACT cross-covariance here. It's also
   a **broad point**, not just ours: any SPT cross-correlation combining two κ maps over a shared
-  tracer hits it. *(Thinking out loud — not proposing a recipe.)*
+  tracer hits it. *(Thinking out loud, not proposing a recipe.)*
