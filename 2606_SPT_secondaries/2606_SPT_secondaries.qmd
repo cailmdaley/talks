@@ -8,7 +8,7 @@ author:
 date: June 1, 2026
 date-format: long
 
-output-file: 2606_SPT_secondaries.html
+output-file: index.html
 
 format:
   revealjs:
@@ -110,14 +110,17 @@ Omori (2024)
 - A joint data vector puts **SPT-κ × Euclid** and **ACT-κ × Euclid** side by side, so the two
   measurements are correlated
 
-- **Qu et al (ACT DR6)** met this for the **auto-spectrum**: to combine ACT + Planck κκ they estimated
-  the ACT × Planck covariance from **shared CMB sims** (plus a conservative max-overlap bound to decide
-  what's negligible), finding it **small**, significant only where the bandpowers overlap in L
+- **Qu, Ge et al (2026)** met this for the **auto-spectra**: combining ACT + SPT + Planck κκ, they
+  derived the cross-experiment covariance **analytically** — shared lensing signal *and* correlated
+  reconstruction noise, verified with sims. It's **small** (ACT–SPT $\lesssim15\%$, Planck–SPT
+  $\lesssim10\%$): little sky overlap, and SPT is **polarization-only** while ACT / Planck are
+  temperature-dominated
 
 <br>
 
-- But that's the **auto case**. In cross-correlation, both share the **same Euclid tracer**, so they're
-  correlated through its sample variance, which is *not* negligible
+- **But that argument is about the κ maps.** In cross-correlation both spectra share the **same Euclid
+  tracer**, correlated through its **sample variance** — which doesn't care about κ-reconstruction
+  overlap or T-vs-pol, and is *not* negligible
 
-- **So the open question:** how do we estimate the **SPT × ACT cross-covariance** for a
+- **The open question:** how do we estimate the **SPT × ACT cross-covariance** for a
   shared-Euclid-tracer data vector? (shared signal, independent reconstruction noise)
