@@ -74,8 +74,8 @@ A non-exhaustive list. Some pieces live on the CMB / large-scale-structure side,
 | Mock | CMB / large-scale side | Euclid side |
 |---|---|---|
 | **Agora** | coherent multi-probe **foreground** sky (CMB-side N-body) | "Euclidise" via GLASS (needs density shells + halo catalogs) |
-| **Flagship2** | — *(ΛCDM N-body, no κ_CMB)* | official Euclid **galaxy + WL** mock; gold-standard realism, the **bias & *n(z)* reference** |
-| **DEMNUni** | correlated **κ_CMB** + galaxies + WL (ΛCDM, massive-ν, *f(R)*) | bias & *n(z)* from **Flagship2** → **numerical covariances** |
+| **Flagship2** | — *(ΛCDM N-body, no $\kappa_\mathrm{CMB}$ to my knowledge)* | official Euclid **galaxy + WL** mock; gold-standard realism, the **bias & *n(z)* reference** |
+| **DEMNUni** | correlated **$\kappa_\mathrm{CMB}$** + galaxies + WL (ΛCDM, massive-ν, *f(R)*) | bias & *n(z)* from **Flagship2**; **50 N-body** calibrate **many FLASK sims** → **covariance** |
 | **Contaminated GLASS** | — | inject **Euclid systematics**, measure effect on cross-spectrum & cosmology |
 | **Per-experiment recon suites** | each experiment's **κ-reconstruction sims** | **per-experiment noise** |
 
