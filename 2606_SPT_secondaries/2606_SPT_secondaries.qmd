@@ -35,8 +35,9 @@ include-in-header: assets/mathjax.html
 
 ## What simulations have prior cross-correlation analyses used?
 
-Simulations do two jobs: <br>
-build or validate the **covariance**, and check for **foreground / pipeline bias**.
+Simulations can do two jobs: <br>
+build or validate the **covariance**, and **check for pipeline bias in the presence of foregrounds or
+injected systematics**.
 
 ::: {.r-stack style="min-height:780px;align-content:center"}
 
@@ -81,9 +82,6 @@ A non-exhaustive list. Some pieces live on the CMB / large-scale-structure side,
 
 ## Euclid-like Agora for systematics characterization
 
-:::::::::::::: {.columns}
-::: {.column style="width:52%"}
-
 - I've been chatting with **Marco Gatti** about building **Euclid-like products from Agora** on NERSC
 
 - To do this we'd just need Agora's **density shells + halo catalogs**. Do those already exist on
@@ -92,17 +90,11 @@ A non-exhaustive list. Some pieces live on the CMB / large-scale-structure side,
 - We could even **inject Euclid-like systematics** into the Euclid side, for a suite with systematics
   on **both the CMB and Euclid sides**
 
-:::
-::: {.column style="width:48%"}
+![](images/agora_maps.png){fig-align="center" width=58%}
 
-![](images/agora_maps.png){fig-align="center" width=100%}
-
-::: {style="font-size:0.6em;text-align:center;margin-top:-15px"}
+::: {style="font-size:0.6em;text-align:center;margin-top:-10px"}
 Omori (2024)
 :::
-
-:::
-::::::::::::::
 
 
 ## How do we account for SPT × ACT × Planck correlations?
