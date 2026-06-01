@@ -36,8 +36,8 @@ include-in-header: assets/mathjax.html
 ## What simulations have prior cross-correlation analyses used?
 
 Simulations can do two jobs: <br>
-build or validate the **covariance**, and **check for pipeline bias in the presence of foregrounds or
-injected systematics**.
+build or validate the **covariance**, and check for **pipeline bias** in the presence of foregrounds
+or injected systematics.
 
 ::: {.r-stack style="min-height:780px;align-content:center"}
 
@@ -73,22 +73,22 @@ A non-exhaustive list. Some pieces live on the CMB / large-scale-structure side,
 
 | Mock | CMB / large-scale side | Euclid side |
 |---|---|---|
-| **Agora** | coherent multi-probe **foreground** sky (CMB-side N-body) | "Euclidise" via GLASS (needs density shells + halo catalogs) |
-| **Flagship2** | — *(ΛCDM N-body, no $\kappa_\mathrm{CMB}$ to my knowledge)* | official Euclid **galaxy + WL** mock; gold-standard realism, the **bias & *n(z)* reference** |
-| **DEMNUni** | correlated **$\kappa_\mathrm{CMB}$** + galaxies + WL (ΛCDM, massive-ν, *f(R)*) | bias & *n(z)* from **Flagship2**; **50 N-body** calibrate **many FLASK sims** → **covariance** |
-| **Contaminated GLASS** | — | inject **Euclid systematics**, measure effect on cross-spectrum & cosmology |
-| **Per-experiment recon suites** | each experiment's **κ-reconstruction sims** | **per-experiment noise** |
+| **Agora** | coherent multi-probe foreground sky (CMB-side N-body) | "Euclidise" via GLASS (needs density shells + halo catalogs) |
+| **Flagship2** | — *(ΛCDM N-body, no $\kappa_\mathrm{CMB}$ to my knowledge)* | official Euclid galaxy + WL mock; gold-standard realism, the bias & *n(z)* reference |
+| **DEMNUni** | correlated $\kappa_\mathrm{CMB}$ + galaxies + WL (ΛCDM, massive-ν, *f(R)*) | bias & *n(z)* from Flagship2; 50 N-body calibrate many FLASK sims → covariance |
+| **Contaminated GLASS** | — | inject Euclid systematics, measure effect on cross-spectrum & cosmology |
+| **Per-experiment recon suites** | each experiment's κ-reconstruction sims | per-experiment noise, experiment cross-covariance |
 
 
 ## Euclid-like Agora for systematics characterization
 
-- I've been chatting with **Marco Gatti** about building **Euclid-like products from Agora** on NERSC
+- I've been chatting with Marco Gatti about building Euclid-like products from Agora on NERSC
 
 - To do this we'd just need Agora's **density shells + halo catalogs**. Do those already exist on
-  NERSC, or do we download them from **Globus**?
+  NERSC, or do we download them from Globus?
 
-- We could even **inject Euclid-like systematics** into the Euclid side, for a suite with systematics
-  on **both the CMB and Euclid sides**
+- We could even inject Euclid-like systematics into the Euclid side, for a suite with systematics on
+  both the CMB and Euclid sides
 
 ![](images/agora_maps.png){fig-align="center" width=58%}
 
@@ -99,20 +99,19 @@ Omori (2024)
 
 ## How do we account for SPT × ACT × Planck correlations?
 
-- A joint data vector puts **SPT-κ × Euclid** and **ACT-κ × Euclid** side by side — the two
-  measurements are correlated
+- Eventually we'll want to combine the SPT, ACT & Planck cross-correlations with Euclid, though
+  perhaps ambitious for DR1
 
-- For the **auto-spectra**, **Qu, Ge et al (2026)** could get away with an **analytic upper bound**:
-  combining ACT + SPT + Planck κκ, the cross-experiment covariance is **small** (ACT–SPT
-  $\lesssim15\%$, Planck–SPT $\lesssim10\%$), since sky overlap is limited and SPT is
-  **polarization-only** while ACT / Planck are temperature-dominated
+- For the auto-spectra, Qu, Ge et al (2026) get away with an analytic upper bound: the ACT + SPT +
+  Planck cross-experiment covariance is small (ACT–SPT $\lesssim15\%$, Planck–SPT $\lesssim10\%$),
+  since the overlap is limited and SPT is polarization-only
 
-<br>
+- For us it's less clear-cut: SPT won't be pol-only, so larger correlations, though the SPT–ACT
+  overlap stays fairly small for DR1 (not all of the Main field)
 
-- **But it grows once the data vector is a cross-correlation with a shared tracer.** **Kim et al
-  (2024)** (ACT × DESI LRG) find the ACT–Planck correlation jumps to **40–50%**, because both
-  cross-spectra share the *same galaxy sample*
+- The cross-covariance also grows once you add a shared tracer ($\delta_g$ or $\gamma$): Kim et al
+  (2024) (ACT × DESI LRG) see the ACT–Planck correlation jump to **40–50%**, both cross-spectra
+  sharing the same galaxy sample
 
-- So it's probably **even more important** to work out the SPT × ACT cross-covariance here. It's also
-  a **broad point**, not just ours: any SPT cross-correlation combining two κ maps over a shared
-  tracer hits it. *(Thinking out loud, not proposing a recipe.)*
+- So it's probably worth working out the SPT × ACT cross-covariance here. It's a broad point, not just
+  ours: any cross-correlation combining two κ maps over a shared tracer hits it. *(Thinking out loud.)*
