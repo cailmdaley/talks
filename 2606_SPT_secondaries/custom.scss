@@ -114,3 +114,13 @@ figcaption > span {
 .reveal .slide.scrollable img {
     max-height: none !important;
 }
+
+.reveal .slides section.spaced li {
+    margin-bottom: 0.85em;
+}
+
+.reveal .slides section.spaced table td,
+.reveal .slides section.spaced table th {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
