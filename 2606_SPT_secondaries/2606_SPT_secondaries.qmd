@@ -1,5 +1,5 @@
 ---
-title: "Euclid × SPT: the simulation landscape"
+title: "Euclid × SPT simulation thoughts"
 occasion: SPT Secondaries and Cross-Correlations Call
 description: The simulation landscape for Euclid × CMB lensing / secondaries cross-correlations
 draft: true
@@ -107,20 +107,20 @@ Omori (2024)
 
 ## How do we account for SPT × ACT × Planck correlations?
 
-- A joint data vector puts **SPT-κ × Euclid** and **ACT-κ × Euclid** side by side, so the two
+- A joint data vector puts **SPT-κ × Euclid** and **ACT-κ × Euclid** side by side — the two
   measurements are correlated
 
-- **Qu, Ge et al (2026)** met this for the **auto-spectra**: combining ACT + SPT + Planck κκ, they
-  derived the cross-experiment covariance **analytically** — shared lensing signal *and* correlated
-  reconstruction noise, verified with sims. It's **small** (ACT–SPT $\lesssim15\%$, Planck–SPT
-  $\lesssim10\%$): little sky overlap, and SPT is **polarization-only** while ACT / Planck are
-  temperature-dominated
+- For the **auto-spectra**, **Qu, Ge et al (2026)** could get away with an **analytic upper bound**:
+  combining ACT + SPT + Planck κκ, the cross-experiment covariance is **small** (ACT–SPT
+  $\lesssim15\%$, Planck–SPT $\lesssim10\%$) — little sky overlap, and SPT is **polarization-only**
+  while ACT / Planck are temperature-dominated
 
 <br>
 
-- **But that argument is about the κ maps.** In cross-correlation both spectra share the **same Euclid
-  tracer**, correlated through its **sample variance** — which doesn't care about κ-reconstruction
-  overlap or T-vs-pol, and is *not* negligible
+- **But it grows once the data vector is a cross-correlation with a shared tracer.** **Kim et al
+  (2024)** (ACT × DESI LRG) find the ACT–Planck correlation jumps to **40–50%**, because both
+  cross-spectra share the *same galaxy sample*
 
-- **The open question:** how do we estimate the **SPT × ACT cross-covariance** for a
-  shared-Euclid-tracer data vector? (shared signal, independent reconstruction noise)
+- So it's probably **even more important** to work out the SPT × ACT cross-covariance here — and it's
+  a **broad point**, not just ours: any SPT cross-correlation combining two κ maps over a shared
+  tracer hits it. *(Thinking out loud — not proposing a recipe.)*
