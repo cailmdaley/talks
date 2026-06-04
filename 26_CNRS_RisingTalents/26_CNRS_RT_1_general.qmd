@@ -12,11 +12,15 @@ format:
     revealjs:
         width:  1920
         height: 1080
+        margin: 0
+        auto-stretch: false
         theme: [default, custom.scss]
         slide-number: true
         fig-align: center
         menu: false
-        include-after-body: assets/no_footer_on_titleslide.html
+        include-after-body:
+            - assets/no_footer_on_titleslide.html
+            - assets/restore-iframe-focus.html
         footer: "Cail Daley | CNRS AI Rising Talents | June 25, 2026"
         history: false
         hash: true
@@ -32,31 +36,82 @@ html-math-method:
 include-in-header: assets/mathjax.html
 ---
 
-## Science is becoming a design problem {#thesis}
+## A six-parameter universe {#standard-model}
 
-::: {style="margin-top:1.3em;font-size:1.05em"}
-Research is accelerating — and increasingly AI-mediated. Scientific output is
-beginning to **outpace our ability to verify it.**
+:::::::::::::: {.columns}
+::: {.column style="width:52%"}
+
+::: {style="margin-top:0.3em"}
+A century of observation has converged on a single model: a universe of ordinary
+and dark matter, expanding ever faster under **dark energy**. We call it **ΛCDM**.
 :::
 
-::: {style="margin-top:1.1em"}
-> The question shifts: from *producing results* to **designing research systems
-> that check themselves as fast as they discover.**
+::: {style="margin-top:0.8em"}
+**Six parameters** fit it all at once — the cosmic microwave background, the
+large-scale distribution of galaxies, supernova distances, the abundances of the
+light elements.
 :::
 
-::: {style="margin-top:1.2em;font-style:italic"}
-This is the through-line of what follows — the results I've produced, how I
-produce them, and the four-year program all turn on it.
+::: {style="margin-top:0.8em"}
+And yet **95%** of this universe — the Λ and the cold dark matter — stays
+*phenomenological*: we know how it shapes spacetime; we do not know what it is.
+:::
+
+:::
+::: {.column style="width:48%"}
+
+::: {.img-placeholder}
+the probes of ΛCDM, together<br>CMB · galaxies · supernovae · light elements<br><br>[ figure to come ]
+:::
+
+<!-- IMAGE PLACEHOLDER (GPT-image): one illustration tying together the probes ΛCDM
+     describes at once — CMB map, galaxy survey / large-scale structure, supernova
+     distance ladder, light-element abundances — with a hint of where the model strains. -->
+
+:::
+::::::::::::::
+
+::: notes
+~60 seconds — ground the room in the science. The load-bearing beat: six numbers, many
+independent probes, all consistent — an extraordinary success. Then the twist: the model
+works, but its dominant ingredients are unexplained. Sets up "so how do we make progress?".
+:::
+
+
+## Precision cosmology: systematic, or new physics? {#precision}
+
+::: {style="margin-top:0.4em"}
+We make progress by **pushing this model until something gives** — percent-level
+measurements from complementary probes, asking whether the joint picture still needs
+only those six numbers.
+:::
+
+::: {style="margin-top:0.7em"}
+Two tensions hold the field's attention:
+:::
+
+::: {style="margin-top:0.3em"}
+- the expansion rate $H_0$ — the early and nearby universe disagree at **~5σ**
+- **S₈**, the amplitude of late-time matter clustering
+:::
+
+::: {style="margin-top:0.7em"}
+Each time, the same question: is the discrepancy **new physics**, or an artifact of the
+instrument, the data, the analysis? S₈ is the cautionary tale — weak lensing sat 2–3σ low
+for years, until KiDS-Legacy and DES Y6 shifted upward and the tension largely dissolved.
+:::
+
+::: {style="margin-top:0.7em;font-style:italic"}
+Euclid, Rubin/LSST, and next-generation CMB shrink the statistical errors another order of
+magnitude. **Systematics will dominate every measurement** — and that is where my work lives.
 :::
 
 ::: notes
-The framing beat — ~40 seconds. It's the lens, not the argument. State the thesis,
-let it breathe, then move into the research arc. The thesis pays off explicitly at
-the AI inflection point ("this is the design problem"), at the four-year program
-("a system that scales its own checking"), at verification ("this is the design"),
-and at the close.
-Voice: this is about how research itself works — researcher altitude, not a pitch
-for tools. The verification apparatus is the wake of doing the science, not the point.
+The pivot. "Pushing the model until it breaks" is the headline. Land the two tensions, then
+the recurring question (systematic or new physics). The S₈ history is the cautionary tale —
+a tension that looked like physics and dissolved into systematics; it returns at the close of
+the deep-dive talk. End on "systematics will dominate," which hands straight to the research
+arc — characterising systematics is the throughline of everything that follows.
 :::
 
 
@@ -88,11 +143,11 @@ for tools. The verification apparatus is the wake of doing the science, not the 
 ::::::::::::::
 
 ::: {style="margin-top:1.2em"}
-Three international collaborations: **UNIONS**, **Euclid**, **SPT-3G**. I lead analyses, not just contribute.
+Three international collaborations: **UNIONS**, **Euclid**, **SPT-3G**. I lead analyses in each.
 :::
 
 ::: notes
-Set the scope early: I'm a cosmologist who works across lensing probes, not a narrow specialist. The CMB→weak lensing trajectory shows methodological breadth. The three collaborations signal that I operate at scale.
+Set the scope early: I'm a cosmologist who works across lensing probes. The CMB→weak lensing trajectory shows methodological breadth. The three collaborations signal that I operate at scale.
 :::
 
 
@@ -128,40 +183,52 @@ Don't rush this slide. The finding ("statistics disagree") is counterintuitive a
 :::
 
 
-## The AI inflection point {#inflection}
+## Science is becoming a design problem {#thesis}
 
-:::::::::::::: {.columns}
-::: {.column style="width:56%"}
-
-::: {style="margin-top:0.3em"}
-Sutton's bitter lesson: **general computation > encoded expertise**, every time.
-
-Applied to research:
+::: {style="margin-top:1.3em;font-size:1.05em"}
+Research is accelerating — and increasingly AI-mediated. Scientific output is
+beginning to **outpace our ability to verify it.**
 :::
 
-::: {style="margin-top:0.7em"}
-- Frontier models complete tasks requiring ~12 hours of human expert time (METR 2026)
-- Capability doubling time: ~4 months
-- If this holds: **~2,500× more capable in 4 years**
+::: {style="margin-top:1.1em"}
+> The question shifts: from *producing results* to **designing research systems
+> that check themselves as fast as they discover.**
 :::
 
-::: {style="margin-top:0.9em;font-style:italic"}
-Expert time is better spent guiding computation than doing it.
-
-**This is the design problem:** the researcher's role shifts to specification, design, and verification — not implementation.
+::: {style="margin-top:1.2em;font-style:italic"}
+This through-line runs through the work you just saw, how I produce it, and the
+four-year program ahead.
 :::
-
-:::
-::: {.column style="width:44%"}
-
-![](images/metr_capability_trajectory.png){width=100%}
-
-:::
-::::::::::::::
 
 ::: notes
-This is the conceptual heart of the talk. Don't rush it. The key move is making the bitter lesson feel inevitable — general computation wins because it doesn't need to encode the specific assumptions that experts bring. Then connect to the doubling-time data, then land on what this means for the researcher's role.
-The "2,500×" number is striking — use it, but then immediately pivot to: "the researcher's job doesn't disappear; it upgrades."
+The framing beat — ~40 seconds. This is the lens for everything else. Having just shown a
+cosmology result and the research arc, name the meta-point: verification is becoming the
+bottleneck, so the work shifts to designing systems that check themselves. Let it breathe,
+then the AI inflection slide explains why this is suddenly tractable. The thesis pays off
+again at the four-year program ("a system that scales its own checking"), at verification,
+and at the close. Researcher altitude — the verification apparatus is the wake of doing the
+science.
+:::
+
+
+## AI capabilities are increasing exponentially {#inflection .metr-slide}
+
+::: {.metr-wrap}
+<iframe class="metr-embed" src="https://metr.org/horizon-chart-embed" title="METR — task-completion time horizon (live, interactive)" loading="lazy"></iframe>
+:::
+
+::: notes
+The conceptual heart of the talk — the live METR chart. Speak over it; toggle linear/log live to
+show the trend both ways. The beats:
+- Sutton's bitter lesson — general computation beats encoded expertise, every time.
+- Applied to research: frontier models now complete tasks that take a human expert ~12 hours;
+  the capability doubling time is ~4 months; if it holds, ~2,500× more capable in four years.
+- The "2,500×" number is striking — use it, then pivot: the researcher's job doesn't disappear,
+  it upgrades. This is the design problem — the role shifts from implementation to specification,
+  design, and verification.
+
+OFFLINE FALLBACK (no internet at the venue): replace the iframe above with the static image:
+  ![](images/metr_capability_trajectory.png){width=70% fig-align="center"}
 :::
 
 
@@ -196,7 +263,7 @@ My role:
 ::::::::::::::
 
 ::: {style="margin-top:1em;font-style:italic"}
-This isn't a future method — it's how I already work.
+This is how I already work.
 :::
 
 ::: notes
@@ -229,7 +296,7 @@ Cross-correlations are robust: independent systematics between CMB lensing and g
 ::::::::::::::
 
 ::: notes
-Brief slide — 45 sec. The key beat is "principal postdoc" (not just a contributor) and DR1 in October. The independent systematics argument is the scientific justification for why these cross-correlations matter.
+Brief slide — 45 sec. Land "principal postdoc" and DR1 in October. The independent systematics argument is the scientific justification for why these cross-correlations matter.
 :::
 
 
@@ -265,7 +332,7 @@ Both axes also work the design problem directly: **a research system that scales
 :::
 
 ::: notes
-Two axes, one unifying thread. The key pitch: this isn't "more of the same" — the agentic methods open up a programme that would be impractical with hand-coding alone. Be specific about the years; milestones defined by scientific deliverables, not tooling.
+Two axes, one unifying thread. The key pitch: the agentic methods open up a programme that would be impractical with hand-coding alone. Be specific about the years; milestones defined by scientific deliverables, not tooling.
 :::
 
 
@@ -302,11 +369,11 @@ Browsable provenance visualisation — the human can audit the agent's decisions
 ::::::::::::::
 
 ::: {style="margin-top:0.8em"}
-**Benchmarks** — real analysis tasks (messy, multiple defensible solutions), not isolated extractions. Year 2 deliverable; growing suite in collaboration with DATAIA and PostGenAI@Paris.
+**Benchmarks** — real analysis tasks: messy, with multiple defensible solutions. Year 2 deliverable; growing suite in collaboration with DATAIA and PostGenAI@Paris.
 :::
 
 ::: notes
-Don't skip this slide. The committee will have concerns about hallucination and reproducibility — get ahead of it. The framing "risk that must be named" signals scientific maturity. The three tools show that we're not just using AI naively; we're building the verification layer alongside it.
+Don't skip this slide. The committee will have concerns about hallucination and reproducibility — get ahead of it. Naming the risk plainly signals scientific maturity. The three tools show the verification layer being developed alongside the AI.
 :::
 
 
@@ -340,7 +407,7 @@ How do you develop verification instincts in students who haven't learned withou
 ::::::::::::::
 
 ::: notes
-"Agentic pedagogy" is a genuinely open question — surfacing it shows intellectual honesty and marks it as a research contribution, not just a side effect. The two lab homes map cleanly onto the two scientific axes (UMR AIM for UNIONS, IAS for Euclid-CMB).
+"Agentic pedagogy" is a genuinely open question — surfacing it shows intellectual honesty and marks it as a research contribution in its own right. The two lab homes map cleanly onto the two scientific axes (UMR AIM for UNIONS, IAS for Euclid-CMB).
 :::
 
 
@@ -357,7 +424,7 @@ How do you develop verification instincts in students who haven't learned withou
 :::
 
 ::: {style="margin-top:1.2em;font-style:italic;text-align:center"}
-The through-line: as science becomes a design problem, the questions I find most exciting are how we build research that checks itself.
+As science becomes a design problem, the question I find most exciting is how we design research that checks itself.
 :::
 
 ::: {style="margin-top:0.5em;text-align:center"}

@@ -6,6 +6,8 @@
 // ─────────────────────────────────────────────────────────────────────────
 $parchment:      #EDE2CE;   // warm canonical ground
 $rag:            #FBF6E9;   // lighter warm paper
+$paper-mid:      #F4ECDC;   // in-between — midway rag↔parchment
+$paper-lite:     #F7F0E1;   // a hair lighter than paper-mid (round-3 default, Cail)
 $ink:            #1B1611;
 $ink-muted:      #7A6F5C;
 $cinnabar:       #BC4538;   // the single accent
@@ -17,12 +19,15 @@ $rule:           #C5B89E;
 
 // ── Ground (the genuine taste variant — see report.html) ──
 //    Switch this single line to render the alternatives:
-//      $parchment  → warm, full house identity   ← recommended (the halo unlocks it)
+//      $paper-mid  → the in-between — slightly darker than rag   ← round-3 default
+//      $parchment  → warm, full house identity (round-2 default)
 //      $rag        → warm near-white, halo near-invisible (round-1 default)
 //      #ffffff     → conservative, neutral
-//    Round 2: the figure halo below dissolves the white-box problem that forced
-//    rag in round 1, so the bolder parchment ground is now the default.
-$ground: $parchment;
+//    Round 3: Cail asked for an in-between ground — slightly darker than rag,
+//    a touch lighter than parchment — then a hair lighter still ($paper-lite).
+//    The huge, soft, under-text halo below melts the figure white into this ground
+//    gradually enough that even this light ground keeps a hard-edge-free figure.
+$ground: $paper-lite;
 
 // ── Fonts ──
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -52,6 +57,35 @@ body {
 }
 
 /*-- scss:rules --*/
+
+// ── Content breathing room ──
+//   margin:0 makes the ground full-bleed (so logo corners + figure halos read
+//   true), but it also removed reveal's letterbox that used to inset the text.
+//   Restore generous content padding here. Logos sit OUTSIDE this: their absolute
+//   offsets reference the slide edge (the padding box), not the padded content.
+.reveal .slides section {
+    padding: 56px 104px;
+    box-sizing: border-box;
+}
+
+// METR embed slide — a complete-sentence title at top + a large, vertically-centred
+// live chart that uses the full vertical room (Cail: bigger, with a title).
+.reveal section.metr-slide { padding: 44px 36px; overflow: hidden; }
+.reveal section.metr-slide .metr-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 2.6em);   // the space below the title
+    margin-top: 0.2em;
+}
+.reveal .metr-embed {
+    width: 100%;
+    height: 600px;
+    border: 0;
+    display: block;
+    transform: scale(1.18);        // enlarge to use the vertical room
+    transform-origin: center;
+}
 
 // ── Headings ──
 .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
@@ -158,7 +192,7 @@ body {
     font-size: 1.75vh !important;
     letter-spacing: 0.05em;
     color: $ink-muted !important;
-    bottom: 0.5vh !important;
+    bottom: 1.5vh !important;
     line-height: 1 !important;
     opacity: 0.85;
 }
@@ -196,18 +230,87 @@ body {
     margin: 0;
 }
 
-// ── Figure halo — the signature move (round 2) ──
-//   The science figures all export with white backgrounds (every figure in both
-//   decks has pure-white corners). On the warm ground they would otherwise sit as
-//   hard white rectangles. A soft white box-shadow feathers each figure's white
-//   margin outward into the ground, so the white interior melts into the warmth
-//   instead of butting against a hard edge — a smooth vignette, no pasted-on look.
-//   Because every figure is white-cornered, a single rule applies cleanly with no
-//   per-image exceptions; reveal's own logo/title images sit outside `section p`.
-$halo-feather: 56px;   // blur radius — width of the white→ground transition
-$halo-collar:  24px;   // spread — solid white collar before the feather begins
-.reveal .slides section p img {
-    box-shadow: 0 0 $halo-feather $halo-collar #fff;
+// ── Figure halo — the signature move (round 3: huge, gradual, UNDER the text) ──
+//   The science figures all export with white backgrounds. On the warm ground they
+//   would otherwise sit as hard white rectangles. We feather each figure's white
+//   margin outward into the ground so the white interior melts into the warmth.
+//
+//   Round 3 (Cail): make it HUGE and gradual — a falloff that *reads* like a
+//   gradient but emanates from the figure (not a slide-wide single-gradient wash,
+//   the generic-AI tell). A single huge box-shadow falls off ~linearly and blooms
+//   like a glowing cloud; instead we STACK several shadows with decreasing alpha to
+//   approximate a smooth gaussian ramp — solid collar at the edge, dissolving over
+//   ~1300px into nothing. Reaches far, stays subtle.
+//
+//   CRUCIAL (Cail): the halo must sit IN THE CANVAS, *under* the text — not paint
+//   over it. The figure is later in the DOM than the text column, so by default its
+//   box-shadow paints on top and washes the words. The z-index layering below puts
+//   the whole figure layer beneath the whole text layer, so even a huge glow stays
+//   behind crisp text. Text glyphs read on top of the glow; the glow is canvas.
+//   Applies to EVERY content figure image (column-figures and sole centred
+//   figures alike), regardless of whether quarto wraps it in <p> or <figure>.
+//   Logos opt out (box-shadow:none on .logo). Auto-stretch is disabled in the
+//   deck YAML (`auto-stretch: false`) so sole images size by their width instead
+//   of reveal's r-stretch, which computed height:0 and left those slides blank.
+.reveal .slides section img,
+.reveal .slides section iframe.figure-embed {
+//   Round 3.2 (Cail): white ONLY at the figure edge (a thin collar), then a long,
+//   eased, gentle gradient that takes a long way to settle — not the bright,
+//   sharp "white blotch" of the 4-stop version. Many low-alpha stops over ~1150px
+//   approximate a smooth convex ease-out: comes off white fast, then a faint wide
+//   tail that stabilizes into the ground well before the page edge.
+//   Round 3.3 (Cail): ~2× larger reach again — the white surround extends much
+//   further before stabilizing. Solid white core still at the edge (no seam).
+    box-shadow:
+        0 0   60px  45px rgba(255,255,255,1.00),   // FULLY WHITE at the edge — matches the
+        0 0  240px 120px rgba(255,255,255,0.85),   //   plot's white background, no seam
+        0 0  520px 220px rgba(255,255,255,0.60),   // generous white surround
+        0 0  920px 340px rgba(255,255,255,0.35),
+        0 0 1440px 480px rgba(255,255,255,0.18),   // easing out over a very long distance
+        0 0 2100px 640px rgba(255,255,255,0.07);   // faint tail, stabilizes into the ground
+    position: relative;
+    z-index: 1;   // figure layer — UNDER the text
+}
+
+// Layering: text ABOVE the halo, figure wrappers stay on the figure layer so
+// they don't drag their image up. `:has()` separates figure wrappers from text.
+.reveal .slides section :is(h1, h2, h3, h4),
+.reveal .slides section p:not(:has(img)),
+.reveal .slides section ul,
+.reveal .slides section ol,
+.reveal .slides section li,
+.reveal .slides section blockquote,
+.reveal .slides section table,
+.reveal .slides section figcaption {
+    position: relative;
+    z-index: 2;
+}
+.reveal .slides section p:has(img),
+.reveal .slides section figure:has(img),
+.reveal .slides section p:has(iframe.figure-embed) {
+    position: relative;
+    z-index: 1;
+}
+
+// ── Image placeholder — for figures Cail will generate later (GPT-image) ──
+//   A clearly-marked, on-theme box so a to-be-made figure reads as intentional,
+//   not as a broken/blank slide. Swap for an ![](…) when the real art lands.
+.reveal .slides section .img-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 6.5em;
+    margin: 0.2em 0;
+    padding: 1.2em 1.4em;
+    border: 2px dashed rgba(188, 69, 56, 0.45);   // cinnabar, faint
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.35);
+    color: $ink-muted;
+    font-style: italic;
+    font-size: 0.82em;
+    line-height: 1.3;
+    box-shadow: none;
 }
 
 .quarto-figure {
@@ -215,32 +318,48 @@ $halo-collar:  24px;   // spread — solid white collar before the feather begin
     padding: 0;
 }
 
-.cea-logo {
-    position: absolute;
-    bottom: -125px;
-    left: -110px;
-    width: 92px;
-    z-index: 2;
-}
+// ── Title-slide logo bar (round 3) ──
+//   Cail: the old corner-jammed CEA/CosmoStat pair sat at different sizes, hard
+//   against the edges, partly clipped off the bottom. Replace with a single row of
+//   uniformly-sized marks, baseline-aligned, with generous margins from the slide
+//   edges and even spacing between marks — "all the same size, in a line."
+//
+//   "Same size" = common optical HEIGHT (the logo-row convention), since the marks
+//   have very different aspect ratios (CNRS 1:1 disc, CEA ~1.2:1, CosmoStat ~2.8:1
+//   wordmark). Per-mark nudges below correct for optical weight so equal height
+//   doesn't make the dense CNRS disc dominate.
+//
+//   Cail: equal breathing room — distance from the left ≈ distance from the bottom
+//   ≈ gap between marks — and none of them large. One token drives all three. The
+//   title section is forced to full slide height (`:has(.logo-bar)`) so `bottom`
+//   anchors to the real slide edge, not the bottom of the centred content box
+//   (which left the bar floating mid-slide before).
+$logo-h:      72px;   // common logo height
+$logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
 
-.cosmostat-logo {
-    position: absolute;
-    bottom: -146px;
-    left: -17px;
-    width: 300px;
-    z-index: 1;
-}
+.reveal .slides section:has(.logo-bar) { height: 100%; }
 
-// CNRS emblem — awarding body, top-right of the title slide (diagonally opposite
-// the CEA/CosmoStat home-institution cluster bottom-left). Title slide only.
-.cnrs-logo {
+.reveal .logo-bar {
     position: absolute;
-    top: -10px;
-    right: -30px;
-    width: 150px;
-    height: auto;
-    z-index: 2;
+    left:   $logo-space;
+    bottom: $logo-space;
+    display: flex;
+    align-items: center;
+    gap: $logo-space;
+    z-index: 3;
 }
+.reveal .logo-bar .logo {
+    height: $logo-h;
+    width: auto;
+    margin: 0;
+    box-shadow: none;   // logos opt out of the figure halo
+}
+// Optical-weight corrections so equal height reads as equal presence.
+// CosmoStat is a wordmark — sized so its TEXT matches the cap-height of the
+// other marks (Cail: the old 0.62 made it read too small).
+.reveal .logo-bar .logo-cnrs      { height: $logo-h * 1.02; }   // dense disc
+.reveal .logo-bar .logo-cea       { height: $logo-h * 0.96; }
+.reveal .logo-bar .logo-cosmostat { height: $logo-h * 1.05; }   // wordmark — text to match
 
 .reveal img.nopad {
     padding: 0;
