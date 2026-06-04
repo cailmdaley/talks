@@ -17,10 +17,12 @@ $rule:           #C5B89E;
 
 // ── Ground (the genuine taste variant — see report.html) ──
 //    Switch this single line to render the alternatives:
-//      $parchment  → warm, full house identity
-//      $rag        → warm near-white, figures stay clean   ← recommended
+//      $parchment  → warm, full house identity   ← recommended (the halo unlocks it)
+//      $rag        → warm near-white, halo near-invisible (round-1 default)
 //      #ffffff     → conservative, neutral
-$ground: $rag;
+//    Round 2: the figure halo below dissolves the white-box problem that forced
+//    rag in round 1, so the bolder parchment ground is now the default.
+$ground: $parchment;
 
 // ── Fonts ──
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -121,12 +123,23 @@ body {
 }
 .reveal .quarto-title-affiliation {
     color: $ink-muted;
+    // EB Garamond petite/small-caps — scholarly, and unifies the byline on the
+    // single typeface. "UNIONS" / "CEA" stay full-cap; the rest drops to small caps.
+    font-variant-caps: small-caps;
+    font-feature-settings: "smcp" 1;
+    letter-spacing: 0.03em;
 }
+// Occasion / kicker line — EB Garamond small-caps cinnabar (round 2; was mono
+// uppercase). Real OpenType small caps read as scholarly, not techy, and keep the
+// whole title block on one typeface. This is the headline small-caps placement.
 .reveal .quarto-title-block .occasion {
-    font-family: $font-family-monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.13em;
-    font-size: 0.62em;
+    font-family: $font-family-sans-serif;
+    font-variant-caps: small-caps;
+    font-feature-settings: "smcp" 1;
+    text-transform: none;
+    letter-spacing: 0.05em;
+    font-size: 0.92em;
+    font-weight: 600;
     color: $cinnabar;
     margin-top: 0.8em;
 }
@@ -183,6 +196,20 @@ body {
     margin: 0;
 }
 
+// ── Figure halo — the signature move (round 2) ──
+//   The science figures all export with white backgrounds (every figure in both
+//   decks has pure-white corners). On the warm ground they would otherwise sit as
+//   hard white rectangles. A soft white box-shadow feathers each figure's white
+//   margin outward into the ground, so the white interior melts into the warmth
+//   instead of butting against a hard edge — a smooth vignette, no pasted-on look.
+//   Because every figure is white-cornered, a single rule applies cleanly with no
+//   per-image exceptions; reveal's own logo/title images sit outside `section p`.
+$halo-feather: 56px;   // blur radius — width of the white→ground transition
+$halo-collar:  24px;   // spread — solid white collar before the feather begins
+.reveal .slides section p img {
+    box-shadow: 0 0 $halo-feather $halo-collar #fff;
+}
+
 .quarto-figure {
     margin-bottom: 0;
     padding: 0;
@@ -202,6 +229,17 @@ body {
     left: -17px;
     width: 300px;
     z-index: 1;
+}
+
+// CNRS emblem — awarding body, top-right of the title slide (diagonally opposite
+// the CEA/CosmoStat home-institution cluster bottom-left). Title slide only.
+.cnrs-logo {
+    position: absolute;
+    top: -10px;
+    right: -30px;
+    width: 150px;
+    height: auto;
+    z-index: 2;
 }
 
 .reveal img.nopad {
