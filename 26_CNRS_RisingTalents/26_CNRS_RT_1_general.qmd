@@ -32,6 +32,34 @@ html-math-method:
 include-in-header: assets/mathjax.html
 ---
 
+## Science is becoming a design problem {#thesis}
+
+::: {style="margin-top:1.3em;font-size:1.05em"}
+Research is accelerating — and increasingly AI-mediated. Scientific output is
+beginning to **outpace our ability to verify it.**
+:::
+
+::: {style="margin-top:1.1em"}
+> The question shifts: from *producing results* to **designing research systems
+> that check themselves as fast as they discover.**
+:::
+
+::: {style="margin-top:1.2em;font-style:italic"}
+This is the through-line of what follows — the results I've produced, how I
+produce them, and the four-year program all turn on it.
+:::
+
+::: notes
+The framing beat — ~40 seconds. It's the lens, not the argument. State the thesis,
+let it breathe, then move into the research arc. The thesis pays off explicitly at
+the AI inflection point ("this is the design problem"), at the four-year program
+("a system that scales its own checking"), at verification ("this is the design"),
+and at the close.
+Voice: this is about how research itself works — researcher altitude, not a pitch
+for tools. The verification apparatus is the wake of doing the science, not the point.
+:::
+
+
 ## Research arc: from CMB to weak lensing
 
 :::::::::::::: {.columns}
@@ -120,7 +148,7 @@ Applied to research:
 ::: {style="margin-top:0.9em;font-style:italic"}
 Expert time is better spent guiding computation than doing it.
 
-The researcher's role shifts: **specification, design, verification** — not implementation.
+**This is the design problem:** the researcher's role shifts to specification, design, and verification — not implementation.
 :::
 
 :::
@@ -233,7 +261,7 @@ Brief slide — 45 sec. The key beat is "principal postdoc" (not just a contribu
 ::::::::::::::
 
 ::: {style="margin-top:1em;font-style:italic"}
-Running through both: **agentic methods make the breadth tractable** — more systematic exploration, more validation checks, complete decision records.
+Both axes also work the design problem directly: **a research system that scales its own checking** — more exploration, more validation, a complete decision record.
 :::
 
 ::: notes
@@ -244,7 +272,11 @@ Two axes, one unifying thread. The key pitch: this isn't "more of the same" — 
 ## Verification and benchmarks
 
 ::: {style="margin-top:0.5em"}
-The risk that must be named: **AI systems hallucinate.** They optimize for plausibility over correctness.
+If science is becoming a design problem, **this is the design** — the apparatus that lets the system check itself.
+:::
+
+::: {style="margin-top:0.5em"}
+The risk it answers: **AI systems hallucinate.** They optimize for plausibility over correctness.
 :::
 
 ::: {style="margin-top:0.6em"}
@@ -324,10 +356,14 @@ How do you develop verification instincts in students who haven't learned withou
 
 :::
 
-::: {style="margin-top:1.5em;font-style:italic;text-align:center"}
+::: {style="margin-top:1.2em;font-style:italic;text-align:center"}
+The through-line: as science becomes a design problem, the questions I find most exciting are how we build research that checks itself.
+:::
+
+::: {style="margin-top:0.5em;text-align:center"}
 Thank you.
 :::
 
 ::: notes
-Short, punchy close. Three lines, same order as the talk. Don't add new information here.
+Short, punchy close. Three lines, same order as the talk, then the thesis callback to bookend the opening frame. Don't add new information here.
 :::

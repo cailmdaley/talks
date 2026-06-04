@@ -10,9 +10,11 @@ Order: candidate's choice — recommend **general first, then deep-dive**
 
 **Title:** *Cosmology with Agentic AI: Research Experience and a Four-Year Program*
 
-**Arc:** trajectory → results → the AI inflection point → program → why France
+**Arc:** *the design-problem thesis* → trajectory → results → the AI inflection point → program → why France
 
 **Pacing:** 8–10 content slides + title + summary = ~12 slides at 1–1.5 min each. This committee will be fast, but leave room for the "bitter lesson" slides — that's the conceptual heart.
+
+> **Revision 2026-06-04 (Shuttle):** a thesis frame — *"Science is becoming a design problem"* — now opens Talk 1 (new framing slide between Title and Research arc), so each numbered slide below shifts +1. The thesis pays off explicitly at the AI-inflection beat (*"this is the design problem"*), the four-year-program beat (*"a research system that scales its own checking"*), the verification beat (*"this is the design"*), and the summary bookend. House theming (EB Garamond / cinnabar accent / warm **rag** ground) applied to both decks via `custom.scss`. Before/after and the ground taste-question live in the fiber's `report.html`.
 
 ### Slide-by-slide structure
 
@@ -21,7 +23,13 @@ Cail Daley, CosmoStat / CEA Paris-Saclay. The program title. Affiliations (UNION
 
 ---
 
-**Slide 2 — Research arc: from CMB to weak lensing**  
+**Framing slide — Science is becoming a design problem** *(NEW, opens Talk 1)*  
+*~40 sec*  
+The organizing idea, stated and let to breathe: research is accelerating and increasingly AI-mediated; output is starting to outpace verification; the question shifts from *producing results* to *designing research systems that check themselves as fast as they discover.* This is the through-line for everything that follows. Keep researcher altitude — the verification apparatus is the wake of doing the science, not the product.
+
+---
+
+**Slide 2 (now 3) — Research arc: from CMB to weak lensing**  
 *~1 min*  
 Timeline graphic or two-column layout:
 
