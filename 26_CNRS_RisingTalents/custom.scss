@@ -25,11 +25,9 @@ $rule:           #C5B89E;
 //      #ffffff     → conservative, neutral
 //    Round 3: Cail asked for an in-between ground — slightly darker than rag,
 //    a touch lighter than parchment — then a hair lighter still ($paper-lite).
-//    Round 5 (Cail): "slightly darker than rag, an in-between" — step back from
-//    $paper-lite to the canonical in-between $paper-mid (#F4ECDC). The much-bigger
-//    halo below (reach ~4200px) melts the figure white into this slightly-darker
-//    ground gradually enough that there's still no hard figure edge.
-$ground: $paper-mid;
+//    The huge, soft, under-text halo below melts the figure white into this ground
+//    gradually enough that even this light ground keeps a hard-edge-free figure.
+$ground: $paper-lite;
 
 // ── Fonts ──
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -258,16 +256,17 @@ body {
 .reveal .slides section iframe.figure-embed {
 //   Round 3.2 (Cail): white ONLY at the figure edge (a thin collar), then a long,
 //   eased, gentle gradient that takes a long way to settle — not the bright,
-//   sharp "white blotch" of the 4-stop version.
-//   Round 5 (Cail): "much bigger — way bigger than the widest one you tried —
-//   really subtle and gradual, like a gradient honestly, but NOT the AI tell of one
-//   giant gradient across; something that really responds to the figure." So: keep
-//   the box-shadow (it emanates from the figure's box, brightest at the figure and
-//   fading radially — corners stay warm, which is what keeps it from reading as a
-//   single slide-wide wash), but roughly DOUBLE the reach again (to ~4200px) and
-//   drop the mid alphas so the falloff is gentler and subtler over a much longer
-//   distance. The figure now sits in a soft, wide pool of light that dissolves into
-//   the ground — reads like a gradient, but one the figure casts.
+//   sharp "white blotch" of the 4-stop version. Many low-alpha stops over ~1150px
+//   approximate a smooth convex ease-out: comes off white fast, then a faint wide
+//   tail that stabilizes into the ground well before the page edge.
+//   Round 3.3 (Cail): ~2× larger reach again — the white surround extends much
+//   further before stabilizing. Solid white core still at the edge (no seam).
+//   Round 5 (Cail liked the bigger halo): roughly double the reach again, ~2100px
+//   → ~4200px, with lower mid alphas so the falloff is gentler over a much longer
+//   distance. The figure casts a wide, soft pool of light that dissolves into the
+//   ground — reads like a gradient, but one the figure emanates (corners stay warm,
+//   so it's not a single slide-wide wash). Everything ELSE this round reverted to
+//   the round-4 baseline; only the halo size carried over.
     box-shadow:
         0 0   80px  44px rgba(255,255,255,1.00),   // solid white collar at the figure edge — seamless
         0 0  260px 100px rgba(255,255,255,0.78),
@@ -326,40 +325,34 @@ body {
     padding: 0;
 }
 
-// ── Title-slide logo bar (round 5) ──
-//   A single row of uniformly-sized marks, baseline-aligned, bottom-left, with
-//   generous, deliberate margins from the slide edges — "all the same size, in a
-//   line." Round 5 (Cail): the bar sat too far into the corner; pull it in from the
-//   edges and open up the spacing — "much more pleasing." So the edge inset and the
-//   inter-mark gap both grow, and the inset is decoupled from the gap (edge inset a
-//   touch larger than the gap, so the group reads as a unit set in from the corner
-//   rather than three marks evenly tiling the whole bottom-left).
+// ── Title-slide logo bar (round 3) ──
+//   Cail: the old corner-jammed CEA/CosmoStat pair sat at different sizes, hard
+//   against the edges, partly clipped off the bottom. Replace with a single row of
+//   uniformly-sized marks, baseline-aligned, with generous margins from the slide
+//   edges and even spacing between marks — "all the same size, in a line."
 //
 //   "Same size" = common optical HEIGHT (the logo-row convention), since the marks
 //   have very different aspect ratios (CNRS 1:1 disc, CEA ~1.2:1, CosmoStat ~2.8:1
-//   wordmark). Small per-mark nudges below correct for optical weight so equal
-//   height reads as equal presence (a dense disc next to a wordmark).
+//   wordmark). Per-mark nudges below correct for optical weight so equal height
+//   doesn't make the dense CNRS disc dominate.
 //
-//   The title section is forced to full slide height (`:has(.logo-bar)`) so
-//   `bottom` anchors to the real slide edge, not the bottom of the centred content
-//   box (which left the bar floating mid-slide before).
-//
-//   Option B (CNRS bottom-RIGHT, CEA+CosmoStat bottom-left): add class `split` to
-//   the .logo-bar — the awarding body sits opposite the affiliation marks and
-//   balances the composition. Rendered for Cail to compare; default is Option A.
-$logo-h:     76px;   // common logo height
-$logo-edge:  92px;   // inset from the left and bottom slide edges (generous)
-$logo-gap:   64px;   // gap between marks (a touch tighter than the edge inset)
+//   Cail: equal breathing room — distance from the left ≈ distance from the bottom
+//   ≈ gap between marks — and none of them large. One token drives all three. The
+//   title section is forced to full slide height (`:has(.logo-bar)`) so `bottom`
+//   anchors to the real slide edge, not the bottom of the centred content box
+//   (which left the bar floating mid-slide before).
+$logo-h:      72px;   // common logo height
+$logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
 
 .reveal .slides section:has(.logo-bar) { height: 100%; }
 
 .reveal .logo-bar {
     position: absolute;
-    left:   $logo-edge;
-    bottom: $logo-edge;
+    left:   $logo-space;
+    bottom: $logo-space;
     display: flex;
     align-items: center;
-    gap: $logo-gap;
+    gap: $logo-space;
     z-index: 3;
 }
 .reveal .logo-bar .logo {
@@ -370,7 +363,7 @@ $logo-gap:   64px;   // gap between marks (a touch tighter than the edge inset)
 }
 // Optical-weight corrections so equal height reads as equal presence.
 // CosmoStat is a wordmark — sized so its TEXT matches the cap-height of the
-// other marks.
+// other marks (Cail: the old 0.62 made it read too small).
 .reveal .logo-bar .logo-cnrs      { height: $logo-h * 1.02; }   // dense disc
 .reveal .logo-bar .logo-cea       { height: $logo-h * 0.96; }
 .reveal .logo-bar .logo-cosmostat { height: $logo-h * 1.05; }   // wordmark — text to match
