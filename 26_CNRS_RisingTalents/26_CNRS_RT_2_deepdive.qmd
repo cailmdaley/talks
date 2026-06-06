@@ -35,21 +35,22 @@ html-math-method:
 include-in-header: assets/mathjax.html
 ---
 
-## UNIONS: the northern sky's weak lensing survey {#unions-opportunity}
+## UNIONS is the first deep weak-lensing map of the northern sky {#unions-opportunity}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:55%"}
 
 ::: {style="margin-top:0.4em"}
-- MegaCam/CFHT, **~3,500 deg²** of deep $r$-band imaging
-- **~61 million source galaxies**, $n_\mathrm{eff} \approx 5 \, \mathrm{arcmin}^{-2}$
-- The only wide-field, deep survey of its generation covering the **northern sky**
+- MegaCam/CFHT, **~3,500 deg²** of deep $r$-band imaging; **~61 million source galaxies**,
+  $n_\mathrm{eff} \approx 5 \, \mathrm{arcmin}^{-2}$
+- The only wide, deep survey of its generation covering the **northern sky** — minimal overlap
+  with KiDS, DES, HSC, so an **independent** cosmic-shear measurement
+- Statistical power of a next-generation survey's **first year**, and a footprint that pairs
+  naturally with **Euclid**
 :::
 
-::: {style="margin-top:0.4em"}
-- **Minimal overlap** with KiDS, DES, HSC — an independent cosmic shear measurement
-- Statistical power comparable to the **first year of the next generation** of experiments
-- Northern footprint pairs naturally with **Euclid** and other northern surveys
+::: {style="margin-top:0.5em;font-style:italic"}
+And produced by a team an **order of magnitude smaller** than DES or KiDS.
 :::
 
 :::
@@ -61,117 +62,80 @@ include-in-header: assets/mathjax.html
 ::::::::::::::
 
 ::: notes
-~1.5 min. Open broad: this is a UNIONS-vision talk, with the systematics deep-dive inside it. The three load-bearing facts: unique northern footprint (independent of the southern surveys), statistical power of a next-gen first year, and the natural pairing with Euclid. Establish that UNIONS earns a place in the S8/systematics landscape on its own terms.
+~1.5 min. Open broad and exciting: UNIONS earns its place in the S₈/systematics landscape on
+its own terms — unique northern footprint (independent of the southern surveys), next-gen
+first-year statistical power, the natural Euclid pairing. The new beat: the team is an order of
+magnitude smaller — that the science below came from a small team is part of what makes it
+impressive. (Keep this as *context*, not a program pitch — the program lives in Talk 1.)
 :::
 
 
-## A four-year staircase to the gold standard {#staircase}
-
-:::::::::::::: {.columns}
-::: {.column style="width:48%"}
-
-::: {style="margin-top:0.4em"}
-- **Now** — first 2D cosmic shear constraints from UNIONS-3500
-- **Year 1** — tomographic cosmic shear, the standard in the field
-- **Year 3** — full multi-probe: cosmic shear + galaxy–galaxy lensing + galaxy clustering, the **gold standard**
-:::
-
-::: {style="margin-top:0.8em;font-style:italic"}
-Lands at percent-level $S_8$ and a competitive dark-energy equation of state, with cross-correlations into DESI and Planck.
-:::
-
-:::
-::: {.column style="width:52%"}
-
-<!-- IMAGE PLACEHOLDER: UNIONS four-year staircase — ascending steps labelled
-     "2D cosmic shear (now)" → "tomographic shear (Yr 1)" → "multi-probe 3x2pt (Yr 3)"
-     → "percent-level S8 + dark-energy EOS", each step adding a probe/constraint;
-     to be generated as a clean illustration. -->
-
-::: {style="border:2px dashed #BC4538;border-radius:0.4em;padding:2em 1em;text-align:center;color:#888;font-style:italic;margin-top:1.5em"}
-[ staircase figure to come ]<br><br>
-2D shear → tomographic → multi-probe → percent-level $S_8$ + dark energy
-:::
-
-:::
-::::::::::::::
-
-::: notes
-~1.5 min. This is THE leadership vision — the program I will lead over four years. Each step is the field standard for its stage: 2D now, tomographic next (Year 1), full multi-probe (Year 3, the gold standard for dark energy and neutrino mass). End state is percent-level S8 and a dark-energy EOS, independent of DES/KiDS, with cross-correlations into DESI and Planck. The staircase image should make the progression feel inevitable.
-:::
-
-
-## Why now: a small team, agentic throughput {#why-now}
+## Weak lensing reads the cosmic web from the shapes of galaxies {#shear-intro}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:56%"}
 
 ::: {style="margin-top:0.4em"}
-UNIONS' core analysis team is an **order of magnitude smaller** than DES or KiDS.
+Mass between us and a distant galaxy bends its light, **shearing its observed shape** by a
+percent or two. Averaged over millions of galaxies, that tiny coherent distortion maps the
+**large-scale matter distribution** — the cosmic web.
 :::
 
 ::: {style="margin-top:0.7em"}
-- Far less coordination overhead
-- Far greater need for the research throughput that **agentic methods** provide
+We measure it through the **two-point shear correlation** — how the shapes of galaxy pairs
+align as a function of separation — the statistical signal of the matter between.
 :::
 
-::: {style="margin-top:0.8em"}
-The careful analysis pipelines developed for the current release are the **foundation** agents build on — enabling systematic exploration of methodological choices that would otherwise be prohibitively labour-intensive at this scale.
-:::
-
-::: {style="margin-top:0.7em;font-style:italic"}
-This is the opening: a small team, about to take off.
+::: {style="margin-top:0.6em;font-style:italic"}
+The catch: the signal is buried in the galaxies' own *intrinsic* shapes and in every
+imperfection of the measurement. Getting the shapes right is the whole game.
 :::
 
 :::
 ::: {.column style="width:44%"}
 
-![](images/astra_provenance_diagram.png){width=100%}
+::: {style="border:2px dashed #BC4538;border-radius:0.4em;padding:2em 1em;text-align:center;color:#888;font-style:italic;margin-top:1.0em"}
+[ shear / shape-measurement<br>pipeline diagram to come ]<br><br>
+sky → images → PSF → galaxy shapes → shear → correlations
+:::
+
+<!-- IMAGE PLACEHOLDER (slide-images constitution): a clean flowchart of the full shear
+     shape-measurement process — Cail's idea. sky → imaging → PSF modelling → shape
+     measurement → calibration → two-point correlations. Conveys "this is a long, careful
+     pipeline" and sets up why systematics validation matters. -->
 
 :::
 ::::::::::::::
 
 ::: notes
-~1.5 min. The "why now / why me" beat. The smallness of the team is the opportunity: less overhead, and a genuine need for throughput that agentic methods supply. The pipelines already developed are the foundation — agents extend breadth on top of careful, validated infrastructure. This is the "we're about to take off" moment; the existence proof comes later in the talk.
+~1.5 min. The "what is weak lensing" slide — pitched for a general jury. Lensing shears shapes;
+averaged over millions of galaxies it maps the matter; we read it through the two-point shear
+correlation. End on the difficulty: the cosmological signal hides under intrinsic shapes and
+measurement systematics, so the shape catalog is everything — which sets up the whole talk. The
+flowchart (placeholder) shows the long careful pipeline; image-gen fiber will make it.
 :::
 
 
-## The first step we had to get right {#first-step}
-
-::: {style="margin-top:1.2em;font-size:1.05em"}
-Before any of that vision, one thing has to hold: the galaxy-shape catalog must be **clean enough for cosmology.**
-:::
-
-::: {style="margin-top:1.1em"}
-> Gravitational lensing leaves a specific geometric fingerprint. Any departure from it diagnoses residual contamination — and a single null test only sees the scales it is built for.
-:::
-
-::: {style="margin-top:1.1em;font-style:italic"}
-The first UNIONS release is the existence proof that we can characterise these systematics, end to end, with a small team.
-:::
-
-::: notes
-~45 sec. The hinge of the talk: zoom from the program down to the foundational requirement. The shear catalog must be clean before any cosmology is trustworthy. The geometric fingerprint of lensing (E-modes) and the scale-limitation of any single test set up the next three slides. Frame the B-mode work as the existence proof for the whole end-to-end vision.
-:::
-
-
-## Cosmic shear: the E/B fingerprint {#shear-setup}
+## Cosmic shear makes only E-modes — so B-modes flag systematics {#shear-eb}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:60%"}
 
-Gravitational lensing distorts galaxy shapes. We measure the **two-point shear correlations** — the statistical signal of the large-scale matter distribution.
-
-::: {style="margin-top:0.6em"}
-The shear field decomposes into:
-
-- **E-modes** (curl-free): the cosmological lensing signal
-- **B-modes** (divergence-free): zero from gravity alone
+::: {style="margin-top:0.4em"}
+Gravitational lensing leaves a specific geometric fingerprint. To leading order the shear field
+is **curl-free**, and decomposes into:
 :::
 
-::: {style="margin-top:0.6em;font-style:italic"}
-Non-zero B-modes diagnose residual systematics:
-PSF leakage, additive shear bias, multiplicative calibration errors.
+::: {style="margin-top:0.4em"}
+- **E-modes** (gradient-like): the cosmological lensing signal
+- **B-modes** (curl-like): sourced only by higher-order effects far below current sensitivity —
+  so **effectively zero from gravity alone**
+:::
+
+::: {style="margin-top:0.5em;font-style:italic"}
+At Stage-III sensitivity, a detected **B-mode is a clean flag for residual systematics** — PSF
+leakage, additive shear bias, calibration error. (The converse doesn't hold: no B-modes does
+not prove no systematics.)
 :::
 
 :::
@@ -190,70 +154,99 @@ PSF leakage, additive shear bias, multiplicative calibration errors.
 ::::::::::::::
 
 ::: notes
-~1.5 min. The E/B decomposition is the key concept: E-modes are what we want, B-modes are what should be zero and tell us something is wrong when they aren't. The pattern images are intuitive. This is the "problem" slide — lensing's specific signature, and why we need more than one test.
+~1.5 min. The key concept, science corrected to the paper: scalar lensing is curl-free to
+leading order → gradient-like E-modes (signal), curl-like B-modes (sourced only by tiny
+higher-order effects, so ≈0). At current sensitivity a detected B-mode means a systematic. State
+the honest caveat — absence of B-modes doesn't rule out contamination. The pattern images are
+intuitive. This is the "what could go wrong, and how we'd see it" slide.
 :::
 
 
-## Three statistics, one systematics test {#three-stats}
+## Before any cosmology, the shear catalog must be clean enough {#first-step}
+
+::: {style="margin-top:1.2em;font-size:1.05em"}
+A single null test only sees the scales it is built for. So the question is sharper than "are
+there B-modes?" — it is **"clean across *which* scales, in *which* basis?"**
+:::
+
+::: {style="margin-top:1.1em"}
+> The first UNIONS release is the existence proof that a small team can characterise these
+> systematics, end to end, before trusting a single cosmological number.
+:::
+
+::: {style="margin-top:1.1em;font-style:italic"}
+That is the work in this talk: turning a B-mode null test into a tool that *decides* the
+analysis.
+:::
+
+::: notes
+~45 sec. The hinge: zoom from "B-modes flag systematics" to the real problem — any single test
+is scale-limited and basis-dependent, so a clean answer needs multiple tests across scales.
+Frame the B-mode work as the existence proof for end-to-end systematics control by a small team.
+Sets up the three statistics.
+:::
+
+
+## I use three E/B-separable statistics, because each has different blind spots {#three-stats}
 
 :::::::::::::: {.columns}
-::: {.column style="width:58%"}
+::: {.column style="width:54%"}
 
-::: {style="margin-top:0.4em"}
-I use three complementary B-mode tests, in different statistical bases:
+::: {style="margin-top:0.3em;font-size:0.95em"}
+1. **$\xi_\pm^B(\theta)$** — pure-mode correlation functions; a direct real-space E/B split
+2. **COSEBIs** — discrete orthogonal modes, maximally sensitive to B-modes on specific scales
+3. **$C_\ell^{BB}$** — catalog-based harmonic-space power spectra; a different scale weighting
 :::
 
-::: {style="margin-top:0.4em;font-size:0.95em"}
-1. **$\xi_\pm^B$ (configuration space)** — pure E/B decomposition of the two-point correlation function; direct diagnostic
-2. **COSEBIs** (Complete Orthogonal Sets of E/B-separating Integrals) — discrete modes maximally sensitive to B-mode contamination on specific scales
-3. **$C_\ell^{BB}$ (harmonic space)** — power spectrum; different scale weighting than real-space statistics
+::: {style="margin-top:0.4em"}
+They probe the *same* shear field, but their filter functions **weight angular scales
+differently**, and the mapping between bases is not one-to-one.
 :::
 
 ::: {style="margin-top:0.4em;font-style:italic"}
-Each weights angular scales differently. When the three disagree, the disagreement itself localises the contamination.
+So contamination that one basis absorbs, another exposes. The full data vector is rich — the
+point is what happens **when the three disagree.**
 :::
 
 :::
-::: {.column style="width:42%"}
+::: {.column style="width:46%"}
 
-![](../26_Moriond_UNIONS/images/cl_data_vector.png){width=100%}
+![](../26_Moriond_UNIONS/images/pure_eb_data_vector.png){width=92%}
 
 :::
 ::::::::::::::
 
 ::: notes
-~1.5 min. The three bases are complementary: they weight scales differently, so disagreement between them carries information about *where* the contamination lives. Requiring all three to pass jointly is what sets the catalog choice and scale cuts. This is the key setup for the data vector.
+~1.5 min. Three complementary bases; each weights scales differently, so comparing across them
+exposes systematics any single one would absorb (the paper's central methodological point).
+Keep the data vector HIGH-LEVEL here — it's the figure on this slide, not its own slide (per
+Cail). Don't walk every panel; the message is "three bases, and they need not agree." Sets up
+the disagreement.
 :::
 
 
-## The B-mode data vector {#data-vector}
-
-![](../26_Moriond_UNIONS/images/pure_eb_data_vector.png){width=85% fig-align="center"}
-
-::: notes
-~30 sec. Let the figure breathe. Row by row: xi_+ E and B (top), xi_- E and B, COSEBIs E and B, Cl E and B. The B-mode rows should be consistent with zero — or not, as the case may be.
-:::
-
-
-## The statistics disagree — and that is information {#disagreement}
+## The statistics disagree — and that disagreement is the information {#disagreement}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:52%"}
 
-Over the **full angular range** (1–250 arcmin, $\ell \lesssim 2000$):
+Over the **full angular range**:
 
-::: {style="margin-top:0.5em"}
+::: {style="margin-top:0.4em"}
 - $\xi_\pm^B$: **passes** ✓
 - $C_\ell^{BB}$: **passes** ✓
 - **COSEBIs: fails** ✗
 :::
 
 ::: {style="margin-top:0.5em"}
-The disagreement is set by the **filter functions**: COSEBIs concentrate sensitivity on the scales where the contamination lives.
+COSEBIs concentrate sensitivity exactly where the contamination lives. The signature is an
+**oscillating B-mode pattern at the CCD scale**.
 :::
 
 ::: {style="margin-top:0.45em;font-size:0.9em;font-style:italic"}
-The oscillating pattern is consistent with an additive shear bias repeating at the CCD scale — a known MegaCam artifact first reported in CFHTLenS (Asgari et al. 2019).
+A detector imprints a near-constant ellipticity on each CCD; the jumps at chip boundaries carry
+curl, generating B-modes at the CCD scale. Same MegaCam camera as **CFHTLenS**, where it was
+first reported (Asgari et al. 2019).
 :::
 
 :::
@@ -265,31 +258,31 @@ The oscillating pattern is consistent with an additive shear bias repeating at t
 ::::::::::::::
 
 ::: notes
-~2 min, the key finding. COSEBIs are designed to be maximally sensitive to specific B-mode patterns, so when they fail and the others pass, we've localised the contamination. The oscillating pattern is the signature — an additive shear bias at the CCD scale, a known MegaCam systematic first seen in CFHTLenS. The intellectual move: the disagreement is the analysis working as designed, not a failure.
+~2 min, the key finding. COSEBIs are built to be maximally sensitive to specific B-mode
+patterns, so when they fail and the others pass, we have *localised* the contamination. The
+mechanism is concrete and from the paper: constant ellipticity per CCD, discontinuities at chip
+boundaries carry curl → B-modes at CCD angular scales; a known MegaCam additive-shear-bias
+effect first seen in CFHTLenS. The intellectual move: disagreement is the analysis working as
+designed.
 :::
 
 
-## Disagreement sets the catalog and the scale cuts {#scale-cuts}
-
-::: {style="margin-top:0.5em"}
-The B-mode tests do more than pass or fail. The joint requirement determines:
-:::
+## The disagreement selects the catalog and sets the scale cuts {#scale-cuts}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
 
-**1. Catalog version selection**
+The joint requirement — pass **all three** statistics — does real work:
 
-Only the PSF size-corrected catalog passes across all three statistics and scale cuts. This choice is locked before unblinding.
+**1. Catalog selection**
+
+B-mode failures on early catalogs drove tighter **galaxy size cuts** and **stellar-halo
+masking**; the size-cut catalog is adopted as fiducial.
 
 **2. Angular scale cuts**
 
-COSEBIs pass after imposing:
-
-- $\theta \geq 3.5'$ (for $\xi_+$)
-- $\theta \geq 40'$ (for $\xi_-$)
-
-These become the analysis scale cuts for the cosmology papers.
+The cuts that suppress the CCD-scale signal become the **scale cuts for the cosmology papers** —
+locked, within a **blinded** framework, before any S₈ is revealed.
 
 :::
 ::: {.column style="width:50%"}
@@ -300,11 +293,14 @@ These become the analysis scale cuts for the cosmology papers.
 ::::::::::::::
 
 ::: notes
-~1.5 min. The disagreement does work: it selects the catalog version and sets the scale cuts. Both decisions are locked before the cosmology is revealed — principled blinding discipline, immune to fishing for a good S8.
+~1.5 min. The disagreement does work: it selects the catalog version (size cut + halo masking,
+per the paper — the size-cut catalog is fiducial) and sets the scale cuts. Both locked before
+unblinding — principled blinding discipline, immune to fishing for a good S₈. PTE-grid figure
+shows the stable acceptable region the adopted cuts sit in.
 :::
 
 
-## Cosmological constraints, deliberately conservative {#cosmology}
+## Our S₈ is conservative by design — wider error bars, on purpose {#cosmology}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:55%;font-size:0.94em"}
@@ -313,15 +309,17 @@ These become the analysis scale cuts for the cosmology papers.
 With a validated catalog and frozen scale cuts, the two independent analysis conventions find:
 
 - **S₈ = 0.86 ± 0.08** (configuration space) and **S₈ = 0.92 ± 0.08** (harmonic space)
-- Consistent with each other, and with the early-universe value ($S_8 = 0.834 \pm 0.016$) to within ~1σ
+- Consistent with each other, and with the early-universe value ($0.834 \pm 0.016$) to ~1σ
 :::
 
 ::: {style="margin-top:0.5em;font-size:0.95em"}
-The error bars are **wider** than the recent KiDS and DES releases — by design. UNIONS is a small team; we made conservative choices and responsibly inflated our systematic budget throughout.
+The error bars are **wider** than the recent KiDS and DES releases — deliberately. A small team
+made conservative choices and inflated its systematic budget throughout.
 :::
 
 ::: {style="margin-top:0.4em;font-size:0.92em;font-style:italic"}
-We avoid the failure mode the history of $S_8$ has now diagnosed — a tight constraint that moves dramatically once systematics are better understood.
+We avoid the failure mode the history of S₈ has now diagnosed: a tight constraint that moves
+once systematics are better understood.
 :::
 
 :::
@@ -333,62 +331,29 @@ We avoid the failure mode the history of $S_8$ has now diagnosed — a tight con
 ::::::::::::::
 
 ::: notes
-~1.5 min. Lead with the headline numbers and the agreement between the two conventions. Then the deliberate conservatism: wider error bars, on purpose, because a small team should inflate its systematic budget rather than claim a tight constraint that later moves. This is the cross-talk bridge — the same S8 lesson that opens Talk 1 closes here.
+~1.5 min. Lead with the headline numbers and the agreement between the two conventions, then the
+deliberate conservatism: wider bars on purpose, because a small team should inflate its budget
+rather than claim a tight constraint that later moves. This is the cross-talk bridge — the same
+S₈ cautionary tale that opens Talk 1 closes here.
 :::
 
 
-## An agentic existence proof {#agentic}
-
-:::::::::::::: {.columns}
-::: {.column style="width:55%;font-size:0.94em"}
-
-::: {style="margin-top:0.5em"}
-This analysis was produced entirely by AI agents under my direction:
-:::
-
-::: {style="margin-top:0.6em"}
-- **~10,000 lines** of analysis code, figures, and manuscript
-- **120,000+ lines edited** across the project
-- Three independent statistical frameworks, characterised end to end
-:::
-
-::: {style="margin-top:0.5em"}
-My role has shifted to **designing the analyses** and the **tests and checks that verify correctness** — from implementation to specification.
-:::
-
-::: {style="margin-top:0.4em;font-style:italic"}
-Proof the end-to-end vision is reachable for a small team.
-:::
-
-:::
-::: {.column style="width:45%"}
-
-![](images/astra_provenance_diagram.png){width=100%}
-
-:::
-::::::::::::::
-
-::: notes
-~1 min. This is the existence proof for the program. ~10,000 lines produced, 120,000+ edited, all under my direction. Lead with it as a strength. The role shift — from coding to design, from implementation to specification — is exactly what makes the four-year multi-probe breadth tractable for a team this size. Every decision recorded in a structured provenance graph (the figure).
-:::
-
-
-## From existence proof to gold standard {#forward}
+## Where UNIONS goes next: tomographic, then the multi-probe gold standard {#forward}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:55%;font-size:0.9em"}
 
-**What this first release delivers**
+**This first release delivers**
 
-- The first northern-sky cosmic shear constraints
-- A systematics framework where disagreement becomes diagnosis
-- $S_8$ consistent with the concordance model, conservatively
+- The first northern-sky cosmic-shear constraints
+- A systematics framework where **disagreement becomes diagnosis**
+- An S₈ consistent with the concordance model, conservatively
 
-**Where I lead UNIONS next**
+**The science from here**
 
-- **Tomographic** cosmic shear (Year 1)
-- **Multi-probe** — shear + GGL + clustering (Year 3)
-- Percent-level $S_8$ + dark energy, independent of DES/KiDS
+- **Tomographic** cosmic shear — the field standard
+- **Multi-probe** — shear + galaxy–galaxy lensing + clustering: percent-level S₈ and dark energy
+- Cross-correlations into **DESI** and **Planck**
 
 :::
 ::: {.column style="width:45%"}
@@ -398,10 +363,15 @@ Proof the end-to-end vision is reachable for a small team.
 :::
 ::::::::::::::
 
-::: {style="margin-top:0.3em;font-style:italic;text-align:center"}
-A clean first step, agentic throughput, and a clear staircase ahead. Thank you.
+::: {style="margin-top:0.2em;font-style:italic;text-align:center"}
+A clean first step, characterised end to end — and produced almost entirely by AI agents under
+my direction. Thank you.
 :::
 
 ::: notes
-~1 min. Zoom back out to the vision. The first release is the existence proof — a clean catalog, a working systematics framework, a conservative S8. The staircase from here is tomographic (Year 1) to multi-probe (Year 3), landing at percent-level S8 and dark energy. Use the convergence figure to show UNIONS joining the S8 landscape — closing the loop on the northern-sky opportunity that opened the talk. My leadership role is the through-line.
+~1 min. Zoom back to the science future (NOT a program pitch — that lives in Talk 1): tomographic
+then multi-probe, percent-level S₈ + dark energy, cross-correlations into DESI/Planck. Use the
+convergence figure to show UNIONS joining the S₈ landscape, closing the loop on the northern-sky
+opportunity that opened the talk. The agentic line is ONE methodological beat at the very end —
+a flourish, not a proposal.
 :::

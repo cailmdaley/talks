@@ -36,25 +36,24 @@ html-math-method:
 include-in-header: assets/mathjax.html
 ---
 
-## A six-parameter universe {#standard-model}
+## A century of observation, six numbers, and a 95% we can't explain {#standard-model}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:52%"}
 
 ::: {style="margin-top:0.3em"}
-A century of observation has converged on a single model: a universe of ordinary
-and dark matter, expanding ever faster under **dark energy**. We call it **ΛCDM**.
+A century of observation has converged on a single model: ordinary and dark matter,
+expanding ever faster under **dark energy**. We call it **ΛCDM**.
 :::
 
 ::: {style="margin-top:0.8em"}
-**Six parameters** fit it all at once — the cosmic microwave background, the
-large-scale distribution of galaxies, supernova distances, the abundances of the
-light elements.
+**Six parameters** fit it all at once — the cosmic microwave background, the large-scale
+distribution of galaxies, supernova distances, the abundances of the light elements.
 :::
 
 ::: {style="margin-top:0.8em"}
-And yet **95%** of this universe — the Λ and the cold dark matter — stays
-*phenomenological*: we know how it shapes spacetime; we do not know what it is.
+And yet **95%** of it — the Λ and the cold dark matter — stays *phenomenological*: we know
+how it shapes spacetime; we do not know what it is.
 :::
 
 :::
@@ -64,66 +63,58 @@ And yet **95%** of this universe — the Λ and the cold dark matter — stays
 the probes of ΛCDM, together<br>CMB · galaxies · supernovae · light elements<br><br>[ figure to come ]
 :::
 
-<!-- IMAGE PLACEHOLDER (GPT-image): one illustration tying together the probes ΛCDM
-     describes at once — CMB map, galaxy survey / large-scale structure, supernova
-     distance ladder, light-element abundances — with a hint of where the model strains. -->
+<!-- IMAGE PLACEHOLDER (GPT-image-2, slide-images constitution): one illustration tying
+     together the probes ΛCDM describes at once, with a hint of where the model strains. -->
 
 :::
 ::::::::::::::
 
 ::: notes
-~60 seconds — ground the room in the science. The load-bearing beat: six numbers, many
-independent probes, all consistent — an extraordinary success. Then the twist: the model
-works, but its dominant ingredients are unexplained. Sets up "so how do we make progress?".
+~60 sec — ground the room. Six numbers, many independent probes, all consistent — an
+extraordinary success — and yet its dominant ingredients are unexplained. Sets up "so how
+do we make progress?".
 :::
 
 
-## Precision cosmology: systematic, or new physics? {#precision}
+## Progress now means finding the systematics before they fool us {#precision}
 
 ::: {style="margin-top:0.4em"}
-We make progress by **pushing this model until something gives** — percent-level
-measurements from complementary probes, asking whether the joint picture still needs
-only those six numbers.
+We make progress by **pushing this model until something gives** — percent-level measurements
+from complementary probes, asking whether the joint picture still needs only those six numbers.
 :::
 
 ::: {style="margin-top:0.7em"}
-Two tensions hold the field's attention:
-:::
-
-::: {style="margin-top:0.3em"}
-- the expansion rate $H_0$ — the early and nearby universe disagree at **~5σ**
-- **S₈**, the amplitude of late-time matter clustering
+Two tensions hold the field's attention: the expansion rate $H_0$ (early vs. nearby disagree
+at **~5σ**), and **S₈**, the amplitude of late-time matter clustering.
 :::
 
 ::: {style="margin-top:0.7em"}
-Each time, the same question: is the discrepancy **new physics**, or an artifact of the
-instrument, the data, the analysis? S₈ is the cautionary tale — weak lensing sat 2–3σ low
-for years, until KiDS-Legacy and DES Y6 shifted upward and the tension largely dissolved.
+Each time, the same question: **new physics, or an artifact of the instrument, the data, the
+analysis?** S₈ is the cautionary tale — weak lensing sat 2–3σ low for years, until KiDS-Legacy
+and DES Y6 shifted up and the tension largely dissolved.
 :::
 
 ::: {style="margin-top:0.7em;font-style:italic"}
-Euclid, Rubin/LSST, and next-generation CMB shrink the statistical errors another order of
-magnitude. **Systematics will dominate every measurement** — and that is where my work lives.
+As Euclid, Rubin, and next-generation CMB shrink the statistical errors another order of
+magnitude, **systematics will set the error budget** — and that is where my work lives.
 :::
 
 ::: notes
-The pivot. "Pushing the model until it breaks" is the headline. Land the two tensions, then
-the recurring question (systematic or new physics). The S₈ history is the cautionary tale —
-a tension that looked like physics and dissolved into systematics; it returns at the close of
-the deep-dive talk. End on "systematics will dominate," which hands straight to the research
-arc — characterising systematics is the throughline of everything that follows.
+The pivot. Land the two tensions, then the recurring question. The S₈ history is the
+cautionary tale — looked like physics, dissolved into systematics; it returns at the close of
+the deep-dive. End on "systematics set the budget," which hands straight to my research.
 :::
 
 
-## CMB lensing with the South Pole Telescope {#cmb-lensing}
+## My SPT-3G maps anchor the tightest CMB constraints to date {#cmb-lensing}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
 
 ::: {style="margin-top:0.3em"}
-My doctoral work measured **CMB lensing** with **SPT-3G**: as the microwave background
-crosses the universe, its path is bent by every clump of matter it passes — reconstructing
-that bending maps the matter integrated across most of cosmic history.
+My doctoral work measured **CMB lensing** with **SPT-3G**: the microwave background is bent by
+every clump of matter it crosses, so reconstructing that bending maps the matter integrated
+across most of cosmic history.
 :::
 
 ::: {style="margin-top:0.6em;font-size:0.92em"}
@@ -135,12 +126,12 @@ that bending maps the matter integrated across most of cosmic history.
 :::
 
 ::: {style="margin-top:0.6em"}
-These maps underpin SPT's flagship results: **$H_0 = 66.66 \pm 0.60$ from SPT alone**, and —
-with ACT and Planck — **the tightest CMB cosmological constraints to date.**
+Those maps underpin **$H_0 = 66.66 \pm 0.60$ from SPT alone**, and — with ACT and Planck — the
+**tightest CMB cosmological constraints to date.**
 :::
 
 ::: {style="margin-top:0.5em;font-style:italic"}
-Data analysis end to end: raw observations → maps → lensing → cosmology.
+The full chain, raw data through cosmology — and contamination control throughout.
 :::
 
 :::
@@ -152,79 +143,34 @@ Data analysis end to end: raw observations → maps → lensing → cosmology.
 ::::::::::::::
 
 ::: notes
-~1.5 min. The PhD slide — emphasise breadth (the full chain, raw data to cosmology) and the
-D1 maps paper (Quan et al. 2026): I produced the maps everyone downstream uses. The payoff is
-the tightness — SPT alone, then SPT+ACT+Planck, the tightest CMB constraints to date. This is
-the "I do hard data analysis at the deepest level" credential, and the systematics throughline
-starts here (bias-hardening, contamination control).
+~1.5 min. The PhD slide — breadth (the full chain, raw data to cosmology) and the D1 maps
+(Quan et al. 2026): I produced the maps everyone downstream uses. The payoff is the tightness.
+Identity beat: I came up doing the hardest end-to-end data analysis in the field, and
+systematics control has been the throughline from the start.
 :::
 
 
-## From CMB lensing to weak lensing {#weak-lensing}
+## I mentor a new way to do weak lensing — galaxy rotation, not shape {#kinematic}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:56%"}
 
 ::: {style="margin-top:0.4em"}
-CMB lensing maps the matter between us and the early universe. **Weak gravitational
-lensing** maps the *same* matter a different way — through the shapes of millions of
-distant galaxies, subtly sheared by the large-scale structure in front of them.
+My current line is **weak lensing** — the shapes of millions of galaxies, sheared by the
+structure in front of them. With **UNIONS**, the first wide, deep survey of the northern sky;
+that analysis is my **second talk**.
 :::
 
 ::: {style="margin-top:0.7em"}
-Two complementary windows on one cosmic web: the early-universe light, and the late-time
-galaxies.
+A newer probe sits alongside it: **kinematic lensing**, which reads the distortion from a
+galaxy's **rotation** rather than its shape, sidestepping the dominant systematic in cosmic
+shear. This is where I mentor:
 :::
 
-::: {style="margin-top:0.7em"}
-My weak-lensing work is with **UNIONS** — the first wide-field, deep survey of the
-**northern sky**, and an independent line on the S₈ question.
-:::
-
-::: {style="margin-top:0.5em;font-style:italic"}
-That analysis is my **second talk** — here I only place it on the map.
-:::
-
-:::
-::: {.column style="width:44%"}
-
-![](../images/cosmic_history.jpg){width=100%}
-
-:::
-::::::::::::::
-
-::: notes
-~45 sec — deliberately brief. The bridge slide: CMB lensing and weak lensing are two probes of
-the same matter field, early vs late. This is where large-scale structure / cosmic shear gets
-introduced, lightly. UNIONS gets exactly one beat — the punt to Talk 2, where the whole B-mode
-analysis lives. Do NOT do the science here; keep the powder dry.
-:::
-
-
-## Kinematic lensing — and mentoring it {#kinematic}
-
-:::::::::::::: {.columns}
-::: {.column style="width:56%"}
-
-::: {style="margin-top:0.4em"}
-A third, newer probe: **kinematic lensing** — using a galaxy's **rotation**, not just its
-shape, to read the lensing distortion. It sidesteps the dominant systematic in cosmic
-shear: the unknown *intrinsic* shapes of galaxies.
-:::
-
-::: {style="margin-top:0.7em"}
-This is where I mentor. Two CosmoStat master's students:
-:::
-
-::: {style="margin-top:0.3em;font-size:0.92em"}
-- **Jordy Ram** (M2) — kinematic weak lensing with spiral and elliptical galaxies;
-  **first paper in preparation**, with Martin Kilbinger, close to submission
-- **Serena Nakhle** (M1) — extending the method to integral-field survey data (SAMI, WiFeS)
-:::
-
-::: {style="margin-top:0.6em;font-style:italic"}
-Supervising the development of a new method end-to-end — the kind of mentorship the program
-builds on.
+::: {style="margin-top:0.3em;font-size:0.9em"}
+- **Jordy Ram** (M2) — kinematic lensing with spiral and elliptical galaxies; **first paper in
+  preparation**, with Martin Kilbinger, near submission
+- **Serena Nakhle** (M1) — extending it to integral-field survey data
 :::
 
 :::
@@ -232,30 +178,29 @@ builds on.
 
 ![](../images/muse_lensing_k_z.png){width=100%}
 
-<!-- OPTIONAL (Cail to decide): replace/supplement this figure with headshots of Jordy Ram
-     and Serena Nakhle to foreground the mentorship. Flagged as possibly overkill given the
-     space — drop the photos in images/ and swap if wanted. -->
+<!-- OPTIONAL (Cail's call): headshots of Ram + Nakhle to foreground mentorship; flagged as
+     possibly overkill for the space. -->
 
 :::
 ::::::::::::::
 
 ::: notes
-~1 min. The mentorship slide, carried by real science (kinematic lensing). Name both students
-and the near-submission paper — concrete, current mentorship, not a promise. The figure is a
-kinematic-lensing convergence result. Photos of the two students are an option (warm, signals
-you take mentorship seriously) but may be overkill for the room — flagged for Cail.
+~1 min. Two jobs in one slide: name UNIONS weak lensing as my main line and punt the science
+to Talk 2; introduce kinematic lensing as the vehicle for real, current mentorship (Ram +
+Nakhle, near-submission paper). Keeps Talk 1 light on weak-lensing detail — the deep-dive owns it.
 :::
 
 
-## Euclid × CMB: cross-correlation {#euclid}
+## Cross-correlations mitigate systematic errors {#euclid}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:58%"}
 
 ::: {style="margin-top:0.4em"}
-The most robust move of all: **cross-correlate two independent matter maps** — CMB lensing
-from SPT-3G, galaxy lensing from Euclid. A systematic that plagues one does not appear in
-the other, so their agreement is a clean diagnostic and shared parameters self-calibrate.
+The most systematics-robust probe of all: **cross-correlate two independent matter maps** —
+CMB lensing from SPT-3G, galaxy lensing from Euclid. A systematic that plagues one does not
+appear in the other, so their agreement is a clean diagnostic and shared parameters
+self-calibrate.
 :::
 
 ::: {style="margin-top:0.7em;font-size:0.95em"}
@@ -265,8 +210,7 @@ the other, so their agreement is a clean diagnostic and shared parameters self-c
 :::
 
 ::: {style="margin-top:0.8em"}
-Three international collaborations — **SPT-3G, UNIONS, Euclid** — I lead analyses in each.
-And across all three the limit is the same: **systematics, not statistics.**
+**SPT-3G, UNIONS, Euclid** — three international collaborations, and I lead analyses in each.
 :::
 
 :::
@@ -278,45 +222,44 @@ And across all three the limit is the same: **systematics, not statistics.**
 ::::::::::::::
 
 ::: notes
-~1 min. Close the science arc: cross-correlation is the most systematics-robust probe, and I
-lead the SPT×Euclid bridge into it. The last line is the hinge of the whole talk — every one of
-these measurements is becoming systematics-limited, so the question becomes how exhaustively we
-can test assumptions. That hands straight to the AI inflection: exhaustive testing at this scale
-is what's newly possible.
+~1 min. Close the research arc on the most systematics-robust probe — and on leadership: three
+collaborations, I lead analyses in each. This is the "who I am as a researcher, ready to lead"
+beat. Hands to the proposal: every one of these is becoming systematics-limited, so the
+question becomes how exhaustively we can test — and something just changed that makes that
+tractable.
 :::
 
 
-## AI capabilities are increasing exponentially {#inflection .metr-slide}
+## AI capabilities are doubling every few months {#inflection .metr-slide}
 
 ::: {.metr-wrap}
 <iframe class="metr-embed" src="https://metr.org/horizon-chart-embed" title="METR — task-completion time horizon (live, interactive)" loading="lazy"></iframe>
 :::
 
 ::: notes
-The conceptual heart of the talk — now placed FIRST in the program half, because it is the
-*cause* of everything that follows. Speak over the live METR chart; toggle linear/log to show
-the trend both ways. The beats:
-- Sutton's bitter lesson — general computation beats encoded expertise, every time.
-- Applied to research: frontier models now complete tasks that take a human expert ~12 hours;
-  the capability doubling time is ~4 months; if it holds, ~2,500× more capable in four years.
-- The "2,500×" number is striking — use it, then pivot to the next slide: apply that curve to
-  research and the bottleneck moves from producing results to verifying them.
+The conceptual heart — placed FIRST in the proposal half, because it is the *cause* of what
+follows. Speak over the live METR chart; toggle linear/log. Beats:
+- Sutton's bitter lesson — general computation beats encoded expertise.
+- Frontier models now complete ~12-hour expert tasks; doubling time ~4 months; ~2,500× in four
+  years if it holds.
+- Use the number, then pivot to the next slide: apply that curve to research and the bottleneck
+  moves from producing results to verifying them.
 
-OFFLINE FALLBACK (no internet at the venue): replace the iframe above with the static image:
+OFFLINE FALLBACK (no venue internet): swap the iframe for
   ![](images/metr_capability_trajectory.png){width=70% fig-align="center"}
 :::
 
 
-## Science is becoming a design problem {#thesis}
+## As output outpaces verification, science becomes a design problem {#thesis}
 
 ::: {style="margin-top:1.1em;font-size:1.05em"}
-Apply that curve to research. The constraint stops being how fast we can **produce**
-results — and becomes how fast we can **verify** them.
+Apply that curve to research. The constraint stops being how fast we can **produce** results —
+and becomes how fast we can **verify** them.
 :::
 
 ::: {style="margin-top:1.1em"}
-> The question shifts: from *producing results* to **designing research systems
-> that check themselves as fast as they discover.**
+> The question shifts: from *producing results* to **designing research systems that check
+> themselves as fast as they discover.**
 :::
 
 ::: {style="margin-top:1.2em;font-style:italic"}
@@ -324,20 +267,13 @@ This is the lens for the program ahead — and it is already how I work.
 :::
 
 ::: notes
-The framing beat — ~40 seconds. Now it lands as the *consequence* of the capability curve, not
-before it: because models can already do this, output begins to outpace verification, so the
-work shifts to designing systems that check themselves. The thesis pays off again at the
-four-year program ("a system that scales its own checking"), at verification, and at the close.
-Researcher altitude — the verification apparatus is the wake of doing the science.
+~40 sec. Now the *consequence* of the curve, not its preface: because models can already do
+this, output outpaces verification, so the work shifts to designing systems that check
+themselves. Pays off again at the program, at benchmarks, and at the close.
 :::
 
 
-## The existence proof: UNIONS Paper II {#existence-proof}
-
-::: {style="margin-top:0.6em"}
-I did not arrive at this in the abstract. My **UNIONS B-mode analysis** was produced
-**almost entirely by AI agents under my direction**:
-:::
+## My UNIONS analysis was produced almost entirely by agents I direct {#existence-proof}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
@@ -364,19 +300,53 @@ My role shifted to:
 ::::::::::::::
 
 ::: {style="margin-top:1em;font-style:italic"}
-This is how I already work — and the analysis where I worked it out is my **second talk**.
-Here, it is the existence proof: the program ahead is reachable for a small team.
+The peer-reviewed existence proof: from implementation to specification — and the analysis
+where I worked it out is my **second talk.**
 :::
 
 ::: notes
-~1 min. The pivot's payoff: we said the role shifts to specification/design/verification — here
-is the peer-reviewed evidence it is already happening. Reframed from the old deck: the numbers
-are the existence proof for the *program*, and the science detail is explicitly punted to Talk 2
-("the analysis where I worked it out is my second talk"). The 120k-lines figure always lands.
+~1 min. The pivot's payoff: peer-reviewed evidence the role-shift is already real. Numbers are
+the existence proof for the *program*; science detail punted to Talk 2. The 120k figure lands.
 :::
 
 
-## A four-year research program {#program}
+## I'm in takeoff too — and I read almost none of the code {#personal-takeoff}
+
+::: {style="margin-top:0.6em;font-size:1.05em"}
+The same curve runs through my own week. Since the start of June, across **`sp_validation`**,
+**`ShapePipe`**, and **`cmbx`**, agents under my direction have committed
+:::
+
+::: {style="margin-top:0.6em;text-align:center;font-size:2.4em;color:#BC4538;font-weight:600"}
+~XX,000 lines
+<!-- TODO(autonomous/Cail): real, OBSERVED number — do not fabricate (Cail's repos, his work).
+     Three repos = sp_validation, shapepipe, cmbx. Local clones are partial:
+       sp_validation (~/Documents/projects/sp_validation) is CURRENT (+645 lines since Jun 1 local);
+       cmbx + shapepipe active clones live on candide/cineca (SSH config has candide-app/cineca-app),
+       local copies are stale (cmbx ~/Documents/projects/cmbx/{dr1,q1}_cmbx are Feb; shapepipe 2024).
+     To get the real total, on each active clone:
+       git log --all --since=2026-06-01 --pretty=tformat: --numstat | awk '{a+=$1}END{print a}'
+     Sum the three, round, state as "lines committed under my direction since June 1." -->
+:::
+
+::: {style="margin-top:0.6em"}
+I read almost none of it. My time goes to **specifying** what the code must do and **designing
+the tests** that prove it did — the throughput is the agents'; the **judgment is mine.**
+:::
+
+::: {style="margin-top:0.5em;font-style:italic"}
+This only works if the verification keeps pace. That apparatus is the program.
+:::
+
+::: notes
+~1 min. The human mirror of the METR slide — I am on the same exponential. The striking move:
+a big code number, then "I read almost none of it." The point is not productivity bragging; it
+is that the work has moved to specification and verification, which is exactly the design
+problem. Hands directly to the program and the benchmarks. NEEDS the real line count (cluster).
+:::
+
+
+## A four-year program on two axes {#program}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
@@ -409,24 +379,23 @@ multi-probe gold standard, the first SPT×Euclid cross-correlation.
 :::
 
 ::: notes
-~1.5 min. The program proper — give it room. Two axes, both building on foundations already in
-place (the UNIONS pipelines, the Euclid WG role, the SPT MOU). Be specific about the years;
-milestones are scientific results, not tooling. Next slide answers "how is this much breadth
-tractable for one researcher and a small team?".
+~1.5 min. The program proper — give it room. Both axes build on foundations already in place.
+Specific years; milestones are scientific results, not tooling. Next slide: how is this much
+breadth tractable for a small team?
 :::
 
 
-## What makes this breadth tractable {#program-methods}
+## Agentic throughput makes that breadth tractable for a small team {#program-methods}
 
 ::: {style="margin-top:0.5em"}
-Both axes are ambitious for a team UNIONS' size — its core analysis group is an
-**order of magnitude smaller** than DES or KiDS.
+Both axes are ambitious for a team UNIONS' size — its core analysis group is an **order of
+magnitude smaller** than DES or KiDS.
 :::
 
 ::: {style="margin-top:0.6em"}
-Agentic methods are what make the breadth possible: **systematic exploration of analysis
-choices** — catalog versions, scale cuts, estimator bases — that would otherwise be
-prohibitively labour-intensive at this scale.
+Agents make the breadth possible: **systematic exploration of analysis choices** — catalog
+versions, scale cuts, estimator bases — that would otherwise be prohibitively labour-intensive
+at this scale.
 :::
 
 ::: {style="margin-top:0.6em"}
@@ -440,58 +409,87 @@ scales its own checking.**
 :::
 
 ::: notes
-~1 min. The "why now / why me at this scale" beat. The smallness of the UNIONS team is the
-opportunity, not the limitation: less overhead, and a genuine need for the throughput agentic
-methods supply, on top of pipelines that are already careful and validated. Ends on the thesis
-callback and hands to verification — the apparatus that makes "scales its own checking" real.
+~1 min. The "why now / why me at this scale" beat. Smallness is the opportunity — less
+overhead, real need for throughput, on top of pipelines already careful and validated. Ends on
+the thesis callback; hands to the benchmarks.
 :::
 
 
-## Verification and benchmarks {#verification}
+## I develop the open ecosystem that makes agentic science verifiable {#lightcone}
 
-::: {style="margin-top:0.5em"}
+::: {style="margin-top:0.4em"}
 If science is becoming a design problem, **this is the design** — the apparatus that lets the
-system check itself.
-:::
-
-::: {style="margin-top:0.5em"}
-The risk it answers: **AI systems hallucinate.** They optimize for plausibility over correctness.
+system check itself. I develop it within **Lightcone Research**, a joint **CNRS–Berkeley**
+open-source project: the open ecosystem for **reproducible, composable, and verifiable** science
+in the age of agentic AI.
 :::
 
 ::: {style="margin-top:0.6em"}
-Tools in development (with François Lanusse, Lightcone Research):
+My contributions — the layer that makes an agent's work auditable:
 :::
 
 :::::::::::::: {.columns}
 ::: {.column style="width:33%"}
 **`felt`**
 
-Traversable decision and progress graph — every analysis choice is traceable
+A traversable decision-and-progress graph — every analysis choice recorded and reviewable
 :::
 ::: {.column style="width:33%"}
-**ASTRA specification**
+**ASTRA**
 
-Structured, machine-readable analysis records; structured outputs for agent-written analyses
+An open schema that brings the decisions, alternatives, and evidence behind a result into the
+record, beside the code and data
 :::
 ::: {.column style="width:33%"}
-***Tapestries***
+**Vellum**
 
-Browsable provenance visualisation — the human can audit the agent's decisions
+A viewer that renders an analysis as a browsable provenance graph — the human audits the agent
 :::
 ::::::::::::::
 
-::: {style="margin-top:0.8em"}
-**Benchmarks** — real analysis tasks: messy, with multiple defensible solutions. Year 2 deliverable; growing suite in collaboration with DATAIA and PostGenAI@Paris.
+::: {style="margin-top:0.7em;font-style:italic"}
+The risk it answers: agents optimize for plausibility over correctness. Lightcone is the
+infrastructure AI co-scientists are missing.
 :::
 
 ::: notes
-Don't skip this slide. The committee will have concerns about hallucination and reproducibility —
-get ahead of it. Naming the risk plainly signals scientific maturity. The three tools show the
-verification layer being developed alongside the AI — the wake of doing the science, not a product.
+~1.5 min — the full Lightcone slide Cail asked for. Voice: scientist-not-builder — I *develop /
+contribute to* Lightcone as a scientist, never "founded." The closing line is their own public
+framing ("the infrastructure AI co-scientists are missing") — lands in the room without
+reaching. Do NOT mention the funding. felt/ASTRA/Vellum are the verification layer that emerged
+from doing the science — the wake, not the destination.
 :::
 
 
-## Team, mentorship, and lab integration {#team}
+## Building agentic science benchmarks {#benchmarks}
+
+::: {style="margin-top:0.5em"}
+Provenance makes an analysis *auditable*; **benchmarks** ask whether the agents are actually
+**right**. Real analysis tasks — messy, with multiple defensible solutions — that test whether
+an agent reaches a sound result *and* leaves a defensible record.
+:::
+
+::: {style="margin-top:0.7em"}
+- A **Year 2 deliverable**, a growing suite with **DATAIA** and **PostGenAI@Paris**
+- With **Pleias**, I compare **sovereign French models against frontier systems** on these
+  tasks — a live test of where French-sovereign AI can already do frontier science
+:::
+
+::: {style="margin-top:0.7em;font-style:italic"}
+The field has no measure of agentic scientific competence yet. This builds one.
+:::
+
+::: notes
+~1 min. The committee will worry about hallucination and reproducibility — get ahead of it.
+Benchmarks are the field-level contribution: a way to *measure* whether agents do science
+correctly, not just plausibly. The Pleias line carries the sovereignty angle (French Science
+Commons; sovereign-vs-frontier on real verification tasks) — reads well to a CNRS jury and
+gives intellectual cover for frontier-model use. DATAIA + PostGenAI@Paris anchor it in the
+Paris-Saclay ecosystem.
+:::
+
+
+## The team and the ecosystem are already in place {#team}
 
 :::::::::::::: {.columns}
 ::: {.column style="width:50%"}
@@ -521,27 +519,27 @@ How do you develop verification instincts in students who have never analysed da
 ::::::::::::::
 
 ::: notes
-The two lab homes map cleanly onto the two scientific axes (UMR AIM for UNIONS, IAS for
-Euclid-CMB). "Agentic pedagogy" is a genuinely open question — surfacing it shows intellectual
-honesty and marks it as a research contribution in its own right; it ties back to the kinematic
-mentorship shown earlier, so it reads as practice, not aspiration.
+The two lab homes map onto the two scientific axes. "Agentic pedagogy" is a genuinely open
+question — surfacing it shows intellectual honesty and marks it as a research contribution; it
+ties back to the kinematic mentorship, so it reads as practice, not aspiration.
 :::
 
 
-## Summary {#summary}
+## France is where this program belongs {#summary}
 
 ::: {style="margin-top:0.8em"}
 
-1. **Strong track record** — CMB lensing with SPT-3G (the maps behind its tightest constraints), UNIONS B-modes, Euclid CMB cross-correlations, and the mentorship to grow it
+1. **Track record** — CMB lensing with SPT-3G (the maps behind its tightest constraints), UNIONS B-modes, Euclid CMB cross-correlations, and the mentorship to grow it
 
-2. **Clear program** — UNIONS tomographic → multi-probe; Euclid-CMB DR1 → DR2; verification benchmarks, made tractable by agentic methods
+2. **A clear program** — UNIONS tomographic → multi-probe; Euclid-CMB DR1 → DR2; verification benchmarks, made tractable by agentic throughput
 
-3. **France is the right place** — CosmoStat + IAS + DATAIA: the research ecosystem is here
+3. **The right place** — CosmoStat + IAS + DATAIA: the research ecosystem is here
 
 :::
 
 ::: {style="margin-top:1.2em;font-style:italic;text-align:center"}
-As science becomes a design problem, the question I find most exciting is how we design research that checks itself.
+As science becomes a design problem, the question I find most exciting is how we design research
+that checks itself.
 :::
 
 ::: {style="margin-top:0.5em;text-align:center"}
@@ -549,7 +547,6 @@ Thank you.
 :::
 
 ::: notes
-Short, punchy close. Three lines — track record, program, France — then the thesis callback to
-bookend the opening frame. The track-record line now leads with SPT-3G (the restructure's new
-emphasis) and folds in mentorship. Don't add new information here.
+Short close. Three lines — track record, program, France — then the thesis callback to bookend
+the open. Leads with SPT (the new emphasis) and folds in mentorship. No new information.
 :::
