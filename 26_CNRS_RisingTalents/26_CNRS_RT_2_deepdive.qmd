@@ -141,14 +141,13 @@ not prove no systematics.)
 :::
 ::: {.column style="width:40%"}
 
-:::::: {.columns}
-::: {.column width="50%"}
-![E-mode pattern](../26_Moriond_UNIONS/images/emode_pattern.jpg){width=100%}
+::: {style="margin-top:0.6em;text-align:center"}
+![E-mode pattern (the signal)](images/emode_pattern_hc.png){.eb-pattern width=88%}
 :::
-::: {.column width="50%"}
-![B-mode pattern](../26_Moriond_UNIONS/images/bmode_pattern.jpg){width=100%}
+
+::: {style="margin-top:1.1em;text-align:center"}
+![B-mode pattern (a systematics flag)](images/bmode_pattern_hc.png){.eb-pattern width=88%}
 :::
-::::::
 
 :::
 ::::::::::::::

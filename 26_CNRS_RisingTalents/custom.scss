@@ -299,6 +299,20 @@ body {
     z-index: 1;
 }
 
+// ── Stacked small schematic figures (e.g. the E/B pattern pair) ──
+//   The signature halo's 80px solid collar is sized for one prominent data plot.
+//   When two small schematics stack in a single column, that collar's soft white
+//   bleeds onto the upper figure's caption. Give these a proportionate halo: a thin
+//   collar that still melts the white edge into the ground, with a short, faint tail
+//   that doesn't reach the neighbour.
+.reveal .slides section img.eb-pattern {
+    box-shadow:
+        0 0  26px 12px rgba(255,255,255,1.00),   // thin solid collar at the edge
+        0 0  90px  26px rgba(255,255,255,0.40),   // modest soft falloff
+        0 0 260px  60px rgba(255,255,255,0.12),
+        0 0 520px 110px rgba(255,255,255,0.04);   // faint, short far tail
+}
+
 // ── Image placeholder — for figures Cail will generate later (GPT-image) ──
 //   A clearly-marked, on-theme box so a to-be-made figure reads as intentional,
 //   not as a broken/blank slide. Swap for an ![](…) when the real art lands.
