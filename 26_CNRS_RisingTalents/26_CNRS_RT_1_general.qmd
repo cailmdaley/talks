@@ -60,7 +60,7 @@ know how it shapes spacetime; we do not know what it is.
 ::: {.column style="width:45%"}
 
 ::: {.standard-model-figure}
-![](images/standard_model_probe_hero_probe20.png){.blend-figure}
+![](images/standard_model_probe_hero_probe21.png){.blend-figure}
 :::
 
 <!-- IMAGE PLACEHOLDER (GPT-image-2, slide-images constitution): one illustration tying
