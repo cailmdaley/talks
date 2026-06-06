@@ -132,7 +132,7 @@ Benchmarks: real analysis tasks (messy, multiple defensible solutions) — not i
 
 **Lab integration:**
 - UMR AIM (CosmoStat): home for UNIONS analyses, Lightcone Research; Kilbinger, Farrens, Lanusse
-- IAS: Euclid CMB cross-correlations; Giulio Fabbian, Laura Salvati (both Euclid CMB working group leaders), Tony Bonnaire (generative AI for cosmology)
+- IAS: Euclid CMB cross-correlations; Giulio Fabbian, Laura Salvati (both Euclid CMB working group leaders)
 - Paris-Saclay ecosystem: DATAIA (DeMythif.AI, PostGenAI@Paris), Pleias collaboration (French Science Commons, sovereign AI)
 
 ---

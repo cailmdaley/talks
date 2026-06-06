@@ -75,15 +75,48 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    width: 100%;
     height: calc(100% - 2.6em);   // the space below the title
-    margin-top: 0.2em;
+    margin: 0.2em auto 0;
+    background: $ground;
+}
+.reveal section.metr-slide .metr-wrap::before {
+    content: "";
+    position: absolute;
+    top: 110px;
+    left: 44.5%;
+    width: 590px;
+    height: 74px;
+    transform: translateX(-50%);
+    background: $ground;
+    z-index: 2;
+    pointer-events: none;
+}
+.reveal section.metr-slide .metr-wrap::after {
+    content: "Time horizon of software tasks\a different LLMs can complete 50% of the time";
+    white-space: pre;
+    position: absolute;
+    top: 131px;
+    left: 44.5%;
+    width: 560px;
+    transform: translateX(-50%);
+    z-index: 3;
+    pointer-events: none;
+    color: #1f1a16;
+    font-family: var(--sans-font);
+    font-size: 22px;
+    line-height: 1.05;
+    text-align: center;
 }
 .reveal .metr-embed {
-    width: 100%;
+    width: min(1560px, 94vw);
     height: 600px;
     border: 0;
     display: block;
-    transform: scale(1.18);        // enlarge to use the vertical room
+    margin: 0 auto;
+    background: $ground;
+    transform: scale(1.08);        // enlarge to use the vertical room without drifting off-centre
     transform-origin: center;
 }
 
@@ -378,6 +411,10 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
 // Optical-weight corrections so equal height reads as equal presence.
 .reveal .logo-bar .logo-cnrs      { height: $logo-h * 1.02; }   // dense disc
 .reveal .logo-bar .logo-cea       { height: $logo-h * 0.96; }
+
+.reveal .slides section img.blend-figure {
+    box-shadow: none;
+}
 
 .reveal img.nopad {
     padding: 0;

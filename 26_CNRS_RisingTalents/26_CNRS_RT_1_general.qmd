@@ -52,14 +52,14 @@ distribution of galaxies, supernova distances, the abundances of the light eleme
 :::
 
 ::: {style="margin-top:0.8em"}
-And yet **95%** of it — the Λ and the cold dark matter — stays *phenomenological*: we know
-how it shapes spacetime; we do not know what it is.
+And yet **95%** of it — **dark energy** and **cold dark matter** — stays *phenomenological*: we
+know how it shapes spacetime; we do not know what it is.
 :::
 
 :::
 ::: {.column style="width:48%"}
 
-![](images/standard_model_probe_hero_probe2.png){width=100%}
+![](images/standard_model_probe_hero_probe7.png){.blend-figure width=68%}
 
 <!-- IMAGE PLACEHOLDER (GPT-image-2, slide-images constitution): one illustration tying
      together the probes ΛCDM describes at once, with a hint of where the model strains. -->
@@ -104,121 +104,46 @@ the deep-dive. End on "systematics set the budget," which hands straight to my r
 :::
 
 
-## My SPT-3G maps anchor the tightest CMB constraints to date {#cmb-lensing}
+## I map large-scale structure through gravitational lensing {#lensing-landscape}
 
 :::::::::::::: {.columns}
-::: {.column style="width:55%"}
+::: {.column style="width:49%"}
 
 ::: {style="margin-top:0.3em"}
-My doctoral work measured **CMB lensing** with **SPT-3G**: the microwave background is bent by the
-matter it crosses, so reconstructing that bending maps it across most of cosmic history.
-:::
-
-::: {style="margin-top:0.55em;font-size:0.9em"}
-- Led **one of three independent lensing pipelines**, with **bias-hardening against galaxy and
-  dust contamination — a first for this class of SPT analysis**
-- Produced the **CMB maps used by all three pipelines** and the D1 cosmology analyses —
-  3,286 observations, three bands, ~60,000 CPU-hours
+My wheelhouse is **large-scale structure**: the cosmic web traced by galaxies, dark matter, and
+lensed light.
 :::
 
 ::: {style="margin-top:0.55em"}
-Those maps underpin **$H_0 = 66.66 \pm 0.60$ from SPT alone**, and — with ACT and Planck — the
-**tightest CMB cosmological constraints to date.**
+I work where independent probes read the **same matter field**:
+:::
+
+::: {style="margin-top:0.45em;font-size:0.9em"}
+- **CMB lensing** with SPT-3G — my maps anchor tight CMB constraints
+- **Cosmic shear** with UNIONS — the weak-lensing science in my second talk
+- **Kinematic lensing** — galaxy rotation as an independent shape reference
+- **SPT × Euclid cross-correlations** — independent maps, shared structure
+:::
+
+::: {style="margin-top:0.55em;font-style:italic"}
+The common thread is using geometry to separate cosmology from systematics.
 :::
 
 :::
-::: {.column style="width:45%"}
+::: {.column style="width:51%"}
 
-![](../images/spt3g_1920_maps.png){width=100%}
-
-:::
-::::::::::::::
-
-::: notes
-~1.5 min. The PhD slide — breadth (the full chain, raw data to cosmology) and the D1 maps
-(Quan et al. 2026): I produced the maps everyone downstream uses. The payoff is the tightness.
-Identity beat: I came up doing the hardest end-to-end data analysis in the field, and
-systematics control has been the throughline from the start.
-:::
-
-
-## I mentor a new way to do weak lensing — galaxy rotation, not shape {#kinematic}
-
-:::::::::::::: {.columns}
-::: {.column style="width:56%"}
-
-::: {style="margin-top:0.4em"}
-My current line is **weak lensing** — the shapes of millions of galaxies, sheared by the
-structure in front of them. With **UNIONS**, the first wide, deep survey of the northern sky;
-that analysis is my **second talk**.
-:::
-
-::: {style="margin-top:0.7em"}
-A newer probe sits alongside it: **kinematic lensing**, which reads the distortion from a
-galaxy's **rotation** rather than its shape, sidestepping the dominant systematic in cosmic
-shear. This is where I mentor:
-:::
-
-::: {style="margin-top:0.3em;font-size:0.9em"}
-- **Jordy Ram** (M2) — kinematic lensing with spiral and elliptical galaxies; **first paper in
-  preparation**, with Martin Kilbinger, near submission
-- **Serena Nakhle** (M1) — extending it to integral-field survey data
-:::
-
-:::
-::: {.column style="width:44%"}
-
-![](../images/muse_lensing_k_z.png){width=100%}
-
-<!-- OPTIONAL (Cail's call): headshots of Ram + Nakhle to foreground mentorship; flagged as
-     possibly overkill for the space. -->
+![](images/research_landscape_lensing_probe1.png){.blend-figure width=64%}
 
 :::
 ::::::::::::::
 
 ::: notes
-~1 min. Two jobs in one slide: name UNIONS weak lensing as my main line and punt the science
-to Talk 2; introduce kinematic lensing as the vehicle for real, current mentorship (Ram +
-Nakhle, near-submission paper). Keeps Talk 1 light on weak-lensing detail — the deep-dive owns it.
-:::
-
-
-## Cross-correlations mitigate systematic errors {#euclid}
-
-:::::::::::::: {.columns}
-::: {.column style="width:58%"}
-
-::: {style="margin-top:0.4em"}
-The most systematics-robust probe of all: **cross-correlate two independent matter maps** —
-CMB lensing from SPT-3G, galaxy lensing from Euclid. A systematic that plagues one does not
-appear in the other, so their agreement is a clean diagnostic and shared parameters
-self-calibrate.
-:::
-
-::: {style="margin-top:0.7em;font-size:0.95em"}
-- **Principal postdoc** in Euclid's CMB cross-correlations working group
-- Proposed and lead the accepted **SPT × Euclid MOU** — ~1,600 deg² of overlap
-- First science with **DR1, October 2026**
-:::
-
-::: {style="margin-top:0.8em"}
-**SPT-3G, UNIONS, Euclid** — three international collaborations, and I lead analyses in each.
-:::
-
-:::
-::: {.column style="width:42%"}
-
-![](../images/euclid_rr2_cmb_experiment_footprints.png){width=100%}
-
-:::
-::::::::::::::
-
-::: notes
-~1 min. Close the research arc on the most systematics-robust probe — and on leadership: three
-collaborations, I lead analyses in each. This is the "who I am as a researcher, ready to lead"
-beat. Hands to the proposal: every one of these is becoming systematics-limited, so the
-question becomes how exhaustively we can test — and something just changed that makes that
-tractable.
+~2 min. This replaces the old three-slide research tour. Point at the diagram: CMB lensing
+(SPT-3G PhD maps), cosmic shear (UNIONS, second talk), kinematic lensing (rotation field gives
+an independent unlensed-shape reference; Ram/Nakhle mentorship if there is time), and
+cross-correlations (Euclid × SPT: independent maps of the same matter). The identity beat:
+large-scale structure + gravitational lensing, and a taste for cross-checks where each probe's
+systematics are different.
 :::
 
 
@@ -520,7 +445,7 @@ How do you develop verification instincts in students who have never analysed da
 
 ::: {style="margin-top:0.3em;font-size:0.85em"}
 - **UMR AIM (CosmoStat)** — UNIONS analyses, Lightcone Research: Kilbinger, Farrens, Lanusse
-- **IAS** — Euclid CMB cross-correlations: Fabbian, Salvati, Bonnaire
+- **IAS** — Euclid CMB cross-correlations: Fabbian, Salvati
 - **Paris-Saclay ecosystem** — DATAIA, PostGenAI@Paris, Pleias (French Science Commons, sovereign AI)
 :::
 
