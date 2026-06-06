@@ -36,10 +36,10 @@ html-math-method:
 include-in-header: assets/mathjax.html
 ---
 
-## A century of observation, six numbers, and a 95% we can't explain {#standard-model}
+## A successful but unsatisfying model {#standard-model}
 
 :::::::::::::: {.columns}
-::: {.column style="width:52%"}
+::: {.column style="width:55%"}
 
 ::: {style="margin-top:0.3em"}
 A century of observation has converged on a single model: ordinary and dark matter,
@@ -57,9 +57,11 @@ know how it shapes spacetime; we do not know what it is.
 :::
 
 :::
-::: {.column style="width:48%"}
+::: {.column style="width:45%"}
 
-![](images/standard_model_probe_hero_probe7.png){.blend-figure width=68%}
+::: {.standard-model-figure}
+![](images/standard_model_probe_hero_probe20.png){.blend-figure}
+:::
 
 <!-- IMAGE PLACEHOLDER (GPT-image-2, slide-images constitution): one illustration tying
      together the probes ΛCDM describes at once, with a hint of where the model strains. -->

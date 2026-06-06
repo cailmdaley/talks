@@ -1,43 +1,91 @@
-Create a conceptual opening illustration for a CNRS interview slide titled:
-"A century of observation, six numbers, and a 95% we can't explain".
+Use case: scientific-educational
+Asset type: portrait bitmap illustration for the right side of a 1920x1080 reveal.js slide
+
+Create a portrait scientific notebook illustration for the opening Lambda-CDM slide.
 
 Canvas and style:
-- Landscape 3:2 composition, suitable for the right half of a 1920x1080 reveal.js slide.
-- Warm parchment / rag-paper background, not pure white.
-- Refined scientific editorial illustration, quiet good taste, restrained.
-- Ink-like dark lines with cinnabar accents and muted cosmic colors.
-- It should feel like "a century of observations converging", not science fiction spectacle.
-- No photorealistic people, no cartoon style, no glossy tech style.
+- Aspect ratio 2:3, tall rectangle.
+- Flat warm parchment background exactly #F7F0E1.
+- No border, no white halo, no page edge, no vignette.
+- Serious hand-drawn pen-and-pencil scientific sketch, restrained Cajal-like notebook anatomy
+  aesthetic, not cartoon.
+- Graphite linework with muted blue-gray, ochre, sepia, red marginalia, and brighter blue
+  supernova accents.
+- Preserve the softer probe15 aesthetic: warm red/orange/ochre density hints, blue supernovae,
+  and a cloudy Gaussian-random-field texture that gradually becomes structure. Do not let the
+  web become a cellular loop diagram, fishnet, or regular mesh.
+- Do not create large cyan radial starbursts with long straight blue rays. Supernovae should be
+  simple blue points or small soft blue glows, so there is only one kind of blue object.
+- Slightly more color in the cosmic microwave background than in the rest of the image, but still
+  quiet and scientific.
+
+Core geometry:
+- Time runs vertically from the early universe at the top to the present day at the bottom.
+- The whole universe/history should read as a widening cone or tapered column: narrow near the
+  top, broader and broader toward the bottom.
+- Add a rapid early widening near the top to suggest inflation, then a smoother gradual expansion
+  through the middle, then a late-time dark-energy widening toward the bottom.
+- Show expansion primarily through the silhouette and density field: a bell/funnel-shaped
+  history volume, narrow at the top and broad at the bottom.
+- Do not use arrow fields. Do not use arrowheads. Do not draw curled arrows at the bottom.
+- Add only a few very light, arrowless guide curves that start high/mid nearly vertical and then
+  bend progressively outward as they go downward, becoming more horizontal near the bottom like
+  the sides of a bell. They must communicate down-and-out expansion with increasing outward
+  slope over time. They must never become vertical walls at the bottom, never turn upward, never
+  curl around, and never have arrowheads.
 
 Scientific content:
-- Tie together the observational probes that Lambda-CDM fits at once:
-  - cosmic microwave background,
-  - galaxy surveys / large-scale structure,
-  - supernova distance ladder,
-  - light-element abundances.
-- These probes should visibly converge toward one central elegant model: a small Lambda-CDM
-  hub, six subtle parameter marks, or a central gravitational/cosmological diagram.
-- Include a hint that the model strains conceptually: an understated dark-sector mass or
-  shadow labelled only by shape, suggesting that ordinary matter is a small visible part and
-  the dominant 95% remains phenomenological.
-- Do not imply the model is broken experimentally; the point is empirical convergence plus
-  unexplained ingredients.
+- Top: faint early-universe/inflation strokes, then light element nuclei/abundance symbols.
+- Below that: a soft opaque band labelled exactly "cosmic microwave background"; spell it out.
+  It should not be a Mollweide map, just a granular CMB wall in muted blue/ochre.
+- From below the CMB downward: a smooth N-body-like growth of the cosmic web.
+- The web should begin as a continuous smooth density field: faint Gaussian speckle and soft
+  cloudy overdensities, not point-like stars or a mesh. Around the "first stars" epoch it should
+  still be mostly a density field with only the first tiny luminous hints. Around "first
+  galaxies", small point-like galaxies and knots can begin to appear. Only later, near the
+  late-time bottom, should cluster-like nodes become visually prominent.
+- Avoid a fishnet/grid look. Filaments should be irregular, wispy, and N-body-like, with curved
+  strands and cloudy knots rather than evenly spaced straight-line mesh geometry.
+- The bottom should be less dense and less intense than probe9, so individual filaments, voids,
+  and the increasing space between clusters remain visible.
+- Late-time nodes should be galaxy clusters: compact cloudy knots and many tiny points. No large
+  spiral galaxies, no galaxies bigger than filaments, no obvious spiral disks.
+- Supernovae should be about five blue starbursts embedded at random positions in the
+  late/intermediate cosmic web, not connected by a ladder line. Nearby/lower-time supernovae
+  should be brighter and larger; farther/higher-time supernovae should be smaller and fainter.
+  This bottom-to-top brightness ordering is mandatory and should be visually monotonic.
+  Supernovae are the only objects that may have a red pointer line, labelled "supernovae" or
+  "supernova distances".
 
-Text:
-- Avoid dense text. If any labels appear, keep them minimal and readable:
-  "CMB", "galaxies", "supernovae", "light elements", "Lambda-CDM".
-- Do not include equations, numerical fake data, or axis labels.
+Labels:
+- Make labels slightly larger than probe13 and more legible on a projected slide, while
+  remaining handwritten and understated.
+- Make all marginal annotations red/cinnabar.
+- Put the general time labels on the right side as a clean vertical timeline with no pointer
+  lines: "light elements", "cosmic microwave background", "first stars", "first galaxies",
+  and exactly "today (late time)" near the bottom. Do not write both as separate labels.
+- Do not draw pointer lines for light elements, CMB, first stars, first galaxies, or late time.
+- Put "cold dark matter (CDM)" so it labels the matter field as a whole, never a single node.
+  Embed it gently inside the main matter field on the left side around just before the first
+  galaxies epoch, with the texture passing around/behind the words. Do not draw a pointer line to
+  one object, and do not keep it as a separate off-field legend.
+- Put "dark energy (Λ)" on the lower left just below/alongside the bell, with the subtle bell
+  guide curves visually flowing toward/around it. Do not point it at a single location.
+- Required labels: "light elements", "cosmic microwave background", "first stars",
+  "first galaxies", "today (late time)", "supernovae", "cold dark matter (CDM)",
+  "dark energy (Λ)".
+- Leave generous negative space around labels.
+- No title, no six parameters, no equations, no Big Bang label.
 
-Composition:
-- Four observational motifs around the perimeter, connected by fine lines to the central model.
-- CMB as a subtle mottled oval/map texture.
-- Galaxies / large-scale structure as a delicate web.
-- Supernovae as a small candle/star ladder receding into depth.
-- Light elements as simple atomic/nuclear dots, not chemistry clipart.
-- The central model should be calm and geometrical; the 95% unknown should be present as a
-  shadowed sector or muted surrounding volume.
-
-Negative prompt:
-No fake plots, no fake measured data, no dense infographic, no neon, no black space poster, no
-overly dramatic exploding universe, no corporate stock-vector style.
-
+Physical plausibility:
+- The expansion/taper should be visible from top to bottom, not just at the bottom, and should be
+  conveyed by the expanding cone/bell silhouette rather than explicit arrows.
+- The early universe should feel narrow and quickly expanding; the present day should feel broad.
+- The "today (late time)" label should sit at the very bottom near the dark-energy label, so the
+  flow of the bell visually arrives there.
+- The dark-energy label should sit near the subtle downward/outward guide curves near the
+  late-time widening at the bottom, without a pointer to a single object.
+- The drawing should communicate observational probes and cosmic evolution without becoming a
+  dense infographic.
+- Keep the main bell/field composition centered inside the bitmap. Do not shift the universe
+  volume up, down, left, or right inside the image; slide placement is handled in CSS.
