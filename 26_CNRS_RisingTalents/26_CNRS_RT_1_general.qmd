@@ -4,7 +4,7 @@ occasion: CNRS AI Rising Talents — Interview
 description: "General presentation: trajectory, program, team"
 author:
     name: Cail Daley
-    affiliation: "CosmoStat, CEA Paris-Saclay  <br> <br> [on behalf of the UNIONS weak lensing team]{style=font-size:1.3em}"
+    affiliation: "Département d'Astrophysique / UMR AIM<br>CEA · CNRS · Université Paris-Saclay · Université Paris Cité"
 date: June 25, 2026
 date-format: long
 
@@ -59,9 +59,7 @@ how it shapes spacetime; we do not know what it is.
 :::
 ::: {.column style="width:48%"}
 
-::: {.img-placeholder}
-the probes of ΛCDM, together<br>CMB · galaxies · supernovae · light elements<br><br>[ figure to come ]
-:::
+![](images/standard_model_probe_hero_probe2.png){width=100%}
 
 <!-- IMAGE PLACEHOLDER (GPT-image-2, slide-images constitution): one illustration tying
      together the probes ΛCDM describes at once, with a hint of where the model strains. -->

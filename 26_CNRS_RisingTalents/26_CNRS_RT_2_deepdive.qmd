@@ -4,7 +4,7 @@ occasion: CNRS AI Rising Talents — Interview
 description: "Deep-dive: B-mode analysis, systematics characterisation, cosmological constraints"
 author:
     name: Cail Daley
-    affiliation: "CosmoStat, CEA Paris-Saclay  <br> <br> [on behalf of the UNIONS weak lensing team]{style=font-size:1.3em}"
+    affiliation: "Département d'Astrophysique / UMR AIM<br>CEA · CNRS · Université Paris-Saclay · Université Paris Cité"
 date: June 25, 2026
 date-format: long
 

@@ -362,11 +362,8 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
     box-shadow: none;   // logos opt out of the figure halo
 }
 // Optical-weight corrections so equal height reads as equal presence.
-// CosmoStat is a wordmark — sized so its TEXT matches the cap-height of the
-// other marks (Cail: the old 0.62 made it read too small).
 .reveal .logo-bar .logo-cnrs      { height: $logo-h * 1.02; }   // dense disc
 .reveal .logo-bar .logo-cea       { height: $logo-h * 0.96; }
-.reveal .logo-bar .logo-cosmostat { height: $logo-h * 1.05; }   // wordmark — text to match
 
 .reveal img.nopad {
     padding: 0;
