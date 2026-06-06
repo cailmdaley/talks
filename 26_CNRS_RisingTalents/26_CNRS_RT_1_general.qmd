@@ -109,33 +109,27 @@ the deep-dive. End on "systematics set the budget," which hands straight to my r
 ## My SPT-3G maps anchor the tightest CMB constraints to date {#cmb-lensing}
 
 :::::::::::::: {.columns}
-::: {.column style="width:50%"}
+::: {.column style="width:55%"}
 
 ::: {style="margin-top:0.3em"}
-My doctoral work measured **CMB lensing** with **SPT-3G**: the microwave background is bent by
-every clump of matter it crosses, so reconstructing that bending maps the matter integrated
-across most of cosmic history.
+My doctoral work measured **CMB lensing** with **SPT-3G**: the microwave background is bent by the
+matter it crosses, so reconstructing that bending maps it across most of cosmic history.
 :::
 
-::: {style="margin-top:0.6em;font-size:0.92em"}
-- Led **one of three independent lensing pipelines** — a quadratic estimator with
-  minimum-variance frequency combination and **bias-hardening against galaxy and dust
-  contamination, a first for this class of SPT analysis**
+::: {style="margin-top:0.55em;font-size:0.9em"}
+- Led **one of three independent lensing pipelines**, with **bias-hardening against galaxy and
+  dust contamination — a first for this class of SPT analysis**
 - Produced the **CMB maps used by all three pipelines** and the D1 cosmology analyses —
   3,286 observations, three bands, ~60,000 CPU-hours
 :::
 
-::: {style="margin-top:0.6em"}
+::: {style="margin-top:0.55em"}
 Those maps underpin **$H_0 = 66.66 \pm 0.60$ from SPT alone**, and — with ACT and Planck — the
 **tightest CMB cosmological constraints to date.**
 :::
 
-::: {style="margin-top:0.5em;font-style:italic"}
-The full chain, raw data through cosmology — and contamination control throughout.
 :::
-
-:::
-::: {.column style="width:50%"}
+::: {.column style="width:45%"}
 
 ![](../images/spt3g_1920_maps.png){width=100%}
 
@@ -319,14 +313,31 @@ The same curve runs through my own week. Since the start of June, across **`sp_v
 
 ::: {style="margin-top:0.6em;text-align:center;font-size:2.4em;color:#BC4538;font-weight:600"}
 ~XX,000 lines
-<!-- TODO(autonomous/Cail): real, OBSERVED number — do not fabricate (Cail's repos, his work).
-     Three repos = sp_validation, shapepipe, cmbx. Local clones are partial:
-       sp_validation (~/Documents/projects/sp_validation) is CURRENT (+645 lines since Jun 1 local);
-       cmbx + shapepipe active clones live on candide/cineca (SSH config has candide-app/cineca-app),
-       local copies are stale (cmbx ~/Documents/projects/cmbx/{dr1,q1}_cmbx are Feb; shapepipe 2024).
-     To get the real total, on each active clone:
-       git log --all --since=2026-06-01 --pretty=tformat: --numstat | awk '{a+=$1}END{print a}'
-     Sum the three, round, state as "lines committed under my direction since June 1." -->
+<!-- CAIL TO FINALISE — do not fabricate. OBSERVED 2026-06-06 from the ACTIVE clones (worker
+     SSH'd to candide/cineca and ran git log --all --since=2026-06-01 --numstat). The number is
+     METHODOLOGY-DEPENDENT by ~10×, so it's your call which framing is honest:
+
+     ACTIVE clones are on CANDIDE under /n17data/cdaley/unions/:
+       sp_validation = /n17data/cdaley/unions/pure_eb/code/sp_validation
+       shapepipe     = /n17data/cdaley/unions/shapepipe
+     (cineca cdaley00/{cmbx,sp_validation} clones are STALE — 0 commits since Jun 1.
+      No active cmbx clone with June commits was found on candide or cineca.)
+
+     ADDED LINES since 2026-06-01 (git log --all --numstat):
+                       all-authors    author=Daley (your agents commit as cail.daley@cea.fr)
+       sp_validation     45,797          2,945
+       shapepipe          1,796          1,678
+       cmbx                 (no June activity located)
+       ------------------------------------------------
+       TOTAL             ~47,600         ~4,600
+
+     The all-authors total is inflated by collaborators (Sacha Guerrini) AND by notebook/
+     generated-file churn that --all/--numstat counts as "lines". The author-filtered ~4,600 is
+     the defensible "under my direction" figure, but undersells the agentic-throughput story you
+     want this slide to tell. Recommend: either present ~4,600 honestly as YOUR commits, OR pick
+     a cleaner metric (e.g. net diff on the merged branch, or lines in agent-authored commits
+     excluding generated/data files) — your call, and verify before the practice jury. -->
+
 :::
 
 ::: {style="margin-top:0.6em"}
