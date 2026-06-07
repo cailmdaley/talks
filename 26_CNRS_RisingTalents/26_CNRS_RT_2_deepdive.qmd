@@ -73,7 +73,7 @@ impressive. (Keep this as *context*, not a program pitch — the program lives i
 ## Weak lensing reads the cosmic web from the shapes of galaxies {#shear-intro}
 
 :::::::::::::: {.columns}
-::: {.column style="width:56%"}
+::: {.column style="width:54%"}
 
 ::: {style="margin-top:0.4em"}
 Mass between us and a distant galaxy bends its light, **shearing its observed shape** by a
@@ -92,17 +92,9 @@ imperfection of the measurement. Getting the shapes right is the whole game.
 :::
 
 :::
-::: {.column style="width:44%"}
+::: {.column style="width:46%"}
 
-::: {style="border:2px dashed #BC4538;border-radius:0.4em;padding:2em 1em;text-align:center;color:#888;font-style:italic;margin-top:1.0em"}
-[ shear / shape-measurement<br>pipeline diagram to come ]<br><br>
-sky → images → PSF → galaxy shapes → shear → correlations
-:::
-
-<!-- IMAGE PLACEHOLDER (slide-images constitution): a clean flowchart of the full shear
-     shape-measurement process — Cail's idea. sky → imaging → PSF modelling → shape
-     measurement → calibration → two-point correlations. Conveys "this is a long, careful
-     pipeline" and sets up why systematics validation matters. -->
+![](images/shear_pipeline_flowchart.svg){.blend-figure width=104%}
 
 :::
 ::::::::::::::
@@ -112,7 +104,7 @@ sky → images → PSF → galaxy shapes → shear → correlations
 averaged over millions of galaxies it maps the matter; we read it through the two-point shear
 correlation. End on the difficulty: the cosmological signal hides under intrinsic shapes and
 measurement systematics, so the shape catalog is everything — which sets up the whole talk. The
-flowchart (placeholder) shows the long careful pipeline; image-gen fiber will make it.
+flowchart shows the long careful pipeline.
 :::
 
 
