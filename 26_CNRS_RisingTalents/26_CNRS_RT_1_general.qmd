@@ -134,7 +134,7 @@ The common thread is using geometry to separate cosmology from systematics.
 :::
 ::: {.column style="width:51%"}
 
-![](images/research_landscape_lensing_probe1.png){.blend-figure width=64%}
+![](images/research_landscape_lensing_probe3.png){.blend-figure width=62%}
 
 :::
 ::::::::::::::
