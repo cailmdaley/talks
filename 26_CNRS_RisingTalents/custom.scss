@@ -172,7 +172,6 @@ body {
     border-left: 3px solid $ochre;
     background: none;
     box-shadow: none;
-    font-style: italic;
     color: $ink;
     padding: 0.1em 0 0.1em 0.7em;
 }
@@ -236,6 +235,20 @@ body {
     letter-spacing: 0.04em;
     color: $ink-muted;
     background: transparent;
+    // pin top-right so the bottom-right UNIONS logo can never cover it
+    top:    1.5vh !important;
+    right:  1.6vh !important;
+    bottom: auto  !important;
+}
+
+// ── Per-slide UNIONS corner logo: lift clear of the slide-number ──
+//   reveal pins both the `logo:` mark and the slide-number to the bottom-right,
+//   so the wide UNIONS wordmark sits on top of the page number. Lift the logo
+//   above the number; the number keeps the very corner.
+.reveal .slide-logo {
+    bottom: 3vh !important;
+    right:  1.6vh !important;
+    max-height: 4.4vh !important;
 }
 
 // ── Structural classes preserved from the original theme ──
