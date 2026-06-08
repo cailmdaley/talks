@@ -37,24 +37,50 @@ include-in-header: assets/mathjax.html
 
 ## UNIONS is the first deep weak-lensing map of the northern sky {#unions-opportunity}
 
+::: {style="margin-top:0.8em;font-size:1.05em"}
+MegaCam / CFHT — **~3,500 deg²** of deep $r$-band imaging at **0.7″** median seeing, yielding
+**~61 million** source galaxies ($n_\mathrm{eff} \approx 5 \, \mathrm{arcmin}^{-2}$).
+:::
+
+::: {style="margin-top:0.7em;font-size:1.05em"}
+That is the statistical power of a **next-generation survey's first year** — and the first such
+dataset anywhere in the **northern sky**.
+:::
+
+::: {style="margin-top:0.7em;font-size:1.05em"}
+Built by a team an **order of magnitude smaller** than DES or KiDS.
+:::
+
+::: notes
+~1 min. The opener — a new deep, wide survey, in the north, with the statistical power of a
+next-generation survey's first year, built by a tiny team. State what UNIONS is and at what
+scale; the independence argument (why the north matters) is the next slide. Keep it broad and
+confident — this is the "look at the cool dataset" beat.
+:::
+
+
+## UNIONS is the independent northern check cosmic shear was missing {#unions-independent}
+
 :::::::::::::: {.columns}
-::: {.column style="width:55%"}
+::: {.column style="width:53%"}
 
-::: {style="margin-top:0.4em"}
-- MegaCam/CFHT, **~3,500 deg²** of deep $r$-band imaging; **~61 million source galaxies**,
-  $n_\mathrm{eff} \approx 5 \, \mathrm{arcmin}^{-2}$
-- The only wide, deep survey of its generation covering the **northern sky** — minimal overlap
-  with KiDS, DES, HSC, so an **independent** cosmic-shear measurement
-- Statistical power of a next-generation survey's **first year**, and a footprint that pairs
-  naturally with **Euclid**
+::: {style="margin-top:0.45em"}
+The $S_8$ debate has **converged** as systematics improved — and a consensus is only as strong as
+its **independent checks.**
 :::
 
-::: {style="margin-top:0.5em"}
-And produced by a team an **order of magnitude smaller** than DES or KiDS.
+::: {style="margin-top:0.55em"}
+But **KiDS, DES, and HSC all share the same southern sky.** UNIONS overlaps **none** of them:
+independent structure, sample variance, Galactic foregrounds, and instrument.
+:::
+
+::: {style="margin-top:0.55em"}
+And its northern footprint opens cross-correlations the south can't — **DESI**, **Planck**,
+**ACT**, and **Euclid**, all at high declination.
 :::
 
 :::
-::: {.column style="width:45%"}
+::: {.column style="width:47%"}
 
 ![](../26_Moriond_UNIONS/images/des_y6_footprints_unions.png){width=100%}
 
@@ -62,11 +88,14 @@ And produced by a team an **order of magnitude smaller** than DES or KiDS.
 ::::::::::::::
 
 ::: notes
-~1.5 min. Open broad and exciting: UNIONS earns its place in the S₈/systematics landscape on
-its own terms — unique northern footprint (independent of the southern surveys), next-gen
-first-year statistical power, the natural Euclid pairing. The new beat: the team is an order of
-magnitude smaller — that the science below came from a small team is part of what makes it
-impressive. (Keep this as *context*, not a program pitch — the program lives in Talk 1.)
+~1.5 min. The consensus argument, in the Moriond framing. S₈ is converging as systematics improve
+(KiDS 3.0σ→0.74σ, DES 2.3σ→1.1σ), so consensus matters — and consensus needs genuinely
+independent measurements, not more data from overlapping footprints. KiDS/DES/HSC all overlap
+(Jefferson+2025, "overlaps between all pairs"); UNIONS shares sky with none → independent sample
+variance, Galactic foregrounds, and instrument (CFHT MegaCam vs DECam/OmegaCAM/HSC). The northern
+footprint is uniquely valuable for cross-correlation: DESI spectroscopy, Planck/ACT CMB lensing,
+and Euclid at high northern declination — things the southern surveys can't do as easily. The map
+shows UNIONS-3500 (purple) alone in the north while everyone else crowds the south.
 :::
 
 
@@ -342,40 +371,31 @@ S₈ cautionary tale that opens Talk 1 closes here.
 :::
 
 
-## Where UNIONS goes next: tomographic, then the multi-probe gold standard {#forward}
+## With the pipeline built, UNIONS can iterate toward the multi-probe gold standard {#forward}
 
-:::::::::::::: {.columns}
-::: {.column style="width:55%;font-size:0.84em"}
-
-**This first release delivers**
-
-- The first northern-sky cosmic-shear constraints
-- A systematics framework where **disagreement becomes diagnosis**
-- An S₈ consistent with the concordance model, conservatively
-
-**The science from here**
-
-- **Tomographic** cosmic shear — the field standard
-- **Multi-probe** — shear + galaxy–galaxy lensing + clustering: percent-level S₈ and dark energy
-- Cross-correlations into **DESI** and **Planck**
-
+::: {style="margin-top:0.45em;font-size:0.96em"}
+The systematics framework is built — so a team an **order of magnitude smaller** than DES or KiDS
+can now run the analysis **end to end.** With **agentic methods** doing the heavy lifting, each
+release sharpens the next: redo everything as the data grows, and explore the full space of
+choices instead of triaging it.
 :::
-::: {.column style="width:45%"}
 
-![](../26_Moriond_UNIONS/images/s8_convergence_with_unions.png){width=94%}
+![](images/unions_roadmap_timeline.svg){width=97%}
 
-:::
-::::::::::::::
-
-::: {style="margin-top:0.1em;text-align:center"}
-A clean first step, characterised end to end — and produced almost entirely by AI agents under
-my direction. Thank you.
+::: {style="margin-top:0.25em;text-align:center;font-size:0.95em"}
+A first step, characterised end to end — and produced almost entirely by AI agents under my
+direction. **Thank you.**
 :::
 
 ::: notes
-~1 min. Zoom back to the science future (NOT a program pitch — that lives in Talk 1): tomographic
-then multi-probe, percent-level S₈ + dark energy, cross-correlations into DESI/Planck. Use the
-convergence figure to show UNIONS joining the S₈ landscape, closing the loop on the northern-sky
-opportunity that opened the talk. The agentic line is ONE methodological beat at the very end —
-a flourish, not a proposal.
+~1.5 min. The close: not a program pitch (that's Talk 1) — the scientific future, with agentic
+methods as the engine. The framework and pipelines now exist, so a tiny team can run the whole
+analysis end to end and, crucially, explore the full space of methodological choices instead of
+triaging it for lack of time. That's the flywheel: each release accelerates the next. Walk the
+roadmap left to right — first release (this talk) → tomographic shear (Year 1, breaks the IA
+degeneracy, tightens S₈) → cross-correlations with DESI/Planck → the multi-probe 3×2pt analysis
+(Year 3, the gold standard for dark energy and neutrino mass) → percent-level S₈ and dark energy.
+Euclid DR1 (Oct 2026) and DR2 (Mar 2029) set the external rhythm. End on the agentic beat: this
+first release was produced almost entirely by AI agents under my direction — the method that makes
+the whole roadmap tractable for a small team.
 :::
