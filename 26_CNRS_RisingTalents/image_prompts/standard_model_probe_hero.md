@@ -19,34 +19,40 @@ Canvas and style:
   at cluster nodes.
 - Do not create large cyan radial starbursts with long straight blue rays. Supernovae should be
   simple blue points or small soft blue glows, so there is only one kind of blue object.
-- Slightly more color in the cosmic microwave background than in the rest of the image, but still
-  quiet and scientific.
+- The cosmic microwave background band should be recognizable as CMB texture: a horizontal,
+  soft, opaque last-scattering surface with mottled blue/orange temperature fluctuations, not an
+  abstract decorative strip and not a Mollweide projection.
 
 Core geometry:
 - Time runs vertically from the early universe at the top to the present day at the bottom.
 - The whole universe/history should read as a widening cone or tapered column: narrow near the
   top, broader and broader toward the bottom.
+- Slightly compress the composition vertically if needed to make room for the late-time region
+  to broaden. The lower third should feel like an accelerating bell/funnel that expands toward
+  the image edges and into/around the bottom labels; do not pinch or narrow the upper/middle
+  field to achieve this.
 - Add a rapid early widening near the top to suggest inflation, then a smoother gradual expansion
   through the middle, then a late-time dark-energy widening toward the bottom.
 - Show expansion primarily through the silhouette and density field: a bell/funnel-shaped
   history volume, narrow at the top and broad at the bottom.
 - Do not use arrow fields. Do not use arrowheads. Do not draw curled arrows at the bottom.
-- Add only a few very light, arrowless guide curves that start high/mid nearly vertical and then
+- Add visible but still delicate arrowless guide curves that start high/mid nearly vertical and then
   bend progressively outward as they go downward, becoming more horizontal near the bottom like
   the sides of a bell. They must communicate down-and-out expansion with increasing outward
   slope over time. They must never become vertical walls at the bottom, never turn upward, never
-  curl around, and never have arrowheads.
+  curl around, and never have arrowheads. These curves should be noticeable at slide scale.
 
 Scientific content:
 - Top: faint early-universe/inflation strokes, then light element nuclei/abundance symbols.
 - Below that: a soft opaque band labelled exactly "cosmic microwave background"; spell it out.
   It should not be a Mollweide map, just a granular CMB wall in muted blue/ochre.
 - From below the CMB downward: a smooth N-body-like growth of the cosmic web.
-- The web should begin as a continuous smooth density field: faint Gaussian speckle and soft
-  cloudy overdensities, not point-like stars or a mesh. Around the "first stars" epoch it should
-  still be mostly a density field with only the first tiny luminous hints. Around "first
-  galaxies", small point-like galaxies and knots can begin to appear. Only later, near the
-  late-time bottom, should cluster-like nodes become visually prominent.
+- The web should begin as a continuous smooth scalar density field: hazy gray fluctuations,
+  blurred cloudy overdensities, soft contour-like patches, and no isolated dots with halos. It
+  should feel like a Gaussian random field, not a collection of particles or stars. Around the
+  "first stars" epoch it should still be mostly a density field with only the first tiny luminous
+  hints. Around "first galaxies", small point-like galaxies and knots can begin to appear. Only
+  later, near the late-time bottom, should cluster-like nodes become visually prominent.
 - Before the first-galaxies epoch there should be no supernovae and no obvious galaxies.
 - Supernovae belong only in the lower nonlinear / late-time part of the web.
 - Avoid a fishnet/grid look. Filaments should be irregular, wispy, and N-body-like, with curved
@@ -71,8 +77,9 @@ Labels:
   and exactly "today (late time)" near the bottom. Do not write both as separate labels.
 - Do not draw pointer lines for light elements, CMB, first stars, first galaxies, or late time.
 - Put "cold dark matter (CDM)" so it labels the matter field as a whole, never a single node.
-  Embed it gently inside the main matter field on the left side before the nonlinear regime
-  starts, near but above the first-galaxies transition, with the texture passing around/behind
+  Embed it gently inside the main matter field on the left side but slightly inward from the
+  edge, before the nonlinear regime starts, near but above the first-galaxies transition, with
+  the smooth density texture passing around/behind
   the words. Do not draw a pointer line to
   one object, and do not keep it as a separate off-field legend.
 - Put "dark energy (Λ)" on the lower left just below/alongside the bell, with the subtle bell
@@ -91,6 +98,9 @@ Physical plausibility:
   flow of the bell visually arrives there.
 - The dark-energy label should sit near the subtle downward/outward guide curves near the
   late-time widening at the bottom, without a pointer to a single object.
+- The late-time matter structure and guide curves may encroach on and surround "dark energy (Λ)"
+  and "today (late time)" as long as the labels remain readable, so the bottom reads as the
+  acceleration regime rather than a narrow cone.
 - The drawing should communicate observational probes and cosmic evolution without becoming a
   dense infographic.
 - Keep the main bell/field composition centered inside the bitmap. Do not shift the universe

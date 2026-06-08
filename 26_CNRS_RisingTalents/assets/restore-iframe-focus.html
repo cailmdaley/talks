@@ -1,11 +1,15 @@
 <script>
 /*
-  Reveal loses keyboard navigation (arrow keys) when a cross-origin iframe — the live
-  METR embed — steals focus on click. We can't reach inside the cross-origin frame, but
-  we CAN reclaim focus for the deck the moment the pointer returns to the slide: while the
-  pointer is over the iframe the parent gets no mousemove, so the first mousemove back on
-  the slide (or any click outside the iframe) tells us to blur the frame and refocus the
-  window. Arrow keys work again without a page refresh.
+  The live METR embed is a cross-origin iframe. When the pointer clicks (or the chart
+  grabs focus), keyboard navigation for reveal stops — arrow keys go to the iframe, not
+  the deck. We can't reach inside a cross-origin frame, but we CAN keep yanking focus
+  back to the deck window. Two mechanisms:
+    1. Event-driven reclaim (mousemove / mousedown outside the frame / window focus).
+    2. A low-frequency poll — the key fix: while the pointer sits ON the iframe the parent
+       gets no mousemove, so the old event-only version stayed stuck until you moved the
+       mouse AWAY. The poll reclaims focus ~5x/second regardless, so arrows work again on
+       their own. A single click still registers in the chart (toggling linear/log etc.)
+       before focus returns, so the chart stays usable.
 */
 (function () {
   function reclaim() {
@@ -19,7 +23,8 @@
   document.addEventListener('mousedown', function (e) {
     if (!e.target || e.target.tagName !== 'IFRAME') reclaim();
   }, true);
-  // Also reclaim whenever the window regains focus.
   window.addEventListener('focus', reclaim);
+  // The poll: auto-restores navigation without needing the pointer to leave the chart.
+  setInterval(reclaim, 200);
 })();
 </script>

@@ -68,57 +68,138 @@ body {
     box-sizing: border-box;
 }
 
-// METR embed slide — a complete-sentence title at top + a large, vertically-centred
-// live chart that uses the full vertical room (Cail: bigger, with a title).
-.reveal section.metr-slide { padding: 44px 36px; overflow: hidden; }
-.reveal section.metr-slide .metr-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+// Embed fix: when the deck runs inside an iframe (the report.html live embed), reveal
+// computes top:1080px for a couple of horizontal slides (the METR + thesis slides),
+// pushing their content one full viewport DOWN — they render blank in the embed while
+// the footer stays. Fullscreen is unaffected. center:false means every horizontal slide
+// SHOULD sit at top:0, so pinning it is both correct and a no-op fullscreen. Scoped to
+// direct children so any future vertical sub-slides (`> section > section`) are untouched.
+.reveal .slides > section { top: 0 !important; }
+
+// METR slide — a two-beat reveal. State A: the live METR chart fills the slide (full width + full
+// height). State B (one fragment step): the chart reflows to TWO-THIRDS width at FULL height while
+// Anthropic's autonomy-progression diagram fades + slides into the right third. The width animates
+// (not a transform) so the chart stays UNDISTORTED — METR re-lays-out to the narrower box. Both
+// motions share the trigger and the 0.85s duration. An empty `.metr-step` fragment before
+// `.metr-stage` drives it via the `~` sibling selector.
+.reveal section.metr-slide { padding: 46px 80px 42px; overflow: hidden; }
+
+// The stage — fills the content area under the headline; everything is placed within it.
+.reveal .metr-stage {
     position: relative;
     width: 100%;
-    height: calc(100% - 2.6em);   // the space below the title
-    margin: 0.2em auto 0;
-    background: $ground;
+    height: 884px;
+    margin-top: 0;
 }
-.reveal section.metr-slide .metr-wrap::before {
-    content: "";
+
+// Chart column — full width in A, two-thirds in B. Animating WIDTH (no transform) keeps the chart
+// UNDISTORTED — METR re-lays-out to the narrower box. NOTE: METR's chart SVG is hard-locked at
+// 500px tall (measured), so a taller box just adds whitespace below; the chart can't fill height.
+.reveal .metr-chart-wrap {
     position: absolute;
-    top: 110px;
-    left: 44.5%;
-    width: 590px;
-    height: 74px;
-    transform: translateX(-50%);
-    background: $ground;
-    z-index: 2;
-    pointer-events: none;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+    display: flex;
+    align-items: center;        // vertically centre the (short) chart in the tall stage
+    transition: width 0.85s cubic-bezier(.4, 0, .2, 1);
 }
-.reveal section.metr-slide .metr-wrap::after {
-    content: "Time horizon of software tasks\a different LLMs can complete 50% of the time";
-    white-space: pre;
-    position: absolute;
-    top: 131px;
-    left: 44.5%;
-    width: 560px;
-    transform: translateX(-50%);
-    z-index: 3;
-    pointer-events: none;
-    color: #1f1a16;
-    font-family: var(--sans-font);
-    font-size: 22px;
-    line-height: 1.05;
-    text-align: center;
+.reveal .metr-step.visible ~ .metr-stage .metr-chart-wrap { width: 66.5%; }
+
+.reveal .metr-cropbox {
+    position: relative;
+    width: 100%;
+    height: 700px;             // hug METR's content (its SVG is locked at 500px tall); the
+    overflow: hidden;          // wrap flex-centres this box so the leftover space is balanced.
+    background: $ground;
+    border-radius: 4px;
 }
 .reveal .metr-embed {
-    width: min(1560px, 94vw);
-    height: 600px;
+    position: absolute;
+    top: -58px;                   // crop METR's own in-chart title — we show ours as an overlay
+    left: 0;
+    width: 100%;
+    height: calc(100% + 58px);
     border: 0;
-    display: block;
-    margin: 0 auto;
-    background: $ground;
-    transform: scale(1.08);        // enlarge to use the vertical room without drifting off-centre
-    transform-origin: center;
+    background: transparent;      // let the parchment show through METR's own ground
 }
+
+// Our chart title — a short transparent overlay at the top-left, to the LEFT of METR's own
+// top-right logo (the shorter wording keeps the box narrow so it clears the logo).
+.reveal .metr-chart-title {
+    position: absolute;
+    top: 98px;            // aligns with the top of the vertically-centred chart box
+    left: 12px;
+    z-index: 3;
+    max-width: 34%;
+    margin: 0;
+    font-size: 0.62em;
+    line-height: 1.18;
+    color: #1f1a16;
+    text-align: left;
+    background: transparent;
+}
+
+// Diagram column — right third; fades + slides in on the same trigger, same duration.
+.reveal .metr-diagram-col {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 70.5%;          // nudged right (~+3%) for more gap from the chart
+    right: -34px;         // reach toward the slide edge so the diagram sits further right
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateX(28px);
+    transition: opacity 0.85s ease, transform 0.85s cubic-bezier(.4, 0, .2, 1);
+    pointer-events: none;
+}
+.reveal .metr-step.visible ~ .metr-stage .metr-diagram-col {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+
+// The diagram column's own title, centered above the diagram.
+.reveal .metr-title {
+    font-size: 0.6em;
+    line-height: 1.18;
+    color: #1f1a16;
+    text-align: center;
+    max-width: 96%;
+    margin: 0.1em auto 0.1em;   // tighter gap to the diagram below
+}
+
+// Anthropic diagram — fills the right column at full height; near-white warm ground multiplies
+// into the parchment via the figure-treatment router.
+.reveal .anthropic-diagram {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+}
+.reveal .slides section .anthropic-diagram img {
+    max-height: 824px;
+    height: auto;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+// Attribution under the Anthropic quote on the thesis slide.
+.reveal .thesis-credit {
+    margin-top: 0.25em;
+    padding-left: 0.7em;     // align under the blockquote's text inset
+    color: $ink-muted;
+    font-size: 0.62em;
+}
+.reveal .thesis-credit a { color: $ink-muted; text-decoration: none; }
+.reveal .thesis-credit a:hover { text-decoration: underline; }
 
 // ── Headings ──
 .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
@@ -173,6 +254,7 @@ body {
     background: none;
     box-shadow: none;
     color: $ink;
+    font-style: normal;   // no italics anywhere (Cail): reveal italicises blockquotes by default
     padding: 0.1em 0 0.1em 0.7em;
 }
 
@@ -235,20 +317,25 @@ body {
     letter-spacing: 0.04em;
     color: $ink-muted;
     background: transparent;
-    // pin top-right so the bottom-right UNIONS logo can never cover it
-    top:    1.5vh !important;
+    // bottom-right, on the footer's baseline (the UNIONS logo is title-only now, so the
+    // bottom-right corner is free on content slides — no conflict to dodge).
+    bottom: 1.5vh !important;
     right:  1.6vh !important;
-    bottom: auto  !important;
+    top:    auto  !important;
 }
 
-// ── Per-slide UNIONS corner logo: lift clear of the slide-number ──
-//   reveal pins both the `logo:` mark and the slide-number to the bottom-right,
-//   so the wide UNIONS wordmark sits on top of the page number. Lift the logo
-//   above the number; the number keeps the very corner.
+// ── UNIONS corner logo: title slide only ──
+//   The `logo:` mark would otherwise sit bottom-right on every slide and collide with the
+//   page number. Show it ONLY on the title slide (where footer + number are both hidden),
+//   so it has the corner to itself; hide it everywhere else.
 .reveal .slide-logo {
-    bottom: 3vh !important;
+    display: none !important;   // Quarto's .reveal.has-logo .slide-logo forces block — override hard
+    bottom: 1.6vh !important;
     right:  1.6vh !important;
     max-height: 4.4vh !important;
+}
+.reveal:has(#title-slide.present) .slide-logo {
+    display: block !important;
 }
 
 // ── Structural classes preserved from the original theme ──
@@ -432,11 +519,20 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
     box-shadow: none;
 }
 
+// ── Figure-on-ground treatment ──
+//   Handled entirely by the shared helper `assets/figure-treatment.html` (the canonical copy
+//   lives in the slides skill: scripts/figure-treatment.html). It samples each figure's corner
+//   and sets all styles INLINE — white plots → multiply onto a local ground backdrop; cream/grey
+//   illustrations → background keyed transparent; transparent / already-ground figures left alone.
+//   The white-halo default above is the no-JS fallback (e.g. a raw file:// open, where canvas
+//   reads taint); over http / embed-resources the helper overrides it per figure.
+
 .reveal section#standard-model .standard-model-figure {
-    height: 1060px;
-    max-width: 100%;
-    margin-top: -4.15em;
-    margin-right: -0.65em;
+    height: 1110px;
+    max-width: none;
+    margin-top: -4.4em;        // pulled up so the wide bottom (today / dark energy) stays in view
+    margin-right: 0;
+    transform: translateX(36px);   // nudge right
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -444,7 +540,7 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
 }
 
 .reveal section#standard-model .standard-model-figure img {
-    height: 1060px !important;
+    height: 1110px !important;
     width: auto !important;
     max-width: none;
     max-height: none;
@@ -452,7 +548,65 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
     object-position: center center;
 }
 
+.reveal section#lensing-landscape {
+    position: relative;
+    overflow: hidden;
+}
+
+.reveal section#lensing-landscape > h2:first-child {
+    max-width: 62%;
+    position: relative;
+    z-index: 2;
+}
+
+.reveal section#lensing-landscape .columns {
+    position: static;
+    z-index: auto;
+}
+
+.reveal section#lensing-landscape .columns > .column:first-child {
+    position: relative;
+    z-index: 2;
+    padding-right: 0.4em;
+    font-size: 0.94em;
+}
+
+.reveal section#lensing-landscape .columns > .column:last-child {
+    position: static;
+}
+
+.reveal section#lensing-landscape .research-landscape-figure {
+    position: absolute;
+    top: -28px;            // height defined by top+bottom insets; a little bleed top+bottom so
+    bottom: -28px;         // the image can run taller than the slide and grow further left.
+    right: -56px;          // (section overflow:hidden clips the bleed; the top:0 fix prevents
+    width: 1010px;         // the blank-slide cascade.) Portrait, right-anchored -> grows LEFT.
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: visible;
+    z-index: 1;
+}
+
+.reveal section#lensing-landscape .research-landscape-figure img {
+    height: 1136px !important;  // taller than the slide (portrait 1024x1536 -> ~757px wide),
+    width: auto !important;     // right-anchored so the extra size extends to the LEFT.
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    object-position: right center;
+}
+
 .reveal img.nopad {
+    padding: 0;
+}
+
+// Lightcone Research wordmark on the #lightcone slide — opts out of the figure halo
+// (it's a transparent-background logo, not a photo, so the white glow would read as a box).
+.reveal .lightcone-logo {
+    width: 640px;
+    height: auto;
+    box-shadow: none !important;
     padding: 0;
 }
 
@@ -474,4 +628,23 @@ figcaption > span {
     top: 0 !important;
     padding: 0 0;
     margin-top: 0px;
+}
+
+// ── Weak-lensing shear animation (Talk 2 opener, #shear-intro) ──────────────
+// Each galaxy is a unit circle placed/shaped by --ti (intrinsic) and retargeted
+// to --tl (lensed: a real reduced-shear distortion + slight deflection) once the
+// cluster fragment fires and assets/wl-shear-animate.html adds .lensed to #wl-shear.
+// non-scaling-stroke keeps the outline weight constant despite the per-galaxy scale().
+#wl-shear .wl-gal {
+    fill: none;
+    stroke: #1b1611;
+    stroke-width: 2.2;
+    opacity: 0.62;
+    vector-effect: non-scaling-stroke;
+    transform: var(--ti);
+    transition: transform 1.15s cubic-bezier(0.45, 0.05, 0.2, 1);
+    transition-delay: var(--d, 0s);
+}
+#wl-shear.lensed .wl-gal {
+    transform: var(--tl);
 }

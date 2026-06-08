@@ -21,6 +21,7 @@ format:
         include-after-body:
             - assets/no_footer_on_titleslide.html
             - assets/restore-iframe-focus.html
+            - assets/figure-treatment.html
         footer: "Cail Daley | CNRS AI Rising Talents | June 25, 2026"
         history: false
         hash: true
@@ -41,19 +42,17 @@ include-in-header: assets/mathjax.html
 :::::::::::::: {.columns}
 ::: {.column style="width:55%"}
 
-::: {style="margin-top:0.3em"}
-A century of observation has converged on a single model: ordinary and dark matter,
-expanding ever faster under **dark energy**. We call it **ΛCDM**.
+::: {style="margin-top:1.3em"}
+A universe dominated by **dark energy** and **cold dark matter**.
 :::
 
-::: {style="margin-top:0.8em"}
-**Six parameters** fit it all at once — the cosmic microwave background, the large-scale
-distribution of galaxies, supernova distances, the abundances of the light elements.
+::: {style="margin-top:1.9em"}
+**Six parameters** describe a diversity of observations.
 :::
 
-::: {style="margin-top:0.8em"}
-And yet **95%** of it — **dark energy** and **cold dark matter** — stays *phenomenological*: we
-know how it shapes spacetime; we do not know what it is.
+::: {style="margin-top:1.9em"}
+And yet **95%** stays phenomenological: the model describes only their behavior — how dark
+energy and dark matter shape spacetime.
 :::
 
 :::
@@ -78,25 +77,26 @@ do we make progress?".
 
 ## Progress now means finding the systematics before they fool us {#precision}
 
-::: {style="margin-top:0.4em"}
-We make progress by **pushing this model until something gives** — percent-level measurements
-from complementary probes, asking whether the joint picture still needs only those six numbers.
+::: {style="margin-top:0.6em"}
+We push the model until something gives: does the joint picture still need only **six numbers**?
 :::
 
-::: {style="margin-top:0.7em"}
-Two tensions hold the field's attention: the expansion rate $H_0$ (early vs. nearby disagree
-at **~5σ**), and **S₈**, the amplitude of late-time matter clustering.
+::: {style="margin-top:1.0em"}
+Two tensions hold the field's attention:
 :::
 
-::: {style="margin-top:0.7em"}
-Each time, the same question: **new physics, or an artifact of the instrument, the data, the
-analysis?** S₈ is the cautionary tale — weak lensing sat 2–3σ low for years, until KiDS-Legacy
-and DES Y6 shifted up and the tension largely dissolved.
+::: {style="margin-top:0.5em;font-size:0.95em"}
+- **$H_0$** — early and nearby measurements disagree at **~5σ**
+- **S₈** — the amplitude of late-time matter clustering
 :::
 
-::: {style="margin-top:0.7em;font-style:italic"}
-As Euclid, Rubin, and next-generation CMB shrink the statistical errors another order of
-magnitude, **systematics will set the error budget** — and that is where my work lives.
+::: {style="margin-top:1.0em"}
+Each time, the same question: **new physics, or a systematic?**
+:::
+
+::: {style="margin-top:1.0em"}
+S₈ is the cautionary tale: it sat 2–3σ low for years, until better data dissolved the tension.
+As the errors shrink, **systematics set the budget** — and that is where my work lives.
 :::
 
 ::: notes
@@ -106,35 +106,36 @@ the deep-dive. End on "systematics set the budget," which hands straight to my r
 :::
 
 
-## I map large-scale structure through gravitational lensing {#lensing-landscape}
+## Combining observables to test ΛCDM and understand systematics {#lensing-landscape}
 
 :::::::::::::: {.columns}
-::: {.column style="width:49%"}
+::: {.column style="width:58%"}
+
+::: {style="margin-top:0.15em"}
+Large-scale structure gives three complementary views of the same matter field.
+:::
 
 ::: {style="margin-top:0.3em"}
-My wheelhouse is **large-scale structure**: the cosmic web traced by galaxies, dark matter, and
-lensed light.
+The leverage comes from combining observables whose systematics are different:
 :::
 
-::: {style="margin-top:0.55em"}
-I work where independent probes read the **same matter field**:
+::: {style="margin-top:0.3em;font-size:0.78em"}
+- **CMB lensing** with SPT-3G — an integral over the full matter distribution
+- **Galaxy lensing** with UNIONS and Euclid — late-time structure through cosmic shear
+- **Galaxy positions** with Euclid — clustering as an independent density tracer
+- **Cross-correlations** — shared cosmology, different failure modes
 :::
 
-::: {style="margin-top:0.45em;font-size:0.9em"}
-- **CMB lensing** with SPT-3G — my maps anchor tight CMB constraints
-- **Cosmic shear** with UNIONS — the weak-lensing science in my second talk
-- **Kinematic lensing** — galaxy rotation as an independent shape reference
-- **SPT × Euclid cross-correlations** — independent maps, shared structure
-:::
-
-::: {style="margin-top:0.55em;font-style:italic"}
-The common thread is using geometry to separate cosmology from systematics.
+::: {style="margin-top:0.35em;font-size:0.86em"}
+Independent observables turn systematics into testable differences.
 :::
 
 :::
-::: {.column style="width:51%"}
+::: {.column style="width:42%"}
 
-![](images/research_landscape_lensing_probe3.png){.blend-figure width=62%}
+::: {.research-landscape-figure}
+![](images/research_landscape_lensing_probe11.png){.blend-figure}
+:::
 
 :::
 ::::::::::::::
@@ -151,38 +152,79 @@ systematics are different.
 
 ## AI capabilities are doubling every few months {#inflection .metr-slide}
 
-::: {.metr-wrap}
+::: {.fragment .metr-step}
+:::
+
+::: {.metr-stage}
+
+::: {.metr-chart-title}
+Time horizon of software tasks
+:::
+
+::: {.metr-chart-wrap}
+
+::: {.metr-cropbox}
 <iframe class="metr-embed" src="https://metr.org/horizon-chart-embed" title="METR — task-completion time horizon (live, interactive)" loading="lazy"></iframe>
+:::
+
+:::
+
+::: {.metr-diagram-col}
+
+::: {.metr-title}
+And human work is changing as models improve
+:::
+
+::: {.anthropic-diagram}
+![](images/anthropic_progression.png){.blend-figure}
+:::
+
+:::
+
 :::
 
 ::: notes
 The conceptual heart — placed FIRST in the proposal half, because it is the *cause* of what
-follows. Speak over the live METR chart; toggle linear/log. Beats:
+follows. TWO-BEAT REVEAL: the slide opens with the live METR chart full-width — speak over it,
+land the doubling. Then one click: the chart slides to the left half and Anthropic's own
+autonomy-progression diagram fades in on the right (person → chatbot → agent → workers → closing
+the loop — the human role recedes up the stack). External benchmark + the view from inside a
+frontier lab. Beats:
 - Sutton's bitter lesson — general computation beats encoded expertise.
 - Frontier models now complete ~12-hour expert tasks; doubling time ~4 months; ~2,500× in four
   years if it holds.
-- Use the number, then pivot to the next slide: apply that curve to research and the bottleneck
-  moves from producing results to verifying them.
+- Then the human mirror (the diagram): even the labs building these models are climbing this
+  ladder — agents direct agents, the person moves to the top. Apply that to research → next slide.
 
-OFFLINE FALLBACK (no venue internet): swap the iframe for
-  ![](images/metr_capability_trajectory.png){width=70% fig-align="center"}
+The diagram is from Anthropic's 2026 piece "When AI builds itself" (recursive self-improvement);
+credited on slide. OFFLINE FALLBACK (no venue internet): swap the iframe for
+  ![](images/metr_capability_trajectory.png){width=100% fig-align="center"}
 :::
 
 
 ## As output outpaces verification, science becomes a design problem {#thesis}
 
-::: {style="margin-top:1.1em;font-size:1.05em"}
-Apply that curve to research. The constraint stops being how fast we can **produce** results —
-and becomes how fast we can **verify** them.
+::: {style="margin-top:1.0em;font-size:1.05em"}
+Apply that curve to research, and **verification becomes the constraint** — how fast we can
+check what the agents produce.
 :::
 
-::: {style="margin-top:1.1em"}
-> The question shifts: from *producing results* to **designing research systems that check
-> themselves as fast as they discover.**
+::: {style="margin-top:1.0em"}
+> An area of human comparative advantage, **for now**, is research taste and judgment, including
+> choosing which problems matter, **which results to trust**, and when an approach is a dead end.
+
+::: {.thesis-credit}
+— [Anthropic, "When AI builds itself" (2026)](https://www.anthropic.com/institute/recursive-self-improvement)
+:::
 :::
 
-::: {style="margin-top:1.2em;font-style:italic"}
-This is the lens for the program ahead — and it is already how I work.
+::: {style="margin-top:1.0em"}
+> The question shifts to **designing research systems that check themselves as fast as they
+> discover.**
+:::
+
+::: {style="margin-top:1.0em"}
+The lens for the program ahead — and already how I work.
 :::
 
 ::: notes
@@ -218,7 +260,7 @@ My role shifted to:
 :::
 ::::::::::::::
 
-::: {style="margin-top:1em;font-style:italic"}
+::: {style="margin-top:1em"}
 The peer-reviewed existence proof: from implementation to specification — and the analysis
 where I worked it out is my **second talk.**
 :::
@@ -226,59 +268,6 @@ where I worked it out is my **second talk.**
 ::: notes
 ~1 min. The pivot's payoff: peer-reviewed evidence the role-shift is already real. Numbers are
 the existence proof for the *program*; science detail punted to Talk 2. The 120k figure lands.
-:::
-
-
-## I'm in takeoff too — and I read almost none of the code {#personal-takeoff}
-
-::: {style="margin-top:0.6em;font-size:1.05em"}
-The same curve runs through my own week. Since the start of June, across **`sp_validation`**,
-**`ShapePipe`**, and **`cmbx`**, agents under my direction have committed
-:::
-
-::: {style="margin-top:0.6em;text-align:center;font-size:2.4em;color:#BC4538;font-weight:600"}
-~XX,000 lines
-<!-- CAIL TO FINALISE — do not fabricate. OBSERVED 2026-06-06 from the ACTIVE clones (worker
-     SSH'd to candide/cineca and ran git log --all --since=2026-06-01 --numstat). The number is
-     METHODOLOGY-DEPENDENT by ~10×, so it's your call which framing is honest:
-
-     ACTIVE clones are on CANDIDE under /n17data/cdaley/unions/:
-       sp_validation = /n17data/cdaley/unions/pure_eb/code/sp_validation
-       shapepipe     = /n17data/cdaley/unions/shapepipe
-     (cineca cdaley00/{cmbx,sp_validation} clones are STALE — 0 commits since Jun 1.
-      No active cmbx clone with June commits was found on candide or cineca.)
-
-     ADDED LINES since 2026-06-01 (git log --all --numstat):
-                       all-authors    author=Daley (your agents commit as cail.daley@cea.fr)
-       sp_validation     45,797          2,945
-       shapepipe          1,796          1,678
-       cmbx                 (no June activity located)
-       ------------------------------------------------
-       TOTAL             ~47,600         ~4,600
-
-     The all-authors total is inflated by collaborators (Sacha Guerrini) AND by notebook/
-     generated-file churn that --all/--numstat counts as "lines". The author-filtered ~4,600 is
-     the defensible "under my direction" figure, but undersells the agentic-throughput story you
-     want this slide to tell. Recommend: either present ~4,600 honestly as YOUR commits, OR pick
-     a cleaner metric (e.g. net diff on the merged branch, or lines in agent-authored commits
-     excluding generated/data files) — your call, and verify before the practice jury. -->
-
-:::
-
-::: {style="margin-top:0.6em"}
-I read almost none of it. My time goes to **specifying** what the code must do and **designing
-the tests** that prove it did — the throughput is the agents'; the **judgment is mine.**
-:::
-
-::: {style="margin-top:0.5em;font-style:italic"}
-This only works if the verification keeps pace. That apparatus is the program.
-:::
-
-::: notes
-~1 min. The human mirror of the METR slide — I am on the same exponential. The striking move:
-a big code number, then "I read almost none of it." The point is not productivity bragging; it
-is that the work has moved to specification and verification, which is exactly the design
-problem. Hands directly to the program and the benchmarks. NEEDS the real line count (cluster).
 :::
 
 
@@ -309,7 +298,7 @@ problem. Hands directly to the program and the benchmarks. NEEDS the real line c
 :::
 ::::::::::::::
 
-::: {style="margin-top:1em;font-style:italic"}
+::: {style="margin-top:1em"}
 Two axes, milestones defined by **scientific deliverables** — tomographic shear, the
 multi-probe gold standard, the first SPT×Euclid cross-correlation.
 :::
@@ -323,25 +312,22 @@ breadth tractable for a small team?
 
 ## Agentic throughput makes that breadth tractable for a small team {#program-methods}
 
-::: {style="margin-top:0.5em"}
-Both axes are ambitious for a team UNIONS' size — its core analysis group is an **order of
-magnitude smaller** than DES or KiDS.
-:::
-
 ::: {style="margin-top:0.6em"}
-Agents make the breadth possible: **systematic exploration of analysis choices** — catalog
-versions, scale cuts, estimator bases — that would otherwise be prohibitively labour-intensive
-at this scale.
+UNIONS' core analysis group is an **order of magnitude smaller** than DES or KiDS.
 :::
 
-::: {style="margin-top:0.6em"}
-The careful, validated pipelines built for the first release are the **foundation**; agents
-extend their reach rather than replace their rigour.
+::: {style="margin-top:0.9em"}
+Agents make the breadth possible — **systematic exploration of catalog versions, scale cuts, and
+estimator bases**, prohibitive by hand at this scale.
 :::
 
-::: {style="margin-top:0.8em;font-style:italic"}
-More exploration, more validation, a complete decision record — **a research system that
-scales its own checking.**
+::: {style="margin-top:0.9em"}
+They extend the reach of pipelines already careful and validated.
+:::
+
+::: {style="margin-top:1.0em"}
+More exploration, more validation, a complete decision record — **a system that scales its own
+checking.**
 :::
 
 ::: notes
@@ -351,67 +337,64 @@ the thesis callback; hands to the benchmarks.
 :::
 
 
-## I develop the open ecosystem that makes agentic science verifiable {#lightcone}
+## I build open tools that keep an AI agent's science auditable {#lightcone}
 
-::: {style="margin-top:0.4em"}
-If science is becoming a design problem, **this is the design** — the apparatus that lets the
-system check itself. I develop it within **Lightcone Research**, a joint **CNRS–Berkeley**
-open-source project: the open ecosystem for **reproducible, composable, and verifiable** science
-in the age of agentic AI.
+::: {style="margin-top:0.55em;text-align:center"}
+![](images/lightcone_logo.png){.lightcone-logo}
+:::
+
+::: {style="margin-top:0.55em"}
+**Lightcone Research** — a joint **CNRS–Berkeley** open-source initiative building the tooling for
+**reproducible, composable, and verifiable** science in the age of agentic AI.
 :::
 
 ::: {style="margin-top:0.6em"}
-My contributions — the layer that makes an agent's work auditable:
+Within it, I develop the **agentic layer** — how agents are directed, and how their work is recorded:
 :::
 
 :::::::::::::: {.columns}
-::: {.column style="width:33%"}
+::: {.column style="width:50%"}
 **`felt`**
 
-A traversable decision-and-progress graph — every analysis choice recorded and reviewable
+A traversable record of every analysis choice, alternative, and result — an agent's work made auditable.
 :::
-::: {.column style="width:33%"}
-**ASTRA**
+::: {.column style="width:50%"}
+**Skills**
 
-An open schema that brings the decisions, alternatives, and evidence behind a result into the
-record, beside the code and data
-:::
-::: {.column style="width:33%"}
-**Vellum**
-
-A viewer that renders an analysis as a browsable provenance graph — the human audits the agent
+Reusable, shareable methods that direct agents through a rigorous analysis the same way each time.
 :::
 ::::::::::::::
 
-::: {style="margin-top:0.7em;font-style:italic"}
-The risk it answers: agents optimize for plausibility over correctness. Lightcone is the
-infrastructure AI co-scientists are missing.
+::: {style="margin-top:0.7em"}
+The risk it answers: agents optimize for plausibility over correctness — the open infrastructure
+AI co-scientists are missing.
 :::
 
 ::: notes
-~1.5 min — the full Lightcone slide Cail asked for. Voice: scientist-not-builder — I *develop /
-contribute to* Lightcone as a scientist, never "founded." The closing line is their own public
-framing ("the infrastructure AI co-scientists are missing") — lands in the room without
-reaching. Do NOT mention the funding. felt/ASTRA/Vellum are the verification layer that emerged
-from doing the science — the wake, not the destination.
+~1.5 min. Voice: scientist-not-builder — I develop / contribute to Lightcone Research, never
+"founded," and never mention funding. My contribution is the AGENTIC LAYER — felt (the
+provenance/decision record) and Skills (the reusable methods that direct agents). Do NOT mention
+Vellum, and do NOT claim ASTRA (not mine). felt + Skills are how an agent is directed and how its
+work is recorded, which is what keeps AI-run analysis auditable. The closing line is a public
+framing that lands without reaching.
 :::
 
 
-## Building agentic science benchmarks {#benchmarks}
+## Benchmarks test whether the agents are actually right {#benchmarks}
 
 ::: {style="margin-top:0.5em"}
-Provenance makes an analysis *auditable*; **benchmarks** ask whether the agents are actually
-**right**. Real analysis tasks — messy, with multiple defensible solutions — that test whether
-an agent reaches a sound result *and* leaves a defensible record.
+Provenance makes the work auditable. The benchmark itself is **real analysis tasks** — messy,
+with multiple defensible solutions — scored on whether an agent reaches a sound result and
+leaves a defensible record.
 :::
 
 ::: {style="margin-top:0.7em"}
 - A **Year 2 deliverable**, a growing suite with **DATAIA** and **PostGenAI@Paris**
-- With **Pleias**, I compare **sovereign French models against frontier systems** on these
-  tasks — a live test of where French-sovereign AI can already do frontier science
+- With **Pleias**, I compare **sovereign French models against frontier systems** — a live test
+  of where French-sovereign AI can already do frontier science
 :::
 
-::: {style="margin-top:0.7em;font-style:italic"}
+::: {style="margin-top:0.7em"}
 The field has no measure of agentic scientific competence yet. This builds one.
 :::
 
@@ -438,7 +421,7 @@ Paris-Saclay ecosystem.
 
 **The mentorship question**
 
-How do you develop verification instincts in students who have never analysed data *without* AI? Already probing it — the kinematic-lensing supervision, and an M2 internship this spring.
+How do you develop verification instincts in students who have never analysed data without AI? Already probing it — the kinematic-lensing supervision, and an M2 internship this spring.
 
 :::
 ::: {.column style="width:50%"}
@@ -473,7 +456,7 @@ ties back to the kinematic mentorship, so it reads as practice, not aspiration.
 
 :::
 
-::: {style="margin-top:1.2em;font-style:italic;text-align:center"}
+::: {style="margin-top:1.2em;text-align:center"}
 As science becomes a design problem, the question I find most exciting is how we design research
 that checks itself.
 :::
