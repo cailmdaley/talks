@@ -37,19 +37,23 @@ include-in-header: assets/mathjax.html
 
 ## UNIONS is the first deep weak-lensing map of the northern sky {#unions-opportunity}
 
-::: {style="margin-top:0.8em;font-size:1.05em"}
+:::: {style="display:flex;flex-direction:column;justify-content:center;gap:1.1em;height:80vh;font-size:1.12em"}
+
+::: {}
 MegaCam / CFHT — **~3,500 deg²** of deep $r$-band imaging at **0.7″** median seeing, yielding
 **~61 million** source galaxies ($n_\mathrm{eff} \approx 5 \, \mathrm{arcmin}^{-2}$).
 :::
 
-::: {style="margin-top:0.7em;font-size:1.05em"}
+::: {}
 That is the statistical power of a **next-generation survey's first year** — and the first such
 dataset anywhere in the **northern sky**.
 :::
 
-::: {style="margin-top:0.7em;font-size:1.05em"}
+::: {}
 Built by a team an **order of magnitude smaller** than DES or KiDS.
 :::
+
+::::
 
 ::: notes
 ~1 min. The opener — a new deep, wide survey, in the north, with the statistical power of a
