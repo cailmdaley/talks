@@ -7,8 +7,8 @@ draft: true
 author:
     name: Cail Daley
     email: cailmdaley@gmail.com
-date: June 2026
-date-format: long
+date: 2026-06-29
+date-format: "MMMM YYYY"
 
 output-file: index.html
 
