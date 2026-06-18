@@ -1,0 +1,264 @@
+---
+title: "Euclid × SPT-3G CMB lensing"
+subtitle: "The first Euclid (TR1) × SPT-3G κ cross-correlation"
+occasion: SPT Summer Collaboration Meeting
+description: First Euclid TR1 × SPT-3G CMB-lensing cross-correlation — a robust detection at a sub-unity amplitude
+draft: true
+author:
+    name: Cail Daley
+    email: cailmdaley@gmail.com
+date: June 2026
+date-format: long
+
+output-file: index.html
+
+format:
+    revealjs:
+        width:  1920
+        height: 1080
+        theme: [default, custom.scss]
+        slide-number: true
+        fig-align: center
+        include-after-body: assets/no_footer_on_titleslide.html
+        footer: Cail Daley | Euclid × SPT-3G CMB lensing | SPT Summer Collaboration | June 2026
+        history: false
+        hash : true
+        pdf-separate-fragments : true
+        pdf-max-pages-per-slide	 : 1
+        template-partials:
+            - title-slide.html
+        center-title-slide: false
+image: images/spt26_footprint.png
+
+html-math-method:
+    method: mathjax
+    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## The bottom line, up front {.center}
+
+We measure the **first Euclid (TR1) × SPT-3G CMB-lensing cross-correlation** —
+galaxy clustering and weak-lensing shear against the SPT-3G winter GMV $\kappa$.
+
+::: {.fragment}
+The cross is **detected at high significance** (S/N up to ~12 per tomographic bin).
+:::
+
+::: {.fragment}
+The single-amplitude fit sits **below** an untuned Planck-18 prediction:
+$$\hat A = 0.63 \pm 0.05 \quad (\text{PTE } 0.73).$$
+:::
+
+::: {.fragment}
+That sub-unity amplitude is **ℓ-flat and robust** — and it is the honest **open
+question** I want to put to the collaboration, not a number to explain away.
+:::
+
+## Why cross-correlate CMB lensing with Euclid?
+
+:::::::::::::: {.columns}
+::: {.column width="55%"}
+- CMB lensing $\kappa$ is a **clean, high-redshift mass map** — no galaxy bias, a
+  well-understood kernel peaking at $z \sim 2$.
+- Crossing $\kappa$ with Euclid **galaxy density** and **shear** pins the
+  **growth of structure** and the **galaxy–matter connection** across $0 < z < 2$.
+- The cross is a **self-calibration handle**: it is sensitive to shear
+  multiplicative bias $m$ and the source $n(z)$ largely independently of the
+  Euclid auto-spectra.
+- SPT-3G + Euclid open a **new, deep southern overlap** at high lensing S/N.
+:::
+::: {.column width="45%"}
+- The cross-spectrum is also **immune to additive shear systematics and to galaxy
+  shot noise** — they don't correlate with the CMB.
+- For SPT: a Euclid cross is an **external, independent check** on the winter-field
+  lensing reconstruction.
+:::
+::::::::::::::
+
+## Euclid TR1: the new data going into the cross
+
+:::::::::::::: {.columns}
+::: {.column width="55%"}
+- **TR1** ≈ the first ~**30% of the DR1 area**, used to validate methods ahead of
+  DR1.
+- Two tracers enter the cross:
+  - **Galaxy clustering** $\delta_g$ — photometric sample, **6 tomographic bins**.
+  - **Weak-lensing shear** $\gamma$ — **6 tomographic bins**.
+- Spectra are measured with **NaMaster** pseudo-$C_\ell$ bandpowers on the joint
+  Euclid × SPT mask.
+:::
+::: {.column width="45%"}
+- The data vector is a **5×2pt-style** set of auto- and cross-spectra; the **spine
+  for this talk is the two CMB-lensing crosses**, $\delta_g\times\kappa$ and
+  $\gamma\times\kappa$.
+- Amplitudes are quoted against an **untuned Planck-18** fiducial — no tuning of
+  $n(z)$, $m$, or IA. So $\hat A = 1$ would mean "Planck-18 as-is."
+:::
+::::::::::::::
+
+## The patch: SPT-3G winter overlaps Euclid TR1 in the south
+
+![](images/spt26_footprint.png){width="88%"}
+
+[The SPT-3G **winter GMV** field (left) and ACT DR6 (right), each overlaid with the
+Euclid clustering footprint; **red = the overlap** — **690.8 deg²** of SPT-3G winter ×
+Euclid TR1 — that this analysis lives on.]{.credit style="font-size:0.6em"}
+
+## Both CMB-lensing crosses are detected and track Planck-18
+
+![](images/spt26_cross_spectra.png){width="92%"}
+
+[$\gamma\times\kappa$ (top) and $\delta_g\times\kappa$ (bottom), six tomographic bins
+each. **Per-bin S/N reaches ~12** at high redshift (≈6–12 across bins); per-bin
+$\hat A$ sits **below unity** across the board.]{.credit style="font-size:0.6em"}
+
+## A robust detection — at a sub-unity, ℓ-flat amplitude
+
+:::::::::::::: {.columns}
+::: {.column width="58%"}
+![](images/spt26_amplitude_by_ell.png){width="100%"}
+:::
+::: {.column width="42%"}
+- Headline: $\hat A = 0.63 \pm 0.05$, **PTE 0.73** (12 crosses, full Gaussian cov).
+- **ℓ-flat at ~0.65** across $\ell \in [150, 3000]$ — *not* a high-ℓ or low-ℓ
+  feature.
+- $\ell < 150$ is **covariance-unstable** (cond $8.4\times10^5$) — consistent with
+  *both* 0.63 and unity; we don't read a story into it.
+- A **full Gaussian covariance only deepens** the deficit vs Knox-diagonal
+  (orange): the misfit was Knox **over-tightening**, not the model fighting the
+  data (cross-only PTE $1.9\times10^{-6}\to0.73$).
+:::
+::::::::::::::
+
+## So what is an ℓ-independent ~0.65 deficit consistent with? {.center}
+
+::: {.fragment}
+**Favoured** (flat in ℓ, multiplicative):
+a **normalization** offset — source $n(z)$ mean-$z$/tail, shear multiplicative bias
+$m$, intrinsic alignments — **or a genuinely low amplitude**.
+:::
+
+::: {.fragment}
+**Disfavoured** by the *wrong* ℓ-signature (these are not flat):
+baryonic feedback, nonlinear / scale-dependent bias, a high-ℓ systematic.
+:::
+
+::: {.fragment}
+This is where I'd value the collaboration's read — *the deficit is the result, and
+its interpretation is open.*
+:::
+
+## The crosses are robust to the SPT lensing estimator
+
+![](images/spt26_estimator_comparison.png){width="80%"}
+
+[Swapping the GMV baseline for the **bias + profile-hardened** reconstruction moves
+every bandpower by **<1σ** (RMS 0.28σ), at no S/N cost. This **bounds the tSZ/CIB
+hardening correction at ≲0.9σ** — estimator-robust, but *not yet* a direct
+foreground-bias measurement (the Websky/Agora-with-HOD recovery is reserved).]{.credit style="font-size:0.55em"}
+
+## The one honest internal tension: a clustering–shear split
+
+:::::::::::::: {.columns}
+::: {.column width="55%"}
+- The combined $\hat A$ is **ℓ-flat** — but that is an aggregate over a **~1.6σ
+  split between the two cross families**:
+  - $\delta_g \times \kappa$ (clustering): $\hat A = 0.72 \pm 0.06$
+  - $\gamma \times \kappa$ (shear): $\hat A = 0.59 \pm 0.06$
+- **ℓ-flat and probe-consistent are different axes.** A single "ℓ-independent
+  normalization" must not silently absorb this offset.
+:::
+::: {.column width="45%"}
+- The split is visible per-bin in the detection figure (clustering crosses sit
+  higher than shear crosses).
+- If real, it points at a **tracer-specific** normalization ($m$ or shear $n(z)$
+  vs galaxy $n(z)$/bias) rather than a global low amplitude.
+:::
+::::::::::::::
+
+## Two CMB-lensing surveys, one consistent cross
+
+![](images/spt26_cross_survey.png){width="92%"}
+
+[The same Euclid tracers crossed with **SPT-3G GMV** (red) and **ACT DR6** (teal)
+give **consistent** cross-spectra bin-by-bin — the detection is not specific to one
+reconstruction.]{.credit style="font-size:0.6em"}
+
+## Galaxy clustering is consistent — but doesn't yet break A–b
+
+:::::::::::::: {.columns}
+::: {.column width="58%"}
+![](images/spt26_dd_joint_fit.png){width="100%"}
+:::
+::: {.column width="42%"}
+- Adding $\delta_g\delta_g$ to the joint fit **tightens galaxy bias ~2.5×** over
+  $\delta_g\times\kappa$ alone.
+- The 3-probe fit is **consistent** with a single sub-unity amplitude:
+  $\hat A = 0.55 \pm 0.07$, $\chi^2 = 9.4/6$, **PTE 0.15**.
+- But it **does not yet break the amplitude–bias degeneracy**, and the per-bin
+  panel flags real structure: **bin 4 at −2.4σ**, a coherent **+3.2σ tilt at
+  ℓ≈130–390**, and the ℓ≈84.5 SPT spike.
+:::
+::::::::::::::
+
+## GLASS mocks: the clustering high-ℓ rise is gridding aliasing
+
+:::::::::::::: {.columns}
+::: {.column width="60%"}
+![](images/spt26_glass_recovery.png){width="100%"}
+:::
+::: {.column width="40%"}
+- Known-truth **GLASS** mocks (south, 100 realizations): recovery tracks input
+  through the **bulk** of the range.
+- The **rise above input at high ℓ** is **NGP gridding aliasing** — proven by a
+  regrid fixed-ℓ test (excess created at the analysis grid, vanishes at nside 2048),
+  consistent with Wolz 2024 App. B.
+- Sets an **empirical scale cut $\ell \lesssim 865$** (≤5% aliasing). Mechanism is
+  nailed; there is **no closed-form factor** — the cut is set empirically.
+:::
+::::::::::::::
+
+## What is *not* yet under control — stated plainly {.center}
+
+::: {.fragment}
+**Shear auto-spectrum ($\gamma\gamma$):** the on-disk product is **broken** —
+negative $C_\ell$, $E\approx B$, a spin-2×spin-2 estimator pathology at low $f_{\rm
+sky}$. **No $\hat A_{\gamma\gamma}$ yet**; the shear-cal cross-check is pending the fix.
+:::
+
+::: {.fragment}
+**Systematics:** quantified for **galactic extinction only** (~1.5σ aggregate, and
+stale). Stellar density, exposures, zodiacal, N/S asymmetry are **un-redone** on this
+catalog. **One number does not close systematics.**
+:::
+
+::: {.fragment}
+**Blinding:** cross-correlations are **out of SGS blinding scope by construction**;
+we roll a **standalone loose self-blind** (a single secret amplitude factor) on the
+talk timescale.
+:::
+
+## Summary & outlook {.center}
+
+- **First Euclid (TR1) × SPT-3G CMB-lensing cross-correlation** — detected at high
+  S/N across 12 tomographic crosses.
+- Single-amplitude fit: $\hat A = 0.63 \pm 0.05$ (PTE 0.73), **ℓ-flat at ~0.65**,
+  **covariance- and estimator-robust**.
+- The **sub-unity, ℓ-flat amplitude is the open question**: normalization
+  ($n(z)$ / $m$ / IA) or a genuinely low amplitude — *not* baryons or high-ℓ
+  systematics.
+
+::: {.fragment}
+**Next:** fix $\gamma\gamma$ → $\hat A_{\gamma\gamma}$ as a shear-cal discriminant ·
+joint per-bin $\{A, b_i\}$ fit · mock-based covariance · close systematics · DR1.
+:::
+
+## Thanks {.center}
+
+Euclid CMBX SWG — **Margherita Lembo, Louis Legrand, Giulio Fabbian** and the
+3×2pt+κ team — and the **SPT-3G lensing** effort whose winter GMV $\kappa$ maps make
+this cross possible.
+
+[Built on Euclid TR1 (RR2) × SPT-3G winter GMV. Amplitudes vs untuned Planck-18; full
+data-fiducial Gaussian covariance.]{.credit style="font-size:0.6em"}
