@@ -129,22 +129,22 @@ comes after we agree the pipeline is trustworthy and we unblind.
 
 ## Data vectors: the three cross-correlations
 
-![](images/spt26_cross_spectra.png){width="90%"}
+![](images/spt26_cross_spectra.png){width="86%"}
 
-[**Three crosses**, six tomographic bins each, NaMaster pseudo-$C_\ell$ bandpowers:
-$\delta_g\times\kappa$ (clustering × CMB-$\kappa$, bottom) and $\gamma\times\kappa$
-(shear × CMB-$\kappa$, top) shown; **$\delta_g\times\gamma$ (galaxy–galaxy lensing) — 3-cross plot TBD**.]{.credit style="font-size:0.6em"}
+[**All three crosses**, same NaMaster pseudo-$C_\ell$ bandpowers, $\ell C_\ell$:
+$\gamma\times\kappa$ (shear × CMB-$\kappa$, top) and $\delta_g\times\kappa$ (clustering × CMB-$\kappa$, middle),
+six tomographic bins each; $\delta_g\times\gamma$ (galaxy–galaxy lensing, bottom) shown as each clustering
+bin × the deepest shear bin (the full 6×6 source×lens matrix is the backup). **No amplitude shown —
+blinding-safe.**]{.credit style="font-size:0.6em"}
 
 ::: {.notes}
 This is the data-vector slide — what we measure, not how it fits.
 
-The spine for SPT is the two CMB-lensing crosses on the figure: shear × kappa on top, galaxy clustering × kappa on the bottom, six tomographic bins each. All measured the same way — NaMaster pseudo-Cℓ bandpowers on the joint Euclid × SPT mask.
+The spine for SPT is the two CMB-lensing crosses, top and middle: shear × kappa and galaxy clustering × kappa, six tomographic bins each, NaMaster pseudo-Cℓ bandpowers on the joint Euclid × SPT mask.
 
-The third cross is galaxy–galaxy lensing, delta_g × gamma — Euclid internal, no CMB-lensing. That closes the set of three crosses but it is NOT in this figure yet; the three-cross version is a new plot I still owe. Say that out loud so no one reads two panels as the whole story.
+The bottom row is the third cross — galaxy–galaxy lensing, delta_g × gamma, Euclid internal, no CMB lensing. One wrinkle to flag honestly: GGL isn't a single-field cross like the kappa-crosses, it's a six-by-six source(shear)-by-lens(clustering) matrix. The broad Euclid tomographic n(z) overlap means there's signal in essentially every pair, but the cleanest, highest-S/N configuration is "source behind the lens." So on the slide I show the deepest shear bin — bin six, which sits behind all the clustering bins — crossed with each clustering lens bin: one clean spectrum per panel, parallel to the rows above. The full six-by-six matrix is a backup figure (spt26_ggl_matrix.png) if anyone wants it — and you can see the source-behind triangle is where the signal lives.
 
-I'm deliberately not quoting amplitudes or per-bin S/N here — those annotations on the panels belong to the detection arc, which is blinded and out of scope for this status report. The message of this slide is just: three crosses, one consistent estimator, tomographic binning. The figure carries the weight.
-
-TBD for Cail: regenerate spt26_cross_spectra.png as a true 3-cross panel including delta_g × gamma, or add a small companion panel for the galaxy–galaxy-lensing cross.
+I'm deliberately not quoting amplitudes or per-bin S/N here — those belong to the detection arc, which is blinded and out of scope for this status report, and I've stripped them from the figure so nothing leaks. The message of this slide is just: three crosses, one consistent estimator, consistent tomographic binning, all tracking the Planck-18 shape. The figure carries the weight.
 :::
 
 ## Robust to the SPT lensing estimator
