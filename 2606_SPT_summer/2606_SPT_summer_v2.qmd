@@ -1,0 +1,344 @@
+---
+title: "Euclid × SPT-3G CMB lensing"
+subtitle: "The first Euclid (TR1) × SPT-3G κ cross-correlation"
+occasion: SPT Summer Collaboration Meeting
+description: First Euclid TR1 × SPT-3G CMB-lensing cross-correlation — a robust detection at a sub-unity amplitude
+draft: true
+author:
+    name: Cail Daley
+    email: cailmdaley@gmail.com
+date: 2026-06-29
+date-format: "MMMM YYYY"
+
+output-file: index_v2.html
+
+format:
+    revealjs:
+        width:  1920
+        height: 1080
+        theme: [default, custom.scss]
+        slide-number: true
+        fig-align: center
+        include-after-body: assets/no_footer_on_titleslide.html
+        footer: Cail Daley | Euclid × SPT-3G CMB lensing | SPT Summer Collaboration | June 2026
+        history: false
+        hash : true
+        pdf-separate-fragments : true
+        pdf-max-pages-per-slide	 : 1
+        template-partials:
+            - title-slide.html
+        center-title-slide: false
+image: images/spt26_footprint.png
+
+html-math-method:
+    method: mathjax
+    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## Status report: Euclid × CMB-lensing cross-correlations {.center}
+
+A status report on the **Euclid MoU CMB-lensing × cross-correlation project** —
+led by **Cail Daley & Margherita Lembo**.
+
+::: {.columns}
+::: {.column width="55%"}
+**Today:**
+footprints & fields · blinding · data vectors ·
+estimator consistency · SPT vs ACT · likelihood & bias plans ·
+systematics · simulations
+:::
+::: {.column width="45%"}
+**Timeline:**
+
+- Euclid cosmology products now scheduled **June 2027**
+- DR1 freeze slipped from **Oct 2026** [CONFIRM]
+:::
+:::
+
+::: {.notes}
+This is a status report, not a results talk — the detection and amplitude work is
+blinded and in progress, so I'm reporting where the Euclid × CMB-lensing
+cross-correlation project stands rather than headlining a number.
+
+It's the Euclid MoU project, jointly led by me and Margherita Lembo, with Louis
+Legrand and the rest of the 3×2pt+κ team.
+
+Quick roadmap of where I'll go: the footprints and how we define the fields; our
+blinding strategy; the data vectors — all three crosses; estimator consistency;
+SPT versus ACT; then the forward-looking pieces — likelihood and bias plans,
+systematics, and simulations.
+
+On timing — and this matters for how we plan the MoU paper relative to Euclid: the
+Euclid cosmology products are now scheduled for June 2027. That's the public
+release / publication date set at the May consortium meeting; DR1 products are
+final March 2027. This has slipped — the original DR1 freeze deadline was the
+Oct-2026 red line, already missed in projection, mostly from shear-calibration
+slippage. [CONFIRM the exact prior date before presenting — dictation was unclear,
+and I want to be precise that the slip is freeze-Oct-2026 → publication-June-2027,
+not muddle the freeze and publication dates.] The upshot the SPT side cares about:
+we don't have to wait for June 2027 to publish — a paper can move on its own
+schedule as long as what we publish matches what's frozen in the SAS.
+:::
+
+## Euclid footprints and overlaps
+
+```{=html}
+<div class="r-stack">
+  <img src="images/spt26_footprint_1_euclid.png" style="width:84%">
+  <img src="images/spt26_footprint_2_spt.png" class="fragment" style="width:84%">
+  <img src="images/spt26_footprint_3_act.png" class="fragment" style="width:84%">
+</div>
+```
+
+## Blinding: a standalone loose self-blind
+
+![](images/spt26_selfblind_shift.png){width="74%"}
+
+[A single secret amplitude factor shifts every spectrum by $\Delta C_\ell$ (blue);
+**unblinded** (pink) vs **blinded** (green). Big enough to hide the answer
+(**~23σ** across the data-vector diagonal), small enough to stay realistic
+(**$S_8$ moves $\lesssim 1.5\sigma$**).]{.credit style="font-size:0.55em"}
+
+::: {.notes}
+Quick word on blinding, because it shapes what I can and can't show you today.
+
+Cross-correlations sit **outside the Euclid SGS blinding scope by
+construction** — the official blinding acts on the catalog-level shear and
+clustering, and the κ-crosses aren't covered. So rather than ride someone
+else's scheme, we roll our **own** standalone, loose self-blind on the talk
+timescale. It's deliberately simple: a **single secret amplitude factor** drawn
+once, applied as a $\Delta C_\ell$ to the whole data vector — the blue line in
+each panel.
+
+The figure is just the honesty check that the blind does its job. Pink is the
+true data, green is what I actually work with. Two things have to be true at
+once. It has to be **big enough to hide the answer** — and it is: across the
+data-vector diagonal the shift is about **23σ**, far more than enough that I
+can't eyeball the amplitude. And it has to be **small enough to stay realistic**
+— a blind that throws the data somewhere absurd lets you unblind by inspection.
+Here it moves $S_8$ by only **a sigma to a sigma and a half**, so the blinded
+vector still looks like a plausible universe.
+
+The practical consequence for this talk: I've **dropped the amplitude and
+detection-significance arc** entirely. Everything you'll see — the data vectors,
+the estimator and survey consistency checks, the mocks — is built to be **read
+under the blind**: shapes, relative consistency, error-bar sizes. The number
+comes after we agree the pipeline is trustworthy and we unblind.
+:::
+
+## Data vectors: the three cross-correlations
+
+![](images/spt26_cross_spectra.png){width="90%"}
+
+[**Three crosses**, six tomographic bins each, NaMaster pseudo-$C_\ell$ bandpowers:
+$\delta_g\times\kappa$ (clustering × CMB-$\kappa$, bottom) and $\gamma\times\kappa$
+(shear × CMB-$\kappa$, top) shown; **$\delta_g\times\gamma$ (galaxy–galaxy lensing) — 3-cross plot TBD**.]{.credit style="font-size:0.6em"}
+
+::: {.notes}
+This is the data-vector slide — what we measure, not how it fits.
+
+The spine for SPT is the two CMB-lensing crosses on the figure: shear × kappa on top, galaxy clustering × kappa on the bottom, six tomographic bins each. All measured the same way — NaMaster pseudo-Cℓ bandpowers on the joint Euclid × SPT mask.
+
+The third cross is galaxy–galaxy lensing, delta_g × gamma — Euclid internal, no CMB-lensing. That closes the set of three crosses but it is NOT in this figure yet; the three-cross version is a new plot I still owe. Say that out loud so no one reads two panels as the whole story.
+
+I'm deliberately not quoting amplitudes or per-bin S/N here — those annotations on the panels belong to the detection arc, which is blinded and out of scope for this status report. The message of this slide is just: three crosses, one consistent estimator, tomographic binning. The figure carries the weight.
+
+TBD for Cail: regenerate spt26_cross_spectra.png as a true 3-cross panel including delta_g × gamma, or add a small companion panel for the galaxy–galaxy-lensing cross.
+:::
+
+## Robust to the SPT lensing estimator
+
+![](images/spt26_estimator_comparison.png){width="82%"}
+
+[Swapping the **GMV baseline** for the **bias + profile-hardened** reconstruction
+moves every bandpower by **<1σ** (pull RMS 0.28σ), at no S/N cost — estimator-robust.
+A foreground term *common* to both estimators cancels in the difference and is **not**
+tested here; that is the reserved Websky/Agora recovery, not yet run.]{.credit style="font-size:0.55em"}
+
+::: {.notes}
+This is a status check on whether the cross depends on which SPT lensing estimator we
+feed it. The figure is gamma-kappa across the six tomographic bins; the same picture
+holds for delta_g-kappa. Each panel overplots the GMV baseline against the bias- and
+profile-hardened reconstruction, with a pull-residual strip underneath.
+
+The message is one line: swapping estimators moves every bandpower by less than one
+sigma — pull RMS 0.28 sigma in gamma-kappa, 0.29 in delta_g-kappa, all 120 bandpowers
+inside 1 sigma, and the detection S/N doesn't drop. So the measurement is
+estimator-robust.
+
+Be careful here, and I want to be honest with this audience because you know lensing
+biases cold: this is NOT a foreground-clean certificate. A tSZ or CIB contribution that
+is common to GMV and the hardened estimator cancels in the difference — the hardening
+correction being small bounds the *part that differs between estimators*, not the total
+foreground bias. The direct test is a Websky or Agora-with-HOD recovery, which is
+reserved and not yet run. So: estimator-robust, hardening correction bounded below one
+sigma — and that's the claim, no more.
+:::
+
+## Two κ surveys on the same Euclid bins: SPT-3G and ACT DR6
+
+![](images/spt26_cross_survey.png){width="92%"}
+
+[Euclid RR2 × CMB-κ, six tomographic bins each: **shear×κ** (top), **clustering×κ** (bottom),
+crossed against **SPT-3G GMV** (red) and **ACT DR6** (teal) over the fiducial theory. Two
+independent κ reconstructions on the *same* southern bins.]{.credit style="font-size:0.55em"}
+
+::: {.notes}
+This is the cross-survey check. Same Euclid tracers, same six tomographic bins, crossed
+against two independent CMB-lensing reconstructions — SPT-3G GMV in red, ACT DR6 in teal —
+both laid over the fiducial theory curve. Top row is shear×κ, bottom row is clustering×κ.
+
+The message is just: we have two κ surveys over this southern overlap, and we can put both
+through the identical pipeline on the identical bins. I'm deliberately *not* making an
+amplitude or consistency claim here — that arc is blinded and in progress. The transferable
+point is that the cross is reproducible across reconstructions, and that gives us a lever:
+where SPT constrains better we lean on SPT, where ACT does we lean on ACT.
+
+[SECOND ANGLE — NEW PLOT to build before the talk.] What this slide is *missing* is the
+direct "who constrains where" view. The new plot should be a single panel (or a thin
+2-row strip, shear×κ and clustering×κ) with the fiducial theory curve drawn once, and then,
+for each of our bandpower bins, the **size of the error bar** from SPT-3G next to the size
+from ACT DR6 — paired bars or paired whiskers at each ℓ-bin center, theory as the common
+reference. The reader should see at a glance which survey has the smaller error bar in which
+ℓ-range / which tomographic bin — i.e. which reconstruction is more constraining where. Plot
+ℓ·Cℓ on a log-ℓ axis per house convention so the dynamic range is legible. Pull the per-bin
+uncertainties straight from the two on-disk data vectors (SPT GMV and ACT DR6) that already
+feed the cross_survey figure — no new covariance work, just surfacing the σ that's already
+computed. Keep numbers off the slide; if I want to state "ACT is tighter at low ℓ, SPT at
+high ℓ" I'll say it aloud once the plot confirms the crossover.
+:::
+
+## Likelihood & bias parameters — the plan
+
+:::::::::::::: {.columns}
+::: {.column width="52%"}
+![](images/spt26_dd_joint_fit.png){width="100%"}
+
+[Per-bin galaxy bias $b_i$ tightens when $\delta_g\delta_g$ joins $\delta_g\times\kappa$ — but the joint fit does **not** yet break the amplitude–bias degeneracy.]{.credit style="font-size:0.5em"}
+:::
+::: {.column width="48%"}
+**Being built**
+
+- A **joint Gaussian likelihood** over the cross data vector — covariance from theory now, mocks next.
+
+**How bias enters**
+
+- Per-bin **$\{A,\, b_i\}$** fit — one nuisance $b_i$ per tomographic bin.
+- Adding **$\delta_g\delta_g$** sharpens each $b_i$ — *bias-breaking power* — yet $A$ and $b$ stay degenerate in the cross alone.
+
+::: {.fragment}
+*Open:* what extra information (shear ratio? $\delta_g\delta_g$ scale range?) actually breaks $A\!-\!b$.
+:::
+:::
+::::::::::::::
+
+::: {.notes}
+This is the most forward-looking slide — I want to be honest that much of the likelihood is still being designed, so read it as a plan, not a result.
+
+What's being built: a joint Gaussian likelihood over the cross data vector. Right now the covariance is theory-based; the simulations slide that follows is partly in service of getting to a mock-based covariance.
+
+How galaxy bias gets handled: we fit one amplitude A together with a per-tomographic-bin galaxy bias b_i — so a vector {A, b_1, ..., b_6}. The figure on the left makes the key structural point. The left panel: when you add the galaxy clustering auto-spectrum delta-g delta-g to the galaxy-lensing cross delta-g times kappa, each per-bin bias b_i tightens by roughly a factor of two and a half. So delta-g delta-g genuinely adds bias-breaking power — it pins the b_i much better.
+
+But — and this is the honest limitation — that does NOT yet break the amplitude-bias degeneracy. In the cross-correlation A and b come in as a product, so even with delta-g delta-g sharpening the b_i, A and b are still degenerate along the same direction. I'm deliberately not putting amplitude numbers on this slide — that arc is blinded and dropped from this talk; the figure is here only to illustrate the bias-breaking point.
+
+So the genuinely open design question, which I'd welcome thoughts on, is what additional information actually breaks A from b. Candidates: the shear-ratio geometry between tomographic bins, or pushing the delta-g delta-g scale range — but this is unsettled.
+
+If asked about the figure's right and bottom panels — those carry amplitude and residual structure from the detection analysis; happy to discuss offline, but they're not the point of this slide.
+:::
+
+## Systematics: quantified for extinction, not yet closed
+
+::: {.r-stack}
+[NEW PLOT — systematics-null summary: $\sqrt{\sum_\ell (X/\sigma)^2}$ in $\sigma$ per
+template × tomographic bin, one panel per cross ($\delta_g\times\kappa$, $\gamma\times\kappa$).
+Extinction row populated; remaining template rows greyed "not yet redone."]{.placeholder style="font-size:0.7em; border:2px dashed #888; padding:2em 3em; display:inline-block;"}
+:::
+
+[Only **galactic extinction** is quantified on this catalog — coherent bias **~1–1.5σ aggregate**,
+**sub-σ per bandpower** (DES/Chang $X = C^{\kappa S}C^{fS}/C^{SS}$). Stellar density, exposures,
+zodiacal, N/S asymmetry: **not yet redone**. One template is not a systematics budget.]{.credit style="font-size:0.6em"}
+
+::: {.notes}
+This is a deliberately honest slide — I want to be clear about what we have and
+haven't done on systematics, because it's the part of the analysis that's least
+advanced.
+
+The one cross-correlation systematic we've actually quantified on this catalog is
+galactic extinction. The metric is the standard DES/Chang contamination estimate:
+project the cross of each tracer with the extinction template, and the cross of
+kappa with extinction, through the extinction auto — that gives the coherent bias
+the template can inject into our signal. Per bandpower it's well sub-sigma, median
+around a tenth of a sigma. The aggregate over ell, added in quadrature, comes out
+around one to one-and-a-half sigma per bin — and it's common-mode, dominated by
+the lowest ell bin around ell forty-four. So extinction is not a showstopper, but
+it's not negligible either: it's at the level we'll have to carry as a correction
+or a nuisance term, not wave away.
+
+The placeholder is what this slide *should* become: a null-test summary — Δχ²
+or this same bias metric in sigma — for every systematic template, across all the
+tomographic bins, for both kappa crosses. Right now only the extinction row would
+be filled in. Everything else — stellar density, exposure depth, zodiacal light,
+PSF, the north-south survey asymmetry — those null tests exist from an earlier
+catalog version but have not been redone on the catalog this analysis runs on, so
+I'm not going to quote stale numbers as if they were current.
+
+The transferable message is just that one line at the bottom: one template
+quantified does not close systematics. This is the most open work-package in the
+analysis, and I'd flag it as such rather than imply we've got systematics under
+control. If anyone asks for the extinction figure specifically, I can show the
+per-bin bar chart — it's real and current, June.
+:::
+
+## Simulations: GLASS mocks recover the input — except the high-ℓ aliasing rise
+
+:::::::::::::: {.columns}
+::: {.column width="62%"}
+![](images/spt26_glass_recovery.png){width="100%"}
+:::
+::: {.column width="38%"}
+- Known-truth **GLASS** δδ mocks, south, 6 tomo bins — recovery tracks input through the bulk of the range.
+- The **high-ℓ rise above input** is **NGP gridding aliasing**, not signal: proven by a regrid test (vanishes at finer nside), consistent with Wolz+ 2024 App. B.
+- Sets an **empirical scale cut, ℓ ≲ 865** (≤5% bias). Mechanism nailed; **no closed-form factor**.
+:::
+::::::::::::::
+
+[Galaxy-clustering recovery vs GLASS input theory, 100 realizations.]{.credit style="font-size:0.55em"}
+
+::: {.notes}
+This is the simulation leg — known-truth GLASS mocks, the same ones Arghavan Souki built to validate the VMPZ decontamination pipeline, run through our shared eDR1data pseudo-Cℓ engine. South footprint, six tomographic bins, 100 realizations. The point of the slide: does the pipeline recover a spectrum we put in?
+
+Through the bulk of the range — out to a few hundred in ℓ — the recovered points sit right on the input theory. The one feature is the rise above the input curve at high ℓ, which you can see turning up in every bin in the last few bandpowers.
+
+The headline is that we've pinned what that rise is. It is NGP gridding aliasing — the mocks are gridded with nearest-grid-point mass assignment, which folds super-Nyquist clustering power back down into the measured bands. And we didn't just infer that, we demonstrated it: regridding the same point catalogs at coarser and finer resolution, the excess collapses as a function of ℓ over the grid Nyquist, and it disagrees at fixed ℓ — at ℓ around 2700 the ratio to theory is 1.75 on the 1024 grid versus about 0.8 on a 2048 grid, hundreds of sigma apart. Measure finer and the excess goes away. That's the signature of an analysis-resolution effect, not intrinsic signal. It's consistent with what Wolz and collaborators saw in their 2024 appendix B.
+
+The practical consequence: it sets an empirical scale cut for the galaxy-clustering autos, around ℓ of 865 for ≤5% bias. I want to be honest that the cut is empirical — the mechanism is nailed, but the simple NGP fold model underpredicts the near-Nyquist magnitude by about a factor of five, so there is no closed-form correction factor we trust. To push to higher ℓ you'd need an aliasing correction — interlacing or higher-order mass assignment — which is a question for the map builders.
+
+If asked about the χ² numbers on the panels: those are dominated by exactly this high-ℓ aliasing, which is why they look terrible — that's the known pathology, and below the scale cut the recovery is clean. The cross-spectra that are the spine of this analysis carry no shot noise and are not where this bites; this is specifically about the clustering auto.
+:::
+
+## Summary & next steps {.center}
+
+**Where we are** — Euclid TR1 × SPT-3G, a status report:
+
+- Maps & fields defined; a standalone self-blind in place.
+- All three cross data vectors measured: $\delta_g\times\gamma$, $\delta_g\times\kappa$, $\gamma\times\kappa$.
+- Estimator- and cross-survey-consistent (SPT-3G GMV vs profile-hardened; SPT vs ACT).
+
+::: {.fragment}
+**Next** — $\gamma\gamma$ shear-auto fix · joint $\{A, b_i\}$ likelihood · mock-based covariance · close systematics · DR1.
+:::
+
+::: {.fragment}
+Thanks — Euclid CMBX SWG: **Margherita Lembo, Louis Legrand, Giulio Fabbian** and the 3×2pt+κ team — and the **SPT-3G lensing** team, whose winter GMV $\kappa$ makes this cross possible.
+:::
+
+::: {.notes}
+Quick wrap. Where we are: the maps and field definitions are built and a self-blind is in place, so the analysis is running on a fixed, blinded footprint. We have all three cross data vectors in hand — galaxy–galaxy lensing, density–kappa, and shear–kappa. And the crosses are consistent two ways: across the SPT lensing estimator — GMV versus profile-hardened — and across surveys, SPT versus ACT. That's the status: the measurement infrastructure is in place and internally consistent.
+
+What's next, and this is where the real work is: fix the gamma-gamma shear auto-spectrum so we get a shear-calibration discriminant; build the joint per-bin {A, b_i} likelihood; move to a mock-based covariance; close out systematics properly — extinction is the only one redone so far; and then DR1.
+
+Deliberately no amplitude number on this slide — that arc is blinded and in progress, so I'm reporting status, not a result.
+
+Thanks to the Euclid CMBX SWG — Margherita Lembo, Louis Legrand, Giulio Fabbian and the 3×2pt+κ team — and to the SPT-3G lensing team, whose winter GMV kappa maps make this whole cross possible. Happy to take questions.
+:::
