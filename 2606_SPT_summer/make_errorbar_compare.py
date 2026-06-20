@@ -61,8 +61,14 @@ ell_a, _ = survey_sigma("SPT-3G GMV", "euclid_lensmc_binall")
 _, sg_spt_all = survey_sigma("SPT-3G GMV", "euclid_lensmc_binall")
 _, sg_act_all = survey_sigma("ACT DR6", "euclid_lensmc_binall")
 ratio = sg_act_all / sg_spt_all
+# true crossing: log-ℓ interpolate where the σ ratio passes 1 (NOT the bracket midpoint —
+# verified the ratio is 0.90 at ℓ=1141.5 and 1.03 at ℓ=1416.5, so the crossing is ≈1350)
 above = np.where(ratio > 1)[0]
-xover = np.sqrt(ell_a[above[0] - 1] * ell_a[above[0]]) if len(above) else ell_a[-1]
+if len(above):
+    i = above[0]; l0, l1 = ell_a[i - 1], ell_a[i]; r0, r1 = ratio[i - 1], ratio[i]
+    xover = np.exp(np.log(l0) + (1.0 - r0) / (r1 - r0) * (np.log(l1) - np.log(l0)))
+else:
+    xover = ell_a[-1]
 
 # Rationale for the design: whiskers anchored on theory balloon in ℓ·Cℓ space
 # (per-bandpower S/N<1) and defeat the at-a-glance read. Plotting ℓ·σ directly *is* the

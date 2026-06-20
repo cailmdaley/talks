@@ -218,8 +218,9 @@ shear×κ bins, with the common fiducial theory as the gray reference. The lower
 tighter survey. It shows **no amplitude** — only the σ from each on-disk covariance — so it's
 blinding-safe.
 
-The story is a clean crossover. **ACT DR6 is tighter at large scales (ℓ ≲ 1300)** and
-**SPT-3G GMV is tighter at small scales (ℓ ≳ 1300)**. That's exactly what you'd expect if
+The story is a clean crossover, sitting between the ℓ=1141 and ℓ=1417 bandpowers (≈1350).
+**ACT DR6 is tighter at large scales (ℓ ≲ 1350)** and **SPT-3G GMV is tighter at small scales
+(ℓ ≳ 1350)**. That's exactly what you'd expect if
 large scales are sample-variance limited (where ACT's wider Euclid overlap wins) and small
 scales are reconstruction-noise limited (where SPT's depth and resolution win) — so the two
 reconstructions are complementary, which motivates using both. The crossover is universal
