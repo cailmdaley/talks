@@ -350,7 +350,7 @@ If asked about the χ² numbers on the panels: those are dominated by exactly th
 - Estimator- and cross-survey-consistent (SPT-3G GMV vs profile-hardened; SPT vs ACT).
 
 ::: {.fragment}
-**Next** — $\gamma\gamma$ shear-auto fix · joint $\{A, b_i\}$ likelihood · mock-based covariance · close systematics · DR1.
+**Next** — joint $\{A, b_i\}$ likelihood · mock-based covariance · close systematics · DR1.
 :::
 
 ::: {.fragment}
@@ -360,7 +360,7 @@ Thanks — Euclid CMBX SWG: **Margherita Lembo, Louis Legrand, Giulio Fabbian** 
 ::: {.notes}
 Quick wrap. Where we are: the maps and field definitions are built and a self-blind is in place, so the analysis is running on a fixed, blinded footprint. We have all three cross data vectors in hand — galaxy–galaxy lensing, density–kappa, and shear–kappa. And the crosses are consistent two ways: across the SPT lensing estimator — GMV versus profile-hardened — and across surveys, SPT versus ACT. That's the status: the measurement infrastructure is in place and internally consistent.
 
-What's next, and this is where the real work is: fix the gamma-gamma shear auto-spectrum so we get a shear-calibration discriminant; build the joint per-bin {A, b_i} likelihood; move to a mock-based covariance; close out systematics properly — extinction is the only one redone so far; and then DR1.
+What's next, and this is where the real work is: build the joint per-bin {A, b_i} likelihood; move to a mock-based covariance; close out systematics properly — extinction is the only one redone so far; and then DR1. (The gamma-gamma shear auto-spectrum, which was flagged as a broken spin-2 product earlier in the analysis, is now restored — the failure was a stale purified MCM-workspace cache, not an estimator problem, fixed and regression-guarded — so it's no longer a gap; it gives us the shear-calibration lever for the joint fit.)
 
 Deliberately no amplitude number on this slide — that arc is blinded and in progress, so I'm reporting status, not a result.
 
