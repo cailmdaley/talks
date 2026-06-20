@@ -97,13 +97,16 @@ question** I want to put to the collaboration, not a number to explain away.
 :::
 ::::::::::::::
 
-## The patch: SPT-3G winter overlaps Euclid TR1 in the south
+## Where the cross lives: Euclid TR1 × SPT-3G in the south
 
-![](images/spt26_footprint.png){width="88%"}
+::: {.r-stack}
+![](images/spt26_footprint_1_euclid.png){.fragment .fade-out fragment-index=1 width="80%"}
+![](images/spt26_footprint_2_spt.png){.fragment .fade-in-then-out fragment-index=1 width="80%"}
+![](images/spt26_footprint_3_act.png){.fragment .fade-in fragment-index=2 width="80%"}
+:::
 
-[The SPT-3G **winter GMV** field (left) and ACT DR6 (right), each overlaid with the
-Euclid clustering footprint; **red = the overlap** — **690.8 deg²** of SPT-3G winter ×
-Euclid TR1 — that this analysis lives on.]{.credit style="font-size:0.6em"}
+[Euclid grows **TR1 → DR1**; **+ SPT-3G main** lights the **149 deg²** patch the cross
+lives on; **+ ACT DR6** adds a second κ survey (triple overlap 122 deg²).]{.credit style="font-size:0.55em"}
 
 ## Both CMB-lensing crosses are detected and track Planck-18
 
