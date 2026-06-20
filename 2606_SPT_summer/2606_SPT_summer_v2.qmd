@@ -195,18 +195,41 @@ amplitude or consistency claim here — that arc is blinded and in progress. The
 point is that the cross is reproducible across reconstructions, and that gives us a lever:
 where SPT constrains better we lean on SPT, where ACT does we lean on ACT.
 
-[SECOND ANGLE — NEW PLOT to build before the talk.] What this slide is *missing* is the
-direct "who constrains where" view. The new plot should be a single panel (or a thin
-2-row strip, shear×κ and clustering×κ) with the fiducial theory curve drawn once, and then,
-for each of our bandpower bins, the **size of the error bar** from SPT-3G next to the size
-from ACT DR6 — paired bars or paired whiskers at each ℓ-bin center, theory as the common
-reference. The reader should see at a glance which survey has the smaller error bar in which
-ℓ-range / which tomographic bin — i.e. which reconstruction is more constraining where. Plot
-ℓ·Cℓ on a log-ℓ axis per house convention so the dynamic range is legible. Pull the per-bin
-uncertainties straight from the two on-disk data vectors (SPT GMV and ACT DR6) that already
-feed the cross_survey figure — no new covariance work, just surfacing the σ that's already
-computed. Keep numbers off the slide; if I want to state "ACT is tighter at low ℓ, SPT at
-high ℓ" I'll say it aloud once the plot confirms the crossover.
+[SECOND ANGLE — now built; it's the next slide.] The direct "who constrains where" view
+(`make_errorbar_compare.py`, σ pulled straight from the two on-disk covariances, theory as
+the common reference, no amplitude shown) is the following slide. It **confirms the
+crossover** I was hoping for: ACT tighter at large scales, SPT tighter at small scales — so
+I can say that aloud.
+:::
+
+## Which κ survey constrains where
+
+![](images/spt26_errorbar_compare.png){width="80%"}
+
+[Per-bandpower error-bar size $\ell\sigma$ on the combined Euclid shear×κ data vector:
+**SPT-3G GMV** (red) vs **ACT DR6** (teal), over the common fiducial theory $\ell C_\ell$.
+Lower curve = tighter survey. σ read directly from each on-disk covariance — no amplitude
+shown.]{.credit style="font-size:0.55em"}
+
+::: {.notes}
+This is the "who constrains where" view — it answers the lever question from the previous
+slide. I'm plotting the *size* of the error bar, ℓ·σ, for each survey on the same Euclid
+shear×κ bins, with the common fiducial theory as the gray reference. The lower curve is the
+tighter survey. It shows **no amplitude** — only the σ from each on-disk covariance — so it's
+blinding-safe.
+
+The story is a clean crossover. **ACT DR6 is tighter at large scales (ℓ ≲ 1300)** and
+**SPT-3G GMV is tighter at small scales (ℓ ≳ 1300)**. That's exactly what you'd expect if
+large scales are sample-variance limited (where ACT's wider Euclid overlap wins) and small
+scales are reconstruction-noise limited (where SPT's depth and resolution win) — so the two
+reconstructions are complementary, which motivates using both. The crossover is universal
+across all six tomographic bins (I have a per-bin backup grid). Below the crossover the median
+σ ratio ACT/SPT is ≈ 0.83 (ACT ~17% tighter); SPT pulls ~15–18% ahead at the top two
+bandpowers (ℓ ≈ 2180, 2710).
+
+One honest caveat to keep ready: the SPT covariance has two inflated low-ℓ bandpowers
+(ℓ ≈ 162, and the known ℓ ≈ 84.5 spike) — visible as the red excursions — so don't over-read
+the very lowest ℓ. The crossover conclusion is robust to them.
 :::
 
 ## Likelihood & bias parameters — the plan
