@@ -92,79 +92,45 @@ def survey_point(survey, family, bin_id):
     return leff, cl, sigma
 
 
-# --------------------------------------------------------------------- figure
+# ----------------------------------------------------------- figure (1 high-z bin)
 sns.set_theme(context="talk", style="whitegrid")
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
                      "font.family": "DejaVu Sans", "legend.frameon": False})
 
-families = [
-    (r"$\ell C_\ell^{\gamma\kappa}$", "Cosmic shear $\\times$ CMB-$\\kappa$",
-     "e", lambda j: ("e", "k", j, 0)),
-    (r"$\ell C_\ell^{\delta_g\kappa}$", "Galaxy clustering $\\times$ CMB-$\\kappa$",
-     "g", lambda j: ("g", "k", j, 0)),
+BIN = 6  # highest-S/N, highest-redshift bin
+PANELS = [
+    ("e", r"$\ell\,C_\ell^{\gamma\kappa}$", r"Cosmic shear $\times$ CMB-$\kappa$   ($\gamma\times\kappa$)",
+     lambda j: ("e", "k", j, 0)),
+    ("g", r"$\ell\,C_\ell^{\delta_g\kappa}$", r"Galaxy clustering $\times$ CMB-$\kappa$   ($\delta_g\times\kappa$)",
+     lambda j: ("g", "k", j, 0)),
 ]
 
-fig, axes = plt.subplots(2, len(TOM_BINS), figsize=(3.3 * len(TOM_BINS), 8.0),
-                         sharex=True)
-
+fig, axes = plt.subplots(1, 2, figsize=(15.5, 7.0))
 legend_handles = {}
-for row, (ylabel, _title, family, key_of) in enumerate(families):
-    # Gather the row's data so we can set an honest common y-range per row.
-    panels = []
-    for bin_id in TOM_BINS:
-        cl_full = theory_full(key_of(bin_id))
-        pts = {s: survey_point(s, family, bin_id) for s in SURVEYS}
-        panels.append((bin_id, cl_full, pts))
+for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
+    cl_full = theory_full(key_of(BIN))
+    ax.axhline(0.0, color="0.6", lw=0.7, zorder=0)
+    (th,) = ax.plot(ell_full[2:], ell_full[2:] * cl_full[2:], color="0.45", lw=1.6,
+                    alpha=0.8, zorder=1)
+    legend_handles.setdefault("fiducial theory", th)
+    for s, cfg in SURVEYS.items():
+        leff, cl, sigma = survey_point(s, family, BIN)
+        container = ax.errorbar(leff * cfg["dodge"], leff * cl, yerr=leff * sigma,
+                                fmt=cfg["marker"], ms=8, color=cfg["color"], ecolor=cfg["color"],
+                                elinewidth=1.5, capsize=4, mfc="white", mew=1.7, zorder=3)
+        legend_handles.setdefault(cfg["label"], container)
+    ax.set_xscale("log")
+    ax.set_xlim(95, 3050)
+    ax.yaxis.get_offset_text().set_size(10)
+    ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
+    ax.grid(which="both", alpha=0.15)
+    ax.set_title(title, fontsize=16, pad=8)
+    ax.set_ylabel(ylabel)
+    ax.set_xlabel(r"$\ell$")
 
-    lo, hi = [], []
-    for _bin_id, cl_full, pts in panels:
-        vals = [ell_full[2:] * cl_full[2:]]
-        for leff, cl, sigma in pts.values():
-            vals += [leff * cl + leff * sigma, leff * cl - leff * sigma]
-        v = np.concatenate(vals); v = v[np.isfinite(v)]
-        lo.append(np.nanmin(v)); hi.append(np.nanmax(v))
-    ymin, ymax = min(lo), max(hi)
-    pad = 0.08 * (ymax - ymin)
-
-    for col, (bin_id, cl_full, pts) in enumerate(panels):
-        ax = axes[row, col]
-        ax.axhline(0.0, color="0.6", lw=0.7, zorder=0)
-        (th,) = ax.plot(ell_full[2:], ell_full[2:] * cl_full[2:], color="0.45",
-                        lw=1.2, alpha=0.75, zorder=1)
-        legend_handles.setdefault("fiducial theory", th)
-        for s, cfg in SURVEYS.items():
-            leff, cl, sigma = pts[s]
-            ells_d = leff * cfg["dodge"]
-            container = ax.errorbar(
-                ells_d, leff * cl, yerr=leff * sigma,
-                fmt=cfg["marker"], ms=5, color=cfg["color"], ecolor=cfg["color"],
-                elinewidth=1.2, capsize=2.5, mfc="white", mew=1.4, zorder=3)
-            legend_handles.setdefault(cfg["label"], container)
-        ax.set_xscale("log")
-        ax.set_xlim(90, 3100)
-        ax.set_ylim(ymin - pad, ymax + pad)
-        ax.yaxis.get_offset_text().set_size(8)
-        ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
-        ax.grid(which="both", alpha=0.15)
-        ax.text(0.05, 0.07, f"bin {bin_id}", transform=ax.transAxes, fontsize=11,
-                weight="bold", va="bottom", color="0.15")
-        if col == 0:
-            ax.set_ylabel(ylabel)
-        if row == 1:
-            ax.set_xlabel(r"$\ell$")
-
-fig.legend(legend_handles.values(), legend_handles.keys(),
-           loc="upper center", ncol=len(legend_handles), fontsize=11,
-           frameon=False, bbox_to_anchor=(0.5, 0.952))
-fig.suptitle(
-    "Euclid RR2 $\\times$ CMB lensing — cross-survey tomographic consistency "
-    "(SPT-3G GMV vs ACT DR6)",
-    y=0.995, fontsize=14, weight="bold",
-)
-fig.tight_layout(rect=(0, 0, 1, 0.93), h_pad=3.6)
-for row, (_yl, title, *_rest) in enumerate(families):
-    top = max(axes[row, c].get_position().y1 for c in range(len(TOM_BINS)))
-    fig.text(0.5, top + 0.018, title, ha="center", va="bottom",
-             fontsize=12, weight="bold")
-fig.savefig(OUT, dpi=170, bbox_inches="tight")
+axes[0].legend(legend_handles.values(), legend_handles.keys(), loc="upper right",
+               fontsize=12.5, title=f"bin {BIN}", title_fontsize=12.5)
+# No suptitle — the slide headline carries the title (avoid duplicate titles).
+fig.tight_layout()
+fig.savefig(OUT, dpi=180, bbox_inches="tight")
 print("wrote", OUT)

@@ -93,21 +93,18 @@ schedule as long as what we publish matches what's frozen in the SAS.
 ## Getting blinding out of the way
 
 ::: {.columns}
-::: {.column width="48%"}
-A standard **parameter-shift blind** ([Muir et al. 2019](https://arxiv.org/abs/1911.05929)) —
-the scheme the **SPT-3G D1 lensing** blind and the **Euclid 3×2pt** blind both use.
+::: {.column width="46%"}
+- **Parameter-shift blind** — [Muir et al. 2019](https://arxiv.org/abs/1911.05929)
+    - same approach as SPT D1 lensing & Euclid 3×2pt
+- **Hidden cosmology** $\theta_{\rm blind}$ shifts the **data only**
+    - theory & covariance untouched → shapes & error bars stay honest
 
-A hidden cosmology $\theta_{\rm blind}$ shifts the **data only**; theory stays fiducial,
-covariance untouched — so **bandpower shapes and error bars stay honest**.
-
-$$\hat{C}_b^{\,\rm blind} \;=\; \hat{C}_b^{\,\rm data} \;+\; \mathbf{B}_{b\ell}\big[\,C_\ell(\theta_{\rm blind}) - C_\ell(\theta_{\rm fid})\,\big]$$
-
-[$\mathbf{B}_{b\ell}$ = the bandpower-window operator the data already passed through.]{.credit style="font-size:0.6em"}
+::: {style="font-size:0.62em"}
+$$\hat{C}_b^{\rm blind} = \hat{C}_b^{\rm data} + \mathbf{B}_{b\ell}\big[\,C_\ell(\theta_{\rm blind}) - C_\ell(\theta_{\rm fid})\,\big]$$
 :::
-::: {.column width="52%"}
-![](images/spt26_blinding_cosmologies.png){width="94%"}
-
-[Only the **selection** is sealed — commitment sha256 `9ecd2133…`.]{.credit style="font-size:0.6em"}
+:::
+::: {.column width="54%"}
+![](images/spt26_blinding_cosmologies.png){width="98%"}
 :::
 :::
 
@@ -137,13 +134,7 @@ shapes, relative consistency, error-bar sizes — never the amplitude.
 
 ## Data vectors: the three cross-correlations
 
-![](images/spt26_cross_spectra.png){width="86%"}
-
-[**All three crosses**, same NaMaster pseudo-$C_\ell$ bandpowers, $\ell C_\ell$:
-$\gamma\times\kappa$ (shear × CMB-$\kappa$, top) and $\delta_g\times\kappa$ (clustering × CMB-$\kappa$, middle),
-six tomographic bins each; $\delta_g\times\gamma$ (galaxy–galaxy lensing, bottom) shown as each clustering
-bin × the deepest shear bin (the full 6×6 source×lens matrix is the backup). **No amplitude shown —
-blinding-safe.**]{.credit style="font-size:0.6em"}
+![](images/spt26_cross_spectra.png){width="100%" fig-align="center"}
 
 ::: {.notes}
 This is the data-vector slide — what we measure, not how it fits.
@@ -155,20 +146,21 @@ The bottom row is the third cross — galaxy–galaxy lensing, delta_g × gamma,
 I'm deliberately not quoting amplitudes or per-bin S/N here — those belong to the detection arc, which is blinded and out of scope for this status report, and I've stripped them from the figure so nothing leaks. The message of this slide is just: three crosses, one consistent estimator, consistent tomographic binning, all tracking the Planck-18 shape. The figure carries the weight.
 :::
 
-## Robust to the SPT lensing estimator
+## Robust to the SPT-3G lensing estimator
 
-![](images/spt26_estimator_comparison.png){width="82%"}
+![](images/spt26_estimator_robustness.png){width="94%" fig-align="center"}
 
-[Swapping the **GMV baseline** for the **bias + profile-hardened** reconstruction
-moves every bandpower by **<1σ** (pull RMS 0.28σ), at no S/N cost — estimator-robust.
-A foreground term *common* to both estimators cancels in the difference and is **not**
-tested here; that is the reserved Websky/Agora recovery, not yet run.]{.credit style="font-size:0.55em"}
+[Highest-S/N bin (6): GMV vs the bias + profile-hardened reconstructions (and PP) agree to
+**<1σ** per bandpower (pull RMS 0.28σ γ×κ, 0.29σ δ×κ), at no S/N cost — estimator-robust. A
+foreground term *common* to all estimators cancels in the difference and is **not** tested
+here (reserved Websky/Agora recovery).]{.credit style="font-size:0.55em"}
 
 ::: {.notes}
 This is a status check on whether the cross depends on which SPT lensing estimator we
-feed it. The figure is gamma-kappa across the six tomographic bins; the same picture
-holds for delta_g-kappa. Each panel overplots the GMV baseline against the bias- and
-profile-hardened reconstruction, with a pull-residual strip underneath.
+feed it. I'm showing the highest-S/N bin (bin 6), the two CMB-lensing crosses side by
+side — cosmic shear × κ and galaxy clustering × κ; the same picture holds across all
+six bins. Each panel overlays the four SPT-3G estimators — GMV, PP, and the two bias +
+profile-hardened reconstructions — and they sit on top of each other.
 
 The message is one line: swapping estimators moves every bandpower by less than one
 sigma — pull RMS 0.28 sigma in gamma-kappa, 0.29 in delta_g-kappa, all 120 bandpowers
@@ -186,16 +178,17 @@ sigma — and that's the claim, no more.
 
 ## Two κ surveys on the same Euclid bins: SPT-3G and ACT DR6
 
-![](images/spt26_cross_survey.png){width="92%"}
+![](images/spt26_cross_survey.png){width="88%" fig-align="center"}
 
-[Euclid RR2 × CMB-κ, six tomographic bins each: **shear×κ** (top), **clustering×κ** (bottom),
-crossed against **SPT-3G GMV** (red) and **ACT DR6** (teal) over the fiducial theory. Two
-independent κ reconstructions on the *same* southern bins.]{.credit style="font-size:0.55em"}
+[Highest-S/N bin (6): **shear×κ** (left) and **clustering×κ** (right), Euclid RR2 crossed
+against **SPT-3G GMV** (red ○) and **ACT DR6** (teal □) over the common fiducial theory.
+Two independent κ reconstructions on the *same* southern bins.]{.credit style="font-size:0.55em"}
 
 ::: {.notes}
-This is the cross-survey check. Same Euclid tracers, same six tomographic bins, crossed
-against two independent CMB-lensing reconstructions — SPT-3G GMV in red, ACT DR6 in teal —
-both laid over the fiducial theory curve. Top row is shear×κ, bottom row is clustering×κ.
+This is the cross-survey check. Same Euclid tracers, crossed against two independent
+CMB-lensing reconstructions — SPT-3G GMV in red, ACT DR6 in teal — both laid over the
+fiducial theory curve. I'm showing the highest-S/N bin (bin 6): shear×κ on the left,
+clustering×κ on the right; the same picture holds across all six bins.
 
 The message is just: we have two κ surveys over this southern overlap, and we can put both
 through the identical pipeline on the identical bins. I'm deliberately *not* making an
@@ -203,42 +196,37 @@ amplitude or consistency claim here — that arc is blinded and in progress. The
 point is that the cross is reproducible across reconstructions, and that gives us a lever:
 where SPT constrains better we lean on SPT, where ACT does we lean on ACT.
 
-[SECOND ANGLE — now built; it's the next slide.] The direct "who constrains where" view
-(`make_errorbar_compare.py`, σ pulled straight from the two on-disk covariances, theory as
-the common reference, no amplitude shown) is the following slide. It **confirms the
-crossover** I was hoping for: ACT tighter at large scales, SPT tighter at small scales — so
-I can say that aloud.
+[SECOND ANGLE — the next slide.] The direct "who constrains where" view: markers placed on
+theory, only the error bars real, so the σ(ℓ) of each survey reads off directly. It
+**confirms the crossover** — ACT tighter at large scales, SPT tighter at small scales — so I
+can say that aloud.
 :::
 
 ## Which κ survey constrains where
 
-![](images/spt26_errorbar_compare.png){width="80%"}
+![](images/spt26_kappa_constraints.png){width="78%" fig-align="center"}
 
-[Per-bandpower error-bar size $\ell\sigma$ on the combined Euclid shear×κ data vector:
-**SPT-3G GMV** (red) vs **ACT DR6** (teal), over the common fiducial theory $\ell C_\ell$.
-Lower curve = tighter survey. σ read directly from each on-disk covariance — no amplitude
-shown.]{.credit style="font-size:0.55em"}
+[$\gamma\times\kappa$, highest-S/N bin (6): markers placed **on the fiducial theory** (no
+measured amplitude), each carrying its survey's real per-bandpower error bar — **SPT-3G GMV**
+(red ○) vs **ACT DR6** (teal □). ACT tighter at large scales, SPT at small — a clean
+crossover.]{.credit style="font-size:0.55em"}
 
 ::: {.notes}
 This is the "who constrains where" view — it answers the lever question from the previous
-slide. I'm plotting the *size* of the error bar, ℓ·σ, for each survey on the same Euclid
-shear×κ bins, with the common fiducial theory as the gray reference. The lower curve is the
-tighter survey. It shows **no amplitude** — only the σ from each on-disk covariance — so it's
-blinding-safe.
+slide. The markers are placed *exactly on the fiducial theory curve* — there's no measured
+amplitude here — and each carries its survey's real per-bandpower error bar, σ from the
+on-disk covariance. So the whole figure is about the *size* of the error bar, and it's
+blinding-safe by construction. I'm showing the highest-S/N bin (bin 6), shear×κ.
 
-The story is a clean crossover, sitting between the ℓ=1141 and ℓ=1417 bandpowers (≈1350).
-**ACT DR6 is tighter at large scales (ℓ ≲ 1350)** and **SPT-3G GMV is tighter at small scales
-(ℓ ≳ 1350)**. That's exactly what you'd expect if
-large scales are sample-variance limited (where ACT's wider Euclid overlap wins) and small
-scales are reconstruction-noise limited (where SPT's depth and resolution win) — so the two
-reconstructions are complementary, which motivates using both. The crossover is universal
-across all six tomographic bins (I have a per-bin backup grid). Below the crossover the median
-σ ratio ACT/SPT is ≈ 0.83 (ACT ~17% tighter); SPT pulls ~15–18% ahead at the top two
-bandpowers (ℓ ≈ 2180, 2710).
+The story is a clean crossover around ℓ≈1350. **ACT DR6 is tighter at large scales (ℓ ≲ 1350)**
+and **SPT-3G GMV is tighter at small scales (ℓ ≳ 1350)** — exactly what you'd expect if large
+scales are sample-variance limited (ACT's wider Euclid overlap wins) and small scales are
+reconstruction-noise limited (SPT's depth and resolution win). The two reconstructions are
+complementary, which motivates using both.
 
-One honest caveat to keep ready: the SPT covariance has two inflated low-ℓ bandpowers
-(ℓ ≈ 162, and the known ℓ ≈ 84.5 spike) — visible as the red excursions — so don't over-read
-the very lowest ℓ. The crossover conclusion is robust to them.
+One honest caveat to keep ready: the SPT covariance has inflated low-ℓ bandpowers (the known
+ℓ≈84.5 spike region) — so don't over-read the very lowest ℓ. The crossover conclusion is robust
+to them.
 :::
 
 ## Likelihood & bias parameters — the plan
@@ -268,49 +256,38 @@ But — the honest limitation — that does NOT yet break the amplitude-bias deg
 So the genuinely open design question, which I'd welcome thoughts on, is what additional information actually breaks A from b. Candidates: the shear-ratio geometry between tomographic bins, or pushing the delta-g delta-g scale range — but this is unsettled.
 :::
 
-## Systematics: quantified for extinction, not yet closed
+## Systematics: galactic extinction is sub-σ in every bin
 
-![](images/spt26_systematics_null.png){width="94%"}
+![](images/spt26_extinction_xell.png){width="92%" fig-align="center"}
 
-[Only **galactic extinction** is quantified on this catalog — coherent bias **sub-σ**
-(≤0.8σ aggregate per bin, median ~0.1σ per bandpower) over the production range **ℓ∈[100,3000]**
-(DES/Chang $X = C^{\kappa S}C^{fS}/C^{SS}$); its large-scale (ℓ<100) coupling is below the analysis floor.
-Stellar density, exposures, zodiacal, N/S asymmetry: **not yet redone**. One template is not a systematics budget.]{.credit style="font-size:0.6em"}
+[Galactic-extinction coherent bias $X_\ell = C_\ell^{\kappa S}C_\ell^{fS}/C_\ell^{SS}$
+(DES/Chang) in units of the measurement error $\sigma$, per tomographic bin:
+$\delta_g\times\kappa$ (left), $\gamma\times\kappa$ (right). **Sub-σ at every bandpower**
+(worst $|X/\sigma|\!\approx\!0.46$); aggregate **0.35–0.8σ** per bin. One template is not a
+systematics budget.]{.credit style="font-size:0.6em"}
 
 ::: {.notes}
-This is a deliberately honest slide — I want to be clear about what we have and
-haven't done on systematics, because it's the part of the analysis that's least
-advanced.
+This is a deliberately honest slide — I want to be clear about what we have and haven't done
+on systematics, because it's the part of the analysis that's least advanced.
 
-The one cross-correlation systematic we've actually quantified on this catalog is
-galactic extinction. The metric is the standard DES/Chang contamination estimate:
-project the cross of each tracer with the extinction template, and the cross of
-kappa with extinction, through the extinction auto — that gives the coherent bias
-the template can inject into our signal. Per bandpower it's well sub-sigma, median
-around a tenth of a sigma. The aggregate over ell, added in quadrature on the
-production binning — log-fifteen bins from ell one hundred to three thousand —
-comes out sub-sigma in every bin, at most about eight tenths of a sigma. The one
-nuance worth knowing: extinction's coherent coupling is largest at the very largest
-scales, below ell one hundred, which is below the floor of this analysis — so on the
-ell range we actually fit, extinction is sub-sigma across the board. It's not a
-showstopper and, on the production range, not a number we have to carry; the honest
-caveat is the breadth, not the depth.
+The one cross-correlation systematic we've actually quantified on this catalog is galactic
+extinction. The metric is the standard DES/Chang contamination estimate: X_ℓ equals the cross
+of kappa with the extinction template, times the cross of the tracer with extinction, divided
+by the extinction auto — that's the coherent bias the template can inject into our signal. I'm
+plotting that bias in units of the measurement error, sigma, as a function of ell, for each of
+the six tomographic bins — clustering-cross-kappa on the left, shear-cross-kappa on the right.
 
-The figure is exactly that null-test summary — this bias metric in sigma — for
-every systematic template, across all the tomographic bins, for both kappa crosses.
-Right now only the extinction row is filled in; the colored cells are the coherent
-aggregate bias, all sub-sigma. Everything else — stellar density,
-exposure depth, zodiacal light, the north-south survey asymmetry — is greyed "not
-yet redone": those null tests exist from an earlier catalog version but have not
-been redone on the catalog this analysis runs on, so I'm not quoting stale numbers
-as if they were current. The greyed rows are the point of the slide as much as the
-filled one.
+The message reads straight off the y-axis: it's sub-sigma at every single bandpower — the worst
+is about 0.46 sigma — and the aggregate per bin is between a third and eight tenths of a sigma.
+So extinction is not a showstopper. The excursions are largest at the lowest ell, which is what
+you'd expect for a smooth galactic template.
 
-The transferable message is just that one line at the bottom: one template
-quantified does not close systematics. This is the most open work-package in the
-analysis, and I'd flag it as such rather than imply we've got systematics under
-control. If anyone asks for the extinction figure specifically, I can show the
-per-bin bar chart — it's real and current, June.
+But the transferable message is the title's other half: this is one template. Stellar density,
+exposure depth, zodiacal light, the north-south asymmetry — those null tests exist from an
+earlier catalog version but have NOT been redone on the catalog this analysis runs on, so I'm
+not quoting them. One template quantified does not close systematics — this is the most open
+work-package in the analysis, and I'd flag it as such rather than imply we've got systematics
+under control.
 :::
 
 ## Simulations: GLASS mocks recover the input — except the high-ℓ aliasing rise

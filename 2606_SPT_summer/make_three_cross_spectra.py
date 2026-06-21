@@ -154,9 +154,10 @@ rows = [
      lambda j: f"GC{j}$\\times$WL{GGL_SOURCE}"),
 ]
 
-# Full page width; panels deliberately rectangular (wide > tall).
-fig, axes = plt.subplots(3, len(TOM_BINS), figsize=(4.1 * len(TOM_BINS), 8.7),
-                         sharex=True)
+# Full-slide layout (~2:1 to fill the 16:9 content area). sharey="row" hides the
+# inner y-tick labels so only column 0 carries them — buys the panels real width.
+fig, axes = plt.subplots(3, len(TOM_BINS), figsize=(4.0 * len(TOM_BINS), 11.6),
+                         sharex=True, sharey="row")
 
 # Collect per-row data once so we can (a) draw and (b) fix a common y-range per row.
 row_data = []
