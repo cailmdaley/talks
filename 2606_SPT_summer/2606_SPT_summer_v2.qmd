@@ -1,12 +1,11 @@
 ---
 title: "Euclid × SPT-3G CMB lensing"
-subtitle: "The first Euclid (TR1) × SPT-3G κ cross-correlation"
 occasion: SPT Summer Collaboration Meeting
 description: First Euclid TR1 × SPT-3G CMB-lensing cross-correlation — a robust detection at a sub-unity amplitude
 draft: true
 author:
     name: Cail Daley
-    email: cailmdaley@gmail.com
+    affiliation: on behalf of the Euclid CMBX team
 date: 2026-06-29
 date-format: "MMMM YYYY"
 
@@ -91,32 +90,49 @@ schedule as long as what we publish matches what's frozen in the SAS.
 </div>
 ```
 
-## Blinding: a cosmology-shift self-blind
+## Getting blinding out of the way
 
-![](images/spt26_selfblind_shift.png){width="74%"}
+::: {.columns}
+::: {.column width="48%"}
+A standard **parameter-shift blind** ([Muir et al. 2019](https://arxiv.org/abs/1911.05929)) —
+the scheme the **SPT-3G D1 lensing** blind and the **Euclid 3×2pt** blind both use.
 
-[Blinded $\kappa$-cross data vector (points) vs the windowed fiducial theory (dashed), per
-tomographic bin. A fixed $\Delta C_\ell$ from a **hidden cosmology** (drawn $\sim\!2\sigma$ around
-Planck lensing) is added to the **data only** — the theory stays fiducial — so the bandpower
-**shapes and error-bar sizes stay honest** while the absolute amplitude is hidden. Same
-parameter-shift scheme as the Euclid SGS and Omori et al. SPT-3G D1 blinds. commitment sha256
-`9ecd2133…`]{.credit style="font-size:0.55em"}
+A hidden cosmology $\theta_{\rm blind}$ shifts the **data only**; theory stays fiducial,
+covariance untouched — so **bandpower shapes and error bars stay honest**.
+
+$$\hat{C}_b^{\,\rm blind} \;=\; \hat{C}_b^{\,\rm data} \;+\; \mathbf{B}_{b\ell}\big[\,C_\ell(\theta_{\rm blind}) - C_\ell(\theta_{\rm fid})\,\big]$$
+
+[$\mathbf{B}_{b\ell}$ = the bandpower-window operator the data already passed through.]{.credit style="font-size:0.6em"}
+:::
+::: {.column width="52%"}
+![](images/spt26_blinding_cosmologies.png){width="94%"}
+
+[Only the **selection** is sealed — commitment sha256 `9ecd2133…`.]{.credit style="font-size:0.6em"}
+:::
+:::
 
 ::: {.notes}
-A quick word on blinding, since it sets what's on these slides.
+A quick word on blinding, since it sets what every later slide can and can't show.
 
-The blind is a cosmology-shift self-blind — the same family as the official Euclid SGS
-blinding and the Omori et al. SPT-3G D1 cross-correlation blind. We draw a hidden cosmology a
-couple of sigma away from Planck lensing, compute the cross-spectra it predicts, and add that
-fixed delta-C-ell to the *data* vectors only; the theory curves stay at the fiducial cosmology.
-The draw is sealed on the compute node — neither I nor the pipeline ever sees which cosmology
-was picked — and only a commitment hash is recorded.
+We use a standard parameter-shift blind — the Muir et al. 2019 scheme, the same family the
+SPT-3G D1 lensing blind and the Euclid 3×2pt blind both use. The recipe is the equation on the
+left: pick a hidden cosmology θ_blind, compute the cross-spectra it predicts, take the
+difference from the fiducial prediction, window it through the same bandpower operator the data
+went through, and add that ΔCℓ to the data vector — and only the data. The theory curves stay
+fiducial and the covariance is untouched, so every bandpower shape and every error-bar size you
+see today is honest; only the absolute amplitude is hidden. It's additive in Cℓ, so unblinding
+is just subtracting the same ΔCℓ.
 
-The figure is the honesty check: blinded bandpowers against the windowed fiducial, per bin. You
-can read the shape and the error-bar sizes straight off it — those are untouched — but not the
-absolute amplitude. The practical consequence for today is that this is a status report on the
-data vectors: everything is built to be read under the blind — shapes, relative consistency,
-error-bar sizes. The amplitude comes after we agree the pipeline is trustworthy and unblind.
+The hidden cosmology is drawn from the public list on the right — a hundred cosmologies
+scattered about two sigma around Planck-18 in the Ωm–S8 plane, S8 being the lensing amplitude
+the cross is most sensitive to. You can see the cloud stretch along the S8 degeneracy. The list
+itself is public and shareable; the only secret is which entry we picked. That selection is
+sealed on the compute node — an OS-entropy integer hashed to an index — so neither I nor the
+pipeline ever sees the realized cosmology, and all that's recorded is the commitment hash at the
+bottom.
+
+The practical consequence for today: this is a status report read entirely under the blind —
+shapes, relative consistency, error-bar sizes — never the amplitude.
 :::
 
 ## Data vectors: the three cross-correlations
@@ -254,15 +270,12 @@ So the genuinely open design question, which I'd welcome thoughts on, is what ad
 
 ## Systematics: quantified for extinction, not yet closed
 
-::: {.r-stack}
-[NEW PLOT — systematics-null summary: $\sqrt{\sum_\ell (X/\sigma)^2}$ in $\sigma$ per
-template × tomographic bin, one panel per cross ($\delta_g\times\kappa$, $\gamma\times\kappa$).
-Extinction row populated; remaining template rows greyed "not yet redone."]{.placeholder style="font-size:0.7em; border:2px dashed #888; padding:2em 3em; display:inline-block;"}
-:::
+![](images/spt26_systematics_null.png){width="94%"}
 
-[Only **galactic extinction** is quantified on this catalog — coherent bias **~1–1.5σ aggregate**,
-**sub-σ per bandpower** (DES/Chang $X = C^{\kappa S}C^{fS}/C^{SS}$). Stellar density, exposures,
-zodiacal, N/S asymmetry: **not yet redone**. One template is not a systematics budget.]{.credit style="font-size:0.6em"}
+[Only **galactic extinction** is quantified on this catalog — coherent bias **sub-σ**
+(≤0.8σ aggregate per bin, median ~0.1σ per bandpower) over the production range **ℓ∈[100,3000]**
+(DES/Chang $X = C^{\kappa S}C^{fS}/C^{SS}$); its large-scale (ℓ<100) coupling is below the analysis floor.
+Stellar density, exposures, zodiacal, N/S asymmetry: **not yet redone**. One template is not a systematics budget.]{.credit style="font-size:0.6em"}
 
 ::: {.notes}
 This is a deliberately honest slide — I want to be clear about what we have and
@@ -274,19 +287,24 @@ galactic extinction. The metric is the standard DES/Chang contamination estimate
 project the cross of each tracer with the extinction template, and the cross of
 kappa with extinction, through the extinction auto — that gives the coherent bias
 the template can inject into our signal. Per bandpower it's well sub-sigma, median
-around a tenth of a sigma. The aggregate over ell, added in quadrature, comes out
-around one to one-and-a-half sigma per bin — and it's common-mode, dominated by
-the lowest ell bin around ell forty-four. So extinction is not a showstopper, but
-it's not negligible either: it's at the level we'll have to carry as a correction
-or a nuisance term, not wave away.
+around a tenth of a sigma. The aggregate over ell, added in quadrature on the
+production binning — log-fifteen bins from ell one hundred to three thousand —
+comes out sub-sigma in every bin, at most about eight tenths of a sigma. The one
+nuance worth knowing: extinction's coherent coupling is largest at the very largest
+scales, below ell one hundred, which is below the floor of this analysis — so on the
+ell range we actually fit, extinction is sub-sigma across the board. It's not a
+showstopper and, on the production range, not a number we have to carry; the honest
+caveat is the breadth, not the depth.
 
-The placeholder is what this slide *should* become: a null-test summary — Δχ²
-or this same bias metric in sigma — for every systematic template, across all the
-tomographic bins, for both kappa crosses. Right now only the extinction row would
-be filled in. Everything else — stellar density, exposure depth, zodiacal light,
-PSF, the north-south survey asymmetry — those null tests exist from an earlier
-catalog version but have not been redone on the catalog this analysis runs on, so
-I'm not going to quote stale numbers as if they were current.
+The figure is exactly that null-test summary — this bias metric in sigma — for
+every systematic template, across all the tomographic bins, for both kappa crosses.
+Right now only the extinction row is filled in; the colored cells are the coherent
+aggregate bias, all sub-sigma. Everything else — stellar density,
+exposure depth, zodiacal light, the north-south survey asymmetry — is greyed "not
+yet redone": those null tests exist from an earlier catalog version but have not
+been redone on the catalog this analysis runs on, so I'm not quoting stale numbers
+as if they were current. The greyed rows are the point of the slide as much as the
+filled one.
 
 The transferable message is just that one line at the bottom: one template
 quantified does not close systematics. This is the most open work-package in the
