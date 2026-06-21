@@ -91,40 +91,32 @@ schedule as long as what we publish matches what's frozen in the SAS.
 </div>
 ```
 
-## Blinding: a standalone loose self-blind
+## Blinding: a cosmology-shift self-blind
 
 ![](images/spt26_selfblind_shift.png){width="74%"}
 
-[A single secret amplitude factor shifts every spectrum by $\Delta C_\ell$ (blue);
-**unblinded** (pink) vs **blinded** (green). Big enough to hide the answer
-(**~23σ** across the data-vector diagonal), small enough to stay realistic
-(**$S_8$ moves $\lesssim 1.5\sigma$**).]{.credit style="font-size:0.55em"}
+[Blinded $\kappa$-cross data vector (points) vs the windowed fiducial theory (dashed), per
+tomographic bin. A fixed $\Delta C_\ell$ from a **hidden cosmology** (drawn $\sim\!2\sigma$ around
+Planck lensing) is added to the **data only** — the theory stays fiducial — so the bandpower
+**shapes and error-bar sizes stay honest** while the absolute amplitude is hidden. Same
+parameter-shift scheme as the Euclid SGS and Omori et al. SPT-3G D1 blinds. commitment sha256
+`9ecd2133…`]{.credit style="font-size:0.55em"}
 
 ::: {.notes}
-Quick word on blinding, because it shapes what I can and can't show you today.
+A quick word on blinding, since it sets what's on these slides.
 
-Cross-correlations sit **outside the Euclid SGS blinding scope by
-construction** — the official blinding acts on the catalog-level shear and
-clustering, and the κ-crosses aren't covered. So rather than ride someone
-else's scheme, we roll our **own** standalone, loose self-blind on the talk
-timescale. It's deliberately simple: a **single secret amplitude factor** drawn
-once, applied as a $\Delta C_\ell$ to the whole data vector — the blue line in
-each panel.
+The blind is a cosmology-shift self-blind — the same family as the official Euclid SGS
+blinding and the Omori et al. SPT-3G D1 cross-correlation blind. We draw a hidden cosmology a
+couple of sigma away from Planck lensing, compute the cross-spectra it predicts, and add that
+fixed delta-C-ell to the *data* vectors only; the theory curves stay at the fiducial cosmology.
+The draw is sealed on the compute node — neither I nor the pipeline ever sees which cosmology
+was picked — and only a commitment hash is recorded.
 
-The figure is just the honesty check that the blind does its job. Pink is the
-true data, green is what I actually work with. Two things have to be true at
-once. It has to be **big enough to hide the answer** — and it is: across the
-data-vector diagonal the shift is about **23σ**, far more than enough that I
-can't eyeball the amplitude. And it has to be **small enough to stay realistic**
-— a blind that throws the data somewhere absurd lets you unblind by inspection.
-Here it moves $S_8$ by only **a sigma to a sigma and a half**, so the blinded
-vector still looks like a plausible universe.
-
-The practical consequence for this talk: I've **dropped the amplitude and
-detection-significance arc** entirely. Everything you'll see — the data vectors,
-the estimator and survey consistency checks, the mocks — is built to be **read
-under the blind**: shapes, relative consistency, error-bar sizes. The number
-comes after we agree the pipeline is trustworthy and we unblind.
+The figure is the honesty check: blinded bandpowers against the windowed fiducial, per bin. You
+can read the shape and the error-bar sizes straight off it — those are untouched — but not the
+absolute amplitude. The practical consequence for today is that this is a status report on the
+data vectors: everything is built to be read under the blind — shapes, relative consistency,
+error-bar sizes. The amplitude comes after we agree the pipeline is trustworthy and unblind.
 :::
 
 ## Data vectors: the three cross-correlations
@@ -235,13 +227,6 @@ the very lowest ℓ. The crossover conclusion is robust to them.
 
 ## Likelihood & bias parameters — the plan
 
-:::::::::::::: {.columns}
-::: {.column width="52%"}
-![](images/spt26_dd_joint_fit.png){width="100%"}
-
-[Per-bin galaxy bias $b_i$ tightens when $\delta_g\delta_g$ joins $\delta_g\times\kappa$ — but the joint fit does **not** yet break the amplitude–bias degeneracy.]{.credit style="font-size:0.5em"}
-:::
-::: {.column width="48%"}
 **Being built**
 
 - A **joint Gaussian likelihood** over the cross data vector — covariance from theory now, mocks next.
@@ -249,26 +234,22 @@ the very lowest ℓ. The crossover conclusion is robust to them.
 **How bias enters**
 
 - Per-bin **$\{A,\, b_i\}$** fit — one nuisance $b_i$ per tomographic bin.
-- Adding **$\delta_g\delta_g$** sharpens each $b_i$ — *bias-breaking power* — yet $A$ and $b$ stay degenerate in the cross alone.
+- Adding **$\delta_g\delta_g$** sharpens each $b_i$ by **~2.5×** — *bias-breaking power* — yet $A$ and $b$ stay degenerate in the cross alone.
 
 ::: {.fragment}
 *Open:* what extra information (shear ratio? $\delta_g\delta_g$ scale range?) actually breaks $A\!-\!b$.
 :::
-:::
-::::::::::::::
 
 ::: {.notes}
-This is the most forward-looking slide — I want to be honest that much of the likelihood is still being designed, so read it as a plan, not a result.
+This is the most forward-looking slide — much of the likelihood is still being designed, so read it as a plan, not a result.
 
 What's being built: a joint Gaussian likelihood over the cross data vector. Right now the covariance is theory-based; the simulations slide that follows is partly in service of getting to a mock-based covariance.
 
-How galaxy bias gets handled: we fit one amplitude A together with a per-tomographic-bin galaxy bias b_i — so a vector {A, b_1, ..., b_6}. The figure on the left makes the key structural point. The left panel: when you add the galaxy clustering auto-spectrum delta-g delta-g to the galaxy-lensing cross delta-g times kappa, each per-bin bias b_i tightens by roughly a factor of two and a half. So delta-g delta-g genuinely adds bias-breaking power — it pins the b_i much better.
+How galaxy bias gets handled: we fit one amplitude A together with a per-tomographic-bin galaxy bias b_i — a vector {A, b_1, ..., b_6}. The structural point: adding the galaxy clustering auto-spectrum delta-g delta-g to the galaxy-lensing cross delta-g times kappa tightens each per-bin bias b_i by roughly a factor of two and a half — so delta-g delta-g genuinely adds bias-breaking power, pinning the b_i much better.
 
-But — and this is the honest limitation — that does NOT yet break the amplitude-bias degeneracy. In the cross-correlation A and b come in as a product, so even with delta-g delta-g sharpening the b_i, A and b are still degenerate along the same direction. I'm deliberately not putting amplitude numbers on this slide — that arc is blinded and dropped from this talk; the figure is here only to illustrate the bias-breaking point.
+But — the honest limitation — that does NOT yet break the amplitude-bias degeneracy. In the cross-correlation A and b come in as a product, so even with delta-g delta-g sharpening the b_i, A and b stay degenerate along the same direction. No amplitude numbers here — that arc is blinded and dropped from this talk.
 
 So the genuinely open design question, which I'd welcome thoughts on, is what additional information actually breaks A from b. Candidates: the shear-ratio geometry between tomographic bins, or pushing the delta-g delta-g scale range — but this is unsettled.
-
-If asked about the figure's right and bottom panels — those carry amplitude and residual structure from the detection analysis; happy to discuss offline, but they're not the point of this slide.
 :::
 
 ## Systematics: quantified for extinction, not yet closed
