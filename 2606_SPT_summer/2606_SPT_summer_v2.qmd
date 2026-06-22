@@ -231,8 +231,14 @@ So the honest takeaway for this audience: across the bulk of the usable range SP
 better-constraining reconstruction on these bins, with ACT competitive only at the very
 largest scales.
 
-One caveat to keep ready: the SPT covariance has somewhat inflated low-ℓ bandpowers (the known
-ℓ≈84.5 spike region) — but the crossover sits well above that, so the conclusion is robust.
+If asked about the covariance — and this audience will ask: these are per-bandpower Gaussian
+error bars, i.e. the covariance *diagonal*, so the crossover is set by σ size alone, not by
+off-diagonal correlations. It is not a Knox artifact. I checked the full mode-coupled Gaussian
+diagonal on these same bin-6 bands (SPT) and it agrees with Knox to ≤18% (mostly ~5%); a
+conservative bound on ACT then pins the first SPT-tighter bandpower in the ℓ≈220–280 window
+either way. So the ℓ≈250 crossover is robust to the covariance basis. (The ℓ≈1350 number that
+circulated earlier was a different comparison — combined-tomography on the older SACC vector —
+not this like-for-like bin-6 one.)
 :::
 
 ## Likelihood — the plan
