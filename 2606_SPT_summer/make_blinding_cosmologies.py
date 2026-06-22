@@ -52,6 +52,12 @@ ax.scatter(om, S8, s=95, color=cloud, alpha=0.55, edgecolor="white", linewidth=0
 ax.scatter([fid["Omega_m"]], [fid["S8"]], marker="*", s=680, color="#e8a33d",
            edgecolor="0.15", linewidth=1.3, zorder=4, label="Planck-18 fiducial")
 
+# Zoom out: the markers are large, so without padding the cloud edges clip the frame.
+xpad = 0.18 * (om.max() - om.min())
+ypad = 0.18 * (S8.max() - S8.min())
+ax.set_xlim(om.min() - xpad, om.max() + xpad)
+ax.set_ylim(S8.min() - ypad, S8.max() + ypad)
+
 ax.set_xlabel(r"$\Omega_{\rm m}$")
 ax.set_ylabel(r"$S_8 \equiv \sigma_8\,(\Omega_{\rm m}/0.3)^{1/2}$")
 ax.tick_params(labelsize=15)

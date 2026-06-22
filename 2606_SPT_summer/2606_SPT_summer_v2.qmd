@@ -148,19 +148,19 @@ I'm deliberately not quoting amplitudes or per-bin S/N here — those belong to 
 
 ## Robust to the SPT-3G lensing estimator
 
-![](images/spt26_estimator_robustness.png){width="94%" fig-align="center"}
+![](images/spt26_estimator_robustness.png){width="60%" fig-align="center"}
 
-[Highest-S/N bin (6): GMV vs the bias + profile-hardened reconstructions (and PP) agree to
+[Highest-S/N bin (6): GMV vs the bias + profile-hardened reconstruction (and PP) agree to
 **<1σ** per bandpower (pull RMS 0.28σ γ×κ, 0.29σ δ×κ), at no S/N cost — estimator-robust. A
 foreground term *common* to all estimators cancels in the difference and is **not** tested
 here (reserved Websky/Agora recovery).]{.credit style="font-size:0.55em"}
 
 ::: {.notes}
 This is a status check on whether the cross depends on which SPT lensing estimator we
-feed it. I'm showing the highest-S/N bin (bin 6), the two CMB-lensing crosses side by
-side — cosmic shear × κ and galaxy clustering × κ; the same picture holds across all
-six bins. Each panel overlays the four SPT-3G estimators — GMV, PP, and the two bias +
-profile-hardened reconstructions — and they sit on top of each other.
+feed it. I'm showing the highest-S/N bin (bin 6), the two CMB-lensing crosses stacked
+top and bottom — cosmic shear × κ and galaxy clustering × κ; the same picture holds across all
+six bins. Each panel overlays three SPT-3G estimators — GMV, PP, and the bias +
+profile-hardened reconstruction (GMVbhTTprf) — and they sit on top of each other.
 
 The message is one line: swapping estimators moves every bandpower by less than one
 sigma — pull RMS 0.28 sigma in gamma-kappa, 0.29 in delta_g-kappa, all 120 bandpowers
@@ -178,17 +178,17 @@ sigma — and that's the claim, no more.
 
 ## Two κ surveys on the same Euclid bins: SPT-3G and ACT DR6
 
-![](images/spt26_cross_survey.png){width="88%" fig-align="center"}
+![](images/spt26_cross_survey.png){width="60%" fig-align="center"}
 
-[Highest-S/N bin (6): **shear×κ** (left) and **clustering×κ** (right), Euclid RR2 crossed
+[Highest-S/N bin (6): **shear×κ** (top) and **clustering×κ** (bottom), Euclid RR2 crossed
 against **SPT-3G GMV** (red ○) and **ACT DR6** (teal □) over the common fiducial theory.
 Two independent κ reconstructions on the *same* southern bins.]{.credit style="font-size:0.55em"}
 
 ::: {.notes}
 This is the cross-survey check. Same Euclid tracers, crossed against two independent
 CMB-lensing reconstructions — SPT-3G GMV in red, ACT DR6 in teal — both laid over the
-fiducial theory curve. I'm showing the highest-S/N bin (bin 6): shear×κ on the left,
-clustering×κ on the right; the same picture holds across all six bins.
+fiducial theory curve. I'm showing the highest-S/N bin (bin 6): shear×κ on top,
+clustering×κ on the bottom; the same picture holds across all six bins.
 
 The message is just: we have two κ surveys over this southern overlap, and we can put both
 through the identical pipeline on the identical bins. I'm deliberately *not* making an
@@ -197,52 +197,48 @@ point is that the cross is reproducible across reconstructions, and that gives u
 where SPT constrains better we lean on SPT, where ACT does we lean on ACT.
 
 [SECOND ANGLE — the next slide.] The direct "who constrains where" view: markers placed on
-theory, only the error bars real, so the σ(ℓ) of each survey reads off directly. It
-**confirms the crossover** — ACT tighter at large scales, SPT tighter at small scales — so I
-can say that aloud.
+theory, only the error bars real, so the σ(ℓ) of each survey reads off directly. ACT is
+marginally tighter only at the largest scales (the lowest few bandpowers, ℓ≲220); **SPT is
+tighter across the bulk of the range** (ℓ≳280), by ~35% through the mid-range and up to ~2× at
+ℓ≈2700 — its depth and resolution win everywhere but the very largest scales.
 :::
 
 ## Which κ survey constrains where
 
-![](images/spt26_kappa_constraints.png){width="78%" fig-align="center"}
+![](images/spt26_kappa_constraints.png){width="60%" fig-align="center"}
 
-[$\gamma\times\kappa$, highest-S/N bin (6): markers placed **on the fiducial theory** (no
-measured amplitude), each carrying its survey's real per-bandpower error bar — **SPT-3G GMV**
-(red ○) vs **ACT DR6** (teal □). ACT tighter at large scales, SPT at small — a clean
-crossover.]{.credit style="font-size:0.55em"}
+[Highest-S/N bin (6), **$\gamma\times\kappa$** (top) and **$\delta_g\times\kappa$** (bottom):
+markers placed **on the fiducial theory** (no measured amplitude), each carrying its survey's
+real per-bandpower error bar — **SPT-3G GMV** (red ○) vs **ACT DR6** (teal □). Shaded =
+**where SPT's error bar is the smaller of the two**: ACT marginally tighter only at ℓ≲220, SPT
+tighter for ℓ≳280 (∼35% mid-range, ∼2× by ℓ≈2700).]{.credit style="font-size:0.55em"}
 
 ::: {.notes}
 This is the "who constrains where" view — it answers the lever question from the previous
 slide. The markers are placed *exactly on the fiducial theory curve* — there's no measured
 amplitude here — and each carries its survey's real per-bandpower error bar, σ from the
 on-disk covariance. So the whole figure is about the *size* of the error bar, and it's
-blinding-safe by construction. I'm showing the highest-S/N bin (bin 6), shear×κ.
+blinding-safe by construction. Both CMB-lensing crosses: shear×κ on top, clustering×κ on the
+bottom — the picture is the same in both.
 
-The story is a clean crossover around ℓ≈1350. **ACT DR6 is tighter at large scales (ℓ ≲ 1350)**
-and **SPT-3G GMV is tighter at small scales (ℓ ≳ 1350)** — exactly what you'd expect if large
-scales are sample-variance limited (ACT's wider Euclid overlap wins) and small scales are
-reconstruction-noise limited (SPT's depth and resolution win). The two reconstructions are
-complementary, which motivates using both.
+The story is a crossover around ℓ≈250, and it favors SPT almost everywhere. ACT DR6 is
+marginally tighter — about 15–18% — only at the largest scales, the lowest four bandpowers
+(ℓ ≲ 220), where its wider Euclid overlap gives it more modes. From ℓ≈280 on, SPT-3G GMV is
+tighter: by roughly 35% through the mid-range, growing to about a factor of two by ℓ≈2700,
+where its depth and angular resolution dominate. The shaded band marks the SPT-tighter region.
+So the honest takeaway for this audience: across the bulk of the usable range SPT is the
+better-constraining reconstruction on these bins, with ACT competitive only at the very
+largest scales.
 
-One honest caveat to keep ready: the SPT covariance has inflated low-ℓ bandpowers (the known
-ℓ≈84.5 spike region) — so don't over-read the very lowest ℓ. The crossover conclusion is robust
-to them.
+One caveat to keep ready: the SPT covariance has somewhat inflated low-ℓ bandpowers (the known
+ℓ≈84.5 spike region) — but the crossover sits well above that, so the conclusion is robust.
 :::
 
-## Likelihood & bias parameters — the plan
+## Likelihood — the plan
 
 **Being built**
 
 - A **joint Gaussian likelihood** over the cross data vector — covariance from theory now, mocks next.
-
-**How bias enters**
-
-- Per-bin **$\{A,\, b_i\}$** fit — one nuisance $b_i$ per tomographic bin.
-- Adding **$\delta_g\delta_g$** sharpens each $b_i$ by **~2.5×** — *bias-breaking power* — yet $A$ and $b$ stay degenerate in the cross alone.
-
-::: {.fragment}
-*Open:* what extra information (shear ratio? $\delta_g\delta_g$ scale range?) actually breaks $A\!-\!b$.
-:::
 
 ::: {.notes}
 This is the most forward-looking slide — much of the likelihood is still being designed, so read it as a plan, not a result.
@@ -290,31 +286,51 @@ work-package in the analysis, and I'd flag it as such rather than imply we've go
 under control.
 :::
 
-## Simulations: GLASS mocks recover the input — except the high-ℓ aliasing rise
+## Simulations: mocks for covariance, foregrounds, and noise
 
-:::::::::::::: {.columns}
-::: {.column width="62%"}
-![](images/spt26_glass_recovery.png){width="100%"}
-:::
-::: {.column width="38%"}
-- Known-truth **GLASS** δδ mocks, south, 6 tomo bins — recovery tracks input through the bulk of the range.
-- The **high-ℓ rise above input** is **NGP gridding aliasing**, not signal: proven by a regrid test (vanishes at finer nside), consistent with Wolz+ 2024 App. B.
-- Sets an **empirical scale cut, ℓ ≲ 865** (≤5% bias). Mechanism nailed; **no closed-form factor**.
-:::
-::::::::::::::
+::: {.columns}
+::: {.column width="50%"}
+**Covariance**
 
-[Galaxy-clustering recovery vs GLASS input theory, 100 realizations.]{.credit style="font-size:0.55em"}
+- **DEMNUni / FLASK** mocks → a mock-based covariance.
+
+**Foregrounds**
+
+- **Agora** sky simulation.
+- **Marco Gatti** building Euclid-like products from Agora.
+- A **systematics-injected GLASS box** within Euclid — *(same injection could go into the Agora Euclid mocks)*.
+:::
+::: {.column width="50%"}
+**Noise realizations**
+
+- **D1 mock lensing reconstruction** ($\hat\kappa - \kappa_{\rm true}$) as noise realizations for our mocks.
+
+**Ambitious**
+
+- Run the **D1 pipeline on Planck FFP10** lensing sims → properly estimate the **cross-covariance** between **Planck, ACT, and SPT**.
+:::
+:::
 
 ::: {.notes}
-This is the simulation leg — known-truth GLASS mocks, the same ones Arghavan Souki built to validate the VMPZ decontamination pipeline, run through our shared eDR1data pseudo-Cℓ engine. South footprint, six tomographic bins, 100 realizations. The point of the slide: does the pipeline recover a spectrum we put in?
+This is the simulations leg — where the mock program stands, organized by what each set of
+mocks is *for*.
 
-Through the bulk of the range — out to a few hundred in ℓ — the recovered points sit right on the input theory. The one feature is the rise above the input curve at high ℓ, which you can see turning up in every bin in the last few bandpowers.
+Covariance: we have DEMNUni and FLASK mocks, which give us a route to a mock-based covariance
+to replace the theory covariance the likelihood uses now.
 
-The headline is that we've pinned what that rise is. It is NGP gridding aliasing — the mocks are gridded with nearest-grid-point mass assignment, which folds super-Nyquist clustering power back down into the measured bands. And we didn't just infer that, we demonstrated it: regridding the same point catalogs at coarser and finer resolution, the excess collapses as a function of ℓ over the grid Nyquist, and it disagrees at fixed ℓ — at ℓ around 2700 the ratio to theory is 1.75 on the 1024 grid versus about 0.8 on a 2048 grid, hundreds of sigma apart. Measure finer and the excess goes away. That's the signature of an analysis-resolution effect, not intrinsic signal. It's consistent with what Wolz and collaborators saw in their 2024 appendix B.
+Foregrounds: the Agora sky simulation is the workhorse, and Marco Gatti is building
+Euclid-like products from Agora that we can run through our pipeline. Separately there's a
+systematics-injected GLASS box within Euclid — and the same systematics-injection idea could
+be applied to the Agora Euclid mocks.
 
-The practical consequence: it sets an empirical scale cut for the galaxy-clustering autos, around ℓ of 865 for ≤5% bias. I want to be honest that the cut is empirical — the mechanism is nailed, but the simple NGP fold model underpredicts the near-Nyquist magnitude by about a factor of five, so there is no closed-form correction factor we trust. To push to higher ℓ you'd need an aliasing correction — interlacing or higher-order mass assignment — which is a question for the map builders.
+Noise: the plan is to use the D1 mock lensing reconstruction — reconstructed kappa minus true
+kappa — as noise realizations for our mocks, so the reconstruction noise is realistic rather
+than analytic.
 
-If asked about the χ² numbers on the panels: those are dominated by exactly this high-ℓ aliasing, which is why they look terrible — that's the known pathology, and below the scale cut the recovery is clean. The cross-spectra that are the spine of this analysis carry no shot noise and are not where this bites; this is specifically about the clustering auto.
+And the ambitious one, which I'll flag as genuinely ambitious: I've been thinking about
+running the D1 lensing pipeline on the Planck FFP10 lensing simulations, so we can properly
+estimate the *cross*-covariance between Planck, ACT, and SPT — the off-diagonal blocks you'd
+need to combine reconstructions rather than pick one.
 :::
 
 ## Summary & next steps {.center}

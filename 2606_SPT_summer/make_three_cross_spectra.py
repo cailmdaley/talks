@@ -195,7 +195,7 @@ axes[0, 0].legend(loc="upper left", fontsize=8.5, ncol=1, framealpha=0.0,
                   bbox_to_anchor=(0.0, 0.92))
 suptitle = "Euclid RR2 $\\times$ SPT-3G winter GMV — the three cross-correlation data vectors"
 fig.suptitle(suptitle, y=1.0, fontsize=15.5, weight="bold")
-fig.tight_layout(rect=(0, 0, 1, 0.965), h_pad=3.2)
+fig.tight_layout(rect=(0, 0, 1, 0.965), h_pad=2.4, w_pad=0.2)
 for r, (_yl, title, *_rest) in enumerate(rows):
     top = max(axes[r, c].get_position().y1 for c in range(len(TOM_BINS)))
     fig.text(0.5, top + 0.012, title, ha="center", va="bottom", fontsize=13,

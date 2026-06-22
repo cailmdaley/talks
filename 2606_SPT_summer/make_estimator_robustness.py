@@ -4,13 +4,12 @@
 # ///
 """Robustness to the SPT-3G lensing estimator — one high-z bin, the two κ-crosses.
 
-Single tomographic bin (the highest-S/N, highest-redshift bin 6), two panels — the
-two CMB-lensing crosses: cosmic shear × CMB-κ (γ×κ) and galaxy clustering × CMB-κ
-(δ_g×κ). Each panel overlays the four SPT-3G reconstruction estimators — GMV
-(baseline), PP (polarization-only), GMVbhTTprf and TTbhTTprf (bias + profile-
-hardened, foreground-clean) — so the eye reads their agreement directly: the
-bandpowers sit on top of each other → estimator-robust. log15 binning (15 log
-bins, ℓ≈112–2695).
+Single tomographic bin (the highest-S/N, highest-redshift bin 6), two stacked
+panels (top/bottom) — the two CMB-lensing crosses: cosmic shear × CMB-κ (γ×κ) and
+galaxy clustering × CMB-κ (δ_g×κ). Each panel overlays three SPT-3G reconstruction
+estimators — GMV (baseline), PP (polarization-only) and GMVbhTTprf (bias + profile-
+hardened) — so the eye reads their agreement directly: the bandpowers sit on top of
+each other → estimator-robust. log15 binning (15 log bins, ℓ≈112–2695).
 
 BLINDING (blinded by default).  The κ-cross amplitude is under the cosmology-shift
 self-blind, so the absolute level must not show. We add the SAME cosmology shift
@@ -41,7 +40,6 @@ ESTIMATORS = [  # (key, label, color)
     ("gmv", "GMV (baseline)", "#222222"),
     ("pp", "PP (pol-only)", "#2a7fb8"),
     ("gmvbhttprf", "GMVbhTTprf", "#c0392b"),
-    ("ttbhttprf", "TTbhTTprf", "#1b9e77"),
 ]
 # (panel prefix, blind-key probe, title)
 PANELS = [
@@ -78,8 +76,8 @@ def est_bin(prefix, est, probe, bin_id):
 
 
 def draw_estimators(ax, prefix, probe):
-    """Overlay the four estimators' bandpowers (ℓCℓ), dodged, for the high-z bin."""
-    dodge = np.linspace(-0.018, 0.018, len(ESTIMATORS))
+    """Overlay the estimators' bandpowers (ℓCℓ), dodged, for the high-z bin."""
+    dodge = np.linspace(-0.06, 0.06, len(ESTIMATORS))
     for (est, label, color), d in zip(ESTIMATORS, dodge):
         ells, cl, sig = est_bin(prefix, est, probe, BIN)
         ax.errorbar(ells * (1 + d), ells * cl, yerr=ells * sig, fmt="o", ms=6, color=color,
@@ -91,7 +89,6 @@ def draw_estimators(ax, prefix, probe):
     ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
     ax.yaxis.get_offset_text().set_size(10)
     ax.grid(which="both", alpha=0.15)
-    ax.set_xlabel(r"$\ell$")
 
 
 # --------------------------------------------------------------------- figure
@@ -99,12 +96,13 @@ sns.set_theme(context="talk", style="whitegrid")
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
                      "font.family": "DejaVu Sans", "legend.frameon": False})
 
-fig, axes = plt.subplots(1, 2, figsize=(15.5, 7.0))
+fig, axes = plt.subplots(2, 1, figsize=(15.0, 10.0), sharex=True)
 for ax, (prefix, probe, title) in zip(axes, PANELS):
     draw_estimators(ax, prefix, probe)
     ax.set_title(title, fontsize=16, pad=8)
     ax.set_ylabel(r"$\ell\,C_\ell$")
-axes[0].legend(loc="upper right", fontsize=12.5, title=f"bin {BIN}", title_fontsize=12.5)
+axes[-1].set_xlabel(r"$\ell$")
+axes[0].legend(loc="upper right", fontsize=13, title=f"bin {BIN}", title_fontsize=13)
 
 # No suptitle — the slide headline carries the title (avoid duplicate titles).
 if not delta:

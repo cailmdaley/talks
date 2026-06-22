@@ -11,9 +11,10 @@ shear γ×κ, galaxy clustering δ_g×κ). The CMB-κ source plane is common
 (z≈1100), so a single fiducial theory curve per panel is the honest reference,
 and the two surveys agreeing on it *is* the cross-survey consistency message.
 
-Layout: 2 rows (TOP γ×κ, BOTTOM δ_g×κ) × 6 columns (tomo bins 1..6). Each panel
-overlays SPT (red, ○) and ACT (teal, □), ℓ-dodged multiplicatively so the error
-bars read cleanly on the log axis, against one continuous fiducial theory curve.
+Layout: the highest-S/N bin (6), the two probe families stacked as wide rows (TOP
+γ×κ, BOTTOM δ_g×κ). Each panel overlays SPT (red, ○) and ACT (teal, □), ℓ-dodged
+multiplicatively so the two surveys' points read cleanly apart on the log axis,
+against one continuous fiducial theory curve.
 
 BLINDING. Central values are the SEALED BLINDED bandpowers (cosmology-shift
 additive ΔCℓ) from the talk datavector bundle: γ×κ → kappa_l{j}/act_kappa_l{j},
@@ -37,13 +38,13 @@ OUT = ROOT / "docs/talks/images/spt26_cross_survey.png"
 # Each survey's OWN raw product (blind-independent covariance), per family.
 SURVEYS = {
     "spt": {
-        "label": "SPT-3G GMV", "color": "#c0392b", "marker": "o", "dodge": 1.0 - 0.035,
+        "label": "SPT-3G GMV", "color": "#c0392b", "marker": "o", "dodge": 1.0 - 0.045,
         "prefix": "",  # blinded keys: kappa_l{j}, kappa_g{j}
         "shear_pkl": ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra/shear_lensmc_x_spt_winter_gmv.pkl",
         "gc_pkl": ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra/gc_x_spt_winter_gmv.pkl",
     },
     "act": {
-        "label": "ACT DR6", "color": "#2a8c8c", "marker": "s", "dodge": 1.0 + 0.035,
+        "label": "ACT DR6", "color": "#2a8c8c", "marker": "s", "dodge": 1.0 + 0.045,
         "prefix": "act_",  # blinded keys: act_kappa_l{j}, act_kappa_g{j}
         "shear_pkl": ROOT / "results/act_dr6/shear_kappa_cross_spectra/shear_lensmc_x_act_dr6.pkl",
         "gc_pkl": ROOT / "results/act_dr6/clustering_kappa_cross_spectra/gc_x_act_dr6.pkl",
@@ -105,7 +106,7 @@ PANELS = [
      lambda j: ("g", "k", j, 0)),
 ]
 
-fig, axes = plt.subplots(1, 2, figsize=(15.5, 7.0))
+fig, axes = plt.subplots(2, 1, figsize=(15.0, 10.0), sharex=True)
 legend_handles = {}
 for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
     cl_full = theory_full(key_of(BIN))
@@ -126,10 +127,10 @@ for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
     ax.grid(which="both", alpha=0.15)
     ax.set_title(title, fontsize=16, pad=8)
     ax.set_ylabel(ylabel)
-    ax.set_xlabel(r"$\ell$")
 
+axes[-1].set_xlabel(r"$\ell$")
 axes[0].legend(legend_handles.values(), legend_handles.keys(), loc="upper right",
-               fontsize=12.5, title=f"bin {BIN}", title_fontsize=12.5)
+               fontsize=13, title=f"bin {BIN}", title_fontsize=13)
 # No suptitle — the slide headline carries the title (avoid duplicate titles).
 fig.tight_layout()
 fig.savefig(OUT, dpi=180, bbox_inches="tight")
