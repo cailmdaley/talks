@@ -38,13 +38,13 @@ OUT = ROOT / "docs/talks/images/spt26_cross_survey.png"
 # Each survey's OWN raw product (blind-independent covariance), per family.
 SURVEYS = {
     "spt": {
-        "label": "SPT-3G GMV", "color": "#c0392b", "marker": "o", "dodge": 1.0 - 0.045,
+        "label": "SPT-3G GMV", "color": "#c0392b", "marker": "o",
         "prefix": "",  # blinded keys: kappa_l{j}, kappa_g{j}
         "shear_pkl": ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra/shear_lensmc_x_spt_winter_gmv.pkl",
         "gc_pkl": ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra/gc_x_spt_winter_gmv.pkl",
     },
     "act": {
-        "label": "ACT DR6", "color": "#2a8c8c", "marker": "s", "dodge": 1.0 + 0.045,
+        "label": "ACT DR6", "color": "#2a8c8c", "marker": "s",
         "prefix": "act_",  # blinded keys: act_kappa_l{j}, act_kappa_g{j}
         "shear_pkl": ROOT / "results/act_dr6/shear_kappa_cross_spectra/shear_lensmc_x_act_dr6.pkl",
         "gc_pkl": ROOT / "results/act_dr6/clustering_kappa_cross_spectra/gc_x_act_dr6.pkl",
@@ -93,6 +93,14 @@ def survey_point(survey, family, bin_id):
     return leff, cl, sigma
 
 
+def log_dodge(leff, n, frac=0.10):
+    """Multiplicative ℓ-dodges so n points span `frac` of the mean log bin spacing."""
+    if n < 2:
+        return np.array([1.0])
+    span = frac * np.mean(np.diff(np.log(np.asarray(leff, dtype=float))))
+    return np.exp(np.linspace(-span / 2, span / 2, n))
+
+
 # ----------------------------------------------------------- figure (1 high-z bin)
 sns.set_theme(context="talk", style="whitegrid")
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
@@ -114,9 +122,10 @@ for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
     (th,) = ax.plot(ell_full[2:], ell_full[2:] * cl_full[2:], color="0.45", lw=1.6,
                     alpha=0.8, zorder=1)
     legend_handles.setdefault("fiducial theory", th)
-    for s, cfg in SURVEYS.items():
+    factors = log_dodge(survey_point("spt", family, BIN)[0], len(SURVEYS))
+    for k, (s, cfg) in enumerate(SURVEYS.items()):
         leff, cl, sigma = survey_point(s, family, BIN)
-        container = ax.errorbar(leff * cfg["dodge"], leff * cl, yerr=leff * sigma,
+        container = ax.errorbar(leff * factors[k], leff * cl, yerr=leff * sigma,
                                 fmt=cfg["marker"], ms=8, color=cfg["color"], ecolor=cfg["color"],
                                 elinewidth=1.5, capsize=4, mfc="white", mew=1.7, zorder=3)
         legend_handles.setdefault(cfg["label"], container)

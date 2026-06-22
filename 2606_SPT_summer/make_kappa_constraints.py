@@ -34,10 +34,10 @@ LMAX = 3000
 XS = ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra"
 ACT = ROOT / "results/act_dr6"
 SURVEYS = {
-    "SPT-3G GMV": dict(color="#c0392b", marker="o", dodge=1.0 - 0.03,
+    "SPT-3G GMV": dict(color="#c0392b", marker="o",
                        shear=XS / "shear_lensmc_x_spt_winter_gmv.pkl",
                        gc=XS / "gc_x_spt_winter_gmv.pkl"),
-    "ACT DR6":    dict(color="#2a8c8c", marker="s", dodge=1.0 + 0.03,
+    "ACT DR6":    dict(color="#2a8c8c", marker="s",
                        shear=ACT / "shear_kappa_cross_spectra/shear_lensmc_x_act_dr6.pkl",
                        gc=ACT / "clustering_kappa_cross_spectra/gc_x_act_dr6.pkl"),
 }
@@ -67,6 +67,14 @@ def sigma_of(pkl):
     """(ℓ_eff, σ) for a survey×family at bin 6 — σ from the on-disk covariance diagonal."""
     spec = pickle.load(open(pkl, "rb"))["spectra"][f"bin{BIN}"]
     return np.asarray(spec["ells"], dtype=float), np.sqrt(np.diag(np.asarray(spec["cov"], dtype=float)))
+
+
+def log_dodge(leff, n, frac=0.10):
+    """Multiplicative ℓ-dodges so n points span `frac` of the mean log bin spacing."""
+    if n < 2:
+        return np.array([1.0])
+    span = frac * np.mean(np.diff(np.log(np.asarray(leff, dtype=float))))
+    return np.exp(np.linspace(-span / 2, span / 2, n))
 
 
 def shade_spt_better(ax, ls, ss, la, sa, color):
@@ -103,11 +111,12 @@ for ax, (fam, tkey, ylabel, title) in zip(axes, PANELS):
     ls, ss = sigma_of(spt[fam])
     la, sa = sigma_of(act[fam])
     center = shade_spt_better(ax, ls, ss, la, sa, spt["color"])
-    for label, cfg in SURVEYS.items():
+    factors = log_dodge(ls, len(SURVEYS))   # cluster spans 10% of the bin spacing
+    for k, (label, cfg) in enumerate(SURVEYS.items()):
         leff, sig = sigma_of(cfg[fam])
         # fake points sit EXACTLY on the theory curve; only the error bar is real.
         th_at = np.interp(leff, ell_full, cl_full)
-        ax.errorbar(leff * cfg["dodge"], leff * th_at, yerr=leff * sig, fmt=cfg["marker"],
+        ax.errorbar(leff * factors[k], leff * th_at, yerr=leff * sig, fmt=cfg["marker"],
                     ms=8, color=cfg["color"], ecolor=cfg["color"], elinewidth=1.8, capsize=4.5,
                     mfc="white", mew=1.8, zorder=3, label=label)
     if center is not None:

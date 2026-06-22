@@ -15,6 +15,7 @@ format:
     revealjs:
         width:  1920
         height: 1080
+        auto-stretch: false
         theme: [default, custom.scss]
         slide-number: true
         fig-align: center
@@ -148,7 +149,7 @@ I'm deliberately not quoting amplitudes or per-bin S/N here — those belong to 
 
 ## Robust to the SPT-3G lensing estimator
 
-![](images/spt26_estimator_robustness.png){width="60%" fig-align="center"}
+![](images/spt26_estimator_robustness.png){width="66%" fig-align="center"}
 
 [Highest-S/N bin (6): GMV vs the bias + profile-hardened reconstruction (and PP) agree to
 **<1σ** per bandpower (pull RMS 0.28σ γ×κ, 0.29σ δ×κ), at no S/N cost — estimator-robust. A
@@ -178,7 +179,7 @@ sigma — and that's the claim, no more.
 
 ## Two κ surveys on the same Euclid bins: SPT-3G and ACT DR6
 
-![](images/spt26_cross_survey.png){width="60%" fig-align="center"}
+![](images/spt26_cross_survey.png){width="66%" fig-align="center"}
 
 [Highest-S/N bin (6): **shear×κ** (top) and **clustering×κ** (bottom), Euclid RR2 crossed
 against **SPT-3G GMV** (red ○) and **ACT DR6** (teal □) over the common fiducial theory.
@@ -205,7 +206,7 @@ tighter across the bulk of the range** (ℓ≳280), by ~35% through the mid-rang
 
 ## Which κ survey constrains where
 
-![](images/spt26_kappa_constraints.png){width="60%" fig-align="center"}
+![](images/spt26_kappa_constraints.png){width="66%" fig-align="center"}
 
 [Highest-S/N bin (6), **$\gamma\times\kappa$** (top) and **$\delta_g\times\kappa$** (bottom):
 markers placed **on the fiducial theory** (no measured amplitude), each carrying its survey's

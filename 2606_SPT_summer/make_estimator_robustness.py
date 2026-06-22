@@ -75,12 +75,20 @@ def est_bin(prefix, est, probe, bin_id):
     return ells, cl, np.sqrt(np.diag(np.asarray(spec["cov"], dtype=float)))
 
 
+def log_dodge(leff, n, frac=0.10):
+    """Multiplicative ℓ-dodges so n points span `frac` of the mean log bin spacing."""
+    if n < 2:
+        return np.array([1.0])
+    span = frac * np.mean(np.diff(np.log(np.asarray(leff, dtype=float))))
+    return np.exp(np.linspace(-span / 2, span / 2, n))
+
+
 def draw_estimators(ax, prefix, probe):
     """Overlay the estimators' bandpowers (ℓCℓ), dodged, for the high-z bin."""
-    dodge = np.linspace(-0.06, 0.06, len(ESTIMATORS))
-    for (est, label, color), d in zip(ESTIMATORS, dodge):
-        ells, cl, sig = est_bin(prefix, est, probe, BIN)
-        ax.errorbar(ells * (1 + d), ells * cl, yerr=ells * sig, fmt="o", ms=6, color=color,
+    rows = [est_bin(prefix, est, probe, BIN) for est, _, _ in ESTIMATORS]
+    factors = log_dodge(rows[0][0], len(ESTIMATORS))   # cluster spans 10% of the bin spacing
+    for (est, label, color), (ells, cl, sig), fac in zip(ESTIMATORS, rows, factors):
+        ax.errorbar(ells * fac, ells * cl, yerr=ells * sig, fmt="o", ms=6, color=color,
                     ecolor=color, elinewidth=1.3, capsize=3,
                     mfc=("white" if est != "gmv" else color), mew=1.4, label=label, zorder=3)
     ax.axhline(0.0, color="0.6", lw=0.7, zorder=0)
