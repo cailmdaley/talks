@@ -198,10 +198,11 @@ point is that the cross is reproducible across reconstructions, and that gives u
 where SPT constrains better we lean on SPT, where ACT does we lean on ACT.
 
 [SECOND ANGLE — the next slide.] The direct "who constrains where" view: markers placed on
-theory, only the error bars real, so the σ(ℓ) of each survey reads off directly. ACT is
-marginally tighter only at the largest scales (the lowest few bandpowers, ℓ≲220); **SPT is
-tighter across the bulk of the range** (ℓ≳280), by ~35% through the mid-range and up to ~2× at
-ℓ≈2700 — its depth and resolution win everywhere but the very largest scales.
+theory, only the error bars real, so the σ(ℓ) of each survey reads off directly — the exact
+full Gaussian diagonal for both surveys. ACT is marginally tighter only at the largest scales
+(the lowest 2–3 bandpowers, ℓ≲180); **SPT is tighter across the bulk of the range** (ℓ≳200),
+by a σ ratio of ~1.5× through the mid-range and up to ~2.5× at ℓ≈2700 — its depth and
+resolution win everywhere but the very largest scales.
 :::
 
 ## Which κ survey constrains where
@@ -210,9 +211,10 @@ tighter across the bulk of the range** (ℓ≳280), by ~35% through the mid-rang
 
 [Highest-S/N bin (6), **$\gamma\times\kappa$** (top) and **$\delta_g\times\kappa$** (bottom):
 markers placed **on the fiducial theory** (no measured amplitude), each carrying its survey's
-real per-bandpower error bar — **SPT-3G GMV** (red ○) vs **ACT DR6** (teal □). Shaded =
-**where SPT's error bar is the smaller of the two**: ACT marginally tighter only at ℓ≲220, SPT
-tighter for ℓ≳280 (∼35% mid-range, ∼2× by ℓ≈2700).]{.credit style="font-size:0.55em"}
+real per-bandpower error bar — the **exact full data-fiducial Gaussian** σ (TR1, log15) —
+**SPT-3G GMV** (red ○) vs **ACT DR6** (teal □). Shaded = **where SPT's error bar is the smaller
+of the two**: ACT marginally tighter only at the lowest 2–3 bandpowers (ℓ≲180), SPT tighter for
+ℓ≳200 (σ ratio ∼1.5× mid-range, ∼2.5× by ℓ≈2700).]{.credit style="font-size:0.55em"}
 
 ::: {.notes}
 This is the "who constrains where" view — it answers the lever question from the previous
@@ -222,22 +224,25 @@ on-disk covariance. So the whole figure is about the *size* of the error bar, an
 blinding-safe by construction. Both CMB-lensing crosses: shear×κ on top, clustering×κ on the
 bottom — the picture is the same in both.
 
-The story is a crossover around ℓ≈250, and it favors SPT almost everywhere. ACT DR6 is
-marginally tighter — about 15–18% — only at the largest scales, the lowest four bandpowers
-(ℓ ≲ 220), where its wider Euclid overlap gives it more modes. From ℓ≈280 on, SPT-3G GMV is
-tighter: by roughly 35% through the mid-range, growing to about a factor of two by ℓ≈2700,
-where its depth and angular resolution dominate. The shaded band marks the SPT-tighter region.
-So the honest takeaway for this audience: across the bulk of the usable range SPT is the
-better-constraining reconstruction on these bins, with ACT competitive only at the very
-largest scales.
+The story is a crossover around ℓ≈200, and it favors SPT almost everywhere. ACT DR6 is
+marginally tighter — by under 10% — only at the very largest scales, the lowest two or three
+bandpowers (ℓ ≲ 180), where its wider Euclid overlap gives it more modes. From ℓ≈200 on,
+SPT-3G GMV is tighter: its error bar is smaller by a factor of about 1.5 through the mid-range,
+growing to about 2.5 by ℓ≈2700, where its depth and angular resolution dominate. The shaded band marks the
+SPT-tighter region. So the honest takeaway for this audience: across the bulk of the usable
+range SPT is the better-constraining reconstruction on these bins, with ACT competitive only
+at the very largest scales.
 
-If asked about the covariance — and this audience will ask: these are per-bandpower Gaussian
-error bars, i.e. the covariance *diagonal*, so the crossover is set by σ size alone, not by
-off-diagonal correlations. It is not a Knox artifact. I checked the full mode-coupled Gaussian
-diagonal on these same bin-6 bands (SPT) and it agrees with Knox to ≤18% (mostly ~5%); a
-conservative bound on ACT then pins the first SPT-tighter bandpower in the ℓ≈220–280 window
-either way. So the ℓ≈250 crossover is robust to the covariance basis. (The ℓ≈1350 number that
-circulated earlier was a different comparison — combined-tomography on the older SACC vector —
+If asked about the covariance — and this audience will ask: these are the **exact full
+data-fiducial Gaussian** per-bandpower σ — the covariance diagonal — for *both* surveys, now
+that the full ACT Gaussian exists on disk alongside SPT's. No Knox approximation, no bound: I
+slice the bin-6 κ-cross block straight out of each survey's 24-spectrum NaMaster Gaussian
+covariance. The crossover sits at ℓ≈200 (γ×κ flips by ℓ≈176, δ_g×κ by ℓ≈221), and it is
+*lower* than the Knox-diagonal figure that circulated earlier (ℓ≈250) for a physical reason:
+the full Gaussian inflates ACT's low-ℓ variance more than SPT's — ACT's wider Euclid overlap
+carries more mode-coupling correction relative to the f_sky-scaled Knox approximation. So the
+exact result is, if anything, *more* favorable to SPT than the Knox story. (The ℓ≈1350 number
+from much earlier was a different comparison — combined-tomography on the older SACC vector —
 not this like-for-like bin-6 one.)
 :::
 
