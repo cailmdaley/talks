@@ -276,12 +276,12 @@ So the genuinely open design question, which I'd welcome thoughts on, is what ad
 ![](images/spt26_extinction_xell.png){width="92%" fig-align="center"}
 
 [Galactic-extinction coherent bias $X_\ell = C_\ell^{\kappa S}C_\ell^{fS}/C_\ell^{SS}$
-(DES/Chang) in units of the measurement error $\sigma$, per tomographic bin:
-$\delta_g\times\kappa$ (left), $\gamma\times\kappa$ (right). **Shear: sub-σ at every
-bandpower** (aggregate 0.4–0.85σ). **Clustering: sub-σ at low/mid-$\ell$ but rising at
-high $\ell$ ($\ell\!\gtrsim\!1000$) toward 1σ**, growing with redshift bin (coherent
-$S_{\rm bias}$ 0.9→1.5σ). One template is not a systematics budget — and on TR1
-extinction is **not yet under control for clustering**.]{.credit style="font-size:0.6em"}
+(DES/Chang) in units of the per-bandpower measurement error $\sigma$ (Knox diagonal),
+per tomographic bin: $\delta_g\times\kappa$ (left), $\gamma\times\kappa$ (right).
+**Shear: sub-σ at every bandpower** (aggregate 0.4–0.85σ). **Clustering: sub-σ at
+low/mid-$\ell$ but rising at high $\ell$ ($\ell\!\gtrsim\!1000$) toward 1σ**, growing
+with redshift bin (coherent $S_{\rm bias}$ 0.9→1.5σ). One template is not a systematics
+budget — and on TR1 extinction is **not yet under control for clustering**.]{.credit style="font-size:0.6em"}
 
 ::: {.notes}
 This is a deliberately honest slide — I want to be clear about what we have and haven't done
@@ -313,6 +313,13 @@ contaminate the largest scales. So either the extinction template carries small-
 or there's extinction-dependent selection in the fainter high-z galaxy samples. High ell is also
 exactly where the clustering auto wants a scale cut — so the clustering cross at high ell is the
 region I'd treat with most caution. This is a real to-do, not a closed box.
+
+One honest footnote on the error bars, since this audience will ask: the sigma here is the
+per-bandpower Knox diagonal — the cross-spectrum's own analytic error — not the full Gaussian
+covariance I showed on the survey-comparison slide. That keeps it apples-to-apples with the RR2
+number I'm contrasting against, but recomputing X-over-sigma against the full Gaussian is the
+refinement on my list; the qualitative picture — controlled for shear, a high-ell concern for
+clustering — is what I'd stand behind today.
 
 And the transferable message is the title's other half: this is one template. Stellar density,
 exposure depth, zodiacal light, the north-south asymmetry — those null tests have NOT been redone
