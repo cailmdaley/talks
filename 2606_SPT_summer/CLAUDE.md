@@ -125,8 +125,10 @@ commitment `852da2ed…`; the unblinded twin + seal are gitignored soft-secrets 
 `results/tr1/blinding/` — never commit/share). The figure scripts add the same
 cosmology-shift ΔCℓ to every estimator/bin, so relative consistency is exact while
 the absolute amplitude is hidden; `--unblinded` exists for debugging and is
-watermarked + off by default. Harmonic axes use the shared
-`_ell_axis.py` helper (labelled integer ticks: 100/200/300/500/1000/2000/3000).
+watermarked + off by default. Figures use a clean seaborn `ticks` aesthetic (no
+in-plot grid) via the shared `_ell_axis.py` helper: `style_ell_axis` (labelled
+integer ℓ-ticks 100/200/500/1000/3000 + minor ticks) and `fold_yscale` (the y-axis
+scale factor folded into the label, `ℓCℓ [×10⁻⁶]`, not a floating offset).
 
 ## Build
 
