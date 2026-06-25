@@ -11,15 +11,26 @@ date-format: "MMMM YYYY"
 
 output-file: index.html
 
+# Title-slide logos are referenced from the title-slide.html partial; declare
+# them so Quarto's resource scanner copies them into _site/.../images/.
+resources:
+    - images/euclid_logo.png
+    - images/cea_logo.png
+    - images/cosmostat_logo.png
+
 format:
     revealjs:
         width:  1920
         height: 1080
+        margin: 0
         auto-stretch: false
-        theme: [default, custom.scss]
+        theme: [default, ../assets/house.scss, custom.scss]
         slide-number: true
         fig-align: center
-        include-after-body: assets/no_footer_on_titleslide.html
+        menu: false
+        include-after-body:
+            - assets/no_footer_on_titleslide.html
+            - assets/figure-treatment.html
         footer: Cail Daley | Euclid × SPT-3G CMB lensing | SPT Summer Collaboration | June 2026
         history: false
         hash : true
@@ -36,7 +47,7 @@ html-math-method:
 include-in-header: assets/mathjax.html
 ---
 
-## Status report: Euclid × CMB-lensing cross-correlations {.center}
+## Status report: Euclid × CMB-lensing cross-correlations {.vcenter}
 
 A status report on the **Euclid MoU CMB-lensing × cross-correlation project** —
 led by **Cail Daley & Margherita Lembo**.
@@ -390,7 +401,7 @@ estimate the *cross*-covariance between Planck, ACT, and SPT — the off-diagona
 need to combine reconstructions rather than pick one.
 :::
 
-## Summary & next steps {.center}
+## Summary & next steps {.vcenter}
 
 **Where we are** — Euclid TR1 × SPT-3G, a status report:
 

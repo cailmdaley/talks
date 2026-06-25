@@ -1,126 +1,21 @@
-
 /*-- scss:defaults --*/
 
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300..500;1,300..500&display=swap');
-
-$font-family-sans-serif: Raleway, sans-serif;
-
-body {
-    font-variant-numeric: lining-nums;
-    -moz-font-feature-settings: "lnum" 1;
-    -moz-font-feature-settings: "lnum=1";
-    -ms-font-feature-settings: "lnum" 1;
-    -o-font-feature-settings: "lnum" 1;
-    -webkit-font-feature-settings: "lnum" 1;
-    font-feature-settings: "lnum" 1;
-}
-
-$presentation-font-size-root: 45px;
-$presentation-h1-font-size: 2.5em;
-$presentation-h2-font-size: 1.35em;
-$presentation-h3-font-size: 1.5em;
-$presentation-h4-font-size: 1.3em;
-
+// Per-talk overrides for the SPT Summer 2026 status-report deck.
+// The house look comes from ../assets/house.scss (loaded BEFORE this file via the
+// deck's `theme:` list). The SPT deck uses the house palette unchanged
+// ($ground: $paper-lite, $cinnabar: #BC4538, EB Garamond + IBM Plex Mono) — so NO
+// palette override is needed. This file holds ONLY the SPT-specific slide tweaks
+// that house.scss deliberately omits; it is intentionally thin because the deck is
+// built from standard pandoc columns + reveal r-stack/fragments and the trusted
+// figure set, all of which the house theme already styles (figure-on-ground halo,
+// h2 kicker-rule, small-caps footer/occasion, vcentred title/summary slides).
 
 /*-- scss:rules --*/
 
-.caption-left {
-    text-align: left;
-    margin-left: 30px;
-}
-
-.fitcenter {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-
-    &.text-left {
-        text-align: left;
-        figcaption {
-            margin-left: 30px;
-        }
-    }
-
-    &.text-right {
-        text-align: right;
-        figcaption {
-            margin-right: 30px;
-        }
-    }
-}
-
-.reveal img {
-    vertical-align: middle;
-    margin: 0;
-}
-
-.reveal img.nopad {
-    padding: 0;
-}
-
-.quarto-figure {
-    margin-bottom: 0;
-    padding: 0;
-}
-
-figcaption > span {
-    display: block !important;
-    position: relative !important;
-}
-
-.credit {
-    position: relative;
-    display: block;
-}
-
-.reveal .footer {
-    font-size: 2vh !important;
-    bottom: 2vh !important;
-}
-
-.reveal .slide-number > a[href*='title-slide'] {
-    display: none;
-}
-
-.reveal .slides .full {
-    top: 0 !important;
-    padding: 0;
-    margin-top: 0;
-}
-
-.cea-logo {
-    position: absolute;
-    bottom: -235px;
-    left: -50px;
-    width: 140px;
-    z-index: 1;
-}
-
-.cosmostat-logo {
-    position: absolute;
-    bottom: -245px;
-    left: 70px;
-    width: 530px;
-}
-
-.spt-logos {
-    position: absolute;
-    bottom: -230px;
-    right: -60px;
-    width: 500px;
-}
-
-.reveal .slide.scrollable img {
-    max-height: none !important;
-}
-
-.reveal .slides section.spaced li {
-    margin-bottom: 0.85em;
-}
-
-.reveal .slides section.spaced table td,
-.reveal .slides section.spaced table th {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-}
+// Title-slide logo bar — per-mark optical-weight nudges off the house common
+// height ($logo-h, 72px). Euclid is the survey we bring; CEA + CosmoStat the
+// employer. The wide CosmoStat wordmark reads heavy at common height, so trim it;
+// nudge the others to balance. (Tuned against the 1920×1080 render.)
+.reveal #title-slide .logo-bar .logo-euclid    { height: 76px; }
+.reveal #title-slide .logo-bar .logo-cea       { height: 64px; }
+.reveal #title-slide .logo-bar .logo-cosmostat { height: 52px; }
