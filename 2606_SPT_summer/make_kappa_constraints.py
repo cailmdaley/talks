@@ -32,7 +32,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis
+from _ell_axis import style_ell_axis, fold_yscale
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 THEORY = ROOT / "results/redshift_tr1/theory_cls.pkl"        # TR1 n(z) + self-Hann smoothing
@@ -113,7 +113,7 @@ def shade_spt_better(ax, ls, ss, la, sa, color):
 
 
 # --------------------------------------------------------------------- figure
-sns.set_theme(context="talk", style="whitegrid")
+sns.set_theme(context="talk", style="ticks")
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
                      "font.family": "DejaVu Sans", "legend.frameon": False})
 
@@ -138,19 +138,20 @@ for ax, (stem, tkey, ylabel, title) in zip(axes, PANELS):
         ax.text(center, 0.94, "SPT tighter", transform=ax.get_xaxis_transform(),
                 ha="center", va="top", fontsize=12.5, color=SURVEYS["SPT-3G GMV"]["color"], weight="bold")
     style_ell_axis(ax, 95, 3050)
-    ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
-    ax.yaxis.get_offset_text().set_size(11)
-    ax.grid(which="both", alpha=0.15)
-    ax.set_ylabel(ylabel)
+    fold_yscale(ax, ylabel)
     ax.set_title(title, fontsize=16, pad=8)
 
 axes[-1].set_xlabel(r"$\ell$")
-axes[0].legend(loc="upper left", fontsize=13, title=f"bin {BIN}", title_fontsize=13)
 # Note in the bottom-right of the lower panel — below the rising curve, clear of data.
 axes[-1].text(0.985, 0.05, "markers placed on theory — only the error bar is real",
               transform=axes[-1].transAxes, fontsize=11, va="bottom", ha="right",
               color="0.4", style="italic")
 
+sns.despine(fig)
 fig.tight_layout()
+# Legend OUTSIDE the panels (right), guaranteed clear of every bandpower (no-overlap requirement).
+h, lab = axes[0].get_legend_handles_labels()
+fig.legend(h, lab, loc="center left", bbox_to_anchor=(1.0, 0.5), frameon=False,
+           fontsize=13, title=f"bin {BIN}", title_fontsize=13)
 fig.savefig(OUT, dpi=180, bbox_inches="tight")
 print("wrote", OUT)

@@ -36,7 +36,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis
+from _ell_axis import style_ell_axis, fold_yscale
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 # TR1 cross-spectra: SPT GMV κ-crosses (shear/clustering live in separate dirs) and
@@ -136,13 +136,10 @@ def draw_panel(ax, color, ells, measured, cov, probe_key):
                 fmt="o", ms=5, color=color, ecolor=color, elinewidth=1.2,
                 capsize=2.5, mfc="white", mew=1.4, zorder=3, label="measured")
     style_ell_axis(ax, 90, 3100)
-    ax.yaxis.get_offset_text().set_size(8)
-    ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
-    ax.grid(which="both", alpha=0.15)
 
 
 # ---------------------------------------------------------------- slide figure
-sns.set_theme(context="talk", style="whitegrid")
+sns.set_theme(context="talk", style="ticks")
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
                      "font.family": "DejaVu Sans", "legend.frameon": False})
 palette = sns.color_palette("husl", len(TOM_BINS))
@@ -193,12 +190,13 @@ for r, ((ylabel, _title, getter, probe_of, label_of), cells) in enumerate(zip(ro
         ax.text(0.05, 0.07, label_of(j), transform=ax.transAxes, fontsize=11,
                 weight="bold", va="bottom", color=palette[c])
         if c == 0:
-            ax.set_ylabel(ylabel)
+            fold_yscale(ax, ylabel)
         if r == 2:
             ax.set_xlabel(r"$\ell$")
 
 axes[0, 0].legend(loc="upper left", fontsize=8.5, ncol=1, framealpha=0.0,
                   bbox_to_anchor=(0.0, 0.92))
+sns.despine(fig)
 suptitle = "Euclid TR1 $\\times$ SPT-3G winter GMV — the three cross-correlation data vectors"
 fig.suptitle(suptitle, y=1.0, fontsize=15.5, weight="bold")
 fig.tight_layout(rect=(0, 0, 1, 0.965), h_pad=2.4, w_pad=0.2)

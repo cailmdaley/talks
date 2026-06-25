@@ -107,7 +107,7 @@ for tracer, _title, _ylab, pkl_path in PANELS:
 # Two panels (the user's "two plots"): δ_g×κ and γ×κ. y = X_ℓ/σ_ℓ — the actual
 # coherent-bias metric read directly against the measurement error (CLAUDE.md). The
 # slide headline carries the title; per-bin S_bias rides in the legend.
-sns.set_theme(context="talk", style="whitegrid")
+sns.set_theme(context="talk", style="ticks")
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
                      "font.family": "DejaVu Sans", "legend.frameon": False})
 palette = sns.color_palette("husl", len(TOM_BINS))
@@ -128,13 +128,13 @@ for col, (tracer, title, _ylab, pkl_path) in enumerate(PANELS):
     ax.text(0.985, 0.94, r"$\pm1\sigma$", transform=ax.transAxes, ha="right", va="top",
             fontsize=12, color="0.4")
     style_ell_axis(ax, 95, 3100)
-    ax.grid(which="both", alpha=0.15)
     ax.set_title(title, fontsize=16, weight="bold", pad=8)
     ax.set_xlabel(r"$\ell$")
-    ax.legend(loc="upper right", fontsize=11.5, ncol=1, handlelength=1.4, borderaxespad=0.4)
+    ax.legend(loc="upper left", fontsize=11.5, ncol=1, handlelength=1.4, borderaxespad=0.4)
 
 axes[0].set_ylabel(r"extinction bias  $X_\ell\,/\,\sigma_\ell$")
 axes[0].set_ylim(-1.2, 1.2)
+sns.despine(fig)
 fig.tight_layout()
 fig.savefig(OUT, dpi=180, bbox_inches="tight")
 print("wrote", OUT)

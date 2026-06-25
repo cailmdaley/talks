@@ -30,7 +30,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis
+from _ell_axis import style_ell_axis, fold_yscale
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 # TR1 re-sealed blinded talk data vector (cosmology-shift self-blind on TR1 data).
@@ -105,7 +105,7 @@ def log_dodge(leff, n, frac=0.10):
 
 
 # ----------------------------------------------------------- figure (1 high-z bin)
-sns.set_theme(context="talk", style="whitegrid")
+sns.set_theme(context="talk", style="ticks")
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
                      "font.family": "DejaVu Sans", "legend.frameon": False})
 
@@ -133,16 +133,16 @@ for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
                                 elinewidth=1.5, capsize=4, mfc="white", mew=1.7, zorder=3)
         legend_handles.setdefault(cfg["label"], container)
     style_ell_axis(ax, 95, 3050)
-    ax.yaxis.get_offset_text().set_size(10)
-    ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
-    ax.grid(which="both", alpha=0.15)
+    fold_yscale(ax, ylabel)
     ax.set_title(title, fontsize=16, pad=8)
-    ax.set_ylabel(ylabel)
 
 axes[-1].set_xlabel(r"$\ell$")
-axes[0].legend(legend_handles.values(), legend_handles.keys(), loc="upper right",
-               fontsize=13, title=f"bin {BIN}", title_fontsize=13)
 # No suptitle — the slide headline carries the title (avoid duplicate titles).
+sns.despine(fig)
 fig.tight_layout()
+# Legend OUTSIDE the panels (right), guaranteed clear of every bandpower (no-overlap requirement).
+fig.legend(legend_handles.values(), legend_handles.keys(), loc="center left",
+           bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=13,
+           title=f"bin {BIN}", title_fontsize=13)
 fig.savefig(OUT, dpi=180, bbox_inches="tight")
 print("wrote", OUT)

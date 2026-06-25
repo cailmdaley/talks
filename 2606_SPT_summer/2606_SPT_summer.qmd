@@ -156,13 +156,7 @@ I'm deliberately not quoting amplitudes or per-bin S/N here — those belong to 
 
 ## Robust to the SPT-3G lensing estimator
 
-![](images/spt26_estimator_robustness.png){width="66%" fig-align="center"}
-
-[Highest-S/N bin (6): swapping GMV → the bias + profile-hardened reconstruction (red on black)
-leaves the vector unchanged to **<1σ** per bandpower — pull RMS **0.29σ** in both γ×κ and δ×κ,
-all 90 bandpowers within 1σ, at no S/N cost — estimator-robust. PP (pol-only) is the noisier
-single-channel reconstruction and scatters more at high ℓ. A foreground term *common* to all
-estimators cancels in the difference and is **not** tested here (reserved Websky/Agora recovery).]{.credit style="font-size:0.55em"}
+![](images/spt26_estimator_robustness.png){width="72%" fig-align="center"}
 
 ::: {.notes}
 This is a status check on whether the cross depends on which SPT lensing estimator we
@@ -191,11 +185,7 @@ sigma — and that's the claim, no more.
 
 ## Two κ surveys on the same Euclid bins: SPT-3G and ACT DR6
 
-![](images/spt26_cross_survey.png){width="66%" fig-align="center"}
-
-[Highest-S/N bin (6): **shear×κ** (top) and **clustering×κ** (bottom), Euclid TR1 crossed
-against **SPT-3G GMV** (red ○) and **ACT DR6** (teal □) over the common fiducial theory.
-Two independent κ reconstructions on the *same* southern bins.]{.credit style="font-size:0.55em"}
+![](images/spt26_cross_survey.png){width="72%" fig-align="center"}
 
 ::: {.notes}
 This is the cross-survey check. Same Euclid tracers, crossed against two independent
@@ -219,14 +209,7 @@ resolution win everywhere but the very largest scales.
 
 ## Which κ survey constrains where
 
-![](images/spt26_kappa_constraints.png){width="66%" fig-align="center"}
-
-[Highest-S/N bin (6), **$\gamma\times\kappa$** (top) and **$\delta_g\times\kappa$** (bottom):
-markers placed **on the fiducial theory** (no measured amplitude), each carrying its survey's
-real per-bandpower error bar — the **exact full data-fiducial Gaussian** σ (TR1, log15) —
-**SPT-3G GMV** (red ○) vs **ACT DR6** (teal □). Shaded = **where SPT's error bar is the smaller
-of the two**: ACT marginally tighter only at the lowest 2–3 bandpowers (ℓ≲180), SPT tighter for
-ℓ≳200 (σ ratio ∼1.5× mid-range, ∼2.5× by ℓ≈2700).]{.credit style="font-size:0.55em"}
+![](images/spt26_kappa_constraints.png){width="72%" fig-align="center"}
 
 ::: {.notes}
 This is the "who constrains where" view — it answers the lever question from the previous
@@ -258,35 +241,62 @@ from much earlier was a different comparison — combined-tomography on the olde
 not this like-for-like bin-6 one.)
 :::
 
-## Likelihood — the plan
+## Likelihood — what's built, and the plan
 
-**Being built**
+::: {.columns}
+::: {.column width="52%"}
+**In place** — internal `eDR1like` (CCL + Cobaya)
 
-- A **joint Gaussian likelihood** over the cross data vector — covariance from theory now, mocks next.
+- **Joint Gaussian likelihood** over the cross vector ($\delta_g\times\kappa$, $\gamma\times\kappa$, $\delta_g\delta_g$, $\delta_g\times\gamma$); covariance from theory now, mocks next.
+- **Galaxy bias** — linear $b_i$ per tomographic bin (global or binwise); optional nonlinear $b_2$ / higher-order.
+- **Photo-$z$ marginalization** — per-bin shift $\Delta z_i$ and width-stretch $w_{z,i}$.
+- **Theory** — CCL angular spectra (Limber), HMCode/HaloFit nonlinear power.
+:::
+::: {.column width="48%"}
+**Next to wire in**
+
+- **Shear systematics** — multiplicative $m_i$ + intrinsic alignments (IA template fixed today, not yet sampled).
+- **Mock-based covariance** (+ Hartlap/Sellentin).
+- **Break the $A$–$b$ degeneracy** — $\delta_g\delta_g$ tightens $b_i$ ${\sim}2.5\times$, but $A$ and $b$ stay degenerate.
+:::
+:::
+
+**→ Plan: move the CMBX likelihood onto [CLOE](https://euclid-cloe.readthedocs.io), the Euclid consortium inference framework.**
 
 ::: {.notes}
-This is the most forward-looking slide — much of the likelihood is still being designed, so read it as a plan, not a result.
+This is the most forward-looking slide, but it's no longer just a plan — the likelihood
+machinery is largely in place, so I'll report what's wired and what's still to come.
 
-What's being built: a joint Gaussian likelihood over the cross data vector. Right now the covariance is theory-based; the simulations slide that follows is partly in service of getting to a mock-based covariance.
+What's in place, on the left — this is our internal eDR1like likelihood, built on CCL for theory
+and Cobaya for sampling. It's a joint Gaussian likelihood over the cross data vector: the two
+CMB-lensing crosses, the galaxy clustering auto, and galaxy–galaxy lensing. Covariance is
+theory-based today; the simulations slide that follows is partly in service of a mock-based
+covariance.
 
-How galaxy bias gets handled: we fit one amplitude A together with a per-tomographic-bin galaxy bias b_i — a vector {A, b_1, ..., b_6}. The structural point: adding the galaxy clustering auto-spectrum delta-g delta-g to the galaxy-lensing cross delta-g times kappa tightens each per-bin bias b_i by roughly a factor of two and a half — so delta-g delta-g genuinely adds bias-breaking power, pinning the b_i much better.
+Galaxy bias is handled with a linear bias per tomographic bin — global or binwise — with optional
+nonlinear and higher-order bias terms available. Photo-z is marginalized per bin with both a mean
+shift Δz_i and a width-stretch parameter — that's the "official dndz handling" we just merged in.
+Theory is CCL angular spectra under the Limber approximation with HMCode/HaloFit nonlinear power.
 
-But — the honest limitation — that does NOT yet break the amplitude-bias degeneracy. In the cross-correlation A and b come in as a product, so even with delta-g delta-g sharpening the b_i, A and b stay degenerate along the same direction. No amplitude numbers here — that arc is blinded and dropped from this talk.
+On the right, what's still to wire in, and I want to be honest that these are NOT yet in the
+sampled model. Shear systematics: there's no multiplicative shear-bias m_i being sampled yet, and
+intrinsic alignments are a fixed template right now, not a marginalized nuisance — both are on the
+list. A mock-based covariance with the Hartlap or Sellentin correction. And the structural one:
+adding delta-g delta-g tightens each per-bin bias b_i by about a factor of two and a half, but it
+does NOT break the amplitude–bias degeneracy — A and b enter as a product, so they stay degenerate.
+The open design question, which I'd welcome thoughts on, is what additional information breaks A
+from b — shear-ratio geometry, or pushing the delta-g delta-g scale range. No amplitude numbers
+here — that arc is blinded and dropped from this talk.
 
-So the genuinely open design question, which I'd welcome thoughts on, is what additional information actually breaks A from b. Candidates: the shear-ratio geometry between tomographic bins, or pushing the delta-g delta-g scale range — but this is unsettled.
+And the bottom line: this internal likelihood is the working tool, but the plan is to move the CMBX
+likelihood onto CLOE, the Euclid consortium inference framework, so the cross slots into the
+official pipeline. The container already carries the CLOE dependencies; the integration is the next
+step, not yet done.
 :::
 
 ## Systematics: extinction is sub-σ for shear, ~1σ at high-ℓ for clustering
 
 ![](images/spt26_extinction_xell.png){width="92%" fig-align="center"}
-
-[Galactic-extinction coherent bias $X_\ell = C_\ell^{\kappa S}C_\ell^{fS}/C_\ell^{SS}$
-(DES/Chang) in units of the per-bandpower measurement error $\sigma$ (Knox diagonal),
-per tomographic bin: $\delta_g\times\kappa$ (left), $\gamma\times\kappa$ (right).
-**Shear: sub-σ at every bandpower** (aggregate 0.4–0.85σ). **Clustering: sub-σ at
-low/mid-$\ell$ but rising at high $\ell$ ($\ell\!\gtrsim\!1000$) toward 1σ**, growing
-with redshift bin (coherent $S_{\rm bias}$ 0.9→1.5σ). One template is not a systematics
-budget — and on TR1 extinction is **not yet under control for clustering**.]{.credit style="font-size:0.6em"}
 
 ::: {.notes}
 This is a deliberately honest slide — I want to be clear about what we have and haven't done
