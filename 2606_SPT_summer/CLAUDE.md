@@ -7,103 +7,122 @@ familiar with Euclid TR1 (the new galaxy density + weak-lensing shear data) and
 with the cross-correlation specifics. Spend the motivation budget on Euclid and
 the overlap, not on what CMB lensing is.
 
-**Headline:** the first high-S/N **Euclid TR1 × SPT-3G CMB-lensing (κ)
-cross-correlation**.
+**Headline:** a **status report** on the **Euclid MoU CMB-lensing ×
+cross-correlation project** (Cail Daley & Margherita Lembo) — where the Euclid TR1
+× SPT-3G κ-cross programme stands: footprints → blinding → data vectors (all three
+crosses) → estimator consistency → SPT-vs-ACT → likelihood/bias plans →
+systematics → simulations.
 
 **Frame (non-negotiable, set by the managing constitution
-`explorations/spt-talk-push`):** *detection + robustness*, with the **sub-unity
-amplitude Â ≈ 0.63 ± 0.05 (PTE 0.73)** presented as **the genuine open question**,
-not a result to explain away. We are honest about what is and isn't under control.
+`explorations/spt-talk-push`):** *status report under the blind*, not a results
+talk. The detection/amplitude arc (the sub-unity Â ≈ 0.63 spine) is real but
+**blinded and OFF this talk** while in progress. Every panel reads under the blind
+— **shapes, relative consistency, error-bar sizes, never the absolute amplitude**.
+We are honest about what is and isn't under control. This is the ~11-slide deck
+below; the retired ~17-slide "detection + robustness" deck (Â≈0.63 headline,
+amplitude/ℓ-flat/open-question slides) is GONE — do not reconstruct it.
 
-## Claim discipline — the wording is load-bearing
+## Claim discipline — the wording is load-bearing (Q&A too)
 
-Every number below reproduces from the on-disk product. Two phrasings are
+No amplitude number appears on any slide — the amplitude arc is blinded and
+dropped. The only numbers that show are **blind-safe by construction**: estimator
+pull RMS <1σ, extinction X_ℓ/σ sub-σ, the SPT-vs-ACT σ-crossover ℓ≈200. Each is
+traceable to a trusted figure built from the sealed bundle. Two phrasings stay
 **banned** because they over-reach (audit:
-`…/5x2pt-amplitude-robustness/amplitude-claims-tempered`):
+`…/5x2pt-amplitude-robustness/amplitude-claims-tempered`) — they matter most now
+in **Q&A**, where the amplitude story will get probed:
 
 - **NOT "foreground-clean-safe."** Say **"estimator-robust; the bias+profile-hardening
-  correction is bounded at <1σ"** (γκ RMS 0.28σ, δκ 0.29σ, all 120 bandpowers <1σ,
-  no detection-S/N cost). A foreground term *common* to GMV and the hardened
-  estimator cancels in the difference and is *not* excluded; the direct test is
-  the reserved Websky/Agora-with-HOD recovery, **not yet run**.
+  correction is bounded at <1σ"** (γκ pull RMS 0.28σ, δκ 0.29σ, all 120 bandpowers
+  <1σ, no detection-S/N cost). A foreground term *common* to GMV and the hardened
+  estimator cancels in the difference and is *not* excluded; the direct test is the
+  reserved Websky/Agora-with-HOD recovery, **not yet run**. (This is exactly the
+  slide-5 caveat and its speaker note.)
 - **NOT "the sub-unity amplitude is localised off the κ reconstruction onto Euclid."**
-  Cross-probe localisation is *suggestive only*. State the family split as a
-  separate, honest axis (below).
+  Cross-probe localisation is *suggestive only*.
 
-Amplitude conventions — keep distinct, never conflate:
-- **Â = 0.63 ± 0.05, PTE 0.73** — 12-cross equal-window, full **data-fiducial
-  Gaussian** covariance. **THE HEADLINE.**
-- **Â = 0.74 ± 0.03 (Knox-diagonal)** — companion only; Knox *over-tightened* the
-  fit (cross-only PTE 1.9e-6 → 0.73 under the Gaussian off-diagonals). The
-  sub-unity amplitude *strengthens* under a better covariance.
-- **Â = 0.61 ± 0.05 (GLS joint estimator)** — ~0.4σ from the equal-window number;
-  mention only if asked, don't imply it's the same number.
-- Â = data / **untuned Planck-18** prediction (windowed fiducial theory, no
-  IA/m/n(z) tuning). So "0.63" = 63% of the untuned prediction.
+If pressed on the amplitude in Q&A, the honest background (NOT on a slide): the
+spine is Â = 0.63 ± 0.05 (PTE 0.73), 12-cross equal-window full **data-fiducial
+Gaussian** covariance; ℓ-flat at ~0.65 across ℓ∈[150,3000]; carries a ~1.6σ family
+split (gc×κ 0.72 vs γ×κ 0.59). It *strengthens* under Knox→Gaussian. But the talk
+reports status, not this number.
 
-The ℓ-shape (locked astra finding `gaussian_cross_amplitude_flat_in_ell`):
-- **A is ℓ-FLAT at ~0.65 across ℓ ∈ [150, 3000]** on the Gaussian basis. Not a
-  high-ℓ feature (kills baryons / nonlinear bias / high-ℓ systematic by
-  ℓ-signature) and not a low-ℓ feature.
-- **ℓ < 150 is covariance-unstable** (cond 8.4e5) — consistent with *both* 0.63
-  and unity. Don't read a low-ℓ story into it (both round-0 low-ℓ stories were
-  covariance artifacts pulling opposite ways).
-- Caveat the flat number carries: it is an aggregate over a **~1.6σ family split**
-  — gc×κ 0.72 ± 0.06 vs γ×κ 0.59 ± 0.06. ℓ-flat and probe-consistent are
-  *different axes*; do not let "ℓ-independent normalization" silently absorb the
-  family offset.
+## The narrative arc (current deck — headlines read top-to-bottom as the story)
 
-## The narrative arc (headline = the "so what", one transferable message each)
+~11 slides for a ~20-min collaboration slot. Source: `2606_SPT_summer.qmd`.
+Figures come ONLY from the trusted, blind-safe set (copied into `../images/`);
+never regenerate a cosmology plot here.
 
-~17 slides for a ~20-min collaboration slot. Headlines read top-to-bottom as the
-story. Figures come ONLY from the trusted set assembled in the dashboard
-(`explorations/spt-talk-push/report.html`) — copied into `../images/`; never
-regenerate a cosmology plot here.
+1. **Status report (title/center)** — "A status report on the Euclid MoU
+   CMB-lensing × cross-correlation project." Today's roadmap + timeline (Euclid
+   cosmology products → June 2027; DR1 freeze slip — `[CONFIRM]` the exact prior
+   date before presenting).
+2. **Euclid footprints and overlaps** — r-stack reveal: Euclid TR1 → +SPT-3G
+   winter → +ACT DR6. (`spt26_footprint_{1_euclid,2_spt,3_act}.png`; the real TR1
+   effcov>0.8 South analysis mask, 380.6 deg², TR1∩SPT 189.3 deg².)
+3. **Getting blinding out of the way** — Muir et al. 2019 parameter-shift blind
+   (same family as SPT-3G D1 & Euclid 3×2pt); hidden cosmology θ_blind added to
+   the **data** only; theory internal (eDR1like), plan to move toward CLOE.
+   (`spt26_blinding_cosmologies.png`.)
+4. **Data vectors: the three cross-correlations** — the spine is δ_g×κ and γ×κ
+   (six bins each, NaMaster on the joint mask); third cross is GGL (δ_g×γ, the
+   source-behind-lens config). Amplitudes/S/N stripped — shapes only.
+   (`spt26_cross_spectra.png`; backup `spt26_ggl_matrix.png`.)
+5. **Robust to the SPT-3G lensing estimator** — bin 6, γ×κ + δ_g×κ, GMV vs PP vs
+   GMVbhTTprf sitting on top of each other → estimator-robust (hardening <1σ).
+   (`spt26_estimator_robustness.png`.) ⏳ **STILL ON RR2** — see "Pending TR1".
+6. **Two κ surveys on the same Euclid bins** — SPT-3G GMV vs ACT DR6 over the
+   common fiducial theory; two independent reconstructions on the same southern
+   bins. (`spt26_cross_survey.png`, TR1.)
+7. **Which κ survey constrains where** — markers on fiducial theory, only the
+   error bars real (exact full data-fiducial Gaussian σ, both surveys, TR1 log15):
+   SPT tighter for ℓ≳200, ACT marginally tighter only at ℓ≲180; crossover ℓ≈200.
+   (`spt26_kappa_constraints.png`.)
+8. **Likelihood — the plan** — joint Gaussian likelihood over the cross vector;
+   per-bin {A, b_i}; δ_gδ_g tightens b_i ~2.5× but does **not** break A–b (no
+   amplitude numbers — blinded).
+9. **Systematics: galactic extinction is sub-σ in every bin** — DES/Chang coherent
+   bias X_ℓ = C^{κS}C^{fS}/C^{SS} in units of σ, per bin, δ_g×κ + γ×κ; sub-σ at
+   every bandpower (worst |X/σ|≈0.46), aggregate 0.35–0.8σ. "One template is not a
+   systematics budget." (`spt26_extinction_xell.png`.) ⏳ **STILL ON RR2** — see below.
+10. **Simulations** — DEMNUni/FLASK → mock covariance; Agora (Gatti Euclid-like
+    products) + systematics-injected GLASS box for foregrounds; D1 κ̂−κ_true noise
+    realizations; the ambitious D1-on-FFP10 cross-covariance between Planck/ACT/SPT.
+11. **Summary & next steps (center)** — status: maps & fields, self-blind, all
+    three crosses, estimator- and cross-survey-consistent. Next: joint {A,b_i},
+    mock cov, close systematics, DR1. Thanks.
 
-1. **Title** — "The first Euclid × SPT-3G CMB-lensing cross-correlation."
-2. **Bottom line up front** — "We detect Euclid TR1 × SPT-3G κ at high S/N — at an
-   amplitude ~⅓ below an untuned Planck-18 prediction, and that deficit is the
-   honest open question." (text teaser; sets the frame)
-3. **Why this cross** — "CMB-lensing × galaxy cross-correlations pin growth and
-   self-calibrate the galaxy tracers — SPT-3G + Euclid open a new high-S/N
-   southern overlap." (κ is mass, bias-free; cross-calibrates shear m & n(z))
-4. **Euclid TR1** — "Euclid TR1 brings ~30% of DR1: galaxy density and weak-lensing
-   shear over the southern sky." (the tracers δ_g, γ; tomographic n(z))
-5. **The footprint** — "The SPT-3G winter GMV field overlaps Euclid TR1 — this is
-   the patch the analysis lives on." (FOOTPRINT figure)
-6. **The data vector** — "We form a 5×2pt data vector; the spine for SPT is the two
-   CMB-lensing crosses, δ_g×κ and γ×κ." (NaMaster bandpowers; estimator one-liner)
-7. **Detection** — "Both κ cross-spectra are detected at high S/N and track the
-   Planck-18 shape." (BANDPOWERS-VS-THEORY spine figure; S/N ~22–24 per cross)
-8. **Amplitude headline** — "A single-amplitude fit gives Â = 0.63 ± 0.05 (PTE 0.73)
-   — a robust detection at a sub-unity amplitude." (AMPLITUDE figure)
-9. **ℓ-flat** — "The deficit is ℓ-flat at ~0.65 across ℓ∈[150,3000]; ℓ<150 is
-   covariance-unstable." (AMPLITUDE-BY-ℓ figure) — kills high-ℓ/low-ℓ stories.
-10. **The open question** — "What is an ℓ-independent ~0.65 deficit consistent with?"
-    Favored: normalization — n(z) mean-z/tail, shear multiplicative m, IA — or a
-    genuine low amplitude. Demoted by wrong ℓ-signature: baryons, nonlinear/scale-
-    dependent bias, high-ℓ systematics. **The centerpiece; ask the collaboration.**
-11. **Robustness — covariance** — "The sub-unity amplitude survives and *strengthens*
-    when Knox → full data-fiducial Gaussian (PTE 1.9e-6 → 0.73)." (COVARIANCE/Knox-vs-
-    Gaussian figure if available; else the amplitude shift stated)
-12. **Robustness — estimator + family split** — "The crosses are estimator-robust
-    (hardening <1σ); the one honest tension is the ~1.6σ gc×κ (0.72) vs γ×κ (0.59)
-    split." (δκ estimator-comparison figure)
-13. **δδ supporting** — "Galaxy clustering is consistent with the same sub-unity
-    story (3-probe χ²=9.5/6, PTE 0.15) but does not yet break the amplitude–bias
-    degeneracy." (δδ JOINT-FIT figure; flag bin4 −2.4σ, tilt at ℓ≈130–390)
-14. **GLASS mocks / scale cut** — "GLASS mocks show the GC-auto high-ℓ excess is NGP
-    gridding aliasing — an empirical ℓ≲865 scale cut; mechanism proven, no closed-
-    form factor." (GLASS RECOVERY figure; consistent w/ Wolz 2024 App. B)
-15. **What's not yet under control** — "Two honest gaps: the on-disk shear auto is a
-    broken spin-2 product (no Â_γγ yet), and systematics are quantified only for
-    extinction (~1.5σ) — one number does not close systematics."
-16. **Blinding** — "Cross-correlations are out of SGS blinding scope by
-    construction; we roll a standalone loose self-blind on the talk timescale."
-    (optional / can fold into #15 or #17)
-17. **Summary & outlook** — "First Euclid×SPT-3G κ-cross: a covariance- and
-    estimator-robust detection at Â=0.63±0.05; the ℓ-flat sub-unity amplitude is the
-    open question. Next: γγ fix, joint {A,b_i}, mock covariance, DR1." (+ Thanks)
+## Pending TR1 — the two figures still reading RR2
+
+Slides 5 (`spt26_estimator_robustness.png`) and 9 (`spt26_extinction_xell.png`)
+still read the RR2 pipeline. They are **blind-safe and carry no RR2/TR1 label**, so
+they don't misrepresent — and the scientific message (estimators agree; extinction
+sub-σ) is identical on RR2 and TR1. For full honesty they should move to TR1, the
+open task in `explorations/spt-talk-push`:
+
+- **Extinction (slide 9)** — the three extinction recipes
+  (`tracer_extinction_cross_spectra`, `kappa_extinction_cross_spectrum`,
+  `extinction_contamination_metric`) are already `release_env.sh`-parameterized, so
+  `lc run -u tr1 …` produces the TR1 products under
+  `results/tr1_v1p1-v0.1/systematics/`. Then repoint `make_extinction_xell.py` (its
+  `SYS`/`XS` roots) at TR1 and re-render.
+- **Estimator (slide 5)** — the two estimator-cross recipes
+  (`spt_estimator_datavector_comparison`, `clustering_estimator_datavector_comparison`)
+  are **RR2-hardcoded** (the deferred "snakemake-bridge"); they need a
+  `release_env.sh` refactor (mirror the migrated spectra recipes) before `lc run -u tr1`
+  can build the per-estimator TR1 crosses `{shear_lensmc,gc}_x_spt_est_{gmv,pp,gmvbhttprf}`.
+  Then repoint `make_estimator_robustness.py` and re-render.
+
+## Blinding & figure provenance
+
+Every data figure is built from the **re-sealed TR1 blinded bundle**
+(`results/tr1/cosmology_shift_talk_datavector/talk_datavector_blinded.pkl`,
+commitment `852da2ed…`; the unblinded twin + seal are gitignored soft-secrets under
+`results/tr1/blinding/` — never commit/share). The figure scripts add the same
+cosmology-shift ΔCℓ to every estimator/bin, so relative consistency is exact while
+the absolute amplitude is hidden; `--unblinded` exists for debugging and is
+watermarked + off by default. Harmonic axes use the shared
+`_ell_axis.py` helper (labelled integer ticks: 100/200/300/500/1000/2000/3000).
 
 ## Build
 
@@ -116,5 +135,10 @@ quarto render 2606_SPT_summer/2606_SPT_summer.qmd --to revealjs   # → 2606_SPT
 node ~/.claude/skills/slides/scripts/slide-to-text.mjs _site/2606_SPT_summer/index.html --flags-only   # text QA
 ```
 
-Figures live in the shared pool `../images/` (symlink). Source PNGs are copied
-from the trusted dashboard set; record provenance in commits.
+The self-contained render embedded at the top of the managing constitution is
+`slides.html` (copied into the fiber dir). Deployment is Cail-gated: pushing the
+`talks` repo to `main` triggers the Pages Action (see `../CLAUDE.md`); do not push
+without Cail.
+
+Figures live in the shared pool `../images/` (symlink). Source PNGs are copied from
+the trusted dashboard set; record provenance in commits.
