@@ -33,8 +33,8 @@ traceable to a trusted figure built from the sealed bundle. Two phrasings stay
 in **Q&A**, where the amplitude story will get probed:
 
 - **NOT "foreground-clean-safe."** Say **"estimator-robust; the bias+profile-hardening
-  correction is bounded at <1σ"** (γκ pull RMS 0.28σ, δκ 0.29σ, all 120 bandpowers
-  <1σ, no detection-S/N cost). A foreground term *common* to GMV and the hardened
+  correction is bounded at <1σ"** (TR1: γκ pull RMS 0.29σ, δκ 0.29σ, all 90 log15 bandpowers
+  <1σ, no detection-S/N cost — S/N if anything rises). A foreground term *common* to GMV and the hardened
   estimator cancels in the difference and is *not* excluded; the direct test is the
   reserved Websky/Agora-with-HOD recovery, **not yet run**. (This is exactly the
   slide-5 caveat and its speaker note.)
