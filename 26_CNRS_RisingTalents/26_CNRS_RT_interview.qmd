@@ -43,7 +43,7 @@ format:
         height: 1080
         margin: 0
         auto-stretch: false
-        theme: [default, custom.scss]
+        theme: [default, ../assets/house.scss, custom.scss]
         slide-number: true
         fig-align: center
         menu: false

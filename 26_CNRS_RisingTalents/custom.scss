@@ -1,125 +1,16 @@
 /*-- scss:defaults --*/
 
-// ─────────────────────────────────────────────────────────────────────────
-//  House palette — vellum / report-template / Portolan
-//  Tokens sourced verbatim from the shuttle skill's references/report-template.html
-// ─────────────────────────────────────────────────────────────────────────
-$parchment:      #EDE2CE;   // warm canonical ground
-$rag:            #FBF6E9;   // lighter warm paper
-$paper-mid:      #F4ECDC;   // in-between — midway rag↔parchment
-$paper-lite:     #F7F0E1;   // a hair lighter than paper-mid (round-3 default, Cail)
-$ink:            #1B1611;
-$ink-muted:      #7A6F5C;
-$cinnabar:       #BC4538;   // the single accent
-$cinnabar-faint: rgba(188, 69, 56, 0.10);
-$teal:           #3F8278;
-$cobalt:         #3D5BA0;
-$ochre:          #C49333;
-$rule:           #C5B89E;
-
-// ── Ground (the genuine taste variant — see report.html) ──
-//    Switch this single line to render the alternatives:
-//      $paper-mid  → the in-between — slightly darker than rag   ← round-3 default
-//      $parchment  → warm, full house identity (round-2 default)
-//      $rag        → warm near-white, halo near-invisible (round-1 default)
-//      #ffffff     → conservative, neutral
-//    Round 3: Cail asked for an in-between ground — slightly darker than rag,
-//    a touch lighter than parchment — then a hair lighter still ($paper-lite).
-//    The huge, soft, under-text halo below melts the figure white into this ground
-//    gradually enough that even this light ground keeps a hard-edge-free figure.
-$ground: $paper-lite;
-
-// ── Fonts ──
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
-$font-family-sans-serif: 'EB Garamond', Georgia, serif;
-$font-family-monospace:  'IBM Plex Mono', ui-monospace, monospace;
-
-// ── Reveal theme hooks ──
-$body-bg:                       $ground;
-$body-color:                    $ink;
-$link-color:                    $cinnabar;
-$selection-bg:                  $cinnabar-faint;
-$presentation-heading-color:    $ink;
-$presentation-heading-font-weight: 600;
-
-$presentation-font-size-root: 46px;
-$presentation-h1-font-size: 2.4em;
-$presentation-h2-font-size: 1.35em;
-$presentation-h3-font-size: 1.4em;
-$presentation-h4-font-size: 1.25em;
-
-body {
-    font-weight: 500;                       // EB Garamond reads thin at 400 when projected
-    font-variant-numeric: lining-nums;
-    -moz-font-feature-settings:    "lnum" 1;
-    -webkit-font-feature-settings: "lnum" 1;
-    font-feature-settings:         "lnum" 1;
-}
+// Per-talk overrides for the CNRS Rising Talents interview deck.
+// The house look comes from ../assets/house.scss (loaded before this file via the
+// deck's `theme:` list). The CNRS palette is identical to the house defaults
+// ($ground: $paper-lite, $cinnabar: #BC4538, …) — so NO palette override is needed.
+// This file holds ONLY the CNRS-specific ~20% that house.scss deliberately omits.
 
 /*-- scss:rules --*/
 
-// ── Content breathing room ──
-//   margin:0 makes the ground full-bleed (so logo corners + figure halos read
-//   true), but it also removed reveal's letterbox that used to inset the text.
-//   Restore generous content padding here. Logos sit OUTSIDE this: their absolute
-//   offsets reference the slide edge (the padding box), not the padded content.
-.reveal .slides section {
-    padding: 56px 104px;
-    box-sizing: border-box;
-}
-
-// Embed fix: when the deck runs inside an iframe (the report.html live embed), reveal
-// computes top:1080px for a couple of horizontal slides (the METR + thesis slides),
-// pushing their content one full viewport DOWN — they render blank in the embed while
-// the footer stays. Fullscreen is unaffected. center:false means every horizontal slide
-// SHOULD sit at top:0, so pinning it is both correct and a no-op fullscreen. Scoped to
-// direct children so any future vertical sub-slides (`> section > section`) are untouched.
-.reveal .slides > section { top: 0 !important; }
-
-// Vertical centering for text-only slides. The deck runs center:false, so every slide is
-// pinned top:0 and short text slides leave a band of dead space below — bottom-heavy and
-// unbalanced. Opt a slide in with `{.vcenter}` on its `##` heading: the section becomes a
-// full-height flex column that floats the headline+body block to the vertical middle. Figure
-// and column slides are deliberately left top-aligned (their layouts are height-tuned).
-// Scoped to `.present` with `display:flex !important` because reveal sets inline `display:block`
-// on the active slide (which beats a plain stylesheet rule) and inline `display:none` on hidden
-// ones — matching only `.present` forces flex when shown while leaving hidden slides hidden.
-.reveal .slides > section.vcenter.present {
-    height: 100%;
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
-    box-sizing: border-box;
-    // Reserve the footer band at the bottom (and a touch at top) so a tall centered block —
-    // e.g. a slide ending in "Thank you." — never grazes the footer. The slight asymmetry
-    // nudges the optical centre up, which reads as balanced above the footer chrome.
-    // Vertical only — the theme's horizontal padding (the comfortable side margins) is left intact.
-    padding-top: 32px;
-    padding-bottom: 84px;
-}
-
-// Columns must actually be flex. Pandoc emits `div.columns{display:flex}`, but a
-// linked reveal/quarto stylesheet carries a later, equal-specificity reset
-// `div.columns{display:initial}` (= inline for a div), which WINS — so every
-// `.columns` slide was silently laid out as inline flow. Narrow rows happened to
-// fit on one line; any row near 100% total width (e.g. the 5-column program slide,
-// 31/3.5/31/3.5/31) wrapped and stacked. A 3-class selector (0,3,0) out-specifies
-// `div.columns` (0,1,1) and restores the intended flex layout deck-wide.
-.reveal .slides section .columns {
-    display: flex;
-    gap: min(4vw, 1.5em);
-}
-
-// METR slide — a two-beat reveal. State A: the live METR chart fills the slide (full width + full
-// height). State B (one fragment step): the chart reflows to TWO-THIRDS width at FULL height while
-// Anthropic's autonomy-progression diagram fades + slides into the right third. The width animates
-// (not a transform) so the chart stays UNDISTORTED — METR re-lays-out to the narrower box. Both
-// motions share the trigger and the 0.85s duration. An empty `.metr-step` fragment before
-// `.metr-stage` drives it via the `~` sibling selector.
+// ── METR slide (CNRS-specific live-iframe layout) ──
 .reveal section.metr-slide { padding: 46px 80px 42px; overflow: hidden; }
 
-// The stage — fills the content area under the headline: chart on the left, the three
-// "why the trend may continue" bullets on the right.
 .reveal .metr-stage {
     position: relative;
     width: 100%;
@@ -127,7 +18,6 @@ body {
     margin-top: 0;
 }
 
-// Chart column — left ~75% (bullets only need ~25%). (The chart is enlarged via the zoom below.)
 .reveal .metr-chart-wrap {
     position: absolute;
     top: 0;
@@ -136,11 +26,9 @@ body {
     width: 75%;
     z-index: 1;
     display: flex;
-    align-items: flex-end;      // chart sits low, freeing a clean band at top for the label
+    align-items: flex-end;
 }
 
-// Custom chart title — masks METR's own two-line title (top-left of the iframe) while leaving
-// the METR logo (top-right) visible. Ground-colored background covers the text underneath.
 .reveal .metr-chart-title {
     position: absolute;
     top: -22px;
@@ -152,37 +40,33 @@ body {
     color: $ink;
     text-align: center;
     background: $ground;
-    padding: 48px 6px 28px 6px;     // title sits ~12px lower in the band; band top/bottom unchanged so masking + 16h clearance hold
-    width: 1000px;                  // wide enough to cover the centred note box; stops short of the METR logo
+    padding: 48px 6px 28px 6px;
+    width: 1000px;
     white-space: nowrap;
 }
 
-// METR hard-locks its chart SVG at 500px tall, so width/height tricks can't enlarge it. Instead we
-// CSS-zoom the iframe: it lays out at 1/zoom of the box, then transform:scale() blows it back up,
-// so the whole chart — text included — is larger and stays crisp (it's vector). Tune $metr-zoom.
 $metr-zoom: 1.42;
 .reveal .metr-cropbox {
     position: relative;
     width: 100%;
     height: 846px;
-    margin-top: 0;                // INERT: .metr-chart-wrap is flex/align-items:flex-end, so the cropbox is bottom-anchored — vertical position is set by the wrap's `bottom` + the embed `top`, not here
+    margin-top: 0;
     overflow: hidden;
     background: $ground;
     border-radius: 4px;
 }
 .reveal .metr-embed {
     position: absolute;
-    top: 0px;                     // no crop — METR's title + note box are masked by .metr-chart-title instead
+    top: 0px;
     left: 0;
     width: calc(100% / #{$metr-zoom});
     height: calc(100% / #{$metr-zoom} + 100px);
     border: 0;
-    background: transparent;      // let the parchment show through METR's own ground
+    background: transparent;
     transform: scale(#{$metr-zoom});
     transform-origin: top left;
 }
 
-// "Why the trend may continue" — three bullets, right column, vertically centred.
 .reveal .metr-axes-col {
     position: absolute;
     top: 0;
@@ -206,7 +90,6 @@ $metr-zoom: 1.42;
 .reveal .metr-axes-col ul { margin: 0; padding-left: 1.1em; list-style: disc; }
 .reveal .metr-axes-col li { font-size: 1.02em; margin-bottom: 1.9em; }
 .reveal .metr-axes-col li::marker { color: $cinnabar; }
-// Reference citations under each bullet — small, muted, clickable to the arXiv abstract.
 .reveal .metr-axes-col li .metr-cite {
     display: block;
     font-size: 0.56em;
@@ -223,8 +106,6 @@ $metr-zoom: 1.42;
 }
 .reveal .metr-axes-col li .metr-cite a:hover { color: $cinnabar; }
 
-// Anthropic diagram — fills the right column at full height; near-white warm ground multiplies
-// into the parchment via the figure-treatment router.
 .reveal .anthropic-diagram {
     flex: 1 1 auto;
     min-height: 0;
@@ -241,408 +122,36 @@ $metr-zoom: 1.42;
     object-fit: contain;
 }
 
-// Attribution under the Anthropic quote on the thesis slide.
+// ── Thesis-quote attribution ──
 .reveal .thesis-credit {
     margin-top: 0.25em;
-    padding-left: 0.7em;     // align under the blockquote's text inset
+    padding-left: 0.7em;
     color: $ink-muted;
     font-size: 0.62em;
 }
 .reveal .thesis-credit a { color: $ink-muted; text-decoration: none; }
 .reveal .thesis-credit a:hover { text-decoration: underline; }
 
-// ── Headings ──
-.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
-    font-weight: 600 !important;
-    font-synthesis: none;
-    letter-spacing: -0.005em;
-}
-
-// A short cinnabar kicker-rule under each content-slide title — the one
-// quiet identity marker. Title slide (h1) is exempt.
-.reveal section > h2:first-child {
-    padding-bottom: 0.12em;
-}
-.reveal section > h2:first-child::after {
-    content: "";
-    display: block;
-    width: 1.25em;
-    height: 4px;
-    margin-top: 0.16em;
-    background: $cinnabar;
-    border-radius: 2px;
-}
-// The intermission slide's heading is intentionally empty (it carries only the
-// centered "Part Two" block), so the kicker-rule would float alone in the
-// top-left corner as a stray mark. Suppress it there.
+// ── Per-slide kicker-rule suppressions (CNRS slide ids) ──
 .reveal section.intermission > h2:first-child::after {
     display: none;
 }
-
-// The backup "sovereign blueprints" slide is two full-height plots carrying
-// their own labels; its heading is intentionally empty. Hide it entirely (no
-// kicker, no reserved vertical space) so the plots own the whole slide.
 .reveal section#sovereign-blueprints > h2:first-child {
     display: none;
 }
 
-// ── Body emphasis ──
-.reveal strong { font-weight: 700; color: $ink; }   // bold = weight, not colour (kept quiet)
-.reveal em { color: $ink; }
-
-.spaced-bullets li {
-    margin-bottom: 0.8em;
-}
-
-// ── Inline code / monospace ──
-.reveal code {
-    font-family: $font-family-monospace;
-    font-size: 0.88em;
-    background: rgba(196, 147, 51, 0.12);
-    padding: 0.04em 0.32em;
-    border-radius: 3px;
-}
-.reveal pre code { background: none; padding: 0; }
-
-// Numbers / stat callouts opt into mono lining figures via `.num`
-.reveal .num {
-    font-family: $font-family-monospace;
-    font-feature-settings: "lnum" 1;
-    font-weight: 500;
-}
-
-// ── Blockquote (used by the thesis frame) ──
-.reveal blockquote {
-    border-left: 3px solid $ochre;
-    background: none;
-    box-shadow: none;
-    color: $ink;
-    font-style: normal;   // no italics anywhere (Cail): reveal italicises blockquotes by default
-    padding: 0.1em 0 0.1em 0.7em;
-}
-
-// ── Title block ──
-.reveal .quarto-title-block .title {
-    color: $ink;
-    font-weight: 600;
-    line-height: 1.08;
-}
-.reveal .quarto-title-author-name {
-    font-family: $font-family-sans-serif;
-    font-weight: 600;
-    color: $ink;
-}
-.reveal .quarto-title-affiliation {
-    color: $ink-muted;
-    // EB Garamond petite/small-caps — scholarly, and unifies the byline on the
-    // single typeface. "UNIONS" / "CEA" stay full-cap; the rest drops to small caps.
-    font-variant-caps: small-caps;
-    font-feature-settings: "smcp" 1;
-    letter-spacing: 0.03em;
-}
-// Occasion / kicker line — EB Garamond small-caps cinnabar (round 2; was mono
-// uppercase). Real OpenType small caps read as scholarly, not techy, and keep the
-// whole title block on one typeface. This is the headline small-caps placement.
-.reveal .quarto-title-block .occasion {
-    font-family: $font-family-sans-serif;
-    font-variant-caps: small-caps;
-    font-feature-settings: "smcp" 1;
-    text-transform: none;
-    letter-spacing: 0.05em;
-    font-size: 0.92em;
-    font-weight: 600;
-    color: $cinnabar;
-    margin-top: 0.8em;
-}
-.reveal .quarto-title-block .date {
-    color: $ink-muted;
-    font-size: 0.78em;
-    margin-top: 0.3em;
-}
-.quarto-title-block .quarto-title-authors {
-    margin-top: 0.3em;
-}
-
-// ── Title slide: a mini-pitch lives between the byline and the occasion ──
-// Make the title section a full-height column so a flex spacer can push the
-// occasion + date down toward the bottom, leaving the middle for credentials.
-.reveal section#title-slide {
-    display: flex !important;
-    flex-direction: column;
-    height: 100%;
-    box-sizing: border-box;
-    padding-bottom: 7vh;
-}
-.reveal #title-slide .title-spacer {
-    flex: 1 1 auto;
-    min-height: 1.5em;
-}
-.reveal #title-slide .credentials {
-    color: $ink;
-    font-size: 0.82em;
-    margin-top: 1.6em;
-    line-height: 1.4;
-}
-.reveal #title-slide .pitch {
-    color: $ink;
-    font-size: 0.8em;
-    margin-top: 0.5em;
-}
-// the only red on the title slide: the separating dots in the credentials + pitch lines
-.reveal #title-slide .ti-dot {
-    color: $cinnabar;
-    padding: 0 0.12em;
-}
-
-// ── Footer & slide number — quiet EB Garamond small-caps stamp ──
-.reveal .footer {
-    font-family: $font-family-sans-serif !important;
-    font-size: 2.05vh !important;
-    font-variant-caps: small-caps;
-    letter-spacing: 0.075em;
-    color: $ink-muted !important;
-    bottom: 1.5vh !important;
-    line-height: 1 !important;
-    opacity: 0.78;
-}
-.reveal .slide-number {
-    font-family: $font-family-sans-serif;
-    font-variant-caps: small-caps;
-    letter-spacing: 0.04em;
-    color: $ink-muted;
-    background: transparent;
-    // bottom-right, on the footer's baseline (the UNIONS logo is title-only now, so the
-    // bottom-right corner is free on content slides — no conflict to dodge).
-    bottom: 1.5vh !important;
-    right:  1.6vh !important;
-    top:    auto  !important;
-}
-
-// ── UNIONS corner logo: title slide only ──
-//   The `logo:` mark would otherwise sit bottom-right on every slide and collide with the
-//   page number. Show it ONLY on the title slide (where footer + number are both hidden),
-//   so it has the corner to itself; hide it everywhere else.
-.reveal .slide-logo {
-    display: none !important;   // Quarto's .reveal.has-logo .slide-logo forces block — override hard
-    bottom: 1.6vh !important;
-    right:  1.6vh !important;
-    max-height: 4.4vh !important;
-}
-.reveal:has(#title-slide.present) .slide-logo {
-    display: block !important;
-}
-
-// ── Structural classes preserved from the original theme ──
-.caption-left {
-    text-align: left;
-    margin-left: 30px;
-}
-
-.fitcenter {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-
-    &.text-left {
-        text-align: left;
-        figcaption { margin-left: 30px; }
-    }
-
-    &.text-right {
-        text-align: right;
-        figcaption { margin-right: 30px; }
-    }
-}
-
-.reveal img {
-    vertical-align: middle;
-    margin: 0;
-}
-
-// ── Figure halo — the signature move (round 3: huge, gradual, UNDER the text) ──
-//   The science figures all export with white backgrounds. On the warm ground they
-//   would otherwise sit as hard white rectangles. We feather each figure's white
-//   margin outward into the ground so the white interior melts into the warmth.
-//
-//   Round 3 (Cail): make it HUGE and gradual — a falloff that *reads* like a
-//   gradient but emanates from the figure (not a slide-wide single-gradient wash,
-//   the generic-AI tell). A single huge box-shadow falls off ~linearly and blooms
-//   like a glowing cloud; instead we STACK several shadows with decreasing alpha to
-//   approximate a smooth gaussian ramp — solid collar at the edge, dissolving over
-//   ~1300px into nothing. Reaches far, stays subtle.
-//
-//   CRUCIAL (Cail): the halo must sit IN THE CANVAS, *under* the text — not paint
-//   over it. The figure is later in the DOM than the text column, so by default its
-//   box-shadow paints on top and washes the words. The z-index layering below puts
-//   the whole figure layer beneath the whole text layer, so even a huge glow stays
-//   behind crisp text. Text glyphs read on top of the glow; the glow is canvas.
-//   Applies to EVERY content figure image (column-figures and sole centred
-//   figures alike), regardless of whether quarto wraps it in <p> or <figure>.
-//   Logos opt out (box-shadow:none on .logo). Auto-stretch is disabled in the
-//   deck YAML (`auto-stretch: false`) so sole images size by their width instead
-//   of reveal's r-stretch, which computed height:0 and left those slides blank.
-.reveal .slides section img,
-.reveal .slides section iframe.figure-embed {
-//   Round 3.2 (Cail): white ONLY at the figure edge (a thin collar), then a long,
-//   eased, gentle gradient that takes a long way to settle — not the bright,
-//   sharp "white blotch" of the 4-stop version. Many low-alpha stops over ~1150px
-//   approximate a smooth convex ease-out: comes off white fast, then a faint wide
-//   tail that stabilizes into the ground well before the page edge.
-//   Round 3.3 (Cail): ~2× larger reach again — the white surround extends much
-//   further before stabilizing. Solid white core still at the edge (no seam).
-//   Round 5 (Cail liked the bigger halo): roughly double the reach again, ~2100px
-//   → ~4200px, with lower mid alphas so the falloff is gentler over a much longer
-//   distance. The figure casts a wide, soft pool of light that dissolves into the
-//   ground — reads like a gradient, but one the figure emanates (corners stay warm,
-//   so it's not a single slide-wide wash). Everything ELSE this round reverted to
-//   the round-4 baseline; only the halo size carried over.
-    box-shadow:
-        0 0   80px  44px rgba(255,255,255,1.00),   // solid white collar at the figure edge — seamless
-        0 0  260px 100px rgba(255,255,255,0.78),
-        0 0  620px 200px rgba(255,255,255,0.52),   // generous white surround, easing
-        0 0 1150px 330px rgba(255,255,255,0.34),
-        0 0 1900px 480px rgba(255,255,255,0.20),   // long, gentle, subtle ramp
-        0 0 2900px 650px rgba(255,255,255,0.10),
-        0 0 4200px 860px rgba(255,255,255,0.04);   // very faint, very far tail — the gradient the figure casts
-    position: relative;
-    z-index: 1;   // figure layer — UNDER the text
-}
-
-// Layering: text ABOVE the halo, figure wrappers stay on the figure layer so
-// they don't drag their image up. `:has()` separates figure wrappers from text.
-.reveal .slides section :is(h1, h2, h3, h4),
-.reveal .slides section p:not(:has(img)),
-.reveal .slides section ul,
-.reveal .slides section ol,
-.reveal .slides section li,
-.reveal .slides section blockquote,
-.reveal .slides section table,
-.reveal .slides section figcaption {
-    position: relative;
-    z-index: 2;
-}
-.reveal .slides section p:has(img),
-.reveal .slides section figure:has(img),
-.reveal .slides section p:has(iframe.figure-embed) {
-    position: relative;
-    z-index: 1;
-}
-
-// ── Stacked small schematic figures (e.g. the E/B pattern pair) ──
-//   The signature halo's 80px solid collar is sized for one prominent data plot.
-//   When two small schematics stack in a single column, that collar's soft white
-//   bleeds onto the upper figure's caption. Give these a proportionate halo: a thin
-//   collar that still melts the white edge into the ground, with a short, faint tail
-//   that doesn't reach the neighbour.
-.reveal .slides section img.eb-pattern {
-    box-shadow:
-        0 0  26px 12px rgba(255,255,255,1.00),   // thin solid collar at the edge
-        0 0  90px  26px rgba(255,255,255,0.40),   // modest soft falloff
-        0 0 260px  60px rgba(255,255,255,0.12),
-        0 0 520px 110px rgba(255,255,255,0.04);   // faint, short far tail
-}
-
-// ── Image placeholder — for figures Cail will generate later (GPT-image) ──
-//   A clearly-marked, on-theme box so a to-be-made figure reads as intentional,
-//   not as a broken/blank slide. Swap for an ![](…) when the real art lands.
-.reveal .slides section .img-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-height: 6.5em;
-    margin: 0.2em 0;
-    padding: 1.2em 1.4em;
-    border: 2px dashed rgba(188, 69, 56, 0.45);   // cinnabar, faint
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.35);
-    color: $ink-muted;
-    font-style: italic;
-    font-size: 0.82em;
-    line-height: 1.3;
-    box-shadow: none;
-}
-
-.quarto-figure {
-    margin-bottom: 0;
-    padding: 0;
-}
-
-// ── Title-slide logo bar (round 3) ──
-//   Cail: the old corner-jammed CEA/CosmoStat pair sat at different sizes, hard
-//   against the edges, partly clipped off the bottom. Replace with a single row of
-//   uniformly-sized marks, baseline-aligned, with generous margins from the slide
-//   edges and even spacing between marks — "all the same size, in a line."
-//
-//   "Same size" = common optical HEIGHT (the logo-row convention), since the marks
-//   have very different aspect ratios (CNRS 1:1 disc, CEA ~1.2:1, CosmoStat ~2.8:1
-//   wordmark). Per-mark nudges below correct for optical weight so equal height
-//   doesn't make the dense CNRS disc dominate.
-//
-//   Cail: equal breathing room — distance from the left ≈ distance from the bottom
-//   ≈ gap between marks — and none of them large. One token drives all three. The
-//   title section is forced to full slide height (`:has(.logo-bar)`) so `bottom`
-//   anchors to the real slide edge, not the bottom of the centred content box
-//   (which left the bar floating mid-slide before).
-$logo-h:      72px;   // common logo height
-$logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
-
-.reveal .slides section:has(.logo-bar) { height: 100%; }
-
-.reveal .logo-bar {
-    position: absolute;
-    left:   $logo-space;
-    bottom: $logo-space;
-    display: flex;
-    align-items: center;
-    gap: $logo-space;
-    z-index: 3;
-}
-.reveal .logo-bar .logo {
-    height: $logo-h;
-    width: auto;
-    margin: 0;
-    box-shadow: none;   // logos opt out of the figure halo
-}
-// Optical-weight corrections so equal height reads as equal presence.
-.reveal .logo-bar .logo-cnrs      { height: $logo-h * 1.02; }   // dense disc
-.reveal .logo-bar .logo-cea       { height: $logo-h * 0.96; }
-
-.reveal .slides section img.blend-figure {
-    box-shadow: none;
-}
-
-// ── Figure-on-ground treatment ──
-//   Handled entirely by the shared helper `assets/figure-treatment.html` (the canonical copy
-//   lives in the slides skill: scripts/figure-treatment.html). It samples each figure's corner
-//   and sets all styles INLINE — white plots → multiply onto a local ground backdrop; cream/grey
-//   illustrations → background keyed transparent; transparent / already-ground figures left alone.
-//   The white-halo default above is the no-JS fallback (e.g. a raw file:// open, where canvas
-//   reads taint); over http / embed-resources the helper overrides it per figure.
-
-// #intro — career trajectory SVG carries the identity (PhD → postdoc, close to the data) in place
-// of bullet text. Transparent ground, so the figure router leaves it untouched.
-.reveal section#intro .intro-trajectory {
-    display: block;
-    width: 1320px;
-    max-width: 88%;
-    height: auto;
-    margin: 0.4em auto 0.2em;
-}
-
+// ── #standard-model ──
 .reveal section#standard-model .standard-model-figure {
-    height: 1098px;            // +4% — uses the small internal label margins; apex + "today" still in
+    height: 1098px;
     max-width: none;
-    margin-top: -4.05em;       // nudged down ~2%
+    margin-top: -4.05em;
     margin-right: 0;
-    transform: translateX(64px);   // nudged further right
+    transform: translateX(64px);
     display: flex;
     align-items: flex-start;
     justify-content: center;
     overflow: visible;
 }
-
 .reveal section#standard-model .standard-model-figure img {
     height: 1098px !important;
     width: auto !important;
@@ -651,9 +160,6 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
     object-fit: contain;
     object-position: center center;
 }
-
-// ΛCDM energy-budget pie (Spergel) at the bottom of the left column — quantitative complement to
-// the cosmic-history cone; its white ground multiplies into the parchment via the figure router.
 .reveal section#standard-model .lcdm-pie {
     margin-top: 1.3em;
 }
@@ -668,117 +174,7 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
     font-size: 0.5em;
 }
 
-// #precision — one tension, annotated. Flex `.columns` is dead deck-wide (overridden to inline), so
-// this is laid out the way the other 2-col slides are: plot flows on the LEFT, the explanation is
-// absolutely positioned on the RIGHT, each line beside its cluster on the whisker plot.
-//   NB: do NOT set `position: relative` on the section — reveal already makes every slide
-//   `position: absolute`, which is the positioning anchor the annotations need. Forcing `relative`
-//   drops the slide into normal flow; with two such slides they stack vertically and push each
-//   other off-screen (that bug emptied #lensing-landscape).
-.reveal section#precision .h0-plot {
-    text-align: left;
-    margin-top: 0.35em;
-}
-.reveal section#precision .h0-plot img {
-    width: 58%;
-    height: auto;
-    max-height: 820px;
-}
-.reveal section#precision .tension-cap {
-    width: 58%;
-    margin-top: 0.35em;
-    text-align: center;
-    font-size: 0.74em;
-    color: $ink;
-}
-.reveal section#precision .plot-credit {
-    width: 58%;
-    margin-top: 0.25em;
-    text-align: center;
-    font-size: 0.5em;
-    color: $ink-muted;
-}
-
-// The explanation column, overlaid on the right and vertically aligned to the plot's data rows:
-// head at the top, "early" beside the CMB/BAO group, "late" beside the SH0ES/TRGB group.
-.reveal section#precision .precision-annot {
-    position: absolute;
-    top: 250px;            // aligned with the plot's top data row
-    right: 2%;
-    width: 37%;
-    height: 560px;         // spans CMB row → SH0ES row
-    color: $ink;
-}
-.reveal section#precision .annot-head {
-    position: absolute; top: -60px; left: 0; right: 0;
-    font-size: 1.0em;
-    line-height: 1.3;
-}
-.reveal section#precision .annot-early {
-    position: absolute; top: 38%; left: 0; right: 0;
-    font-size: 0.95em;
-}
-.reveal section#precision .annot-late {
-    position: absolute; top: 86%; left: 0; right: 0;
-    font-size: 0.95em;
-}
-// Colour the cluster labels only; the rest of each line stays ink, verbs stay italic.
-.reveal section#precision .lbl-early { color: $cobalt; }
-.reveal section#precision .lbl-late  { color: $teal; }
-.reveal section#precision .plot-credit a { color: $ink-muted; text-decoration: none; }
-.reveal section#precision .plot-credit a:hover { text-decoration: underline; }
-
-.reveal section#lensing-landscape {
-    position: relative;
-    overflow: hidden;
-}
-
-.reveal section#lensing-landscape > h2:first-child {
-    max-width: 62%;
-    position: relative;
-    z-index: 2;
-}
-
-.reveal section#lensing-landscape .columns {
-    position: static;
-    z-index: auto;
-}
-
-.reveal section#lensing-landscape .columns > .column:first-child {
-    position: relative;
-    z-index: 2;
-    padding-right: 0.4em;
-    font-size: 0.94em;
-}
-
-.reveal section#lensing-landscape .columns > .column:last-child {
-    position: static;
-}
-
-.reveal section#lensing-landscape .research-landscape-figure {
-    position: absolute;
-    top: -28px;            // height defined by top+bottom insets; a little bleed top+bottom so
-    bottom: -28px;         // the image can run taller than the slide and grow further left.
-    right: -14px;          // (section overflow:hidden clips the bleed; the top:0 fix prevents
-    width: 1010px;         // the blank-slide cascade.) Portrait, right-anchored -> grows LEFT.
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    overflow: visible;
-    z-index: 1;
-}
-
-.reveal section#lensing-landscape .research-landscape-figure img {
-    height: 1136px !important;  // taller than the slide (portrait 1024x1536 -> ~757px wide),
-    width: auto !important;     // right-anchored so the extra size extends to the LEFT.
-    max-width: none;
-    max-height: none;
-    object-fit: contain;
-    object-position: right center;
-}
-
-// #credentials (combined deck) reuses the exact lensing-landscape figure positioning:
-// portrait illustration right-anchored, bleeding top/bottom, growing left, behind the text column.
+// ── #credentials (portrait illustration right-anchored, bleeding, growing left) ──
 .reveal section#credentials {
     position: relative;
     overflow: hidden;
@@ -821,12 +217,7 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
     object-position: right center;
 }
 
-.reveal img.nopad {
-    padding: 0;
-}
-
-// Lightcone Research wordmark on the #lightcone slide — opts out of the figure halo
-// (it's a transparent-background logo, not a photo, so the white glow would read as a box).
+// ── Lightcone wordmark (transparent logo, opts out of halo) ──
 .reveal .lightcone-logo {
     width: 640px;
     height: auto;
@@ -834,31 +225,7 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
     padding: 0;
 }
 
-figcaption > span {
-    display: block !important;
-    position: relative !important;
-}
-
-.credit {
-    position: relative;
-    display: block;
-}
-
-.reveal .slide-number > a[href*='title-slide'] {
-    display: none;
-}
-
-.reveal .slides .full {
-    top: 0 !important;
-    padding: 0 0;
-    margin-top: 0px;
-}
-
-// ── Weak-lensing shear animation (Talk 2 opener, #shear-intro) ──────────────
-// Each galaxy is a unit circle placed/shaped by --ti (intrinsic) and retargeted
-// to --tl (lensed: a real reduced-shear distortion + slight deflection) once the
-// cluster fragment fires and assets/wl-shear-animate.html adds .lensed to #wl-shear.
-// non-scaling-stroke keeps the outline weight constant despite the per-galaxy scale().
+// ── Weak-lensing shear animation (Talk 2 opener) ──
 #wl-shear .wl-gal {
     fill: none;
     stroke: #1b1611;
@@ -872,12 +239,6 @@ figcaption > span {
 #wl-shear.lensed .wl-gal {
     transform: var(--tl);
 }
-// roomier bullet rhythm on the opener
 .reveal section#shear-intro li { margin: 0.42em 0; }
-// cluster fades in over the SAME 1.15s as the galaxy shear, so the mass appears and the
-// shapes distort simultaneously (overrides reveal's fast ~0.2s fragment fade).
 #wl-cluster.fragment { transition: opacity 1.15s cubic-bezier(0.45, 0.05, 0.2, 1) !important; }
-// Papers/team slide: vertically centre the (shorter) team-photo column against the papers list.
-// Centre at the flex-row level so the image keeps its normal block sizing (making the column
-// itself display:flex lets the 4032px photo overflow and collapses the two-column layout).
 .reveal section#papers-team .columns { align-items: center; }
