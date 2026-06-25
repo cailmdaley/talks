@@ -1,94 +1,47 @@
-
 /*-- scss:defaults --*/
 
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300..500;1,300..500&display=swap');
-
-$font-family-sans-serif: Raleway, sans-serif;
-
-body {
-    font-variant-numeric: lining-nums;
-    -moz-font-feature-settings: "lnum" 1;
-    -moz-font-feature-settings: "lnum=1";
-    -ms-font-feature-settings: "lnum" 1;
-    -o-font-feature-settings: "lnum" 1;
-    -webkit-font-feature-settings: "lnum" 1;
-    font-feature-settings: "lnum" 1;
-}
-
-$presentation-font-size-root: 50px;
-$presentation-h1-font-size: 2.5em;
-$presentation-h2-font-size: 2em;
-$presentation-h3-font-size: 1.5em;
-$presentation-h4-font-size: 1.3em;
+// ═══════════════════════════════════════════════════════════════════════════
+//  Per-talk overrides. The house look comes from ../assets/house.scss (loaded
+//  before this file via the deck's `theme:` list). This file holds only what is
+//  specific to THIS talk: palette re-skin + bespoke slide layouts.
+//
+//  RE-SKIN THE PALETTE (Quarto concatenates the theme list IN ORDER, so a var
+//  set here CANNOT override house.scss's — house already loaded). To change the
+//  palette, add a scss file BEFORE house.scss in the deck frontmatter:
+//
+//      theme: [default, brand.scss, ../assets/house.scss, custom.scss]
+//
+//  …where brand.scss sets the tokens you want (each house var carries !default,
+//  so your value wins):
+//
+//      $cinnabar: #2E6F9E;        // re-skin the single accent
+//      $ground:   $parchment;     // warmer ground; or #ffffff for neutral
+//
+//  Most talks won't re-skin — the default vellum/cinnabar look is the house.
+// ═══════════════════════════════════════════════════════════════════════════
 
 
 /*-- scss:rules --*/
 
-.caption-left {
-    text-align: left;
-    margin-left: 30px;
-}
+// ── Bespoke slide layouts for THIS talk ──
+//   House gives you: the parchment ground, the figure halo, .vcenter, .columns
+//   flex, the title-slide layout (.credentials / .pitch / .ti-dot), the kicker
+//   rule, the logo-bar pattern, .img-placeholder, and the figure utility classes.
+//   Add slide-id-specific positioning here, e.g.:
+//
+//   .reveal section#my-figure-slide .my-figure img {
+//       height: 1000px !important;
+//       width: auto !important;
+//   }
+//
+//   Optical-weight nudges for THIS talk's logo bar, e.g.:
+//
+//   .reveal .logo-bar .logo-cnrs { height: 73px; }   // dense disc reads heavy
 
-.fitcenter {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-
-    &.text-left {
-        text-align: left;
-        figcaption {
-            margin-left: 30px;
-        }
-    }
-
-    &.text-right {
-        text-align: right;
-        figcaption {
-            margin-right: 30px;
-        }
-    }
-}
-
-.reveal img {
-    vertical-align: middle;
-    margin: 0;
-}
-
-.reveal img.nopad {
-    padding: 0;
-}
-
-.quarto-figure {
-    margin-bottom: 0;
-    padding: 0;
-}
-
-figcaption > span {
-    display: block !important;
-    position: relative !important;
-}
-
-.credit {
-    position: relative;
-    display: block;
-}
-
-.reveal .footer {
-    font-size: 2vh !important;
-    bottom: 2vh !important;
-}
-
-.reveal .slide-number > a[href*='title-slide'] {
-    display: none;
-}
-
-.reveal .slides .full {
-    top: 0 !important;
-    padding: 0;
-    margin-top: 0;
-}
-
+// ── This starter's title-slide logos (CEA / CosmoStat / SPT) ──
+//   The bundled title-slide.html positions three marks by absolute offset. Newer
+//   decks prefer house's `.logo-bar` row instead; swap the partial + these rules
+//   for `.logo-bar` when you build a real talk. Kept here so the starter renders.
 .cea-logo {
     position: absolute;
     bottom: -235px;
@@ -96,14 +49,12 @@ figcaption > span {
     width: 140px;
     z-index: 1;
 }
-
 .cosmostat-logo {
     position: absolute;
     bottom: -245px;
     left: 70px;
     width: 530px;
 }
-
 .spt-logos {
     position: absolute;
     bottom: -230px;

@@ -1,0 +1,157 @@
+<script>
+/*
+  figure-treatment.html — make figures sit cleanly on a COLORED ground (warm paper, etc.)
+  with no hard white rectangle and no color break. Drop-in: copy into your talk's assets/
+  and add to the deck's reveal `include-after-body`. Self-contained — no theme CSS required;
+  it detects the ground from <body> and sets every style inline.
+
+  ── The problem ───────────────────────────────────────────────────────────────────────
+  Plots export on pure white; hand-drawn / AI illustrations on cream; schematics on light
+  grey; some SVGs are transparent or carry their own ground rect. On a warm ground each of
+  these reads differently — a white plot is a glaring rectangle, a cream illustration breaks
+  at its edge. No single fix is right for all of them.
+
+  ── The routing (sample each figure's corner background, then) ──────────────────────────
+    transparent              → leave (already seamless)
+    already ≈ the ground      → leave (e.g. an SVG whose bg rect is the ground; don't rasterise)
+    pure white                → MULTIPLY onto a local ground backdrop
+    other light (cream/grey)  → KEY the background to transparent (canvas), ground shows through
+    dark / vivid              → a small color-matched feather (fallback; rare)
+
+  ── Why two mechanisms, not one (the load-bearing insight) ──────────────────────────────
+  • multiply can only DARKEN: result = image × ground. The ONLY colour it maps exactly onto
+    the ground is pure white (white × ground = ground). Any non-white background multiplies
+    BELOW the ground → a visible darker break. So multiply is wrong for cream/grey/near-white.
+  • keying (make the background transparent) matches ANY background — but it can't tell a light
+    *element* from a light *background*, so it ERASES intentional light-grey content (shaded
+    bands, light fills, faint error envelopes).
+  So: multiply where the light pixels are CONTENT (science plots — it preserves everything),
+  keying where the light pixels are BACKGROUND (illustrations — nothing to preserve). The split
+  tracks what the light pixels MEAN; it is not arbitrary.
+
+  ── The reveal gotcha multiply needs ───────────────────────────────────────────────────
+  mix-blend-mode blends with the backdrop in the element's own stacking context. reveal.js puts
+  every <section> in its own context (z-index), so the ground on <body> is unreachable and the
+  blend hits transparent (= no effect). Fix: paint the detected ground INTO the figure's parent
+  and isolate it, giving multiply a local ground backdrop. This helper does that automatically.
+
+  ── Notes ───────────────────────────────────────────────────────────────────────────────
+  • Pixel reads need a canvas; same-origin / data-URI images are safe, raw file:// taints and we
+    fall back silently (figure keeps whatever the theme gave it). Serve over http (quarto preview,
+    a localhost server) or embed-resources for the keying/multiply to apply.
+  • Config (optional): set `window.figureTreatment = { ground:{r,g,b}, selector, skip }` before
+    this script. Defaults: ground = <body> background; selector = '.reveal .slides section img';
+    skip = logos + anything matching '.no-treat' / '[data-no-treat]'.
+*/
+(function () {
+  var CFG = window.figureTreatment || {};
+  var SELECTOR = CFG.selector || '.reveal .slides section img';
+  var SKIP = (CFG.skip ? CFG.skip + ',' : '') + '.no-treat,[data-no-treat],.logo,.slide-logo,.lightcone-logo';
+
+  var GROUND = null;
+  function ground() {
+    if (GROUND) return GROUND;
+    if (CFG.ground) { GROUND = CFG.ground; return GROUND; }
+    var m = (getComputedStyle(document.body).backgroundColor || '').match(/(\d+),\s*(\d+),\s*(\d+)/);
+    GROUND = m ? { r: +m[1], g: +m[2], b: +m[3] } : { r: 255, g: 255, b: 255 };
+    return GROUND;
+  }
+  function rgb(c) { return 'rgb(' + c.r + ',' + c.g + ',' + c.b + ')'; }
+  function dist(a, b) { return Math.sqrt((a.r - b.r) * (a.r - b.r) + (a.g - b.g) * (a.g - b.g) + (a.b - b.b) * (a.b - b.b)); }
+
+  // Median colour of each corner patch, then the median ACROSS corners — robust to one corner
+  // that carries content or a stray bright margin.
+  function sampleBg(img) {
+    try {
+      var w = img.naturalWidth, h = img.naturalHeight;
+      if (!w || !h) return null;
+      var cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+      var ctx = cv.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0);
+      var S = Math.max(6, Math.round(Math.min(w, h) * 0.02));
+      var corners = [[0, 0], [w - S, 0], [0, h - S], [w - S, h - S]];
+      var med = function (a) { a.sort(function (p, q) { return p - q; }); return a[a.length >> 1]; };
+      var cs = corners.map(function (xy) {
+        var d = ctx.getImageData(xy[0], xy[1], S, S).data, r = [], g = [], b = [], al = [];
+        for (var i = 0; i < d.length; i += 4) { r.push(d[i]); g.push(d[i + 1]); b.push(d[i + 2]); al.push(d[i + 3]); }
+        return { r: med(r), g: med(g), b: med(b), a: med(al) };
+      });
+      var pick = function (k) { return med(cs.map(function (c) { return c[k]; })); };
+      return { r: pick('r'), g: pick('g'), b: pick('b'), a: pick('a') };
+    } catch (e) { return null; }
+  }
+
+  // Make the sampled background transparent (feathered) so the real ground shows through.
+  function keyOut(img, bg, NEAR, FAR) {
+    try {
+      var maxDim = 2200, w = img.naturalWidth, h = img.naturalHeight;
+      var s = Math.min(1, maxDim / Math.max(w, h));
+      w = Math.round(w * s); h = Math.round(h * s);
+      var cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+      var ctx = cv.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0, w, h);
+      var id = ctx.getImageData(0, 0, w, h), d = id.data;
+      for (var i = 0; i < d.length; i += 4) {
+        var dd = Math.sqrt((d[i] - bg.r) * (d[i] - bg.r) + (d[i + 1] - bg.g) * (d[i + 1] - bg.g) + (d[i + 2] - bg.b) * (d[i + 2] - bg.b));
+        var a = dd <= NEAR ? 0 : dd >= FAR ? 1 : (dd - NEAR) / (FAR - NEAR);
+        d[i + 3] = Math.round(d[i + 3] * a);
+      }
+      ctx.putImageData(id, 0, 0);
+      return cv.toDataURL('image/png');
+    } catch (e) { return null; }
+  }
+
+  function treat(img) {
+    if (img.dataset.figTreated || img.matches(SKIP)) return;
+    var bg = sampleBg(img);
+    if (!bg) {                                                           // not decoded yet / tainted
+      var n = (+img.dataset.figTries || 0) + 1; img.dataset.figTries = n;
+      if (n >= 8) img.dataset.figTreated = '1';                          // give up (e.g. file:// taint)
+      return;                                                            // else leave UNMARKED → retry
+    }
+    img.dataset.figTreated = '1';
+    if (bg.a < 30) { img.dataset.figTreat = 'transparent'; img.style.boxShadow = 'none'; return; }
+    if (dist(bg, ground()) < 6) { img.dataset.figTreat = 'asground'; img.style.boxShadow = 'none'; return; }
+    if (bg.r > 250 && bg.g > 250 && bg.b > 250) {                        // pure white → multiply
+      img.dataset.figTreat = 'multiply';
+      img.style.mixBlendMode = 'multiply';
+      img.style.boxShadow = 'none';
+      var p = img.parentElement;
+      if (p) { p.style.background = rgb(ground()); p.style.isolation = 'isolate'; }
+      return;
+    }
+    if (bg.r > 175 && bg.g > 175 && bg.b > 175) {                        // cream / grey / near-white → key
+      var keyed = keyOut(img, bg, 20, 66);
+      if (keyed) { img.dataset.figTreat = 'keyed'; img.style.boxShadow = 'none'; img.src = keyed; }
+      else { delete img.dataset.figTreated; }                           // canvas not ready — retry
+      return;
+    }
+    var c = rgb(bg);                                                     // dark / vivid → matched feather
+    img.dataset.figTreat = 'matched';
+    img.style.boxShadow = '0 0 14px 8px ' + c + ', 0 0 34px 16px ' + c.replace('rgb', 'rgba').replace(')', ',0.45)');
+  }
+
+  // Wait for a real decode before sampling — a "complete" image isn't guaranteed to have its
+  // bitmap ready, and sampling too early reads zeros (alpha 0 → misclassified "transparent",
+  // leaving a white plot). decode() closes that race; multiple plots / fragments hit it most.
+  function attempt(img) {
+    if (img.dataset.figTreated || img.matches(SKIP) || !img.naturalWidth) return;
+    if (img.decode) img.decode().then(function () { treat(img); }, function () { treat(img); });
+    else treat(img);
+  }
+  function scan() {
+    document.querySelectorAll(SELECTOR).forEach(function (img) {
+      if (img.dataset.figTreated) return;
+      if (img.naturalWidth) attempt(img);
+      else img.addEventListener('load', function () { attempt(img); }, { once: true });
+    });
+  }
+  if (window.Reveal && Reveal.on) {
+    Reveal.on('ready', scan); Reveal.on('slidechanged', scan);
+    Reveal.on('lazyloaded', scan); Reveal.on('fragmentshown', scan);
+  }
+  document.addEventListener('DOMContentLoaded', scan);
+  window.addEventListener('load', scan);
+  [120, 350, 800, 1600, 2800].forEach(function (t) { setTimeout(scan, t); });
+})();
+</script>
