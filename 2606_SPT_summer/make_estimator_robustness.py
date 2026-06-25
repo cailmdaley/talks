@@ -32,9 +32,14 @@ import matplotlib.pyplot as plt
 from _ell_axis import style_ell_axis
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
-XS = ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra"
-BLINDED_PKL = ROOT / "results/baseline/cosmology_shift_talk_datavector/talk_datavector_blinded.pkl"
-UNBLINDED_PKL = ROOT / "results/baseline/blinding/talk_datavector_unblinded.pkl"
+# TR1. The per-estimator κ-cross pickles ({prefix}_x_spt_est_{est}.pkl) are written
+# to the $RESULTS_ROOT working tree by `lc run -u tr1 {spt,clustering}_estimator_
+# datavector_comparison` (only the comparison json/png get copied to the lc-canonical
+# results/tr1/<output_id>/ tree). The blind bundle is the re-sealed TR1 talk data
+# vector (commitment 852da2ed…) under the lc-canonical results/tr1/ tree.
+XS = ROOT / "results/tr1_v1p1-v0.1/cross_spectra"
+BLINDED_PKL = ROOT / "results/tr1/cosmology_shift_talk_datavector/talk_datavector_blinded.pkl"
+UNBLINDED_PKL = ROOT / "results/tr1/blinding/talk_datavector_unblinded.pkl"
 OUT = ROOT / "docs/talks/images/spt26_estimator_robustness.png"
 
 BIN = 6

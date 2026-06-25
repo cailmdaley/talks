@@ -158,22 +158,27 @@ I'm deliberately not quoting amplitudes or per-bin S/N here — those belong to 
 
 ![](images/spt26_estimator_robustness.png){width="66%" fig-align="center"}
 
-[Highest-S/N bin (6): GMV vs the bias + profile-hardened reconstruction (and PP) agree to
-**<1σ** per bandpower (pull RMS 0.28σ γ×κ, 0.29σ δ×κ), at no S/N cost — estimator-robust. A
-foreground term *common* to all estimators cancels in the difference and is **not** tested
-here (reserved Websky/Agora recovery).]{.credit style="font-size:0.55em"}
+[Highest-S/N bin (6): swapping GMV → the bias + profile-hardened reconstruction (red on black)
+leaves the vector unchanged to **<1σ** per bandpower — pull RMS **0.29σ** in both γ×κ and δ×κ,
+all 90 bandpowers within 1σ, at no S/N cost — estimator-robust. PP (pol-only) is the noisier
+single-channel reconstruction and scatters more at high ℓ. A foreground term *common* to all
+estimators cancels in the difference and is **not** tested here (reserved Websky/Agora recovery).]{.credit style="font-size:0.55em"}
 
 ::: {.notes}
 This is a status check on whether the cross depends on which SPT lensing estimator we
 feed it. I'm showing the highest-S/N bin (bin 6), the two CMB-lensing crosses stacked
 top and bottom — cosmic shear × κ and galaxy clustering × κ; the same picture holds across all
 six bins. Each panel overlays three SPT-3G estimators — GMV, PP, and the bias +
-profile-hardened reconstruction (GMVbhTTprf) — and they sit on top of each other.
+profile-hardened reconstruction (GMVbhTTprf) — and the hardened reconstruction sits right
+on top of GMV; PP tracks them but with more scatter at high ell.
 
-The message is one line: swapping estimators moves every bandpower by less than one
-sigma — pull RMS 0.28 sigma in gamma-kappa, 0.29 in delta_g-kappa, all 120 bandpowers
-inside 1 sigma, and the detection S/N doesn't drop. So the measurement is
-estimator-robust.
+The message: swapping GMV for the bias + profile-hardened reconstruction — the product
+recommended for cross-correlation — moves every bandpower by less than one sigma. Pull RMS
+0.29 sigma in both gamma-kappa and delta_g-kappa, all ninety bandpowers inside one sigma, and
+the detection S/N doesn't drop — if anything it goes up. PP, the polarization-only
+reconstruction, is noisier and scatters more at high ell — that's single-channel
+reconstruction noise, not a signal or foreground effect — but it stays broadly consistent
+within the errors. So the measurement is estimator-robust.
 
 Be careful here, and I want to be honest with this audience because you know lensing
 biases cold: this is NOT a foreground-clean certificate. A tSZ or CIB contribution that
