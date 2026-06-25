@@ -76,6 +76,40 @@ body {
 // direct children so any future vertical sub-slides (`> section > section`) are untouched.
 .reveal .slides > section { top: 0 !important; }
 
+// Vertical centering for text-only slides. The deck runs center:false, so every slide is
+// pinned top:0 and short text slides leave a band of dead space below — bottom-heavy and
+// unbalanced. Opt a slide in with `{.vcenter}` on its `##` heading: the section becomes a
+// full-height flex column that floats the headline+body block to the vertical middle. Figure
+// and column slides are deliberately left top-aligned (their layouts are height-tuned).
+// Scoped to `.present` with `display:flex !important` because reveal sets inline `display:block`
+// on the active slide (which beats a plain stylesheet rule) and inline `display:none` on hidden
+// ones — matching only `.present` forces flex when shown while leaving hidden slides hidden.
+.reveal .slides > section.vcenter.present {
+    height: 100%;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    // Reserve the footer band at the bottom (and a touch at top) so a tall centered block —
+    // e.g. a slide ending in "Thank you." — never grazes the footer. The slight asymmetry
+    // nudges the optical centre up, which reads as balanced above the footer chrome.
+    // Vertical only — the theme's horizontal padding (the comfortable side margins) is left intact.
+    padding-top: 32px;
+    padding-bottom: 84px;
+}
+
+// Columns must actually be flex. Pandoc emits `div.columns{display:flex}`, but a
+// linked reveal/quarto stylesheet carries a later, equal-specificity reset
+// `div.columns{display:initial}` (= inline for a div), which WINS — so every
+// `.columns` slide was silently laid out as inline flow. Narrow rows happened to
+// fit on one line; any row near 100% total width (e.g. the 5-column program slide,
+// 31/3.5/31/3.5/31) wrapped and stacked. A 3-class selector (0,3,0) out-specifies
+// `div.columns` (0,1,1) and restores the intended flex layout deck-wide.
+.reveal .slides section .columns {
+    display: flex;
+    gap: min(4vw, 1.5em);
+}
+
 // METR slide — a two-beat reveal. State A: the live METR chart fills the slide (full width + full
 // height). State B (one fragment step): the chart reflows to TWO-THIRDS width at FULL height while
 // Anthropic's autonomy-progression diagram fades + slides into the right third. The width animates
@@ -84,7 +118,8 @@ body {
 // `.metr-stage` drives it via the `~` sibling selector.
 .reveal section.metr-slide { padding: 46px 80px 42px; overflow: hidden; }
 
-// The stage — fills the content area under the headline; everything is placed within it.
+// The stage — fills the content area under the headline: chart on the left, the three
+// "why the trend may continue" bullets on the right.
 .reveal .metr-stage {
     position: relative;
     width: 100%;
@@ -92,86 +127,101 @@ body {
     margin-top: 0;
 }
 
-// Chart column — full width in A, two-thirds in B. Animating WIDTH (no transform) keeps the chart
-// UNDISTORTED — METR re-lays-out to the narrower box. NOTE: METR's chart SVG is hard-locked at
-// 500px tall (measured), so a taller box just adds whitespace below; the chart can't fill height.
+// Chart column — left ~75% (bullets only need ~25%). (The chart is enlarged via the zoom below.)
 .reveal .metr-chart-wrap {
     position: absolute;
     top: 0;
     left: 0;
-    bottom: 0;
-    width: 100%;
+    bottom: 54px;
+    width: 75%;
     z-index: 1;
     display: flex;
-    align-items: center;        // vertically centre the (short) chart in the tall stage
-    transition: width 0.85s cubic-bezier(.4, 0, .2, 1);
+    align-items: flex-end;      // chart sits low, freeing a clean band at top for the label
 }
-.reveal .metr-step.visible ~ .metr-stage .metr-chart-wrap { width: 66.5%; }
 
+// Custom chart title — masks METR's own two-line title (top-left of the iframe) while leaving
+// the METR logo (top-right) visible. Ground-colored background covers the text underneath.
+.reveal .metr-chart-title {
+    position: absolute;
+    top: -22px;
+    left: 4px;
+    z-index: 3;
+    margin: 0;
+    font-size: 0.82em;
+    line-height: 1.2;
+    color: $ink;
+    text-align: center;
+    background: $ground;
+    padding: 48px 6px 28px 6px;     // title sits ~12px lower in the band; band top/bottom unchanged so masking + 16h clearance hold
+    width: 1000px;                  // wide enough to cover the centred note box; stops short of the METR logo
+    white-space: nowrap;
+}
+
+// METR hard-locks its chart SVG at 500px tall, so width/height tricks can't enlarge it. Instead we
+// CSS-zoom the iframe: it lays out at 1/zoom of the box, then transform:scale() blows it back up,
+// so the whole chart — text included — is larger and stays crisp (it's vector). Tune $metr-zoom.
+$metr-zoom: 1.42;
 .reveal .metr-cropbox {
     position: relative;
     width: 100%;
-    height: 700px;             // hug METR's content (its SVG is locked at 500px tall); the
-    overflow: hidden;          // wrap flex-centres this box so the leftover space is balanced.
+    height: 846px;
+    margin-top: 0;                // INERT: .metr-chart-wrap is flex/align-items:flex-end, so the cropbox is bottom-anchored — vertical position is set by the wrap's `bottom` + the embed `top`, not here
+    overflow: hidden;
     background: $ground;
     border-radius: 4px;
 }
 .reveal .metr-embed {
     position: absolute;
-    top: -58px;                   // crop METR's own in-chart title — we show ours as an overlay
+    top: 0px;                     // no crop — METR's title + note box are masked by .metr-chart-title instead
     left: 0;
-    width: 100%;
-    height: calc(100% + 58px);
+    width: calc(100% / #{$metr-zoom});
+    height: calc(100% / #{$metr-zoom} + 100px);
     border: 0;
     background: transparent;      // let the parchment show through METR's own ground
+    transform: scale(#{$metr-zoom});
+    transform-origin: top left;
 }
 
-// Our chart title — a short transparent overlay at the top-left, to the LEFT of METR's own
-// top-right logo (the shorter wording keeps the box narrow so it clears the logo).
-.reveal .metr-chart-title {
-    position: absolute;
-    top: 98px;            // aligns with the top of the vertically-centred chart box
-    left: 12px;
-    z-index: 3;
-    max-width: 34%;
-    margin: 0;
-    font-size: 0.62em;
-    line-height: 1.18;
-    color: #1f1a16;
-    text-align: left;
-    background: transparent;
-}
-
-// Diagram column — right third; fades + slides in on the same trigger, same duration.
-.reveal .metr-diagram-col {
+// "Why the trend may continue" — three bullets, right column, vertically centred.
+.reveal .metr-axes-col {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 70.5%;          // nudged right (~+3%) for more gap from the chart
-    right: -34px;         // reach toward the slide edge so the diagram sits further right
+    left: 72%;
+    right: 0;
+    padding-left: 52px;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    opacity: 0;
-    transform: translateX(28px);
-    transition: opacity 0.85s ease, transform 0.85s cubic-bezier(.4, 0, .2, 1);
-    pointer-events: none;
+    justify-content: center;
 }
-.reveal .metr-step.visible ~ .metr-stage .metr-diagram-col {
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
+.reveal .metr-axes-head {
+    font-variant-caps: small-caps;
+    letter-spacing: 0.07em;
+    font-size: 0.96em;
+    color: $ink-muted;
+    margin-bottom: 0.2em;
+    line-height: 1.2;
 }
-
-// The diagram column's own title, centered above the diagram.
-.reveal .metr-title {
-    font-size: 0.6em;
-    line-height: 1.18;
-    color: #1f1a16;
-    text-align: center;
-    max-width: 96%;
-    margin: 0.1em auto 0.1em;   // tighter gap to the diagram below
+.reveal .metr-axes-col ul { margin: 0; padding-left: 1.1em; list-style: disc; }
+.reveal .metr-axes-col li { font-size: 1.02em; margin-bottom: 1.9em; }
+.reveal .metr-axes-col li::marker { color: $cinnabar; }
+// Reference citations under each bullet — small, muted, clickable to the arXiv abstract.
+.reveal .metr-axes-col li .metr-cite {
+    display: block;
+    font-size: 0.56em;
+    color: $ink-muted;
+    letter-spacing: 0.01em;
+    margin-top: 0.3em;
+    line-height: 1.3;
 }
+.reveal .metr-axes-col li .metr-cite a {
+    color: $ink-muted;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(122, 111, 92, 0.4);
+    transition: color 0.15s ease;
+}
+.reveal .metr-axes-col li .metr-cite a:hover { color: $cinnabar; }
 
 // Anthropic diagram — fills the right column at full height; near-white warm ground multiplies
 // into the parchment via the figure-treatment router.
@@ -221,6 +271,19 @@ body {
     margin-top: 0.16em;
     background: $cinnabar;
     border-radius: 2px;
+}
+// The intermission slide's heading is intentionally empty (it carries only the
+// centered "Part Two" block), so the kicker-rule would float alone in the
+// top-left corner as a stray mark. Suppress it there.
+.reveal section.intermission > h2:first-child::after {
+    display: none;
+}
+
+// The backup "sovereign blueprints" slide is two full-height plots carrying
+// their own labels; its heading is intentionally empty. Hide it entirely (no
+// kicker, no reserved vertical space) so the plots own the whole slide.
+.reveal section#sovereign-blueprints > h2:first-child {
+    display: none;
 }
 
 // ── Body emphasis ──
@@ -298,6 +361,37 @@ body {
 }
 .quarto-title-block .quarto-title-authors {
     margin-top: 0.3em;
+}
+
+// ── Title slide: a mini-pitch lives between the byline and the occasion ──
+// Make the title section a full-height column so a flex spacer can push the
+// occasion + date down toward the bottom, leaving the middle for credentials.
+.reveal section#title-slide {
+    display: flex !important;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
+    padding-bottom: 7vh;
+}
+.reveal #title-slide .title-spacer {
+    flex: 1 1 auto;
+    min-height: 1.5em;
+}
+.reveal #title-slide .credentials {
+    color: $ink;
+    font-size: 0.82em;
+    margin-top: 1.6em;
+    line-height: 1.4;
+}
+.reveal #title-slide .pitch {
+    color: $ink;
+    font-size: 0.8em;
+    margin-top: 0.5em;
+}
+// the only red on the title slide: the separating dots in the credentials + pitch lines
+.reveal #title-slide .ti-dot {
+    color: $cinnabar;
+    padding: 0 0.12em;
 }
 
 // ── Footer & slide number — quiet EB Garamond small-caps stamp ──
@@ -527,12 +621,22 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
 //   The white-halo default above is the no-JS fallback (e.g. a raw file:// open, where canvas
 //   reads taint); over http / embed-resources the helper overrides it per figure.
 
+// #intro — career trajectory SVG carries the identity (PhD → postdoc, close to the data) in place
+// of bullet text. Transparent ground, so the figure router leaves it untouched.
+.reveal section#intro .intro-trajectory {
+    display: block;
+    width: 1320px;
+    max-width: 88%;
+    height: auto;
+    margin: 0.4em auto 0.2em;
+}
+
 .reveal section#standard-model .standard-model-figure {
-    height: 1110px;
+    height: 1098px;            // +4% — uses the small internal label margins; apex + "today" still in
     max-width: none;
-    margin-top: -4.4em;        // pulled up so the wide bottom (today / dark energy) stays in view
+    margin-top: -4.05em;       // nudged down ~2%
     margin-right: 0;
-    transform: translateX(36px);   // nudge right
+    transform: translateX(64px);   // nudged further right
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -540,13 +644,89 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
 }
 
 .reveal section#standard-model .standard-model-figure img {
-    height: 1110px !important;
+    height: 1098px !important;
     width: auto !important;
     max-width: none;
     max-height: none;
     object-fit: contain;
     object-position: center center;
 }
+
+// ΛCDM energy-budget pie (Spergel) at the bottom of the left column — quantitative complement to
+// the cosmic-history cone; its white ground multiplies into the parchment via the figure router.
+.reveal section#standard-model .lcdm-pie {
+    margin-top: 1.3em;
+}
+.reveal section#standard-model .lcdm-pie img {
+    width: 880px;
+    max-width: 100%;
+    height: auto;
+}
+.reveal section#standard-model .pie-credit {
+    margin-top: 0.35em;
+    color: $ink-muted;
+    font-size: 0.5em;
+}
+
+// #precision — one tension, annotated. Flex `.columns` is dead deck-wide (overridden to inline), so
+// this is laid out the way the other 2-col slides are: plot flows on the LEFT, the explanation is
+// absolutely positioned on the RIGHT, each line beside its cluster on the whisker plot.
+//   NB: do NOT set `position: relative` on the section — reveal already makes every slide
+//   `position: absolute`, which is the positioning anchor the annotations need. Forcing `relative`
+//   drops the slide into normal flow; with two such slides they stack vertically and push each
+//   other off-screen (that bug emptied #lensing-landscape).
+.reveal section#precision .h0-plot {
+    text-align: left;
+    margin-top: 0.35em;
+}
+.reveal section#precision .h0-plot img {
+    width: 58%;
+    height: auto;
+    max-height: 820px;
+}
+.reveal section#precision .tension-cap {
+    width: 58%;
+    margin-top: 0.35em;
+    text-align: center;
+    font-size: 0.74em;
+    color: $ink;
+}
+.reveal section#precision .plot-credit {
+    width: 58%;
+    margin-top: 0.25em;
+    text-align: center;
+    font-size: 0.5em;
+    color: $ink-muted;
+}
+
+// The explanation column, overlaid on the right and vertically aligned to the plot's data rows:
+// head at the top, "early" beside the CMB/BAO group, "late" beside the SH0ES/TRGB group.
+.reveal section#precision .precision-annot {
+    position: absolute;
+    top: 250px;            // aligned with the plot's top data row
+    right: 2%;
+    width: 37%;
+    height: 560px;         // spans CMB row → SH0ES row
+    color: $ink;
+}
+.reveal section#precision .annot-head {
+    position: absolute; top: -60px; left: 0; right: 0;
+    font-size: 1.0em;
+    line-height: 1.3;
+}
+.reveal section#precision .annot-early {
+    position: absolute; top: 38%; left: 0; right: 0;
+    font-size: 0.95em;
+}
+.reveal section#precision .annot-late {
+    position: absolute; top: 86%; left: 0; right: 0;
+    font-size: 0.95em;
+}
+// Colour the cluster labels only; the rest of each line stays ink, verbs stay italic.
+.reveal section#precision .lbl-early { color: $cobalt; }
+.reveal section#precision .lbl-late  { color: $teal; }
+.reveal section#precision .plot-credit a { color: $ink-muted; text-decoration: none; }
+.reveal section#precision .plot-credit a:hover { text-decoration: underline; }
 
 .reveal section#lensing-landscape {
     position: relative;
@@ -579,7 +759,7 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
     position: absolute;
     top: -28px;            // height defined by top+bottom insets; a little bleed top+bottom so
     bottom: -28px;         // the image can run taller than the slide and grow further left.
-    right: -56px;          // (section overflow:hidden clips the bleed; the top:0 fix prevents
+    right: -14px;          // (section overflow:hidden clips the bleed; the top:0 fix prevents
     width: 1010px;         // the blank-slide cascade.) Portrait, right-anchored -> grows LEFT.
     display: flex;
     align-items: center;
@@ -591,6 +771,50 @@ $logo-space:  44px;   // unified: left inset = bottom inset = inter-mark gap
 .reveal section#lensing-landscape .research-landscape-figure img {
     height: 1136px !important;  // taller than the slide (portrait 1024x1536 -> ~757px wide),
     width: auto !important;     // right-anchored so the extra size extends to the LEFT.
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    object-position: right center;
+}
+
+// #credentials (combined deck) reuses the exact lensing-landscape figure positioning:
+// portrait illustration right-anchored, bleeding top/bottom, growing left, behind the text column.
+.reveal section#credentials {
+    position: relative;
+    overflow: hidden;
+}
+.reveal section#credentials > h2:first-child {
+    max-width: 66%;
+    position: relative;
+    z-index: 2;
+}
+.reveal section#credentials .columns {
+    position: static;
+    z-index: auto;
+}
+.reveal section#credentials .columns > .column:first-child {
+    position: relative;
+    z-index: 2;
+    padding-right: 0.4em;
+}
+.reveal section#credentials .columns > .column:last-child {
+    position: static;
+}
+.reveal section#credentials .research-landscape-figure {
+    position: absolute;
+    top: -28px;
+    bottom: -28px;
+    right: -14px;
+    width: 1010px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: visible;
+    z-index: 1;
+}
+.reveal section#credentials .research-landscape-figure img {
+    height: 1136px !important;
+    width: auto !important;
     max-width: none;
     max-height: none;
     object-fit: contain;
@@ -648,3 +872,12 @@ figcaption > span {
 #wl-shear.lensed .wl-gal {
     transform: var(--tl);
 }
+// roomier bullet rhythm on the opener
+.reveal section#shear-intro li { margin: 0.42em 0; }
+// cluster fades in over the SAME 1.15s as the galaxy shear, so the mass appears and the
+// shapes distort simultaneously (overrides reveal's fast ~0.2s fragment fade).
+#wl-cluster.fragment { transition: opacity 1.15s cubic-bezier(0.45, 0.05, 0.2, 1) !important; }
+// Papers/team slide: vertically centre the (shorter) team-photo column against the papers list.
+// Centre at the flex-row level so the image keeps its normal block sizing (making the column
+// itself display:flex lets the 4032px photo overflow and collapses the two-column layout).
+.reveal section#papers-team .columns { align-items: center; }

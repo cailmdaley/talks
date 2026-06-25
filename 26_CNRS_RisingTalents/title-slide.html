@@ -30,7 +30,14 @@
   $endfor$
   </div>
 
-  <br>
+  $if(credentials)$
+    <p class="credentials">$credentials$</p>
+  $endif$
+  $if(pitch)$
+    <p class="pitch">$pitch$</p>
+  $endif$
+
+  <div class="title-spacer"></div>
 
   $if(occasion)$
     <p class="occasion">$occasion$</p>

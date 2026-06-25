@@ -9,6 +9,7 @@
       .ext  { font-family: 'EB Garamond', Georgia, serif; font-size: 24px; font-weight: 600; fill: #3F8278; }
       .date { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 17px; font-weight: 400; fill: #7A6F5C; letter-spacing: 0.04em; }
       .prog { font-family: 'EB Garamond', Georgia, serif; font-size: 21px; font-style: italic; fill: #7A6F5C; }
+      .subext { font-family: 'EB Garamond', Georgia, serif; font-size: 20px; font-style: italic; fill: #3F8278; }
       .spine { stroke: #C5B89E; stroke-width: 2.5; fill: none; }
       .conn  { stroke: #C5B89E; stroke-width: 1.5; }
       .connt { stroke: #3F8278; stroke-width: 1.5; stroke-dasharray: 2 4; }
@@ -18,8 +19,8 @@
   </defs>
 
   <!-- spine + forward arrowhead -->
-  <line class="spine" x1="110" y1="250" x2="1662" y2="250"/>
-  <path d="M1662 250 L1642 241 L1642 259 Z" fill="#BC4538"/>
+  <line class="spine" x1="110" y1="250" x2="1700" y2="250"/>
+  <path d="M1700 250 L1680 241 L1680 259 Z" fill="#BC4538"/>
 
   <!-- ============ UNIONS milestones (above the spine) ============ -->
   <!-- n1 NOW (you-are-here) -->
@@ -36,37 +37,25 @@
   <text class="ms" x="545" y="146" text-anchor="middle"><tspan x="545">Tomographic</tspan><tspan x="545" dy="31">cosmic shear</tspan></text>
 
   <!-- n3 YEARS 2-3 -->
-  <line class="conn" x1="880" y1="244" x2="880" y2="196"/>
-  <circle class="dot" cx="880" cy="250" r="9"/>
-  <text class="yr" x="880" y="104" text-anchor="middle">YEARS 2–3</text>
-  <text class="ms" x="880" y="146" text-anchor="middle"><tspan x="880">Cross-correlations</tspan><tspan x="880" dy="31">DESI · Planck</tspan></text>
-
-  <!-- n4 YEAR 3 -->
-  <line class="conn" x1="1215" y1="244" x2="1215" y2="196"/>
-  <circle class="dot" cx="1215" cy="250" r="9"/>
-  <text class="yr" x="1215" y="104" text-anchor="middle">YEAR 3</text>
-  <text class="ms" x="1215" y="146" text-anchor="middle"><tspan x="1215">Multi-probe 3×2pt</tspan><tspan x="1215" dy="31">shear + GGL + clustering</tspan></text>
-
-  <!-- n5 YEAR 4 -->
-  <line class="conn" x1="1550" y1="244" x2="1550" y2="196"/>
-  <circle class="dot" cx="1550" cy="250" r="9"/>
-  <text class="yr" x="1550" y="104" text-anchor="middle">YEAR 4</text>
-  <text class="ms" x="1550" y="146" text-anchor="middle"><tspan x="1550">Percent-level</tspan><tspan x="1550" dy="31">S₈ + dark energy</tspan></text>
+  <line class="conn" x1="1250" y1="244" x2="1250" y2="196"/>
+  <circle class="dot" cx="1250" cy="250" r="9"/>
+  <text class="yr" x="1250" y="104" text-anchor="middle">YEARS 2–3</text>
+  <text class="ms" x="1250" y="146" text-anchor="middle"><tspan x="1250">Multi-probe 3×2pt</tspan><tspan x="1250" dy="31">shear + GGL + clustering</tspan></text>
 
   <!-- ============ external anchors (below the spine) ============ -->
-  <!-- Euclid DR1 -->
-  <line class="connt" x1="380" y1="256" x2="380" y2="300"/>
-  <path d="M380 296 l9 9 l-9 9 l-9 -9 Z" fill="#3F8278"/>
-  <text class="ext"  x="380" y="338" text-anchor="middle">Euclid DR1</text>
-  <text class="date" x="380" y="362" text-anchor="middle">OCT 2026</text>
+  <!-- Euclid DR1 — right of the tomographic milestone; framed as my cross-correlation work -->
+  <line class="connt" x1="650" y1="256" x2="650" y2="300"/>
+  <path d="M650 296 l9 9 l-9 9 l-9 -9 Z" fill="#3F8278"/>
+  <text class="ext"    x="650" y="338" text-anchor="middle">Euclid DR1</text>
+  <text class="subext" x="650" y="364" text-anchor="middle">cross-correlations with SPT-3G</text>
 
-  <!-- Euclid DR2 (aligned under the multi-probe milestone) -->
-  <line class="connt" x1="1215" y1="256" x2="1215" y2="300"/>
-  <path d="M1215 296 l9 9 l-9 9 l-9 -9 Z" fill="#3F8278"/>
-  <text class="ext"  x="1215" y="338" text-anchor="middle">Euclid DR2</text>
-  <text class="date" x="1215" y="362" text-anchor="middle">MAR 2029</text>
+  <!-- Euclid DR2 — the CMB×Euclid frontier -->
+  <line class="connt" x1="1350" y1="256" x2="1350" y2="300"/>
+  <path d="M1350 296 l9 9 l-9 9 l-9 -9 Z" fill="#3F8278"/>
+  <text class="ext"    x="1350" y="338" text-anchor="middle">Euclid DR2</text>
+  <text class="subext" x="1350" y="364" text-anchor="middle">tightest constraints from CMB + Euclid</text>
 
   <!-- ============ four-year programme bracket ============ -->
-  <path class="bracket" d="M545 426 v10 H1550 v-10"/>
-  <text class="prog" x="1047" y="462" text-anchor="middle">the four-year programme</text>
+  <path class="bracket" d="M360 426 v10 H1660 v-10"/>
+  <text class="prog" x="1010" y="462" text-anchor="middle">the four-year programme</text>
 </svg>

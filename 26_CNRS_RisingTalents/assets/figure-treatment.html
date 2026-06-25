@@ -104,8 +104,12 @@
   function treat(img) {
     if (img.dataset.figTreated || img.matches(SKIP)) return;
     var bg = sampleBg(img);
+    if (!bg) {                                                           // not decoded yet / tainted
+      var n = (+img.dataset.figTries || 0) + 1; img.dataset.figTries = n;
+      if (n >= 8) img.dataset.figTreated = '1';                          // give up (e.g. file:// taint)
+      return;                                                            // else leave UNMARKED → retry
+    }
     img.dataset.figTreated = '1';
-    if (!bg) return;                                                     // tainted / unloaded — leave
     if (bg.a < 30) { img.dataset.figTreat = 'transparent'; img.style.boxShadow = 'none'; return; }
     if (dist(bg, ground()) < 6) { img.dataset.figTreat = 'asground'; img.style.boxShadow = 'none'; return; }
     if (bg.r > 250 && bg.g > 250 && bg.b > 250) {                        // pure white → multiply
@@ -119,6 +123,7 @@
     if (bg.r > 175 && bg.g > 175 && bg.b > 175) {                        // cream / grey / near-white → key
       var keyed = keyOut(img, bg, 20, 66);
       if (keyed) { img.dataset.figTreat = 'keyed'; img.style.boxShadow = 'none'; img.src = keyed; }
+      else { delete img.dataset.figTreated; }                           // canvas not ready — retry
       return;
     }
     var c = rgb(bg);                                                     // dark / vivid → matched feather
@@ -126,18 +131,27 @@
     img.style.boxShadow = '0 0 14px 8px ' + c + ', 0 0 34px 16px ' + c.replace('rgb', 'rgba').replace(')', ',0.45)');
   }
 
+  // Wait for a real decode before sampling — a "complete" image isn't guaranteed to have its
+  // bitmap ready, and sampling too early reads zeros (alpha 0 → misclassified "transparent",
+  // leaving a white plot). decode() closes that race; multiple plots / fragments hit it most.
+  function attempt(img) {
+    if (img.dataset.figTreated || img.matches(SKIP) || !img.naturalWidth) return;
+    if (img.decode) img.decode().then(function () { treat(img); }, function () { treat(img); });
+    else treat(img);
+  }
   function scan() {
     document.querySelectorAll(SELECTOR).forEach(function (img) {
       if (img.dataset.figTreated) return;
-      if (img.complete && img.naturalWidth) treat(img);
-      else img.addEventListener('load', function () { treat(img); }, { once: true });
+      if (img.naturalWidth) attempt(img);
+      else img.addEventListener('load', function () { attempt(img); }, { once: true });
     });
   }
   if (window.Reveal && Reveal.on) {
-    Reveal.on('ready', scan); Reveal.on('slidechanged', scan); Reveal.on('lazyloaded', scan);
+    Reveal.on('ready', scan); Reveal.on('slidechanged', scan);
+    Reveal.on('lazyloaded', scan); Reveal.on('fragmentshown', scan);
   }
   document.addEventListener('DOMContentLoaded', scan);
   window.addEventListener('load', scan);
-  setTimeout(scan, 1200);
+  [120, 350, 800, 1600, 2800].forEach(function (t) { setTimeout(scan, t); });
 })();
 </script>

@@ -1,8 +1,4 @@
-# The combined interview deck is the live deliverable but must NOT be published:
-# its memory/felt screenshots show unpublished science and private fiber names,
-# and the talks repo auto-publishes to GitHub Pages on push to main.
-# The durable record of the work is the felt fiber
-# (ai-futures/application/interview/slides/feedback-incorporation: report.html + history),
-# not a git commit. See that fiber's constitution.
-26_CNRS_RT_interview.qmd
+# screenshots/ stays out of git — visual-QA renders (and any memory/felt captures) can expose
+# private fiber names. The interview deck .qmd is tracked; note this repo auto-publishes to
+# public GitHub Pages on push to main, so committing and pushing the deck makes it public.
 screenshots/

@@ -1,12 +1,102 @@
 # CNRS AI Rising Talents — Interview Talk Outlines
 
-Interview date: **Thursday, June 25, 2026, 10:00 CET**  
-Format: 15-min general + 15-min deep-dive + ~13-min discussion  
-Order: candidate's choice — recommend **general first, then deep-dive**
+Interview date: **Thursday, June 25, 2026, 10:00 CET**
+Format (per the official invitation): **two 15-min talks + ~13-min discussion** — a *general* talk
+(research experience + four-year program) and an *in-depth scientific* talk (one contribution),
+candidate's choice of order. Both ship as **one combined deck** (`26_CNRS_RT_interview.qmd`) with an
+**intermission** between them. (An earlier pass misread a mock-day "feels like one slot" aside as
+collapsing the two into a single ~13-slide talk — that was wrong; the science deep-dive is required.)
+The combined LIVE deck is below. The standalone two-talk outlines further down are the **rehearsal-era
+quarry** the science talk was rebuilt from — kept as source / fallback, not the deliverable.
 
 ---
 
-## Talk 1: General Presentation (15 min)
+## Combined two-talk deck (LIVE) — `26_CNRS_RT_interview.qmd`
+
+Audience: a **non-astrophysicist AI/ML panel** (ENS / DI). Built against the mock-jury feedback (see
+`[[ai-futures/application/interview/slides/mock-feedback]]` and the feedback-incorporation fiber's
+`report.html` ledger). ~28 slides incl. title, ~30 min of content + discussion.
+
+### Part I — general / program (15 content slides, ~15 min, ~1 min each unless noted)
+
+The AI research program is the centre of gravity; cosmology is the proving ground.
+
+1. **Pitch** *(~45s)* — A new way of doing science: agents execute, I supply the judgment; I'll
+   build it into a program here and prove it on the universe. Roadmap line: why it's needed · what
+   I'd build · why me. *(Lead with the proposal — audible in the first minute.)*
+2. **Stakes** *(~1m)* — We still cannot explain 95% of the universe; we don't even know its age to
+   better than a billion years. Plain language, no ΛCDM.
+3. **Crisis** *(~1m)* — Answering these questions is bottlenecked on human labor: 60M galaxy shapes,
+   a 1% signal, ~5-year analyses, hundreds of people. The limit is people and the years they cost.
+4. **METR** *(~1m)* — AI can now do longer and longer expert work; the frontier doubles every few
+   months. Why it continues: scaling laws, test-time compute, synthetic data.
+5. **Judgment** *(~1m, the hinge)* — As agents do more, the bottleneck moves from *doing* to
+   *knowing whether it's right* — judgment, the skill agents still lack.
+6. **Why cosmology** *(~50s)* — The ideal proving ground: one universe, no answer key, so every step
+   is a judgment call (signal or artifact?). The differentiator vs other 5-year fields.
+7. **Proof** *(~1m)* — An entire analysis for a major sky survey, produced almost entirely by agents
+   I direct; a team an order of magnitude smaller, doing dozens of people-years of work. My job was
+   the judgment: designing the analysis and the checks. *(FTE framing, not lines-of-code.)*
+8. **Science** *(~1.5m, the one plot)* — The surveys' disagreement on how clumpy the universe is
+   wasn't new physics — it was each instrument's own artifacts; once removed, they line up. Telling
+   signal from artifact is the judgment the program is built to scale. *(Plot lay-relabelled — jargon
+   stripped, prediction-band anchored, earlier-low/latest-up draws the convergence, ours wide-on-purpose.
+   Remaining taste-call: keep in Part I vs migrate — see the ledger.)*
+9. **Program** *(~1m)* — Three pieces that build on each other: **memory → measurement → diffusion**.
+   Cosmology — this survey now, Europe's flagship Euclid next — is where each is built and tested.
+10. **Step one — Memory** *(~1.5m)* — `felt`: a shared, verifiable record + a scheduler that
+    dispatches agents against open questions. Spend real time here.
+11. **Step two — Benchmark** *(~1m)* — Benchmark the practice on real scientific work: scored not on
+    the answer but on sound reasoning + a defensible record. Scoring without an answer key is an open
+    problem in evaluating agents — and real science is exactly where it must be solved.
+12. **Step two, continued — training signal** *(~1m)* — Those same benchmarks double as training
+    environments; with Pleias / DATAIA, a sovereign signal France can own.
+13. **Step three — Diffusion** *(~1m)* — Teach judgment, not prompting: form an expectation, test it,
+    learn from the gap. How to teach it is an open question for the Paris-Saclay teaching centers.
+14. **Mentoring + sovereignty** *(~1m)* — Students came in skeptical; AI changed how I *support* them,
+    and we go deeper together. Sovereignty is trained people, not only sovereign models.
+15. **Close** *(~1m)* — Why here, why me, why now: judgment is my native skill as a cosmologist, shown
+    at scale; the ecosystem is here; France can lead trustworthy science with AI.
+
+### Intermission
+
+Divider slide ("Part Two — the science, up close"). Bridges from the program into the demonstration:
+the whole program rests on one skill — telling a real signal from an instrument's fingerprint.
+
+### Part II — in-depth science (11 content slides, ~15 min)
+
+The UNIONS B-mode systematics work, told ENTIRELY in plain language for a zero-cosmology panel.
+"Be pure, not complete." The through-line is the *judgment skill* in action; no program re-pitch,
+one light agentic clause at the close.
+
+1. **Hook** *(~1m)* — Gravity bends light, so a clump of invisible matter stretches the shapes of the
+   galaxies behind it by ~1%. *(Lensing animation.)*
+2. **Averaging → a map** *(~1m)* — Any one galaxy is already random, so a 1% nudge is invisible; but
+   the nudge is *shared*, so averaged over millions the random shapes cancel and the stretch becomes a map.
+3. **Independent + small team** *(~1m)* — To trust agreement between teams, measurements must be
+   genuinely independent; ours is the first deep northern-sky map, from a team of ~10. *(Team photo.)*
+4. **The difficulty** *(~1m)* — The signal is a ~1% stretch; the instrument distorts shapes about as
+   much; and there's no answer key to check against.
+5. **Blinding** *(~1.5m)* — With no answer key, we hide our own result from ourselves — exactly
+   holding out a test set — and only reveal it once every analysis choice is locked.
+6. **Forbidden pattern** *(~1.5m)* — Gravity can make only one pattern; a swirl is physically
+   impossible — so any swirl is the instrument talking. A built-in lie detector. *(E/B patterns.)*
+7. **Three rulers** *(~1m)* — We look for the forbidden swirl three ways, each blind to different
+   mistakes. The interesting question is what happens when they disagree.
+8. **Disagreement = discovery** *(~2m, the one plot)* — The sharpest of the three measures caught a
+   swirl the other two missed; that disagreement traced the fingerprint to one size — the spacing of
+   the camera's sensors. *(cosebis plot.)*
+9. **The check designs the analysis** *(~1.5m)* — The disagreement, not our preferences, chose which
+   data to trust and which range to throw away — locked in before unblinding.
+10. **Conservative result** *(~1.5m)* — We unblinded, agreed with the other teams, then widened our
+    own error bars on purpose. Better honest and wide than confident and wrong.
+11. **Close** *(~1.5m)* — A small team did a thorough job because agents did the running and I did the
+    judging; the same discipline scales straight to the far larger surveys coming. *(One light agentic
+    beat. Thank you.)*
+
+---
+
+## Talk 1: General Presentation (15 min)  *(rehearsal-era — fallback)*
 
 **Title:** *Cosmology with Agentic AI: Research Experience and a Four-Year Program*
 
@@ -147,7 +237,7 @@ Simple three-line close:
 
 ---
 
-## Talk 2: Deep-Dive Scientific Presentation (15 min)
+## Talk 2: Deep-Dive Scientific Presentation (15 min)  *(rehearsal-era — fallback)*
 
 **Title:** *B-mode systematics in the UNIONS-3500 weak lensing survey*  
 (Alternative title framing: *When null tests disagree: systematics characterization for UNIONS weak lensing*)
