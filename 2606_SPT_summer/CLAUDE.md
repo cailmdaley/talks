@@ -68,9 +68,10 @@ never regenerate a cosmology plot here.
    (six bins each, NaMaster on the joint mask); third cross is GGL (δ_g×γ, the
    source-behind-lens config). Amplitudes/S/N stripped — shapes only.
    (`spt26_cross_spectra.png`; backup `spt26_ggl_matrix.png`.)
-5. **Robust to the SPT-3G lensing estimator** — bin 6, γ×κ + δ_g×κ, GMV vs PP vs
-   GMVbhTTprf sitting on top of each other → estimator-robust (hardening <1σ).
-   (`spt26_estimator_robustness.png`.) ⏳ **STILL ON RR2** — see "Pending TR1".
+5. **Robust to the SPT-3G lensing estimator** — bin 6, γ×κ + δ_g×κ, GMV vs the
+   bias + profile-hardened reconstruction (GMVbhTTprf) sitting on top of each
+   other → estimator-robust (hardening RMS 0.29σ both crosses, all 90 bandpowers
+   <1σ, no S/N cost); PP (pol-only) noisier at high ℓ. (`spt26_estimator_robustness.png`, TR1.)
 6. **Two κ surveys on the same Euclid bins** — SPT-3G GMV vs ACT DR6 over the
    common fiducial theory; two independent reconstructions on the same southern
    bins. (`spt26_cross_survey.png`, TR1.)
@@ -96,25 +97,25 @@ never regenerate a cosmology plot here.
     three crosses, estimator- and cross-survey-consistent. Next: joint {A,b_i},
     mock cov, close systematics, DR1. Thanks.
 
-## Pending TR1 — the two figures still reading RR2
+## TR1 migration — complete (every data figure on TR1)
 
-**Extinction (slide 9) — DONE on TR1.** Built via `lc run -u tr1`
+**Extinction (slide 9) — on TR1.** Built via `lc run -u tr1`
 (`tracer_extinction_cross_spectra`, `kappa_extinction_cross_spectrum`,
-`extinction_contamination_metric`; already `release_env.sh`-parameterized); products
-land in the lc-canonical `results/tr1/<output_id>/` tree (the same tree the spine
-reads). `make_extinction_xell.py` now points there. The TR1 numbers shifted the slide
-honestly (see slide 9 above) — this was a real finding, not a cosmetic swap.
+`extinction_contamination_metric`); products in the lc-canonical `results/tr1/<output_id>/`
+tree (the same tree the spine reads). `make_extinction_xell.py` points there. The TR1
+numbers shifted the slide honestly (slide 9 above) — a real finding, not a cosmetic swap.
 
-**Estimator (slide 5) — still RR2.** Blind-safe, carries no RR2/TR1 label, and the
-message (estimators agree) is identical on RR2/TR1. For full honesty it should move
-to TR1:
-
-- **Estimator (slide 5)** — the two estimator-cross recipes
-  (`spt_estimator_datavector_comparison`, `clustering_estimator_datavector_comparison`)
-  are **RR2-hardcoded** (the deferred "snakemake-bridge"); they need a
-  `release_env.sh` refactor (mirror the migrated spectra recipes) before `lc run -u tr1`
-  can build the per-estimator TR1 crosses `{shear_lensmc,gc}_x_spt_est_{gmv,pp,gmvbhttprf}`.
-  Then repoint `make_estimator_robustness.py` and re-render.
+**Estimator (slide 5) — on TR1.** The three estimator recipes
+(`spt_estimator_spike_comparison` + the two `*_estimator_datavector_comparison` outputs)
+were the last RR2-hardcoded holdouts; migrated to the `release_env.sh` pattern
+(`data_release` in decisions, `$RESULTS_ROOT`/`$VALIDATED_ROOT`/`$REDSHIFT_ROOT`).
+`lc run -u tr1` (job 47833097) builds the per-estimator crosses
+`{shear_lensmc,gc}_x_spt_est_{gmv,pp,gmvbhttprf,ttbhttprf}` into the
+`results/tr1_v1p1-v0.1/cross_spectra/` working tree; `make_estimator_robustness.py`
+reads them there. **TR1 confirmed the RR2 story to <0.01σ**: gmvbhttprf vs GMV RMS 0.29σ
+in both crosses, all 90 log15 bandpowers <1σ, no S/N cost; PP (pol-only) noisier at high
+ℓ. Slide caption/notes updated honestly (PP no longer lumped into the <1σ claim); the
+gmv-estimator cross is byte-identical to the spine.
 
 ## Blinding & figure provenance
 
