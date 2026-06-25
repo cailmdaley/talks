@@ -1,0 +1,22 @@
+<script>
+// Talk-2 #shear-intro: when the cluster fragment (#wl-cluster) becomes visible,
+// add .lensed to #wl-shear so the galaxies transition from intrinsic (--ti) to
+// lensed (--tl) shapes/positions. Reversible on fragment-back / slide change.
+(function () {
+  function wire() {
+    if (!window.Reveal || !window.Reveal.on) { return setTimeout(wire, 150); }
+    var sync = function () {
+      var svg = document.getElementById('wl-shear');
+      var cluster = document.getElementById('wl-cluster');
+      if (!svg || !cluster) return;
+      svg.classList.toggle('lensed', cluster.classList.contains('visible'));
+    };
+    Reveal.on('fragmentshown', sync);
+    Reveal.on('fragmenthidden', sync);
+    Reveal.on('slidechanged', sync);
+    Reveal.on('ready', sync);
+    sync();
+  }
+  wire();
+})();
+</script>

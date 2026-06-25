@@ -14,11 +14,13 @@ format:
   revealjs:
     width: 1920
     height: 1080
-    theme: [default, custom.scss]
+    theme: [default, ../assets/house.scss, custom.scss]
     slide-number: true
     fig-align: center
     menu: false
-    include-after-body: assets/no_footer_on_titleslide.html
+    include-after-body:
+      - assets/no_footer_on_titleslide.html
+      - assets/figure-treatment.html
     footer: "Cail Daley | Occasion | today"
     history: false
     hash: true

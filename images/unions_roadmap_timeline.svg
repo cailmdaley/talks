@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1740 480" role="img" aria-labelledby="t d">
+  <title id="t">UNIONS science roadmap</title>
+  <desc id="d">A four-year roadmap: from the first 2D shear release through tomographic cosmic shear, cross-correlations, and a multi-probe analysis, with Euclid DR1 and DR2 as external anchors.</desc>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap');
+      .yr   { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 19px; font-weight: 500; fill: #BC4538; letter-spacing: 0.10em; }
+      .ms   { font-family: 'EB Garamond', Georgia, serif; font-size: 26px; font-weight: 600; fill: #1B1611; }
+      .ext  { font-family: 'EB Garamond', Georgia, serif; font-size: 24px; font-weight: 600; fill: #3F8278; }
+      .date { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 17px; font-weight: 400; fill: #7A6F5C; letter-spacing: 0.04em; }
+      .prog { font-family: 'EB Garamond', Georgia, serif; font-size: 21px; font-style: italic; fill: #7A6F5C; }
+      .subext { font-family: 'EB Garamond', Georgia, serif; font-size: 20px; font-style: italic; fill: #3F8278; }
+      .spine { stroke: #C5B89E; stroke-width: 2.5; fill: none; }
+      .conn  { stroke: #C5B89E; stroke-width: 1.5; }
+      .connt { stroke: #3F8278; stroke-width: 1.5; stroke-dasharray: 2 4; }
+      .dot   { fill: #BC4538; }
+      .bracket { stroke: #C5B89E; stroke-width: 1.5; fill: none; }
+    </style>
+  </defs>
+
+  <!-- spine + forward arrowhead -->
+  <line class="spine" x1="110" y1="250" x2="1700" y2="250"/>
+  <path d="M1700 250 L1680 241 L1680 259 Z" fill="#BC4538"/>
+
+  <!-- ============ UNIONS milestones (above the spine) ============ -->
+  <!-- n1 NOW (you-are-here) -->
+  <line class="conn" x1="210" y1="244" x2="210" y2="196"/>
+  <circle class="dot" cx="210" cy="250" r="9"/>
+  <circle cx="210" cy="250" r="15" fill="none" stroke="#BC4538" stroke-width="1.5"/>
+  <text class="yr" x="210" y="104" text-anchor="middle">NOW</text>
+  <text class="ms" x="210" y="146" text-anchor="middle"><tspan x="210">First release</tspan><tspan x="210" dy="31">2D shear + B-modes</tspan></text>
+
+  <!-- n2 YEAR 1 -->
+  <line class="conn" x1="545" y1="244" x2="545" y2="196"/>
+  <circle class="dot" cx="545" cy="250" r="9"/>
+  <text class="yr" x="545" y="104" text-anchor="middle">YEAR 1</text>
+  <text class="ms" x="545" y="146" text-anchor="middle"><tspan x="545">Tomographic</tspan><tspan x="545" dy="31">cosmic shear</tspan></text>
+
+  <!-- n3 YEARS 2-3 -->
+  <line class="conn" x1="1250" y1="244" x2="1250" y2="196"/>
+  <circle class="dot" cx="1250" cy="250" r="9"/>
+  <text class="yr" x="1250" y="104" text-anchor="middle">YEARS 2–3</text>
+  <text class="ms" x="1250" y="146" text-anchor="middle"><tspan x="1250">Multi-probe 3×2pt</tspan><tspan x="1250" dy="31">shear + GGL + clustering</tspan></text>
+
+  <!-- ============ external anchors (below the spine) ============ -->
+  <!-- Euclid DR1 — right of the tomographic milestone; framed as my cross-correlation work -->
+  <line class="connt" x1="650" y1="256" x2="650" y2="300"/>
+  <path d="M650 296 l9 9 l-9 9 l-9 -9 Z" fill="#3F8278"/>
+  <text class="ext"    x="650" y="338" text-anchor="middle">Euclid DR1</text>
+  <text class="subext" x="650" y="364" text-anchor="middle">cross-correlations with SPT-3G</text>
+
+  <!-- Euclid DR2 — the CMB×Euclid frontier -->
+  <line class="connt" x1="1350" y1="256" x2="1350" y2="300"/>
+  <path d="M1350 296 l9 9 l-9 9 l-9 -9 Z" fill="#3F8278"/>
+  <text class="ext"    x="1350" y="338" text-anchor="middle">Euclid DR2</text>
+  <text class="subext" x="1350" y="364" text-anchor="middle">tightest constraints from CMB + Euclid</text>
+
+  <!-- ============ four-year programme bracket ============ -->
+  <path class="bracket" d="M360 426 v10 H1660 v-10"/>
+  <text class="prog" x="1010" y="462" text-anchor="middle">the four-year programme</text>
+</svg>

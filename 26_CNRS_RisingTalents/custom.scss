@@ -1,0 +1,244 @@
+/*-- scss:defaults --*/
+
+// Per-talk overrides for the CNRS Rising Talents interview deck.
+// The house look comes from ../assets/house.scss (loaded before this file via the
+// deck's `theme:` list). The CNRS palette is identical to the house defaults
+// ($ground: $paper-lite, $cinnabar: #BC4538, …) — so NO palette override is needed.
+// This file holds ONLY the CNRS-specific ~20% that house.scss deliberately omits.
+
+/*-- scss:rules --*/
+
+// ── METR slide (CNRS-specific live-iframe layout) ──
+.reveal section.metr-slide { padding: 46px 80px 42px; overflow: hidden; }
+
+.reveal .metr-stage {
+    position: relative;
+    width: 100%;
+    height: 884px;
+    margin-top: 0;
+}
+
+.reveal .metr-chart-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 54px;
+    width: 75%;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+}
+
+.reveal .metr-chart-title {
+    position: absolute;
+    top: -22px;
+    left: 4px;
+    z-index: 3;
+    margin: 0;
+    font-size: 0.82em;
+    line-height: 1.2;
+    color: $ink;
+    text-align: center;
+    background: $ground;
+    padding: 48px 6px 28px 6px;
+    width: 1000px;
+    white-space: nowrap;
+}
+
+$metr-zoom: 1.42;
+.reveal .metr-cropbox {
+    position: relative;
+    width: 100%;
+    height: 846px;
+    margin-top: 0;
+    overflow: hidden;
+    background: $ground;
+    border-radius: 4px;
+}
+.reveal .metr-embed {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: calc(100% / #{$metr-zoom});
+    height: calc(100% / #{$metr-zoom} + 100px);
+    border: 0;
+    background: transparent;
+    transform: scale(#{$metr-zoom});
+    transform-origin: top left;
+}
+
+.reveal .metr-axes-col {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 72%;
+    right: 0;
+    padding-left: 52px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.reveal .metr-axes-head {
+    font-variant-caps: small-caps;
+    letter-spacing: 0.07em;
+    font-size: 0.96em;
+    color: $ink-muted;
+    margin-bottom: 0.2em;
+    line-height: 1.2;
+}
+.reveal .metr-axes-col ul { margin: 0; padding-left: 1.1em; list-style: disc; }
+.reveal .metr-axes-col li { font-size: 1.02em; margin-bottom: 1.9em; }
+.reveal .metr-axes-col li::marker { color: $cinnabar; }
+.reveal .metr-axes-col li .metr-cite {
+    display: block;
+    font-size: 0.56em;
+    color: $ink-muted;
+    letter-spacing: 0.01em;
+    margin-top: 0.3em;
+    line-height: 1.3;
+}
+.reveal .metr-axes-col li .metr-cite a {
+    color: $ink-muted;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(122, 111, 92, 0.4);
+    transition: color 0.15s ease;
+}
+.reveal .metr-axes-col li .metr-cite a:hover { color: $cinnabar; }
+
+.reveal .anthropic-diagram {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+}
+.reveal .slides section .anthropic-diagram img {
+    max-height: 824px;
+    height: auto;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+// ── Thesis-quote attribution ──
+.reveal .thesis-credit {
+    margin-top: 0.25em;
+    padding-left: 0.7em;
+    color: $ink-muted;
+    font-size: 0.62em;
+}
+.reveal .thesis-credit a { color: $ink-muted; text-decoration: none; }
+.reveal .thesis-credit a:hover { text-decoration: underline; }
+
+// ── Per-slide kicker-rule suppressions (CNRS slide ids) ──
+.reveal section.intermission > h2:first-child::after {
+    display: none;
+}
+.reveal section#sovereign-blueprints > h2:first-child {
+    display: none;
+}
+
+// ── #standard-model ──
+.reveal section#standard-model .standard-model-figure {
+    height: 1098px;
+    max-width: none;
+    margin-top: -4.05em;
+    margin-right: 0;
+    transform: translateX(64px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: visible;
+}
+.reveal section#standard-model .standard-model-figure img {
+    height: 1098px !important;
+    width: auto !important;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    object-position: center center;
+}
+.reveal section#standard-model .lcdm-pie {
+    margin-top: 1.3em;
+}
+.reveal section#standard-model .lcdm-pie img {
+    width: 880px;
+    max-width: 100%;
+    height: auto;
+}
+.reveal section#standard-model .pie-credit {
+    margin-top: 0.35em;
+    color: $ink-muted;
+    font-size: 0.5em;
+}
+
+// ── #credentials (portrait illustration right-anchored, bleeding, growing left) ──
+.reveal section#credentials {
+    position: relative;
+    overflow: hidden;
+}
+.reveal section#credentials > h2:first-child {
+    max-width: 66%;
+    position: relative;
+    z-index: 2;
+}
+.reveal section#credentials .columns {
+    position: static;
+    z-index: auto;
+}
+.reveal section#credentials .columns > .column:first-child {
+    position: relative;
+    z-index: 2;
+    padding-right: 0.4em;
+}
+.reveal section#credentials .columns > .column:last-child {
+    position: static;
+}
+.reveal section#credentials .research-landscape-figure {
+    position: absolute;
+    top: -28px;
+    bottom: -28px;
+    right: -14px;
+    width: 1010px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: visible;
+    z-index: 1;
+}
+.reveal section#credentials .research-landscape-figure img {
+    height: 1136px !important;
+    width: auto !important;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    object-position: right center;
+}
+
+// ── Lightcone wordmark (transparent logo, opts out of halo) ──
+.reveal .lightcone-logo {
+    width: 640px;
+    height: auto;
+    box-shadow: none !important;
+    padding: 0;
+}
+
+// ── Weak-lensing shear animation (Talk 2 opener) ──
+#wl-shear .wl-gal {
+    fill: none;
+    stroke: #1b1611;
+    stroke-width: 2.2;
+    opacity: 0.62;
+    vector-effect: non-scaling-stroke;
+    transform: var(--ti);
+    transition: transform 1.15s cubic-bezier(0.45, 0.05, 0.2, 1);
+    transition-delay: var(--d, 0s);
+}
+#wl-shear.lensed .wl-gal {
+    transform: var(--tl);
+}
+.reveal section#shear-intro li { margin: 0.42em 0; }
+#wl-cluster.fragment { transition: opacity 1.15s cubic-bezier(0.45, 0.05, 0.2, 1) !important; }
+.reveal section#papers-team .columns { align-items: center; }

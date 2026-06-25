@@ -1,0 +1,4 @@
+# screenshots/ stays out of git — visual-QA renders (and any memory/felt captures) can expose
+# private fiber names. The interview deck .qmd is tracked; note this repo auto-publishes to
+# public GitHub Pages on push to main, so committing and pushing the deck makes it public.
+screenshots/
