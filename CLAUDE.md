@@ -25,6 +25,10 @@ centralized reuse, or replace the symlink with a real folder when slides demand 
 - **`_site/`** — rendered output. Gitignored.
 - **`unused_images/`** — images pruned by `collect_unused_assets.py`. Gitignored.
 
+### Meta-work is fine to commit
+The repo is public but not sensitive — build scaffolding (speaker notes, per-talk `CLAUDE.md`,
+outlines, internal reasoning, felt fiber names) is fine to commit and push; the only bar is genuine PII.
+
 ### Image hygiene
 - **Resolution over file size**: use figures at full resolution — scientific figures need to stay
   crisp on a projector, and degrading them to hit an arbitrary byte cap is the wrong tradeoff. Match
