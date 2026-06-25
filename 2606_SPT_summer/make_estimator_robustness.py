@@ -29,6 +29,8 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from _ell_axis import style_ell_axis
+
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 XS = ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra"
 BLINDED_PKL = ROOT / "results/baseline/cosmology_shift_talk_datavector/talk_datavector_blinded.pkl"
@@ -92,8 +94,7 @@ def draw_estimators(ax, prefix, probe):
                     ecolor=color, elinewidth=1.3, capsize=3,
                     mfc=("white" if est != "gmv" else color), mew=1.4, label=label, zorder=3)
     ax.axhline(0.0, color="0.6", lw=0.7, zorder=0)
-    ax.set_xscale("log")
-    ax.set_xlim(95, 3050)
+    style_ell_axis(ax, 95, 3050)
     ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
     ax.yaxis.get_offset_text().set_size(10)
     ax.grid(which="both", alpha=0.15)

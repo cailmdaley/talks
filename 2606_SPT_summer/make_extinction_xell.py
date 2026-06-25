@@ -43,6 +43,8 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from _ell_axis import style_ell_axis
+
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 SYS = ROOT / "results/rr2_v2_1_wl_031224-v0.1/systematics"
 XS = ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra"
@@ -118,8 +120,7 @@ for col, (tracer, title, _ylab, pkl_path) in enumerate(PANELS):
         ax.axhline(s, color="0.45", lw=1.0, ls="--", zorder=2)
     ax.text(0.985, 0.94, r"$\pm1\sigma$", transform=ax.transAxes, ha="right", va="top",
             fontsize=12, color="0.4")
-    ax.set_xscale("log")
-    ax.set_xlim(95, 3100)
+    style_ell_axis(ax, 95, 3100)
     ax.grid(which="both", alpha=0.15)
     ax.set_title(title, fontsize=16, weight="bold", pad=8)
     ax.set_xlabel(r"$\ell$")

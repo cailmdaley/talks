@@ -36,13 +36,20 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from _ell_axis import style_ell_axis
+
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
-XS = ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra"
-THEORY = ROOT / "results/redshift/theory_cls.pkl"
+# TR1 cross-spectra: SPT GMV κ-crosses (shear/clustering live in separate dirs) and
+# the GGL per-bin npz (under the TR1 results-root; the tr1/ rerun κ-crosses share
+# the same log15 binning).
+SHEAR_KAPPA_PKL = ROOT / "results/tr1/shear_kappa_cross_spectra/shear_lensmc_x_spt_winter_gmv.pkl"
+GC_KAPPA_PKL = ROOT / "results/tr1/clustering_kappa_cross_spectra/gc_x_spt_winter_gmv.pkl"
+GGL_DIR = ROOT / "results/tr1_v1p1-v0.1/cross_spectra/individual"
+THEORY = ROOT / "results/redshift_tr1/theory_cls.pkl"
 OUT = ROOT / "docs/talks/images/spt26_cross_spectra.png"
 OUT_MATRIX = ROOT / "docs/talks/images/spt26_ggl_matrix.png"
-# Sealed cosmology-shift talk data vector — the source of every blinded central value.
-BLINDED_PKL = ROOT / "results/baseline/cosmology_shift_talk_datavector/talk_datavector_blinded.pkl"
+# Sealed cosmology-shift talk data vector (TR1 re-seal) — every blinded central value.
+BLINDED_PKL = ROOT / "results/tr1/cosmology_shift_talk_datavector/talk_datavector_blinded.pkl"
 
 TOM_BINS = [1, 2, 3, 4, 5, 6]
 LMAX = 3000
@@ -58,8 +65,8 @@ p.add_argument("--unblinded", action="store_true",
 args = p.parse_args()
 
 theory = pickle.load(open(THEORY, "rb"))
-shear_kappa = pickle.load(open(XS / "shear_lensmc_x_spt_winter_gmv.pkl", "rb"))
-gc_kappa = pickle.load(open(XS / "gc_x_spt_winter_gmv.pkl", "rb"))
+shear_kappa = pickle.load(open(SHEAR_KAPPA_PKL, "rb"))
+gc_kappa = pickle.load(open(GC_KAPPA_PKL, "rb"))
 
 # Blinded BY DEFAULT — the talk figure must never silently render the true amplitude.
 # kappa_l{j}=γ×κ, kappa_g{j}=δ_g×κ, l{s}_g{l}=GGL (0-indexed). --unblinded is the explicit,
@@ -95,7 +102,7 @@ def load_ggl(src, lens):
     ``l{src-1}_g{lens-1}``. The blinded central value overrides the raw on-disk
     Cℓ; the error bars/cov stay raw (the blind touches only central values).
     """
-    z = np.load(XS / f"individual/wl_lensmc_bin-{src}_x_gc_bin-{lens}.npz",
+    z = np.load(GGL_DIR / f"wl_lensmc_bin-{src}_x_gc_bin-{lens}.npz",
                 allow_pickle=True)
     ells, measured = np.asarray(z["ells"], dtype=float), np.asarray(z["cls"])[0]
     cov = np.asarray(z["cov"], dtype=float)
@@ -128,8 +135,7 @@ def draw_panel(ax, color, ells, measured, cov, probe_key):
     ax.errorbar(ells, ells * measured, yerr=ells * np.sqrt(np.diag(cov)),
                 fmt="o", ms=5, color=color, ecolor=color, elinewidth=1.2,
                 capsize=2.5, mfc="white", mew=1.4, zorder=3, label="measured")
-    ax.set_xscale("log")
-    ax.set_xlim(90, 3100)
+    style_ell_axis(ax, 90, 3100)
     ax.yaxis.get_offset_text().set_size(8)
     ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
     ax.grid(which="both", alpha=0.15)
@@ -193,7 +199,7 @@ for r, ((ylabel, _title, getter, probe_of, label_of), cells) in enumerate(zip(ro
 
 axes[0, 0].legend(loc="upper left", fontsize=8.5, ncol=1, framealpha=0.0,
                   bbox_to_anchor=(0.0, 0.92))
-suptitle = "Euclid RR2 $\\times$ SPT-3G winter GMV — the three cross-correlation data vectors"
+suptitle = "Euclid TR1 $\\times$ SPT-3G winter GMV — the three cross-correlation data vectors"
 fig.suptitle(suptitle, y=1.0, fontsize=15.5, weight="bold")
 fig.tight_layout(rect=(0, 0, 1, 0.965), h_pad=2.4, w_pad=0.2)
 for r, (_yl, title, *_rest) in enumerate(rows):

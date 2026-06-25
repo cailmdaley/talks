@@ -32,6 +32,8 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from _ell_axis import style_ell_axis
+
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 THEORY = ROOT / "results/redshift_tr1/theory_cls.pkl"        # TR1 n(z) + self-Hann smoothing
 OUT = ROOT / "docs/talks/images/spt26_kappa_constraints.png"
@@ -135,8 +137,7 @@ for ax, (stem, tkey, ylabel, title) in zip(axes, PANELS):
     if center is not None:
         ax.text(center, 0.94, "SPT tighter", transform=ax.get_xaxis_transform(),
                 ha="center", va="top", fontsize=12.5, color=SURVEYS["SPT-3G GMV"]["color"], weight="bold")
-    ax.set_xscale("log")
-    ax.set_xlim(95, 3050)
+    style_ell_axis(ax, 95, 3050)
     ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
     ax.yaxis.get_offset_text().set_size(11)
     ax.grid(which="both", alpha=0.15)

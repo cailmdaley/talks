@@ -30,24 +30,27 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from _ell_axis import style_ell_axis
+
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
-BLINDED = ROOT / "results/baseline/cosmology_shift_talk_datavector/talk_datavector_blinded.pkl"
-THEORY = ROOT / "results/redshift/theory_cls.pkl"
+# TR1 re-sealed blinded talk data vector (cosmology-shift self-blind on TR1 data).
+BLINDED = ROOT / "results/tr1/cosmology_shift_talk_datavector/talk_datavector_blinded.pkl"
+THEORY = ROOT / "results/redshift_tr1/theory_cls.pkl"
 OUT = ROOT / "docs/talks/images/spt26_cross_survey.png"
 
-# Each survey's OWN raw product (blind-independent covariance), per family.
+# Each survey's OWN raw product (blind-independent covariance), per family — TR1.
 SURVEYS = {
     "spt": {
         "label": "SPT-3G GMV", "color": "#c0392b", "marker": "o",
         "prefix": "",  # blinded keys: kappa_l{j}, kappa_g{j}
-        "shear_pkl": ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra/shear_lensmc_x_spt_winter_gmv.pkl",
-        "gc_pkl": ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra/gc_x_spt_winter_gmv.pkl",
+        "shear_pkl": ROOT / "results/tr1/shear_kappa_cross_spectra/shear_lensmc_x_spt_winter_gmv.pkl",
+        "gc_pkl": ROOT / "results/tr1/clustering_kappa_cross_spectra/gc_x_spt_winter_gmv.pkl",
     },
     "act": {
         "label": "ACT DR6", "color": "#2a8c8c", "marker": "s",
         "prefix": "act_",  # blinded keys: act_kappa_l{j}, act_kappa_g{j}
-        "shear_pkl": ROOT / "results/act_dr6/shear_kappa_cross_spectra/shear_lensmc_x_act_dr6.pkl",
-        "gc_pkl": ROOT / "results/act_dr6/clustering_kappa_cross_spectra/gc_x_act_dr6.pkl",
+        "shear_pkl": ROOT / "results/tr1_act/shear_kappa_cross_spectra/shear_lensmc_x_act_dr6.pkl",
+        "gc_pkl": ROOT / "results/tr1_act/clustering_kappa_cross_spectra/gc_x_act_dr6.pkl",
     },
 }
 
@@ -129,8 +132,7 @@ for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
                                 fmt=cfg["marker"], ms=8, color=cfg["color"], ecolor=cfg["color"],
                                 elinewidth=1.5, capsize=4, mfc="white", mew=1.7, zorder=3)
         legend_handles.setdefault(cfg["label"], container)
-    ax.set_xscale("log")
-    ax.set_xlim(95, 3050)
+    style_ell_axis(ax, 95, 3050)
     ax.yaxis.get_offset_text().set_size(10)
     ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
     ax.grid(which="both", alpha=0.15)
