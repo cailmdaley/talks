@@ -81,10 +81,14 @@ never regenerate a cosmology plot here.
 8. **Likelihood — the plan** — joint Gaussian likelihood over the cross vector;
    per-bin {A, b_i}; δ_gδ_g tightens b_i ~2.5× but does **not** break A–b (no
    amplitude numbers — blinded).
-9. **Systematics: galactic extinction is sub-σ in every bin** — DES/Chang coherent
-   bias X_ℓ = C^{κS}C^{fS}/C^{SS} in units of σ, per bin, δ_g×κ + γ×κ; sub-σ at
-   every bandpower (worst |X/σ|≈0.46), aggregate 0.35–0.8σ. "One template is not a
-   systematics budget." (`spt26_extinction_xell.png`.) ⏳ **STILL ON RR2** — see below.
+9. **Systematics: extinction is sub-σ for shear, ~1σ at high-ℓ for clustering** —
+   DES/Chang coherent bias X_ℓ = C^{κS}C^{fS}/C^{SS} in units of σ, per bin, δ_g×κ +
+   γ×κ. On TR1 (`lc run -u tr1`): shear sub-σ everywhere (aggregate 0.4–0.85σ);
+   clustering sub-σ at low/mid-ℓ but rises at high-ℓ (ℓ≳1000) toward 1σ, growing
+   with z-bin (coherent S_bias 0.9→1.5σ, gc bin6 bandpower at 1.0σ). Surprising:
+   largest at HIGH ℓ, opposite the smooth-template expectation. "One template is
+   not a systematics budget." (`spt26_extinction_xell.png`, TR1.) See
+   `…/spt-talk-push/tr1-extinction-highell-clustering`.
 10. **Simulations** — DEMNUni/FLASK → mock covariance; Agora (Gatti Euclid-like
     products) + systematics-injected GLASS box for foregrounds; D1 κ̂−κ_true noise
     realizations; the ambitious D1-on-FFP10 cross-covariance between Planck/ACT/SPT.
@@ -94,18 +98,17 @@ never regenerate a cosmology plot here.
 
 ## Pending TR1 — the two figures still reading RR2
 
-Slides 5 (`spt26_estimator_robustness.png`) and 9 (`spt26_extinction_xell.png`)
-still read the RR2 pipeline. They are **blind-safe and carry no RR2/TR1 label**, so
-they don't misrepresent — and the scientific message (estimators agree; extinction
-sub-σ) is identical on RR2 and TR1. For full honesty they should move to TR1, the
-open task in `explorations/spt-talk-push`:
+**Extinction (slide 9) — DONE on TR1.** Built via `lc run -u tr1`
+(`tracer_extinction_cross_spectra`, `kappa_extinction_cross_spectrum`,
+`extinction_contamination_metric`; already `release_env.sh`-parameterized); products
+land in the lc-canonical `results/tr1/<output_id>/` tree (the same tree the spine
+reads). `make_extinction_xell.py` now points there. The TR1 numbers shifted the slide
+honestly (see slide 9 above) — this was a real finding, not a cosmetic swap.
 
-- **Extinction (slide 9)** — the three extinction recipes
-  (`tracer_extinction_cross_spectra`, `kappa_extinction_cross_spectrum`,
-  `extinction_contamination_metric`) are already `release_env.sh`-parameterized, so
-  `lc run -u tr1 …` produces the TR1 products under
-  `results/tr1_v1p1-v0.1/systematics/`. Then repoint `make_extinction_xell.py` (its
-  `SYS`/`XS` roots) at TR1 and re-render.
+**Estimator (slide 5) — still RR2.** Blind-safe, carries no RR2/TR1 label, and the
+message (estimators agree) is identical on RR2/TR1. For full honesty it should move
+to TR1:
+
 - **Estimator (slide 5)** — the two estimator-cross recipes
   (`spt_estimator_datavector_comparison`, `clustering_estimator_datavector_comparison`)
   are **RR2-hardcoded** (the deferred "snakemake-bridge"); they need a

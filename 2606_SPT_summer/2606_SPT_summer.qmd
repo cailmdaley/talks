@@ -271,38 +271,54 @@ But — the honest limitation — that does NOT yet break the amplitude-bias deg
 So the genuinely open design question, which I'd welcome thoughts on, is what additional information actually breaks A from b. Candidates: the shear-ratio geometry between tomographic bins, or pushing the delta-g delta-g scale range — but this is unsettled.
 :::
 
-## Systematics: galactic extinction is sub-σ in every bin
+## Systematics: extinction is sub-σ for shear, ~1σ at high-ℓ for clustering
 
 ![](images/spt26_extinction_xell.png){width="92%" fig-align="center"}
 
 [Galactic-extinction coherent bias $X_\ell = C_\ell^{\kappa S}C_\ell^{fS}/C_\ell^{SS}$
 (DES/Chang) in units of the measurement error $\sigma$, per tomographic bin:
-$\delta_g\times\kappa$ (left), $\gamma\times\kappa$ (right). **Sub-σ at every bandpower**
-(worst $|X/\sigma|\!\approx\!0.46$); aggregate **0.35–0.8σ** per bin. One template is not a
-systematics budget.]{.credit style="font-size:0.6em"}
+$\delta_g\times\kappa$ (left), $\gamma\times\kappa$ (right). **Shear: sub-σ at every
+bandpower** (aggregate 0.4–0.85σ). **Clustering: sub-σ at low/mid-$\ell$ but rising at
+high $\ell$ ($\ell\!\gtrsim\!1000$) toward 1σ**, growing with redshift bin (coherent
+$S_{\rm bias}$ 0.9→1.5σ). One template is not a systematics budget — and on TR1
+extinction is **not yet under control for clustering**.]{.credit style="font-size:0.6em"}
 
 ::: {.notes}
 This is a deliberately honest slide — I want to be clear about what we have and haven't done
-on systematics, because it's the part of the analysis that's least advanced.
+on systematics, because it's the part of the analysis that's least advanced, and on TR1 it's
+the one slide where the data made the story less comfortable, not more.
 
-The one cross-correlation systematic we've actually quantified on this catalog is galactic
+The one cross-correlation systematic we've actually quantified on this TR1 catalog is galactic
 extinction. The metric is the standard DES/Chang contamination estimate: X_ℓ equals the cross
 of kappa with the extinction template, times the cross of the tracer with extinction, divided
 by the extinction auto — that's the coherent bias the template can inject into our signal. I'm
 plotting that bias in units of the measurement error, sigma, as a function of ell, for each of
 the six tomographic bins — clustering-cross-kappa on the left, shear-cross-kappa on the right.
 
-The message reads straight off the y-axis: it's sub-sigma at every single bandpower — the worst
-is about 0.46 sigma — and the aggregate per bin is between a third and eight tenths of a sigma.
-So extinction is not a showstopper. The excursions are largest at the lowest ell, which is what
-you'd expect for a smooth galactic template.
+Shear, on the right, is the clean panel: extinction is sub-sigma at every single bandpower,
+aggregate four tenths to eight tenths of a sigma per bin. For shear-cross-kappa, extinction is
+controlled.
 
-But the transferable message is the title's other half: this is one template. Stellar density,
-exposure depth, zodiacal light, the north-south asymmetry — those null tests exist from an
-earlier catalog version but have NOT been redone on the catalog this analysis runs on, so I'm
-not quoting them. One template quantified does not close systematics — this is the most open
-work-package in the analysis, and I'd flag it as such rather than imply we've got systematics
-under control.
+Clustering, on the left, is the honest concern. At low and mid ell it's sub-sigma, but it
+*climbs at high ell* — above ell of about a thousand it rises toward one sigma per bandpower,
+and it grows with redshift bin: the coherent aggregate goes from about one sigma in the lowest
+bin to about one-and-a-half in the highest, and the worst single bandpower (bin 6) sits right
+at one sigma. So for the clustering cross, extinction is not yet under control.
+
+Two things I want to flag honestly. First, this is *different from what we saw on RR2*, where
+extinction was sub-sigma everywhere — the TR1 southern footprint and the deeper, higher-redshift
+clustering bins make this worse. Second, and more interesting: the bias is largest at *high* ell,
+which is the opposite of what you'd naively expect from a smooth galactic template — that should
+contaminate the largest scales. So either the extinction template carries small-scale structure,
+or there's extinction-dependent selection in the fainter high-z galaxy samples. High ell is also
+exactly where the clustering auto wants a scale cut — so the clustering cross at high ell is the
+region I'd treat with most caution. This is a real to-do, not a closed box.
+
+And the transferable message is the title's other half: this is one template. Stellar density,
+exposure depth, zodiacal light, the north-south asymmetry — those null tests have NOT been redone
+on this TR1 catalog, so I'm not quoting them. One template quantified does not close systematics —
+this is the most open work-package in the analysis, and on TR1 it's a genuine flag for the
+clustering cross, not a reassurance.
 :::
 
 ## Simulations: mocks for covariance, foregrounds, and noise

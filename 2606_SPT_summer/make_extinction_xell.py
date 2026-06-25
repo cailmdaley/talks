@@ -46,8 +46,15 @@ import matplotlib.pyplot as plt
 from _ell_axis import style_ell_axis
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
-SYS = ROOT / "results/rr2_v2_1_wl_031224-v0.1/systematics"
-XS = ROOT / "results/rr2_v2_1_wl_031224-v0.1/cross_spectra"
+# TR1, lc-canonical output tree (results/tr1/<output_id>/) — built by
+# `lc run -u tr1 {tracer_extinction_cross_spectra,kappa_extinction_cross_spectrum}`.
+# Same tree the spine figures read, so the σ-source κ-crosses below are the
+# byte-identical files the spine uses for its error bars.
+TR1 = ROOT / "results/tr1"
+EXT_TRACERS = TR1 / "tracer_extinction_cross_spectra" / "extinction_x_tracers.npz"
+EXT_KAPPA = TR1 / "kappa_extinction_cross_spectrum" / "extinction_x_spt_winter_gmv.npz"
+GC_SIGMA = TR1 / "clustering_kappa_cross_spectra" / "gc_x_spt_winter_gmv.pkl"
+SHEAR_SIGMA = TR1 / "shear_kappa_cross_spectra" / "shear_lensmc_x_spt_winter_gmv.pkl"
 OUT = ROOT / "docs/talks/images/spt26_extinction_xell.png"
 
 TOM_BINS = [1, 2, 3, 4, 5, 6]
@@ -56,14 +63,14 @@ TOM_BINS = [1, 2, 3, 4, 5, 6]
 #   (the pkl is the σ source — its diag is the blind-independent measurement error).
 PANELS = [
     ("gc", r"Galaxy clustering $\times$ CMB-$\kappa$   ($\delta_g\times\kappa$)",
-     r"$\ell\,X_\ell^{\,\delta_g\kappa}$", XS / "gc_x_spt_winter_gmv.pkl"),
+     r"$\ell\,X_\ell^{\,\delta_g\kappa}$", GC_SIGMA),
     ("wl", r"Cosmic shear $\times$ CMB-$\kappa$   ($\gamma\times\kappa$)",
-     r"$\ell\,X_\ell^{\,\gamma\kappa}$", XS / "shear_lensmc_x_spt_winter_gmv.pkl"),
+     r"$\ell\,X_\ell^{\,\gamma\kappa}$", SHEAR_SIGMA),
 ]
 
 # ---------------------------------------------------------------- load products
-ext = np.load(SYS / "extinction_x_tracers.npz", allow_pickle=True)["spectra"].item()
-kappa_ext = np.load(SYS / "extinction_x_spt_winter_gmv.npz")
+ext = np.load(EXT_TRACERS, allow_pickle=True)["spectra"].item()
+kappa_ext = np.load(EXT_KAPPA)
 c_ks = np.asarray(kappa_ext["cl"], dtype=float)            # C^{κS}, bin-independent
 c_ss = np.asarray(kappa_ext["cl_sys_auto"], dtype=float)   # C^{SS} (Knox extinction auto)
 leff = np.asarray(kappa_ext["ells"], dtype=float)          # log15 bandpower centers
