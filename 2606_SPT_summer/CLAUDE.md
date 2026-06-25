@@ -132,8 +132,19 @@ scale factor folded into the label, `ℓCℓ [×10⁻⁶]`, not a floating offse
 
 ## Build
 
-Quarto + reveal.js. Scaffolding copied from `25_SPT_f2f` / `2606_SPT_secondaries`
-(custom.scss, title-slide.html, assets/ + images/ symlinks).
+Quarto + reveal.js, on the **shared house theme** (`../assets/house.scss`): warm
+parchment ground, EB Garamond + IBM Plex Mono, a single cinnabar accent, the
+figure-on-ground halo, small-caps footer/occasion, a cinnabar kicker-rule under
+each `##`. The deck consumes it in two lines —
+`theme: [default, ../assets/house.scss, custom.scss]` plus `margin: 0` and the
+`assets/figure-treatment.html` include (which multiplies the white seaborn figures
+onto the ground; no figure regeneration needed). `custom.scss` is now thin (only
+the title logo-bar nudges); `title-slide.html` uses the house spacer + an
+Euclid·CEA·CosmoStat logo bar. Text slides that should sit vertically centred use
+`{.vcenter}` (the house opt-in; reveal's `.center` is pinned to top:0 by the
+theme). The house theme is the going-forward look, extracted from the CNRS
+Rising-Talents deck (`26_CNRS_RisingTalents`); to re-skin the palette, set vars in
+a `brand.scss` listed *before* house.scss.
 
 ```bash
 cd /leonardo_work/EUHPC_E07_074/cdaley00/cmbx/docs/talks
