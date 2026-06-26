@@ -4,7 +4,7 @@
 # ///
 """Robustness to the SPT-3G lensing estimator — one high-z bin, the two κ-crosses.
 
-Single tomographic bin (the highest-S/N, highest-redshift bin 6), two stacked
+Single tomographic bin (bin 5), two stacked
 panels (top/bottom) — the two CMB-lensing crosses: cosmic shear × CMB-κ (γ×κ) and
 galaxy clustering × CMB-κ (δ_g×κ). Each panel overlays three SPT-3G reconstruction
 estimators — GMV (baseline), GMV pol-only (PP) and GMV profile-hardened (the bias +
@@ -44,7 +44,7 @@ UNBLINDED_PKL = ROOT / "results/tr1/blinding/talk_datavector_unblinded.pkl"
 THEORY = ROOT / "results/redshift_tr1/theory_cls.pkl"
 OUT = ROOT / "docs/talks/images/spt26_estimator_robustness.png"
 
-BIN = 6
+BIN = 5
 LMAX = 3000
 ESTIMATORS = [  # (key, label, color)
     ("gmv", "GMV", "#222222"),

@@ -172,7 +172,7 @@ I'm deliberately not quoting amplitudes or per-bin S/N here — those belong to 
 
 ::: {.notes}
 This is a status check on whether the cross depends on which SPT lensing estimator we
-feed it. I'm showing the highest-S/N bin (bin 6), the two CMB-lensing crosses stacked
+feed it. I'm showing one representative high-z bin (bin 5), the two CMB-lensing crosses stacked
 top and bottom — cosmic shear × κ and galaxy clustering × κ; the same picture holds across all
 six bins. Each panel overlays three SPT-3G estimators — GMV, PP, and the bias +
 profile-hardened reconstruction (GMVbhTTprf) — and the hardened reconstruction sits right
@@ -202,7 +202,7 @@ sigma — and that's the claim, no more.
 ::: {.notes}
 This is the cross-survey check. Same Euclid tracers, crossed against two independent
 CMB-lensing reconstructions — SPT-3G GMV in red, ACT DR6 in teal — both laid over the
-fiducial theory curve. I'm showing the highest-S/N bin (bin 6): shear×κ on top,
+fiducial theory curve. I'm showing one representative high-z bin (bin 5): shear×κ on top,
 clustering×κ on the bottom; the same picture holds across all six bins.
 
 The message is just: we have two κ surveys over this southern overlap, and we can put both
@@ -243,14 +243,14 @@ at the very largest scales.
 If asked about the covariance — and this audience will ask: these are the **exact full
 data-fiducial Gaussian** per-bandpower σ — the covariance diagonal — for *both* surveys, now
 that the full ACT Gaussian exists on disk alongside SPT's. No Knox approximation, no bound: I
-slice the bin-6 κ-cross block straight out of each survey's 24-spectrum NaMaster Gaussian
+slice the bin-5 κ-cross block straight out of each survey's 24-spectrum NaMaster Gaussian
 covariance. The crossover sits at ℓ≈200 (γ×κ flips by ℓ≈176, δ_g×κ by ℓ≈221), and it is
 *lower* than the Knox-diagonal figure that circulated earlier (ℓ≈250) for a physical reason:
 the full Gaussian inflates ACT's low-ℓ variance more than SPT's — ACT's wider Euclid overlap
 carries more mode-coupling correction relative to the f_sky-scaled Knox approximation. So the
 exact result is, if anything, *more* favorable to SPT than the Knox story. (The ℓ≈1350 number
 from much earlier was a different comparison — combined-tomography on the older SACC vector —
-not this like-for-like bin-6 one.)
+not this like-for-like bin-5 one.)
 :::
 
 ## Likelihood — what's built, and the plan

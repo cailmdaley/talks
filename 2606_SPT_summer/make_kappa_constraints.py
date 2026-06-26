@@ -4,7 +4,7 @@
 # ///
 """Which κ survey constrains where — error-bar size, SPT-3G GMV vs ACT DR6 (Euclid TR1).
 
-The two CMB-lensing crosses at the highest-S/N bin (6), log15 binning, stacked as
+The two CMB-lensing crosses at a single tomographic bin (bin 5), log15 binning, stacked as
 wide rows: cosmic shear × CMB-κ (γ×κ, top) and galaxy clustering × CMB-κ (δ_g×κ,
 bottom). The point is the *error-bar size* and how it fluctuates with ℓ: ACT is
 tighter only at the very largest scales (its wider Euclid overlap wins the lowest
@@ -14,7 +14,7 @@ is shaded (per panel, from the on-disk σ).
 
 EXACT, not a bound. σ is the per-bandpower diagonal of each survey's **full
 data-fiducial Gaussian covariance** (NaMaster mode-coupled, 24-spectrum log15
-vector), sliced to the bin-6 κ-cross block — `sqrt(diag(cov[isp][isp]))` exactly
+vector), sliced to the bin-5 κ-cross block — `sqrt(diag(cov[isp][isp]))` exactly
 as eDR1like.likelihood reads it. This supersedes the earlier Knox-diagonal figure
 + conservative-ACT-bound argument: the full ACT Gaussian now exists on disk, so
 both surveys carry their exact mode-coupled σ. (Datafid, not hybrid — the hybrid's
@@ -37,14 +37,14 @@ from _ell_axis import style_ell_axis, fold_yscale
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 THEORY = ROOT / "results/redshift_tr1/theory_cls.pkl"        # TR1 n(z) + self-Hann smoothing
 OUT = ROOT / "docs/talks/images/spt26_kappa_constraints.png"
-BIN = 6
+BIN = 5
 LMAX = 3000
 
 # Full data-fiducial Gaussian covariance per survey (24-spectrum log15 vector). The
-# exact per-bandpower σ is the diagonal of the bin-6 κ-cross auto-block.
+# exact per-bandpower σ is the diagonal of the bin-5 κ-cross auto-block.
 SURVEYS = {
     "SPT-3G GMV": dict(color="#c0392b", marker="o",
-                       cov=ROOT / "results/tr1/covariance_gaussian/spt_winter_gmv_covariance_gaussian_datafid_input.pkl"),
+                       cov=ROOT / "results/tr1/covariance_gaussian/spt_winter_gmvbhttprf_covariance_gaussian_datafid_input.pkl"),
     "ACT DR6":    dict(color="#2a8c8c", marker="s",
                        cov=ROOT / "results/tr1_act/covariance_gaussian/act_dr6_covariance_gaussian_datafid_input.pkl"),
 }
@@ -72,11 +72,11 @@ def theory_full(key):
 
 
 def sigma_of(label, stem):
-    """(ℓ_eff, σ) for a survey×family at bin 6 — σ = sqrt of the full-Gaussian diagonal block.
+    """(ℓ_eff, σ) for a survey×family at bin 5 — σ = sqrt of the full-Gaussian diagonal block.
 
     The covariance is a list-of-lists over the 24-spectrum vector whose order is
-    `list(cls.keys())`; the bin-6 κ-cross auto-block is cov[idx][idx] for
-    idx = index of f"{stem}{BIN-1}" (bin 6 → kappa_l5 / kappa_g5, 0-indexed).
+    `list(cls.keys())`; the bin-5 κ-cross auto-block is cov[idx][idx] for
+    idx = index of f"{stem}{BIN-1}" (bin 5 → kappa_l4 / kappa_g4, 0-indexed).
     """
     d = _covcache[label]
     key = f"{stem}{BIN - 1}"

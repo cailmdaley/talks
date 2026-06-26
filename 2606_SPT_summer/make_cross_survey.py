@@ -11,7 +11,7 @@ shear γ×κ, galaxy clustering δ_g×κ). The CMB-κ source plane is common
 (z≈1100), so a single fiducial theory curve per panel is the honest reference,
 and the two surveys agreeing on it *is* the cross-survey consistency message.
 
-Layout: the highest-S/N bin (6), the two probe families stacked as wide rows (TOP
+Layout: a single tomographic bin (bin 5), the two probe families stacked as wide rows (TOP
 γ×κ, BOTTOM δ_g×κ). Each panel overlays SPT (red, ○) and ACT (teal, □), ℓ-dodged
 multiplicatively so the two surveys' points read cleanly apart on the log axis,
 against one continuous fiducial theory curve.
@@ -43,8 +43,8 @@ SURVEYS = {
     "spt": {
         "label": "SPT-3G GMV", "color": "#c0392b", "marker": "o",
         "prefix": "",  # blinded keys: kappa_l{j}, kappa_g{j}
-        "shear_pkl": ROOT / "results/tr1/shear_kappa_cross_spectra/shear_lensmc_x_spt_winter_gmv.pkl",
-        "gc_pkl": ROOT / "results/tr1/clustering_kappa_cross_spectra/gc_x_spt_winter_gmv.pkl",
+        "shear_pkl": ROOT / "results/tr1/shear_kappa_cross_spectra/shear_lensmc_x_spt_winter_gmvbhttprf.pkl",
+        "gc_pkl": ROOT / "results/tr1/clustering_kappa_cross_spectra/gc_x_spt_winter_gmvbhttprf.pkl",
     },
     "act": {
         "label": "ACT DR6", "color": "#2a8c8c", "marker": "s",
@@ -109,7 +109,7 @@ sns.set_theme(context="talk", style="ticks")
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
                      "font.family": "DejaVu Sans", "legend.frameon": False})
 
-BIN = 6  # highest-S/N, highest-redshift bin
+BIN = 5  # tomographic bin shown for the single-bin cross-survey panel
 PANELS = [
     ("e", r"$\ell\,C_\ell^{\gamma\kappa}$", r"Cosmic shear $\times$ CMB-$\kappa$   ($\gamma\times\kappa$)",
      lambda j: ("e", "k", j, 0)),

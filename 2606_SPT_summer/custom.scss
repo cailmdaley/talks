@@ -20,20 +20,41 @@
 .reveal #title-slide .logo-bar .logo-cea       { height: 64px; }
 .reveal #title-slide .logo-bar .logo-cosmostat { height: 52px; }
 
+// Collaborator portraits — eight per row, sized to fill the title slide's spare
+// room (the deck has only title + logos here). Each figure is a portrait with the
+// name set below it in the house mono face.
 .reveal #title-slide .collaborator-portraits {
   display: grid;
-  grid-template-columns: repeat(8, 86px);
-  gap: 16px 18px;
+  grid-template-columns: repeat(8, 132px);
+  gap: 26px 22px;
   justify-content: center;
-  margin: 34px auto 0;
+  margin: 40px auto 0;
   width: fit-content;
 }
 
+.reveal #title-slide .collaborator-portraits figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+}
+
 .reveal #title-slide .collaborator-portraits img {
-  width: 86px;
-  height: 86px;
+  width: 124px;
+  height: 124px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(188, 69, 56, 0.72);
   box-shadow: 0 6px 14px rgba(55, 42, 35, 0.18);
+}
+
+.reveal #title-slide .collaborator-portraits figcaption {
+  font-family: $font-family-monospace;
+  font-size: 0.46em;
+  line-height: 1.18;
+  letter-spacing: 0.01em;
+  color: $body-color;
+  text-align: center;
+  max-width: 132px;
 }

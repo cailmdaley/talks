@@ -42,8 +42,8 @@ ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 # TR1 cross-spectra: SPT GMV κ-crosses (shear/clustering live in separate dirs) and
 # the GGL per-bin npz (under the TR1 results-root; the tr1/ rerun κ-crosses share
 # the same log15 binning).
-SHEAR_KAPPA_PKL = ROOT / "results/tr1/shear_kappa_cross_spectra/shear_lensmc_x_spt_winter_gmv.pkl"
-GC_KAPPA_PKL = ROOT / "results/tr1/clustering_kappa_cross_spectra/gc_x_spt_winter_gmv.pkl"
+SHEAR_KAPPA_PKL = ROOT / "results/tr1/shear_kappa_cross_spectra/shear_lensmc_x_spt_winter_gmvbhttprf.pkl"
+GC_KAPPA_PKL = ROOT / "results/tr1/clustering_kappa_cross_spectra/gc_x_spt_winter_gmvbhttprf.pkl"
 GGL_DIR = ROOT / "results/tr1_v1p1-v0.1/cross_spectra/individual"
 THEORY = ROOT / "results/redshift_tr1/theory_cls.pkl"
 OUT = ROOT / "docs/talks/images/spt26_cross_spectra.png"
