@@ -17,6 +17,7 @@ resources:
     - images/euclid_logo.png
     - images/cea_logo.png
     - images/cosmostat_logo.png
+    - images/collaborators/*.jpg
 
 format:
     revealjs:

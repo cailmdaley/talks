@@ -19,3 +19,21 @@
 .reveal #title-slide .logo-bar .logo-euclid    { height: 76px; }
 .reveal #title-slide .logo-bar .logo-cea       { height: 64px; }
 .reveal #title-slide .logo-bar .logo-cosmostat { height: 52px; }
+
+.reveal #title-slide .collaborator-portraits {
+  display: grid;
+  grid-template-columns: repeat(8, 86px);
+  gap: 16px 18px;
+  justify-content: center;
+  margin: 34px auto 0;
+  width: fit-content;
+}
+
+.reveal #title-slide .collaborator-portraits img {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(188, 69, 56, 0.72);
+  box-shadow: 0 6px 14px rgba(55, 42, 35, 0.18);
+}
