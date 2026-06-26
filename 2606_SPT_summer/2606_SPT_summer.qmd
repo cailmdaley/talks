@@ -15,8 +15,6 @@ output-file: index.html
 # them so Quarto's resource scanner copies them into _site/.../images/.
 resources:
     - images/euclid_logo.png
-    - images/cea_logo.png
-    - images/cosmostat_logo.png
     - images/collaborators/*.jpg
 
 format:
@@ -50,8 +48,8 @@ include-in-header: assets/mathjax.html
 
 ## Status report: Euclid × CMB-lensing cross-correlations {.vcenter}
 
-A status report on the **Euclid MoU CMB-lensing × cross-correlation project** —
-led by **Cail Daley & Margherita Lembo**.
+A status report on the **Euclid MoU CMB-lensing × cross-correlation project**
+(project liaisons: **Cail Daley & Margherita Lembo**).
 
 ::: {.columns}
 ::: {.column width="55%"}
@@ -64,7 +62,6 @@ systematics · simulations
 **Timeline:**
 
 - Euclid cosmology products now scheduled **June 2027**
-- DR1 freeze slipped from **Oct 2026** [CONFIRM]
 :::
 :::
 
@@ -82,13 +79,9 @@ SPT versus ACT; then the forward-looking pieces — likelihood and bias plans,
 systematics, and simulations.
 
 On timing — and this matters for how we plan the MoU paper relative to Euclid: the
-Euclid cosmology products are now scheduled for June 2027. That's the public
-release / publication date set at the May consortium meeting; DR1 products are
-final March 2027. This has slipped — the original DR1 freeze deadline was the
-Oct-2026 red line, already missed in projection, mostly from shear-calibration
-slippage. [CONFIRM the exact prior date before presenting — dictation was unclear,
-and I want to be precise that the slip is freeze-Oct-2026 → publication-June-2027,
-not muddle the freeze and publication dates.] The upshot the SPT side cares about:
+Euclid cosmology products are now scheduled for June 2027 (the public
+release / publication date set at the May consortium meeting; DR1 products final
+March 2027). The upshot the SPT side cares about:
 we don't have to wait for June 2027 to publish — a paper can move on its own
 schedule as long as what we publish matches what's frozen in the SAS.
 :::

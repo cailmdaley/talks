@@ -10,8 +10,9 @@ tracked, shareable artifact — so nothing here is secret. The one entry actuall
 selected (the sealed index) is NEVER marked; the figure shows the *distribution
 we draw from*, not the draw.
 
-The list is drawn uniformly within ±max_sigma·σ of the Planck-18 fiducial in the
-(Ω_m, S8) plane (S8 = σ8·(Ω_m/0.3)^½ is the lensing amplitude the cross probes);
+The list is drawn uniformly within ±max_sigma · σ_ref of the Planck-18 fiducial in
+the (Ω_m, S8) plane, where σ_ref = (0.03, 0.016) are the DES Y3 3×2pt×SPT errors
+(S8 = σ8·(Ω_m/0.3)^½ is the lensing amplitude the cross probes);
 mapped to (Ω_m, σ8) the box shears along the S8 degeneracy. Plotting in σ8 makes
 that degeneracy direction legible.
 
@@ -26,7 +27,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
-LIST = ROOT / "results/baseline/cosmology_shift_list/blinding_cosmology_list.json"
+LIST = ROOT / "results/tr1/cosmology_shift_list/blinding_cosmology_list.json"
 OUT_PNG = ROOT / "docs/talks/images/spt26_blinding_cosmologies.png"
 
 payload = json.loads(LIST.read_text())
@@ -65,7 +66,7 @@ ax.grid(which="both", alpha=0.25)
 
 ax.legend(loc="upper right", fontsize=15, handletextpad=0.4, borderpad=0.5,
           frameon=True, framealpha=0.9, facecolor="white", edgecolor="0.8")
-ax.text(0.035, 0.05, r"drawn $\pm%g\sigma$ around Planck-18" % max_sigma,
+ax.text(0.035, 0.05, r"drawn $\pm%g\sigma$ (DES Y3 3×2pt×SPT) around Planck-18" % max_sigma,
         transform=ax.transAxes, fontsize=13, va="bottom", ha="left", color="0.3")
 
 fig.tight_layout()

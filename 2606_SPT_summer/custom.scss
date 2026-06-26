@@ -12,24 +12,73 @@
 
 /*-- scss:rules --*/
 
-// Title-slide logo bar — per-mark optical-weight nudges off the house common
-// height ($logo-h, 72px). Euclid is the survey we bring; CEA + CosmoStat the
-// employer. The wide CosmoStat wordmark reads heavy at common height, so trim it;
-// nudge the others to balance. (Tuned against the 1920×1080 render.)
-.reveal #title-slide .logo-bar .logo-euclid    { height: 76px; }
-.reveal #title-slide .logo-bar .logo-cea       { height: 64px; }
-.reveal #title-slide .logo-bar .logo-cosmostat { height: 52px; }
+// Title-slide logo bar — Euclid only (the survey we bring to the cross), at the
+// house common logo height. (Tuned against the 1920×1080 render.)
+.reveal #title-slide .logo-bar .logo-euclid { height: 76px; }
 
-// Collaborator portraits — eight per row, sized to fill the title slide's spare
-// room (the deck has only title + logos here). Each figure is a portrait with the
-// name set below it in the house mono face.
+// Title people — the collaborator grid sits on the LEFT; an "In Memoriam" block
+// sits in the room on the RIGHT, vertically centred against the two portrait rows.
+.reveal #title-slide .title-people {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 72px;
+  margin: 40px auto 0;
+  width: fit-content;
+}
+
+// Collaborator portraits — eight per row. Each figure is a portrait with the name
+// set below it in the house mono face.
 .reveal #title-slide .collaborator-portraits {
   display: grid;
   grid-template-columns: repeat(8, 132px);
   gap: 26px 22px;
   justify-content: center;
-  margin: 40px auto 0;
+  margin: 0;
   width: fit-content;
+}
+
+// In Memoriam — Karim Benabed, set apart to the right with a small-caps cinnabar
+// label above the portrait.
+.reveal #title-slide .in-memoriam {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.reveal #title-slide .in-memoriam .memoriam-label {
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  color: $cinnabar;
+  font-size: 0.7em;
+  margin: 0;
+}
+
+.reveal #title-slide .in-memoriam figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+}
+
+.reveal #title-slide .in-memoriam img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(188, 69, 56, 0.72);
+  box-shadow: 0 6px 14px rgba(55, 42, 35, 0.18);
+}
+
+.reveal #title-slide .in-memoriam figcaption {
+  font-family: $font-family-monospace;
+  font-size: 0.5em;
+  line-height: 1.18;
+  letter-spacing: 0.01em;
+  color: $body-color;
+  text-align: center;
 }
 
 .reveal #title-slide .collaborator-portraits figure {
