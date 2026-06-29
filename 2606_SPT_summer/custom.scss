@@ -179,3 +179,21 @@
 // Orientation slide — the right-hand roadmap column, at body size.
 .reveal .orient-side { font-size: 1.0em; }
 .reveal .orient-side .timeline-date { color: $cinnabar; font-weight: 700; }
+
+// Footprint build-up (slide 3) — give each r-stack image its OWN opaque ground
+// backdrop. Without a per-image frame, all three images share the .r-stack as the
+// multiply parent and bleed through each other (white → see-through under multiply),
+// so revealed footprints accumulate instead of the top one occluding the ones below.
+// The frame carries the fragment + an opaque ground, so each reveal cleanly REPLACES
+// the previous footprint; the figure-treatment script multiplies each image onto its
+// own frame (it paints img.parentElement), melting the white into the ground.
+.reveal .footprint-frame {
+  width: 75vw;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $ground;        // fallback ground; figure-treatment confirms it for multiply
+  isolation: isolate;         // local stacking context so multiply blends onto this ground
+}
+.reveal .footprint-frame > img { width: 100%; height: auto; }
