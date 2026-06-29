@@ -49,7 +49,7 @@ include-in-header: assets/mathjax.html
 ## A status report from the Euclid × SPT-3G CMB-lensing MoU {.vcenter}
 
 ::: {.columns}
-::: {.column width="57%"}
+::: {.column width="50%"}
 
 ```{=html}
 <div class="xmatrix" aria-label="upper-triangular matrix of the six two-point spectra of galaxy density, shear, and CMB lensing">
@@ -63,23 +63,19 @@ include-in-header: assets/mathjax.html
   <div class="empty"></div><div class="empty"></div><div class="cell odd">κκ</div>
 </div>
 <div class="xmatrix-legend">
-  <span><i class="sw sw-cross"></i>our crosses</span>
   <span><i class="sw sw-tpt"></i>standard Euclid 3×2pt</span>
-  <span><i class="sw sw-odd"></i>κκ — likelihood-level</span>
-  <span class="sixtot">all six → 6×2pt</span>
+  <span><i class="sw sw-cross"></i>this project<br><span class="lg-sub">(as proposed)</span></span>
 </div>
 ```
 
 :::
-::: {.column width="43%"}
+::: {.column width="50%"}
 
 ::: {.orient-side}
 **Today**
 
 footprints · blinding · data vectors · estimator consistency · SPT vs ACT ·
 likelihood & bias · systematics · simulations
-
-**Timeline**
 
 Euclid cosmology products → [June 2027]{.timeline-date}
 :::
