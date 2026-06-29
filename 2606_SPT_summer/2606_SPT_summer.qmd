@@ -46,44 +46,83 @@ html-math-method:
 include-in-header: assets/mathjax.html
 ---
 
-## Status report: Euclid × CMB-lensing cross-correlations {.vcenter}
-
-A status report on the **Euclid MoU CMB-lensing × cross-correlation project**
-(project liaisons: **Cail Daley & Margherita Lembo**).
+## A status report from the Euclid × SPT-3G CMB-lensing MoU {.vcenter}
 
 ::: {.columns}
-::: {.column width="55%"}
-**Today:**
-footprints & fields · blinding · data vectors ·
-estimator consistency · SPT vs ACT · likelihood & bias plans ·
-systematics · simulations
-:::
-::: {.column width="45%"}
-**Timeline:**
+::: {.column width="57%"}
 
-- Euclid cosmology products now scheduled **June 2027**
+```{=html}
+<div class="xmatrix" aria-label="upper-triangular matrix of the six two-point spectra of galaxy density, shear, and CMB lensing">
+  <div class="hdr"></div>
+  <div class="hdr">δ<sub>g</sub></div><div class="hdr">γ</div><div class="hdr">κ</div>
+  <div class="hdr">δ<sub>g</sub></div>
+  <div class="cell tpt">δ<sub>g</sub>δ<sub>g</sub></div><div class="cell tpt cross">δ<sub>g</sub>γ</div><div class="cell cross">δ<sub>g</sub>κ</div>
+  <div class="hdr">γ</div>
+  <div class="empty"></div><div class="cell tpt">γγ</div><div class="cell cross">γκ</div>
+  <div class="hdr">κ</div>
+  <div class="empty"></div><div class="empty"></div><div class="cell odd">κκ</div>
+</div>
+<div class="xmatrix-legend">
+  <span><i class="sw sw-cross"></i>our crosses</span>
+  <span><i class="sw sw-tpt"></i>standard Euclid 3×2pt</span>
+  <span><i class="sw sw-odd"></i>κκ — likelihood-level</span>
+  <span class="sixtot">all six → 6×2pt</span>
+</div>
+```
+
+:::
+::: {.column width="43%"}
+
+::: {.orient-side}
+**Today**
+
+footprints · blinding · data vectors · estimator consistency · SPT vs ACT ·
+likelihood & bias · systematics · simulations
+
+**Timeline**
+
+Euclid cosmology products → [June 2027]{.timeline-date}
+:::
+
 :::
 :::
 
 ::: {.notes}
-This is a status report, not a results talk — the detection and amplitude work is
-blinded and in progress, so I'm reporting where the Euclid × CMB-lensing
-cross-correlation project stands rather than headlining a number.
+Status report, not a results talk — the detection / amplitude work is blinded and
+in progress, so I'm reporting where the Euclid × CMB-lensing cross-correlation
+programme stands rather than headlining a number.
 
-It's the Euclid MoU project, jointly led by me and Margherita Lembo, with Louis
-Legrand and the rest of the 3×2pt+κ team.
+The frame is this MoU [point to the matrix]: the six two-point spectra of galaxy
+density δ, shear γ, and CMB lensing κ — the whole 6×2pt. The cross-hatched cells are
+the standard Euclid 3×2pt: clustering, shear, and galaxy–galaxy lensing — what Euclid
+does on its own. What we propose is the shaded cells: the cross-correlations — δ×γ,
+δ×κ, γ×κ. It's a 3×2pt in its own right, just of the crosses, and the two that bring
+in SPT — δ×κ and γ×κ — are the genuinely new measurement.
 
-Quick roadmap of where I'll go: the footprints and how we define the fields; our
-blinding strategy; the data vectors — all three crosses; estimator consistency;
-SPT versus ACT; then the forward-looking pieces — likelihood and bias plans,
-systematics, and simulations.
+κκ is the odd one out. That's SPT's lensing auto-spectrum — you already have it — so
+it doesn't come from this cross-correlation measurement; we fold it in later, at the
+likelihood level, when we do the joint fit. [say out loud]
 
-On timing — and this matters for how we plan the MoU paper relative to Euclid: the
-Euclid cosmology products are now scheduled for June 2027 (the public
-release / publication date set at the May consortium meeting; DR1 products final
-March 2027). The upshot the SPT side cares about:
-we don't have to wait for June 2027 to publish — a paper can move on its own
-schedule as long as what we publish matches what's frozen in the SAS.
+Why bother: the DES×SPT×Planck 6×2pt (Abbott et al. 2023) tightened Ω_m by ~30% and
+S₈ by ~50% over the shear-and-clustering-only 3×2pt, and self-calibrated shear
+multiplicative bias at the 5–10% level. We expect the same kind of return for
+Euclid — Gatti's forecast has SPT-3G × DR1-South κγ improving the (Ω_m, σ8) figure
+of merit ~14% over γγ alone.
+
+This is one piece of a broader CMBX effort: fold our crosses together with the Euclid
+3×2pt and it becomes the full 5×2pt, and with κκ in the likelihood, the 6×2pt. [say
+out loud]
+
+The MoU is jointly run — I'm the SPT contact, Margherita Lembo the Euclid contact,
+with Louis Legrand and the rest of the 3×2pt+κ team.
+
+On timing, and this matters for how we plan the paper relative to Euclid: the Euclid
+cosmology products are now scheduled for June 2027 — the public release set at the
+May consortium meeting, with DR1 products frozen March 2027. That's later than some
+may have assumed (people had ~October in mind), and it sets the pace we're working
+at. The upshot the SPT side cares about: we don't have to wait for June 2027 to
+publish — a paper can move on its own schedule as long as what we publish matches
+what's frozen in the SAS.
 :::
 
 ## Euclid footprints and overlaps

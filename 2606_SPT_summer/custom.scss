@@ -107,3 +107,75 @@
   text-align: center;
   max-width: 132px;
 }
+
+// ── Orientation slide: the upper-triangular data-vector matrix ──────────────
+// The six two-point spectra of galaxy density (δ_g), shear (γ), and CMB lensing
+// (κ) — the upper triangle of the symmetric 3×3, so nothing is duplicated.
+// Three treatments carry the story: the off-diagonal CROSSES (δγ, δκ, γκ) are
+// what this MoU proposes — a 3×2pt of crosses (cinnabar shade); the standard
+// Euclid 3×2pt (δδ, γγ, δγ) is cross-hatched; κκ is the odd one out — SPT's
+// lensing auto, brought in at the likelihood level (dashed, muted). δγ is the
+// shared cell (shade + hatch). All six → the full 6×2pt.
+.reveal .xmatrix {
+  display: grid;
+  grid-template-columns: 2.0em repeat(3, 3.7em);
+  grid-template-rows: 2.0em repeat(3, 3.7em);
+  gap: 8px;
+  width: fit-content;
+  margin: 0.1em auto 0.55em;
+  font-family: $font-family-sans-serif;
+}
+.reveal .xmatrix .hdr {
+  display: flex; align-items: center; justify-content: center;
+  color: $ink-muted; font-style: italic; font-size: 1.0em;
+}
+.reveal .xmatrix .empty { border: none; background: none; }
+.reveal .xmatrix .cell {
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid $rule;
+  border-radius: 3px;
+  font-size: 0.72em;
+  color: $ink;
+  white-space: nowrap;
+}
+.reveal .xmatrix .cell sub { font-size: 0.62em; line-height: 0; }
+.reveal .xmatrix .cell.tpt {                 // standard Euclid 3×2pt — cross-hatch
+  background-image: repeating-linear-gradient(45deg,
+      rgba(122, 111, 92, 0.34) 0, rgba(122, 111, 92, 0.34) 1.4px,
+      transparent 1.4px, transparent 7px);
+}
+.reveal .xmatrix .cell.cross {               // the crosses we propose — cinnabar shade
+  background-color: rgba(188, 69, 56, 0.16);
+  border-color: $cinnabar;
+}
+.reveal .xmatrix .cell.odd {                 // κκ — odd one out, likelihood-level
+  border-style: dashed;
+  border-color: $ink-muted;
+  color: $ink-muted;
+}
+
+// Legend under the matrix — at body size, readable. Tight wording so it fits.
+.reveal .xmatrix-legend {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 8px 26px;
+  font-size: 0.9em; color: $ink-muted;
+  width: 100%; margin: 0 auto;
+  text-align: center;
+}
+.reveal .xmatrix-legend .sw {
+  display: inline-block; width: 1.0em; height: 1.0em;
+  vertical-align: -0.14em; margin-right: 0.45em;
+  border: 1.5px solid $rule; border-radius: 2px;
+}
+.reveal .xmatrix-legend .sw-cross { background: rgba(188, 69, 56, 0.16); border-color: $cinnabar; }
+.reveal .xmatrix-legend .sw-tpt {
+  background-image: repeating-linear-gradient(45deg,
+      rgba(122, 111, 92, 0.34) 0, rgba(122, 111, 92, 0.34) 1.4px,
+      transparent 1.4px, transparent 7px);
+}
+.reveal .xmatrix-legend .sw-odd { border-style: dashed; border-color: $ink-muted; }
+.reveal .xmatrix-legend .sixtot { color: $cinnabar; font-style: italic; }
+
+// Orientation slide — the right-hand roadmap column, at body size.
+.reveal .orient-side { font-size: 1.0em; }
+.reveal .orient-side .timeline-date { color: $cinnabar; font-weight: 700; }
