@@ -72,12 +72,14 @@ include-in-header: assets/mathjax.html
 ::: {.column width="50%"}
 
 ::: {.orient-side}
+Euclid cosmology products → [June 2027]{.timeline-date}
+
+::: {.today-block}
 **Today**
 
 footprints · blinding · data vectors · estimator consistency · SPT vs ACT ·
 likelihood & bias · systematics · simulations
-
-Euclid cosmology products → [June 2027]{.timeline-date}
+:::
 :::
 
 :::

@@ -176,8 +176,16 @@
 .reveal .xmatrix-legend .sw-odd { border-style: dashed; border-color: $ink-muted; }
 .reveal .xmatrix-legend .lg-sub { font-style: italic; }
 
-// Orientation slide — the right-hand roadmap column, at body size.
-.reveal .orient-side { font-size: 1.0em; }
+// Orientation slide — the right-hand column: timeline above, Today block below,
+// distributed over the column height (which stretches to the matrix's).
+.reveal .orient-side {
+  font-size: 1.0em;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.reveal .orient-side .today-block > :first-child { margin-top: 0; }
 .reveal .orient-side .timeline-date { color: $cinnabar; font-weight: 700; }
 
 // Footprint build-up (slide 3) — give each r-stack image its OWN opaque ground
@@ -187,8 +195,10 @@
 // The frame carries the fragment + an opaque ground, so each reveal cleanly REPLACES
 // the previous footprint; the figure-treatment script multiplies each image onto its
 // own frame (it paints img.parentElement), melting the white into the ground.
+// Size in PIXELS (the 1920×1080 slide coordinate system), never vw/vh: reveal scales
+// the slide to the window, so vw/vh resolve against the browser window and the figure
+// silently shrinks. Height-based fill so the 16:9 map is as large as fits below the title.
 .reveal .footprint-frame {
-  width: 75vw;
   margin: auto;
   display: flex;
   justify-content: center;
@@ -196,4 +206,9 @@
   background: $ground;        // fallback ground; figure-treatment confirms it for multiply
   isolation: isolate;         // local stacking context so multiply blends onto this ground
 }
-.reveal .footprint-frame > img { width: 100%; height: auto; }
+.reveal .footprint-frame > img {
+  height: 900px;
+  width: auto;
+  max-width: 1880px;
+  object-fit: contain;
+}
