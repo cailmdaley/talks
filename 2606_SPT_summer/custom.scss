@@ -195,10 +195,13 @@
 // The frame carries the fragment + an opaque ground, so each reveal cleanly REPLACES
 // the previous footprint; the figure-treatment script multiplies each image onto its
 // own frame (it paints img.parentElement), melting the white into the ground.
-// Size in PIXELS (the 1920×1080 slide coordinate system), never vw/vh: reveal scales
-// the slide to the window, so vw/vh resolve against the browser window and the figure
-// silently shrinks. Height-based fill so the 16:9 map is as large as fits below the title.
+// Sizing in % of the slide (general — no baked-in 1080). reveal scales the whole
+// 1920×1080 stage by a CSS transform, so % of the slide height tracks the slide, not the
+// window (unlike vw/vh). The stack + frame carry a slide-relative height so the image's
+// max-height:% has a definite ancestor to resolve against; object-fit keeps the aspect.
+.reveal .footprint-stack { height: 94%; }
 .reveal .footprint-frame {
+  height: 100%;
   margin: auto;
   display: flex;
   justify-content: center;
@@ -207,8 +210,9 @@
   isolation: isolate;         // local stacking context so multiply blends onto this ground
 }
 .reveal .footprint-frame > img {
-  height: 900px;
+  max-height: 100%;
+  max-width: 100%;
   width: auto;
-  max-width: 1880px;
+  height: auto;
   object-fit: contain;
 }

@@ -126,7 +126,7 @@ what's frozen in the SAS.
 ## Euclid footprints and overlaps
 
 ```{=html}
-<div class="r-stack">
+<div class="r-stack footprint-stack">
   <div class="footprint-frame"><img src="images/spt26_footprint_1_euclid.png"></div>
   <div class="footprint-frame fragment"><img src="images/spt26_footprint_2_spt.png"></div>
   <div class="footprint-frame fragment"><img src="images/spt26_footprint_3_act.png"></div>
