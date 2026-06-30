@@ -53,7 +53,12 @@ BLINDED_PKL = ROOT / "results/tr1/cosmology_shift_talk_datavector/talk_datavecto
 
 TOM_BINS = [1, 2, 3, 4, 5, 6]
 LMAX = 3000
-GGL_SOURCE = 6  # deepest shear bin shown on the slide (always "source behind")
+# GGL slide row = single source(shear)-bin slice over its valid lens(clustering) bins
+# (lens ≤ source: source-behind-or-equal). Bin 6 is the highest-combined-detection-S/N
+# slice — it is the deepest source (every lens bin 1–5 sits behind it, plus the same-bin
+# 6×6), so it both maximises √χ²₀ summed over valid panels AND fills all six columns. The
+# per-source-bin S/N table is recomputed + printed at run time below to keep this honest.
+GGL_SOURCE = 6
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument("--blinded-pkl", default=str(BLINDED_PKL),
@@ -155,10 +160,30 @@ def draw_panel(ax, color, ells, measured, cov, probe_key):
     style_ell_axis(ax, 90, 3100)
 
 
+# --------------------------------------------- GGL source-bin selection (verify)
+# For each candidate shear(source) bin s, the valid GGL panels are the lens(clustering)
+# bins l ≤ s (source-behind-or-equal). The slide row is a SINGLE source-bin slice, so we
+# pick the s whose valid panels carry the largest COMBINED detection S/N = √(Σ χ²₀) — the
+# blind-safe null-detection significance, full bandpower covariance per panel. Printed so
+# the GGL_SOURCE choice above stays falsifiable; also reports per-panel S/N (combined/√N).
+print("\nGGL source-bin selection — combined detection S/N over valid lens bins (l ≤ s):")
+ggl_combined = {}
+for s in TOM_BINS:
+    chi2s = [chi0(*load_ggl(s, l)[1:])[0] for l in TOM_BINS if l <= s]
+    combined = float(np.sqrt(np.sum(chi2s)))
+    ggl_combined[s] = combined
+    print(f"  source {s}: Nvalid={len(chi2s)}  combined S/N={combined:5.1f}  "
+          f"per-panel S/N={combined / np.sqrt(len(chi2s)):4.1f}")
+best = max(ggl_combined, key=ggl_combined.get)
+print(f"  -> highest combined S/N: source {best} ({ggl_combined[best]:.1f}); "
+      f"GGL_SOURCE={GGL_SOURCE}" + ("" if best == GGL_SOURCE else "  [DIFFERS — review]"))
+
 # ---------------------------------------------------------------- slide figure
-sns.set_theme(context="talk", style="ticks")
+sns.set_theme(context="talk", style="ticks", font_scale=1.3)
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
-                     "font.family": "DejaVu Sans", "legend.frameon": False})
+                     "font.family": "DejaVu Sans", "legend.frameon": False,
+                     "axes.labelpad": 2.0, "xtick.major.pad": 2.0,
+                     "ytick.major.pad": 2.0})
 palette = sns.color_palette("husl", len(TOM_BINS))
 
 rows = [
@@ -176,7 +201,7 @@ rows = [
 
 # Full-slide layout (~2:1 to fill the 16:9 content area). sharey="row" hides the
 # inner y-tick labels so only column 0 carries them — buys the panels real width.
-fig, axes = plt.subplots(3, len(TOM_BINS), figsize=(4.0 * len(TOM_BINS), 11.6),
+fig, axes = plt.subplots(3, len(TOM_BINS), figsize=(4.7 * len(TOM_BINS), 14.0),
                          sharex=True, sharey="row")
 
 # Collect per-row data once so we can (a) draw and (b) fix a common y-range per row.
@@ -201,34 +226,41 @@ for r, ((ylabel, _title, getter, probe_of, label_of), cells) in enumerate(zip(ro
     pad = 0.08 * (ymax - ymin)
     for c, j in enumerate(TOM_BINS):
         ax = axes[r, c]
+        if r == 2 and j > GGL_SOURCE:   # GGL: show only valid lens bins (l ≤ source); hide the rest
+            ax.set_visible(False)
+            continue
         ells, measured, cov, pk = cells[c]
         draw_panel(ax, palette[c], ells, measured, cov, pk)
         ax.set_ylim(ymin - pad, ymax + pad)
-        ax.text(0.05, 0.07, label_of(j), transform=ax.transAxes, fontsize=11,
+        ax.text(0.05, 0.07, label_of(j), transform=ax.transAxes, fontsize=16,
                 weight="bold", va="bottom", color=palette[c])
         chi2_0, ndof = chi0(measured, cov)
-        ax.text(0.95, 0.93, rf"$\chi^2_0={chi2_0:.0f}$", transform=ax.transAxes,
-                fontsize=10.5, ha="right", va="top", weight="bold", color=palette[c])
+        sn0 = np.sqrt(chi2_0)  # combined detection S/N vs null (full-cov χ²₀ over all bandpowers)
+        ax.text(0.95, 0.93, rf"$\mathrm{{S/N}}={sn0:.1f}$", transform=ax.transAxes,
+                fontsize=17, ha="right", va="top", weight="bold", color=palette[c])
         print(f"  row{r} {label_of(j):>14s}: chi2_0={chi2_0:7.1f}  ndof={ndof:2d}  "
-              f"S/N=sqrt(chi2_0)={np.sqrt(chi2_0):4.1f}")
+              f"S/N=sqrt(chi2_0)={sn0:4.1f}")
         if c == 0:
             fold_yscale(ax, ylabel)
         if r == 2:
             ax.set_xlabel(r"$\ell$")
 
-axes[0, 0].legend(loc="upper left", fontsize=8.5, ncol=1, framealpha=0.0,
+axes[0, 0].legend(loc="upper left", fontsize=13, ncol=1, framealpha=0.0,
                   bbox_to_anchor=(0.0, 0.92))
 sns.despine(fig)
 suptitle = "Euclid TR1 $\\times$ SPT-3G winter GMV — the three cross-correlation data vectors"
-fig.suptitle(suptitle, y=1.0, fontsize=15.5, weight="bold")
-fig.tight_layout(rect=(0, 0, 1, 0.965), h_pad=2.4, w_pad=0.2)
+fig.suptitle(suptitle, y=1.0, fontsize=21, weight="bold")
+fig.tight_layout(rect=(0, 0, 1, 0.965), h_pad=2.6, w_pad=0.2)
 for r, (_yl, title, *_rest) in enumerate(rows):
     top = max(axes[r, c].get_position().y1 for c in range(len(TOM_BINS)))
-    fig.text(0.5, top + 0.012, title, ha="center", va="bottom", fontsize=13,
+    fig.text(0.5, top + 0.010, title, ha="center", va="bottom", fontsize=19,
              weight="bold")
 if blinded is None:
     fig.text(0.5, 0.5, "PRELIMINARY — UNBLINDED", ha="center", va="center",
              fontsize=46, color="0.85", weight="bold", rotation=18, zorder=0, alpha=0.5)
+_bb = axes[1, 2].get_position()
+print(f"DATA-AREA per panel: {_bb.width * fig.get_figwidth():.3f} x "
+      f"{_bb.height * fig.get_figheight():.3f} in   figsize={tuple(fig.get_size_inches())}")
 fig.savefig(OUT, dpi=170, bbox_inches="tight")
 print("wrote", OUT)
 
