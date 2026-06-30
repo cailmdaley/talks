@@ -20,8 +20,11 @@ BLINDING. Central values are the SEALED BLINDED bandpowers (cosmology-shift
 additive ΔCℓ) from the talk datavector bundle: γ×κ → kappa_l{j}/act_kappa_l{j},
 δ_g×κ → kappa_g{j}/act_kappa_g{j} (0-indexed). Error bars come from each
 survey's OWN raw on-disk covariance (blind-independent), and the theory curve is
-the UNSHIFTED fiducial. NO amplitude, NO per-bin S/N, NO Â annotated anywhere —
-this is a blinding-safe consistency status figure.
+the UNSHIFTED fiducial. Each panel annotates each survey's blinded detection
+S/N = √χ²₀ (χ²₀ = d·C⁻¹·d on the blinded bandpowers + that survey's own full 15×15
+covariance — the same blind-safe quantity the data-vector slide shows; mirrors
+make_three_cross_spectra.chi0). NO amplitude, NO Â is annotated — this is a
+blinding-safe consistency status figure.
 
 CONSISTENCY χ² (blind-safe). Each panel annotates a reduced-χ² for the
 SPT-vs-ACT difference Δ = d_SPT − d_ACT over the 15 log15 bandpowers:
@@ -140,6 +143,29 @@ def cross_survey_chi2(family, bin_id):
     return chi2 / dof, float(stats.chi2.sf(chi2, dof)), dof
 
 
+def chi0(d, cov):
+    """Blinded detection χ² vs the no-signal null: d·C⁻¹·d over the finite,
+    positive-variance bandpowers. Mirrors make_three_cross_spectra.chi0 so the talk's
+    detection S/N (= √χ²₀) is ONE definition. Blind-safe: the cosmology shift moves d,
+    so this is the BLINDED detection strength, not the true amplitude. Returns (χ², n)."""
+    d = np.asarray(d, dtype=float)
+    C = np.asarray(cov, dtype=float)
+    good = np.isfinite(d) & np.isfinite(np.diag(C)) & (np.diag(C) > 0)
+    d, C = d[good], C[np.ix_(good, good)]
+    return (float(d @ np.linalg.solve(C, d)), int(d.size)) if d.size else (np.nan, 0)
+
+
+def survey_sn(survey, family, bin_id):
+    """Blinded detection S/N = √χ²₀ for a survey×family×bin: the survey's BLINDED
+    bandpowers against its OWN full 15×15 on-disk covariance (the plotted points)."""
+    cfg = SURVEYS[survey]
+    product = cfg["shear"] if family == "e" else cfg["gc"]
+    cov = np.asarray(product["spectra"][f"bin{bin_id}"]["cov"], dtype=float)
+    stem = "kappa_l" if family == "e" else "kappa_g"
+    cl = np.asarray(blinded[f"{cfg['prefix']}{stem}{bin_id - 1}"]["cl"], dtype=float)
+    return np.sqrt(chi0(cl, cov)[0])
+
+
 # ----------------------------------------------------------- figure (1 high-z bin)
 sns.set_theme(context="talk", style="ticks")
 # Bumped fonts for a projected talk slide; figsize is enlarged in step so the axes
@@ -158,6 +184,9 @@ PANELS = [
 ]
 # Per-panel corner for the χ² box, each chosen in that panel's clear region.
 ANN = {"e": (0.015, 0.055, "left", "bottom"), "g": (0.985, 0.95, "right", "top")}
+# Anchor for the color-matched per-survey detection-S/N block (top-left clear region,
+# clear of the χ² box and the bandpowers).
+SN_ANN = {"e": (0.015, 0.96, "left"), "g": (0.015, 0.96, "left")}
 
 fig, axes = plt.subplots(2, 1, figsize=(17.0, 13.0), sharex=True)
 legend_handles = {}
@@ -180,9 +209,18 @@ for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
     chi2_red, pte, dof = cross_survey_chi2(family, BIN)
     x, y, ha, va = ANN[family]
     ax.text(x, y, rf"$\chi^2_\nu(\mathrm{{SPT}}-\mathrm{{ACT}}) = {chi2_red:.2f}$"
-            "\n" rf"PTE {pte:.2f} $\cdot$ {dof} dof", transform=ax.transAxes,
+            "\n" rf"PTE {pte:.2f}", transform=ax.transAxes,
             ha=ha, va=va, fontsize=18, color="0.15", zorder=5,
             bbox=dict(boxstyle="round,pad=0.4", fc="white", ec="0.7", alpha=0.78))
+    # Per-survey blinded detection S/N = √χ²₀, color-matched (red SPT / teal ACT).
+    sx, sy0, sha = SN_ANN[family]
+    ax.text(sx, sy0, r"detection S/N $(\sqrt{\chi^2_0})$", transform=ax.transAxes, ha=sha,
+            va="top", fontsize=15, color="0.35", zorder=5)
+    for i, (s, cfg) in enumerate(SURVEYS.items(), start=1):
+        val = survey_sn(s, family, BIN)
+        ax.text(sx, sy0 - 0.075 * i, rf"{cfg['label']}: {val:.1f}", transform=ax.transAxes,
+                ha=sha, va="top", fontsize=18, color=cfg["color"], weight="bold", zorder=5)
+        print(f"  {family}-cross {cfg['label']:>12s}: blinded S/N = {val:.2f}")
 
 axes[-1].set_xlabel(r"$\ell$")
 # No suptitle — the slide headline carries the title (avoid duplicate titles).

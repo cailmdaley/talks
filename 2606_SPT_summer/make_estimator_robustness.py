@@ -22,19 +22,16 @@ twin is a gitignored soft-secret read only at build time, and only blinded
 bandpowers reach the PNG. ``--unblinded`` renders the raw amplitude with a
 PRELIMINARY watermark (off by default so no re-render can silently leak it).
 
-CONSISTENCY METRIC — RMS PULL, not a reduced-χ². A reduced-χ² is ILL-POSED here:
-GMV and the profile-hardened GMVbhTTprf are two reconstructions of the SAME SPT
-data, so they share essentially all of the Euclid sample variance AND most of the
-κ reconstruction noise — they are highly correlated and agree by construction. The
-only covariances on disk are each estimator's OWN auto-covariance; the naive
-Cov(GMV)+Cov(hardened) would MASSIVELY overstate the variance of the difference
-(it double-counts the shared variance instead of cancelling it), giving a
-misleadingly tiny χ². With no proper difference/cross covariance available, we do
-NOT fabricate one. Instead each panel reports the hardening PULL relative to the
-GMV statistical error — RMS and max of |Δ/σ_GMV| over the bin's 15 log15
-bandpowers, Δ = GMVbhTTprf − GMV. The blind cancels exactly in Δ (the same ΔCℓ is
-added to every estimator), so the pull is blind-independent. (Aggregated over all
-6 bins this is the canonical RMS 0.29σ, both crosses.)
+DETECTION S/N (blind-safe). Each panel annotates, color-matched to each estimator,
+the per-estimator blinded detection S/N = √χ²₀, χ²₀ = d·C⁻¹·d over the bin's
+finite, positive-variance log15 bandpowers — d = that estimator's blinded
+bandpowers, C = its OWN full covariance (incl. off-diagonals; analytic Gaussian
+cov, no Hartlap). This MIRRORS the data-vector slide's chi0() detection S/N
+exactly (make_three_cross_spectra.chi0), so the talk is internally consistent.
+The cosmology-shift blind moves d, so √χ²₀ is the
+BLINDED detection strength (the same PI-approved quantity the data-vector slide
+shows) — it leaks no absolute amplitude. The estimators sitting on top of each
+other AND carrying matched detection S/N is the estimator-robustness message.
 """
 import argparse
 import pickle
@@ -110,13 +107,13 @@ def theory_full(key):
 
 
 def est_bin(prefix, est, probe, bin_id):
-    """(ells, blinded Cℓ, σ) for one estimator's cross-spectrum at the tomographic bin."""
+    """(ells, blinded Cℓ, full cov) for one estimator's cross-spectrum at the tomographic bin."""
     spec = pickle.load(open(XS / f"{prefix}_x_spt_est_{est}.pkl", "rb"))["spectra"][f"bin{bin_id}"]
     ells = np.asarray(spec["ells"], dtype=float)
     cl = np.asarray(spec["cl"], dtype=float)
     if probe in delta:
         cl = cl + delta[probe]                     # same cosmology shift for every estimator
-    return ells, cl, np.sqrt(np.diag(np.asarray(spec["cov"], dtype=float)))
+    return ells, cl, np.asarray(spec["cov"], dtype=float)
 
 
 def log_dodge(leff, n, frac=0.20):
@@ -127,34 +124,37 @@ def log_dodge(leff, n, frac=0.20):
     return np.exp(np.linspace(-span / 2, span / 2, n))
 
 
-def hardening_pull(prefix, bin_id):
-    """RMS and max of the GMVbhTTprf−GMV pull |Δ/σ_GMV| over the bin's bandpowers.
-
-    Δ = profile-hardened − GMV (blind cancels in the difference); σ_GMV is the GMV
-    statistical error (sqrt diag of its OWN covariance). A reduced-χ² is ill-posed
-    for these highly-correlated same-data estimators — see the module docstring —
-    so this pull is the blind-safe agreement metric. Returns (rms, max, n_bandpowers)."""
-    raw = lambda est: pickle.load(open(XS / f"{prefix}_x_spt_est_{est}.pkl", "rb"))["spectra"][f"bin{bin_id}"]
-    g, h = raw("gmv"), raw("gmvbhttprf")
-    delta = np.asarray(h["cl"], dtype=float) - np.asarray(g["cl"], dtype=float)
-    pull = delta / np.sqrt(np.diag(np.asarray(g["cov"], dtype=float)))
-    return float(np.sqrt(np.mean(pull**2))), float(np.max(np.abs(pull))), pull.size
+def chi0(d, cov):
+    """Blinded detection χ² vs the no-signal null: d·C⁻¹·d over the finite,
+    positive-variance bandpowers. Mirrors make_three_cross_spectra.chi0 so the talk's
+    detection S/N (= √χ²₀) is ONE definition. Blind-safe: the cosmology shift moves d,
+    so this is the BLINDED detection strength, not the true amplitude. Returns (χ², n)."""
+    d = np.asarray(d, dtype=float)
+    C = np.asarray(cov, dtype=float)
+    good = np.isfinite(d) & np.isfinite(np.diag(C)) & (np.diag(C) > 0)
+    d, C = d[good], C[np.ix_(good, good)]
+    return (float(d @ np.linalg.solve(C, d)), int(d.size)) if d.size else (np.nan, 0)
 
 
 def draw_estimators(ax, prefix, probe, theory_key):
-    """One panel: fiducial theory curve + the estimators' bandpowers (ℓCℓ), dodged."""
+    """One panel: fiducial theory curve + the estimators' bandpowers (ℓCℓ), dodged.
+
+    Returns [(color, √χ²₀), …] — each estimator's blinded detection S/N, for annotation."""
     ax.axhline(0.0, color="0.6", lw=0.7, zorder=0)
     cl_full = theory_full(theory_key)
     ax.plot(ell_full[2:], ell_full[2:] * cl_full[2:], color="0.55", lw=1.6, alpha=0.8,
             zorder=1, label="fiducial theory")
     rows = [est_bin(prefix, est, probe, BIN) for est, _, _ in ESTIMATORS]
     factors = log_dodge(rows[0][0], len(ESTIMATORS))   # cluster spans 20% of the bin spacing
-    for (est, label, color), (ells, cl, sig), fac in zip(ESTIMATORS, rows, factors):
-        ax.errorbar(ells * fac, ells * cl, yerr=ells * sig, fmt="o", ms=6, color=color,
-                    ecolor=color, elinewidth=1.3, capsize=3,
+    sn = []
+    for (est, label, color), (ells, cl, cov), fac in zip(ESTIMATORS, rows, factors):
+        ax.errorbar(ells * fac, ells * cl, yerr=ells * np.sqrt(np.diag(cov)), fmt="o", ms=6,
+                    color=color, ecolor=color, elinewidth=1.3, capsize=3,
                     mfc=("white" if est != "gmv" else color), mew=1.4, label=label, zorder=3)
+        sn.append((color, np.sqrt(chi0(cl, cov)[0])))
     style_ell_axis(ax, 95, 3050)
     fold_yscale(ax, r"$\ell\,C_\ell$", nbins=6)
+    return sn
 
 
 # --------------------------------------------------------------------- figure
@@ -166,19 +166,20 @@ plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
                      "axes.titlesize": 23, "axes.labelsize": 23,
                      "xtick.labelsize": 19, "ytick.labelsize": 19})
 
-# Per-panel corner for the pull box, each chosen in that panel's clear region.
-ANN = {"e": (0.015, 0.055, "left", "bottom"), "g": (0.985, 0.95, "right", "top")}
+# Per-panel anchor for the color-matched detection-S/N block (top-left clear region).
+ANN = {"e": (0.015, 0.96, "left"), "g": (0.015, 0.96, "left")}
 
 fig, axes = plt.subplots(2, 1, figsize=(17.0, 13.0), sharex=True)
 for ax, (prefix, probe, theory_key, title) in zip(axes, PANELS):
-    draw_estimators(ax, prefix, probe, theory_key)
+    sn = draw_estimators(ax, prefix, probe, theory_key)
     ax.set_title(title, pad=8)
-    rms, mx, _ = hardening_pull(prefix, BIN)
-    x, y, ha, va = ANN[probe]
-    ax.text(x, y, r"GMVbhTTprf $-$ GMV pull" "\n"
-            rf"RMS {rms:.2f}$\sigma$ $\cdot$ max {mx:.2f}$\sigma$", transform=ax.transAxes,
-            ha=ha, va=va, fontsize=18, color="0.15", zorder=5,
-            bbox=dict(boxstyle="round,pad=0.4", fc="white", ec="0.7", alpha=0.78))
+    x, y0, ha = ANN[probe]
+    ax.text(x, y0, r"detection S/N $(\sqrt{\chi^2_0})$", transform=ax.transAxes, ha=ha,
+            va="top", fontsize=15, color="0.35", zorder=5)
+    for i, ((color, val), (_, label, _)) in enumerate(zip(sn, ESTIMATORS), start=1):
+        ax.text(x, y0 - 0.075 * i, rf"S/N $= {val:.1f}$", transform=ax.transAxes, ha=ha,
+                va="top", fontsize=19, color=color, weight="bold", zorder=5)
+        print(f"  {probe}-cross {label:>22s}: blinded S/N = {val:.2f}")
 axes[-1].set_xlabel(r"$\ell$")
 sns.despine(fig)
 
