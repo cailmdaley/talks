@@ -21,6 +21,20 @@ amplitude is hidden. ΔCℓ = blinded_bundle[kappa_*] − unblinded_twin[kappa_*
 twin is a gitignored soft-secret read only at build time, and only blinded
 bandpowers reach the PNG. ``--unblinded`` renders the raw amplitude with a
 PRELIMINARY watermark (off by default so no re-render can silently leak it).
+
+CONSISTENCY METRIC — RMS PULL, not a reduced-χ². A reduced-χ² is ILL-POSED here:
+GMV and the profile-hardened GMVbhTTprf are two reconstructions of the SAME SPT
+data, so they share essentially all of the Euclid sample variance AND most of the
+κ reconstruction noise — they are highly correlated and agree by construction. The
+only covariances on disk are each estimator's OWN auto-covariance; the naive
+Cov(GMV)+Cov(hardened) would MASSIVELY overstate the variance of the difference
+(it double-counts the shared variance instead of cancelling it), giving a
+misleadingly tiny χ². With no proper difference/cross covariance available, we do
+NOT fabricate one. Instead each panel reports the hardening PULL relative to the
+GMV statistical error — RMS and max of |Δ/σ_GMV| over the bin's 15 log15
+bandpowers, Δ = GMVbhTTprf − GMV. The blind cancels exactly in Δ (the same ΔCℓ is
+added to every estimator), so the pull is blind-independent. (Aggregated over all
+6 bins this is the canonical RMS 0.29σ, both crosses.)
 """
 import argparse
 import pickle
@@ -113,6 +127,20 @@ def log_dodge(leff, n, frac=0.20):
     return np.exp(np.linspace(-span / 2, span / 2, n))
 
 
+def hardening_pull(prefix, bin_id):
+    """RMS and max of the GMVbhTTprf−GMV pull |Δ/σ_GMV| over the bin's bandpowers.
+
+    Δ = profile-hardened − GMV (blind cancels in the difference); σ_GMV is the GMV
+    statistical error (sqrt diag of its OWN covariance). A reduced-χ² is ill-posed
+    for these highly-correlated same-data estimators — see the module docstring —
+    so this pull is the blind-safe agreement metric. Returns (rms, max, n_bandpowers)."""
+    raw = lambda est: pickle.load(open(XS / f"{prefix}_x_spt_est_{est}.pkl", "rb"))["spectra"][f"bin{bin_id}"]
+    g, h = raw("gmv"), raw("gmvbhttprf")
+    delta = np.asarray(h["cl"], dtype=float) - np.asarray(g["cl"], dtype=float)
+    pull = delta / np.sqrt(np.diag(np.asarray(g["cov"], dtype=float)))
+    return float(np.sqrt(np.mean(pull**2))), float(np.max(np.abs(pull))), pull.size
+
+
 def draw_estimators(ax, prefix, probe, theory_key):
     """One panel: fiducial theory curve + the estimators' bandpowers (ℓCℓ), dodged."""
     ax.axhline(0.0, color="0.6", lw=0.7, zorder=0)
@@ -126,18 +154,31 @@ def draw_estimators(ax, prefix, probe, theory_key):
                     ecolor=color, elinewidth=1.3, capsize=3,
                     mfc=("white" if est != "gmv" else color), mew=1.4, label=label, zorder=3)
     style_ell_axis(ax, 95, 3050)
-    fold_yscale(ax, r"$\ell\,C_\ell$")
+    fold_yscale(ax, r"$\ell\,C_\ell$", nbins=6)
 
 
 # --------------------------------------------------------------------- figure
 sns.set_theme(context="talk", style="ticks")
+# Bumped fonts for a projected talk slide; figsize is enlarged in step so the axes
+# rectangle (data area / absolute-points error bars) does not shrink under the bigger text.
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
-                     "font.family": "DejaVu Sans", "legend.frameon": False})
+                     "font.family": "DejaVu Sans", "legend.frameon": False,
+                     "axes.titlesize": 23, "axes.labelsize": 23,
+                     "xtick.labelsize": 19, "ytick.labelsize": 19})
 
-fig, axes = plt.subplots(2, 1, figsize=(15.0, 10.0), sharex=True)
+# Per-panel corner for the pull box, each chosen in that panel's clear region.
+ANN = {"e": (0.015, 0.055, "left", "bottom"), "g": (0.985, 0.95, "right", "top")}
+
+fig, axes = plt.subplots(2, 1, figsize=(17.0, 13.0), sharex=True)
 for ax, (prefix, probe, theory_key, title) in zip(axes, PANELS):
     draw_estimators(ax, prefix, probe, theory_key)
-    ax.set_title(title, fontsize=16, pad=8)
+    ax.set_title(title, pad=8)
+    rms, mx, _ = hardening_pull(prefix, BIN)
+    x, y, ha, va = ANN[probe]
+    ax.text(x, y, r"GMVbhTTprf $-$ GMV pull" "\n"
+            rf"RMS {rms:.2f}$\sigma$ $\cdot$ max {mx:.2f}$\sigma$", transform=ax.transAxes,
+            ha=ha, va=va, fontsize=18, color="0.15", zorder=5,
+            bbox=dict(boxstyle="round,pad=0.4", fc="white", ec="0.7", alpha=0.78))
 axes[-1].set_xlabel(r"$\ell$")
 sns.despine(fig)
 
@@ -149,6 +190,6 @@ fig.tight_layout()
 # Legend OUTSIDE the panels (right), guaranteed clear of every bandpower (no-overlap requirement).
 h, lab = axes[0].get_legend_handles_labels()
 fig.legend(h, lab, loc="center left", bbox_to_anchor=(1.0, 0.5), frameon=False,
-           fontsize=13, title=f"bin {BIN}", title_fontsize=13)
+           fontsize=18, title=f"bin {BIN}", title_fontsize=18)
 fig.savefig(OUT, dpi=180, bbox_inches="tight")
 print("wrote", OUT)

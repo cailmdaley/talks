@@ -22,11 +22,28 @@ additive ΔCℓ) from the talk datavector bundle: γ×κ → kappa_l{j}/act_kapp
 survey's OWN raw on-disk covariance (blind-independent), and the theory curve is
 the UNSHIFTED fiducial. NO amplitude, NO per-bin S/N, NO Â annotated anywhere —
 this is a blinding-safe consistency status figure.
+
+CONSISTENCY χ² (blind-safe). Each panel annotates a reduced-χ² for the
+SPT-vs-ACT difference Δ = d_SPT − d_ACT over the 15 log15 bandpowers:
+χ²_ν = Δ·Cov_diff⁻¹·Δ / dof, dof = 15. This is blind-safe BY CONSTRUCTION: the
+cosmology-shift blind adds the SAME experiment-agnostic theory ΔCℓ to both
+surveys' same-bin κ-cross (selfblind_shift.py: κ theory pair is identical for
+kappa_* and act_kappa_*; metadata cmb_lensing_experiment_agnostic), so the
+common blind cancels in the difference and Δ carries no absolute amplitude. (The
+two surveys' bandpower windows Bbl differ at the ~15% level from their different
+κ masks, so cancellation is exact only to the window-shape difference acting on a
+SMOOTH cosmology-shift ΔCℓ — a second-order, sub-error-bar residual that still
+leaks no amplitude.) Cov_diff = Cov(SPT) + Cov(ACT): the shared-Euclid cross
+covariance Cov(SPT,ACT) is NOT in the bundle (cov_structure: block_diagonal, the
+SPT↔ACT block is identically zero), so it is NEGLECTED. The two κ reconstructions
+on the same field are positively correlated → this OVERSTATES the difference
+variance → UNDERSTATES any tension; the reduced-χ² is therefore CONSERVATIVE.
 """
 import pickle
 from pathlib import Path
 
 import numpy as np
+from scipy import stats
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -104,10 +121,33 @@ def log_dodge(leff, n, frac=0.10):
     return np.exp(np.linspace(-span / 2, span / 2, n))
 
 
+def cross_survey_chi2(family, bin_id):
+    """Blind-safe SPT-vs-ACT reduced-χ² for one probe family at the tomographic bin.
+
+    Δ = d_SPT − d_ACT on the BLINDED bandpowers (common cosmology-shift blind
+    cancels — see module docstring); Cov_diff = Cov(SPT) + Cov(ACT) from each
+    survey's OWN full 15×15 on-disk covariance (cross-survey covariance neglected
+    → conservative). Returns (χ²_ν, PTE, dof)."""
+    stem = "kappa_l" if family == "e" else "kappa_g"
+    fam_pkl = "shear" if family == "e" else "gc"
+    d_spt = np.asarray(blinded[f"kappa_{'l' if family == 'e' else 'g'}{bin_id - 1}"]["cl"], dtype=float)
+    d_act = np.asarray(blinded[f"act_{stem}{bin_id - 1}"]["cl"], dtype=float)
+    delta = d_spt - d_act
+    cov_diff = (np.asarray(SURVEYS["spt"][fam_pkl]["spectra"][f"bin{bin_id}"]["cov"], dtype=float)
+                + np.asarray(SURVEYS["act"][fam_pkl]["spectra"][f"bin{bin_id}"]["cov"], dtype=float))
+    chi2 = float(delta @ np.linalg.solve(cov_diff, delta))
+    dof = delta.size
+    return chi2 / dof, float(stats.chi2.sf(chi2, dof)), dof
+
+
 # ----------------------------------------------------------- figure (1 high-z bin)
 sns.set_theme(context="talk", style="ticks")
+# Bumped fonts for a projected talk slide; figsize is enlarged in step so the axes
+# rectangle (data area / absolute-points error bars) does not shrink under the bigger text.
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
-                     "font.family": "DejaVu Sans", "legend.frameon": False})
+                     "font.family": "DejaVu Sans", "legend.frameon": False,
+                     "axes.titlesize": 23, "axes.labelsize": 23,
+                     "xtick.labelsize": 19, "ytick.labelsize": 19})
 
 BIN = 5  # tomographic bin shown for the single-bin cross-survey panel
 PANELS = [
@@ -116,8 +156,10 @@ PANELS = [
     ("g", r"$\ell\,C_\ell^{\delta_g\kappa}$", r"Galaxy clustering $\times$ CMB-$\kappa$   ($\delta_g\times\kappa$)",
      lambda j: ("g", "k", j, 0)),
 ]
+# Per-panel corner for the χ² box, each chosen in that panel's clear region.
+ANN = {"e": (0.015, 0.055, "left", "bottom"), "g": (0.985, 0.95, "right", "top")}
 
-fig, axes = plt.subplots(2, 1, figsize=(15.0, 10.0), sharex=True)
+fig, axes = plt.subplots(2, 1, figsize=(17.0, 13.0), sharex=True)
 legend_handles = {}
 for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
     cl_full = theory_full(key_of(BIN))
@@ -133,8 +175,14 @@ for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
                                 elinewidth=1.5, capsize=4, mfc="white", mew=1.7, zorder=3)
         legend_handles.setdefault(cfg["label"], container)
     style_ell_axis(ax, 95, 3050)
-    fold_yscale(ax, ylabel)
-    ax.set_title(title, fontsize=16, pad=8)
+    fold_yscale(ax, ylabel, nbins=6)
+    ax.set_title(title, pad=8)
+    chi2_red, pte, dof = cross_survey_chi2(family, BIN)
+    x, y, ha, va = ANN[family]
+    ax.text(x, y, rf"$\chi^2_\nu(\mathrm{{SPT}}-\mathrm{{ACT}}) = {chi2_red:.2f}$"
+            "\n" rf"PTE {pte:.2f} $\cdot$ {dof} dof", transform=ax.transAxes,
+            ha=ha, va=va, fontsize=18, color="0.15", zorder=5,
+            bbox=dict(boxstyle="round,pad=0.4", fc="white", ec="0.7", alpha=0.78))
 
 axes[-1].set_xlabel(r"$\ell$")
 # No suptitle — the slide headline carries the title (avoid duplicate titles).
@@ -142,7 +190,7 @@ sns.despine(fig)
 fig.tight_layout()
 # Legend OUTSIDE the panels (right), guaranteed clear of every bandpower (no-overlap requirement).
 fig.legend(legend_handles.values(), legend_handles.keys(), loc="center left",
-           bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=13,
-           title=f"bin {BIN}", title_fontsize=13)
+           bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=18,
+           title=f"bin {BIN}", title_fontsize=18)
 fig.savefig(OUT, dpi=180, bbox_inches="tight")
 print("wrote", OUT)
