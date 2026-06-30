@@ -36,8 +36,6 @@ fid = header["fiducial"]
 cosmos = payload["cosmologies"]
 om = np.array([c["Omega_m"] for c in cosmos])
 S8 = np.array([c["S8"] for c in cosmos])  # draw is uniform in (Ω_m, S8); plot the plane we draw in
-hw_om = header["half_width_Omega_m"]      # uniform-box half-widths (S8 sized to the S8 tension)
-hw_S8 = header["half_width_S8"]
 
 sns.set_theme(context="talk", style="whitegrid")
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.9,
@@ -67,9 +65,7 @@ ax.grid(which="both", alpha=0.25)
 
 ax.legend(loc="upper right", fontsize=15, handletextpad=0.4, borderpad=0.5,
           frameon=True, framealpha=0.9, facecolor="white", edgecolor="0.8")
-ax.text(0.035, 0.05,
-        rf"uniform $\pm{hw_om:g}\ \Omega_{{\rm m}}$, $\pm{hw_S8:g}\ S_8$ — sized to the $S_8$ tension",
-        transform=ax.transAxes, fontsize=13, va="bottom", ha="left", color="0.3")
+# (No on-plot envelope label — the slide caption already states |ΔΩm|<0.1, |ΔS8|<0.075.)
 
 fig.tight_layout()
 OUT_PNG.parent.mkdir(parents=True, exist_ok=True)
