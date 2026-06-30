@@ -140,8 +140,8 @@ what's frozen in the SAS.
 - **Parameter-shift blind** ([Muir et al. 2019](https://arxiv.org/abs/1911.05929))
     - same approach as Euclid 3×2pt
 - **Cosmology shift** $\sim \mathcal{U}$:
-    - $|\Delta\Omega_m| < 0.09$
-    - $|\Delta S_8| < 0.05$
+    - $|\Delta\Omega_m| < 0.1$
+    - $|\Delta S_8| < 0.075$
 - **Hidden cosmology** $\theta_{\rm blind}$
 
 ::: {style="font-size:0.9em; margin-top:-0.6em"}
@@ -179,8 +179,9 @@ bottom.
 The practical consequence for today: this is a status report read entirely under the blind —
 shapes, relative consistency, error-bar sizes — never the amplitude.
 
-On the magnitude: the hidden cosmology is drawn within ±3σ of the DES-Y3-3×2pt×SPT errors — about
-±(0.09, 0.05) in (Ω_m, S8); that envelope is public, only the realized draw is secret. The theory we
+On the magnitude: the shift is drawn uniformly within ±0.1 in Ω_m and ±0.075 in S8 — an envelope sized
+to cover the S8 tension, so a tension-sized pull can't be reasoned away as "too big to be the blind, so
+it must be real." That envelope is public, only the realized draw is secret. The theory we
 shift against is computed with pyccl (CCL), our eDR1like pipeline, not an external Boltzmann product.
 The likelihood itself, and the move into CLOE, I come back to on the likelihood slide. Bottom line for
 this audience: every data vector you see today is blinded.
