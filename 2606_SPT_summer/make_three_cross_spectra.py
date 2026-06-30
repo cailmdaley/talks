@@ -36,7 +36,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis, fold_yscale
+from _ell_axis import style_ell_axis, fold_yscale, blinding_watermark
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 # TR1 cross-spectra: SPT GMV κ-crosses (shear/clustering live in separate dirs) and
@@ -255,9 +255,7 @@ for r, (_yl, title, *_rest) in enumerate(rows):
     top = max(axes[r, c].get_position().y1 for c in range(len(TOM_BINS)))
     fig.text(0.5, top + 0.010, title, ha="center", va="bottom", fontsize=19,
              weight="bold")
-if blinded is None:
-    fig.text(0.5, 0.5, "PRELIMINARY — UNBLINDED", ha="center", va="center",
-             fontsize=46, color="0.85", weight="bold", rotation=18, zorder=0, alpha=0.5)
+blinding_watermark(fig, blinded is not None)
 _bb = axes[1, 2].get_position()
 print(f"DATA-AREA per panel: {_bb.width * fig.get_figwidth():.3f} x "
       f"{_bb.height * fig.get_figheight():.3f} in   figsize={tuple(fig.get_size_inches())}")

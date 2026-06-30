@@ -123,7 +123,7 @@ def blinding_watermark(fig, blinded, text="Blinded"):
     """
     if blinded:
         fig.text(0.5, 0.5, text.upper(), ha="center", va="center", zorder=0,
-                 fontfamily=BLIND_FONT, fontsize=170, color="0.15", alpha=0.08, rotation=16)
+                 fontfamily=BLIND_FONT, fontsize=170, color="0.15", alpha=0.05, rotation=16)
     else:
         fig.text(0.5, 0.5, "PRELIMINARY — UNBLINDED", ha="center", va="center", zorder=0,
                  fontsize=52, color="0.85", weight="bold", rotation=18, alpha=0.5)
