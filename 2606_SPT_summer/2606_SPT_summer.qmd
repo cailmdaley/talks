@@ -292,7 +292,7 @@ not this like-for-like bin-5 one.)
 **In place** — internal `eDR1like` (CCL + Cobaya)
 
 - **Joint Gaussian likelihood** over the cross vector ($\delta_g\times\kappa$, $\gamma\times\kappa$, $\delta_g\delta_g$, $\delta_g\times\gamma$); covariance from theory now, mocks next.
-- **Galaxy bias** — linear $b_i$ per tomographic bin (global or binwise); optional nonlinear $b_2$ / higher-order.
+- **Galaxy bias — fit on RR2 and TR1** — linear $b_i$ per tomographic bin (global or binwise), with magnification bias varied; optional nonlinear $b_2$ / higher-order.
 - **Photo-$z$ marginalization** — per-bin shift $\Delta z_i$ and width-stretch $w_{z,i}$.
 - **Theory** — CCL angular spectra (Limber), HMCode/HaloFit nonlinear power.
 :::
@@ -317,8 +317,10 @@ CMB-lensing crosses, the galaxy clustering auto, and galaxy–galaxy lensing. Co
 theory-based today; the simulations slide that follows is partly in service of a mock-based
 covariance.
 
-Galaxy bias is handled with a linear bias per tomographic bin — global or binwise — with optional
-nonlinear and higher-order bias terms available. Photo-z is marginalized per bin with both a mean
+Galaxy bias has already been fit on both RR2 and TR1 — a linear bias per tomographic bin, global or
+binwise, also varying the magnification bias; nonlinear and higher-order bias terms are available. Note
+that fitting the bias is not the same as breaking the amplitude–bias degeneracy on the right — that's
+still open. Photo-z is marginalized per bin with both a mean
 shift Δz_i and a width-stretch parameter — that's the "official dndz handling" we just merged in.
 Theory is CCL angular spectra under the Limber approximation with HMCode/HaloFit nonlinear power.
 
