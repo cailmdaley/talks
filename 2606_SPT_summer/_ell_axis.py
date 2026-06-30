@@ -21,8 +21,13 @@ import matplotlib.ticker as mticker
 ELL_TICKS = [100, 200, 500, 1000, 3000]
 
 
-def style_ell_axis(ax, lo=95, hi=3050, label=None):
-    """Log ℓ-axis with labelled integer ticks (the in-range subset of ELL_TICKS)."""
+def style_ell_axis(ax, lo=95, hi=3050, label=None, rotate=45):
+    """Log ℓ-axis with labelled integer ticks (the in-range subset of ELL_TICKS).
+
+    ``rotate`` tilts the x-tick labels (default 45°, right-anchored) so the labelled
+    ℓ-ticks stay legible once the per-panel font is bumped up for a talk; pass
+    ``rotate=0`` to keep them horizontal.
+    """
     ax.set_xscale("log")
     ax.set_xlim(lo, hi)
     ticks = [t for t in ELL_TICKS if lo <= t <= hi]
@@ -30,24 +35,31 @@ def style_ell_axis(ax, lo=95, hi=3050, label=None):
     ax.xaxis.set_major_formatter(mticker.FixedFormatter([str(t) for t in ticks]))
     ax.xaxis.set_minor_locator(mticker.LogLocator(base=10, subs=np.arange(2, 10) * 0.1, numticks=100))
     ax.xaxis.set_minor_formatter(mticker.NullFormatter())
+    if rotate:
+        for lbl in ax.get_xticklabels():
+            lbl.set(rotation=rotate, ha="right", rotation_mode="anchor")
     if label is not None:
         ax.set_xlabel(label)
     return ax
 
 
-def fold_yscale(ax, label, exp=None):
+def fold_yscale(ax, label, exp=None, nbins=None):
     """Fold the y-axis sci-notation offset into the axis label.
 
     Replaces matplotlib's ``1e-6``-style offset text (drawn above the axis) with a
     clean ``× 10^exp`` factor in the y-label and plain-mantissa tick labels. ``exp``
     defaults to the order of magnitude of the axis's current data range, so call it
     *after* plotting / setting ``ylim``. ``exp == 0`` just sets the label (no factor).
+    ``nbins`` (optional) caps the number of major y-ticks via ``MaxNLocator`` — use it
+    when a bumped font crowds the y-axis; ``None`` keeps matplotlib's default density.
     Returns the exponent used.
     """
     if exp is None:
         ymax = max(abs(v) for v in ax.get_ylim())
         exp = int(np.floor(np.log10(ymax))) if ymax > 0 else 0
     scale = 10.0 ** exp
+    if nbins is not None:
+        ax.yaxis.set_major_locator(mticker.MaxNLocator(nbins=nbins))
     ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda v, _pos: f"{v / scale:.3g}"))
     ax.set_ylabel(label + (rf"  $[\times 10^{{{exp}}}]$" if exp else ""))
     return exp
