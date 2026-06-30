@@ -72,10 +72,49 @@ include-in-header: assets/mathjax.html
 ::: {.column width="50%"}
 
 ::: {.orient-side}
-Euclid cosmology products → [June 2027]{.timeline-date}
+
+```{=html}
+<svg class="timeline-svg" viewBox="0 0 480 168" width="100%" xmlns="http://www.w3.org/2000/svg"
+     font-family="'EB Garamond', Georgia, serif">
+  <!-- axis -->
+  <line x1="26" y1="92" x2="448" y2="92" stroke="#C5B89E" stroke-width="2.2"/>
+  <polygon points="456,92 446,87 446,97" fill="#C5B89E"/>
+  <!-- faint iteration ticks ahead (many cycles to come) -->
+  <g stroke="#C5B89E" stroke-width="1.4" opacity="0.55">
+    <line x1="368" y1="88" x2="368" y2="96"/>
+    <line x1="398" y1="88" x2="398" y2="96"/>
+  </g>
+
+  <!-- RR2 — delivered -->
+  <circle cx="50" cy="92" r="5" fill="#7A6F5C"/>
+  <text x="50" y="116" text-anchor="middle" font-size="14.5" fill="#7A6F5C">RR2</text>
+  <text x="50" y="131" text-anchor="middle" font-size="10.5" font-style="italic" fill="#7A6F5C">delivered</text>
+
+  <!-- TR1 cycle 1 — TODAY -->
+  <line x1="138" y1="62" x2="138" y2="118" stroke="#BC4538" stroke-width="1.5" opacity="0.45"/>
+  <circle cx="138" cy="92" r="8.5" fill="#BC4538"/>
+  <circle cx="138" cy="92" r="13" fill="none" stroke="#BC4538" stroke-width="1.2" opacity="0.45"/>
+  <text x="138" y="40" text-anchor="middle" font-size="11" letter-spacing="2" fill="#BC4538" font-weight="600">TODAY</text>
+  <text x="138" y="57" text-anchor="middle" font-size="15.5" fill="#1B1611" font-weight="600">TR1 cycle 1</text>
+
+  <!-- TR1 cycle 2 -->
+  <circle cx="250" cy="92" r="5" fill="#1B1611"/>
+  <text x="250" y="116" text-anchor="middle" font-size="14.5" fill="#1B1611">TR1 cycle 2</text>
+
+  <!-- TR1 internal -->
+  <circle cx="330" cy="92" r="5" fill="#1B1611"/>
+  <text x="330" y="57" text-anchor="middle" font-size="14.5" fill="#1B1611">TR1 internal</text>
+
+  <!-- Euclid cosmology products — June 2027 (the one hard date) -->
+  <circle cx="430" cy="92" r="7" fill="#BC4538"/>
+  <text x="426" y="116" text-anchor="middle" font-size="13" fill="#1B1611">Cosmology</text>
+  <text x="426" y="131" text-anchor="middle" font-size="13" fill="#1B1611">products</text>
+  <text x="426" y="149" text-anchor="middle" font-size="13.5" fill="#BC4538" font-weight="700">June 2027</text>
+</svg>
+```
 
 ::: {.today-block}
-**Today**
+**Today — TR1 cycle 1**
 
 footprints · blinding · data vectors · estimator consistency · SPT vs ACT ·
 likelihood & bias · systematics · simulations

@@ -188,6 +188,15 @@
 .reveal .orient-side .today-block > :first-child { margin-top: 0; }
 .reveal .orient-side .timeline-date { color: $cinnabar; font-weight: 700; }
 
+// The working-timeline SVG (RR2 → TR1 cycle 1 [today] → … → cosmology products
+// June 2027). Full column width; a touch of breathing room from the title above and
+// the Today block below.
+.reveal .orient-side .timeline-svg {
+  display: block;
+  width: 100%;
+  margin: 0.2em 0 0.6em;
+}
+
 // Footprint build-up (slide 3) — give each r-stack image its OWN opaque ground
 // backdrop. Without a per-image frame, all three images share the .r-stack as the
 // multiply parent and bleed through each other (white → see-through under multiply),
