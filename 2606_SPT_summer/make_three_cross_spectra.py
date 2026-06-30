@@ -126,6 +126,23 @@ def kappa_cross(product, probe, bin_id):
     return ells, measured, cov
 
 
+def chi0(measured, cov):
+    """Blinded detection χ² against the null (no-signal) hypothesis: d·C⁻¹·d.
+
+    Uses the BLINDED central values (the default ``measured``) and the panel's own
+    bandpower covariance, over the finite, positive-variance bandpowers. Blind-safe:
+    the cosmology-shift moves d, so this reports the *blinded* detection strength,
+    not the true amplitude. Returns (χ², n_bandpowers).
+    """
+    d = np.asarray(measured, dtype=float)
+    C = np.asarray(cov, dtype=float)
+    good = np.isfinite(d) & np.isfinite(np.diag(C)) & (np.diag(C) > 0)
+    d, C = d[good], C[np.ix_(good, good)]
+    if d.size == 0:
+        return np.nan, 0
+    return float(d @ np.linalg.solve(C, d)), int(d.size)
+
+
 def draw_panel(ax, color, ells, measured, cov, probe_key):
     """One bandpower panel in ℓCℓ: ONE continuous theory curve + measured ± Knox."""
     cl_full = theory_full(probe_key)
@@ -189,6 +206,11 @@ for r, ((ylabel, _title, getter, probe_of, label_of), cells) in enumerate(zip(ro
         ax.set_ylim(ymin - pad, ymax + pad)
         ax.text(0.05, 0.07, label_of(j), transform=ax.transAxes, fontsize=11,
                 weight="bold", va="bottom", color=palette[c])
+        chi2_0, ndof = chi0(measured, cov)
+        ax.text(0.95, 0.93, rf"$\chi^2_0={chi2_0:.0f}$", transform=ax.transAxes,
+                fontsize=10.5, ha="right", va="top", weight="bold", color=palette[c])
+        print(f"  row{r} {label_of(j):>14s}: chi2_0={chi2_0:7.1f}  ndof={ndof:2d}  "
+              f"S/N=sqrt(chi2_0)={np.sqrt(chi2_0):4.1f}")
         if c == 0:
             fold_yscale(ax, ylabel)
         if r == 2:
