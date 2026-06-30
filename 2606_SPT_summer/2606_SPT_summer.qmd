@@ -145,8 +145,7 @@ what's frozen in the SAS.
 $$\hat{C}_b^{\rm blind} = \hat{C}_b^{\rm data} + \mathbf{B}_{b\ell}\big[\,C_\ell(\theta_{\rm blind}) - C_\ell(\theta_{\rm fid})\,\big]$$
 :::
 
-- **Theory:** internal (eDR1like)
-- **CMBX likelihood:** plan to move toward [CLOE](https://euclid-cloe.readthedocs.io)
+- **Theory:** pyccl
 :::
 ::: {.column width="54%"}
 ![](images/spt26_blinding_cosmologies.png){width="98%"}
@@ -176,10 +175,9 @@ bottom.
 The practical consequence for today: this is a status report read entirely under the blind —
 shapes, relative consistency, error-bar sizes — never the amplitude.
 
-Two pointers on the bottom bullets. The theory we shift against is internal — the eDR1like
-prediction from our own pipeline, not an external Boltzmann product. And the CMBX likelihood is
-the eDR1like Gaussian likelihood today; the plan is to move it toward CLOE, the Euclid consortium
-likelihood, so the cross slots into the official inference framework.
+One pointer on the bottom bullet: the theory we shift against is computed with pyccl (CCL) — the
+eDR1like prediction from our own pipeline, not an external Boltzmann product. The likelihood itself,
+and the move into CLOE, I come back to on the likelihood slide.
 :::
 
 ## Data vectors: the three cross-correlations
@@ -303,7 +301,7 @@ not this like-for-like bin-5 one.)
 :::
 :::
 
-**→ Plan: move the CMBX likelihood onto [CLOE](https://euclid-cloe.readthedocs.io), the Euclid consortium inference framework.**
+**→ [CLOE](https://euclid-cloe.readthedocs.io) integration (Euclid's framework): theory done, likelihood in progress.**
 
 ::: {.notes}
 This is the most forward-looking slide, but it's no longer just a plan — the likelihood
@@ -330,10 +328,11 @@ The open design question, which I'd welcome thoughts on, is what additional info
 from b — shear-ratio geometry, or pushing the delta-g delta-g scale range. No amplitude numbers
 here — that arc is blinded and dropped from this talk.
 
-And the bottom line: this internal likelihood is the working tool, but the plan is to move the CMBX
-likelihood onto CLOE, the Euclid consortium inference framework, so the cross slots into the
-official pipeline. The container already carries the CLOE dependencies; the integration is the next
-step, not yet done.
+And the bottom line: this internal eDR1like likelihood — a full pyccl theory pipeline plus a
+Cobaya-interfaced Gaussian likelihood — is the working tool today, and we're now integrating the CMBX
+cross-correlation observable into CLOE, the Euclid consortium inference framework, so it slots into
+the official pipeline. The theory side is already done in CLOE; we're working on the likelihood part
+now. The container already carries the CLOE dependencies.
 :::
 
 ## Systematics: extinction is sub-σ for shear, ~1σ at high-ℓ for clustering
