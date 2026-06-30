@@ -238,23 +238,24 @@ The bottom row is the third cross — galaxy–galaxy lensing, delta_g × gamma,
 I'm deliberately not quoting amplitudes or per-bin S/N here — those belong to the detection arc, which is blinded and out of scope for this status report, and I've stripped them from the figure so nothing leaks. The message of this slide is just: three crosses, one consistent estimator, consistent tomographic binning, all tracking the Planck-18 shape. The figure carries the weight.
 :::
 
-## Robust to the SPT-3G lensing estimator
+## Estimators are consistent, GMV is lowest
 
-![](images/spt26_estimator_robustness.png){width="72%" fig-align="center"}
+![](images/spt26_estimator_robustness.png){width="100%" fig-align="center"}
 
 ::: {.notes}
 This is a status check on whether the cross depends on which SPT lensing estimator we
 feed it. I'm showing one representative high-z bin (bin 5), the two CMB-lensing crosses stacked
 top and bottom — cosmic shear × κ and galaxy clustering × κ; the same picture holds across all
-six bins. Each panel overlays three SPT-3G estimators — GMV, PP, and the bias +
-profile-hardened reconstruction (GMVbhTTprf) — and the hardened reconstruction sits right
-on top of GMV; PP tracks them but with more scatter at high ell.
+six bins. Each panel overlays three SPT-3G estimators — GMV, the SQE pol-only reconstruction
+(PP, polarization-only standard quadratic estimator), and the bias + profile-hardened GMV
+(GMVbhTTprf) — and the hardened reconstruction sits right on top of GMV; the SQE pol-only
+tracks them but with more scatter at high ell.
 
 The message: swapping GMV for the bias + profile-hardened reconstruction — the product
 recommended for cross-correlation — moves every bandpower by less than one sigma. Pull RMS
 0.29 sigma in both gamma-kappa and delta_g-kappa, all ninety bandpowers inside one sigma, and
-the detection S/N doesn't drop — if anything it goes up. PP, the polarization-only
-reconstruction, is noisier and scatters more at high ell — that's single-channel
+the detection S/N doesn't drop — if anything it goes up. The SQE pol-only reconstruction
+(PP) is noisier and scatters more at high ell — that's single-channel
 reconstruction noise, not a signal or foreground effect — but it stays broadly consistent
 within the errors. So the measurement is estimator-robust.
 
@@ -269,7 +270,7 @@ sigma — and that's the claim, no more.
 
 ## Two κ surveys on the same Euclid bins: SPT-3G and ACT DR6
 
-![](images/spt26_cross_survey.png){width="72%" fig-align="center"}
+![](images/spt26_cross_survey.png){width="100%" fig-align="center"}
 
 ::: {.notes}
 This is the cross-survey check. Same Euclid tracers, crossed against two independent
@@ -291,9 +292,20 @@ by a σ ratio of ~1.5× through the mid-range and up to ~2.5× at ℓ≈2700 —
 resolution win everywhere but the very largest scales.
 :::
 
-## Which κ survey constrains where
+## SPT-3G tighter for ℓ > 200 {.vcenter}
 
-![](images/spt26_kappa_constraints.png){width="72%" fig-align="center"}
+::: {.columns}
+::: {.column width="64%"}
+![](images/spt26_kappa_constraints.png){width="100%" fig-align="center"}
+:::
+::: {.column width="36%"}
+
+**Time to start thinking about scale cuts.**
+
+Different surveys carry different scales — so the usable ℓ-range, and where to cut, is now a real choice.
+
+:::
+:::
 
 ::: {.notes}
 This is the "who constrains where" view — it answers the lever question from the previous
