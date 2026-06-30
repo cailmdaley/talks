@@ -138,11 +138,13 @@ what's frozen in the SAS.
 ::: {.columns}
 ::: {.column width="46%"}
 - **Parameter-shift blind** ([Muir et al. 2019](https://arxiv.org/abs/1911.05929))
-    - shift $\sim \mathcal{U}$:  $|\Delta\Omega_m| < 0.09$,  $|\Delta S_8| < 0.05$
     - same approach as Euclid 3×2pt
+- **Cosmology shift** $\sim \mathcal{U}$:
+    - $|\Delta\Omega_m| < 0.09$
+    - $|\Delta S_8| < 0.05$
 - **Hidden cosmology** $\theta_{\rm blind}$
 
-::: {style="font-size:0.9em"}
+::: {style="font-size:0.9em; margin-top:-0.6em"}
 $$\hat{C}_b^{\rm blind} = \hat{C}_b^{\rm data} + \mathbf{B}_{b\ell}\big[\,C_\ell(\theta_{\rm blind}) - C_\ell(\theta_{\rm fid})\,\big]$$
 :::
 
