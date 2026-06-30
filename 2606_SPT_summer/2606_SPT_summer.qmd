@@ -174,7 +174,7 @@ what's frozen in the SAS.
 
 ::: {.columns}
 ::: {.column width="46%"}
-- **Parameter-shift blind** ([Muir et al. 2019](https://arxiv.org/abs/1911.05929))
+- **Parameter-shift blind**<br>([Muir et al. 2019](https://arxiv.org/abs/1911.05929))
     - same approach as Euclid 3×2pt
 - **Cosmology shift** $\Delta\theta \sim \mathcal{U}$:
     - $|\Delta\Omega_m| < 0.1$
@@ -186,6 +186,8 @@ $$\hat{C}_b^{\rm blind} = \hat{C}_b^{\rm data} + \mathbf{B}_{b\ell}\big[\,C_\ell
 :::
 
 **All data vectors here are blinded.**
+
+… but low-$z$ bins are not very sensitive.
 :::
 ::: {.column width="54%"}
 ![](images/spt26_blinding_cosmologies.png){width="98%"}
@@ -295,14 +297,12 @@ resolution win everywhere but the very largest scales.
 ## SPT-3G tighter for ℓ > 200 {.vcenter}
 
 ::: {.columns}
-::: {.column width="64%"}
+::: {.column width="80%"}
 ![](images/spt26_kappa_constraints.png){width="100%" fig-align="center"}
 :::
-::: {.column width="36%"}
+::: {.column width="20%"}
 
 **Time to start thinking about scale cuts.**
-
-Different surveys carry different scales — so the usable ℓ-range, and where to cut, is now a real choice.
 
 :::
 :::
