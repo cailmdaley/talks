@@ -7,7 +7,8 @@
 Single tomographic bin (bin 5), two stacked
 panels (top/bottom) — the two CMB-lensing crosses: cosmic shear × CMB-κ (γ×κ) and
 galaxy clustering × CMB-κ (δ_g×κ). Each panel overlays three SPT-3G reconstruction
-estimators — GMV (baseline), GMV pol-only (PP) and GMV profile-hardened (the bias +
+estimators — GMV (baseline), SQE pol-only (the PP polarization-only standard
+quadratic estimator, EE+EB; NOT a GMV) and GMV profile-hardened (the bias +
 profile-hardened GMVbhTTprf) — over the fiducial theory curve, so the eye reads
 their agreement directly: the bandpowers sit on top of each other → estimator-robust.
 log15 binning (15 log bins, ℓ≈112–2695).
@@ -41,7 +42,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis, fold_yscale
+from _ell_axis import style_ell_axis, fold_yscale, sn_row, blinding_watermark
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 # TR1. The per-estimator κ-cross pickles ({prefix}_x_spt_est_{est}.pkl) are written
@@ -59,7 +60,7 @@ BIN = 5
 LMAX = 3000
 ESTIMATORS = [  # (key, label, color)
     ("gmv", "GMV", "#222222"),
-    ("pp", "GMV pol-only", "#2a7fb8"),
+    ("pp", "SQE pol-only", "#2a7fb8"),          # pol-only is SQE-based (EE+EB), not GMV
     ("gmvbhttprf", "GMV profile-hardened", "#c0392b"),
 ]
 # (panel prefix, blind-key probe, theory key, title)
@@ -159,38 +160,33 @@ def draw_estimators(ax, prefix, probe, theory_key):
 
 # --------------------------------------------------------------------- figure
 sns.set_theme(context="talk", style="ticks")
-# Bumped fonts for a projected talk slide; figsize is enlarged in step so the axes
-# rectangle (data area / absolute-points error bars) does not shrink under the bigger text.
+# Bumped fonts for a projected talk slide; wide figsize so the stacked panels fill the
+# 16:9 content area (the data area / absolute-points error bars stay large under the text).
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
                      "font.family": "DejaVu Sans", "legend.frameon": False,
-                     "axes.titlesize": 23, "axes.labelsize": 23,
-                     "xtick.labelsize": 19, "ytick.labelsize": 19})
+                     "axes.titlesize": 26, "axes.labelsize": 26,
+                     "xtick.labelsize": 22, "ytick.labelsize": 22})
 
-# Per-panel anchor for the color-matched detection-S/N block (top-left clear region).
-ANN = {"e": (0.015, 0.96, "left"), "g": (0.015, 0.96, "left")}
-
-fig, axes = plt.subplots(2, 1, figsize=(17.0, 13.0), sharex=True)
+fig, axes = plt.subplots(2, 1, figsize=(19.0, 11.0), sharex=True)
 for ax, (prefix, probe, theory_key, title) in zip(axes, PANELS):
     sn = draw_estimators(ax, prefix, probe, theory_key)
     ax.set_title(title, pad=8)
-    x, y0, ha = ANN[probe]
-    ax.text(x, y0, r"detection S/N $(\sqrt{\chi^2_0})$", transform=ax.transAxes, ha=ha,
-            va="top", fontsize=15, color="0.35", zorder=5)
-    for i, ((color, val), (_, label, _)) in enumerate(zip(sn, ESTIMATORS), start=1):
-        ax.text(x, y0 - 0.075 * i, rf"S/N $= {val:.1f}$", transform=ax.transAxes, ha=ha,
-                va="top", fontsize=19, color=color, weight="bold", zorder=5)
+    # Detection S/N as a horizontal, color-matched row along the bottom centre of the
+    # panel (clear room there) — one definition deck-wide; identity read off the colour.
+    segments = [("detection S/N", "0.35", "normal")] + [(f"{val:.1f}", color, "bold")
+                                                        for color, val in sn]
+    sn_row(ax, segments, fontsize=23)
+    for (color, val), (_, label, _) in zip(sn, ESTIMATORS):
         print(f"  {probe}-cross {label:>22s}: blinded S/N = {val:.2f}")
 axes[-1].set_xlabel(r"$\ell$")
 sns.despine(fig)
 
 # No suptitle — the slide headline carries the title (avoid duplicate titles).
-if not delta:
-    fig.text(0.5, 0.5, "PRELIMINARY — UNBLINDED", ha="center", va="center",
-             fontsize=52, color="0.85", weight="bold", rotation=18, zorder=0, alpha=0.5)
+blinding_watermark(fig, blinded=bool(delta))
 fig.tight_layout()
 # Legend OUTSIDE the panels (right), guaranteed clear of every bandpower (no-overlap requirement).
 h, lab = axes[0].get_legend_handles_labels()
 fig.legend(h, lab, loc="center left", bbox_to_anchor=(1.0, 0.5), frameon=False,
-           fontsize=18, title=f"bin {BIN}", title_fontsize=18)
+           fontsize=22, title=f"bin {BIN}", title_fontsize=22)
 fig.savefig(OUT, dpi=180, bbox_inches="tight")
 print("wrote", OUT)

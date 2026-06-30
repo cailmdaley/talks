@@ -50,7 +50,7 @@ from scipy import stats
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis, fold_yscale
+from _ell_axis import style_ell_axis, fold_yscale, sn_row, blinding_watermark, SPT_COLOR, ACT_COLOR
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 # TR1 re-sealed blinded talk data vector (cosmology-shift self-blind on TR1 data).
@@ -61,13 +61,13 @@ OUT = ROOT / "docs/talks/images/spt26_cross_survey.png"
 # Each survey's OWN raw product (blind-independent covariance), per family — TR1.
 SURVEYS = {
     "spt": {
-        "label": "SPT-3G GMV", "color": "#c0392b", "marker": "o",
+        "label": "SPT-3G GMV", "color": SPT_COLOR, "marker": "o",
         "prefix": "",  # blinded keys: kappa_l{j}, kappa_g{j}
         "shear_pkl": ROOT / "results/tr1/shear_kappa_cross_spectra/shear_lensmc_x_spt_winter_gmvbhttprf.pkl",
         "gc_pkl": ROOT / "results/tr1/clustering_kappa_cross_spectra/gc_x_spt_winter_gmvbhttprf.pkl",
     },
     "act": {
-        "label": "ACT DR6", "color": "#2a8c8c", "marker": "s",
+        "label": "ACT DR6", "color": ACT_COLOR, "marker": "s",
         "prefix": "act_",  # blinded keys: act_kappa_l{j}, act_kappa_g{j}
         "shear_pkl": ROOT / "results/tr1_act/shear_kappa_cross_spectra/shear_lensmc_x_act_dr6.pkl",
         "gc_pkl": ROOT / "results/tr1_act/clustering_kappa_cross_spectra/gc_x_act_dr6.pkl",
@@ -168,12 +168,12 @@ def survey_sn(survey, family, bin_id):
 
 # ----------------------------------------------------------- figure (1 high-z bin)
 sns.set_theme(context="talk", style="ticks")
-# Bumped fonts for a projected talk slide; figsize is enlarged in step so the axes
-# rectangle (data area / absolute-points error bars) does not shrink under the bigger text.
+# Bumped fonts for a projected talk slide; wide figsize so the stacked panels fill the
+# 16:9 content area (the data area / absolute-points error bars stay large under the text).
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
                      "font.family": "DejaVu Sans", "legend.frameon": False,
-                     "axes.titlesize": 23, "axes.labelsize": 23,
-                     "xtick.labelsize": 19, "ytick.labelsize": 19})
+                     "axes.titlesize": 26, "axes.labelsize": 26,
+                     "xtick.labelsize": 22, "ytick.labelsize": 22})
 
 BIN = 5  # tomographic bin shown for the single-bin cross-survey panel
 PANELS = [
@@ -184,11 +184,8 @@ PANELS = [
 ]
 # Per-panel corner for the χ² box, each chosen in that panel's clear region.
 ANN = {"e": (0.015, 0.055, "left", "bottom"), "g": (0.985, 0.95, "right", "top")}
-# Anchor for the color-matched per-survey detection-S/N block (top-left clear region,
-# clear of the χ² box and the bandpowers).
-SN_ANN = {"e": (0.015, 0.96, "left"), "g": (0.015, 0.96, "left")}
 
-fig, axes = plt.subplots(2, 1, figsize=(17.0, 13.0), sharex=True)
+fig, axes = plt.subplots(2, 1, figsize=(19.0, 11.0), sharex=True)
 legend_handles = {}
 for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
     cl_full = theory_full(key_of(BIN))
@@ -210,25 +207,24 @@ for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
     x, y, ha, va = ANN[family]
     ax.text(x, y, rf"$\chi^2_\nu(\mathrm{{SPT}}-\mathrm{{ACT}}) = {chi2_red:.2f}$"
             "\n" rf"PTE {pte:.2f}", transform=ax.transAxes,
-            ha=ha, va=va, fontsize=18, color="0.15", zorder=5,
+            ha=ha, va=va, fontsize=20, color="0.15", zorder=5,
             bbox=dict(boxstyle="round,pad=0.4", fc="white", ec="0.7", alpha=0.78))
-    # Per-survey blinded detection S/N = √χ²₀, color-matched (red SPT / teal ACT).
-    sx, sy0, sha = SN_ANN[family]
-    ax.text(sx, sy0, r"detection S/N $(\sqrt{\chi^2_0})$", transform=ax.transAxes, ha=sha,
-            va="top", fontsize=15, color="0.35", zorder=5)
-    for i, (s, cfg) in enumerate(SURVEYS.items(), start=1):
-        val = survey_sn(s, family, BIN)
-        ax.text(sx, sy0 - 0.075 * i, rf"{cfg['label']}: {val:.1f}", transform=ax.transAxes,
-                ha=sha, va="top", fontsize=18, color=cfg["color"], weight="bold", zorder=5)
-        print(f"  {family}-cross {cfg['label']:>12s}: blinded S/N = {val:.2f}")
+    # Detection S/N as a horizontal, color-matched row along the bottom centre (same
+    # treatment as the estimator slide); identity read off the survey colour.
+    segments = [("detection S/N", "0.35", "normal")] + [(f"{survey_sn(s, family, BIN):.1f}",
+                cfg["color"], "bold") for s, cfg in SURVEYS.items()]
+    sn_row(ax, segments, fontsize=23)
+    for s, cfg in SURVEYS.items():
+        print(f"  {family}-cross {cfg['label']:>12s}: blinded S/N = {survey_sn(s, family, BIN):.2f}")
 
 axes[-1].set_xlabel(r"$\ell$")
 # No suptitle — the slide headline carries the title (avoid duplicate titles).
+blinding_watermark(fig, blinded=True)   # central values are always the sealed blinded bundle
 sns.despine(fig)
 fig.tight_layout()
 # Legend OUTSIDE the panels (right), guaranteed clear of every bandpower (no-overlap requirement).
 fig.legend(legend_handles.values(), legend_handles.keys(), loc="center left",
-           bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=18,
-           title=f"bin {BIN}", title_fontsize=18)
+           bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=22,
+           title=f"bin {BIN}", title_fontsize=22)
 fig.savefig(OUT, dpi=180, bbox_inches="tight")
 print("wrote", OUT)

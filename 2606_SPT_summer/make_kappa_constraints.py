@@ -32,7 +32,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis, fold_yscale
+from _ell_axis import style_ell_axis, fold_yscale, SPT_COLOR, ACT_COLOR
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 THEORY = ROOT / "results/redshift_tr1/theory_cls.pkl"        # TR1 n(z) + self-Hann smoothing
@@ -43,9 +43,9 @@ LMAX = 3000
 # Full data-fiducial Gaussian covariance per survey (24-spectrum log15 vector). The
 # exact per-bandpower σ is the diagonal of the bin-5 κ-cross auto-block.
 SURVEYS = {
-    "SPT-3G GMV": dict(color="#c0392b", marker="o",
+    "SPT-3G GMV": dict(color=SPT_COLOR, marker="o",
                        cov=ROOT / "results/tr1/covariance_gaussian/spt_winter_gmvbhttprf_covariance_gaussian_datafid_input.pkl"),
-    "ACT DR6":    dict(color="#2a8c8c", marker="s",
+    "ACT DR6":    dict(color=ACT_COLOR, marker="s",
                        cov=ROOT / "results/tr1_act/covariance_gaussian/act_dr6_covariance_gaussian_datafid_input.pkl"),
 }
 PANELS = [  # (cov spectrum stem, theory key, ylabel, title)
@@ -114,10 +114,14 @@ def shade_spt_better(ax, ls, ss, la, sa, color):
 
 # --------------------------------------------------------------------- figure
 sns.set_theme(context="talk", style="ticks")
+# Font sizes / wide figsize matched to the estimator + cross-survey slides (6–8 read
+# as one family) so the deck's comparison panels are visually consistent and fill 16:9.
 plt.rcParams.update({"axes.edgecolor": "0.2", "axes.linewidth": 0.8,
-                     "font.family": "DejaVu Sans", "legend.frameon": False})
+                     "font.family": "DejaVu Sans", "legend.frameon": False,
+                     "axes.titlesize": 26, "axes.labelsize": 26,
+                     "xtick.labelsize": 22, "ytick.labelsize": 22})
 
-fig, axes = plt.subplots(2, 1, figsize=(14.5, 10.0), sharex=True)
+fig, axes = plt.subplots(2, 1, figsize=(19.0, 11.0), sharex=True)
 for ax, (stem, tkey, ylabel, title) in zip(axes, PANELS):
     cl_full = theory_full(tkey)
     ax.plot(ell_full[2:], ell_full[2:] * cl_full[2:], color="0.45", lw=2.0, alpha=0.85,
@@ -136,15 +140,15 @@ for ax, (stem, tkey, ylabel, title) in zip(axes, PANELS):
                     mfc="white", mew=1.8, zorder=3, label=label)
     if center is not None:
         ax.text(center, 0.94, "SPT tighter", transform=ax.get_xaxis_transform(),
-                ha="center", va="top", fontsize=12.5, color=SURVEYS["SPT-3G GMV"]["color"], weight="bold")
+                ha="center", va="top", fontsize=18, color=SURVEYS["SPT-3G GMV"]["color"], weight="bold")
     style_ell_axis(ax, 95, 3050)
     fold_yscale(ax, ylabel)
-    ax.set_title(title, fontsize=16, pad=8)
+    ax.set_title(title, pad=8)
 
 axes[-1].set_xlabel(r"$\ell$")
 # Note in the bottom-right of the lower panel — below the rising curve, clear of data.
 axes[-1].text(0.985, 0.05, "markers placed on theory — only the error bar is real",
-              transform=axes[-1].transAxes, fontsize=11, va="bottom", ha="right",
+              transform=axes[-1].transAxes, fontsize=16, va="bottom", ha="right",
               color="0.4", style="italic")
 
 sns.despine(fig)
@@ -152,6 +156,6 @@ fig.tight_layout()
 # Legend OUTSIDE the panels (right), guaranteed clear of every bandpower (no-overlap requirement).
 h, lab = axes[0].get_legend_handles_labels()
 fig.legend(h, lab, loc="center left", bbox_to_anchor=(1.0, 0.5), frameon=False,
-           fontsize=13, title=f"bin {BIN}", title_fontsize=13)
+           fontsize=22, title=f"bin {BIN}", title_fontsize=22)
 fig.savefig(OUT, dpi=180, bbox_inches="tight")
 print("wrote", OUT)
