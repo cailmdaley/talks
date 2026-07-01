@@ -208,7 +208,11 @@
 // which read heavy and un-scientific (Cail, 2026-07-01). Adding this child pushes
 // the timeline + Today block down automatically (space-evenly over 3 items).
 .reveal .orient-side .symbol-defs {
-  text-align: center;
+  // left-justified lines, block centred in the column (ragged-both-sides centred
+  // text read poorly — Cail 2026-07-01)
+  text-align: left;
+  width: fit-content;
+  margin: 0 auto;
   font-size: 0.95em;
   color: $ink-muted;
   line-height: 1.55;

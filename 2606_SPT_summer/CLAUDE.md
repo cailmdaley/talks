@@ -89,7 +89,10 @@ never regenerate a cosmology plot here.
 7. **Which κ survey constrains where** — markers on fiducial theory, only the
    error bars real (exact full data-fiducial Gaussian σ, both surveys, TR1 log15):
    SPT tighter for ℓ≳200, ACT marginally tighter only at ℓ≲180; crossover ℓ≈200.
-   Overlay caption: "Time to start thinking about scale cuts…"
+   Overlay caption: "Ongoing validation: ℓ_max, apodization scale" (replaced
+   "time to start thinking about scale cuts" 2026-07-01 — Léa Dumilly's
+   Cℓ-settings sweep is already running; see
+   `felt show science/cmbx/methodology/lea-cl-settings-validation`).
    (`spt26_kappa_constraints.png`.)
 8. **Systematics: extinction is sub-σ for shear, ~1σ at high-ℓ for clustering** —
    (now precedes Likelihood — reordered 2026-07-01) DES/Chang coherent bias
@@ -111,10 +114,14 @@ never regenerate a cosmology plot here.
    photo-z Δz_i + w_z,i marginalization (global or binwise). **Not yet in the
    sampled model** (all verified absent): no multiplicative m_i anywhere; IA is
    a fixed constant-amplitude template in the shear tracer (NLA params loaded
-   but not wired, not marginalized); no Hartlap/Sellentin anywhere (needed only
-   once the covariance comes from mocks). The A–b degeneracy is NOT on this
-   slide anymore — it's a thing to *try*, moved to slide 11's Next line
-   (δ_gδ_g tightens b_i ~2.5× but A·b stays degenerate — speaker notes carry it).
+   but not wired, not marginalized); Hartlap/Sellentin absent (needed only once
+   the covariance comes from mocks — in the notes, NOT on the slide; Cail
+   trimmed it 2026-07-01 as non-crucial). Right column is two blocks for
+   evenness: "Not yet in the sampled model" (m_i + IA one bullet; mock cov →
+   see next slide) then "→ CLOE integration — theory done, likelihood in
+   progress" (the old full-width bottom line, folded up). The A–b degeneracy is
+   NOT on this slide anymore — it's a thing to *try*, moved to slide 11's Next
+   line (δ_gδ_g tightens b_i ~2.5× but A·b stays degenerate — notes carry it).
 10. **Simulations** — DEMNUni/FLASK → mock covariance; Agora (Gatti Euclid-like
     products) + systematics-injected GLASS box for foregrounds; D1 κ̂−κ_true noise
     realizations; the ambitious D1-on-FFP10 cross-covariance between Planck/ACT/SPT.
