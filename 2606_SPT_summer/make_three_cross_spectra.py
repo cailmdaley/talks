@@ -306,6 +306,7 @@ for ri, src in enumerate(TOM_BINS):            # row = shear (source) bin
 fig2.suptitle("Galaxy–galaxy lensing $\\delta_g\\times\\gamma$ — full 6$\\times$6 source(shear)$\\times$lens(clustering) matrix\n"
               "red = source behind (highest S/N) | grey = same bin | teal = source front",
               y=0.995, fontsize=15, weight="bold")
+blinding_watermark(fig2, blinded is not None)
 fig2.tight_layout(rect=(0, 0, 1, 0.975))
 fig2.savefig(OUT_MATRIX, dpi=130, bbox_inches="tight")
 print("wrote", OUT_MATRIX)

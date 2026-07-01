@@ -25,9 +25,15 @@ centralized reuse, or replace the symlink with a real folder when slides demand 
 - **`_site/`** — rendered output. Gitignored.
 - **`unused_images/`** — images pruned by `collect_unused_assets.py`. Gitignored.
 
-### Meta-work is fine to commit
-The repo is public but not sensitive — build scaffolding (speaker notes, per-talk `CLAUDE.md`,
-outlines, internal reasoning, felt fiber names) is fine to commit and push; the only bar is genuine PII.
+### Meta-work is fine to commit — with two hard bars
+The repo is public — build scaffolding (speaker notes, per-talk `CLAUDE.md`, outlines, internal
+reasoning, felt fiber names) is fine to commit and push, subject to two bars: **genuine PII**, and
+**blinded results**. No unblinded number from a blinded analysis — no amplitude value, no
+sub-/super-unity statement, no figure showing measured amplitudes against theory — may be committed
+*anywhere* in the repo (speaker notes, per-talk CLAUDE.md, retired figures, planning docs). Blinded
+background belongs in the private felt store; the repo carries a pointer at most. (This bar exists
+because it was burned once: the 2606 deck's CLAUDE.md and four retired figures carried the blinded
+κ-cross amplitude verbatim and had to be scrubbed from history.)
 
 ### Image hygiene
 - **Resolution over file size**: use figures at full resolution — scientific figures need to stay

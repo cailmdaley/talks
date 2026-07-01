@@ -15,12 +15,17 @@ likelihood/bias plans → simulations.
 
 **Frame (non-negotiable, set by the managing constitution
 `explorations/spt-talk-push`):** *status report under the blind*, not a results
-talk. The detection/amplitude arc (the sub-unity Â ≈ 0.63 spine) is real but
-**blinded and OFF this talk** while in progress. Every panel reads under the blind
-— **shapes, relative consistency, error-bar sizes, never the absolute amplitude**.
-We are honest about what is and isn't under control. This is the ~11-slide deck
-below; the retired ~17-slide "detection + robustness" deck (Â≈0.63 headline,
-amplitude/ℓ-flat/open-question slides) is GONE — do not reconstruct it.
+talk. The detection/amplitude arc is real but **blinded and OFF this talk** while
+in progress. Every panel reads under the blind — **shapes, relative consistency,
+error-bar sizes, never the absolute amplitude**. We are honest about what is and
+isn't under control. This is the ~11-slide deck below; the retired ~17-slide
+"detection + robustness" deck (amplitude headline, ℓ-trend/open-question slides)
+is GONE — do not reconstruct it.
+
+**This repo is public.** No unblinded number — no amplitude value, no
+sub-/super-unity statement about this data — may appear anywhere in it: not in
+slides, not in speaker notes, not in tracked figures, and not in this file. The
+blinded background lives in the (private) felt store, not here.
 
 ## Claim discipline — the wording is load-bearing (Q&A too)
 
@@ -38,14 +43,12 @@ in **Q&A**, where the amplitude story will get probed:
   estimator cancels in the difference and is *not* excluded; the direct test is the
   reserved Websky/Agora-with-HOD recovery, **not yet run**. (This is exactly the
   slide-5 caveat and its speaker note.)
-- **NOT "the sub-unity amplitude is localised off the κ reconstruction onto Euclid."**
-  Cross-probe localisation is *suggestive only*.
+- **NOT any claim localising the amplitude onto one side** (the κ reconstruction
+  vs the Euclid probes). Cross-probe localisation is *suggestive only*.
 
-If pressed on the amplitude in Q&A, the honest background (NOT on a slide): the
-spine is Â = 0.63 ± 0.05 (PTE 0.73), 12-cross equal-window full **data-fiducial
-Gaussian** covariance; ℓ-flat at ~0.65 across ℓ∈[150,3000]; carries a ~1.6σ family
-split (gc×κ 0.72 vs γ×κ 0.59). It *strengthens* under Knox→Gaussian. But the talk
-reports status, not this number.
+If pressed on the amplitude in Q&A, the honest background lives OFF this public
+repo: `felt show science/cmbx/explorations/spt-talk-push/qa-amplitude-background`
+(private felt store). The talk reports status, not numbers.
 
 ## The narrative arc (current deck — headlines read top-to-bottom as the story)
 
@@ -77,7 +80,7 @@ never regenerate a cosmology plot here.
    now). Amplitudes stripped — shapes + blinded per-bin S/N only.
    (`spt26_cross_spectra.png`; backup `spt26_ggl_matrix.png`, GGL still generated
    for Q&A even though it's off the main slide.)
-5. **Robust to the SPT-3G lensing estimator** — bin 6, γ×κ + δ_g×κ, GMV vs the
+5. **Robust to the SPT-3G lensing estimator** — bin 5, γ×κ + δ_g×κ, GMV vs the
    bias + profile-hardened reconstruction (GMVbhTTprf) sitting on top of each
    other → estimator-robust (hardening RMS 0.29σ both crosses, all 90 bandpowers
    <1σ, no S/N cost); PP (pol-only) noisier at high ℓ. (`spt26_estimator_robustness.png`, TR1.)
