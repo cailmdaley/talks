@@ -32,7 +32,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis, fold_yscale, SPT_COLOR, ACT_COLOR
+from _ell_axis import style_ell_axis, fold_yscale, legend_right, SPT_COLOR, ACT_COLOR
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 THEORY = ROOT / "results/redshift_tr1/theory_cls.pkl"        # TR1 n(z) + self-Hann smoothing
@@ -153,9 +153,10 @@ axes[-1].text(0.985, 0.05, "markers placed on theory — only the error bar is r
 
 sns.despine(fig)
 fig.tight_layout()
-# Legend OUTSIDE the panels (right), guaranteed clear of every bandpower (no-overlap requirement).
+# Legend OUTSIDE the panels (right), in a FIXED margin — see legend_right() docstring:
+# keeps this figure's canvas the same size as the neighbouring estimator-robustness /
+# cross-survey slides (6/7/8 read as one family; slide 8 is now full-width to match).
 h, lab = axes[0].get_legend_handles_labels()
-fig.legend(h, lab, loc="center left", bbox_to_anchor=(1.0, 0.5), frameon=False,
-           fontsize=22, title=f"bin {BIN}", title_fontsize=22)
-fig.savefig(OUT, dpi=180, bbox_inches="tight")
+legend_right(fig, h, lab, title=f"bin {BIN}")
+fig.savefig(OUT, dpi=180)
 print("wrote", OUT)

@@ -42,7 +42,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis, fold_yscale, sn_row, blinding_watermark
+from _ell_axis import style_ell_axis, fold_yscale, sn_row, blinding_watermark, legend_right
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 # TR1. The per-estimator κ-cross pickles ({prefix}_x_spt_est_{est}.pkl) are written
@@ -184,9 +184,10 @@ sns.despine(fig)
 # No suptitle — the slide headline carries the title (avoid duplicate titles).
 blinding_watermark(fig, blinded=bool(delta))
 fig.tight_layout()
-# Legend OUTSIDE the panels (right), guaranteed clear of every bandpower (no-overlap requirement).
+# Legend OUTSIDE the panels (right), in a FIXED margin — see legend_right() docstring:
+# this is what keeps this figure's canvas the same size as the neighbouring
+# cross-survey / kappa-constraints slides regardless of this legend's longer labels.
 h, lab = axes[0].get_legend_handles_labels()
-fig.legend(h, lab, loc="center left", bbox_to_anchor=(1.0, 0.5), frameon=False,
-           fontsize=22, title=f"bin {BIN}", title_fontsize=22)
-fig.savefig(OUT, dpi=180, bbox_inches="tight")
+legend_right(fig, h, lab, title=f"bin {BIN}")
+fig.savefig(OUT, dpi=180)
 print("wrote", OUT)

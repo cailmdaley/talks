@@ -113,6 +113,28 @@ def sn_row(ax, segments, *, loc="lower center", fontsize=22, sep=20, borderpad=0
     return box
 
 
+def legend_right(fig, handles, labels, *, title=None, fontsize=22, title_fontsize=22,
+                  axes_right=0.72, pad=0.015):
+    """Legend in a FIXED right margin, so the saved canvas is the SAME size regardless
+    of legend content — this is what makes side-by-side deck figures (e.g. the
+    estimator / cross-survey / kappa-constraints slides) come out at identical pixel
+    dimensions. The old pattern (``fig.legend(...)`` then ``savefig(bbox_inches="tight")``)
+    let the tight crop grow or shrink with the longest label, so panels with a longer
+    legend (e.g. "GMV profile-hardened") rendered at a different aspect ratio than a
+    neighbour with shorter labels — same slide width, different height on screen.
+
+    Call this AFTER ``fig.tight_layout()``, then ``savefig(..., dpi=...)`` WITHOUT
+    ``bbox_inches="tight"`` — that combination is what keeps the canvas fixed at
+    exactly ``fig.get_size_inches() * dpi``. ``axes_right`` (fraction of figure width)
+    is deck-wide constant across the scripts that call this, sized to fit the longest
+    legend label in the deck at ``fontsize``; keep it constant when adding a script so
+    new figures stay drop-in size-matched with the existing ones.
+    """
+    fig.subplots_adjust(right=axes_right)
+    fig.legend(handles, labels, loc="center left", bbox_to_anchor=(axes_right + pad, 0.5),
+               frameon=False, fontsize=fontsize, title=title, title_fontsize=title_fontsize)
+
+
 def blinding_watermark(fig, blinded, text="Blinded"):
     """Background blinding stamp for a talk figure (reusable across the deck).
 

@@ -50,7 +50,7 @@ from scipy import stats
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis, fold_yscale, sn_row, blinding_watermark, SPT_COLOR, ACT_COLOR
+from _ell_axis import style_ell_axis, fold_yscale, sn_row, blinding_watermark, legend_right, SPT_COLOR, ACT_COLOR
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 # TR1 re-sealed blinded talk data vector (cosmology-shift self-blind on TR1 data).
@@ -222,9 +222,9 @@ axes[-1].set_xlabel(r"$\ell$")
 blinding_watermark(fig, blinded=True)   # central values are always the sealed blinded bundle
 sns.despine(fig)
 fig.tight_layout()
-# Legend OUTSIDE the panels (right), guaranteed clear of every bandpower (no-overlap requirement).
-fig.legend(legend_handles.values(), legend_handles.keys(), loc="center left",
-           bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=22,
-           title=f"bin {BIN}", title_fontsize=22)
-fig.savefig(OUT, dpi=180, bbox_inches="tight")
+# Legend OUTSIDE the panels (right), in a FIXED margin — see legend_right() docstring:
+# keeps this figure's canvas the same size as the neighbouring estimator-robustness /
+# kappa-constraints slides regardless of this legend's shorter labels.
+legend_right(fig, legend_handles.values(), legend_handles.keys(), title=f"bin {BIN}")
+fig.savefig(OUT, dpi=180)
 print("wrote", OUT)

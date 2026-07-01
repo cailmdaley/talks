@@ -242,7 +242,7 @@ I'm deliberately not quoting amplitudes or per-bin S/N here — those belong to 
 
 ## Estimators are consistent, GMV is lowest
 
-![](images/spt26_estimator_robustness.png){width="100%" fig-align="center"}
+![](images/spt26_estimator_robustness.png){width="78%" fig-align="center"}
 
 ::: {.notes}
 This is a status check on whether the cross depends on which SPT lensing estimator we
@@ -272,7 +272,7 @@ sigma — and that's the claim, no more.
 
 ## Two κ surveys on the same Euclid bins: SPT-3G and ACT DR6
 
-![](images/spt26_cross_survey.png){width="100%" fig-align="center"}
+![](images/spt26_cross_survey.png){width="78%" fig-align="center"}
 
 ::: {.notes}
 This is the cross-survey check. Same Euclid tracers, crossed against two independent
@@ -294,18 +294,11 @@ by a σ ratio of ~1.5× through the mid-range and up to ~2.5× at ℓ≈2700 —
 resolution win everywhere but the very largest scales.
 :::
 
-## SPT-3G tighter for ℓ > 200 {.vcenter}
+## SPT-3G tighter for ℓ > 200
 
-::: {.columns}
-::: {.column width="80%"}
-![](images/spt26_kappa_constraints.png){width="100%" fig-align="center"}
-:::
-::: {.column width="20%"}
+![](images/spt26_kappa_constraints.png){width="78%" fig-align="center"}
 
 **Time to start thinking about scale cuts.**
-
-:::
-:::
 
 ::: {.notes}
 This is the "who constrains where" view — it answers the lever question from the previous
@@ -489,7 +482,7 @@ estimate the *cross*-covariance between Planck, ACT, and SPT — the off-diagona
 need to combine reconstructions rather than pick one.
 :::
 
-## Summary & next steps {.vcenter}
+## Summary & next steps
 
 **Where we are** — Euclid TR1 × SPT-3G, a status report:
 
@@ -498,19 +491,38 @@ need to combine reconstructions rather than pick one.
 - Estimator- and cross-survey-consistent (SPT-3G GMV vs profile-hardened; SPT vs ACT).
 
 ::: {.fragment}
-**Next** — joint $\{A, b_i\}$ likelihood · mock-based covariance · close systematics · DR1.
+::: {.columns}
+::: {.column width="50%"}
+**Systematics — checked so far**
+
+- Galaxy & magnification bias (RR2 + TR1)
+- Galactic extinction ($X_\ell$, TR1)
+:::
+::: {.column width="50%"}
+**Systematics — want to check**
+
+- Shear $m_i$, intrinsic alignments
+- Broader budget: stars, depth, zodiacal, N/S
+:::
+:::
 :::
 
 ::: {.fragment}
-Thanks — Euclid CMBX SWG: **Margherita Lembo, Louis Legrand, Giulio Fabbian** and the 3×2pt+κ team — and the **SPT-3G lensing** team, whose winter GMV $\kappa$ makes this cross possible.
+**Next** — joint $\{A, b_i\}$ likelihood · mock-based covariance · DR1.
+:::
+
+::: {.fragment}
+Thanks — Euclid CMBX SWG: **Margherita Lembo, Louis Legrand, Giulio Fabbian** and the 3×2pt+κ team — and the **SPT-3G lensing** team, whose winter GMV $\kappa$ makes this cross possible. **Chains soon!**
 :::
 
 ::: {.notes}
 Quick wrap. Where we are: the maps and field definitions are built and a self-blind is in place, so the analysis is running on a fixed, blinded footprint. We have all three cross data vectors in hand — galaxy–galaxy lensing, density–kappa, and shear–kappa. And the crosses are consistent two ways: across the SPT lensing estimator — GMV versus profile-hardened — and across surveys, SPT versus ACT. That's the status: the measurement infrastructure is in place and internally consistent.
 
-What's next, and this is where the real work is: build the joint per-bin {A, b_i} likelihood; move to a mock-based covariance; close out systematics properly — extinction is the only one redone so far; and then DR1. (The gamma-gamma shear auto-spectrum, which was flagged as a broken spin-2 product earlier in the analysis, is now restored — the failure was a stale purified MCM-workspace cache, not an estimator problem, fixed and regression-guarded — so it's no longer a gap; it gives us the shear-calibration lever for the joint fit.)
+On systematics, since this comes up every time: what we've actually checked so far is galaxy bias and magnification bias — fit on both RR2 and TR1 — and galactic extinction, quantified end-to-end with the X_ℓ metric. What we still want to check: the shear multiplicative bias and intrinsic alignments aren't sampled yet, and the broader budget — stellar density, exposure depth, zodiacal light, the north-south asymmetry — hasn't been redone on this catalog. One template is not a systematics budget, so I want that gap visible, not implied.
+
+What's next, and this is where the real work is: build the joint per-bin {A, b_i} likelihood; move to a mock-based covariance; and then DR1. (The gamma-gamma shear auto-spectrum, which was flagged as a broken spin-2 product earlier in the analysis, is now restored — the failure was a stale purified MCM-workspace cache, not an estimator problem, fixed and regression-guarded — so it's no longer a gap; it gives us the shear-calibration lever for the joint fit.)
 
 Deliberately no amplitude number on this slide — that arc is blinded and in progress, so I'm reporting status, not a result.
 
-Thanks to the Euclid CMBX SWG — Margherita Lembo, Louis Legrand, Giulio Fabbian and the 3×2pt+κ team — and to the SPT-3G lensing team, whose winter GMV kappa maps make this whole cross possible. Happy to take questions.
+Thanks to the Euclid CMBX SWG — Margherita Lembo, Louis Legrand, Giulio Fabbian and the 3×2pt+κ team — and to the SPT-3G lensing team, whose winter GMV kappa maps make this whole cross possible. And — chains soon: the joint likelihood is next up. Happy to take questions.
 :::
