@@ -26,10 +26,12 @@ covariance — the same blind-safe quantity the data-vector slide shows; mirrors
 make_three_cross_spectra.chi0). NO amplitude, NO Â is annotated — this is a
 blinding-safe consistency status figure.
 
-CONSISTENCY χ² (blind-safe). Computed per panel (not drawn in the panel — the slide
-overlays a plain-language "Naive χ² / considerable overlap" caption instead, see the
-.qmd; the number itself is logged to console for the speaker notes) as a reduced-χ²
-for the SPT-vs-ACT difference Δ = d_SPT − d_ACT over the 15 log15 bandpowers:
+CONSISTENCY χ² (blind-safe). Only the PTE is drawn in-panel (top-right/bottom-left
+box, "PTE(SPT-ACT) = …") — the reduced-χ² itself is logged to console for the
+speaker notes but not shown on the figure; the slide also overlays a plain-language
+"Naive PTE / considerable overlap" caption pointing at the same number (see the
+.qmd). Computed as a reduced-χ² for the SPT-vs-ACT difference Δ = d_SPT − d_ACT
+over the 15 log15 bandpowers:
 χ²_ν = Δ·Cov_diff⁻¹·Δ / dof, dof = 15. This is blind-safe BY CONSTRUCTION: the
 cosmology-shift blind adds the SAME experiment-agnostic theory ΔCℓ to both
 surveys' same-bin κ-cross (selfblind_shift.py: κ theory pair is identical for
@@ -184,6 +186,8 @@ PANELS = [
     ("g", r"$\ell\,C_\ell^{\delta_g\kappa}$", r"Galaxy clustering $\times$ CMB-$\kappa$   ($\delta_g\times\kappa$)",
      lambda j: ("g", "k", j, 0)),
 ]
+# Per-panel corner for the PTE annotation, each chosen in that panel's clear region.
+ANN = {"e": (0.015, 0.055, "left", "bottom"), "g": (0.985, 0.95, "right", "top")}
 
 fig, axes = plt.subplots(2, 1, figsize=(19.0, 11.0), sharex=True)
 legend_handles = {}
@@ -204,11 +208,15 @@ for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
     ax.set_ylim(*PANEL_YLIM[family])   # shared across slides 6/7/8 — see _ell_axis.PANEL_YLIM
     fold_yscale(ax, ylabel, nbins=6)
     ax.set_title(title, pad=8)
-    # χ²_ν(SPT−ACT)/PTE is no longer drawn IN the panel — Cail's call: the slide carries
-    # only the plain-language takeaway ("Naive χ² — considerable overlap", overlaid on
-    # the slide itself, see the .qmd) and the number stays off-figure, in the console
-    # log below (and available for the speaker notes if wanted).
+    # PTE(SPT−ACT) only, drawn IN the panel — Cail's call: the reduced-χ² itself is
+    # noisy/uninteresting to show, but the PTE is worth having on the plot. The slide
+    # ALSO carries a plain-language overlay takeaway ("Naive PTE / considerable
+    # overlap", see the .qmd) pointing at this same number.
     chi2_red, pte, dof = cross_survey_chi2(family, BIN)
+    x, y, ha, va = ANN[family]
+    ax.text(x, y, rf"$\mathrm{{PTE}}(\mathrm{{SPT}}-\mathrm{{ACT}}) = {pte:.2f}$",
+            transform=ax.transAxes, ha=ha, va=va, fontsize=20, color="0.15", zorder=5,
+            bbox=dict(boxstyle="round,pad=0.4", fc="white", ec="0.7", alpha=0.78))
     print(f"  {family}-cross naive χ²_ν(SPT-ACT) = {chi2_red:.2f}, PTE = {pte:.2f} ({dof} dof)")
     # Detection S/N as a horizontal, color-matched row along the bottom centre (same
     # treatment as the estimator slide); identity read off the survey colour.

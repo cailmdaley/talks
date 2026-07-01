@@ -218,23 +218,19 @@
   display: block;
 }
 .reveal .fullfig-note {
+  // width kept narrow enough that its LEFT edge clears legend_right()'s axes_right=0.72
+  // boundary (the plot area ends there) — a wider box + left-justified text would
+  // intrude into the plot itself. Same box, same type treatment for every caption in
+  // the 6/7/8 family (only the wording differs).
   position: absolute;
   right: 2.5%;
-  width: 33%;
+  width: 22%;
   text-align: left;
   line-height: 1.25;
-}
-.reveal .fullfig-note.scale-cuts {
   top: 48%;
   font-size: 0.95em;
   font-weight: 700;
   color: $cinnabar;
-}
-.reveal .fullfig-note.chi2-note {
-  top: 48%;
-  font-size: 0.7em;
-  font-style: italic;
-  color: $ink-muted;
 }
 
 // Footprint build-up (slide 3) — give each r-stack image its OWN opaque ground

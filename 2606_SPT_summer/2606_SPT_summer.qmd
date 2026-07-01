@@ -115,7 +115,7 @@ include-in-header: assets/mathjax.html
 **Today: TR1 cycle 1**
 
 footprints · blinding · data vectors · estimator consistency · SPT vs ACT ·
-likelihood & bias · systematics · simulations
+systematics · likelihood & bias · simulations
 :::
 :::
 
@@ -278,7 +278,7 @@ sigma — and that's the claim, no more.
 ![](images/spt26_cross_survey.png)
 
 ::: {.fullfig-note .chi2-note}
-Naive χ²<br>considerable overlap
+Naive PTE<br>considerable overlap
 :::
 :::
 
@@ -308,7 +308,7 @@ resolution win everywhere but the very largest scales.
 ![](images/spt26_kappa_constraints.png)
 
 ::: {.fullfig-note .scale-cuts}
-Time to start thinking<br>about scale cuts
+Time to start thinking<br>about scale cuts…
 :::
 :::
 
@@ -340,6 +340,55 @@ carries more mode-coupling correction relative to the f_sky-scaled Knox approxim
 exact result is, if anything, *more* favorable to SPT than the Knox story. (The ℓ≈1350 number
 from much earlier was a different comparison — combined-tomography on the older SACC vector —
 not this like-for-like bin-5 one.)
+:::
+
+## Systematics: extinction is sub-σ for shear, ~1σ at high-ℓ for clustering
+
+![](images/spt26_extinction_xell.png){width="92%" fig-align="center"}
+
+::: {.notes}
+This is a deliberately honest slide — I want to be clear about what we have and haven't done
+on systematics, because it's the part of the analysis that's least advanced, and on TR1 it's
+the one slide where the data made the story less comfortable, not more.
+
+The one cross-correlation systematic we've actually quantified on this TR1 catalog is galactic
+extinction. The metric is the standard DES/Chang contamination estimate: X_ℓ equals the cross
+of kappa with the extinction template, times the cross of the tracer with extinction, divided
+by the extinction auto — that's the coherent bias the template can inject into our signal. I'm
+plotting that bias in units of the measurement error, sigma, as a function of ell, for each of
+the six tomographic bins — clustering-cross-kappa on the left, shear-cross-kappa on the right.
+
+Shear, on the right, is the clean panel: extinction is sub-sigma at every single bandpower,
+aggregate four tenths to eight tenths of a sigma per bin. For shear-cross-kappa, extinction is
+controlled.
+
+Clustering, on the left, is the honest concern. At low and mid ell it's sub-sigma, but it
+*climbs at high ell* — above ell of about a thousand it rises toward one sigma per bandpower,
+and it grows with redshift bin: the coherent aggregate goes from about one sigma in the lowest
+bin to about one-and-a-half in the highest, and the worst single bandpower (bin 6) sits right
+at one sigma. So for the clustering cross, extinction is not yet under control.
+
+Two things I want to flag honestly. First, this is *different from what we saw on RR2*, where
+extinction was sub-sigma everywhere — the TR1 southern footprint and the deeper, higher-redshift
+clustering bins make this worse. Second, and more interesting: the bias is largest at *high* ell,
+which is the opposite of what you'd naively expect from a smooth galactic template — that should
+contaminate the largest scales. So either the extinction template carries small-scale structure,
+or there's extinction-dependent selection in the fainter high-z galaxy samples. High ell is also
+exactly where the clustering auto wants a scale cut — so the clustering cross at high ell is the
+region I'd treat with most caution. This is a real to-do, not a closed box.
+
+One honest footnote on the error bars, since this audience will ask: the sigma here is the
+per-bandpower Knox diagonal — the cross-spectrum's own analytic error — not the full Gaussian
+covariance I showed on the survey-comparison slide. That keeps it apples-to-apples with the RR2
+number I'm contrasting against, but recomputing X-over-sigma against the full Gaussian is the
+refinement on my list; the qualitative picture — controlled for shear, a high-ell concern for
+clustering — is what I'd stand behind today.
+
+And the transferable message is the title's other half: this is one template. Stellar density,
+exposure depth, zodiacal light, the north-south asymmetry — those null tests have NOT been redone
+on this TR1 catalog, so I'm not quoting them. One template quantified does not close systematics —
+this is the most open work-package in the analysis, and on TR1 it's a genuine flag for the
+clustering cross, not a reassurance.
 :::
 
 ## Likelihood — what's built, and the plan
@@ -396,55 +445,6 @@ Cobaya-interfaced Gaussian likelihood — is the working tool today, and we're n
 cross-correlation observable into CLOE, the Euclid consortium inference framework, so it slots into
 the official pipeline. The theory side is already done in CLOE; we're working on the likelihood part
 now. The container already carries the CLOE dependencies.
-:::
-
-## Systematics: extinction is sub-σ for shear, ~1σ at high-ℓ for clustering
-
-![](images/spt26_extinction_xell.png){width="92%" fig-align="center"}
-
-::: {.notes}
-This is a deliberately honest slide — I want to be clear about what we have and haven't done
-on systematics, because it's the part of the analysis that's least advanced, and on TR1 it's
-the one slide where the data made the story less comfortable, not more.
-
-The one cross-correlation systematic we've actually quantified on this TR1 catalog is galactic
-extinction. The metric is the standard DES/Chang contamination estimate: X_ℓ equals the cross
-of kappa with the extinction template, times the cross of the tracer with extinction, divided
-by the extinction auto — that's the coherent bias the template can inject into our signal. I'm
-plotting that bias in units of the measurement error, sigma, as a function of ell, for each of
-the six tomographic bins — clustering-cross-kappa on the left, shear-cross-kappa on the right.
-
-Shear, on the right, is the clean panel: extinction is sub-sigma at every single bandpower,
-aggregate four tenths to eight tenths of a sigma per bin. For shear-cross-kappa, extinction is
-controlled.
-
-Clustering, on the left, is the honest concern. At low and mid ell it's sub-sigma, but it
-*climbs at high ell* — above ell of about a thousand it rises toward one sigma per bandpower,
-and it grows with redshift bin: the coherent aggregate goes from about one sigma in the lowest
-bin to about one-and-a-half in the highest, and the worst single bandpower (bin 6) sits right
-at one sigma. So for the clustering cross, extinction is not yet under control.
-
-Two things I want to flag honestly. First, this is *different from what we saw on RR2*, where
-extinction was sub-sigma everywhere — the TR1 southern footprint and the deeper, higher-redshift
-clustering bins make this worse. Second, and more interesting: the bias is largest at *high* ell,
-which is the opposite of what you'd naively expect from a smooth galactic template — that should
-contaminate the largest scales. So either the extinction template carries small-scale structure,
-or there's extinction-dependent selection in the fainter high-z galaxy samples. High ell is also
-exactly where the clustering auto wants a scale cut — so the clustering cross at high ell is the
-region I'd treat with most caution. This is a real to-do, not a closed box.
-
-One honest footnote on the error bars, since this audience will ask: the sigma here is the
-per-bandpower Knox diagonal — the cross-spectrum's own analytic error — not the full Gaussian
-covariance I showed on the survey-comparison slide. That keeps it apples-to-apples with the RR2
-number I'm contrasting against, but recomputing X-over-sigma against the full Gaussian is the
-refinement on my list; the qualitative picture — controlled for shear, a high-ell concern for
-clustering — is what I'd stand behind today.
-
-And the transferable message is the title's other half: this is one template. Stellar density,
-exposure depth, zodiacal light, the north-south asymmetry — those null tests have NOT been redone
-on this TR1 catalog, so I'm not quoting them. One template quantified does not close systematics —
-this is the most open work-package in the analysis, and on TR1 it's a genuine flag for the
-clustering cross, not a reassurance.
 :::
 
 ## Simulations: mocks for covariance, foregrounds, and noise
@@ -524,7 +524,7 @@ need to combine reconstructions rather than pick one.
 :::
 
 ::: {.fragment}
-Thanks — Euclid CMBX SWG: **Margherita Lembo, Louis Legrand, Giulio Fabbian** and the 3×2pt+κ team — and the **SPT-3G lensing** team, whose winter GMV $\kappa$ makes this cross possible. **Chains soon!**
+**Thank you for listening** — and to the SPT and Euclid members who made this work possible.
 :::
 
 ::: {.notes}
