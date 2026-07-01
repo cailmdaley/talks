@@ -56,7 +56,7 @@ include-in-header: assets/mathjax.html
   <div class="hdr"></div>
   <div class="hdr">δ<sub>g</sub></div><div class="hdr">γ</div><div class="hdr">κ</div>
   <div class="hdr">δ<sub>g</sub></div>
-  <div class="cell tpt">δ<sub>g</sub>δ<sub>g</sub></div><div class="cell tpt cross">δ<sub>g</sub>γ</div><div class="cell cross">δ<sub>g</sub>κ</div>
+  <div class="cell tpt">δ<sub>g</sub>δ<sub>g</sub></div><div class="cell tpt">δ<sub>g</sub>γ</div><div class="cell cross">δ<sub>g</sub>κ</div>
   <div class="hdr">γ</div>
   <div class="empty"></div><div class="cell tpt">γγ</div><div class="cell cross">γκ</div>
   <div class="hdr">κ</div>
@@ -130,13 +130,18 @@ programme stands rather than headlining a number.
 The frame is this MoU [point to the matrix]: the six two-point spectra of galaxy
 density δ, shear γ, and CMB lensing κ — the whole 6×2pt. The cross-hatched cells are
 the standard Euclid 3×2pt: clustering, shear, and galaxy–galaxy lensing — what Euclid
-does on its own. What we propose is the shaded cells: the cross-correlations — δ×γ,
-δ×κ, γ×κ. It's a 3×2pt in its own right, just of the crosses, and the two that bring
-in SPT — δ×κ and γ×κ — are the genuinely new measurement.
+does on its own, δ×γ included. What we propose is the shaded cells — and this is a
+CMB-only 3×2pt, Louis's framing: of the six spectra, the three that actually involve
+CMB-κ are δ×κ, γ×κ, and κκ itself. δ×κ and γ×κ are the genuinely new measurement,
+the two that bring in SPT.
 
-κκ is the odd one out. That's SPT's lensing auto-spectrum — you already have it — so
-it doesn't come from this cross-correlation measurement; we fold it in later, at the
-likelihood level, when we do the joint fit. [say out loud]
+κκ is the odd one out, not shaded either. That's SPT's lensing auto-spectrum — you
+already have it — so it doesn't come from this cross-correlation measurement; we
+fold it in later, at the likelihood level, when we do the joint fit. [say out loud]
+Galaxy–galaxy lensing, δ×γ, is cross-hatched only, not shaded — it's a standard
+Euclid 3×2pt product from the main 3×2pt group already, not something new we're
+adding, so later slides that used to feature it (the data-vector slide) don't
+anymore.
 
 Why bother: the DES×SPT×Planck 6×2pt (Abbott et al. 2023) tightened Ω_m by ~30% and
 S₈ by ~50% over the shear-and-clustering-only 3×2pt, and self-calibrated shear
@@ -226,18 +231,37 @@ The likelihood itself, and the move into CLOE, I come back to on the likelihood 
 this audience: every data vector you see today is blinded.
 :::
 
-## Data vectors: the three cross-correlations
+## Data vectors: Gaussian NaMaster error bars
 
 ![](images/spt26_cross_spectra.png){width="100%" fig-align="center"}
 
 ::: {.notes}
 This is the data-vector slide — what we measure, not how it fits.
 
-The spine for SPT is the two CMB-lensing crosses, top and middle: shear × kappa and galaxy clustering × kappa, six tomographic bins each, NaMaster pseudo-Cℓ bandpowers on the joint Euclid × SPT mask.
+Two rows now, not three — this is the CMB-only 3×2pt, per Louis's point: of the
+six-by-two-point's six spectra, the three that actually involve CMB-κ are
+shear×κ, clustering×κ, and κκ itself — and κκ folds in only at the likelihood
+level, we don't measure it directly, so it doesn't get a panel either. Galaxy–
+galaxy lensing, which used to be the third row here, is a standard Euclid 3×2pt
+product from the main 3×2pt group already — not something new this MoU is
+adding — so it's off this slide. (Still happy to show the backup 6×6
+source×lens matrix, spt26_ggl_matrix.png, if anyone asks.) Dropping that row
+also means these panels are bigger than before.
 
-The bottom row is the third cross — galaxy–galaxy lensing, delta_g × gamma, Euclid internal, no CMB lensing. One wrinkle to flag honestly: GGL isn't a single-field cross like the kappa-crosses, it's a six-by-six source(shear)-by-lens(clustering) matrix. The broad Euclid tomographic n(z) overlap means there's signal in essentially every pair, but the cleanest, highest-S/N configuration is "source behind the lens." So on the slide I show the deepest shear bin — bin six, which sits behind all the clustering bins — crossed with each clustering lens bin: one clean spectrum per panel, parallel to the rows above. The full six-by-six matrix is a backup figure (spt26_ggl_matrix.png) if anyone wants it — and you can see the source-behind triangle is where the signal lives.
+Both rows: the SPT-3G GMV profile-hardened estimator, six tomographic bins,
+NaMaster pseudo-Cℓ bandpowers on the joint Euclid × SPT mask.
 
-I'm deliberately not quoting amplitudes or per-bin S/N here — those belong to the detection arc, which is blinded and out of scope for this status report, and I've stripped them from the figure so nothing leaks. The message of this slide is just: three crosses, one consistent estimator, consistent tomographic binning, all tracking the Planck-18 shape. The figure carries the weight.
+On error bars, since Louis asked directly: these are the full data-fiducial
+Gaussian NaMaster covariance now, not the per-bandpower Knox diagonal this
+figure used before — same treatment as the kappa-constraints slide later on.
+I put that on the slide title itself rather than leave it to the notes, since
+it's exactly the kind of thing this audience wants to know without having to ask.
+
+Each panel also carries its own blinded detection S/N — root chi-squared-zero
+against the no-signal null, same blind-safe definition as the estimator and
+cross-survey slides. The message: two crosses, one estimator, one binning,
+tracking Planck-18, with both the shape and the detection strength visible;
+the amplitude itself stays off this status report.
 :::
 
 ## Estimators are consistent, GMV is lowest
@@ -284,7 +308,7 @@ Naive PTE<br>considerable overlap
 
 ::: {.notes}
 This is the cross-survey check. Same Euclid tracers, crossed against two independent
-CMB-lensing reconstructions — SPT-3G GMV in red, ACT DR6 in teal — both laid over the
+CMB-lensing reconstructions — SPT-3G GMV-hardened in red, ACT DR6 in teal — both laid over the
 fiducial theory curve. I'm showing one representative high-z bin (bin 5): shear×κ on top,
 clustering×κ on the bottom; the same picture holds across all six bins.
 

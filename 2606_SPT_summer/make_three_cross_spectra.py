@@ -2,31 +2,39 @@
 # requires-python = ">=3.10"
 # dependencies = ["numpy", "matplotlib", "seaborn"]
 # ///
-"""The three Euclid cross-correlation data vectors for the SPT-summer talk.
+"""The two CMB-lensing cross-correlation data vectors for the SPT-summer talk.
 
-Status-report figure (blinding-safe): the analysis measures *three* crosses, all
-on the same NaMaster pseudo-Cℓ bandpowers (log15: 15 log bins, ℓ 100–3000) —
-cosmic shear × CMB-κ (γ×κ), galaxy clustering × CMB-κ (δ_g×κ), and galaxy–galaxy
-lensing (δ_g×γ, Euclid-internal). Each panel shows the measured bandpowers with
-Knox error bars and ONE continuous fiducial Planck-18 theory curve. No amplitude
-or per-bin S/N is annotated — the message is "three crosses, consistently binned,
-tracking theory," carried by the figure.
+Status-report figure (blinding-safe): the CMB-only 3×2pt this MoU actually proposes
+is the three spectra of the 6×2pt that involve CMB-κ — γ×κ, δ_g×κ, and κκ (the last
+folded in at the likelihood level, not plotted here, since we don't measure it
+ourselves). Galaxy–galaxy lensing (δ_g×γ) is NOT one of these — it's a standard
+Euclid 3×2pt product from the main 3×2pt group, not something new this MoU is
+adding, so (Louis's point, 2026-07-01) it doesn't belong on this slide; it dropped
+from 3 rows to 2. Both panels: cosmic shear × CMB-κ (γ×κ), galaxy clustering ×
+CMB-κ (δ_g×κ), the SPT-3G winter GMV-profile-hardened (gmvbhttprf) estimator, on
+the same NaMaster pseudo-Cℓ bandpowers (log15: 15 log bins, ℓ 100–3000).
 
-Full-page-width layout: 3 rows (one per cross) × 6 tomographic bins, with a
-common y-range per row so the bin-to-bin amplitude comparison is honest.
+Error bars are the FULL data-fiducial GAUSSIAN NaMaster covariance (per Louis's
+question about what error bars are shown) — the same `covariance_gaussian`
+product `make_kappa_constraints.py` reads, sliced to each bin's κ-cross diagonal
+BLOCK (not just the per-bandpower Knox diagonal this figure used before
+2026-07-01). No amplitude or suptitle is baked into the figure — the slide
+headline carries the message, per the deck-wide "no suptitle" convention.
+
+Full-page-width layout: 2 rows (one per cross) × 6 tomographic bins, with a
+common y-range per row so the bin-to-bin amplitude comparison is honest. Dropping
+the GGL row frees vertical space, so each panel renders bigger than before.
 
 BLINDING.  The two CMB-κ rows can read BLINDED bandpowers: pass
 ``--blinded-pkl <blinded likelihood-input pkl>`` and the γ×κ / δ_g×κ central
 values are overridden by the blinded ``kappa_l{j}`` / ``kappa_g{j}`` spectra
-(error bars and binning unchanged — the loose blind touches the cross block
-only).  GGL (δ_g×γ) is blinded too: its central values come from the bundle's
-``l{src}_g{lens}`` keys (raw error bars/cov retained).  Without the flag the
+(the Gaussian covariance is blind-independent, unchanged). Without the flag the
 figure shows the UNBLINDED data and stamps "PRELIMINARY — UNBLINDED" on the
 canvas.
 
-GGL is a 6×6 source(shear)×lens(clustering) matrix; the slide row shows the
-deepest shear source bin (6 — always behind) × each clustering lens bin, parallel
-to the κ-cross rows.  Full 6×6 matrix → companion ``spt26_ggl_matrix.png``.
+GGL (δ_g×γ) is no longer on the main slide, but the loaders/selection logic and
+the backup full 6×6 source(shear)×lens(clustering) matrix (``spt26_ggl_matrix.png``)
+are kept — still useful if GGL comes up in Q&A.
 """
 import argparse
 import pickle
@@ -46,6 +54,9 @@ SHEAR_KAPPA_PKL = ROOT / "results/tr1/shear_kappa_cross_spectra/shear_lensmc_x_s
 GC_KAPPA_PKL = ROOT / "results/tr1/clustering_kappa_cross_spectra/gc_x_spt_winter_gmvbhttprf.pkl"
 GGL_DIR = ROOT / "results/tr1_v1p1-v0.1/cross_spectra/individual"
 THEORY = ROOT / "results/redshift_tr1/theory_cls.pkl"
+# Full data-fiducial Gaussian covariance (same product make_kappa_constraints.py reads) —
+# error bars on this slide are this covariance's diagonal, not the per-bin pkl's own Knox cov.
+GAUSS_COV_PKL = ROOT / "results/tr1/covariance_gaussian/spt_winter_gmvbhttprf_covariance_gaussian_datafid_input.pkl"
 OUT = ROOT / "docs/talks/images/spt26_cross_spectra.png"
 OUT_MATRIX = ROOT / "docs/talks/images/spt26_ggl_matrix.png"
 # Sealed cosmology-shift talk data vector (TR1 re-seal) — every blinded central value.
@@ -72,6 +83,18 @@ args = p.parse_args()
 theory = pickle.load(open(THEORY, "rb"))
 shear_kappa = pickle.load(open(SHEAR_KAPPA_PKL, "rb"))
 gc_kappa = pickle.load(open(GC_KAPPA_PKL, "rb"))
+gauss_cov = pickle.load(open(GAUSS_COV_PKL, "rb"))
+gauss_keys = list(gauss_cov["cls"].keys())
+
+
+def gaussian_cov_block(probe, bin_id):
+    """Full per-bin covariance BLOCK (not just the diagonal) from the on-disk full
+    data-fiducial Gaussian covariance — same product/indexing as
+    make_kappa_constraints.sigma_of. probe='e'→γ×κ (kappa_l), 'g'→δ_g×κ (kappa_g).
+    Blind-independent (the covariance never depends on the cosmology-shift blind)."""
+    stem = "kappa_l" if probe == "e" else "kappa_g"
+    idx = gauss_keys.index(f"{stem}{bin_id - 1}")
+    return np.asarray(gauss_cov["cov"][idx][idx], dtype=float)
 
 # Blinded BY DEFAULT — the talk figure must never silently render the true amplitude.
 # kappa_l{j}=γ×κ, kappa_g{j}=δ_g×κ, l{s}_g{l}=GGL (0-indexed). --unblinded is the explicit,
@@ -119,12 +142,14 @@ def load_ggl(src, lens):
 def kappa_cross(product, probe, bin_id):
     """(ells, measured Cℓ, cov) for a κ-cross bin; blinded central values if armed.
 
-    probe='e'→γ×κ (kappa_l), 'g'→δ_g×κ (kappa_g).
+    probe='e'→γ×κ (kappa_l), 'g'→δ_g×κ (kappa_g). cov is the full data-fiducial
+    GAUSSIAN NaMaster covariance block (gaussian_cov_block), not the per-bin pkl's
+    own Knox diagonal — Louis's question about the error bars, answered directly.
     """
     spec = product["spectra"][f"bin{bin_id}"]
     ells = np.asarray(spec["ells"], dtype=float)
     measured = np.asarray(spec["cl"], dtype=float)
-    cov = np.asarray(spec["cov"], dtype=float)
+    cov = gaussian_cov_block(probe, bin_id)
     if blinded is not None:
         key = f"kappa_l{bin_id - 1}" if probe == "e" else f"kappa_g{bin_id - 1}"
         measured = np.asarray(blinded[key]["cl"], dtype=float)
@@ -193,15 +218,15 @@ rows = [
     (r"$\ell C_\ell^{\delta_g\kappa}$", "Galaxy clustering $\\times$ CMB-$\\kappa$",
      lambda j: kappa_cross(gc_kappa, "g", j), lambda j: ("g", "k", j, 0),
      lambda j: f"bin {j}"),
-    (r"$\ell C_\ell^{\delta_g\gamma}$",
-     f"Galaxy–galaxy lensing  $\\delta_g\\times\\gamma$  (clustering bin $\\times$ shear bin {GGL_SOURCE})",
-     lambda j: load_ggl(GGL_SOURCE, j), lambda j: ("e", "g", GGL_SOURCE, j),
-     lambda j: f"GC{j}$\\times$WL{GGL_SOURCE}"),
 ]
+# GGL (δ_g×γ) is no longer a row here (Louis's point — it's a standard Euclid
+# 3×2pt product, not part of the CMB-only 3×2pt this MoU proposes); the loaders
+# above still feed the backup 6×6 matrix (fig2) below.
 
 # Full-slide layout (~2:1 to fill the 16:9 content area). sharey="row" hides the
 # inner y-tick labels so only column 0 carries them — buys the panels real width.
-fig, axes = plt.subplots(3, len(TOM_BINS), figsize=(4.7 * len(TOM_BINS), 14.0),
+# 2 rows (was 3, pre-2026-07-01) — dropping GGL means each panel gets more height.
+fig, axes = plt.subplots(2, len(TOM_BINS), figsize=(4.7 * len(TOM_BINS), 13.0),
                          sharex=True, sharey="row")
 
 # Collect per-row data once so we can (a) draw and (b) fix a common y-range per row.
@@ -226,9 +251,6 @@ for r, ((ylabel, _title, getter, probe_of, label_of), cells) in enumerate(zip(ro
     pad = 0.08 * (ymax - ymin)
     for c, j in enumerate(TOM_BINS):
         ax = axes[r, c]
-        if r == 2 and j > GGL_SOURCE:   # GGL: show only valid lens bins (l ≤ source); hide the rest
-            ax.set_visible(False)
-            continue
         ells, measured, cov, pk = cells[c]
         draw_panel(ax, palette[c], ells, measured, cov, pk)
         ax.set_ylim(ymin - pad, ymax + pad)
@@ -242,15 +264,16 @@ for r, ((ylabel, _title, getter, probe_of, label_of), cells) in enumerate(zip(ro
               f"S/N=sqrt(chi2_0)={sn0:4.1f}")
         if c == 0:
             fold_yscale(ax, ylabel)
-        if r == 2:
+        if r == len(rows) - 1:
             ax.set_xlabel(r"$\ell$")
 
 axes[0, 0].legend(loc="upper left", fontsize=13, ncol=1, framealpha=0.0,
-                  bbox_to_anchor=(0.0, 0.92))
+                  bbox_to_anchor=(0.0, 0.92), title="SPT-3G GMV-hardened", title_fontsize=13)
 sns.despine(fig)
-suptitle = "Euclid TR1 $\\times$ SPT-3G winter GMV — the three cross-correlation data vectors"
-fig.suptitle(suptitle, y=1.0, fontsize=21, weight="bold")
-fig.tight_layout(rect=(0, 0, 1, 0.965), h_pad=2.6, w_pad=0.2)
+# No suptitle — the slide headline carries the title (deck-wide convention); the
+# per-row labels below (Cosmic shear ×.../Galaxy clustering ×...) are NOT a
+# duplicate title, they identify which κ-cross each row is.
+fig.tight_layout(rect=(0, 0, 1, 0.97), h_pad=2.6, w_pad=0.2)
 for r, (_yl, title, *_rest) in enumerate(rows):
     top = max(axes[r, c].get_position().y1 for c in range(len(TOM_BINS)))
     fig.text(0.5, top + 0.010, title, ha="center", va="bottom", fontsize=19,

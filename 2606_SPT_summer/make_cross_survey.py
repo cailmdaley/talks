@@ -65,7 +65,7 @@ OUT = ROOT / "docs/talks/images/spt26_cross_survey.png"
 # Each survey's OWN raw product (blind-independent covariance), per family — TR1.
 SURVEYS = {
     "spt": {
-        "label": "SPT-3G GMV", "color": SPT_COLOR, "marker": "o",
+        "label": "SPT-3G GMV-hardened", "color": SPT_COLOR, "marker": "o",
         "prefix": "",  # blinded keys: kappa_l{j}, kappa_g{j}
         "shear_pkl": ROOT / "results/tr1/shear_kappa_cross_spectra/shear_lensmc_x_spt_winter_gmvbhttprf.pkl",
         "gc_pkl": ROOT / "results/tr1/clustering_kappa_cross_spectra/gc_x_spt_winter_gmvbhttprf.pkl",

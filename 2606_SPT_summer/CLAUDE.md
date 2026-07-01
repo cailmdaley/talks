@@ -9,9 +9,9 @@ the overlap, not on what CMB lensing is.
 
 **Headline:** a **status report** on the **Euclid MoU CMB-lensing ×
 cross-correlation project** (Cail Daley & Margherita Lembo) — where the Euclid TR1
-× SPT-3G κ-cross programme stands: footprints → blinding → data vectors (all three
-crosses) → estimator consistency → SPT-vs-ACT → likelihood/bias plans →
-systematics → simulations.
+× SPT-3G κ-cross programme stands: footprints → blinding → data vectors (the
+CMB-only 3×2pt) → estimator consistency → SPT-vs-ACT → systematics →
+likelihood/bias plans → simulations.
 
 **Frame (non-negotiable, set by the managing constitution
 `explorations/spt-talk-push`):** *status report under the blind*, not a results
@@ -64,38 +64,54 @@ never regenerate a cosmology plot here.
    (same family as SPT-3G D1 & Euclid 3×2pt); hidden cosmology θ_blind added to
    the **data** only; theory internal (eDR1like), plan to move toward CLOE.
    (`spt26_blinding_cosmologies.png`.)
-4. **Data vectors: the three cross-correlations** — the spine is δ_g×κ and γ×κ
-   (six bins each, NaMaster on the joint mask); third cross is GGL (δ_g×γ, the
-   source-behind-lens config). Amplitudes/S/N stripped — shapes only.
-   (`spt26_cross_spectra.png`; backup `spt26_ggl_matrix.png`.)
+4. **Data vectors: Gaussian NaMaster error bars** — the CMB-only 3×2pt (Louis's
+   framing, 2026-07-01): of the 6×2pt's six spectra, only δ_g×κ and γ×κ are
+   measured here — κκ is the third that involves CMB-κ but folds in only at the
+   likelihood level, not plotted; galaxy–galaxy lensing (δ_g×γ) is dropped
+   entirely — it's a standard Euclid 3×2pt product from the main 3×2pt group
+   already, not something new this MoU proposes (was a third row through
+   2026-06-30; removing it also let the remaining two rows render bigger). SPT-3G
+   GMV-hardened, six bins each, NaMaster on the joint mask, error bars now the
+   FULL data-fiducial Gaussian covariance (was Knox through 2026-06-30 — Louis
+   asked directly what error bars were shown, so it's on the slide title itself
+   now). Amplitudes stripped — shapes + blinded per-bin S/N only.
+   (`spt26_cross_spectra.png`; backup `spt26_ggl_matrix.png`, GGL still generated
+   for Q&A even though it's off the main slide.)
 5. **Robust to the SPT-3G lensing estimator** — bin 6, γ×κ + δ_g×κ, GMV vs the
    bias + profile-hardened reconstruction (GMVbhTTprf) sitting on top of each
    other → estimator-robust (hardening RMS 0.29σ both crosses, all 90 bandpowers
    <1σ, no S/N cost); PP (pol-only) noisier at high ℓ. (`spt26_estimator_robustness.png`, TR1.)
-6. **Two κ surveys on the same Euclid bins** — SPT-3G GMV vs ACT DR6 over the
-   common fiducial theory; two independent reconstructions on the same southern
-   bins. (`spt26_cross_survey.png`, TR1.)
+6. **SPT and ACT are consistent, SPT is higher S/N** — SPT-3G GMV-hardened vs ACT
+   DR6 over the common fiducial theory; two independent reconstructions on the
+   same southern bins. In-panel PTE(SPT-ACT) only (not the full reduced-χ²); the
+   slide overlays a plain-language "Naive PTE / considerable overlap" caption.
+   (`spt26_cross_survey.png`, TR1.)
 7. **Which κ survey constrains where** — markers on fiducial theory, only the
    error bars real (exact full data-fiducial Gaussian σ, both surveys, TR1 log15):
    SPT tighter for ℓ≳200, ACT marginally tighter only at ℓ≲180; crossover ℓ≈200.
+   Overlay caption: "Time to start thinking about scale cuts…"
    (`spt26_kappa_constraints.png`.)
-8. **Likelihood — the plan** — joint Gaussian likelihood over the cross vector;
-   per-bin {A, b_i}; δ_gδ_g tightens b_i ~2.5× but does **not** break A–b (no
-   amplitude numbers — blinded).
-9. **Systematics: extinction is sub-σ for shear, ~1σ at high-ℓ for clustering** —
-   DES/Chang coherent bias X_ℓ = C^{κS}C^{fS}/C^{SS} in units of σ, per bin, δ_g×κ +
-   γ×κ. On TR1 (`lc run -u tr1`): shear sub-σ everywhere (aggregate 0.4–0.85σ);
-   clustering sub-σ at low/mid-ℓ but rises at high-ℓ (ℓ≳1000) toward 1σ, growing
-   with z-bin (coherent S_bias 0.9→1.5σ, gc bin6 bandpower at 1.0σ). Surprising:
-   largest at HIGH ℓ, opposite the smooth-template expectation. "One template is
-   not a systematics budget." (`spt26_extinction_xell.png`, TR1.) See
+8. **Systematics: extinction is sub-σ for shear, ~1σ at high-ℓ for clustering** —
+   (now precedes Likelihood — reordered 2026-07-01) DES/Chang coherent bias
+   X_ℓ = C^{κS}C^{fS}/C^{SS} in units of σ, per bin, δ_g×κ + γ×κ. On TR1
+   (`lc run -u tr1`): shear sub-σ everywhere (aggregate 0.4–0.85σ); clustering
+   sub-σ at low/mid-ℓ but rises at high-ℓ (ℓ≳1000) toward 1σ, growing with z-bin
+   (coherent S_bias 0.9→1.5σ, gc bin6 bandpower at 1.0σ). Surprising: largest at
+   HIGH ℓ, opposite the smooth-template expectation. "One template is not a
+   systematics budget." (`spt26_extinction_xell.png`, TR1.) See
    `…/spt-talk-push/tr1-extinction-highell-clustering`.
+9. **Likelihood — what's built, and the plan** — joint Gaussian likelihood over
+   the cross vector; per-bin {A, b_i}; δ_gδ_g tightens b_i ~2.5× but does **not**
+   break A–b (no amplitude numbers — blinded).
 10. **Simulations** — DEMNUni/FLASK → mock covariance; Agora (Gatti Euclid-like
     products) + systematics-injected GLASS box for foregrounds; D1 κ̂−κ_true noise
     realizations; the ambitious D1-on-FFP10 cross-covariance between Planck/ACT/SPT.
 11. **Summary & next steps (center)** — status: maps & fields, self-blind, all
     three crosses, estimator- and cross-survey-consistent. Next: joint {A,b_i},
-    mock cov, close systematics, DR1. Thanks.
+    mock cov, close systematics, DR1. Closes on a simple "Thank you for
+    listening — and to the SPT and Euclid members who made this work possible"
+    (simplified 2026-07-01; the fuller named acknowledgment lives in the speaker
+    notes, spoken not shown).
 
 ## TR1 migration — complete (every data figure on TR1)
 
@@ -105,7 +121,7 @@ never regenerate a cosmology plot here.
 tree (the same tree the spine reads). `make_extinction_xell.py` points there. The TR1
 numbers shifted the slide honestly (slide 9 above) — a real finding, not a cosmetic swap.
 
-**Estimator (slide 5) — on TR1.** The three estimator recipes
+**Estimator (slide 6) — on TR1.** The three estimator recipes
 (`spt_estimator_spike_comparison` + the two `*_estimator_datavector_comparison` outputs)
 were the last RR2-hardcoded holdouts; migrated to the `release_env.sh` pattern
 (`data_release` in decisions, `$RESULTS_ROOT`/`$VALIDATED_ROOT`/`$REDSHIFT_ROOT`).
