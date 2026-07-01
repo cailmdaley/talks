@@ -157,11 +157,15 @@
   background-color: rgba(188, 69, 56, 0.16);
   border-color: $cinnabar;
 }
-.reveal .xmatrix .cell.odd {                 // κκ — odd one out, likelihood-level
-  border-style: dashed;
-  border-color: $ink-muted;
-  color: $ink-muted;
+.reveal .xmatrix .cell.odd {                 // κκ — folded in at the likelihood level, not
+  border-style: dashed;                      // directly cross-correlated; dashed marks that
+  border-color: $ink-muted;                   // difference. Overridden below when also .cross:
+  color: $ink-muted;                          // κκ IS part of the proposed CMB-only 3×2pt now.
 }
+.reveal .xmatrix .cell.cross.odd {           // κκ: proposed (shaded, like δκ/γκ) but dashed —
+  border-style: dashed;                      // folded in at the likelihood level rather than
+  color: $ink;                               // measured directly. Higher specificity than
+}                                            // .cross/.odd alone, so this wins on both.
 
 // Legend under the matrix — at body size, readable. Tight wording so it fits.
 .reveal .xmatrix-legend {

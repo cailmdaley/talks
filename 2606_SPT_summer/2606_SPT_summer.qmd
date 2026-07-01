@@ -60,7 +60,7 @@ include-in-header: assets/mathjax.html
   <div class="hdr">γ</div>
   <div class="empty"></div><div class="cell tpt">γγ</div><div class="cell cross">γκ</div>
   <div class="hdr">κ</div>
-  <div class="empty"></div><div class="empty"></div><div class="cell odd">κκ</div>
+  <div class="empty"></div><div class="empty"></div><div class="cell cross odd">κκ</div>
 </div>
 <div class="xmatrix-legend">
   <span><i class="sw sw-tpt"></i>standard Euclid 3×2pt</span>
@@ -132,16 +132,16 @@ density δ, shear γ, and CMB lensing κ — the whole 6×2pt. The cross-hatched
 the standard Euclid 3×2pt: clustering, shear, and galaxy–galaxy lensing — what Euclid
 does on its own, δ×γ included. What we propose is the shaded cells — and this is a
 CMB-only 3×2pt, Louis's framing: of the six spectra, the three that actually involve
-CMB-κ are δ×κ, γ×κ, and κκ itself. δ×κ and γ×κ are the genuinely new measurement,
-the two that bring in SPT.
+CMB-κ are δ×κ, γ×κ, and κκ itself, all three shaded as part of this project.
 
-κκ is the odd one out, not shaded either. That's SPT's lensing auto-spectrum — you
-already have it — so it doesn't come from this cross-correlation measurement; we
-fold it in later, at the likelihood level, when we do the joint fit. [say out loud]
-Galaxy–galaxy lensing, δ×γ, is cross-hatched only, not shaded — it's a standard
-Euclid 3×2pt product from the main 3×2pt group already, not something new we're
-adding, so later slides that used to feature it (the data-vector slide) don't
-anymore.
+δ×κ and γ×κ are the genuinely new cross-correlation measurement, the two that bring
+in SPT directly. κκ is shaded too — it's part of the CMB-only 3×2pt we're proposing
+— but its border is dashed, marking that it comes in differently: it's SPT's own
+lensing auto-spectrum, so it's not something we cross-correlate, it folds in at the
+likelihood level when we do the joint fit. [say out loud] Galaxy–galaxy lensing,
+δ×γ, is cross-hatched only, not shaded — it's a standard Euclid 3×2pt product from
+the main 3×2pt group already, not something new we're adding, so later slides that
+used to feature it (the data-vector slide) don't anymore.
 
 Why bother: the DES×SPT×Planck 6×2pt (Abbott et al. 2023) tightened Ω_m by ~30% and
 S₈ by ~50% over the shear-and-clustering-only 3×2pt, and self-calibrated shear
@@ -231,7 +231,7 @@ The likelihood itself, and the move into CLOE, I come back to on the likelihood 
 this audience: every data vector you see today is blinded.
 :::
 
-## SPT-3G GMV-hardened,<br>Gaussian NaMaster error bars {.data-family}
+## SPT-3G GMV-hardened, NaMaster error bars {.data-family}
 
 ![](images/spt26_cross_spectra.png){width="100%" fig-align="center"}
 
