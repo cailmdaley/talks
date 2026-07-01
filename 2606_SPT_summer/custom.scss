@@ -201,6 +201,17 @@
 .reveal .orient-side .today-block > :first-child { margin-top: 0; }
 .reveal .orient-side .timeline-date { color: $cinnabar; font-weight: 700; }
 
+// Symbol glossary (δ/γ/κ), sitting above the timeline as the first .orient-side
+// child — orientation for an audience that knows CMB lensing cold but is newer to
+// Euclid's δ_g/γ notation. Adding this child pushes the timeline + Today block
+// down automatically (space-evenly over 3 items now, not 2) — Cail's ask.
+.reveal .orient-side .symbol-defs {
+  text-align: center;
+  font-size: 0.95em;
+  color: $ink-muted;
+}
+.reveal .orient-side .symbol-defs strong { color: $cinnabar; }
+
 // The working-timeline SVG (RR2 → TR1 cycle 1 [today] → … → cosmology products
 // June 2027). Full column width; a touch of breathing room from the title above and
 // the Today block below.

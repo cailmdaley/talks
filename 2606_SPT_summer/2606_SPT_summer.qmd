@@ -73,6 +73,10 @@ include-in-header: assets/mathjax.html
 
 ::: {.orient-side}
 
+::: {.symbol-defs}
+**δ:** galaxy density &nbsp;·&nbsp; **γ:** cosmic shear &nbsp;·&nbsp; **κ:** SPT-3G D1 lensing
+:::
+
 ```{=html}
 <svg class="timeline-svg" viewBox="0 0 480 178" width="100%" xmlns="http://www.w3.org/2000/svg"
      font-family="'EB Garamond', Georgia, serif">
@@ -126,6 +130,11 @@ systematics · likelihood & bias · simulations
 Status report, not a results talk — the detection / amplitude work is blinded and
 in progress, so I'm reporting where the Euclid × CMB-lensing cross-correlation
 programme stands rather than headlining a number.
+
+Quick notation, since this audience knows CMB lensing cold but is less familiar
+with Euclid's side: δ is Euclid's galaxy density, γ is cosmic shear, and κ is the
+SPT-3G D1 lensing map — I'll use these symbols throughout, so it's worth having
+them up front.
 
 The frame is this MoU [point to the matrix]: the six two-point spectra of galaxy
 density δ, shear γ, and CMB lensing κ — the whole 6×2pt. The cross-hatched cells are
