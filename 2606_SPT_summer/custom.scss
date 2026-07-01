@@ -12,6 +12,15 @@
 
 /*-- scss:rules --*/
 
+// The data-family slides (5-8: data-vectors / estimator-robustness / cross-survey /
+// kappa-constraints) went full-height this session, freeing up real room at the top
+// of the slide that the house h2 size (1.35em) doesn't use — Cail: "make the titles
+// bigger now that we have the room." Scoped to `.data-family` (not deck-wide) since
+// the other slides weren't part of this pass.
+.reveal section.data-family > h2:first-child {
+  font-size: 1.75em;
+}
+
 // Title-slide logo bar — Euclid only (the survey we bring to the cross), at the
 // house common logo height. (Tuned against the 1920×1080 render.)
 .reveal #title-slide .logo-bar .logo-euclid { height: 76px; }
@@ -218,13 +227,16 @@
   display: block;
 }
 .reveal .fullfig-note {
-  // width kept narrow enough that its LEFT edge clears legend_right()'s axes_right=0.72
-  // boundary (the plot area ends there) — a wider box + left-justified text would
-  // intrude into the plot itself. Same box, same type treatment for every caption in
-  // the 6/7/8 family (only the wording differs).
+  // LEFT-anchored (not right-anchored): the left edge clears legend_right()'s
+  // axes_right=0.72 boundary (the plot area ends there — a box starting any further
+  // left would intrude into the plot), then the box is free to expand RIGHT past the
+  // image's own edge into the slide's real empty margin (`.fullfig` has no
+  // overflow:hidden, so this is visually fine) — Cail: "keep the left side the same,
+  // expand to the right, there's a lot of space there." Same box, same type
+  // treatment for every caption in the 6/7/8 family (only the wording differs).
   position: absolute;
-  right: 2.5%;
-  width: 22%;
+  left: 75.5%;
+  width: 34%;
   text-align: left;
   line-height: 1.25;
   top: 48%;

@@ -231,7 +231,7 @@ The likelihood itself, and the move into CLOE, I come back to on the likelihood 
 this audience: every data vector you see today is blinded.
 :::
 
-## Data vectors: Gaussian NaMaster error bars
+## SPT-3G GMV-hardened,<br>Gaussian NaMaster error bars {.data-family}
 
 ![](images/spt26_cross_spectra.png){width="100%" fig-align="center"}
 
@@ -264,7 +264,7 @@ tracking Planck-18, with both the shape and the detection strength visible;
 the amplitude itself stays off this status report.
 :::
 
-## Estimators are consistent, GMV is lowest
+## Estimators are consistent, GMV is lowest {.data-family}
 
 ::: {.fullfig}
 ![](images/spt26_estimator_robustness.png)
@@ -296,13 +296,13 @@ reserved and not yet run. So: estimator-robust, hardening correction bounded bel
 sigma — and that's the claim, no more.
 :::
 
-## SPT and ACT are consistent, SPT is higher S/N
+## SPT and ACT are consistent, SPT is higher S/N {.data-family}
 
 ::: {.fullfig}
 ![](images/spt26_cross_survey.png)
 
 ::: {.fullfig-note .chi2-note}
-Naive PTE<br>considerable overlap
+Naive PTE, considerable<br>footprint overlap
 :::
 :::
 
@@ -326,7 +326,7 @@ by a σ ratio of ~1.5× through the mid-range and up to ~2.5× at ℓ≈2700 —
 resolution win everywhere but the very largest scales.
 :::
 
-## SPT-3G tighter for ℓ > 200
+## SPT-3G tighter for ℓ > 200 {.data-family}
 
 ::: {.fullfig}
 ![](images/spt26_kappa_constraints.png)
