@@ -42,7 +42,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis, fold_yscale, sn_row, blinding_watermark, legend_right
+from _ell_axis import style_ell_axis, fold_yscale, sn_row, blinding_watermark, legend_right, PANEL_YLIM
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 # TR1. The per-estimator κ-cross pickles ({prefix}_x_spt_est_{est}.pkl) are written
@@ -70,6 +70,9 @@ PANELS = [
     ("gc", "g", ("g", "k", BIN, 0),
      r"Galaxy clustering $\times$ CMB-$\kappa$   ($\delta_g\times\kappa$)"),
 ]
+# Per-probe ℓCℓ ylabel notation — SAME strings the cross-survey / kappa-constraints
+# scripts use, so the three "one family" slides read with identical axis notation.
+PROBE_YLABEL = {"e": r"$\ell\,C_\ell^{\gamma\kappa}$", "g": r"$\ell\,C_\ell^{\delta_g\kappa}$"}
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument("--unblinded", action="store_true",
@@ -154,7 +157,8 @@ def draw_estimators(ax, prefix, probe, theory_key):
                     mfc=("white" if est != "gmv" else color), mew=1.4, label=label, zorder=3)
         sn.append((color, np.sqrt(chi0(cl, cov)[0])))
     style_ell_axis(ax, 95, 3050)
-    fold_yscale(ax, r"$\ell\,C_\ell$", nbins=6)
+    ax.set_ylim(*PANEL_YLIM[probe])   # shared across slides 6/7/8 — see _ell_axis.PANEL_YLIM
+    fold_yscale(ax, PROBE_YLABEL[probe], nbins=6)
     return sn
 
 

@@ -50,7 +50,7 @@ from scipy import stats
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis, fold_yscale, sn_row, blinding_watermark, legend_right, SPT_COLOR, ACT_COLOR
+from _ell_axis import style_ell_axis, fold_yscale, sn_row, blinding_watermark, legend_right, PANEL_YLIM, SPT_COLOR, ACT_COLOR
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 # TR1 re-sealed blinded talk data vector (cosmology-shift self-blind on TR1 data).
@@ -201,6 +201,7 @@ for ax, (family, ylabel, title, key_of) in zip(axes, PANELS):
                                 elinewidth=1.5, capsize=4, mfc="white", mew=1.7, zorder=3)
         legend_handles.setdefault(cfg["label"], container)
     style_ell_axis(ax, 95, 3050)
+    ax.set_ylim(*PANEL_YLIM[family])   # shared across slides 6/7/8 — see _ell_axis.PANEL_YLIM
     fold_yscale(ax, ylabel, nbins=6)
     ax.set_title(title, pad=8)
     chi2_red, pte, dof = cross_survey_chi2(family, BIN)

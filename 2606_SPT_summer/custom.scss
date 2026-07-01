@@ -197,6 +197,46 @@
   margin: 0.2em 0 0.6em;
 }
 
+// Full-height figure slides (6/7/8 — estimator-robustness / cross-survey /
+// kappa-constraints, "one family"): the PNG fills nearly the whole slide height
+// instead of ~78% width-constrained, so the panels read bigger, and the legend's
+// FIXED right margin (legend_right(), now top-anchored) leaves its lower portion
+// empty on purpose — a short HTML caption is overlaid there instead of living as
+// slide text below the image (the old pattern on slide 8). Position:relative
+// wrapper sized to the image's own rendered box (width: fit-content) so the
+// overlaid caption's %-offsets track the image, not the full slide width.
+.reveal .fullfig {
+  position: relative;
+  height: 90%;
+  width: fit-content;
+  margin: 0 auto;
+  display: flex;
+}
+.reveal .fullfig > img {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+.reveal .fullfig-note {
+  position: absolute;
+  right: 2.5%;
+  width: 33%;
+  text-align: right;
+  line-height: 1.25;
+}
+.reveal .fullfig-note.scale-cuts {
+  top: 48%;
+  font-size: 0.95em;
+  font-weight: 700;
+  color: $cinnabar;
+}
+.reveal .fullfig-note.chi2-note {
+  top: 48%;
+  font-size: 0.7em;
+  font-style: italic;
+  color: $ink-muted;
+}
+
 // Footprint build-up (slide 3) — give each r-stack image its OWN opaque ground
 // backdrop. Without a per-image frame, all three images share the .r-stack as the
 // multiply parent and bleed through each other (white → see-through under multiply),

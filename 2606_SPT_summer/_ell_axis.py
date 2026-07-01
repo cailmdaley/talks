@@ -33,6 +33,15 @@ from matplotlib.offsetbox import TextArea, HPacker, AnchoredOffsetbox
 
 ELL_TICKS = [100, 200, 500, 1000, 3000]
 
+# Shared y-limits for the estimator-robustness / cross-survey / kappa-constraints
+# trio (slides 6/7/8 — "read as one family"): same bin (5), same two probes (γ×κ,
+# δ_g×κ), so a fixed ℓCℓ range per probe lets the eye carry over scale from one
+# slide to the next instead of re-reading the axis each time. Padded ~15% beyond
+# the union of (data ± 1σ) across all three figures' series (computed once from
+# the on-disk products; see docs/talks/2606_SPT_summer/CLAUDE.md if it needs
+# recomputing after a data refresh).
+PANEL_YLIM = {"e": (-4.5e-6, 4.5e-6), "g": (-4.0e-5, 7.0e-5)}
+
 # Deck-wide survey identity — keep constant so people recognise "the SPT/ACT plot".
 SPT_COLOR = "#c0392b"   # SPT-3G — red (same red as the profile-hardened default series)
 ACT_COLOR = "#2a8c8c"   # ACT DR6 — teal, the constant "ACT colour" across the deck
@@ -114,7 +123,7 @@ def sn_row(ax, segments, *, loc="lower center", fontsize=22, sep=20, borderpad=0
 
 
 def legend_right(fig, handles, labels, *, title=None, fontsize=22, title_fontsize=22,
-                  axes_right=0.72, pad=0.015):
+                  axes_right=0.72, pad=0.015, valign="upper"):
     """Legend in a FIXED right margin, so the saved canvas is the SAME size regardless
     of legend content — this is what makes side-by-side deck figures (e.g. the
     estimator / cross-survey / kappa-constraints slides) come out at identical pixel
@@ -129,9 +138,16 @@ def legend_right(fig, handles, labels, *, title=None, fontsize=22, title_fontsiz
     is deck-wide constant across the scripts that call this, sized to fit the longest
     legend label in the deck at ``fontsize``; keep it constant when adding a script so
     new figures stay drop-in size-matched with the existing ones.
+
+    ``valign="upper"`` (default) anchors the legend at the TOP of the right margin —
+    this is what leaves the lower right margin empty, on purpose: the deck overlays a
+    short HTML caption there (`.fullfig-note` in custom.scss) instead of a matplotlib
+    in-figure annotation, on the slides that need one (6/7/8's scale-cuts / χ² notes).
+    Pass ``valign="center"`` for the old vertically-centred placement.
     """
     fig.subplots_adjust(right=axes_right)
-    fig.legend(handles, labels, loc="center left", bbox_to_anchor=(axes_right + pad, 0.5),
+    loc, anchor_y = ("upper left", 0.97) if valign == "upper" else ("center left", 0.5)
+    fig.legend(handles, labels, loc=loc, bbox_to_anchor=(axes_right + pad, anchor_y),
                frameon=False, fontsize=fontsize, title=title, title_fontsize=title_fontsize)
 
 

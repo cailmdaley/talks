@@ -32,7 +32,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from _ell_axis import style_ell_axis, fold_yscale, legend_right, SPT_COLOR, ACT_COLOR
+from _ell_axis import style_ell_axis, fold_yscale, legend_right, PANEL_YLIM, SPT_COLOR, ACT_COLOR
 
 ROOT = Path("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx")
 THEORY = ROOT / "results/redshift_tr1/theory_cls.pkl"        # TR1 n(z) + self-Hann smoothing
@@ -142,6 +142,7 @@ for ax, (stem, tkey, ylabel, title) in zip(axes, PANELS):
         ax.text(center, 0.94, "SPT tighter", transform=ax.get_xaxis_transform(),
                 ha="center", va="top", fontsize=18, color=SURVEYS["SPT-3G GMV"]["color"], weight="bold")
     style_ell_axis(ax, 95, 3050)
+    ax.set_ylim(*PANEL_YLIM[tkey[0]])   # shared across slides 6/7/8 — see _ell_axis.PANEL_YLIM
     fold_yscale(ax, ylabel)
     ax.set_title(title, pad=8)
 

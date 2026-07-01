@@ -242,7 +242,9 @@ I'm deliberately not quoting amplitudes or per-bin S/N here — those belong to 
 
 ## Estimators are consistent, GMV is lowest
 
-![](images/spt26_estimator_robustness.png){width="78%" fig-align="center"}
+::: {.fullfig}
+![](images/spt26_estimator_robustness.png)
+:::
 
 ::: {.notes}
 This is a status check on whether the cross depends on which SPT lensing estimator we
@@ -272,7 +274,13 @@ sigma — and that's the claim, no more.
 
 ## Two κ surveys on the same Euclid bins: SPT-3G and ACT DR6
 
-![](images/spt26_cross_survey.png){width="78%" fig-align="center"}
+::: {.fullfig}
+![](images/spt26_cross_survey.png)
+
+::: {.fullfig-note .chi2-note}
+Naive χ² — considerable overlap.
+:::
+:::
 
 ::: {.notes}
 This is the cross-survey check. Same Euclid tracers, crossed against two independent
@@ -296,9 +304,13 @@ resolution win everywhere but the very largest scales.
 
 ## SPT-3G tighter for ℓ > 200
 
-![](images/spt26_kappa_constraints.png){width="78%" fig-align="center"}
+::: {.fullfig}
+![](images/spt26_kappa_constraints.png)
 
-**Time to start thinking about scale cuts.**
+::: {.fullfig-note .scale-cuts}
+Time to start thinking<br>about scale cuts
+:::
+:::
 
 ::: {.notes}
 This is the "who constrains where" view — it answers the lever question from the previous
