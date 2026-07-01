@@ -103,7 +103,9 @@ never regenerate a cosmology plot here.
    HIGH ℓ, opposite the smooth-template expectation. "One template is not a
    systematics budget." (`spt26_extinction_xell.png`, TR1.) See
    `…/spt-talk-push/tr1-extinction-highell-clustering`.
-9. **Likelihood — what's built, and the plan** — content verified line-by-line
+9. **Likelihoods are coming together** (retitled from "Likelihood — what's
+   built, and the plan" 2026-07-01: active assertion, not a label) — content
+   verified line-by-line
    against the eDR1like code on the `cail` branch (which contains the full
    `origin/update_likelihood` tip — Margherita's branch, MR !7 → v1.0)
    2026-07-01. **In place**: Gaussian likelihood over ANY subset of the 6×2pt

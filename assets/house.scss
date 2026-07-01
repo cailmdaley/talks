@@ -479,3 +479,15 @@ figcaption > span {
     padding: 0 0;
     margin-top: 0px;
 }
+
+// ── Typography: line breaking ────────────────────────────────────────────────
+// Nicer line breaks everywhere: the browser avoids single-word orphan lines in
+// paragraphs and bullets (Chrome text-wrap:pretty; inert where unsupported).
+// Companion authoring rule (can't be done in CSS): punctuation directly after
+// inline math must live INSIDE the math — `$b_i,$` not `$b_i$,` — because
+// MathJax containers are atomic inlines and browsers will happily break before
+// the comma. See the slides skill, build.md → Math.
+.reveal .slides p,
+.reveal .slides li {
+  text-wrap: pretty;
+}

@@ -248,12 +248,7 @@
   width: auto;
   display: block;
 }
-// Nicer line breaks everywhere: let the browser avoid single-word orphan lines
-// in paragraphs and bullets (Chrome's text-wrap:pretty) — Cail 2026-07-01.
-.reveal .slides p,
-.reveal .slides li {
-  text-wrap: pretty;
-}
+// (text-wrap:pretty moved to the house theme, 2026-07-01 — applies to every deck.)
 
 // Slide 10: the hr separating "not yet in the sampled model" from the CLOE
 // integration block — a quiet rule in the house palette, not reveal's default.

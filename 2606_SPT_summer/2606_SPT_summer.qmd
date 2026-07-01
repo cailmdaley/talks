@@ -360,7 +360,7 @@ resolution win everywhere but the very largest scales.
 ![](images/spt26_kappa_constraints.png)
 
 ::: {.fullfig-note .scale-cuts}
-Ongoing validation:<br>$n_{\rm side}$, $\ell_{\rm max}$, apodization,<br>catalog-based $C_\ell$s
+Ongoing validation:<br>$n_{\rm side},$ $\ell_{\rm max},$ apodization,<br>catalog-based $C_\ell$
 :::
 :::
 
@@ -455,7 +455,7 @@ this is the most open work-package in the analysis, and on TR1 it's a genuine fl
 clustering cross, not a reassurance.
 :::
 
-## Likelihood — what's built, and the plan
+## Likelihoods are coming together
 
 ::: {.columns}
 ::: {.column width="54%"}
@@ -463,13 +463,13 @@ clustering cross, not a reassurance.
 
 - **Gaussian likelihood** over any subset of the 6×2pt: NaMaster (or Knox) covariance, Cobaya sampling.
 - **Theory**: CCL Limber spectra, HMCode-2020 nonlinear, RSD + magnification (fixed $s(z)$).
-- **Galaxy bias, fit on RR2 and TR1**: linear $b_i$, global or per-bin; nonlinear $b_2$, $b_s$ available.
-- **Photo-$z$ marginalization**: per-bin shift $\Delta z_i$, width-stretch $w_{z,i}$.
+- **Galaxy bias, fit on RR2 and TR1**: linear $b_i,$ global or per-bin; nonlinear $b_2,$ $b_s$ available.
+- **Photo-$z$ marginalization**: per-bin shift $\Delta z_i,$ width-stretch $w_{z,i}.$
 :::
 ::: {.column width="46%"}
 **Not yet in the sampled model**
 
-- **Shear calibration** $m_i$, **intrinsic alignments** (fixed amplitude, not marginalized).
+- **Shear calibration** $m_i,$ **intrinsic alignments** (fixed amplitude, not marginalized).
 - **Mock-based covariance**: next slide.
 
 ---
@@ -577,7 +577,7 @@ need to combine reconstructions rather than pick one.
 **Where we are** — Euclid TR1 × SPT-3G, a status report:
 
 - Maps & fields defined; a standalone self-blind in place.
-- All three cross data vectors measured: $\delta_g\times\gamma$, $\delta_g\times\kappa$, $\gamma\times\kappa$.
+- All three cross data vectors measured: $\delta_g\times\gamma,$ $\delta_g\times\kappa,$ $\gamma\times\kappa.$
 - Estimator- and cross-survey-consistent (SPT-3G GMV vs profile-hardened; SPT vs ACT).
 
 ::: {.fragment}
@@ -586,12 +586,12 @@ need to combine reconstructions rather than pick one.
 **Systematics — checked so far**
 
 - Galaxy & magnification bias (RR2 + TR1)
-- Galactic extinction ($X_\ell$, TR1)
+- Galactic extinction ($X_\ell,$ TR1)
 :::
 ::: {.column width="50%"}
 **Systematics — want to check**
 
-- Shear $m_i$, intrinsic alignments
+- Shear $m_i,$ intrinsic alignments
 - Broader budget: stars, depth, zodiacal, N/S
 :::
 :::
