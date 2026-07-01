@@ -463,6 +463,9 @@ clustering cross, not a reassurance.
 
 - **Gaussian likelihood** over any subset of the 6×2pt: NaMaster (or Knox) covariance, Cobaya sampling.
 - **Theory**: CCL Limber spectra, HMCode-2020 nonlinear, RSD + magnification (fixed $s(z)$).
+
+---
+
 - **Galaxy bias, fit on RR2 and TR1**: linear $b_i,$ global or per-bin; nonlinear $b_2,$ $b_s$ available.
 - **Photo-$z$ marginalization**: per-bin shift $\Delta z_i,$ width-stretch $w_{z,i}.$
 :::
