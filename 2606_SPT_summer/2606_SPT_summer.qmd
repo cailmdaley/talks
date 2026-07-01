@@ -272,13 +272,13 @@ reserved and not yet run. So: estimator-robust, hardening correction bounded bel
 sigma — and that's the claim, no more.
 :::
 
-## Two κ surveys on the same Euclid bins: SPT-3G and ACT DR6
+## SPT and ACT are consistent, SPT is higher S/N
 
 ::: {.fullfig}
 ![](images/spt26_cross_survey.png)
 
 ::: {.fullfig-note .chi2-note}
-Naive χ² — considerable overlap.
+Naive χ²<br>considerable overlap
 :::
 :::
 
