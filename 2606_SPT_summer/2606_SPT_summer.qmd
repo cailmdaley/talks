@@ -279,6 +279,10 @@ the amplitude itself stays off this status report.
 
 ::: {.fullfig}
 ![](images/spt26_estimator_robustness.png)
+
+::: {.fullfig-note .nulls-note}
+Ongoing validation:<br>spatial splits,<br>$\delta_g/\gamma/\kappa$ nulls,<br>estimator consistency
+:::
 :::
 
 ::: {.notes}
@@ -305,6 +309,19 @@ correction being small bounds the *part that differs between estimators*, not th
 foreground bias. The direct test is a Websky or Agora-with-HOD recovery, which is
 reserved and not yet run. So: estimator-robust, hardening correction bounded below one
 sigma — and that's the claim, no more.
+
+The caption points at the wider null-test program this slide is one instance of.
+Estimator consistency — what you're looking at — is one member of a family of null
+tests we're setting up on all three fields: catalog splits (jackknife halves of the
+galaxy samples, which stress the shot-noise model), spatial splits (hemisphere and
+patch-level, with the caveat that some spatial splits also split Planck-vs-ground
+systematics), and CMB-probe nulls on the κ side — frequency-nulled reconstructions,
+the curl mode, half-mission differences. All of them are scored the same way: the
+difference of two data vectors against a proper difference covariance —
+Cov(ΔC) = C₁₁ + C₂₂ − 2C₁₂ with the cross-block computed through NaMaster — so each
+null gets a real χ² and PTE rather than a by-eye call. That machinery exists and is
+running today on the settings-validation side; wiring these splits through it is the
+program.
 :::
 
 ## SPT and ACT are consistent, SPT is higher S/N {.data-family}
@@ -343,7 +360,7 @@ resolution win everywhere but the very largest scales.
 ![](images/spt26_kappa_constraints.png)
 
 ::: {.fullfig-note .scale-cuts}
-Ongoing validation:<br>$\ell_{\rm max}$, apodization scale
+Ongoing validation:<br>$n_{\rm side}$, $\ell_{\rm max}$, apodization,<br>catalog-based $C_\ell$s
 :::
 :::
 
@@ -383,8 +400,10 @@ against a baseline, with a proper difference covariance — Cov(ΔC) = C₁₁+C
 cross-block computed through NaMaster — so each variant gets a real χ²/PTE, not a by-eye
 comparison. Her ℓ_max sweep already shows the kind of effect that will set our cuts: on a
 cut sky, bandpowers within a mode-coupling kernel width of the ℓ_max cut bias high, so the
-usable range ends *below* wherever we truncate. That work is on the tSZ side today but the
-machinery is the shared pipeline, and running it on these κ crosses is part of the plan.
+usable range ends *below* wherever we truncate. A comparison of the map-based pseudo-Cℓ
+against a catalog-based estimator is planned as part of the same program. That work is on
+the tSZ side today but the machinery is the shared pipeline, and running it on these κ
+crosses is part of the plan.
 :::
 
 ## Systematics: extinction is sub-σ for shear, ~1σ at high-ℓ for clustering
@@ -442,18 +461,20 @@ clustering cross, not a reassurance.
 ::: {.column width="54%"}
 **In place** — internal `eDR1like`
 
-- **Gaussian likelihood over any subset of the 6×2pt** — NaMaster (or Knox theory) covariance; Cobaya sampling.
-- **Theory** — CCL Limber spectra; HMCode-2020 nonlinear; RSD + magnification bias (fixed $s(z)$).
-- **Galaxy bias — fit on RR2 and TR1** — linear $b_i$, global or per-bin; nonlinear $b_2$, $b_s$ available.
-- **Photo-$z$ marginalization** — per-bin shift $\Delta z_i$ and width-stretch $w_{z,i}$.
+- **Gaussian likelihood** over any subset of the 6×2pt: NaMaster (or Knox) covariance, Cobaya sampling.
+- **Theory**: CCL Limber spectra, HMCode-2020 nonlinear, RSD + magnification (fixed $s(z)$).
+- **Galaxy bias, fit on RR2 and TR1**: linear $b_i$, global or per-bin; nonlinear $b_2$, $b_s$ available.
+- **Photo-$z$ marginalization**: per-bin shift $\Delta z_i$, width-stretch $w_{z,i}$.
 :::
 ::: {.column width="46%"}
 **Not yet in the sampled model**
 
 - **Shear calibration** $m_i$, **intrinsic alignments** (fixed amplitude, not marginalized).
-- **Mock-based covariance** — see next slide.
+- **Mock-based covariance**: next slide.
 
-**→ [CLOE](https://euclid-cloe.readthedocs.io) integration** (Euclid's framework)
+---
+
+**[CLOE](https://euclid-cloe.readthedocs.io) integration** (Euclid's framework):
 
 - **Theory done, likelihood in progress.**
 :::

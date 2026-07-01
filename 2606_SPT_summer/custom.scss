@@ -248,6 +248,21 @@
   width: auto;
   display: block;
 }
+// Nicer line breaks everywhere: let the browser avoid single-word orphan lines
+// in paragraphs and bullets (Chrome's text-wrap:pretty) — Cail 2026-07-01.
+.reveal .slides p,
+.reveal .slides li {
+  text-wrap: pretty;
+}
+
+// Slide 10: the hr separating "not yet in the sampled model" from the CLOE
+// integration block — a quiet rule in the house palette, not reveal's default.
+.reveal .column hr {
+  border: none;
+  border-top: 1.5px solid $rule;
+  margin: 0.55em 0 0.5em;
+}
+
 .reveal .fullfig-note {
   // LEFT-anchored (not right-anchored): the left edge clears legend_right()'s
   // axes_right=0.72 boundary (the plot area ends there — a box starting any further
