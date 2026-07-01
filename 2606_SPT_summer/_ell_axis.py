@@ -95,8 +95,11 @@ def fold_yscale(ax, label, exp=None, nbins=None):
         ymax = max(abs(v) for v in ax.get_ylim())
         exp = int(np.floor(np.log10(ymax))) if ymax > 0 else 0
     scale = 10.0 ** exp
-    if nbins is not None:
-        ax.yaxis.set_major_locator(mticker.MaxNLocator(nbins=nbins))
+    # steps=[1, 2, 5, 10] (no 1.5/2.5) keeps the mantissa ticks integer — decimal
+    # tick labels are wider, which visibly resizes the axes box relative to the
+    # sibling figures that share PANEL_YLIM. Applied always (not just with nbins)
+    # so every deck figure carries the same spaced-out integer labels.
+    ax.yaxis.set_major_locator(mticker.MaxNLocator(nbins=nbins or "auto", steps=[1, 2, 5, 10]))
     ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda v, _pos: f"{v / scale:.3g}"))
     ax.set_ylabel(label + (rf"  $[\times 10^{{{exp}}}]$" if exp else ""))
     return exp

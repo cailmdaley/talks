@@ -100,15 +100,28 @@ never regenerate a cosmology plot here.
    HIGH ℓ, opposite the smooth-template expectation. "One template is not a
    systematics budget." (`spt26_extinction_xell.png`, TR1.) See
    `…/spt-talk-push/tr1-extinction-highell-clustering`.
-9. **Likelihood — what's built, and the plan** — joint Gaussian likelihood over
-   the cross vector; per-bin {A, b_i}; δ_gδ_g tightens b_i ~2.5× but does **not**
-   break A–b (no amplitude numbers — blinded).
+9. **Likelihood — what's built, and the plan** — content verified line-by-line
+   against the eDR1like code on the `cail` branch (which contains the full
+   `origin/update_likelihood` tip — Margherita's branch, MR !7 → v1.0)
+   2026-07-01. **In place**: Gaussian likelihood over ANY subset of the 6×2pt
+   (γγ IS supported — WeakLensingTracer; κκ enters here, the slide-2 promise);
+   NaMaster covariance from file; Cobaya sampling; CCL Limber theory,
+   HMCode-2020 nonlinear, RSD + magnification bias (fixed s(z), NOT sampled);
+   galaxy bias fit on RR2+TR1 (linear b_i global/per-bin, b₂/b_s available);
+   photo-z Δz_i + w_z,i marginalization (global or binwise). **Not yet in the
+   sampled model** (all verified absent): no multiplicative m_i anywhere; IA is
+   a fixed constant-amplitude template in the shear tracer (NLA params loaded
+   but not wired, not marginalized); no Hartlap/Sellentin anywhere (needed only
+   once the covariance comes from mocks). The A–b degeneracy is NOT on this
+   slide anymore — it's a thing to *try*, moved to slide 11's Next line
+   (δ_gδ_g tightens b_i ~2.5× but A·b stays degenerate — speaker notes carry it).
 10. **Simulations** — DEMNUni/FLASK → mock covariance; Agora (Gatti Euclid-like
     products) + systematics-injected GLASS box for foregrounds; D1 κ̂−κ_true noise
     realizations; the ambitious D1-on-FFP10 cross-covariance between Planck/ACT/SPT.
 11. **Summary & next steps (center)** — status: maps & fields, self-blind, all
     three crosses, estimator- and cross-survey-consistent. Next: joint {A,b_i},
-    mock cov, close systematics, DR1. Closes on a simple "Thank you for
+    try breaking A–b (shear-ratio geometry? δ_gδ_g scale range? — the open
+    design question, notes invite thoughts), mock cov, close systematics, DR1. Closes on a simple "Thank you for
     listening — and to the SPT and Euclid members who made this work possible"
     (simplified 2026-07-01; the fuller named acknowledgment lives in the speaker
     notes, spoken not shown).
@@ -144,7 +157,10 @@ the absolute amplitude is hidden; `--unblinded` exists for debugging and is
 watermarked + off by default. Figures use a clean seaborn `ticks` aesthetic (no
 in-plot grid) via the shared `_ell_axis.py` helper: `style_ell_axis` (labelled
 integer ℓ-ticks 100/200/500/1000/3000 + minor ticks) and `fold_yscale` (the y-axis
-scale factor folded into the label, `ℓCℓ [×10⁻⁶]`, not a floating offset).
+scale factor folded into the label, `ℓCℓ [×10⁻⁶]`, not a floating offset;
+y-tick mantissas are forced INTEGER deck-wide via `MaxNLocator(steps=[1,2,5,10])` —
+decimal tick labels are wider and visibly resize the axes box between sibling
+figures; Cail 2026-07-01).
 
 ## Build
 

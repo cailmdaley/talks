@@ -201,16 +201,19 @@
 .reveal .orient-side .today-block > :first-child { margin-top: 0; }
 .reveal .orient-side .timeline-date { color: $cinnabar; font-weight: 700; }
 
-// Symbol glossary (δ/γ/κ), sitting above the timeline as the first .orient-side
+// Symbol glossary (δ_g/γ/κ), sitting above the timeline as the first .orient-side
 // child — orientation for an audience that knows CMB lensing cold but is newer to
-// Euclid's δ_g/γ notation. Adding this child pushes the timeline + Today block
-// down automatically (space-evenly over 3 items now, not 2) — Cail's ask.
+// Euclid's δ_g/γ notation. One item per line (pandoc line block), symbols in
+// MathJax — the same face the deck's equations use — rather than bold Garamond,
+// which read heavy and un-scientific (Cail, 2026-07-01). Adding this child pushes
+// the timeline + Today block down automatically (space-evenly over 3 items).
 .reveal .orient-side .symbol-defs {
   text-align: center;
   font-size: 0.95em;
   color: $ink-muted;
+  line-height: 1.55;
 }
-.reveal .orient-side .symbol-defs strong { color: $cinnabar; }
+.reveal .orient-side .symbol-defs .sym { color: $cinnabar; }
 
 // The working-timeline SVG (RR2 → TR1 cycle 1 [today] → … → cosmology products
 // June 2027). Full column width; a touch of breathing room from the title above and

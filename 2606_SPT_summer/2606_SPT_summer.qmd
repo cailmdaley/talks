@@ -74,7 +74,9 @@ include-in-header: assets/mathjax.html
 ::: {.orient-side}
 
 ::: {.symbol-defs}
-**δ:** galaxy density &nbsp;·&nbsp; **γ:** cosmic shear &nbsp;·&nbsp; **κ:** SPT-3G D1 lensing
+| [$\delta_g$]{.sym} — galaxy density
+| [$\gamma$]{.sym} — cosmic shear
+| [$\kappa$]{.sym} — SPT-3G D1 lensing
 :::
 
 ```{=html}
@@ -427,20 +429,20 @@ clustering cross, not a reassurance.
 ## Likelihood — what's built, and the plan
 
 ::: {.columns}
-::: {.column width="52%"}
-**In place** — internal `eDR1like` (CCL + Cobaya)
+::: {.column width="54%"}
+**In place** — internal `eDR1like`
 
-- **Joint Gaussian likelihood** over the cross vector ($\delta_g\times\kappa$, $\gamma\times\kappa$, $\delta_g\delta_g$, $\delta_g\times\gamma$); covariance from theory now, mocks next.
-- **Galaxy bias — fit on RR2 and TR1** — linear $b_i$ per tomographic bin (global or binwise), with magnification bias varied; optional nonlinear $b_2$ / higher-order.
+- **Gaussian likelihood over any subset of the 6×2pt** — $\gamma\gamma$ included, $\kappa\kappa$ folds in here; NaMaster covariance; Cobaya sampling.
+- **Theory** — CCL Limber spectra; HMCode-2020 nonlinear; RSD + magnification bias (fixed $s(z)$).
+- **Galaxy bias — fit on RR2 and TR1** — linear $b_i$, global or per-bin; nonlinear $b_2$, $b_s$ available.
 - **Photo-$z$ marginalization** — per-bin shift $\Delta z_i$ and width-stretch $w_{z,i}$.
-- **Theory** — CCL angular spectra (Limber), HMCode/HaloFit nonlinear power.
 :::
-::: {.column width="48%"}
-**Next to wire in**
+::: {.column width="46%"}
+**Not yet in the sampled model**
 
-- **Shear systematics** — multiplicative $m_i$ + intrinsic alignments (IA template fixed today, not yet sampled).
-- **Mock-based covariance** (+ Hartlap/Sellentin).
-- **Break the $A$–$b$ degeneracy** — $\delta_g\delta_g$ tightens $b_i$ ${\sim}2.5\times$, but $A$ and $b$ stay degenerate.
+- **Shear calibration** — no multiplicative $m_i$.
+- **Intrinsic alignments** — fixed template, not marginalized.
+- **Mock-based covariance** (→ simulations) — then Hartlap / Sellentin.
 :::
 :::
 
@@ -448,36 +450,47 @@ clustering cross, not a reassurance.
 
 ::: {.notes}
 This is the most forward-looking slide, but it's no longer just a plan — the likelihood
-machinery is largely in place, so I'll report what's wired and what's still to come.
+machinery is largely in place, so I'll report what's wired and what's still to come. This is
+Margherita's eDR1like package, heading toward the v1.0 merge in dr1_cmbx; everything on the
+left column I've verified against the code as it stands today.
 
-What's in place, on the left — this is our internal eDR1like likelihood, built on CCL for theory
-and Cobaya for sampling. It's a joint Gaussian likelihood over the cross data vector: the two
-CMB-lensing crosses, the galaxy clustering auto, and galaxy–galaxy lensing. Covariance is
-theory-based today; the simulations slide that follows is partly in service of a mock-based
-covariance.
+The architecture, briefly: a Theory layer builds CCL tracers — number counts, weak lensing,
+CMB lensing — and computes the angular spectra under Limber; a pure data-vector layer holds
+the measured bandpowers, the bandpower windows, and the NaMaster covariance and returns a
+Gaussian chi-squared; and a thin adapter exposes it all to Cobaya for sampling. Because
+theory and likelihood are separate, Cobaya caches the cosmology while nuisance parameters vary.
 
-Galaxy bias has already been fit on both RR2 and TR1 — a linear bias per tomographic bin, global or
-binwise, also varying the magnification bias; nonlinear and higher-order bias terms are available. Note
-that fitting the bias is not the same as breaking the amplitude–bias degeneracy on the right — that's
-still open. Photo-z is marginalized per bin with both a mean
-shift Δz_i and a width-stretch parameter — that's the "official dndz handling" we just merged in.
-Theory is CCL angular spectra under the Limber approximation with HMCode/HaloFit nonlinear power.
+What the likelihood can fit: any subset of the full six-by-two-point — all six spectra of
+delta-g, gamma, and kappa, selected per run. So yes, the shear auto-spectrum gamma-gamma IS
+supported, and kappa-kappa enters here too — this is the "folds in at the likelihood level"
+promise from the orientation slide. What we've actually exercised on data so far is narrower
+than the capability: the CMB-lensing crosses plus the clustering auto — the gamma-gamma and
+kappa-kappa entries are wired but haven't been fit on TR1 yet.
 
-On the right, what's still to wire in, and I want to be honest that these are NOT yet in the
-sampled model. Shear systematics: there's no multiplicative shear-bias m_i being sampled yet, and
-intrinsic alignments are a fixed template right now, not a marginalized nuisance — both are on the
-list. A mock-based covariance with the Hartlap or Sellentin correction. And the structural one:
-adding delta-g delta-g tightens each per-bin bias b_i by about a factor of two and a half, but it
-does NOT break the amplitude–bias degeneracy — A and b enter as a product, so they stay degenerate.
-The open design question, which I'd welcome thoughts on, is what additional information breaks A
-from b — shear-ratio geometry, or pushing the delta-g delta-g scale range. No amplitude numbers
-here — that arc is blinded and dropped from this talk.
+Galaxy bias: fit on both RR2 and TR1 — a linear bias per tomographic bin, either one global
+amplitude or per-bin, with second-order and tidal bias terms available in the model.
+Magnification bias and RSD are included in the number-counts tracer, but I should be precise:
+the magnification slope s(z) is a fixed input — a fitting function or per-bin constants — not
+a sampled parameter. Photo-z is marginalized per bin with both a mean shift Δz_i and a
+width-stretch w_z,i — the official dndz handling we just merged. Nonlinear power is
+HMCode-2020.
 
-And the bottom line: this internal eDR1like likelihood — a full pyccl theory pipeline plus a
-Cobaya-interfaced Gaussian likelihood — is the working tool today, and we're now integrating the CMBX
-cross-correlation observable into CLOE, the Euclid consortium inference framework, so it slots into
-the official pipeline. The theory side is already done in CLOE; we're working on the likelihood part
-now. The container already carries the CLOE dependencies.
+On the right, what is NOT yet in the sampled model, and I want to be honest about each.
+No multiplicative shear bias m_i exists in the code at all yet. Intrinsic alignments are a
+fixed template — a constant-amplitude placeholder in the shear tracer — not a marginalized
+nuisance; sampling it is on the list. And the covariance is the analytic NaMaster Gaussian
+today; the move to a mock-based covariance — that's what the DEMNUni and FLASK mocks on the
+next slide are for — brings with it the finite-mocks corrections: the Hartlap factor, which
+debiases the inverse of a noisy covariance estimate, or the Sellentin–Heavens likelihood,
+which replaces the Gaussian with a t-distribution that marginalizes over the covariance
+uncertainty. Neither is implemented yet because neither is needed until the covariance
+actually comes from mocks.
+
+And the bottom line: eDR1like is the working tool today, and we're integrating the CMBX
+cross-correlation observable into CLOE, the Euclid consortium inference framework, so it
+slots into the official pipeline. The theory side is already done in CLOE; the likelihood
+part is in progress. No amplitude numbers on this slide — that arc is blinded and off this
+talk; the open amplitude–bias degeneracy question lives on the summary slide.
 :::
 
 ## Simulations: mocks for covariance, foregrounds, and noise
@@ -553,7 +566,7 @@ need to combine reconstructions rather than pick one.
 :::
 
 ::: {.fragment}
-**Next** — joint $\{A, b_i\}$ likelihood · mock-based covariance · DR1.
+**Next** — joint $\{A, b_i\}$ likelihood · try breaking $A$–$b$ · mock-based covariance · DR1.
 :::
 
 ::: {.fragment}
@@ -565,7 +578,7 @@ Quick wrap. Where we are: the maps and field definitions are built and a self-bl
 
 On systematics, since this comes up every time: what we've actually checked so far is galaxy bias and magnification bias — fit on both RR2 and TR1 — and galactic extinction, quantified end-to-end with the X_ℓ metric. What we still want to check: the shear multiplicative bias and intrinsic alignments aren't sampled yet, and the broader budget — stellar density, exposure depth, zodiacal light, the north-south asymmetry — hasn't been redone on this catalog. One template is not a systematics budget, so I want that gap visible, not implied.
 
-What's next, and this is where the real work is: build the joint per-bin {A, b_i} likelihood; move to a mock-based covariance; and then DR1. (The gamma-gamma shear auto-spectrum, which was flagged as a broken spin-2 product earlier in the analysis, is now restored — the failure was a stale purified MCM-workspace cache, not an estimator problem, fixed and regression-guarded — so it's no longer a gap; it gives us the shear-calibration lever for the joint fit.)
+What's next, and this is where the real work is: build the joint per-bin {A, b_i} likelihood; try to break the amplitude–bias degeneracy — adding the clustering auto tightens each per-bin bias by about a factor of two and a half, but A and b enter as a product and stay degenerate, so the thing to try is extra information: shear-ratio geometry, or pushing the delta-g delta-g scale range — I'd genuinely welcome thoughts on that one; move to a mock-based covariance; and then DR1. (The gamma-gamma shear auto-spectrum, which was flagged as a broken spin-2 product earlier in the analysis, is now restored — the failure was a stale purified MCM-workspace cache, not an estimator problem, fixed and regression-guarded — so it's no longer a gap; it gives us the shear-calibration lever for the joint fit.)
 
 Deliberately no amplitude number on this slide — that arc is blinded and in progress, so I'm reporting status, not a result.
 
