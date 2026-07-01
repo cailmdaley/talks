@@ -258,6 +258,30 @@
   margin: 0.55em 0 0.5em;
 }
 
+// Slide 10: the two column hrs sit at nearly-but-not-quite the same height,
+// which reads as a mistake. The right column has the room, so its hr takes
+// extra top margin to land level with the left one (Cail 2026-07-02; offset
+// tuned against the 1920×1080 render).
+.reveal section.likelihood .column + .column hr {
+  margin-top: calc(0.55em + 60px);
+}
+
+// Big in-column section headers ("Covariance:", "In place:", "Next:", …) —
+// EB Garamond small-caps with a trailing colon, replacing the bold-Garamond +
+// em-dash look (Cail 2026-07-02: colons for all the big headers, small-caps
+// face). Same OpenType small-caps treatment as the house footer/occasion.
+.reveal .colhead {
+  font-variant-caps: small-caps;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+// The "(ambitious)" aside inside the cross-covariance header — cinnabar, so the
+// reach of the idea is flagged in the accent, not the ink.
+.reveal .colhead .ambitious {
+  color: $cinnabar;
+}
+
 .reveal .fullfig-note {
   // LEFT-anchored (not right-anchored): the left edge clears legend_right()'s
   // axes_right=0.72 boundary (the plot area ends there — a box starting any further

@@ -119,16 +119,40 @@ never regenerate a cosmology plot here.
    but not wired, not marginalized); Hartlap/Sellentin absent (needed only once
    the covariance comes from mocks — in the notes, NOT on the slide; Cail
    trimmed it 2026-07-01 as non-crucial). Right column is two blocks for
-   evenness: "Not yet in the sampled model" (m_i + IA one bullet; mock cov →
-   see next slide) then "→ CLOE integration — theory done, likelihood in
-   progress" (the old full-width bottom line, folded up). The A–b degeneracy is
-   NOT on this slide anymore — it's a thing to *try*, moved to slide 11's Next
-   line (δ_gδ_g tightens b_i ~2.5× but A·b stays degenerate — notes carry it).
-10. **Simulations** — DEMNUni/FLASK → mock covariance; Agora (Gatti Euclid-like
-    products) + systematics-injected GLASS box for foregrounds; D1 κ̂−κ_true noise
-    realizations; the ambitious D1-on-FFP10 cross-covariance between Planck/ACT/SPT.
+   evenness: "Not yet in the sampled model:" (m_i + IA one bullet; mock cov →
+   see next slide) then "CLOE: Euclid's inference framework — theory done,
+   likelihood in progress" (wording chosen 2026-07-02 so the header fits one
+   line in small-caps). The two column hrs are pixel-aligned: the right column's
+   hr takes `calc(0.55em + 60px)` top margin (custom.scss, `.likelihood` slide
+   class) so the rules sit level (Cail 2026-07-02 — near-miss alignment read as
+   a mistake). The A–b degeneracy is NOT on this slide anymore — it's a thing to
+   *try*, moved to slide 11's Next line (δ_gδ_g tightens b_i ~2.5× but A·b stays
+   degenerate — notes carry it).
+10. **Simulations: covariance & systematics** (rebuilt 2026-07-02 from "mocks
+    for covariance, foregrounds, and noise" — two conceptual halves, one per
+    column). **Left, covariance:** DEMNUni/FLASK → mock data vector +
+    mock-based covariance; D1 κ̂−κ_true recon residuals as noise realizations;
+    cross-covariance *(ambitious in cinnabar)* — D1 pipeline on Planck FFP10 →
+    Planck/ACT/SPT. **Right, systematics — "three simulated skies":** Agora
+    (CMB side, correlated extragalactic foregrounds), Flagship (Euclid side,
+    the official galaxy simulation), GLASS (fast lognormal mocks with KNOWN
+    Euclid systematics injected — extinction/depth/stars; named plainly because
+    the bare "systematics-injected GLASS box" phrasing confused readers), then
+    the plan: → port the same injections into the Euclid-like Agora mocks
+    (Marco Gatti, in progress). Speaker notes carry the *grounded* DEMNUni
+    story from the KP3 wiki (see
+    `felt show science/cmbx/talks/spt-secondaries-2606-slides`): CMBX sim team
+    (Calabrese/Vielzeuf/Carbone/Fabbian/Baldi, paper in prep), 2 Gpc/h N-body
+    across ΛCDM / Mν=0.16,0.32,0.53 eV / f(R) (DUSTGRAIN), SUBFIND → SHAM
+    galaxies calibrated to Flagship bias+n(z), full-sky nside-4096 correlated
+    κ_CMB(+ISW-RS)/WL/galaxy maps, QE recons with SO noise; niche = correlated
+    *signal* mock data vector for likelihood validation, while covariance
+    proper is the FLASK-lognormal + Gaussian-fiducial route (the DES×SPT /
+    ACT×DES recipe: lognormal signal + per-experiment recon-noise residuals).
 11. **Summary & next steps (center)** — status: maps & fields, self-blind, all
-    three crosses, estimator- and cross-survey-consistent. Next: joint {A,b_i},
+    three crosses, estimator- and cross-survey-consistent (headers in the
+    `.colhead` treatment: "Where we are:", "Systematics checked:",
+    "Systematics to check:", "Next:"). Next: joint {A,b_i},
     try breaking A–b (shear-ratio geometry? δ_gδ_g scale range? — the open
     design question, notes invite thoughts), mock cov, close systematics, DR1. Closes on a simple "Thank you for
     listening — and to the SPT and Euclid members who made this work possible"
@@ -179,8 +203,12 @@ figure-on-ground halo, small-caps footer/occasion, a cinnabar kicker-rule under
 each `##`. The deck consumes it in two lines —
 `theme: [default, ../assets/house.scss, custom.scss]` plus `margin: 0` and the
 `assets/figure-treatment.html` include (which multiplies the white seaborn figures
-onto the ground; no figure regeneration needed). `custom.scss` is now thin (only
-the title logo-bar nudges); `title-slide.html` uses the house spacer + an
+onto the ground; no figure regeneration needed). **Big in-column section headers deck-wide use `[Header:]{.colhead}`** — EB
+Garamond small-caps + trailing colon (custom.scss), replacing the old
+bold-Garamond + em-dash look (Cail 2026-07-02: "colons for all the big
+headers", small-caps face; same OpenType treatment as the house
+footer/occasion). The cinnabar `[(ambitious)]{.ambitious}` aside nests inside a
+colhead. `custom.scss` is otherwise thin (the title logo-bar nudges); `title-slide.html` uses the house spacer + an
 Euclid·CEA·CosmoStat logo bar. Text slides that should sit vertically centred use
 `{.vcenter}` (the house opt-in; reveal's `.center` is pinned to top:0 by the
 theme). The house theme is the going-forward look, extracted from the CNRS

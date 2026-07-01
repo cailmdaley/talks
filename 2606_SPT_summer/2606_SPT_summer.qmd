@@ -455,11 +455,11 @@ this is the most open work-package in the analysis, and on TR1 it's a genuine fl
 clustering cross, not a reassurance.
 :::
 
-## Likelihoods are coming together
+## Likelihoods are coming together {.likelihood}
 
 ::: {.columns}
 ::: {.column width="54%"}
-**In place** — internal `eDR1like`
+[In place:]{.colhead} internal `eDR1like`
 
 - **Gaussian likelihood** over any subset of the 6×2pt: NaMaster (or Knox) covariance, Cobaya sampling.
 - **Theory**: CCL Limber spectra, HMCode-2020 nonlinear, RSD + magnification (fixed $s(z)$).
@@ -470,14 +470,14 @@ clustering cross, not a reassurance.
 - **Photo-$z$ marginalization**: per-bin shift $\Delta z_i,$ width-stretch $w_{z,i}.$
 :::
 ::: {.column width="46%"}
-**Not yet in the sampled model**
+[Not yet in the sampled model:]{.colhead}
 
 - **Shear calibration** $m_i,$ **intrinsic alignments** (fixed amplitude, not marginalized).
 - **Mock-based covariance**: next slide.
 
 ---
 
-**[CLOE](https://euclid-cloe.readthedocs.io) integration** (Euclid's framework):
+[[CLOE](https://euclid-cloe.readthedocs.io):]{.colhead} Euclid's inference framework
 
 - **Theory done, likelihood in progress.**
 :::
@@ -528,56 +528,82 @@ part is in progress. No amplitude numbers on this slide — that arc is blinded 
 talk; the open amplitude–bias degeneracy question lives on the summary slide.
 :::
 
-## Simulations: mocks for covariance, foregrounds, and noise
+## Simulations: covariance & systematics
 
 ::: {.columns}
-::: {.column width="50%"}
-**Covariance**
+::: {.column width="48%"}
+[Covariance:]{.colhead}
 
-- **DEMNUni / FLASK** mocks → a mock-based covariance.
+- **DEMNUni / FLASK** mocks → mock data vector + mock-based covariance.
 
-**Foregrounds**
+[Noise realizations:]{.colhead}
 
-- **Agora** sky simulation.
-- **Marco Gatti** building Euclid-like products from Agora.
-- A **systematics-injected GLASS box** within Euclid — *(same injection could go into the Agora Euclid mocks)*.
+- **D1 lensing reconstructions** ($\hat\kappa - \kappa_{\rm true}$) → realistic $\kappa$ noise.
+
+[Cross-covariance [(ambitious)]{.ambitious}:]{.colhead}
+
+- **D1 pipeline on Planck FFP10** → **Planck / ACT / SPT** cross-covariance.
 :::
-::: {.column width="50%"}
-**Noise realizations**
+::: {.column width="52%"}
+[Systematics:]{.colhead} three simulated skies
 
-- **D1 mock lensing reconstruction** ($\hat\kappa - \kappa_{\rm true}$) as noise realizations for our mocks.
+- **Agora** — CMB side: correlated extragalactic foregrounds.
+- **Flagship** — Euclid side: the official galaxy simulation.
+- **GLASS** — fast lognormal mocks, **known Euclid systematics injected** (extinction, depth, stars…).
 
-**Ambitious**
-
-- Run the **D1 pipeline on Planck FFP10** lensing sims → properly estimate the **cross-covariance** between **Planck, ACT, and SPT**.
+→ **port the same injections into the Euclid-like Agora mocks** (Marco Gatti, in progress).
 :::
 :::
 
 ::: {.notes}
-This is the simulations leg — where the mock program stands, organized by what each set of
-mocks is *for*.
+The simulations leg, in two halves: everything covariance on the left, systematics on the
+right.
 
-Covariance: we have DEMNUni and FLASK mocks, which give us a route to a mock-based covariance
-to replace the theory covariance the likelihood uses now.
+Covariance. DEMNUni is the CMBX simulation effort — Calabrese, Vielzeuf, Carbone, Fabbian,
+Baldi and collaborators, a dedicated mock-simulations paper in prep. It's a purpose-built
+end-to-end pipeline: a 2 Gpc/h N-body run across ΛCDM, massive neutrinos at 0.16, 0.32 and
+0.53 eV, and f(R) gravity through its sibling DUSTGRAIN; then lightcone, SUBFIND halos,
+subhalo-abundance-matched galaxies calibrated to Flagship's galaxy bias and n(z), and
+full-sky maps at nside 4096. Because everything comes from the same box, the CMB-lensing
+convergence — with ISW–RS — the tomographic WL convergence, and the SHAM galaxy maps are all
+correlated; there are even QE lensing reconstructions with Simons Observatory noise. To be
+precise about the two jobs: DEMNUni's primary niche is the correlated *signal* mock — the
+mock data vector we validate the 6×2pt likelihood against; the covariance proper comes from
+the cheap-realization route — FLASK lognormal mocks and Gaussian sims at the DEMNUni
+fiducial. That's the same recipe DES×SPT and ACT×DES used: lognormal signal realizations
+plus per-experiment reconstruction-noise residuals.
 
-Foregrounds: the Agora sky simulation is the workhorse, and Marco Gatti is building
-Euclid-like products from Agora that we can run through our pipeline. Separately there's a
-systematics-injected GLASS box within Euclid — and the same systematics-injection idea could
-be applied to the Agora Euclid mocks.
+Which is exactly the noise-realizations line: take the D1 mock lensing reconstructions,
+subtract the input convergence, and those recon-minus-truth residuals become noise
+realizations to add on top of any signal mock — realistic reconstruction noise rather than
+an analytic level.
 
-Noise: the plan is to use the D1 mock lensing reconstruction — reconstructed kappa minus true
-kappa — as noise realizations for our mocks, so the reconstruction noise is realistic rather
-than analytic.
+And the ambitious one, which I'll flag as genuinely ambitious: run the D1 lensing pipeline
+on the Planck FFP10 lensing simulations, so we can properly estimate the *cross*-covariance
+between Planck, ACT, and SPT — the off-diagonal blocks you'd need to combine
+reconstructions rather than pick one.
 
-And the ambitious one, which I'll flag as genuinely ambitious: I've been thinking about
-running the D1 lensing pipeline on the Planck FFP10 lensing simulations, so we can properly
-estimate the *cross*-covariance between Planck, ACT, and SPT — the off-diagonal blocks you'd
-need to combine reconstructions rather than pick one.
+Systematics, on the right — the part I find most interesting. Three simulated skies, each
+bringing something different. Agora is the CMB-side sky — extragalactic foregrounds, tSZ,
+CIB, radio, all correlated with the same large-scale structure the lensing traces; this
+room knows it well. Flagship is the Euclid-side counterpart: the official Euclid galaxy
+simulation, gold-standard galaxy realism — though ΛCDM-only, and no CMB lensing. And the
+GLASS boxes — let me be clear about what these are, because the name is opaque: fast
+lognormal Euclid-like mocks, nothing fancy, whose value is that we inject *known*
+systematics — extinction, depth variations, star contamination — and watch what they do to
+the cross-spectra. That injection machinery exists in Euclid today.
+
+The plan I want to flag: Marco Gatti is building Euclid-like galaxy and shear products from
+the Agora density shells and halo catalogs, and the idea is to port those same systematics
+injections into the Agora Euclid mocks — known systematics on top of a realistic correlated
+foreground sky. That upgrades the systematics program from one template at a time on the
+data — the extinction test two slides ago — to a controlled end-to-end test where we know
+the answer.
 :::
 
 ## Summary & next steps
 
-**Where we are** — Euclid TR1 × SPT-3G, a status report:
+[Where we are:]{.colhead} Euclid TR1 × SPT-3G, a status report
 
 - Maps & fields defined; a standalone self-blind in place.
 - All three cross data vectors measured: $\delta_g\times\gamma,$ $\delta_g\times\kappa,$ $\gamma\times\kappa.$
@@ -586,13 +612,13 @@ need to combine reconstructions rather than pick one.
 ::: {.fragment}
 ::: {.columns}
 ::: {.column width="50%"}
-**Systematics — checked so far**
+[Systematics checked:]{.colhead}
 
 - Galaxy & magnification bias (RR2 + TR1)
 - Galactic extinction ($X_\ell,$ TR1)
 :::
 ::: {.column width="50%"}
-**Systematics — want to check**
+[Systematics to check:]{.colhead}
 
 - Shear $m_i,$ intrinsic alignments
 - Broader budget: stars, depth, zodiacal, N/S
@@ -601,7 +627,7 @@ need to combine reconstructions rather than pick one.
 :::
 
 ::: {.fragment}
-**Next** — joint $\{A, b_i\}$ likelihood · try breaking $A$–$b$ · mock-based covariance · DR1.
+[Next:]{.colhead} joint $\{A, b_i\}$ likelihood · try breaking $A$–$b$ · mock-based covariance · DR1.
 :::
 
 ::: {.fragment}
