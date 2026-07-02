@@ -156,12 +156,13 @@ never regenerate a cosmology plot here.
     estimator- and cross-survey-consistent), then two `.colhead` columns of
     work **underway** — "Systematics & null tests underway:" (extinction X_ℓ →
     stars/depth/zodiacal/N-S; GLASS inject-&-recover) and "Bias & modeling
-    checks underway:" (galaxy & magnification bias, shear m_i + IA next;
-    scale cuts ℓ_max/apodization · mock covariance) — then "Next: **first
-    chain soon** — the joint {A,b_i} likelihood, under the blind", then
-    "Ahead: TR cycle 2 → DR1 — processing improves and stabilizes with each
-    iteration", then the thank-you line. The A–b degeneracy levers
-    (shear-ratio geometry, δ_gδ_g scale range) live in the speaker notes.
+    checks underway:" (galaxy & magnification bias; m_i, IA, n(z)
+    marginalization; scale cuts ℓ_max/apodization · mock covariance) — then
+    "Next: **first chain soon** — the joint likelihood, sampled under the
+    blind" (the {A,b_i} parameter framing was dropped post-talk, Cail
+    2026-07-02 — do not re-add it; the A–b degeneracy lever aside is gone from
+    the notes too), then "Ahead: TR cycle 2 → DR1 — processing improves and
+    stabilizes with each iteration", then the thank-you line.
     Slide is full to the footer — any added line will overflow; bullets in the
     two columns must stay single-line.
 

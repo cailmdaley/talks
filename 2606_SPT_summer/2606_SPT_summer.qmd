@@ -571,14 +571,14 @@ end-to-end test where we know the answer.
 ::: {.column width="50%"}
 [Bias & modeling checks underway:]{.colhead}
 
-- Galaxy & magnification bias; shear $m_i,$ IA
+- Galaxy & mag. bias; $m_i,$ IA, $n(z)$ marg.
 - Scale cuts ($\ell_{\max},$ apod.) · mock covariance
 :::
 :::
 :::
 
 ::: {.fragment}
-[Next:]{.colhead} **first chain soon** — the joint $\{A, b_i\}$ likelihood, under the blind.
+[Next:]{.colhead} **first chain soon** — the joint likelihood, sampled under the blind.
 :::
 
 ::: {.fragment}
@@ -592,9 +592,9 @@ end-to-end test where we know the answer.
 ::: {.notes}
 Quick wrap. Where we are: the maps and field definitions are built and a self-blind is in place, so the analysis is running on a fixed, blinded footprint. We have both CMB-lensing cross data vectors in hand — density–kappa and shear–kappa. And the crosses are consistent two ways: across the SPT lensing estimator — GMV versus profile-hardened — and across surveys, SPT versus ACT. That's the status: the measurement infrastructure is in place and internally consistent.
 
-Then the two columns of work in flight — and I mean genuinely in flight, this is what we're doing right now. Systematics and null tests: galactic extinction is the template we're quantifying end-to-end on the TR1 catalog with the X_ℓ contamination metric, and the broader budget follows the same machinery — stellar density, exposure depth, zodiacal light, the north-south asymmetry. And the GLASS lognormal mocks close the loop from the other side: inject known systematics — extinction, depth, stars — and verify the pipeline sees them. On the bias and modeling side: galaxy bias and magnification bias are fit on both RR2 and TR1; the shear multiplicative bias m_i and intrinsic-alignment marginalization are the next nuisances into the sampled model; and the measurement-definition checks — where to cut in ℓ, the apodization scale, and the move from analytic to mock-based covariance — are running as part of the same program.
+Then the two columns of work in flight — and I mean genuinely in flight, this is what we're doing right now. Systematics and null tests: galactic extinction is the template we're quantifying end-to-end on the TR1 catalog with the X_ℓ contamination metric, and the broader budget follows the same machinery — stellar density, exposure depth, zodiacal light, the north-south asymmetry. And the GLASS lognormal mocks close the loop from the other side: inject known systematics — extinction, depth, stars — and verify the pipeline sees them. On the bias and modeling side: galaxy bias and magnification bias are fit on both RR2 and TR1; the shear multiplicative bias m_i, intrinsic-alignment marginalization, and n(z) marginalization (the photo-z shift and width nuisances) are the next nuisances into the sampled model; and the measurement-definition checks — where to cut in ℓ, the apodization scale, and the move from analytic to mock-based covariance — are running as part of the same program.
 
-And the headline of the next line: we're planning to run our first chain soon — the joint per-bin {A, b_i} likelihood, sampled under the blind. Everything on this slide funnels into that: the likelihood machinery from the likelihood slide is in place, the data vector is sealed, and the systematics and modeling checks are what stand between us and trusting the posterior. One thing to try there that I'd welcome thoughts on: A and b enter as a product and stay degenerate even with the clustering auto — shear-ratio geometry or pushing the delta-g delta-g scale range are the candidate levers.
+And the headline of the next line: we're planning to run our first chain soon — the joint likelihood, sampled under the blind. Everything on this slide funnels into that: the likelihood machinery from the likelihood slide is in place, the data vector is sealed, and the systematics and modeling checks are what stand between us and trusting the posterior.
 
 And the last beat: this is TR1 cycle 1, the first pass of the timeline from the opening slide. Ahead is TR cycle 2 and eventually DR1, and the point of the iteration structure is exactly that the processing improves and stabilizes each time — catalogs, masks, calibration all firm up, and the analysis choices we're validating now carry forward onto better data. So the status today is the foundation pass, not the final word.
 
