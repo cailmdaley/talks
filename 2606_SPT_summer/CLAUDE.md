@@ -10,7 +10,7 @@ the overlap, not on what CMB lensing is.
 **Headline:** a **status report** on the **Euclid MoU CMB-lensing ×
 cross-correlation project** (Cail Daley & Margherita Lembo) — where the Euclid TR1
 × SPT-3G κ-cross programme stands: footprints → blinding → data vectors (the
-CMB-only 3×2pt) → estimator consistency → SPT-vs-ACT → systematics →
+CMB-only 3×2pt) → estimator consistency → SPT-vs-ACT →
 likelihood/bias plans → simulations.
 
 **Frame (non-negotiable, set by the managing constitution
@@ -52,7 +52,7 @@ repo: `felt show science/cmbx/explorations/spt-talk-push/qa-amplitude-background
 
 ## The narrative arc (current deck — headlines read top-to-bottom as the story)
 
-~11 slides for a ~20-min collaboration slot. Source: `2606_SPT_summer.qmd`.
+10 content slides for a ~20-min collaboration slot. Source: `2606_SPT_summer.qmd`.
 Figures come ONLY from the trusted, blind-safe set (copied into `../images/`);
 never regenerate a cosmology plot here.
 
@@ -97,16 +97,7 @@ never regenerate a cosmology plot here.
    Cℓ-settings sweep is already running; see
    `felt show science/cmbx/methodology/lea-cl-settings-validation`).
    (`spt26_kappa_constraints.png`.)
-8. **Systematics: extinction is sub-σ for shear, ~1σ at high-ℓ for clustering** —
-   (now precedes Likelihood — reordered 2026-07-01) DES/Chang coherent bias
-   X_ℓ = C^{κS}C^{fS}/C^{SS} in units of σ, per bin, δ_g×κ + γ×κ. On TR1
-   (`lc run -u tr1`): shear sub-σ everywhere (aggregate 0.4–0.85σ); clustering
-   sub-σ at low/mid-ℓ but rises at high-ℓ (ℓ≳1000) toward 1σ, growing with z-bin
-   (coherent S_bias 0.9→1.5σ, gc bin6 bandpower at 1.0σ). Surprising: largest at
-   HIGH ℓ, opposite the smooth-template expectation. "One template is not a
-   systematics budget." (`spt26_extinction_xell.png`, TR1.) See
-   `…/spt-talk-push/tr1-extinction-highell-clustering`.
-9. **Likelihoods are coming together** (retitled from "Likelihood — what's
+8. **Likelihoods are coming together** (retitled from "Likelihood — what's
    built, and the plan" 2026-07-01: active assertion, not a label) — content
    verified line-by-line
    against the eDR1like code on the `cail` branch (which contains the full
@@ -131,7 +122,7 @@ never regenerate a cosmology plot here.
    a mistake). The A–b degeneracy is NOT on this slide anymore — it's a thing to
    *try*, moved to slide 11's Next line (δ_gδ_g tightens b_i ~2.5× but A·b stays
    degenerate — notes carry it).
-10. **Simulations: covariance & systematics** (rebuilt 2026-07-02 from "mocks
+9. **Simulations: covariance & systematics** (rebuilt 2026-07-02 from "mocks
     for covariance, foregrounds, and noise" — two conceptual halves, one per
     column). **Left, covariance** (no bullets — one item per colhead, Cail
     2026-07-02): DEMNUni/FLASK → mock data vector + mock-based covariance;
@@ -158,15 +149,21 @@ never regenerate a cosmology plot here.
     *signal* mock data vector for likelihood validation, while covariance
     proper is the FLASK-lognormal + Gaussian-fiducial route (the DES×SPT /
     ACT×DES recipe: lognormal signal + per-experiment recon-noise residuals).
-11. **Summary & next steps (center)** — status: maps & fields, self-blind, all
-    three crosses, estimator- and cross-survey-consistent (headers in the
-    `.colhead` treatment: "Where we are:", "Systematics checked:",
-    "Systematics to check:", "Next:"). Next: joint {A,b_i},
-    try breaking A–b (shear-ratio geometry? δ_gδ_g scale range? — the open
-    design question, notes invite thoughts), mock cov, close systematics, DR1. Closes on a simple "Thank you for
-    listening — and to the SPT and Euclid members who made this work possible"
-    (simplified 2026-07-01; the fuller named acknowledgment lives in the speaker
-    notes, spoken not shown).
+10. **Summary & next steps** (rebuilt 2026-07-02 post-talk, per Cail: the
+    standalone extinction slide is REMOVED — do not re-add it — and the close
+    now carries the in-progress program instead). Structure: "Where we are:"
+    (maps & fields + self-blind; the two CMB-lensing crosses δ_g×κ, γ×κ;
+    estimator- and cross-survey-consistent), then two `.colhead` columns of
+    work **underway** — "Systematics & null tests underway:" (extinction X_ℓ →
+    stars/depth/zodiacal/N-S; GLASS inject-&-recover) and "Bias & modeling
+    checks underway:" (galaxy & magnification bias, shear m_i + IA next;
+    scale cuts ℓ_max/apodization · mock covariance) — then "Next: **first
+    chain soon** — the joint {A,b_i} likelihood, under the blind", then
+    "Ahead: TR cycle 2 → DR1 — processing improves and stabilizes with each
+    iteration", then the thank-you line. The A–b degeneracy levers
+    (shear-ratio geometry, δ_gδ_g scale range) live in the speaker notes.
+    Slide is full to the footer — any added line will overflow; bullets in the
+    two columns must stay single-line.
 
 ## TR1 migration — complete (every data figure on TR1)
 
