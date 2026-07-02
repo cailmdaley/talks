@@ -274,12 +274,13 @@
   font-variant-caps: small-caps;
   letter-spacing: 0.04em;
   font-weight: 700;
+  color: $cinnabar;   // Cail 2026-07-02: all the small-caps headers in the accent
 }
 
-// The "(ambitious)" aside inside the cross-covariance header — cinnabar, so the
-// reach of the idea is flagged in the accent, not the ink.
+// The "(ambitious)" aside inside the cross-covariance header inherits the
+// cinnabar; keep it lighter-weight so it still reads as an aside.
 .reveal .colhead .ambitious {
-  color: $cinnabar;
+  font-weight: 400;
 }
 
 .reveal .fullfig-note {

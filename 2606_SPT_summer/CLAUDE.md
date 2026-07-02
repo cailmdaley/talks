@@ -133,16 +133,22 @@ never regenerate a cosmology plot here.
    degenerate — notes carry it).
 10. **Simulations: covariance & systematics** (rebuilt 2026-07-02 from "mocks
     for covariance, foregrounds, and noise" — two conceptual halves, one per
-    column). **Left, covariance:** DEMNUni/FLASK → mock data vector +
-    mock-based covariance; D1 κ̂−κ_true recon residuals as noise realizations;
-    cross-covariance *(ambitious in cinnabar)* — D1 pipeline on Planck FFP10 →
-    Planck/ACT/SPT. **Right, systematics — "three simulated skies":** Agora
-    (CMB side, correlated extragalactic foregrounds), Flagship (Euclid side,
-    the official galaxy simulation), GLASS (fast lognormal mocks with KNOWN
-    Euclid systematics injected — extinction/depth/stars; named plainly because
-    the bare "systematics-injected GLASS box" phrasing confused readers), then
-    the plan: → port the same injections into the Euclid-like Agora mocks
-    (Marco Gatti, in progress). Speaker notes carry the *grounded* DEMNUni
+    column). **Left, covariance** (no bullets — one item per colhead, Cail
+    2026-07-02): DEMNUni/FLASK → mock data vector + mock-based covariance;
+    "**D1 lensing reconstructions**" with a forced line break after the bold
+    phrase, then "minus truth (κ̂−κ_true) → realistic κ noise" (the
+    parenthetical was wrapping alone — Cail 2026-07-02); cross-covariance
+    *(ambitious)* — D1 pipeline on Planck FFP10 → Planck/ACT/SPT. **Right,
+    systematics — "three simulated skies":** Agora (CMB side, correlated
+    extragalactic foregrounds; Euclid-like WL products from its halos +
+    density shells — Marco Gatti, in progress), Flagship (Euclid side:
+    realistic, one realization — Agora's counterpart; it is to Euclid what
+    Agora is to the CMB), GLASS (fast lognormal mocks with KNOWN Euclid
+    systematics injected — extinction/depth/stars), with a sub-bullet: →
+    could port the same injections into the Euclid-like Agora mocks.
+    Deck-wide, `.colhead` small-caps headers are cinnabar (Cail 2026-07-02,
+    aesthetics; the `(ambitious)` aside drops to weight 400 so it still reads
+    as an aside). Speaker notes carry the *grounded* DEMNUni
     story from the KP3 wiki (see
     `felt show science/cmbx/talks/spt-secondaries-2606-slides`): CMBX sim team
     (Calabrese/Vielzeuf/Carbone/Fabbian/Baldi, paper in prep), 2 Gpc/h N-body
@@ -225,7 +231,12 @@ node ~/.claude/skills/slides/scripts/slide-to-text.mjs _site/2606_SPT_summer/ind
 ```
 
 The self-contained render embedded at the top of the managing constitution is
-`slides.html` (copied into the fiber dir). Deployment is Cail-gated: pushing the
+`slides.html` (copied into the fiber dir). Build it with
+`quarto render 2606_SPT_summer/2606_SPT_summer.qmd --to revealjs -M embed-resources:true`
+then copy `_site/2606_SPT_summer/index.html` to the fiber's `slides.html`
+(**not** `--output slides.html`, which breaks reveal.js initialization — the
+output lands unstyled); re-run the plain render afterwards so `_site` isn't
+left with an embedded index. Deployment is Cail-gated: pushing the
 `talks` repo to `main` triggers the Pages Action (see `../CLAUDE.md`); do not push
 without Cail.
 

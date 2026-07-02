@@ -534,24 +534,24 @@ talk; the open amplitude–bias degeneracy question lives on the summary slide.
 ::: {.column width="48%"}
 [Covariance:]{.colhead}
 
-- **DEMNUni / FLASK** mocks → mock data vector + mock-based covariance.
+**DEMNUni / FLASK** mocks → mock data vector + mock-based covariance.
 
 [Noise realizations:]{.colhead}
 
-- **D1 lensing reconstructions** ($\hat\kappa - \kappa_{\rm true}$) → realistic $\kappa$ noise.
+**D1 lensing reconstructions**\
+minus truth ($\hat\kappa - \kappa_{\rm true}$) → realistic $\kappa$ noise.
 
 [Cross-covariance [(ambitious)]{.ambitious}:]{.colhead}
 
-- **D1 pipeline on Planck FFP10** → **Planck / ACT / SPT** cross-covariance.
+**D1 pipeline on Planck FFP10** → **Planck / ACT / SPT** cross-covariance.
 :::
 ::: {.column width="52%"}
 [Systematics:]{.colhead} three simulated skies
 
-- **Agora** — CMB side: correlated extragalactic foregrounds.
-- **Flagship** — Euclid side: the official galaxy simulation.
+- **Agora** — CMB side: correlated extragalactic foregrounds. Euclid-like WL products from its halos + density shells (Marco Gatti, in progress).
+- **Flagship** — Euclid side: realistic, one realization — Agora's counterpart.
 - **GLASS** — fast lognormal mocks, **known Euclid systematics injected** (extinction, depth, stars…).
-
-→ **port the same injections into the Euclid-like Agora mocks** (Marco Gatti, in progress).
+  - → could **port the same injections into the Euclid-like Agora mocks**.
 :::
 :::
 
