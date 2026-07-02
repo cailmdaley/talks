@@ -80,10 +80,13 @@ never regenerate a cosmology plot here.
    now). Amplitudes stripped — shapes + blinded per-bin S/N only.
    (`spt26_cross_spectra.png`; backup `spt26_ggl_matrix.png`, GGL still generated
    for Q&A even though it's off the main slide.)
-5. **Robust to the SPT-3G lensing estimator** — bin 5, γ×κ + δ_g×κ, GMV vs the
-   bias + profile-hardened reconstruction (GMVbhTTprf) sitting on top of each
-   other → estimator-robust (hardening RMS 0.29σ both crosses, all 90 bandpowers
-   <1σ, no S/N cost); PP (pol-only) noisier at high ℓ. (`spt26_estimator_robustness.png`, TR1.)
+5. **Robust to the SPT-3G lensing estimator** (headline: "Estimators are
+   consistent, GMV a bit low" — Cail 2026-07-02, softened from "GMV is lowest
+   S/N"; the figure shows GMV 6.4 vs hardened 7.4 S/N) — bin 5, γ×κ + δ_g×κ,
+   GMV vs the bias + profile-hardened reconstruction (GMVbhTTprf) sitting on
+   top of each other → estimator-robust (hardening RMS 0.29σ both crosses, all
+   90 bandpowers <1σ, no S/N cost); PP (pol-only) noisier at high ℓ.
+   (`spt26_estimator_robustness.png`, TR1.)
 6. **SPT and ACT are consistent, SPT is higher S/N** — SPT-3G GMV-hardened vs ACT
    DR6 over the common fiducial theory; two independent reconstructions on the
    same southern bins. In-panel PTE(SPT-ACT) only (not the full reduced-χ²); the
@@ -129,14 +132,17 @@ never regenerate a cosmology plot here.
     "**D1 lensing reconstructions**" with a forced line break after the bold
     phrase, then "minus truth (κ̂−κ_true) → realistic κ noise" (the
     parenthetical was wrapping alone — Cail 2026-07-02); cross-covariance
-    *(ambitious)* — D1 pipeline on Planck FFP10 → Planck/ACT/SPT. **Right,
-    systematics — "three simulated skies":** Agora (CMB side, correlated
-    extragalactic foregrounds; Euclid-like WL products from its halos +
-    density shells — Marco Gatti, in progress), Flagship (Euclid side:
-    realistic, one realization — Agora's counterpart; it is to Euclid what
-    Agora is to the CMB), GLASS (fast lognormal mocks with KNOWN Euclid
-    systematics injected — extinction/depth/stars), with a sub-bullet: →
-    could port the same injections into the Euclid-like Agora mocks.
+    *(ambitious)* — D1 pipeline on Planck FFP10, with a forced line break
+    before **Planck / ACT / SPT** cross-covariance (Cail 2026-07-02, reads
+    nicer). **Right, systematics — "three simulated skies":** the right-column
+    entries lead with a bold term + colon (Cail 2026-07-02, "colons not em
+    dashes"): **Agora:** Euclid-like WL products from its halos + density
+    shells (Marco Gatti, in progress) — the "CMB side: correlated extragalactic
+    foregrounds" gloss was DROPPED (this audience knows Agora); **Flagship:**
+    Euclid side, realistic, one realization — Agora's counterpart; **GLASS:**
+    fast lognormal mocks with KNOWN Euclid systematics injected
+    (extinction/depth/stars), sub-bullet → could port the same injections into
+    the Euclid-like Agora mocks.
     Deck-wide, `.colhead` small-caps headers are cinnabar (Cail 2026-07-02,
     aesthetics; the `(ambitious)` aside drops to weight 400 so it still reads
     as an aside). Speaker notes carry the *grounded* DEMNUni
@@ -149,22 +155,29 @@ never regenerate a cosmology plot here.
     *signal* mock data vector for likelihood validation, while covariance
     proper is the FLASK-lognormal + Gaussian-fiducial route (the DES×SPT /
     ACT×DES recipe: lognormal signal + per-experiment recon-noise residuals).
-10. **Summary & next steps** (rebuilt 2026-07-02 post-talk, per Cail: the
-    standalone extinction slide is REMOVED — do not re-add it — and the close
-    now carries the in-progress program instead). Structure: "Where we are:"
-    (maps & fields + self-blind; the two CMB-lensing crosses δ_g×κ, γ×κ;
-    estimator- and cross-survey-consistent), then two `.colhead` columns of
-    work **underway** — "Systematics & null tests underway:" (extinction X_ℓ →
-    stars/depth/zodiacal/N-S; GLASS inject-&-recover) and "Bias & modeling
-    checks underway:" (galaxy & magnification bias; m_i, IA, n(z)
-    marginalization; scale cuts ℓ_max/apodization · mock covariance) — then
-    "Next: **first chain soon** — the joint likelihood, sampled under the
-    blind" (the {A,b_i} parameter framing was dropped post-talk, Cail
-    2026-07-02 — do not re-add it; the A–b degeneracy lever aside is gone from
-    the notes too), then "Ahead: TR cycle 2 → DR1 — processing improves and
-    stabilizes with each iteration", then the thank-you line.
-    Slide is full to the footer — any added line will overflow; bullets in the
-    two columns must stay single-line.
+10. **Summary & next steps** (rebuilt 2026-07-02 post-talk, per Cail; the
+    standalone extinction slide is REMOVED — do not re-add it). The "Where
+    we are:" lede is three honest full-width bullets (Cail 2026-07-02, exact
+    wording): "Euclid products evolving; TR1 Cycle 1 → Cycle 2 → DR1",
+    "CMB-lensing cross data vectors measured; provisional blinding",
+    "Qualitative estimator- and cross-survey agreement, need to quantify
+    rigorously" — the third is a deliberate honesty beat (agreement is by-eye;
+    rigour still to come). Then two `.colhead` columns, three single-line
+    bullets each: **"Systematics & null tests underway:"** summarizes the
+    KP2/3 program in three families — "Nulls: random-position, splits, κ
+    B-modes", "Consistency: κ maps & shear methods" (SPT/ACT/Planck +
+    LensMC/METACAL, named in notes), "Template deprojection χ² (depth,
+    stars…)"; extinction is demoted to one template among many (no longer
+    singled out) and GLASS is NOT re-highlighted here (it lives on slide 9).
+    **"Bias & modeling checks underway:"** is "Galaxy & mag. bias; m_i, IA,
+    n(z) marg.", "Scale cuts: ℓ_max, apodization", "Mock (cross)-covariance →
+    rigorous errors" (the last ties back to the lede's "quantify rigorously";
+    the {A,b_i} parameter framing was dropped, do not re-add). Then "Next:
+    **first chain soon** — the joint likelihood, sampled under the blind",
+    "Ahead: TR cycle 2 → DR1 — processing improves and stabilizes with each
+    iteration", the thank-you line. Verified single-line + no-overflow at
+    16% whitespace, both columns balanced ~24% below; keep column bullets
+    single-line.
 
 ## TR1 migration — complete (every data figure on TR1)
 

@@ -275,7 +275,7 @@ tracking Planck-18, with both the shape and the detection strength visible;
 the amplitude itself stays off this status report.
 :::
 
-## Estimators are consistent, GMV is lowest S/N {.data-family}
+## Estimators are consistent, GMV a bit low {.data-family}
 
 ::: {.fullfig}
 ![](images/spt26_estimator_robustness.png)
@@ -494,14 +494,15 @@ minus truth ($\hat\kappa - \kappa_{\rm true}$) → realistic $\kappa$ noise.
 
 [Cross-covariance [(ambitious)]{.ambitious}:]{.colhead}
 
-**D1 pipeline on Planck FFP10** → **Planck / ACT / SPT** cross-covariance.
+**D1 pipeline on Planck FFP10** →\
+**Planck / ACT / SPT** cross-covariance.
 :::
 ::: {.column width="52%"}
 [Systematics:]{.colhead} three simulated skies
 
-- **Agora** — CMB side: correlated extragalactic foregrounds. Euclid-like WL products from its halos + density shells (Marco Gatti, in progress).
-- **Flagship** — Euclid side: realistic, one realization — Agora's counterpart.
-- **GLASS** — fast lognormal mocks, **known Euclid systematics injected** (extinction, depth, stars…).
+- **Agora:** Euclid-like WL products from its halos + density shells (Marco Gatti, in progress).
+- **Flagship:** Euclid side, realistic, one realization — Agora's counterpart.
+- **GLASS:** fast lognormal mocks, **known Euclid systematics injected** (extinction, depth, stars…).
   - → could **port the same injections into the Euclid-like Agora mocks**.
 :::
 :::
@@ -556,23 +557,25 @@ end-to-end test where we know the answer.
 
 [Where we are:]{.colhead} Euclid TR1 × SPT-3G, a status report
 
-- Maps & fields defined; a standalone self-blind in place.
-- CMB-lensing cross data vectors measured: $\delta_g\times\kappa,$ $\gamma\times\kappa.$
-- Estimator- and cross-survey-consistent (SPT-3G GMV vs profile-hardened; SPT vs ACT).
+- Euclid products evolving; TR1 Cycle 1 → Cycle 2 → DR1.
+- CMB-lensing cross data vectors measured; provisional blinding.
+- Qualitative estimator- and cross-survey agreement, need to quantify rigorously.
 
 ::: {.fragment}
 ::: {.columns}
 ::: {.column width="50%"}
 [Systematics & null tests underway:]{.colhead}
 
-- Extinction $X_\ell$ → stars, depth, zodiacal, N/S
-- GLASS mocks: inject & recover systematics
+- Nulls: random-position, splits, $\kappa$ B-modes
+- Consistency: $\kappa$ maps & shear methods
+- Template deprojection $\chi^2$ (depth, stars…)
 :::
 ::: {.column width="50%"}
 [Bias & modeling checks underway:]{.colhead}
 
 - Galaxy & mag. bias; $m_i,$ IA, $n(z)$ marg.
-- Scale cuts ($\ell_{\max},$ apod.) · mock covariance
+- Scale cuts: $\ell_{\max},$ apodization
+- Mock (cross)-covariance → rigorous errors
 :::
 :::
 :::
@@ -590,9 +593,9 @@ end-to-end test where we know the answer.
 :::
 
 ::: {.notes}
-Quick wrap. Where we are: the maps and field definitions are built and a self-blind is in place, so the analysis is running on a fixed, blinded footprint. We have both CMB-lensing cross data vectors in hand — density–kappa and shear–kappa. And the crosses are consistent two ways: across the SPT lensing estimator — GMV versus profile-hardened — and across surveys, SPT versus ACT. That's the status: the measurement infrastructure is in place and internally consistent.
+Quick wrap. Where we are, three honest lines. First: the Euclid data products are still evolving — we're on TR1 cycle 1, and the sequence runs cycle 1 to cycle 2 to DR1, each pass firmer than the last. Second: both CMB-lensing cross data vectors are measured — density–kappa and shear–kappa — under a provisional self-blind, one we'll retire for the collaboration blinding later. Third, and I want to be honest here: the estimator and cross-survey agreement you've seen is qualitative — the curves sit on top of each other — but we have not yet quantified it rigorously, and doing that properly needs a real covariance, which is the mock (cross)-covariance line on the right. That's the status: infrastructure in place, agreement by eye, rigour still to come.
 
-Then the two columns of work in flight — and I mean genuinely in flight, this is what we're doing right now. Systematics and null tests: galactic extinction is the template we're quantifying end-to-end on the TR1 catalog with the X_ℓ contamination metric, and the broader budget follows the same machinery — stellar density, exposure depth, zodiacal light, the north-south asymmetry. And the GLASS lognormal mocks close the loop from the other side: inject known systematics — extinction, depth, stars — and verify the pipeline sees them. On the bias and modeling side: galaxy bias and magnification bias are fit on both RR2 and TR1; the shear multiplicative bias m_i, intrinsic-alignment marginalization, and n(z) marginalization (the photo-z shift and width nuisances) are the next nuisances into the sampled model; and the measurement-definition checks — where to cut in ℓ, the apodization scale, and the move from analytic to mock-based covariance — are running as part of the same program.
+Then the two columns of work in flight — and I mean genuinely in flight, this is what we're doing right now. Systematics and null tests, three families: null tests — random-position/shot-noise maps, spatial and magnitude/colour splits, and the κ B-mode and curl nulls; consistency — the cross holds across CMB reconstructions (SPT, ACT, Planck) and across Euclid shear pipelines (LensMC versus METACAL); and the map-systematics budget — each contamination template (depth, stellar density, extinction, PSF, zodiacal, exposures…) is NaMaster-deprojected and χ²-tested for whether it moves the spectrum, with extinction the one we've already pushed end-to-end on TR1. On the bias and modeling side: galaxy bias and magnification bias are fit on both RR2 and TR1; the shear multiplicative bias m_i, intrinsic-alignment marginalization, and n(z) marginalization (the photo-z shift and width nuisances) are the next nuisances into the sampled model; and the measurement-definition checks — where to cut in ℓ, the apodization scale, and the move from analytic to mock-based covariance — are running as part of the same program.
 
 And the headline of the next line: we're planning to run our first chain soon — the joint likelihood, sampled under the blind. Everything on this slide funnels into that: the likelihood machinery from the likelihood slide is in place, the data vector is sealed, and the systematics and modeling checks are what stand between us and trusting the posterior.
 
