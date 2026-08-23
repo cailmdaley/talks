@@ -1,0 +1,114 @@
+/*-- scss:defaults --*/
+
+// Per-talk overrides for the FORTH Crete keynote. House look from
+// ../assets/house.scss (loaded before this file via the deck's `theme:` list);
+// this file holds only the FORTH-specific layouts: quote cards, prompt cards,
+// tutorial chrome, big stats.
+
+/*-- scss:rules --*/
+
+// ── Quote cards (Stripe, Dean Ball) ──
+.reveal .quote-card {
+    background: #FBF6E9;                 // $rag
+    border-left: 10px solid #BC4538;     // $cinnabar
+    border-radius: 0 12px 12px 0;
+    padding: 44px 60px 34px;
+    font-size: 0.92em;
+    line-height: 1.5;
+    text-align: left;
+    box-shadow: 0 2px 14px rgba(27, 22, 17, 0.06);
+
+    strong { color: #BC4538; }
+}
+.reveal .quote-attrib {
+    margin-top: 26px;
+    font-size: 0.72em;
+    color: #7A6F5C;                      // $ink-muted
+    text-align: right;
+}
+
+// ── Prompt cards (the tutorial's "you say this to the agent" device) ──
+.reveal .prompt-card {
+    background: #F4ECDC;                 // $paper-mid
+    border: 2px solid #C5B89E;           // $rule
+    border-radius: 16px;
+    padding: 38px 52px;
+    max-width: 1350px;
+    margin: 30px auto 0;
+    font-size: 0.82em;
+    line-height: 1.5;
+    text-align: left;
+    position: relative;
+
+    // "prompt" tab
+    &::before {
+        content: "prompt \2192  agent";
+        position: absolute;
+        top: -26px;
+        left: 36px;
+        background: #BC4538;
+        color: #F7F0E1;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.55em;
+        letter-spacing: 0.06em;
+        padding: 7px 22px;
+        border-radius: 999px;
+    }
+
+    code { font-size: 0.9em; }
+}
+
+// ── Big statistics ──
+.reveal .stat-big {
+    font-size: 1.7em;
+    font-weight: 600;
+    color: #BC4538;
+    line-height: 1.1;
+}
+.reveal .stat-label {
+    font-size: 0.66em;
+    color: #7A6F5C;
+}
+.reveal .stat-hero {
+    font-size: 2.6em;
+    font-weight: 600;
+    color: #BC4538;
+    font-family: 'EB Garamond', serif;
+}
+
+// ── Decision chips (going-further slide) ──
+.reveal .decision-chip {
+    background: #FBF6E9;
+    border: 2px solid #C5B89E;
+    border-radius: 18px;
+    padding: 44px 54px;
+    width: 400px;
+    font-weight: 600;
+    font-size: 0.95em;
+    line-height: 1.35;
+}
+.reveal .chip-sub {
+    display: block;
+    margin-top: 18px;
+    font-weight: 400;
+    font-size: 0.68em;
+    color: #7A6F5C;
+}
+
+// ── Section dividers ──
+.reveal section.section-divider h2 {
+    margin-top: 320px;
+    font-size: 1.55em;
+    text-align: center;
+}
+
+// ── Title-slide logo bar (house .logo-bar pattern; per-logo optical nudges) ──
+.reveal .logo-bar .logo-cosmostat { height: 86px; }
+.reveal .logo-bar .logo-lightcone { height: 64px; }
+
+// ── Tutorial code blocks: a hair larger than house default ──
+.reveal pre code {
+    font-size: 0.62em;
+    line-height: 1.45;
+    max-height: none;
+}

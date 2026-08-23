@@ -1,0 +1,734 @@
+---
+# ════════════════════════════════════════════════════════════════════════════════════════
+# Closing keynote, FORTH Workshop on Physics-Informed Machine Learning, Heraklion.
+# Fri 18 Sep 2026, 11:30–12:30: 30 min talk + 15 min live demo + 15 min discussion.
+# Arc: history (chatbot→harness) → singularity landing → ASTRA tutorial → implications.
+# Strategy in ./CLAUDE.md; felt fiber 2609-forth-crete.
+# Export: decktape reveal "file://$(pwd)/_site/2609_FORTH_Crete/2609_FORTH_Crete.html" out.pdf --size 1920x1080
+# ════════════════════════════════════════════════════════════════════════════════════════
+title: "Scaling Scientific Labor<br>with Agentic Engineering"
+occasion: FORTH Workshop on Physics-Informed Machine Learning
+description: "Closing keynote: a tutorial-style introduction to agentic AI for scientific workflows"
+draft: true
+author:
+    name: Cail Daley
+    affiliation: "Département d'Astrophysique / UMR AIM · CEA Paris-Saclay"
+date: September 18, 2026
+date-format: long
+
+resources:
+    - images/earendil-harness.mp4
+
+format:
+    revealjs:
+        width:  1920
+        height: 1080
+        margin: 0
+        auto-stretch: false
+        theme: [default, ../assets/house.scss, custom.scss]
+        slide-number: true
+        fig-align: center
+        menu: false
+        include-after-body:
+            - assets/no_footer_on_titleslide.html
+            - assets/figure-treatment.html
+        footer: "Cail Daley | FORTH PIML Workshop | September 18, 2026"
+        history: false
+        hash: true
+        pdf-separate-fragments: true
+        pdf-max-pages-per-slide: 1
+        template-partials:
+            - title-slide.html
+        center-title-slide: false
+
+html-math-method:
+    method: mathjax
+    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## Two years ago, the intelligence left through the clipboard {#oracle-era}
+
+::: {style="display:flex;justify-content:center;margin-top:100px"}
+```{=html}
+<svg viewBox="0 0 1500 560" style="width:1400px" xmlns="http://www.w3.org/2000/svg">
+  <!-- chat window -->
+  <g>
+    <rect x="40" y="40" width="520" height="460" rx="14" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2.5"/>
+    <rect x="40" y="40" width="520" height="56" rx="14" fill="#EDE2CE" stroke="#C5B89E" stroke-width="2.5"/>
+    <text x="72" y="77" font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C">chat.openai.com</text>
+    <!-- user bubble -->
+    <rect x="200" y="130" width="320" height="64" rx="18" fill="#EDE2CE"/>
+    <text x="228" y="170" font-family="EB Garamond, serif" font-size="28" fill="#1B1611">write me a likelihood…</text>
+    <!-- assistant bubble w/ code -->
+    <rect x="80" y="230" width="400" height="220" rx="18" fill="#F4ECDC" stroke="#C5B89E" stroke-width="1.5"/>
+    <text x="110" y="280" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">def log_like(theta, d):</text>
+    <text x="110" y="320" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">    r = d - model(theta)</text>
+    <text x="110" y="360" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">    return -0.5 * r @ C @ r</text>
+    <text x="110" y="420" font-family="EB Garamond, serif" font-size="26" fill="#7A6F5C">Here is a simple likelihood…</text>
+  </g>
+  <!-- clipboard arrow -->
+  <g>
+    <path d="M 600 300 C 680 300, 740 300, 820 300" stroke="#BC4538" stroke-width="6" fill="none" marker-end="url(#arr)"/>
+    <text x="712" y="262" font-family="EB Garamond, serif" font-size="34" fill="#BC4538" text-anchor="middle">copy</text>
+    <text x="712" y="356" font-family="EB Garamond, serif" font-size="34" fill="#BC4538" text-anchor="middle">paste</text>
+  </g>
+  <!-- editor window -->
+  <g>
+    <rect x="880" y="40" width="580" height="460" rx="14" fill="#1B1611"/>
+    <rect x="880" y="40" width="580" height="56" rx="14" fill="#332B21"/>
+    <circle cx="916" cy="68" r="9" fill="#BC4538"/><circle cx="948" cy="68" r="9" fill="#C49333"/><circle cx="980" cy="68" r="9" fill="#3F8278"/>
+    <text x="1020" y="77" font-family="IBM Plex Mono, monospace" font-size="24" fill="#C5B89E">analysis.py — you run it</text>
+    <text x="920" y="160" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1">def log_like(theta, d):</text>
+    <text x="920" y="200" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1">    r = d - model(theta)</text>
+    <text x="920" y="240" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1">    return -0.5 * r @ Cinv @ r</text>
+    <text x="920" y="320" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C"># you fix the imports,</text>
+    <text x="920" y="360" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C"># you run it, you read the</text>
+    <text x="920" y="400" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C"># traceback, you go back…</text>
+  </g>
+  <defs>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#BC4538"/>
+    </marker>
+  </defs>
+</svg>
+```
+:::
+
+::: notes
+~2 min, setting the stage with history. Two years ago — late 2024 — the way most of us touched
+these models was this: a chatbot in a browser tab. The model was already smart, and the smart thing
+to do was to treat it as an oracle: ask it for the code, then carry the intelligence out through the
+clipboard, into your editor, where you fixed the imports, ran it, read the traceback, and went back
+to ask again. Every loop through the problem passed through your hands. The model thought; you did
+everything else. Hold onto that division of labor — the whole history I want to tell you is the
+story of that division dissolving.
+:::
+
+
+## The first "agents" were hand-wired DAGs {#dag-era}
+
+::: {style="display:flex;justify-content:center;align-items:center;gap:60px;margin-top:60px"}
+![](images/openai-agent-builder-dag.jpeg){style="width:1150px;border:2px solid #C5B89E;border-radius:10px"}
+:::
+
+::: {style="text-align:center;margin-top:26px"}
+[intelligence in the boxes · plumbing between]{style="color:#7A6F5C;font-size:0.85em"}
+:::
+
+::: notes
+Then came the first things called agents — and they looked like this. This is OpenAI's Agent
+Builder, from about a year and a half ago. Look at it: it's a DAG. A query-rewrite node, a
+classifier node, an if/else, two specialist LLM nodes, an end state. This should feel like home —
+it's a pipeline, and pipelines are this room's native language. And that's exactly why I show it:
+the human encodes the control flow, and the LLM calls sit inside the boxes. Intelligence in the
+boxes, plumbing between. When people in 2024 said "agents are brittle," this is the architecture
+they were describing — and if your intuitions about agents were formed here, they are due for an
+update, because this picture is already obsolete.
+:::
+
+
+## A harness inverts the picture: control flow lives in the model {#harness}
+
+::: {style="display:flex;justify-content:center;margin-top:70px"}
+```{=html}
+<video data-autoplay loop muted playsinline src="images/earendil-harness.mp4" style="width:1350px;border-radius:10px"></video>
+```
+:::
+
+::: {style="text-align:center;margin-top:24px"}
+[system prompt · tools · agentic loop · translation layer — [earendil.com/posts/what-is-a-harness](https://earendil.com/posts/what-is-a-harness/)]{style="color:#7A6F5C;font-size:0.8em"}
+:::
+
+::: notes
+The modern form is called a harness, and it deletes the DAG. Four components — watch them build: a
+system prompt that says who the agent is; tools — read a file, run a command, search — described to
+the model; an agentic loop; and a translation layer to the model's API. That's the whole
+architecture. The model chooses tools and loops until the task is done. Nobody draws the graph — the
+model decides, at every step, what happens next. The control flow moved out of the boxes-and-arrows
+and into the model itself. This is what the word "agentic" actually means, and it's why the
+brittleness went away: there is no pipeline to break. Claude Code, Codex, and every serious coding
+agent today is this — a few hundred lines of harness around a very capable model.
+:::
+
+
+## You stopped drawing the graph {#inversion}
+
+::: {style="display:flex;justify-content:center;margin-top:80px"}
+```{=html}
+<svg viewBox="0 0 1560 560" style="width:1450px" xmlns="http://www.w3.org/2000/svg">
+  <!-- LEFT: human-drawn DAG -->
+  <g>
+    <text x="330" y="50" font-family="EB Garamond, serif" font-size="40" fill="#1B1611" text-anchor="middle" font-weight="600">2024 — you draw the graph</text>
+    <g stroke="#7A6F5C" stroke-width="3" fill="none">
+      <path d="M 150 160 L 270 160"/><path d="M 390 160 L 480 120"/><path d="M 390 160 L 480 220"/>
+      <path d="M 590 120 L 590 120"/><path d="M 600 120 L 660 160"/><path d="M 600 220 L 660 180"/>
+    </g>
+    <g font-family="IBM Plex Mono, monospace" font-size="22" fill="#1B1611">
+      <rect x="60" y="130" width="90" height="60" rx="8" fill="#F4ECDC" stroke="#C5B89E" stroke-width="2"/>
+      <text x="105" y="167" text-anchor="middle">start</text>
+      <rect x="270" y="130" width="120" height="60" rx="8" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="2"/>
+      <text x="330" y="167" text-anchor="middle" fill="#3D5BA0">LLM</text>
+      <rect x="480" y="90" width="120" height="60" rx="8" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="2"/>
+      <text x="540" y="127" text-anchor="middle" fill="#3D5BA0">LLM</text>
+      <rect x="480" y="190" width="120" height="60" rx="8" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="2"/>
+      <text x="540" y="227" text-anchor="middle" fill="#3D5BA0">LLM</text>
+      <rect x="660" y="140" width="90" height="60" rx="8" fill="#F4ECDC" stroke="#C5B89E" stroke-width="2"/>
+      <text x="705" y="177" text-anchor="middle">end</text>
+    </g>
+    <text x="400" y="330" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">control flow: yours</text>
+    <text x="400" y="375" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">intelligence: in the boxes</text>
+  </g>
+  <!-- divider -->
+  <line x1="800" y1="60" x2="800" y2="500" stroke="#C5B89E" stroke-width="2" stroke-dasharray="8 10"/>
+  <!-- RIGHT: model in a loop -->
+  <g>
+    <text x="1190" y="50" font-family="EB Garamond, serif" font-size="40" fill="#1B1611" text-anchor="middle" font-weight="600">2026 — the model is the graph</text>
+    <circle cx="1190" cy="210" r="86" fill="#FBF6E9" stroke="#BC4538" stroke-width="4"/>
+    <text x="1190" y="202" font-family="EB Garamond, serif" font-size="34" fill="#BC4538" text-anchor="middle" font-weight="600">model</text>
+    <text x="1190" y="240" font-family="EB Garamond, serif" font-size="24" fill="#7A6F5C" text-anchor="middle">decides</text>
+    <!-- loop arrow -->
+    <path d="M 1190 96 A 118 118 0 1 1 1074 232" fill="none" stroke="#BC4538" stroke-width="5" marker-end="url(#arr2)"/>
+    <!-- tools around -->
+    <g font-family="IBM Plex Mono, monospace" font-size="24" fill="#1B1611">
+      <rect x="920" y="120" width="150" height="52" rx="26" fill="#F4ECDC" stroke="#3F8278" stroke-width="2.5"/>
+      <text x="995" y="154" text-anchor="middle" fill="#3F8278">read</text>
+      <rect x="1310" y="120" width="150" height="52" rx="26" fill="#F4ECDC" stroke="#3F8278" stroke-width="2.5"/>
+      <text x="1385" y="154" text-anchor="middle" fill="#3F8278">run</text>
+      <rect x="920" y="290" width="150" height="52" rx="26" fill="#F4ECDC" stroke="#3F8278" stroke-width="2.5"/>
+      <text x="995" y="324" text-anchor="middle" fill="#3F8278">write</text>
+      <rect x="1310" y="290" width="150" height="52" rx="26" fill="#F4ECDC" stroke="#3F8278" stroke-width="2.5"/>
+      <text x="1385" y="324" text-anchor="middle" fill="#3F8278">search</text>
+    </g>
+    <text x="1190" y="440" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">loops until the task is done</text>
+  </g>
+  <defs>
+    <marker id="arr2" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#BC4538"/>
+    </marker>
+  </defs>
+</svg>
+```
+:::
+
+::: notes
+So here is the inversion, side by side, and it's the one mental move I need from you this morning.
+On the left, the world your pipeline intuitions were built for: you draw the graph, the
+intelligence sits in the boxes. On the right, today: the model sits in a loop with tools, and the
+graph is whatever the model decides to do next. If you internalize just this one picture, the rest
+of the talk — and honestly, the rest of the next few years — will make much more sense. Everything
+I'll show you in the tutorial is this right-hand picture, pointed at a cosmology problem.
+:::
+
+
+<!-- ═══════════════ BEAT 2 · THE LANDING: beginning of the singularity ═══════════════ -->
+
+## The math predicts a singularity {#timeline}
+
+::: {style="display:flex;justify-content:center;margin-top:110px"}
+```{=html}
+<svg viewBox="0 0 1560 500" style="width:1480px" xmlns="http://www.w3.org/2000/svg">
+  <!-- log axis: time before present -->
+  <line x1="80" y1="330" x2="1480" y2="330" stroke="#1B1611" stroke-width="3"/>
+  <text x="1370" y="400" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="end">time before present (log)</text>
+  <!-- events: log10(years ago): earth 9.65, sapiens 5.48, agriculture 4.0, industry 2.48, computers 1.9, LLMs 0.9 -->
+  <!-- map: x = 80 + (9.65 - v) * 1360/9.65  → earth 80, sapiens 667, agri 876, industry 1090, computers 1172, llm 1313, now 1440 -->
+  <g>
+    <circle cx="80"  cy="330" r="13" fill="#3D5BA0"/>
+    <text x="80"  y="270" font-family="EB Garamond, serif" font-size="32" fill="#1B1611" text-anchor="middle">Earth</text>
+    <text x="80"  y="306" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C" text-anchor="middle">4.5 Gyr</text>
+    <circle cx="667" cy="330" r="13" fill="#3D5BA0"/>
+    <text x="667" y="270" font-family="EB Garamond, serif" font-size="32" fill="#1B1611" text-anchor="middle">Homo sapiens</text>
+    <text x="667" y="306" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C" text-anchor="middle">300 kyr</text>
+    <circle cx="876" cy="330" r="13" fill="#3D5BA0"/>
+    <text x="876" y="200" font-family="EB Garamond, serif" font-size="32" fill="#1B1611" text-anchor="middle">agriculture</text>
+    <text x="876" y="236" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C" text-anchor="middle">10 kyr</text>
+    <line x1="876" y1="250" x2="876" y2="315" stroke="#C5B89E" stroke-width="2"/>
+    <circle cx="1090" cy="330" r="13" fill="#3D5BA0"/>
+    <text x="1090" y="270" font-family="EB Garamond, serif" font-size="32" fill="#1B1611" text-anchor="middle">industry</text>
+    <text x="1090" y="306" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C" text-anchor="middle">300 yr</text>
+    <circle cx="1172" cy="330" r="13" fill="#3D5BA0"/>
+    <text x="1172" y="200" font-family="EB Garamond, serif" font-size="32" fill="#1B1611" text-anchor="middle">computers</text>
+    <text x="1172" y="236" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C" text-anchor="middle">80 yr</text>
+    <line x1="1172" y1="250" x2="1172" y2="315" stroke="#C5B89E" stroke-width="2"/>
+    <circle cx="1313" cy="330" r="13" fill="#BC4538"/>
+    <text x="1313" y="270" font-family="EB Garamond, serif" font-size="32" fill="#BC4538" text-anchor="middle" font-weight="600">LLMs</text>
+    <text x="1313" y="306" font-family="IBM Plex Mono, monospace" font-size="24" fill="#BC4538" text-anchor="middle">8 yr</text>
+    <!-- now marker -->
+    <line x1="1440" y1="120" x2="1440" y2="380" stroke="#BC4538" stroke-width="4" stroke-dasharray="10 8"/>
+    <text x="1440" y="440" font-family="EB Garamond, serif" font-size="34" fill="#BC4538" text-anchor="middle" font-weight="600">now</text>
+  </g>
+</svg>
+```
+:::
+
+::: notes
+Now let me place us in time — and this is a plot a cosmologist can't resist. Take the big
+transitions in the history of complexity and plot them on a log axis of time before present: Earth,
+four and a half billion years; anatomically modern humans, three hundred thousand; agriculture, ten
+thousand; industry, three hundred; computers, eighty; large language models, eight. Roughly evenly
+spaced — in log time. Each transition arrives an order of magnitude faster than the last. Extrapolate
+the series and the spacing goes to zero in finite time: the math predicts a singularity. Now,
+extrapolation is exactly the kind of move this audience is trained to distrust, and rightly so. So
+let me give you something much more concrete than a log plot.
+:::
+
+
+## "January 1st marked the beginning of the singularity" {#stripe}
+
+::: {style="display:flex;justify-content:center;margin-top:90px"}
+::: {.quote-card style="max-width:1350px"}
+"It's a fuzzy and perhaps already overworked term, but we decided that **January 1st marked the
+beginning of the singularity**, and we have since been operating on that basis. … we simply saw a
+large inflection in long-run trends — for example, a huge increase in the rate of new firm creation
+— and we decided that we ought to take the phase change seriously."
+
+::: {.quote-attrib}
+Stripe, letter to investors — August 2026
+:::
+:::
+:::
+
+::: {style="display:flex;justify-content:center;gap:110px;margin-top:70px;text-align:center"}
+::: {}
+[+41%]{.stat-big}<br>[H1 revenue, YoY]{.stat-label}
+:::
+::: {}
+[88%]{.stat-big}<br>[of the Forbes AI 50 build on Stripe]{.stat-label}
+:::
+::: {}
+[>$8B]{.stat-big}<br>[paid for OpenRouter]{.stat-label}
+:::
+:::
+
+::: notes
+This is Stripe — the payments company, one of the most sober, numbers-driven institutions in the
+economy — writing to its investors two weeks ago. They declared that January 1st, 2026 marked the
+beginning of the singularity, and that they have been operating on that basis since. Not as
+futurism — as an operational reading of their own data: an inflection in new-firm creation, revenue
+up forty-one percent year over year, nearly the entire Forbes AI 50 running on their rails. The
+word "singularity" is migrating from speculation to descriptive vocabulary — serious people now use
+it to describe the present. I can't tell you what it means from the inside — that's rather the
+point of the word — but I can tell you what it means for us: these are the very last years of the
+old way of doing science, and the very first years of the new. That's the frame for everything
+that follows: what does the new way actually look like, at a keyboard, on a real problem?
+:::
+
+
+<!-- ═══════════════ BEAT 3 · THE TUTORIAL: measure dark energy ═══════════════ -->
+
+## Measure dark energy in twenty minutes {.section-divider #tutorial-open}
+
+::: {style="text-align:center;margin-top:60px"}
+[580 supernovae · one parameter · one agent]{style="color:#7A6F5C;font-size:0.9em"}
+:::
+
+::: {style="text-align:center;margin-top:40px"}
+[lightconeresearch.github.io/agent-skills → ASTRA]{style="font-family:'IBM Plex Mono',monospace;font-size:0.6em;color:#7A6F5C"}
+:::
+
+::: notes
+So here's the tutorial — and everything I'm about to show you is public, linked at the bottom, and
+designed so you can run it yourself this afternoon. The problem is a classic: use the relation
+between the brightness and redshift of Type Ia supernovae to measure the dark energy content of the
+universe — the same measurement that won the 2011 Nobel Prize. Five hundred and eighty supernovae,
+one free parameter, one agent. Mechanically it's a least-squares fit; that's deliberate — the
+physics is simple enough that you can watch the *practice* instead. And the practice is the point:
+you'll see the agent do the work, and you'll see the thing I actually care about, which is how the
+record of that work gets kept honest.
+:::
+
+
+## ASTRA records the analysis; the agent does the work {#astra-intro}
+
+::: {style="display:flex;justify-content:center;align-items:center;gap:90px;margin-top:90px"}
+::: {style="width:44%"}
+```yaml
+# astra.yaml — machine-readable record
+inputs:      # what goes in
+outputs:     # what comes out
+recipes:     # how, exactly
+decisions:   # the choices that matter
+evidence:    # verified against sources
+```
+:::
+::: {style="width:40%"}
+```bash
+uv tool install astra-tools
+
+claude plugin install \
+  astra@lightcone-research
+```
+:::
+:::
+
+::: notes
+Two pieces of infrastructure, both installable in one line. ASTRA is a format — a YAML file that
+is a machine-readable record of an analysis: its inputs, its outputs, the recipes that connect
+them, and — the part I'll spend the most time on — the consequential methodological decisions, with
+evidence that gets verified against the literature. ASTRA runs nothing; it validates and inspects.
+The runner is the agent — the harness you just met. And the plugin teaches your agent the format:
+the judgment about what counts as a decision, how to parameterize choices, when to split an
+analysis. You install these two things, start your agent in an empty directory, and everything from
+here on is prompts.
+:::
+
+
+## 1 · The data — you ask; the agent fetches and reads {#step-data}
+
+::: {.prompt-card}
+Download the Union2.1 supernova compilation from the Supernova Cosmology Project into a `data/`
+directory:
+
+`https://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt`
+
+Then show me the first few rows and tell me what's in the file.
+:::
+
+::: {style="text-align:center;margin-top:50px"}
+[580 SNe Ia · z = 0.015 – 1.414 · distance moduli calibrated to h = 0.7]{style="color:#7A6F5C;font-size:0.85em"}
+:::
+
+::: notes
+Step one. This block is a prompt — you paste it into the agent, not the shell. Everything in this
+tutorial in this style is words addressed to the agent, and that's the first thing to notice about
+the practice: the interface is intent. The agent downloads the Union2.1 compilation — the 2012
+supernova sample — reads the header, and tells you what's there: five hundred eighty supernovae,
+redshifts from 0.015 to 1.4, distance moduli carrying an h equals 0.7 calibration from the header.
+Note that it read the header and told us about the calibration — hold that thought, because the
+header is going to matter again at the end.
+:::
+
+
+## 2 · The spec — say what the analysis is {#step-spec}
+
+::: {style="display:flex;justify-content:center;align-items:flex-start;gap:60px;margin-top:30px"}
+::: {style="width:44%"}
+::: {.prompt-card style="font-size:0.78em"}
+Use the astra skill to set up an `astra.yaml` for this. I want to fit a flat LCDM model to this
+data to recover Omega_Lambda, varying only Omega_Lambda and using the metadata in the file's
+header. Two outputs: the best fit, and a downstream best-fit Hubble diagram figure…
+:::
+:::
+::: {style="width:50%"}
+```yaml
+inputs:
+  - id: union21
+    type: data
+    source: data/SCPUnion2.1_mu_vs_z.txt
+
+outputs:
+  - id: best_fit
+    type: metric
+    inputs: [union21]
+    recipe:
+      command: python src/fit.py
+        --data {inputs.union21}
+  - id: hubble_diagram
+    type: figure
+    inputs: [union21, best_fit]
+```
+:::
+:::
+
+::: notes
+Step two: say what the analysis is, in words, and the agent writes the spec. Inputs: the data file.
+Outputs: a best-fit — Omega Lambda with uncertainty, chi-squared — and a Hubble-diagram figure
+downstream of it. Each output carries a recipe: the exact command that produces it, with the
+dependencies explicit. Notice what this is: it's a DAG again! — but look who drew it. You said four
+sentences of intent; the model wrote the graph, and a hook validated the file the moment it was
+saved. The graph didn't disappear from science — provenance still wants a graph — it moved from
+being the thing you hand-wire to being an artifact the agent maintains.
+:::
+
+
+## 3 · Run it — the agent implements, executes, and reports {#step-run}
+
+::: {.prompt-card style="max-width:1200px;margin:40px auto 0"}
+Use uv to set up a virtual environment and install any needed packages. Then implement the
+analysis. Write the scripts the recipes call, run them, and show me the Hubble diagram.
+:::
+
+::: {style="text-align:center;margin-top:90px"}
+[Ω~Λ~ = 0.722 ± 0.013]{.stat-hero}
+:::
+
+::: notes
+Step three: run it. One prompt: set up the environment, write the scripts the recipes call, run
+them, show me the figure. The agent writes the fitter, writes the plotting script, runs both, and
+one number comes back: Omega Lambda equals 0.722 plus or minus 0.013. Seventy-two percent of the
+universe is dark energy — measured, from a standing start, in about five minutes of wall-clock
+time. If we stopped here, this would be a cute demo: agent fits line, film at eleven. But this is
+where the scientific part actually starts — because how do you know that number is right?
+:::
+
+
+## 4 · Check it — the quote is verified against the paper itself {#step-verify}
+
+::: {style="display:flex;justify-content:center;align-items:flex-start;gap:60px;margin-top:30px"}
+::: {style="width:52%"}
+```yaml
+prior_insights:
+  suzuki_2012_result:
+    claim: >
+      Suzuki et al. (2012) constrain
+      Omega_Lambda = 0.705 (+0.040, -0.043)
+      including systematic errors.
+    evidence:
+      - doi: "10.48550/arXiv.1105.3470"
+        quote:
+          exact: "In a flat Universe, SNe Ia
+          alone constrain … ΩΛ = 0.705+0.040−0.043
+          including systematics"
+        location:
+          value: "page=17"
+```
+:::
+::: {style="width:36%"}
+```text
+$ astra validate astra.yaml \
+    --verify-evidence
+
+✓ Schema validation passed
+✓ Semantic validation passed
+
+Verifying evidence...
+✓ Quote verified on page(s) [17]
+```
+:::
+:::
+
+::: notes
+Step four: check it against the paper that published this catalogue — Suzuki et al. 2012. And
+here's my favorite mechanism in the whole system. The agent caches the paper and records the
+published constraint as a *prior insight* — a claim with evidence. The evidence is an exact quote,
+with a page number — and ASTRA searches the cached PDF and verifies that the quote actually appears
+on page seventeen. This matters because agents, like graduate students, occasionally remember
+papers saying things they don't say. Claims about the literature are grounded in the literature,
+mechanically. And with the quote verified, we can compare: they got 0.705, plus 0.040 minus 0.043.
+Our central value agrees nicely. But look at the error bars — ours are three times tighter, on the
+same 580 supernovae. Same data, same model. Something is wrong, and it's wrong in the direction
+that should scare you: we're *too* confident.
+:::
+
+
+## 5 · One decision doubles the error bar {#step-decision}
+
+::: {style="display:flex;justify-content:center;margin-top:70px"}
+```{=html}
+<svg viewBox="0 0 1500 520" style="width:1400px" xmlns="http://www.w3.org/2000/svg">
+  <!-- error-bar comparison, Omega_Lambda axis from 0.64 to 0.80 → x 220..1420 (7500 px per unit) -->
+  <line x1="220" y1="430" x2="1420" y2="430" stroke="#1B1611" stroke-width="3"/>
+  <g font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C">
+    <text x="295" y="480" text-anchor="middle">0.65</text>
+    <text x="670" y="480" text-anchor="middle">0.70</text>
+    <text x="1045" y="480" text-anchor="middle">0.75</text>
+    <text x="1420" y="480" text-anchor="middle">0.80</text>
+  </g>
+  <text x="820" y="515" font-family="EB Garamond, serif" font-size="30" fill="#1B1611" text-anchor="middle">Ω_Λ</text>
+  <!-- rows: ours stat (0.722±0.013): center x=835, half=97; ours stat+sys (0.714±0.030): center 775, half=225; suzuki (0.705 +0.040 -0.043): center 707, +300/-322 -->
+  <g>
+    <line x1="738" y1="120" x2="932" y2="120" stroke="#BC4538" stroke-width="7"/>
+    <circle cx="835" cy="120" r="14" fill="#BC4538"/>
+    <text x="960" y="132" font-family="EB Garamond, serif" font-size="32" fill="#1B1611">ours — statistical only</text>
+  </g>
+  <g>
+    <line x1="550" y1="230" x2="1000" y2="230" stroke="#3F8278" stroke-width="7"/>
+    <circle cx="775" cy="230" r="14" fill="#3F8278"/>
+    <text x="1030" y="242" font-family="EB Garamond, serif" font-size="32" fill="#1B1611">ours — with systematics</text>
+  </g>
+  <g>
+    <line x1="385" y1="340" x2="1007" y2="340" stroke="#3D5BA0" stroke-width="7"/>
+    <circle cx="707" cy="340" r="14" fill="#3D5BA0"/>
+    <text x="1040" y="352" font-family="EB Garamond, serif" font-size="32" fill="#1B1611">Suzuki et al. 2012, published</text>
+  </g>
+  <text x="820" y="60" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">the value barely moves — the honesty is in the width</text>
+</svg>
+```
+:::
+
+::: notes
+Step five, and the payoff. We ask the agent to find out why: download the two Union2.1 covariance
+files — with and without systematics — work out which one our error column corresponds to, and
+record a *decision* in the spec: statistical-only versus full systematic covariance. The answer:
+our fit had been using the no-systematics errors. Everything the systematic covariance knows was
+sitting in a file we had never opened. Switch to it, and watch the plot: the central value barely
+moves — 0.722 to 0.714 — but the uncertainty more than doubles, and only then does our measurement
+actually lie beside the published one: 0.2 sigma apart, their data, their systematics, their
+method. Here's the lesson, and it's the sentence I'd have you take home: if you had ranked this
+choice by its effect on the best-fit number, it would have looked nearly irrelevant. It is the
+difference between a number that *resembles* theirs and a number you can *put beside* theirs. That
+is what a decision is — and this field, all of science, is made of thousands of them, almost none
+of them written down. ASTRA writes them down.
+:::
+
+
+## Three more decisions are still sitting in this analysis {#going-further}
+
+::: {style="display:flex;justify-content:center;gap:70px;margin-top:130px;text-align:center"}
+::: {.decision-chip}
+optimiser<br>[likely a null result — worth recording as one]{.chip-sub}
+:::
+::: {.decision-chip}
+redshift range<br>[longest lever arm, worst systematics]{.chip-sub}
+:::
+::: {.decision-chip}
+dark-energy model<br>[hold w = −1, or fit it]{.chip-sub}
+:::
+:::
+
+::: notes
+And the tutorial ends by pointing at what it didn't do: three more decisions sitting in this little
+analysis, unimplemented. The optimiser — likely a null result, and a null result is worth recording
+as one. The redshift range — the high-z supernovae carry the longest lever arm and the worst
+systematics. And the dark-energy model itself: hold w at minus one, or fit it and buy a degeneracy.
+Each is one more option, one more recipe argument, one more reason written down. That's a toy
+analysis. Now scale the picture up: a real weak-lensing analysis has hundreds of these decisions
+and takes a collaboration five years. What does this practice look like there? That's the last
+part of the tutorial — how this works day to day, on real science.
+:::
+
+
+<!-- ═══════════════ BEAT 3b · THE PRACTICE AT SCALE (CNRS lifts land here) ═══════════════ -->
+<!-- TODO(inventory): lift CNRS slides — verification environments, long-running/autonomous work
+     (agentic_task_board.png / agentic_task_report.png), orchestration, UNIONS-in-practice. -->
+
+
+<!-- ═══════════════ BEAT 4 · IMPLICATIONS ═══════════════ -->
+
+## "Some sciences — for example astrophysics — have become information sciences" {#ball-1}
+
+::: {style="display:flex;justify-content:center;margin-top:110px"}
+::: {.quote-card style="max-width:1400px"}
+"…if every current prosumer-tier subscriber to codex and claude code donated a tiny share of their
+monthly compute, **we will soon be able to automate more astrophysics than is currently done by
+human astrophysicists** — the ones who operate in the 'astrophysics as data science' regime at
+least."
+
+::: {.quote-attrib}
+Dean W. Ball — August 8, 2026
+:::
+:::
+:::
+
+::: notes
+So what does it mean? Let me borrow two claims from Dean Ball — a policy researcher, not an AI
+booster — writing three weeks ago. First claim: some sciences, astrophysics chief among them, have
+in practice become information sciences — high-capex shared instruments producing data, plus labor
+that is almost entirely computation on that data. And in that regime, the arithmetic is brutal: the
+idle compute of the world's coding-agent subscribers is soon enough to automate more astrophysics
+than human astrophysicists currently do. You just watched the existence proof: a dark-energy
+measurement, spec'd, run, verified against the literature, by an agent, in minutes. He's talking
+about us. This is coming right for our field, and I think both of his claims are true.
+:::
+
+
+## The meta-skill: knowing what is computationally tractable {#ball-2}
+
+::: {style="display:flex;justify-content:center;margin-top:110px"}
+::: {.quote-card style="max-width:1400px"}
+"if you can master the meta-skill of figuring out what problems in arbitrary domains are
+computationally tractable … you'll have refined heuristics for the right questions to ask about
+everything. … **this is probably the skill to have optimized for** … though I readily admit I don't
+know how long it will remain a human advantage. **it is for now though.**"
+
+::: {.quote-attrib}
+Dean W. Ball — August 8, 2026
+:::
+:::
+:::
+
+::: notes
+Second claim, and this one is about you. The scarce skill in this regime is not coding and it's
+not prompting — it's the meta-skill of looking at an arbitrary domain and knowing which of its
+problems are computationally tractable, and what question to ask to make progress along the
+margin. Master that and you get to be, in his phrase, a kind of meta-genius — for at least a year
+or two, maybe longer. Everyone in this room is unusually well positioned for this: physics-informed
+ML is *already* the discipline of knowing what physics can be pushed through computation. But
+notice the honesty of the last clause: he doesn't know how long it remains a human advantage. It is
+for now. The meta-skill is temporary — and that's not a reason for despair, it's a reason for
+urgency and, honestly, for joy: this is the window in which knowing how to do this makes you
+extraordinary.
+:::
+
+
+## The stake in the ground {#stake}
+
+::: {style="display:flex;justify-content:center;align-items:center;margin-top:160px"}
+::: {style="max-width:1400px;text-align:center;font-size:1.35em;line-height:1.45"}
+In five years, I expect frontier AI to be **better at astrophysics and cosmology than the vast
+majority of currently employed astrophysicists and cosmologists** — to the extent that the
+economics of our field are drastically changed.
+:::
+:::
+
+::: notes
+So let me put a stake in the ground — a concrete, falsifiable position you can hold me to. In five
+years, I expect frontier AI to be better at astrophysics and cosmology than the vast majority of
+currently employed astrophysicists and cosmologists — to the point that the economics of our field
+are drastically changed. I might be wrong! It's a prediction, and predictions about exponentials
+are hard in both directions. But notice that everything you saw today — the harness, the tutorial,
+the verified analysis — is the *current* state, the worst it will ever be. If you think I'm wrong,
+I'd genuinely love to argue about it in the discussion. If I'm right, then the interesting question
+isn't whether — it's what you personally do about it.
+:::
+
+
+## The choice is genuinely open — and neither path is bad {#choice}
+
+::: {style="display:flex;justify-content:center;margin-top:80px"}
+```{=html}
+<svg viewBox="0 0 1560 560" style="width:1450px" xmlns="http://www.w3.org/2000/svg">
+  <!-- left: eddy -->
+  <g>
+    <path d="M 390 260 a 120 120 0 1 1 -6 -62" fill="none" stroke="#3D5BA0" stroke-width="6"/>
+    <path d="M 390 245 a 82 82 0 1 1 -8 -44" fill="none" stroke="#3D5BA0" stroke-width="5" opacity="0.7"/>
+    <path d="M 383 235 a 48 48 0 1 1 -10 -28" fill="none" stroke="#3D5BA0" stroke-width="4" opacity="0.45"/>
+    <text x="300" y="470" font-family="EB Garamond, serif" font-size="38" fill="#1B1611" text-anchor="middle" font-weight="600">find a protected eddy</text>
+    <text x="300" y="520" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">a niche that doesn't scale — hold on a while longer</text>
+  </g>
+  <!-- right: wave -->
+  <g>
+    <path d="M 820 380 C 950 380, 1050 340, 1130 260 C 1190 200, 1230 150, 1260 120 C 1290 160, 1350 220, 1460 260"
+          fill="none" stroke="#3F8278" stroke-width="7"/>
+    <path d="M 820 420 C 970 420, 1090 390, 1190 330 C 1270 282, 1330 240, 1400 220"
+          fill="none" stroke="#3F8278" stroke-width="5" opacity="0.55"/>
+    <circle cx="1252" cy="128" r="12" fill="#BC4538"/>
+    <text x="1140" y="470" font-family="EB Garamond, serif" font-size="38" fill="#1B1611" text-anchor="middle" font-weight="600">ride the wave</text>
+    <text x="1140" y="520" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">become expert in scaling — and see what comes next</text>
+  </g>
+</svg>
+```
+:::
+
+::: notes
+And here is the honest framing of that choice, because I want to be careful: neither path is bad —
+it depends on what you want. One real option: find a niche where things don't scale — where data is
+scarce, where the loop runs through hardware, through a wet lab, through people — and hold on a
+while longer. Those eddies exist and they are legitimate places to do beautiful science. The other:
+use exactly this window to become an expert in scaling — in the meta-skill — and move with the wave
+to see what comes next. What I'd argue against is only the default: drifting into one of these by
+not choosing. Think about the futures you'd actually want to live in — including the uncomfortable
+ones — so that you can genuinely advocate for what you want in the world.
+:::
+
+
+## Might as well enjoy it while the going's good {#close}
+
+::: {style="text-align:center;margin-top:180px"}
+[the last years of the old way · the first years of the new]{style="font-size:1.1em"}
+:::
+
+::: {style="text-align:center;margin-top:120px;color:#7A6F5C;font-size:0.8em"}
+[cailmdaley.github.io/talks · lightconeresearch.github.io/agent-skills]{style="font-family:'IBM Plex Mono',monospace"}
+:::
+
+::: notes
+I'll close where I started. We are living in the very last years of the old way of doing science
+and the very first years of the new — and whatever else that is, it is not boring. The meta-skill
+is temporary; the window is open now; and this combination — agentic modes of work pointed at real
+physics by people with real taste — is going to produce some of the most fun and dramatic advances
+astrophysics and ML have ever seen. So might as well enjoy it while the going's good. The tutorial
+is at the link — run it this afternoon; it genuinely takes twenty minutes. And in a moment I'll
+show you a live demo. Thank you.
+:::
