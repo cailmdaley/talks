@@ -112,3 +112,8 @@
     line-height: 1.45;
     max-height: none;
 }
+
+// ── Intermission divider (lifted pattern from CNRS deck) ──
+.reveal section.intermission > h2:first-child::after {
+    display: none;
+}
