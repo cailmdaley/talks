@@ -602,7 +602,8 @@ that should scare you: we're *too* confident.
 Step five, and the payoff. We ask the agent to find out why: download the two Union2.1 covariance
 files — with and without systematics — work out which one our error column corresponds to, and
 record a *decision* in the spec: statistical-only versus full systematic covariance. The answer:
-our fit had been using the no-systematics errors. Everything the systematic covariance knows was
+our fit had been using the no-systematics errors — the error column in the data file *is* the diagonal
+of the no-systematics covariance, to twelve decimal places. Everything the systematic covariance knows was
 sitting in a file we had never opened. Switch to it, and watch the plot: the central value barely
 moves — 0.722 to 0.714 — but the uncertainty more than doubles, and only then does our measurement
 actually lie beside the published one: 0.2 sigma apart, their data, their systematics, their
