@@ -123,16 +123,6 @@
     display: none;
 }
 
-// ── METR drivers column ──
-.reveal .metr-cite {
-    display: block;
-    font-size: 0.55em;
-    color: #7A6F5C;
-    margin-top: 0.15em;
-    line-height: 1.3;
-    a { color: #7A6F5C; text-decoration: none; border-bottom: 1px solid rgba(122,111,92,0.4); }
-}
-
 // ── Live tutorial layout: prompt left (under the terminal), watch panel right ──
 .reveal .live-pair {
     display: flex;
@@ -184,3 +174,106 @@
 .reveal .prompt-card code { word-break: break-all; white-space: normal; }
 .reveal .watch-row p { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; margin: 0; }
 .reveal .watch-row .v { text-align: right; }
+
+// ── METR slide (CNRS-specific live-iframe layout) ──
+.reveal section.metr-slide { padding: 46px 80px 42px; overflow: hidden; }
+
+.reveal .metr-stage {
+    position: relative;
+    width: 100%;
+    height: 884px;
+    margin-top: 0;
+}
+
+.reveal .metr-chart-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 54px;
+    width: 75%;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+}
+
+.reveal .metr-chart-title {
+    position: absolute;
+    top: -22px;
+    left: 4px;
+    z-index: 3;
+    margin: 0;
+    font-size: 0.82em;
+    line-height: 1.2;
+    color: $ink;
+    text-align: center;
+    background: $ground;
+    padding: 48px 6px 28px 6px;
+    width: 1000px;
+    white-space: nowrap;
+}
+
+$metr-zoom: 1.42;
+.reveal .metr-cropbox {
+    position: relative;
+    width: 100%;
+    height: 846px;
+    margin-top: 0;
+    overflow: hidden;
+    background: $ground;
+    border-radius: 4px;
+}
+.reveal .metr-embed {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: calc(100% / #{$metr-zoom});
+    height: calc(100% / #{$metr-zoom} + 100px);
+    border: 0;
+    background: transparent;
+    transform: scale(#{$metr-zoom});
+    transform-origin: top left;
+}
+
+.reveal .metr-axes-col {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 72%;
+    right: 0;
+    padding-left: 52px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.reveal .metr-axes-head {
+    font-variant-caps: small-caps;
+    letter-spacing: 0.07em;
+    font-size: 0.96em;
+    color: $ink-muted;
+    margin-bottom: 0.2em;
+    line-height: 1.2;
+}
+.reveal .metr-axes-col ul { margin: 0; padding-left: 1.1em; list-style: disc; }
+.reveal .metr-axes-col li { font-size: 1.02em; margin-bottom: 1.9em; }
+.reveal .metr-axes-col li::marker { color: $cinnabar; }
+.reveal .metr-axes-col li .metr-cite {
+    display: block;
+    font-size: 0.56em;
+    color: $ink-muted;
+    letter-spacing: 0.01em;
+    margin-top: 0.3em;
+    line-height: 1.3;
+}
+.reveal .metr-axes-col li .metr-cite a {
+    color: $ink-muted;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(122, 111, 92, 0.4);
+    transition: color 0.15s ease;
+}
+.reveal .metr-axes-col li .metr-cite a:hover { color: $cinnabar; }
+
+// offline fallback for the METR iframe (toggled by live-demo.html)
+.reveal .metr-cropbox .metr-fallback { display: none; position: absolute; inset: 0; width: 100%; height: auto; box-shadow: none; }
+.reveal .metr-cropbox.offline .metr-embed { display: none; }
+.reveal .metr-cropbox.offline .metr-fallback { display: block; }

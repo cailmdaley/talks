@@ -153,11 +153,11 @@ agent today is this — a few hundred lines of harness around a very capable mod
 :::
 
 
-## You stopped drawing the graph {#inversion}
+## You stopped drawing the graph — the model draws it on the fly {#inversion}
 
 ::: {style="display:flex;justify-content:center;margin-top:150px"}
 ```{=html}
-<svg viewBox="0 0 1560 560" style="width:1650px" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1560 580" style="width:1650px" xmlns="http://www.w3.org/2000/svg">
   <!-- LEFT: human-drawn DAG -->
   <g>
     <text x="330" y="50" font-family="EB Garamond, serif" font-size="40" fill="#1B1611" text-anchor="middle" font-weight="600">2024 — you draw the graph</text>
@@ -184,7 +184,7 @@ agent today is this — a few hundred lines of harness around a very capable mod
   <line x1="800" y1="60" x2="800" y2="500" stroke="#C5B89E" stroke-width="2" stroke-dasharray="8 10"/>
   <!-- RIGHT: model in a loop -->
   <g>
-    <text x="1190" y="50" font-family="EB Garamond, serif" font-size="40" fill="#1B1611" text-anchor="middle" font-weight="600">2026 — the model is the graph</text>
+    <text x="1190" y="50" font-family="EB Garamond, serif" font-size="40" fill="#1B1611" text-anchor="middle" font-weight="600">2026 — the model generates the graph</text>
     <circle cx="1190" cy="210" r="86" fill="#FBF6E9" stroke="#BC4538" stroke-width="4"/>
     <text x="1190" y="202" font-family="EB Garamond, serif" font-size="34" fill="#BC4538" text-anchor="middle" font-weight="600">model</text>
     <text x="1190" y="240" font-family="EB Garamond, serif" font-size="24" fill="#7A6F5C" text-anchor="middle">decides</text>
@@ -201,7 +201,19 @@ agent today is this — a few hundred lines of harness around a very capable mod
       <rect x="1310" y="290" width="150" height="52" rx="26" fill="#F4ECDC" stroke="#3F8278" stroke-width="2.5"/>
       <text x="1385" y="324" text-anchor="middle" fill="#3F8278">search</text>
     </g>
-    <text x="1190" y="440" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">loops until the task is done</text>
+    <!-- emergent graph, drawn by the model for this task -->
+    <g stroke="#BC4538" stroke-width="2.5" stroke-dasharray="7 6" fill="none" opacity="0.8">
+      <path d="M 1230 296 L 1290 390"/><path d="M 1150 296 L 1090 390"/><path d="M 1190 296 L 1190 400"/>
+      <path d="M 1290 390 L 1330 470"/><path d="M 1290 390 L 1250 470"/>
+    </g>
+    <g font-family="IBM Plex Mono, monospace" font-size="20" fill="#BC4538">
+      <rect x="1040" y="390" width="100" height="40" rx="8" fill="#FBF6E9" stroke="#BC4538" stroke-width="2" stroke-dasharray="5 4"/><text x="1090" y="416" text-anchor="middle">agent</text>
+      <rect x="1140" y="400" width="100" height="40" rx="8" fill="#FBF6E9" stroke="#BC4538" stroke-width="2" stroke-dasharray="5 4"/><text x="1190" y="426" text-anchor="middle">agent</text>
+      <rect x="1240" y="390" width="100" height="40" rx="8" fill="#FBF6E9" stroke="#BC4538" stroke-width="2" stroke-dasharray="5 4"/><text x="1290" y="416" text-anchor="middle">agent</text>
+      <rect x="1200" y="470" width="100" height="40" rx="8" fill="#FBF6E9" stroke="#BC4538" stroke-width="2" stroke-dasharray="5 4"/><text x="1250" y="496" text-anchor="middle">verify</text>
+      <rect x="1300" y="470" width="100" height="40" rx="8" fill="#FBF6E9" stroke="#BC4538" stroke-width="2" stroke-dasharray="5 4"/><text x="1350" y="496" text-anchor="middle">verify</text>
+    </g>
+    <text x="1190" y="548" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">a graph per task — drawn, run, discarded</text>
   </g>
   <defs>
     <marker id="arr2" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto">
@@ -215,10 +227,96 @@ agent today is this — a few hundred lines of harness around a very capable mod
 ::: notes
 So here is the inversion, side by side, and it's the one mental move I need from you this morning.
 On the left, the world your pipeline intuitions were built for: you draw the graph, the
-intelligence sits in the boxes. On the right, today: the model sits in a loop with tools, and the
-graph is whatever the model decides to do next. If you internalize just this one picture, the rest
+intelligence sits in the boxes. On the right, today: the model sits in a loop with tools — and the
+graph didn't vanish, it moved. The model draws it, for this task, on the fly: it decides to fan
+out three sub-agents, to put a verifier behind two of them, to run a pipeline — and when the task
+is done that graph is thrown away. Nobody could have drawn it in advance because it depends on
+what the model finds as it goes. If you internalize just this one picture, the rest
 of the talk — and honestly, the rest of the next few years — will make much more sense. Everything
 I'll show you in the tutorial is this right-hand picture, pointed at a cosmology problem.
+:::
+
+
+## The graph is generated per task: subagents and workflows {#generated-graph}
+
+::: {style="display:flex;justify-content:center;margin-top:50px"}
+```{=html}
+<svg viewBox="0 0 1560 620" style="width:1500px" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="ga" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#BC4538"/></marker>
+  <marker id="gb" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3F8278"/></marker></defs>
+  <!-- orchestrator -->
+  <rect x="60" y="230" width="300" height="150" rx="14" fill="#FBF6E9" stroke="#BC4538" stroke-width="4"/>
+  <text x="210" y="290" font-family="EB Garamond, serif" font-size="34" fill="#BC4538" text-anchor="middle" font-weight="600">orchestrator</text>
+  <text x="210" y="330" font-family="EB Garamond, serif" font-size="24" fill="#7A6F5C" text-anchor="middle">holds the plan &amp; the judgement</text>
+  <!-- its context bar -->
+  <rect x="60" y="400" width="300" height="18" rx="4" fill="#3D5BA0" fill-opacity="0.25" stroke="#3D5BA0"/>
+  <text x="60" y="446" font-family="IBM Plex Mono, monospace" font-size="20" fill="#7A6F5C">context: management view only</text>
+  <!-- spawn arrows -->
+  <g stroke="#BC4538" stroke-width="3" fill="none" marker-end="url(#ga)">
+    <path d="M 360 270 C 460 270, 460 110, 560 110"/>
+    <path d="M 360 305 L 560 305"/>
+    <path d="M 360 340 C 460 340, 460 500, 560 500"/>
+  </g>
+  <text x="440" y="90" font-family="EB Garamond, serif" font-size="24" fill="#BC4538" text-anchor="middle">spawn</text>
+  <!-- subagent 1: bulk read -->
+  <g>
+    <rect x="560" y="60" width="330" height="100" rx="12" fill="#FBF6E9" stroke="#1B1611" stroke-width="2.5"/>
+    <text x="725" y="102" font-family="EB Garamond, serif" font-size="28" fill="#1B1611" text-anchor="middle" font-weight="600">subagent · read 2000 lines</text>
+    <rect x="560" y="132" width="330" height="14" rx="4" fill="#3D5BA0" fill-opacity="0.25" stroke="#3D5BA0"/>
+  </g>
+  <!-- subagent 2: implement -->
+  <g>
+    <rect x="560" y="255" width="330" height="100" rx="12" fill="#FBF6E9" stroke="#1B1611" stroke-width="2.5"/>
+    <text x="725" y="297" font-family="EB Garamond, serif" font-size="28" fill="#1B1611" text-anchor="middle" font-weight="600">subagent · implement</text>
+    <rect x="560" y="327" width="330" height="14" rx="4" fill="#3D5BA0" fill-opacity="0.25" stroke="#3D5BA0"/>
+  </g>
+  <!-- workflow: pipeline the model wrote -->
+  <g>
+    <rect x="560" y="440" width="930" height="130" rx="12" fill="none" stroke="#3F8278" stroke-width="2.5" stroke-dasharray="8 7"/>
+    <text x="580" y="428" font-family="IBM Plex Mono, monospace" font-size="20" fill="#3F8278">workflow — a pipeline written for this task</text>
+    <g font-family="EB Garamond, serif" font-size="24" fill="#1B1611" text-anchor="middle">
+      <rect x="590" y="475" width="180" height="60" rx="10" fill="#FBF6E9" stroke="#3F8278" stroke-width="2.5"/><text x="680" y="512">review: bugs</text>
+      <rect x="590" y="475" width="0" height="0"/>
+      <rect x="840" y="445" width="180" height="50" rx="10" fill="#FBF6E9" stroke="#3F8278" stroke-width="2.5"/><text x="930" y="478">verify #1</text>
+      <rect x="840" y="510" width="180" height="50" rx="10" fill="#FBF6E9" stroke="#3F8278" stroke-width="2.5"/><text x="930" y="543">verify #2</text>
+      <rect x="1100" y="475" width="180" height="60" rx="10" fill="#FBF6E9" stroke="#3F8278" stroke-width="2.5"/><text x="1190" y="512">confirmed</text>
+    </g>
+    <g stroke="#3F8278" stroke-width="2.5" fill="none" marker-end="url(#gb)">
+      <path d="M 770 495 C 800 495, 800 470, 840 470"/><path d="M 770 515 C 800 515, 800 535, 840 535"/>
+      <path d="M 1020 470 C 1060 470, 1060 500, 1100 500"/><path d="M 1020 535 C 1060 535, 1060 510, 1100 510"/>
+    </g>
+  </g>
+  <!-- results flow back -->
+  <g stroke="#7A6F5C" stroke-width="2.5" fill="none" stroke-dasharray="6 6">
+    <path d="M 890 110 C 1000 110, 1000 200, 1100 200 L 1400 200"/>
+    <path d="M 890 305 L 1400 305"/>
+  </g>
+  <rect x="1400" y="160" width="130" height="190" rx="12" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2.5"/>
+  <text x="1465" y="245" font-family="EB Garamond, serif" font-size="24" fill="#7A6F5C" text-anchor="middle">summary</text>
+  <text x="1465" y="275" font-family="EB Garamond, serif" font-size="24" fill="#7A6F5C" text-anchor="middle">back</text>
+  <path d="M 1465 350 C 1465 600, 210 620, 210 470" fill="none" stroke="#7A6F5C" stroke-width="2.5" stroke-dasharray="6 6" marker-end="url(#ga)"/>
+  <!-- legend -->
+  <rect x="1100" y="60" width="30" height="14" rx="4" fill="#3D5BA0" fill-opacity="0.25" stroke="#3D5BA0"/>
+  <text x="1140" y="74" font-family="EB Garamond, serif" font-size="24" fill="#1B1611">a fresh context window, each</text>
+</svg>
+```
+:::
+
+::: notes
+~1.5 min. [DRAFT — refine to your voice.] Here's what "the model draws the graph" looks like in
+practice, because it's very concrete. An orchestrating agent holds the plan and the judgement.
+When it hits a sub-goal that would flood its own context — read two thousand lines of a paper,
+implement a module, sweep a directory — it *spawns a subagent*: a fresh model instance, its own
+clean context window, given one job, returning a summary. Each blue bar is a separate context.
+The orchestrator's own window stays lean — just the management view — which is what lets one
+session carry an arc that used to take five. And when the model wants structure it can write a
+*workflow*: a small pipeline — review for bugs, fan out two independent verifiers, keep only the
+confirmed findings — composed for this task and discarded after. That's a DAG. It just wasn't
+drawn by you. Two things I want you to notice, because they'll come back in the tutorial. First,
+this is context architecture before it's parallelism: the reason to split is that each piece
+wants a clean window. Second, look where verification appears — as nodes the model added on its
+own. When we get to the practice at scale, "design the checks into the work" is exactly this
+picture, made deliberate.
 :::
 
 
@@ -343,26 +441,35 @@ let me give you something much more concrete than a log plot.
 :::
 
 
-## Agentic capabilities are increasing exponentially {#metr}
+## Agentic capabilities are increasing exponentially {#metr .metr-slide}
 
-:::::::::::::: {.columns style="margin-top:20px;align-items:center"}
-::: {.column style="width:70%"}
-![](images/metr_capability_trajectory.png){.no-treat style="width:100%;border-radius:8px"}
+::: {.metr-stage}
+
+::: {.metr-chart-wrap}
+
+::: {.metr-chart-title}
+How long a task takes a human expert
 :::
-::: {.column style="width:30%;padding-left:50px"}
-::: {style="font-variant-caps:small-caps;letter-spacing:0.07em;font-size:0.9em;color:#7A6F5C;margin-bottom:0.3em"}
+
+::: {.metr-cropbox}
+<iframe class="metr-embed" src="https://metr.org/horizon-chart-embed" title="METR — task-completion time horizon (live, interactive)" loading="lazy"></iframe>
+<img class="metr-fallback no-treat" src="images/metr_capability_trajectory.png" alt="">
+:::
+
+:::
+
+::: {.metr-axes-col}
+
+::: {.metr-axes-head}
 Driven by
 :::
-::: {style="font-size:0.95em;line-height:1.35"}
-- Scaling laws<br>[[Kaplan ’20](https://arxiv.org/abs/2001.08361) · [Hoffmann ’22](https://arxiv.org/abs/2203.15556)]{.metr-cite}
-- Test-time compute<br>[[Snell ’24](https://arxiv.org/abs/2408.03314) · [DeepSeek ’25](https://arxiv.org/abs/2501.12948)]{.metr-cite}
-- Synthetic data<br>[[Gunasekar ’23](https://arxiv.org/abs/2306.11644) · [Langlais ’26](https://arxiv.org/abs/2604.18226)]{.metr-cite}
-:::
-:::
-::::::::::::::
 
-::: {style="text-align:center;margin-top:10px;color:#7A6F5C;font-size:0.6em"}
-METR — task-completion time horizon · [metr.org](https://metr.org)
+- Scaling laws [[Kaplan ’20](https://arxiv.org/abs/2001.08361) · [Hoffmann ’22](https://arxiv.org/abs/2203.15556)]{.metr-cite}
+- Test-time compute [[Snell ’24](https://arxiv.org/abs/2408.03314) · [DeepSeek ’25](https://arxiv.org/abs/2501.12948)]{.metr-cite}
+- Synthetic data [[Gunasekar ’23](https://arxiv.org/abs/2306.11644) · [Langlais ’26](https://arxiv.org/abs/2604.18226) (Pleias)]{.metr-cite}
+
+:::
+
 :::
 
 ::: notes
@@ -375,6 +482,8 @@ people who build these systems expect it to continue: scaling laws, test-time co
 synthetic data — three levers, none exhausted. The tutorial you'll see in a minute sits somewhere
 around the one-hour mark on this axis. Now — the log plot said "singularity" as a curiosity. Here's
 what it looks like when a serious institution says it as an operating assumption.
+OFFLINE: if the browser is offline the static PNG shows automatically; press `m` on this slide to
+toggle iframe ↔ PNG by hand.
 :::
 
 
@@ -1311,7 +1420,7 @@ while they last, and shape the practice so people stay *in* it.
 
 ::: {style="display:flex;justify-content:center;margin-top:150px"}
 ```{=html}
-<svg viewBox="0 0 1560 560" style="width:1650px" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1560 580" style="width:1650px" xmlns="http://www.w3.org/2000/svg">
   <!-- left: eddy -->
   <g>
     <path d="M 390 260 a 120 120 0 1 1 -6 -62" fill="none" stroke="#3D5BA0" stroke-width="6"/>
