@@ -222,6 +222,74 @@ I'll show you in the tutorial is this right-hand picture, pointed at a cosmology
 :::
 
 
+## The loop is affordable because the prefix is cached {#prompt-caching}
+
+::: {style="display:flex;justify-content:center;margin-top:60px"}
+```{=html}
+<svg viewBox="0 0 1560 620" style="width:1500px" xmlns="http://www.w3.org/2000/svg">
+<defs><pattern id="hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#3D5BA0" stroke-width="5" opacity="0.55"/></pattern></defs>
+<text x="120" y="40" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C">context sent to the model, step by step →</text>
+<text x="100" y="120" font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C" text-anchor="end">step 1</text>
+<rect x="120" y="80" width="200" height="56" rx="8" fill="#3D5BA0" fill-opacity="0.18" stroke="#3D5BA0" stroke-width="2"/>
+<text x="220" y="117" font-family="IBM Plex Mono, monospace" font-size="24" fill="#1B1611" text-anchor="middle">sys</text>
+<rect x="326" y="80" width="160" height="56" rx="8" fill="#3D5BA0" fill-opacity="0.18" stroke="#3D5BA0" stroke-width="2"/>
+<text x="406" y="117" font-family="IBM Plex Mono, monospace" font-size="24" fill="#1B1611" text-anchor="middle">tools</text>
+<rect x="492" y="80" width="120" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
+<text x="552" y="117" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">you</text>
+<text x="100" y="240" font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C" text-anchor="end">step 2</text>
+<rect x="120" y="200" width="480" height="56" rx="8" fill="url(#hatch)" stroke="#3D5BA0" stroke-width="2"/>
+<text x="360" y="237" font-family="EB Garamond, serif" font-size="28" fill="#3D5BA0" text-anchor="middle" font-weight="600">cached prefix — identical to last step</text>
+<rect x="606" y="200" width="220" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
+<text x="716" y="237" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">tool result</text>
+<rect x="832" y="200" width="90" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
+<text x="877" y="237" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">model</text>
+<text x="100" y="360" font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C" text-anchor="end">step 3</text>
+<rect x="120" y="320" width="790" height="56" rx="8" fill="url(#hatch)" stroke="#3D5BA0" stroke-width="2"/>
+<text x="515" y="357" font-family="EB Garamond, serif" font-size="28" fill="#3D5BA0" text-anchor="middle" font-weight="600">cached prefix — identical to last step</text>
+<rect x="916" y="320" width="260" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
+<text x="1046" y="357" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">tool result</text>
+<rect x="1182" y="320" width="90" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
+<text x="1227" y="357" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">model</text>
+<text x="100" y="480" font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C" text-anchor="end">step 4</text>
+<rect x="120" y="440" width="1080" height="56" rx="8" fill="url(#hatch)" stroke="#3D5BA0" stroke-width="2"/>
+<text x="690" y="477" font-family="EB Garamond, serif" font-size="28" fill="#3D5BA0" text-anchor="middle" font-weight="600">cached prefix — identical to last step</text>
+<rect x="1206" y="440" width="180" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
+<text x="1296" y="477" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">tool result</text>
+<rect x="1392" y="440" width="60" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
+<text x="1422" y="477" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">model</text>
+<g font-family="EB Garamond, serif" font-size="30">
+<rect x="120" y="560" width="40" height="26" rx="5" fill="url(#hatch)" stroke="#3D5BA0" stroke-width="2"/><text x="175" y="582" fill="#1B1611">read from cache · ~10× cheaper · no prefill latency</text>
+<rect x="900" y="560" width="40" height="26" rx="5" fill="#BC4538" fill-opacity="0.9"/><text x="955" y="582" fill="#1B1611">new tokens · computed this step</text>
+</g></svg>
+```
+:::
+
+::: {style="text-align:center;margin-top:26px;color:#7A6F5C;font-size:0.8em"}
+[design rule: stable system prompt first · append-only history · never edit the middle]{style="font-family:'IBM Plex Mono',monospace;font-size:0.85em"}
+:::
+
+::: notes
+~1.5 min. One piece of mechanics before we move on, because it's the thing that makes the loop on
+the previous slide economically possible — and it's the single most important thing to understand
+about how these systems are priced and engineered. The model is stateless. Every step of the loop,
+the harness sends the *entire* context again: system prompt, tool definitions, the whole
+conversation so far, plus the new tool result. Naively that's quadratic — a hundred-step task
+re-reads a hundred-thousand-token context a hundred times. What saves it is prompt caching: the
+provider keeps the model's internal state for a prefix it has already processed, so if this step's
+context begins with exactly the same tokens as the last one — and in a loop it does — the whole
+prefix is served from cache. Cached tokens cost about a tenth as much and skip the prefill
+latency; only the tail — the newest tool result and the model's new output — is actually computed.
+[Point at the rows: the hatched region grows, the red stays small.] Two consequences. For cost:
+a long agentic session is dominated by cache reads, which is why it's affordable at all. For
+design: everything in the harness is organised to keep the prefix stable — the system prompt
+goes first and never changes, history is append-only, you never edit the middle of the context.
+That's the design rule at the bottom, and once you know it you'll recognise it everywhere in how
+these tools behave — why they compact context rather than reorder it, why long stable instructions
+are cheap and mid-conversation changes aren't. Hold onto it; it's what makes the tutorial's
+twenty-minute session cost cents.
+:::
+
+
 <!-- ═══════════════ BEAT 2 · THE LANDING: beginning of the singularity ═══════════════ -->
 
 ## The math predicts a singularity {#timeline}

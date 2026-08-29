@@ -57,6 +57,17 @@ ecologies-of-intelligence / OpenAI→HF incident thread fits this audience.
 - **Theme**: house look from `../assets/house.scss` via `theme: [default, ../assets/house.scss,
   custom.scss]`; figure-on-ground via `assets/figure-treatment.html`.
 
+## Live demo mechanics (tutorial beat)
+
+Cail's terminal covers the **left half** of the screen during the live tutorial. Every tutorial
+slide is a `.live-pair`: prompt card left (copied *before* the terminal opens — each card has a
+`copy` button; `demo/prompts.md` holds all five for `cat`), "while it runs" panel right (the only
+thing the audience sees while he types). Step 3's right panel is a `.live-figure` that polls
+`~/forth-demo/results/hubble_diagram.png` every 1.5 s and swaps it in when the agent writes it
+(`live-demo.html`; override the dir with `?demo=file:///abs/path` on the deck URL). Run the demo in
+`~/forth-demo/`, or pass the override. Prompts follow the ASTRA tutorial verbatim except for the
+explicit `results/hubble_diagram.png` save path.
+
 ## Build
 
 ```bash
