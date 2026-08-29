@@ -32,6 +32,7 @@ format:
         include-after-body:
             - assets/no_footer_on_titleslide.html
             - assets/figure-treatment.html
+            - live-demo.html
         footer: "Cail Daley | FORTH PIML Workshop | September 18, 2026"
         history: false
         hash: true
@@ -411,6 +412,8 @@ here on is prompts.
 
 ## 1 · The data — you ask; the agent fetches and reads {#step-data}
 
+::: {.live-pair}
+::: {.live-left}
 ::: {.prompt-card}
 Download the Union2.1 supernova compilation from the Supernova Cosmology Project into a `data/`
 directory:
@@ -419,20 +422,27 @@ directory:
 
 Then show me the first few rows and tell me what's in the file.
 :::
-
-::: {.reply-card}
-```text
-# M(h=0.7, statistical only) -19.3182761161
-# M(h=0.7, with systematics) -19.3081547178
-1993ah   0.028488   35.3466   0.2239   0.1284
-1993ag   0.050043   36.6823   0.1667   0.0182
-1993o    0.052926   36.8177   0.1554   0.0180
-…  (580 rows)
-```
 :::
-
-::: {style="text-align:center;margin-top:30px"}
-[580 SNe Ia · z = 0.015 – 1.414 · distance moduli calibrated to h = 0.7]{style="color:#7A6F5C;font-size:0.85em"}
+::: {.live-right}
+::: {.watch-head}
+while it runs — what to look for
+:::
+::: {.watch-row}
+[supernovae]{.k} [580 SNe Ia]{.v}
+:::
+::: {.watch-row}
+[redshift range]{.k} [z = 0.015 – 1.414]{.v}
+:::
+::: {.watch-row}
+[columns]{.k} [name · z · μ · σ~μ~ · P(low-mass host)]{.v}
+:::
+::: {.watch-row}
+[header]{.k} [M(h=0.7) — calibration lives here]{.v}
+:::
+::: {.watch-row}
+[the tell]{.k} [does the agent *read the header*?]{.v}
+:::
+:::
 :::
 
 ::: notes
@@ -448,15 +458,24 @@ header is going to matter again at the end.
 
 ## 2 · The spec — say what the analysis is {#step-spec}
 
-::: {style="display:flex;justify-content:center;align-items:flex-start;gap:60px;margin-top:30px"}
-::: {style="width:44%"}
-::: {.prompt-card style="font-size:0.78em"}
+::: {.live-pair}
+::: {.live-left}
+::: {.prompt-card}
 Use the astra skill to set up an `astra.yaml` for this. I want to fit a flat LCDM model to this
 data to recover Omega_Lambda, varying only Omega_Lambda and using the metadata in the file's
-header. Two outputs: the best fit, and a downstream best-fit Hubble diagram figure…
+header.
+
+Two outputs: the best fit, and a downstream best-fit Hubble diagram figure with an absolute panel
+and a residuals panel. Put outputs under `results/`, e.g. `results/hubble_diagram.png`.
+
+In this first pass, let's only use inputs, outputs, and recipes. Please walk me through each
+element that you add.
 :::
 :::
-::: {style="width:50%"}
+::: {.live-right}
+::: {.watch-head}
+while it runs — the shape the hook will validate
+:::
 ```yaml
 inputs:
   - id: union21
@@ -469,10 +488,12 @@ outputs:
     inputs: [union21]
     recipe:
       command: python src/fit.py
-        --data {inputs.union21}
+        --data {inputs.union21} --out {output}
   - id: hubble_diagram
     type: figure
     inputs: [union21, best_fit]
+    recipe:
+      command: python src/plot_hubble.py …
 ```
 :::
 :::
@@ -490,17 +511,26 @@ being the thing you hand-wire to being an artifact the agent maintains.
 
 ## 3 · Run it — the agent implements, executes, and reports {#step-run}
 
-::: {.prompt-card style="max-width:1500px;margin:30px auto 0"}
-Use uv to set up a virtual environment and install any needed packages. Then implement the
-analysis. Write the scripts the recipes call, run them, and show me the Hubble diagram.
+::: {.live-pair}
+::: {.live-left}
+::: {.prompt-card}
+Use uv to set up a virtual environment and install any needed packages.
+
+Then implement the analysis. Write the scripts the recipes call, run them, and show me the Hubble
+diagram. Save the figure to `results/hubble_diagram.png`.
 :::
 
-::: {style="display:flex;justify-content:center;align-items:center;gap:60px;margin-top:30px"}
-![](images/union21_hubble_diagram.png){.blend-figure style="width:1050px"}
-
-::: {style="text-align:center"}
-[Ω~Λ~ = 0.722 ± 0.013]{.stat-hero style="font-size:1.8em;white-space:nowrap"}<br>
-[χ²/dof = 0.97 · 580 SNe · ~5 min wall-clock]{style="color:#7A6F5C;font-size:0.7em"}
+::: {style="margin-top:40px;text-align:center"}
+[expect one number]{style="color:#7A6F5C;font-size:0.7em"}<br>
+[Ω~Λ~ ≈ 0.72]{.stat-hero style="font-size:1.4em"}
+:::
+:::
+::: {.live-right}
+::: {.watch-head}
+live — fills in when the agent writes the file
+:::
+::: {.live-figure data-src="results/hubble_diagram.png"}
+:::
 :::
 :::
 
@@ -516,36 +546,39 @@ where the scientific part actually starts — because how do you know that numbe
 
 ## 4 · Check it — the quote is verified against the paper itself {#step-verify}
 
-::: {style="display:flex;justify-content:center;align-items:flex-start;gap:60px;margin-top:30px"}
-::: {style="width:52%"}
+::: {.live-pair}
+::: {.live-left}
+::: {.prompt-card}
+The paper that published this catalogue is Suzuki et al. 2012, arXiv 1105.3470. Cache the paper,
+verify their own Omega_Lambda from these supernovae, and show me the output. Then record it in
+`astra.yaml` as a prior insight with the quote as evidence, and tell me how our constraint compares
+to theirs.
+:::
+:::
+::: {.live-right}
+::: {.watch-head}
+while it runs — what a verified claim looks like
+:::
 ```yaml
 prior_insights:
   suzuki_2012_result:
     claim: >
-      Suzuki et al. (2012) constrain
       Omega_Lambda = 0.705 (+0.040, -0.043)
       including systematic errors.
     evidence:
       - doi: "10.48550/arXiv.1105.3470"
         quote:
-          exact: "In a flat Universe, SNe Ia
-          alone constrain … ΩΛ = 0.705+0.040−0.043
+          exact: "… ΩΛ = 0.705+0.040−0.043
           including systematics"
-        location:
-          value: "page=17"
+        location: { value: "page=17" }
 ```
-:::
-::: {style="width:36%"}
 ```text
-$ astra validate astra.yaml \
-    --verify-evidence
-
-✓ Schema validation passed
-✓ Semantic validation passed
-
-Verifying evidence...
+$ astra validate astra.yaml --verify-evidence
 ✓ Quote verified on page(s) [17]
 ```
+::: {style="margin-top:14px;text-align:center;font-size:0.75em;color:#7A6F5C"}
+theirs ± 0.04 · ours ± 0.013 — same 580 supernovae. *Too* confident.
+:::
 :::
 :::
 
@@ -565,37 +598,52 @@ that should scare you: we're *too* confident.
 
 ## 5 · One decision doubles the error bar {#step-decision}
 
-::: {style="display:flex;justify-content:center;margin-top:70px"}
+::: {.live-pair}
+::: {.live-left}
+::: {.prompt-card}
+Let's understand why our error bars are so much tighter than theirs. Download the two Union2.1
+covariance files:
+
+`https://supernova.lbl.gov/Union/figures/SCPUnion2.1_covmat_nosys.txt`<br>
+`https://supernova.lbl.gov/Union/figures/SCPUnion2.1_covmat_sys.txt`
+
+Work out which one the main data file's error column is using, then add a decision to `astra.yaml`
+to switch to the other, and see what impact it has on our constraint.
+:::
+:::
+::: {.live-right}
+::: {.watch-head}
+while it runs — where the three numbers land
+:::
 ```{=html}
-<svg viewBox="0 0 1500 520" style="width:1400px" xmlns="http://www.w3.org/2000/svg">
-  <!-- error-bar comparison, Omega_Lambda axis from 0.64 to 0.80 → x 220..1420 (7500 px per unit) -->
-  <line x1="220" y1="430" x2="1420" y2="430" stroke="#1B1611" stroke-width="3"/>
-  <g font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C">
-    <text x="295" y="480" text-anchor="middle">0.65</text>
-    <text x="670" y="480" text-anchor="middle">0.70</text>
-    <text x="1045" y="480" text-anchor="middle">0.75</text>
-    <text x="1420" y="480" text-anchor="middle">0.80</text>
-  </g>
-  <text x="820" y="515" font-family="EB Garamond, serif" font-size="30" fill="#1B1611" text-anchor="middle">Ω_Λ</text>
-  <!-- rows: ours stat (0.722±0.013): center x=835, half=97; ours stat+sys (0.714±0.030): center 775, half=225; suzuki (0.705 +0.040 -0.043): center 707, +300/-322 -->
+<svg viewBox="0 0 900 640" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+  <text x="450" y="44" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle" font-style="italic">the value barely moves — the honesty is in the width</text>
   <g>
-    <line x1="738" y1="120" x2="932" y2="120" stroke="#BC4538" stroke-width="7"/>
-    <circle cx="835" cy="120" r="14" fill="#BC4538"/>
-    <text x="960" y="132" font-family="EB Garamond, serif" font-size="32" fill="#1B1611">ours — statistical only</text>
+    <line x1="396" y1="150" x2="523" y2="150" stroke="#BC4538" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="460" cy="150" r="16" fill="#BC4538"/>
+    <text x="460" y="112" font-family="EB Garamond, serif" font-size="34" fill="#1B1611" text-anchor="middle">ours — statistical only · 0.722 ± 0.013</text>
   </g>
   <g>
-    <line x1="550" y1="230" x2="1000" y2="230" stroke="#3F8278" stroke-width="7"/>
-    <circle cx="775" cy="230" r="14" fill="#3F8278"/>
-    <text x="1030" y="242" font-family="EB Garamond, serif" font-size="32" fill="#1B1611">ours — with systematics</text>
+    <line x1="275" y1="300" x2="567" y2="300" stroke="#3F8278" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="421" cy="300" r="16" fill="#3F8278"/>
+    <text x="421" y="262" font-family="EB Garamond, serif" font-size="34" fill="#1B1611" text-anchor="middle">ours — with systematics · 0.714 ± 0.030</text>
   </g>
   <g>
-    <line x1="385" y1="340" x2="1007" y2="340" stroke="#3D5BA0" stroke-width="7"/>
-    <circle cx="707" cy="340" r="14" fill="#3D5BA0"/>
-    <text x="1040" y="352" font-family="EB Garamond, serif" font-size="32" fill="#1B1611">Suzuki et al. 2012, published</text>
+    <line x1="167" y1="450" x2="572" y2="450" stroke="#3D5BA0" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="377" cy="450" r="16" fill="#3D5BA0"/>
+    <text x="377" y="412" font-family="EB Garamond, serif" font-size="34" fill="#1B1611" text-anchor="middle">Suzuki et al. 2012 · 0.705 +0.040 −0.043</text>
   </g>
-  <text x="820" y="60" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">the value barely moves — the honesty is in the width</text>
+  <line x1="60" y1="540" x2="840" y2="540" stroke="#1B1611" stroke-width="3"/>
+  <g font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C" text-anchor="middle">
+    <line x1="109" y1="540" x2="109" y2="552" stroke="#1B1611" stroke-width="2"/><text x="109" y="590">0.65</text>
+    <line x1="352" y1="540" x2="352" y2="552" stroke="#1B1611" stroke-width="2"/><text x="352" y="590">0.70</text>
+    <line x1="596" y1="540" x2="596" y2="552" stroke="#1B1611" stroke-width="2"/><text x="596" y="590">0.75</text>
+    <line x1="840" y1="540" x2="840" y2="552" stroke="#1B1611" stroke-width="2"/><text x="840" y="590">0.80</text>
+  </g>
+  <text x="450" y="630" font-family="EB Garamond, serif" font-size="30" fill="#1B1611" text-anchor="middle">Ω<tspan font-size="22" dy="6">Λ</tspan></text>
 </svg>
 ```
+:::
 :::
 
 ::: notes

@@ -1,0 +1,63 @@
+<script>
+// ── Live-demo helpers for the tutorial beat ──
+// 1. Copy buttons on every .prompt-card (click → clipboard).
+// 2. .live-figure panels poll the demo directory for a PNG and swap it in
+//    the moment it appears. Demo dir: window.FORTH_DEMO_DIR, overridable with
+//    ?demo=file:///abs/path in the deck URL.
+(function () {
+  var DEFAULT_DEMO = "file:///Users/cd280747/forth-demo";
+  var q = new URLSearchParams(location.search);
+  var DEMO = (q.get("demo") || window.FORTH_DEMO_DIR || DEFAULT_DEMO).replace(/\/$/, "");
+
+  function copyText(t) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t);
+    var ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta);
+    ta.select(); document.execCommand("copy"); ta.remove(); return Promise.resolve();
+  }
+
+  function initCopy() {
+    document.querySelectorAll(".prompt-card").forEach(function (card) {
+      if (card.querySelector(".copy-btn")) return;
+      var b = document.createElement("button"); b.className = "copy-btn"; b.textContent = "copy";
+      b.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var text = card.innerText.replace(/^\s*copy\s*/, "").trim();
+        copyText(text).then(function () { b.textContent = "copied ✓"; setTimeout(function () { b.textContent = "copy"; }, 1600); });
+      });
+      card.appendChild(b);
+    });
+  }
+
+  function initLive() {
+    document.querySelectorAll(".live-figure").forEach(function (panel) {
+      var rel = panel.getAttribute("data-src");            // e.g. results/hubble_diagram.png
+      var every = +(panel.getAttribute("data-every") || 1500);
+      var img = document.createElement("img"); img.className = "live-img no-treat"; img.alt = "";
+      var ph = document.createElement("div"); ph.className = "live-placeholder";
+      ph.innerHTML = '<span class="live-dot"></span> waiting for <code>' + rel + '</code>';
+      panel.appendChild(ph); panel.appendChild(img);
+      var lastOK = 0, timer = null;
+      function tick() {
+        var probe = new Image();
+        var url = DEMO + "/" + rel + "?t=" + Date.now();
+        probe.onload = function () { img.src = url; panel.classList.add("is-live"); lastOK = Date.now(); };
+        probe.onerror = function () { /* not there yet */ };
+        probe.src = url;
+      }
+      function start() { if (!timer) { tick(); timer = setInterval(tick, every); } }
+      function stop() { if (timer) { clearInterval(timer); timer = null; } }
+      panel._liveStart = start; panel._liveStop = stop;
+    });
+    function sync() {
+      var cur = Reveal.getCurrentSlide();
+      document.querySelectorAll(".live-figure").forEach(function (p) {
+        (cur && cur.contains(p)) ? p._liveStart() : p._liveStop();
+      });
+    }
+    Reveal.on("slidechanged", sync); Reveal.on("ready", sync);
+  }
+
+  if (window.Reveal && Reveal.isReady && Reveal.isReady()) { initCopy(); initLive(); }
+  else { window.addEventListener("load", function () { initCopy(); if (window.Reveal) initLive(); }); }
+})();
+</script>
