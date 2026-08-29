@@ -272,8 +272,3 @@ $metr-zoom: 1.42;
     transition: color 0.15s ease;
 }
 .reveal .metr-axes-col li .metr-cite a:hover { color: $cinnabar; }
-
-// offline fallback for the METR iframe (toggled by live-demo.html)
-.reveal .metr-cropbox .metr-fallback { display: none; position: absolute; inset: 0; width: 100%; height: auto; box-shadow: none; }
-.reveal .metr-cropbox.offline .metr-embed { display: none; }
-.reveal .metr-cropbox.offline .metr-fallback { display: block; }

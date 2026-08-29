@@ -57,15 +57,7 @@
     Reveal.on("slidechanged", sync); Reveal.on("ready", sync);
   }
 
-  function initMetr() {
-    var box = document.querySelector(".metr-cropbox"); if (!box) return;
-    if (!navigator.onLine) box.classList.add("offline");
-    window.addEventListener("offline", function(){ box.classList.add("offline"); });
-    document.addEventListener("keydown", function(e){
-      if (e.key === "m" && Reveal.getCurrentSlide().contains(box)) box.classList.toggle("offline");
-    });
-  }
-  if (window.Reveal && Reveal.isReady && Reveal.isReady()) { initCopy(); initLive(); initMetr(); }
-  else { window.addEventListener("load", function () { initCopy(); if (window.Reveal) { initLive(); initMetr(); } }); }
+  if (window.Reveal && Reveal.isReady && Reveal.isReady()) { initCopy(); initLive(); }
+  else { window.addEventListener("load", function () { initCopy(); if (window.Reveal) initLive(); }); }
 })();
 </script>

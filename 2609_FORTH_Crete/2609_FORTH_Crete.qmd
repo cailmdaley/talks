@@ -453,7 +453,6 @@ How long a task takes a human expert
 
 ::: {.metr-cropbox}
 <iframe class="metr-embed" src="https://metr.org/horizon-chart-embed" title="METR — task-completion time horizon (live, interactive)" loading="lazy"></iframe>
-<img class="metr-fallback no-treat" src="images/metr_capability_trajectory.png" alt="">
 :::
 
 :::
@@ -482,8 +481,6 @@ people who build these systems expect it to continue: scaling laws, test-time co
 synthetic data — three levers, none exhausted. The tutorial you'll see in a minute sits somewhere
 around the one-hour mark on this axis. Now — the log plot said "singularity" as a curiosity. Here's
 what it looks like when a serious institution says it as an operating assumption.
-OFFLINE: if the browser is offline the static PNG shows automatically; press `m` on this slide to
-toggle iframe ↔ PNG by hand.
 :::
 
 
@@ -549,6 +546,84 @@ one free parameter, one agent. Mechanically it's a least-squares fit; that's del
 physics is simple enough that you can watch the *practice* instead. And the practice is the point:
 you'll see the agent do the work, and you'll see the thing I actually care about, which is how the
 record of that work gets kept honest.
+:::
+
+
+## A skill is expertise the agent loads on demand {#skills}
+
+::: {style="display:flex;justify-content:center;align-items:flex-start;gap:50px;margin-top:20px"}
+::: {style="width:46%"}
+```yaml
+# astra/skills/astra/SKILL.md
+---
+name: astra
+description: >
+  ASTRA (astra.yaml) support: what the format
+  is, and how to drive the `astra` CLI. Invoke
+  whenever reading, writing, validating, or
+  restructuring an astra.yaml spec …
+---
+# ASTRA
+## What ASTRA is
+## Orient before authoring
+## Citations, quotes, and supporting evidence
+## CLI reference          … 108 lines
+```
+```text
+astra/
+├── skills/astra/SKILL.md     the expertise
+├── hooks/hooks.json          validate on save
+└── scripts/                  the checks
+```
+:::
+::: {style="width:50%"}
+```{=html}
+<svg viewBox="0 0 800 560" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="sk" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#BC4538"/></marker></defs>
+  <text x="400" y="34" font-family="EB Garamond, serif" font-size="28" fill="#7A6F5C" text-anchor="middle">the agent's context window</text>
+  <!-- always-loaded index -->
+  <rect x="60" y="60" width="680" height="120" rx="12" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2.5"/>
+  <text x="90" y="100" font-family="EB Garamond, serif" font-size="26" fill="#1B1611" font-weight="600">always loaded — the index</text>
+  <g font-family="IBM Plex Mono, monospace" font-size="20" fill="#7A6F5C">
+    <text x="90" y="136">astra · felt · slides · shuttle · …</text>
+    <text x="90" y="164">one line each: name + when to use</text>
+  </g>
+  <!-- trigger -->
+  <path d="M 400 180 L 400 250" stroke="#BC4538" stroke-width="4" fill="none" marker-end="url(#sk)"/>
+  <text x="420" y="222" font-family="EB Garamond, serif" font-size="26" fill="#BC4538" font-style="italic">"set up an astra.yaml…"</text>
+  <!-- loaded body -->
+  <rect x="60" y="260" width="680" height="150" rx="12" fill="#FBF6E9" stroke="#BC4538" stroke-width="3.5"/>
+  <text x="90" y="300" font-family="EB Garamond, serif" font-size="26" fill="#BC4538" font-weight="600">loaded on demand — the whole SKILL.md</text>
+  <g font-family="IBM Plex Mono, monospace" font-size="20" fill="#1B1611">
+    <text x="90" y="338">what counts as a decision · how to parameterise</text>
+    <text x="90" y="366">when to split an analysis · how to cite evidence</text>
+    <text x="90" y="394">→ behaves like someone who read the docs</text>
+  </g>
+  <!-- hooks -->
+  <rect x="60" y="440" width="680" height="90" rx="12" fill="#F4ECDC" stroke="#3F8278" stroke-width="2.5" stroke-dasharray="8 6"/>
+  <text x="90" y="476" font-family="EB Garamond, serif" font-size="26" fill="#3F8278" font-weight="600">hooks — deterministic, outside the model</text>
+  <text x="90" y="510" font-family="IBM Plex Mono, monospace" font-size="20" fill="#1B1611">on save astra.yaml → astra validate · not skippable</text>
+</svg>
+```
+:::
+:::
+
+::: notes
+~1.5 min. [DRAFT — refine to your voice.] One last piece of the harness before the tutorial,
+because the tutorial's first move is "install a plugin" and I want that to mean something. A
+skill is a markdown file. That's it — a `SKILL.md` with a name, a one-paragraph description of
+*when* it applies, and a body that is the expertise: for ASTRA, what counts as a decision, how to
+parameterise a choice, when to split an analysis, how to cite evidence so it can be verified. The
+mechanism is progressive disclosure. The agent's context always carries the *index* — one line per
+skill, name plus trigger — and nothing more; that's cheap, and it's in the cached prefix. When
+your request matches — "set up an astra.yaml" — the whole body is loaded, and from that moment
+the agent behaves like someone who has read the documentation. This is how a general model becomes
+a domain expert without retraining: the expertise lives in a file you can read, diff, and version.
+And a plugin is a skill plus hooks — small deterministic scripts that fire on events, outside the
+model. The astra plugin has one that runs `astra validate` every time the spec is saved. The model
+can't forget to do it, because the model isn't the one doing it. Hold that pattern: expertise in a
+file the model reads on demand, checks in a script the model can't skip. Everything in the
+tutorial is those two things pointed at a supernova catalogue.
 :::
 
 
