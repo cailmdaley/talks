@@ -130,9 +130,9 @@ update, because this picture is already obsolete.
 
 ## A harness inverts the picture: control flow lives in the model {#harness}
 
-::: {style="display:flex;justify-content:center;margin-top:70px"}
+::: {style="display:flex;justify-content:center;margin-top:30px"}
 ```{=html}
-<video data-autoplay loop muted playsinline src="images/earendil-harness.mp4" style="width:1350px;border-radius:10px"></video>
+<video data-autoplay loop muted playsinline src="images/earendil-harness.mp4" style="width:1180px;border-radius:10px"></video>
 ```
 :::
 
@@ -154,9 +154,9 @@ agent today is this — a few hundred lines of harness around a very capable mod
 
 ## You stopped drawing the graph {#inversion}
 
-::: {style="display:flex;justify-content:center;margin-top:80px"}
+::: {style="display:flex;justify-content:center;margin-top:150px"}
 ```{=html}
-<svg viewBox="0 0 1560 560" style="width:1450px" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1560 560" style="width:1650px" xmlns="http://www.w3.org/2000/svg">
   <!-- LEFT: human-drawn DAG -->
   <g>
     <text x="330" y="50" font-family="EB Garamond, serif" font-size="40" fill="#1B1611" text-anchor="middle" font-weight="600">2024 — you draw the graph</text>
@@ -274,6 +274,41 @@ let me give you something much more concrete than a log plot.
 :::
 
 
+## Agentic capabilities are increasing exponentially {#metr}
+
+:::::::::::::: {.columns style="margin-top:20px;align-items:center"}
+::: {.column style="width:70%"}
+![](images/metr_capability_trajectory.png){.no-treat style="width:100%;border-radius:8px"}
+:::
+::: {.column style="width:30%;padding-left:50px"}
+::: {style="font-variant-caps:small-caps;letter-spacing:0.07em;font-size:0.9em;color:#7A6F5C;margin-bottom:0.3em"}
+Driven by
+:::
+::: {style="font-size:0.95em;line-height:1.35"}
+- Scaling laws<br>[[Kaplan ’20](https://arxiv.org/abs/2001.08361) · [Hoffmann ’22](https://arxiv.org/abs/2203.15556)]{.metr-cite}
+- Test-time compute<br>[[Snell ’24](https://arxiv.org/abs/2408.03314) · [DeepSeek ’25](https://arxiv.org/abs/2501.12948)]{.metr-cite}
+- Synthetic data<br>[[Gunasekar ’23](https://arxiv.org/abs/2306.11644) · [Langlais ’26](https://arxiv.org/abs/2604.18226)]{.metr-cite}
+:::
+:::
+::::::::::::::
+
+::: {style="text-align:center;margin-top:10px;color:#7A6F5C;font-size:0.6em"}
+METR — task-completion time horizon · [metr.org](https://metr.org)
+:::
+
+::: notes
+~1 min. [Lifted from CNRS — Cail's rehearsed script, retargeted.] So here is something concrete
+instead of a log plot. This audience probably knows this chart — I'll keep it plain anyway. Each
+point is a task, measured by how long it takes a human expert. The frontier is the longest task an
+AI agent can now finish on its own, and it has been doubling every few months — roughly a
+two-and-a-half-thousand-fold increase over four years if it holds. The right column is why the
+people who build these systems expect it to continue: scaling laws, test-time compute, and
+synthetic data — three levers, none exhausted. The tutorial you'll see in a minute sits somewhere
+around the one-hour mark on this axis. Now — the log plot said "singularity" as a curiosity. Here's
+what it looks like when a serious institution says it as an operating assumption.
+:::
+
+
 ## "January 1st marked the beginning of the singularity" {#stripe}
 
 ::: {style="display:flex;justify-content:center;margin-top:90px"}
@@ -385,7 +420,18 @@ directory:
 Then show me the first few rows and tell me what's in the file.
 :::
 
-::: {style="text-align:center;margin-top:50px"}
+::: {.reply-card}
+```text
+# M(h=0.7, statistical only) -19.3182761161
+# M(h=0.7, with systematics) -19.3081547178
+1993ah   0.028488   35.3466   0.2239   0.1284
+1993ag   0.050043   36.6823   0.1667   0.0182
+1993o    0.052926   36.8177   0.1554   0.0180
+…  (580 rows)
+```
+:::
+
+::: {style="text-align:center;margin-top:30px"}
 [580 SNe Ia · z = 0.015 – 1.414 · distance moduli calibrated to h = 0.7]{style="color:#7A6F5C;font-size:0.85em"}
 :::
 
@@ -444,13 +490,18 @@ being the thing you hand-wire to being an artifact the agent maintains.
 
 ## 3 · Run it — the agent implements, executes, and reports {#step-run}
 
-::: {.prompt-card style="max-width:1200px;margin:40px auto 0"}
+::: {.prompt-card style="max-width:1500px;margin:30px auto 0"}
 Use uv to set up a virtual environment and install any needed packages. Then implement the
 analysis. Write the scripts the recipes call, run them, and show me the Hubble diagram.
 :::
 
-::: {style="text-align:center;margin-top:90px"}
-[Ω~Λ~ = 0.722 ± 0.013]{.stat-hero}
+::: {style="display:flex;justify-content:center;align-items:center;gap:60px;margin-top:30px"}
+![](images/union21_hubble_diagram.png){.blend-figure style="width:1050px"}
+
+::: {style="text-align:center"}
+[Ω~Λ~ = 0.722 ± 0.013]{.stat-hero style="font-size:1.8em;white-space:nowrap"}<br>
+[χ²/dof = 0.97 · 580 SNe · ~5 min wall-clock]{style="color:#7A6F5C;font-size:0.7em"}
+:::
 :::
 
 ::: notes
@@ -719,6 +770,63 @@ specs that describe the desired state of a piece of science.
 :::
 
 
+## Agentic labor allowed more rigorous cross-checks {#disagreement}
+
+::: {style="text-align:center;margin-top:10px"}
+```{=html}
+<svg viewBox="0 0 1100 262" style="width:88%;max-width:1500px;height:auto;display:block;margin:0 auto;font-family:'EB Garamond',Georgia,serif" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="g-cinn" markerWidth="10" markerHeight="10" refX="6.6" refY="3.4" orient="auto"><path d="M0,0 L7.6,3.4 L0,6.8 Z" fill="#BC4538"/></marker>
+    <marker id="g-mut" markerWidth="9" markerHeight="9" refX="5.6" refY="3" orient="auto-start-reverse"><path d="M0,0 L6.4,3 L0,6 Z" fill="#9a8e76"/></marker>
+  </defs>
+  <path d="M250,62 Q550,10 850,62" fill="none" stroke="#9a8e76" stroke-width="1.6" stroke-dasharray="5 4" marker-start="url(#g-mut)" marker-end="url(#g-mut)"/>
+  <text x="550" y="30" text-anchor="middle" font-size="16" font-style="italic" fill="#7a6f5c">Hankel transform</text>
+  <path d="M205,150 Q335,180 470,192" fill="none" stroke="#BC4538" stroke-width="2.2" marker-end="url(#g-cinn)"/>
+  <path d="M895,150 Q765,180 630,192" fill="none" stroke="#BC4538" stroke-width="2.2" marker-end="url(#g-cinn)"/>
+  <ellipse cx="158" cy="80" rx="16" ry="8" transform="rotate(-25 158 80)" fill="none" stroke="#C49333" stroke-width="2.6"/>
+  <ellipse cx="232" cy="80" rx="16" ry="8" transform="rotate(28 232 80)" fill="none" stroke="#C49333" stroke-width="2.6"/>
+  <line x1="178" y1="80" x2="212" y2="80" stroke="#7a6f5c" stroke-width="1.4" stroke-dasharray="3 3"/>
+  <text x="195" y="68" text-anchor="middle" font-size="15" font-style="italic" fill="#7a6f5c">&#952;</text>
+  <text x="195" y="134" text-anchor="middle" font-size="19" font-style="italic" fill="#3a342b">configuration space</text>
+  <path d="M848,80 C860,54 878,54 890,80 C902,106 920,106 932,80 C944,54 962,54 974,80" fill="none" stroke="#3F8278" stroke-width="2.8"/>
+  <text x="910" y="134" text-anchor="middle" font-size="19" font-style="italic" fill="#3a342b">harmonic space</text>
+  <line x1="498" y1="208" x2="602" y2="208" stroke="#c5b89e" stroke-width="1.4"/>
+  <rect x="504" y="176" width="12" height="32" rx="1.5" fill="#BC4538"/>
+  <rect x="524" y="188" width="12" height="20" rx="1.5" fill="#BC4538"/>
+  <rect x="544" y="181" width="12" height="27" rx="1.5" fill="#BC4538"/>
+  <rect x="564" y="193" width="12" height="15" rx="1.5" fill="#BC4538"/>
+  <rect x="584" y="189" width="12" height="19" rx="1.5" fill="#BC4538"/>
+  <text x="550" y="234" text-anchor="middle" font-size="21" font-weight="600" fill="#BC4538">COSEBIs</text>
+  <text x="550" y="256" text-anchor="middle" font-size="15" font-style="italic" fill="#7a6f5c">clean, discrete E/B modes</text>
+</svg>
+```
+:::
+
+![](images/cosebis_bsigma_talk.png){.blend-figure width=92% fig-align="center"}
+
+::: notes
+~2 min. [Lifted from CNRS — Cail's rehearsed script, with a two-sentence setup added for a room that
+hasn't seen the UNIONS science; DRAFT the setup in your own words.] Here's what verification looks
+like on the real thing. Setup, in two sentences: gravitational lensing distorts galaxy shapes in a
+pattern that has no curl — physics forbids the swirling "B-mode" — so any B-mode we measure has to be
+contamination, and hunting it is the daily craft of the field. We measure it three independent ways
+— correlation functions in configuration space, power spectra in harmonic space, and COSEBIs, the
+sharp discrete modes both of those compress into — and with agents doing the labor, we could afford
+to run all three, with full covariances, on every version of the catalogue.
+
+Now the plot. Don't read the axes; read the shape. On the left, points that should sit on the flat
+line instead climb away from it: a swirl that physics forbids, so it *must* be contamination. Two of
+our three measures had passed; this third, sharper one caught it, because it concentrates a small
+fingerprint the others dilute below notice. We could even pin down its size — it repeats at the
+spacing of the camera's individual sensors, a man-made scale where the instrument would imprint
+itself. Right panel: after we cut the affected range, it sits back on the line. The move to land:
+the disagreement isn't a failure of the analysis, it's the analysis *working* — the measurement
+telling us where the instrument was lying. And this is the honest version of "agents help": not
+doing the same analysis faster, but doing a *more rigorous* one, because you can now check at a
+finer level than any human team could afford.
+:::
+
+
 ## Using agentic tools well requires a new way of working {#work-timeline}
 
 ::: {style="text-align:center;margin-top:0.2em"}
@@ -871,7 +979,7 @@ us to what this means for all of us.
 
 <!-- ═══════════════ BEAT 4 · IMPLICATIONS ═══════════════ -->
 
-## "Some sciences — for example astrophysics — have become information sciences" {#ball-1}
+## Astrophysics has become an information science {#ball-1}
 
 ::: {style="display:flex;justify-content:center;margin-top:110px"}
 ::: {.quote-card style="max-width:1400px"}
@@ -927,6 +1035,75 @@ extraordinary.
 :::
 
 
+## Your simulations are tomorrow's RL environments {#sim-envs}
+
+::: {style="text-align:center;margin-top:0.2em"}
+```{=html}
+<svg viewBox="0 0 1920 900" style="width:96%;height:auto" font-family="'EB Garamond', Georgia, serif" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="sfa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9A8E76"/></marker>
+    <marker id="sfr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#BC4538"/></marker>
+    <marker id="sfb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3D5BA0"/></marker>
+  </defs>
+  <text x="960" y="52" text-anchor="middle" fill="#1B1611" font-size="38">Physics already has a mature, diverse simulation ecosystem</text>
+  <path d="M 430,238 Q 960,116 1556,246" fill="none" stroke="#9A8E76" stroke-width="3" stroke-opacity="0.55" marker-end="url(#sfa)"/>
+  <g stroke="#BC4538" stroke-width="2.6" stroke-opacity="0.42"><line x1="248" y1="250" x2="338" y2="212"/><line x1="338" y1="212" x2="430" y2="256"/><line x1="248" y1="250" x2="352" y2="330"/><line x1="338" y1="212" x2="352" y2="330"/><line x1="430" y1="256" x2="412" y2="312"/><line x1="352" y1="330" x2="412" y2="312"/><line x1="352" y1="330" x2="250" y2="356"/><line x1="250" y1="356" x2="306" y2="422"/><line x1="306" y1="422" x2="446" y2="378"/><line x1="412" y1="312" x2="446" y2="378"/><line x1="352" y1="330" x2="446" y2="378"/><line x1="352" y1="330" x2="306" y2="422"/></g>
+  <g fill="#BC4538"><circle cx="248" cy="250" r="9"/><circle cx="338" cy="212" r="7"/><circle cx="430" cy="256" r="9"/><circle cx="250" cy="356" r="8"/><circle cx="352" cy="330" r="12"/><circle cx="446" cy="378" r="8"/><circle cx="306" cy="422" r="6"/><circle cx="412" cy="312" r="7"/></g>
+  <g fill="#BC4538" fill-opacity="0.55"><circle cx="290" cy="240" r="3"/><circle cx="400" cy="222" r="3"/><circle cx="472" cy="322" r="3"/><circle cx="330" cy="402" r="3"/><circle cx="232" cy="312" r="3"/><circle cx="424" cy="424" r="3"/></g>
+  <g fill="#BC4538"><circle cx="915" cy="300" r="74" fill-opacity="0.13"/><circle cx="1006" cy="350" r="64" fill-opacity="0.13"/><circle cx="958" cy="312" r="86" fill-opacity="0.09"/></g>
+  <g fill="#BC4538" fill-opacity="0.5"><circle cx="918" cy="302" r="13"/><circle cx="1002" cy="350" r="13"/><circle cx="966" cy="300" r="10"/></g>
+  <g stroke="#BC4538" stroke-width="2.4" stroke-opacity="0.3"><line x1="918" y1="302" x2="1002" y2="350"/><line x1="966" y1="300" x2="1002" y2="350"/></g>
+  <g transform="rotate(-22 1580 330)"><ellipse cx="1580" cy="330" rx="108" ry="74" fill="#BC4538" fill-opacity="0.05" stroke="#BC4538" stroke-opacity="0.5" stroke-width="2"/><ellipse cx="1580" cy="330" rx="74" ry="50" fill="#BC4538" fill-opacity="0.10" stroke="#BC4538" stroke-opacity="0.65" stroke-width="2"/><ellipse cx="1580" cy="330" rx="42" ry="28" fill="#BC4538" fill-opacity="0.20" stroke="#BC4538" stroke-opacity="0.85" stroke-width="2"/></g>
+  <circle cx="1580" cy="330" r="5" fill="#BC4538"/>
+  <g fill="none" stroke="#9A8E76" stroke-width="3" marker-end="url(#sfa)" opacity="0.9"><line x1="508" y1="332" x2="822" y2="332"/><line x1="1092" y1="332" x2="1430" y2="332"/></g>
+  <text x="340" y="500" text-anchor="middle" fill="#1B1611" font-size="40" font-weight="600">Full-physics simulations</text>
+  <text x="960" y="500" text-anchor="middle" fill="#1B1611" font-size="40" font-weight="600">Fast surrogates</text>
+  <text x="1580" y="500" text-anchor="middle" fill="#1B1611" font-size="40" font-weight="600">Simulation-based inference</text>
+  <g class="fragment" data-fragment-index="1">
+  <circle cx="332" cy="600" r="25" fill="#BC4538" fill-opacity="0.10" stroke="#BC4538" stroke-width="3"/>
+  <path d="M 304 656 C 308 632, 356 632, 360 656" fill="none" stroke="#BC4538" stroke-width="3"/>
+  <circle cx="332" cy="601" r="4.5" fill="#BC4538"/>
+  <g fill="none" stroke="#BC4538" stroke-width="2.4" stroke-opacity="0.7"><path d="M 366 591 a 12 12 0 0 1 0 18"/><path d="M 378 584 a 21 21 0 0 1 0 32"/></g>
+  <path d="M 904 642 A 57 57 0 0 1 1016 642" fill="none" stroke="#3D5BA0" stroke-width="3" stroke-opacity="0.55"/>
+  <g fill="#3D5BA0" fill-opacity="0.75"><circle cx="904" cy="642" r="4.5"/><circle cx="922" cy="606" r="4.5"/><circle cx="960" cy="592" r="4.5"/><circle cx="998" cy="606" r="4.5"/><circle cx="1016" cy="642" r="4.5"/></g>
+  <line x1="960" y1="642" x2="996" y2="606" stroke="#3D5BA0" stroke-width="3.5"/>
+  <circle cx="960" cy="642" r="7" fill="#3D5BA0"/>
+  <g stroke="#3D5BA0" stroke-width="1.8" stroke-opacity="0.4"><line x1="1580" y1="614" x2="1558" y2="598"/><line x1="1580" y1="614" x2="1602" y2="598"/><line x1="1580" y1="614" x2="1562" y2="632"/><line x1="1580" y1="614" x2="1600" y2="632"/></g>
+  <g fill="#3D5BA0" fill-opacity="0.5"><circle cx="1558" cy="598" r="5"/><circle cx="1602" cy="598" r="5"/><circle cx="1562" cy="632" r="5"/><circle cx="1600" cy="632" r="5"/></g>
+  <circle cx="1580" cy="614" r="7.5" fill="#3D5BA0"/>
+  <path d="M 1580 576 A 38 38 0 1 1 1542 614" fill="none" stroke="#3D5BA0" stroke-width="2.8" marker-end="url(#sfb)"/>
+  <line x1="408" y1="620" x2="884" y2="620" fill="none" stroke="#9A8E76" stroke-width="3.5" marker-end="url(#sfa)"/>
+  <line x1="1036" y1="620" x2="1524" y2="620" fill="none" stroke="#9A8E76" stroke-width="3.5" marker-end="url(#sfa)"/>
+  <text x="340" y="704" text-anchor="middle" fill="#1B1611" font-size="36" font-weight="600">Scientists' expertise</text>
+  <text x="960" y="704" text-anchor="middle" fill="#3D5BA0" font-size="36" font-weight="600">Benchmarks</text>
+  <text x="1580" y="704" text-anchor="middle" fill="#3D5BA0" font-size="36" font-weight="600">Synthetic RL environments</text>
+  <path d="M 1626 620 C 1894 656, 1832 808, 1380 814 C 1110 818, 810 818, 540 814 C 90 808, 30 656, 254 620" fill="none" stroke="#BC4538" stroke-width="3" stroke-opacity="0.85" marker-end="url(#sfr)"/>
+  <text x="960" y="776" text-anchor="middle" fill="#BC4538" font-size="30" font-weight="600">verifiable provenance of synthetic data</text>
+  </g>
+</svg>
+```
+:::
+
+::: notes
+~1.5 min. [Lifted from CNRS `#sim-bench-rl` — retargeted from "my program" to "what this room can
+do"; DRAFT, refine to your voice.] And here is where the meta-skill lands on *this* room
+specifically. The first places AI got genuinely productive were the verifiable ones — code, math —
+because you can check the answer and train on it at scale. Physics has no answer key: one universe,
+no re-runs. But look at what you already build. Top row: full-physics simulations, fast surrogates,
+simulation-based inference — a mature ecosystem whose whole purpose is to run the analysis on a
+universe whose answer we *do* know. [advance] That is exactly the substrate agents are missing.
+Your expertise and your simulations become benchmarks that characterise real scientific work;
+instantiated in simulation, where the truth is known, they become RL environments — a reward to
+train agents on. And it flows back: every environment is traceable to the people it came from, so
+the value returns to its source rather than to whoever has the most compute. Two things to say out
+loud for an ML audience. First, the reward is sparse and *noisy* — you can do everything right and
+still land two sigma off by chance; learning efficiently from a reward that noisy is a real, open
+AI problem, and physics is the place to crack it. Second, everything is hackable, this included —
+the fix isn't an unhackable reward, it's closing the sim-to-real gap so the local hacking stays
+honest. Physics-informed ML is not a consumer of this transition. It is the supply chain.
+:::
+
+
 ## The stake in the ground {#stake}
 
 ::: {style="display:flex;justify-content:center;align-items:center;margin-top:160px"}
@@ -949,11 +1126,75 @@ isn't whether — it's what you personally do about it.
 :::
 
 
+## Pharmakon: we get to choose what science becomes {#pharmakon .vcenter}
+
+:::::::::::::: {.columns style="margin-top:0.85em;align-items:stretch"}
+::: {.column style="width:50%"}
+
+::: {style="height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:0.2em 1em;border-left:5px solid #7a6f5c"}
+[**AI science factories**]{style="font-size:1.08em"}
+
+::: {style="text-align:center"}
+![](images/competing_ai_scientists.png){.no-treat style="width:94%;border-radius:5px;box-shadow:0 8px 20px rgba(27,22,17,0.18)"}
+
+![](images/parallel_arxiv.png){.no-treat style="width:94%;border-radius:5px;box-shadow:0 8px 20px rgba(27,22,17,0.18);margin-top:0.22em"}
+:::
+
+::: {style="line-height:1.35"}
+[alienation from scientific labor]{style="color:#bc4538;font-size:1.0em"}<br>
+[discovery scales with capital, not expertise]{style="color:#bc4538;font-size:0.9em"}
+:::
+:::
+
+:::
+::: {.column style="width:50%"}
+
+::: {style="height:100%;display:flex;flex-direction:column;padding:0.2em 1.1em;border-left:5px solid #3F8278"}
+[**An economy of contribution**]{style="font-size:1.08em;color:#3F8278"}
+
+::: {style="flex:1;display:flex;flex-direction:column;justify-content:center;color:#1B1611;padding-bottom:2.5em"}
+[« …l'augmentation du savoir des travailleurs à travers un nouvel agencement entre la machine et le travailleur »]{style="display:block;text-align:center;font-size:0.98em;line-height:1.5;padding:0 0.2em"}
+
+[— Bernard Stiegler]{style="display:block;text-align:right;color:#3F8278;font-size:0.9em;letter-spacing:0.02em;margin-top:0.55em"}
+:::
+:::
+
+:::
+::::::::::::::
+
+::: notes
+~1.5 min. [Lifted from CNRS `#the-choice` — the frame is a DRAFT for you to make your own; the
+first-person passage at the end is yours, keep verbatim.] Before I put the choice to you personally,
+the collective version — and I get to use a Greek word in Crete. *Pharmakon*: the remedy that is
+also the poison, one dose, both faces at once. Which face science gets is not decided by the
+technology; it's decided by the practice we build around it.
+
+The poison — "AI science factories." Not hypothetical: papers already framed as *Competing with AI
+Scientists*, the John Henry race humans are built to lose; a *Parallel ArXiv* where agents write the
+papers and agents review them — a literature with no one in it. What's lost isn't jobs, it's the
+*doing* of science. And a structural loss underneath: once people are out of the loop, output is a
+function of capital — the labs have every incentive to stop selling the tools and do the science
+in-house. Discovery scales with capital, not expertise.
+
+The cure — same tools, different practice. The grunt work goes to the agents; the human is freed for
+the science that matters — you talk to the model, it hands you a plot, you argue about it with a
+colleague on a walk, and the argument becomes the next set of actions. Not agent fleets replacing
+people, not the lone genius — networks of humans amplified by agents. Stiegler called it an
+*économie de la contribution*: the machine augments the worker's knowledge rather than displacing it.
+
+[Cail's, verbatim:] This is not only about jobs. It is about keeping the part of the work we
+actually love — discovery. I would far rather spend this era in wonderful, beautiful discovery,
+amplified, than watch the work get slowly ripped from our hands by agent "competitors." If a day
+comes when there is nothing left for us to add, so be it — but I would rather enjoy the good times
+while they last, and shape the practice so people stay *in* it.
+:::
+
+
 ## The choice is genuinely open — and neither path is bad {#choice}
 
-::: {style="display:flex;justify-content:center;margin-top:80px"}
+::: {style="display:flex;justify-content:center;margin-top:150px"}
 ```{=html}
-<svg viewBox="0 0 1560 560" style="width:1450px" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1560 560" style="width:1650px" xmlns="http://www.w3.org/2000/svg">
   <!-- left: eddy -->
   <g>
     <path d="M 390 260 a 120 120 0 1 1 -6 -62" fill="none" stroke="#3D5BA0" stroke-width="6"/>
@@ -1006,4 +1247,65 @@ physics by people with real taste — is going to produce some of the most fun a
 astrophysics and ML have ever seen. So might as well enjoy it while the going's good. The tutorial
 is at the link — run it this afternoon; it genuinely takes twenty minutes. And in a moment I'll
 show you a live demo. Thank you.
+:::
+
+
+<!-- ═══════════════ BACKUP ═══════════════ -->
+
+## &nbsp; {#backup-divider .intermission background-color="#E8D9BF" data-menu-title="Backup slides" data-visibility="uncounted"}
+
+::: {style="height:80vh;display:flex;align-items:center;justify-content:center;text-align:center"}
+::: {style="font-family:'EB Garamond',Georgia,serif;font-variant-caps:small-caps;font-feature-settings:'smcp' 1;letter-spacing:0.18em;color:#7A6F5C;font-size:2.4em;font-weight:500"}
+backup
+:::
+:::
+
+
+## Blinding: holding out a test set on the universe {#blinding .vcenter data-visibility="uncounted"}
+
+::: {style="margin-top:0.3em;text-align:center"}
+```{=html}
+<svg viewBox="0 0 1060 440" style="width:100%;max-width:1040px;height:auto;font-family:'EB Garamond',Georgia,serif" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="bl-cinnabar" markerWidth="9" markerHeight="9" refX="6.5" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="#BC4538"/></marker>
+    <marker id="bl-muted" markerWidth="9" markerHeight="9" refX="6.5" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="#7A6F5C"/></marker>
+    <marker id="bl-muted-start" markerWidth="9" markerHeight="9" refX="0.5" refY="3.2" orient="auto"><path d="M7,0 L0,3.2 L7,6.4 Z" fill="#7A6F5C"/></marker>
+  </defs>
+  <text x="265" y="34" text-anchor="middle" font-size="22" font-weight="600" letter-spacing="0.5" fill="#7A6F5C">Without blinding</text>
+  <rect x="30" y="58" width="470" height="344" rx="16" fill="none" stroke="#C5B89E" stroke-width="1.5"/>
+  <g stroke="#C5B89E" stroke-width="1.4" opacity="0.7" fill="none"><path d="M54,384 L126,384" marker-end="url(#bl-muted)"/><path d="M54,384 L54,314" marker-end="url(#bl-muted)"/></g>
+  <ellipse cx="350" cy="300" rx="66" ry="50" fill="#7A6F5C" opacity="0.10"/>
+  <g fill="#7A6F5C"><circle cx="332" cy="286" r="6"/><circle cx="368" cy="292" r="6"/><circle cx="348" cy="306" r="6"/><circle cx="376" cy="312" r="6"/><circle cx="330" cy="316" r="6"/><circle cx="358" cy="324" r="6"/></g>
+  <text x="350" y="380" text-anchor="middle" font-size="18" fill="#7A6F5C">the rest of the field</text>
+  <g stroke="#C49333" stroke-width="2.2" fill="none"><circle cx="436" cy="296" r="10"/><path d="M436,282 L436,310 M422,296 L450,296"/></g>
+  <text x="436" y="272" text-anchor="middle" font-size="17" font-style="italic" fill="#C49333">the truth</text>
+  <circle cx="150" cy="142" r="9" fill="#BC4538"/>
+  <text x="150" y="120" text-anchor="middle" font-size="18" font-weight="600" fill="#BC4538">your result</text>
+  <path d="M165,154 Q250,182 304,290" fill="none" stroke="#BC4538" stroke-width="2.6" stroke-dasharray="7 6" marker-end="url(#bl-cinnabar)"/>
+  <text x="214" y="174" text-anchor="middle" font-size="17" font-style="italic" fill="#BC4538">confirmation bias</text>
+  <text x="795" y="34" text-anchor="middle" font-size="22" font-weight="600" letter-spacing="0.5" fill="#7A6F5C">With blinding</text>
+  <rect x="560" y="58" width="470" height="344" rx="16" fill="none" stroke="#C5B89E" stroke-width="1.5"/>
+  <g stroke="#C5B89E" stroke-width="1.4" opacity="0.7" fill="none"><path d="M584,384 L656,384" marker-end="url(#bl-muted)"/><path d="M584,384 L584,314" marker-end="url(#bl-muted)"/></g>
+  <ellipse cx="875" cy="292" rx="68" ry="52" fill="#7A6F5C" opacity="0.05"/>
+  <g fill="#7A6F5C" opacity="0.18"><circle cx="855" cy="276" r="6"/><circle cx="892" cy="283" r="6"/><circle cx="870" cy="300" r="6"/><circle cx="900" cy="306" r="6"/><circle cx="852" cy="310" r="6"/><circle cx="882" cy="318" r="6"/></g>
+  <circle cx="875" cy="292" r="30" fill="#F7F0E1" opacity="0.92" stroke="#C5B89E" stroke-width="1.5"/>
+  <text x="875" y="304" text-anchor="middle" font-size="36" fill="#7A6F5C">?</text>
+  <text x="875" y="378" text-anchor="middle" font-size="18" fill="#7A6F5C">hidden while we choose</text>
+  <circle cx="680" cy="142" r="9" fill="#BC4538"/>
+  <text x="680" y="120" text-anchor="middle" font-size="18" font-weight="600" fill="#BC4538">your result</text>
+  <path d="M696,154 L840,278" fill="none" stroke="#7A6F5C" stroke-width="2" stroke-dasharray="7 6" marker-start="url(#bl-muted-start)" marker-end="url(#bl-muted)"/>
+  <text x="730" y="200" text-anchor="middle" font-size="17" font-style="italic" fill="#7A6F5C">distance unknown</text>
+</svg>
+```
+:::
+
+::: notes
+Backup, for the verification discussion. [CNRS `#blinding`, Cail's script.] The discipline that
+replaces a ground truth. Left: there's a truth, and the rest of the field clustered near it — and a
+real pull to land your own result next to everyone else's. That pull is confirmation bias. Right: so
+we blind ourselves — shift our number by a secret amount and hide where the field sits, so while we
+make every analysis choice we genuinely can't tell how far we are from anyone. Only once every choice
+is frozen do we unblind. For this room: it is exactly holding out a test set — you cannot tune toward
+a number you cannot see. And note it composes with agents perfectly: the agent can make and record
+every decision, and still never see the answer.
 :::
