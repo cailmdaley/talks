@@ -238,6 +238,44 @@
 .reveal .nka .two > div { flex: 1; min-width: 0; }
 // an inset-sized paper figure, when it shares a row with a live panel
 .reveal .nka .paperfig.inset img { max-height: 286px; width: auto; margin: 0 auto; }
+
+// W1's lower band: the toy kernel on the left, then the paper figure at full
+// height with its caption in a column beside it rather than underneath
+.reveal .nka .two.lower { gap: 30px; align-items: flex-start; }
+// beats the generic `.two > div { flex: 1 }` on class count
+.reveal .nka .two.lower > .toycol { flex: 0 0 520px; }
+.reveal .nka .figblock {
+    flex: 1;
+    display: flex;
+    gap: 26px;
+    align-items: flex-start;
+
+    img {
+        flex: 0 0 auto;
+        height: 440px;
+        width: auto;
+        max-width: none;    // the flex row must not shrink it below its aspect
+        box-shadow: none;
+        mix-blend-mode: multiply;
+    }
+}
+.reveal .nka .figside {
+    flex: 1 1 auto;
+    min-width: 420px;
+    font-size: 25px;
+    line-height: 1.34;
+    color: #7A6F5C;
+
+    p { margin: 0 0 14px 0; }
+    b { color: #1B1611; font-weight: 600; }
+    .figtitle {
+        font-size: 28px;
+        color: #1B1611;
+        font-weight: 600;
+        line-height: 1.2;
+        margin-bottom: 12px;
+    }
+}
 // the shear panel is the upper half of a two-panel figure, so its x-axis is
 // unlabelled in the source; name it here rather than dragging in the B-mode panel
 .reveal .nka .axcap {

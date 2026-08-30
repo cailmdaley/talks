@@ -248,6 +248,17 @@ function boot(){
   function txt(p,x,y,s,a){ var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,fill:INK},a||{}));
     e.textContent=s; return e; }
   function clear(s){ while(s.firstChild) s.removeChild(s.firstChild); }
+  //  base + subscript + rest, so θ_c renders as a symbol rather than an underscore
+  function txtsub(p, x, y, base, sub, rest, a){
+    var e = el(p,'text',Object.assign({x:x,y:y,'font-size':26,fill:INK}, a||{}));
+    e.appendChild(document.createTextNode(base));
+    var t = document.createElementNS(NS,'tspan');
+    t.setAttribute('dy','6'); t.setAttribute('font-size','0.72em');
+    t.textContent = sub; e.appendChild(t);
+    var r = document.createElementNS(NS,'tspan');
+    r.setAttribute('dy','-6'); r.textContent = rest; e.appendChild(r);
+    return e;
+  }
   var PAD = 90, W1 = 1730, AW = W1 - PAD - 40;
   //  Panels take an optional plot width so they can sit side by side in columns;
   //  everything defaults to the full-bleed geometry.
@@ -620,8 +631,19 @@ function boot(){
       el(s,'circle',{cx:X2,cy:by-70,r:4,fill:COB});
     }
     txt(s, Math.max(PAD-82,2), by+9, 'w(x)', {fill:COB});
-    txt(s, PAD, by+52, 'position  x', {fill:MUT});
     txt(s, PAD+AW-360, y0+18, CAT.xs.length + ' sources', {fill:MUT});
+
+    //  the cloud scale, on the toy: the gap between two neighbouring sources.
+    //  It is the scale the next slide smears each delta over.
+    var mid = CAT.xs.length >> 1, best = mid;
+    for(var q=Math.max(1,mid-12); q<Math.min(CAT.xs.length,mid+12); q++)
+      if(CAT.xs[q]-CAT.xs[q-1] > CAT.xs[best]-CAT.xs[best-1]) best = q;
+    var xL = PAD + AW*CAT.xs[best-1], xR = PAD + AW*CAT.xs[best], yb2 = by + 30;
+    el(s,'line',{x1:xL,y1:yb2,x2:xR,y2:yb2,stroke:TEAL,'stroke-width':4,'stroke-linecap':'round'});
+    el(s,'line',{x1:xL,y1:yb2-9,x2:xL,y2:yb2+9,stroke:TEAL,'stroke-width':3});
+    el(s,'line',{x1:xR,y1:yb2-9,x2:xR,y2:yb2+9,stroke:TEAL,'stroke-width':3});
+    txtsub(s, xR+16, yb2+9, 'θ', 'c', '  ≈  source spacing', {fill:TEAL,'font-size':26});
+    txt(s, PAD, by+58, 'position  x', {fill:MUT});
   }
 
   //  the catalogue mask's kernel: flat and ratty. The mask is itself a catalogue,
@@ -646,16 +668,14 @@ function boot(){
     el(s,'line',{x1:PAD,y1:Y(floor),x2:PAD+AW,y2:Y(floor),stroke:INK,
                  'stroke-width':3,'stroke-dasharray':'12 8'});
     // clear of the curve, which rattles about half a decade either side
-    txt(s, PAD, Y(floor)-40, 'the mask\u2019s own white floor — its self-pairs, Σ wᵢ²',
-        {fill:INK,'font-size':27});
+    txt(s, PAD, Y(floor)-40, 'the mask\u2019s own white floor', {fill:INK,'font-size':27});
     txt(s, PAD, y0-16, 'kernel  |W|²   (log)', {fill:ACC});
     // the axis is mode separation, so mark its origin
     var cx = PAD + AW/2;
     el(s,'line',{x1:cx,y1:y0+h,x2:cx,y2:y0+h+12,stroke:RULE,'stroke-width':2.5});
-    txt(s, cx-30, y0+h+40, 'Δk = 0', {fill:MUT,'font-size':26});
-    txt(s, PAD, y0+h+40, 'mode separation  Δk', {fill:MUT,'font-size':26});
-    txt(s, PAD, y0+h+78, opts.foot || 'no scale below the source spacing — the kernel never narrows',
-        {fill:MUT,'font-size':27});
+    txt(s, cx-34, y0+h+40, 'Δk = 0', {fill:MUT,'font-size':26});
+    txt(s, PAD, y0+h+78, opts.foot || 'mode separation Δk — the kernel never narrows',
+        {fill:MUT,'font-size':26});
   }
 
   //  W2 — the products that break

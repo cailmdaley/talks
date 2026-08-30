@@ -178,14 +178,23 @@ papers.
 <div class="ctl-slider">
   <label>sources <input type="range" data-var="N" min="30" max="400" value="160"></label>
 </div>
-<svg class="pP" data-h="190" viewBox="0 0 1730 360" width="1730" height="360"></svg>
-<div class="two">
-  <div><svg class="pKC" data-h="164" data-x0="90" data-w="700"
-       data-foot="the toy: the kernel rattles around the floor and never narrows"
-       viewBox="0 0 850 300" width="850" height="300"></svg></div>
-  <div class="paperfig inset">
-    <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo-spectrum">
-    <div class="mlab"><b>the real sky</b>the catalogue mask falls onto its white floor; a pixelated mask keeps falling — pixels are an implicit band-limit</div>
+<svg class="pP" data-h="140" viewBox="0 0 1730 330" width="1730" height="330"></svg>
+<div class="two lower">
+  <div class="toycol">
+    <svg class="pKC" data-h="150" data-x0="86" data-w="400"
+         data-foot="mode separation Δk — it never narrows"
+         viewBox="0 0 520 300" width="520" height="300"></svg>
+  </div>
+  <div class="figblock">
+    <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo power spectrum">
+    <div class="figside">
+      <div class="figtitle">power spectrum of the<br>Quaia catalogue mask</div>
+      <p><b>Ñ<sub>w</sub></b> \(=\sum_i w_i^2/4\pi\) — the mask&rsquo;s own white floor, its
+         self-pairs. The catalogue mask flattens onto it; a pixelated mask keeps falling, because
+         pixels are an implicit band-limit.</p>
+      <p><b>θ<sub>c</sub></b> — the cloud scale, about the mean source spacing. The dashed
+         π/θ<sub>c</sub> line marks it. Next slide turns this knob.</p>
+    </div>
   </div>
 </div>
 </div>
