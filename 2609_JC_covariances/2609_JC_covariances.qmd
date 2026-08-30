@@ -412,6 +412,304 @@ randoms or a completeness map, and catalogue-clustering, which is that with the 
 set to one. Worked notebooks are examples eleven and twelve in the docs.
 :::
 
+## The projection sums over every off-diagonal {.nka-slide}
+
+```{=html}
+<div class="nka">
+  <div class="corr">
+    <div>
+      <span class="nm">the correlation function is a linear map of the <i>windowed</i> spectrum</span>
+      <span class="eq">\( \xi_i = \frac{n^2}{N_{{\rm pair},i}}\;2\pi\sum_\ell \big[P_{\ell+1}-P_{\ell-1}\big]_i\;\tilde C_\ell \)</span>
+      <span class="note">a pair count is unbiased by the mask — the geometry enters as the normalisation, through the pairs that actually exist.</span>
+    </div>
+    <div>
+      <span class="nm">so its covariance is a <i>double</i> sum</span>
+      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;\propto\;\sum_{\ell}\sum_{\ell'}\big[P_{\ell+1}-P_{\ell-1}\big]_i\,\big[P_{\ell'+1}-P_{\ell'-1}\big]_j\;{\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big) \)</span>
+      <span class="note">every off-diagonal element contributes — and the exact \({\rm Cov}(\tilde C_\ell,\tilde C_{\ell'})\) costs \(\mathcal{O}(\ell_{\rm max}^{6})\), intractable at \(\ell_{\rm max}\simeq6000\). An approximation is forced.</span>
+    </div>
+  </div>
+  <div class="menu">
+    <div class="fragment">
+      <span class="nm">f<sub>sky</sub> — Knox</span>
+      <span class="eq">\( \delta_{\ell\ell'}\dfrac{2C_\ell^2}{(2\ell+1)f_{\rm sky}} \)</span>
+      <span class="note">pretend the mask deletes modes but never couples them: diagonal, divided by the sky fraction.</span>
+    </div>
+    <div class="fragment">
+      <span class="nm">iNKA — the one we know</span>
+      <span class="eq">\( \tfrac12\Big(\dfrac{\tilde C_\ell+\tilde C_{\ell'}}{\langle w^2\rangle}\Big)^{2}\,\Xi_{\ell\ell'}(w^2,w^2) \)</span>
+      <span class="note">pull the signal out of the coupling sum; what is left is pure geometry, built from the squared mask.</span>
+    </div>
+    <div class="fragment">
+      <span class="nm">quartic counts — Schneider, Shirasaki</span>
+      <span class="eq">\( \sum_{\rm pairs\;of\;pairs} w^4\;\dfrac{\xi\xi+\xi\xi}{2} \)</span>
+      <span class="note">Wick's theorem in configuration space, on the real galaxies. The window is never modelled — it is <b>counted</b>.</span>
+    </div>
+  </div>
+</div>
+```
+
+::: {.notes}
+Second paper. Nagura, Terasawa, Terawaki and Takada, from Kavli IPMU and Chiba. Same
+machinery, one step further: what happens when you take a harmonic-space covariance and
+go to real space.
+
+Top line, and it is the structural fact the paper leans on, from Friedrich's appendix C:
+xi is a linear transform of the *windowed* spectrum. A pair count is not biased by the
+mask — but its harmonic representation is in terms of C-tilde, and the normalisation is
+the number of pairs that actually exist in the footprint, not an idealised area. So the
+geometry enters twice.
+
+Second line is the load-bearing equation. Linear transform in, so the covariance
+propagates by sandwiching — and that is a *double* sum over ell and ell-prime. Every
+off-diagonal element of the harmonic covariance contributes, weighted by two oscillating
+Legendre kernels. And the exact harmonic covariance is order ell-max to the sixth, which
+the paper calls intractable at six thousand. So you are forced to approximate, and that
+is where the trouble enters.
+
+Three things people actually use. F-sky, the Knox formula: strictly diagonal, inflated by
+one over f-sky, pretending the mask deletes modes without coupling them. iNKA, which we
+spent the first half of the talk on. And the one that is going to win: weighted quartic
+counts, from Schneider and from Shirasaki. Take every pair in bin i and every pair in bin
+j, and the Gaussian four-point function factorises into two cross-pairings, each the
+theory xi at the actual separations. Notice what is absent: there is no window function
+anywhere. No coupling matrix, no f-sky, no assumption about the kernel — because the sum
+runs over real positions, so the footprint, the holes, the boundaries and the weights are
+all encoded exactly by which quadruplets exist. The window is not modelled. It is counted.
+:::
+
+## The diagonal is innocent {.nka-slide}
+
+```{=html}
+<div class="anim" id="s4">
+<div style="display:flex; gap:44px; align-items:flex-start;">
+  <div>
+    <canvas id="s4m" width="96" height="96" style="width:730px;height:730px"></canvas>
+    <div style="margin-top:10px; font-size:28px; color:#7A6F5C;">
+      iNKA covariance &nbsp;·&nbsp; <span style="color:#1B1611;font-weight:600"
+      id="s4b">bands kept</span></div>
+  </div>
+  <div style="flex:1;">
+    <svg id="s4c" viewBox="0 0 940 730" width="940" height="730"></svg>
+    <div style="font-size:28px; color:#7A6F5C; margin-left:90px;">
+      separation &nbsp;θ</div>
+  </div>
+</div>
+<div class="ctl"><button id="s4r">replay</button></div>
+</div>
+
+<script>
+(function(){
+  var D=window.NKA_DATA.slide4;
+  var NS='http://www.w3.org/2000/svg';
+  function el(p,t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);
+    p.appendChild(e);return e;}
+  function txt(p,x,y,s,a){var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,
+    fill:'#7A6F5C'},a||{}));e.textContent=s;return e;}
+
+  var KM=D.km, bin=atob(D.matrix), M=new Uint8Array(KM*KM);
+  for(var q=0;q<M.length;q++)M[q]=bin.charCodeAt(q);
+
+  var cv=document.getElementById('s4m'), ctx=cv.getContext('2d');
+  function drawMatrix(n){
+    var im=ctx.createImageData(KM,KM);
+    for(var i=0;i<KM;i++)for(var j=0;j<KM;j++){
+      var v=M[i*KM+j]/255, inb=Math.abs(i-j)<=n, o=4*(i*KM+j), u=Math.pow(v,0.55);
+      // in-band: ground -> cobalt.  outside (replaced by the exact answer): muted.
+      if(inb){ im.data[o]=247-186*u; im.data[o+1]=240-149*u; im.data[o+2]=225-65*u; }
+      else   { im.data[o]=247-55*u;  im.data[o+1]=240-58*u;  im.data[o+2]=225-64*u; }
+      im.data[o+3]=255;
+    }
+    ctx.putImageData(im,0,0);
+  }
+
+  var TH=D.theta, lo=Math.log10(TH[0]), hi=Math.log10(TH[TH.length-1]);
+  var X0=110, Y0=60, W=800, H=600, YLO=0.80, YHI=1.04;
+  function X(t){return X0+W*(Math.log10(t)-lo)/(hi-lo);}
+  function Y(r){return Y0+H*(1-(r-YLO)/(YHI-YLO));}
+  function drawCurve(n){
+    var s=document.getElementById('s4c');s.innerHTML='';
+    for(var g=0.85;g<1.041;g+=0.05){
+      el(s,'line',{x1:X0,y1:Y(g),x2:X0+W,y2:Y(g),stroke:'#E0D5BF','stroke-width':2});
+      txt(s,X0-78,Y(g)+10,g.toFixed(2));
+    }
+    el(s,'line',{x1:X0,y1:Y(1),x2:X0+W,y2:Y(1),stroke:'#1B1611','stroke-width':3});
+    txt(s,X0+W-150,Y(1)-16,'exact',{fill:'#1B1611'});
+    var r=D.ratios[n],d='';
+    for(var i=0;i<TH.length;i++)d+=(i?'L':'M')+X(TH[i]).toFixed(1)+' '+Y(r[i]).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke:'#BC4538','stroke-width':4});
+    txt(s,X0+W-340,Y(0.815),'iNKA / exact   Cov(ξ,ξ)',{fill:'#BC4538'});
+    el(s,'circle',{cx:X(TH[0]),cy:Y(r[0]),r:9,fill:'#BC4538'});
+    txt(s,X(TH[0])+24,Y(r[0])-30,(100*(r[0]-1)).toFixed(1)+'%',
+        {fill:'#BC4538','font-size':46,'font-weight':600});
+  }
+
+  var i=0,timer=null;
+  function show(j){
+    var n=D.ns[j];
+    drawMatrix(n); drawCurve(j);
+    document.getElementById('s4b').textContent='|k − k′| ≤ '+n;
+
+  }
+  function play(){clearInterval(timer);i=0;show(0);
+    timer=setInterval(function(){i++;if(i>=D.ns.length){clearInterval(timer);return;}
+      show(i);},300);}
+  document.getElementById('s4r').onclick=play;
+  window.__jump=window.__jump||{};
+  window.__jump.s4=function(j){clearInterval(timer);show(j);};
+  show(0);
+  var sec=document.getElementById('s4').closest('section'), was=false;
+  setInterval(function(){var now=sec.classList.contains('present');
+    if(now&&!was)play(); if(!now&&was)clearInterval(timer); was=now;},250);
+})();
+</script>
+```
+
+::: {.notes}
+This is the experiment the paper doesn't do, and it settles the diagnosis.
+
+Start on the left with iNKA's covariance matrix, and keep only the bands within some
+separation of the diagonal — everything outside, greyed, I've replaced with the exact
+answer. At the start only the diagonal is iNKA's, and the real-space covariance on the
+right sits on top of the truth: one percent low. So the diagonal is fine.
+
+Now widen the band. As iNKA's own off-diagonals come back in, the curve peels away and
+settles at eighteen percent low. Most of that damage is done by the time the band reaches
+the coupling kernel, which is fifteen modes wide here — about eighty percent of the error
+is in by n of sixteen. The last couple of points accumulate slowly out to sixty, so the
+cutoff is soft rather than sharp.
+
+So: iNKA is right exactly where it was fitted, the harmonic diagonal, and real space
+weights precisely the part the fit never reached. And the reverse test says the same —
+zero those off-diagonals instead of correcting them and you lose eighty percent of the
+covariance. That band isn't a correction to the real-space covariance. It is the
+real-space covariance.
+:::
+
+## The transform is innocent; the input is not {.nka-slide}
+
+```{=html}
+<div class="nka">
+<div class="figrow">
+  <div class="figcell">
+    <img src="images/nagura_cov_xi.png" alt="Cov(xi,xi) diagonal: sims, projected sim harmonic covariance, projected iNKA">
+    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 — Fig. 3</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using Eq. 12 (solid lines).</div>
+  </div>
+  <div class="figcell">
+    <img src="images/nagura_matrix_r.png" alt="Correlation matrices of the harmonic covariance: iNKA, simulations, and their ratio">
+    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 — Fig. 4</span>Correlation matrices of \(\mathrm{Cov}(\tilde C_\ell,\tilde C_{\ell'})\) computed using the iNKA (left) and measured from Gaussian simulations (center). The right plot shows the fractional difference \(\mathrm{Cov}^{\rm iNKA}/\mathrm{Cov}^{\rm sim}-1\). The iNKA reproduces the diagonal structure accurately, while noticeable differences remain in the off-diagonal components.</div>
+  </div>
+</div>
+</div>
+```
+
+::: {.notes}
+Left is the controlled experiment, and it is the cleanest thing in the paper. Black dashed
+is the covariance of xi measured directly from a thousand simulations. Blue is the
+*simulated harmonic* covariance pushed through that double Legendre sum. Blue lands on
+black — so the transform, the pair-count normalisation, and the ell-max of six thousand
+are all fine. Red is iNKA through the same machinery, and it sits visibly low: twenty-five
+to thirty percent at six arcminutes, shrinking to nothing by a couple of hundred. The
+failure is isolated to the covariance model. Nothing else in the chain is at fault.
+
+Right is their diagnosis. iNKA's correlation matrix on the left, the simulated one in the
+middle, ratio on the right: sharp diagonal reproduced, off-diagonal not.
+
+Now, a caveat I want to say out loud, because I think it is the weakest link. That ratio
+panel divides by a sample covariance from a thousand realisations at six thousand unbinned
+multipoles. Off the diagonal, the sampling scatter on a correlation coefficient is about
+one over root-N, three percent, around a true value that is itself tiny — the middle panel
+is visibly pure speckle. So dividing a smooth iNKA prediction by a noisy near-zero
+denominator gives you a ratio that is not a pointwise error map, and the uniform blue is
+what you would get from signal much smaller than noise with random sign. The *result* on
+the left I believe completely. The *diagnosis* is argued by elimination. The obvious clean
+test — keep only the first N off-diagonal bands and project — is not in the paper.
+
+So I ran it. Next slide.
+:::
+
+## Count the geometry, don't model it {.nka-slide}
+
+```{=html}
+<div class="nka">
+<div class="figpair">
+  <div class="figmain">
+    <img src="images/nagura_analytic_comp.png" alt="Cov(xi,xi) diagonal for the XMM field: simulations, iNKA, f_sky and quartic counts">
+  </div>
+  <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 — Fig. 5</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using analytical methods (solid lines). Note that we consider XMM field only for this figure.</div>
+</div>
+</div>
+```
+
+::: {.notes}
+The comparison, on the XMM field alone. Black dashed is the simulations. Green is quartic
+counts and it sits on the simulations within a few percent across the whole range,
+including the upturn past a hundred and fifty arcminutes that both harmonic methods miss
+entirely. Red is iNKA, low by twenty to thirty percent at small theta and still ten to
+fifteen percent low at large. Blue is f-sky — high by a quarter at small angles, crossing
+around an hour, and then collapsing by more than a factor of two by three hundred
+arcminutes, exactly where the field size bites.
+
+That ordering deserves a moment, because it is uncomfortable for the room. Most real-space
+shear analyses — CosmoLike, OneCovariance, the DES and KiDS pipelines — are not using
+iNKA. They are using an f-sky or effective-area treatment. So the reading is not "stop
+using iNKA," which you weren't; it is "the thing you *are* using is worse, and the fix is
+expensive pair counting."
+
+Two caveats. The simulations are Gaussian by construction, so quartic counts is being
+graded on the one test it is guaranteed to pass — in a real analysis it carries its own
+unquantified non-Gaussian error. And shape noise is dropped from the comparison entirely,
+while for real cosmic shear the noise and mixed terms dominate the small-theta covariance.
+So a fair question is whether a twenty-five percent error on the sample-variance term
+survives adding shape noise in quadrature at six arcminutes.
+:::
+
+## Harmonic diagonal accuracy buys you nothing in real space {.nka-slide}
+
+```{=html}
+<div class="nka">
+  <div class="punch">10% in harmonic space &nbsp;→&nbsp; <b>25–30%</b> in \(\xi(\theta)\).</div>
+  <div class="punch sub">And the fix is to <b>count</b> the geometry, not model it.</div>
+</div>
+```
+
+::: {.notes}
+Where that leaves us.
+
+The result is solid and the control experiment proves it: project the simulated harmonic
+covariance and you recover the truth, so the transform is innocent and the input is what
+is wrong. The diagnosis — that the damage is in the off-diagonals — is asserted rather
+than measured in the paper, for the reason I gave two slides ago. But our own 1D toy says
+they are right, and sharply. Replace iNKA's off-diagonals with the exact ones and the
+projected error collapses from minus eighteen point six percent to minus zero point six.
+Restore them band by band and about eighty percent of the error is back by the time the
+band reaches the coupling kernel width. And the reverse test: zero those off-diagonals
+instead of correcting them and you lose eighty percent of the real-space covariance
+amplitude. That band is not a correction to the answer. It is the answer.
+
+Second thing worth naming: quartic counts is the same object as Wolz's exact summation.
+Both are Wick's theorem evaluated on the actual sources rather than on a modelled window —
+one in configuration space, one in harmonic space, both order N to the fourth naively,
+both rescued by a matrix rewrite. Two independent groups, three months apart, arriving at
+"stop modelling the window and count it." That is the through-line of the whole session.
+
+Third, the honest limits. Their implementation coarse-grains galaxies onto an Nside of two
+fifty-six or five twelve depending on the angular bin — which is the same band-limiting
+move as Wolz's clouds, chosen for the same reason and with the same arbitrariness. They
+run one field out of six with half the bins to keep the cost down, and they report no
+wall-clock time, no scaling law, no memory footprint anywhere. So the practical case for
+the method rests on a cost they never state. What it does at Stage-IV volumes is an open
+question.
+
+And finally, my own reservation, which the toy backs. HSC-Y3 is six disjoint patches with
+a very high perimeter-to-area ratio — the hardest possible case for a narrow-kernel
+approximation. In the toy, splitting one patch into six at fixed area widens the kernel
+about sevenfold and takes the iNKA real-space error from minus seven point six percent,
+which nobody would write a paper about, to minus eighteen point six. So my honest reading
+is that this headline is a statement about HSC's geometry at least as much as about iNKA,
+and for a contiguous Rubin-like footprint the problem largely goes away. That is exactly
+the question the paper cannot answer, because they have one mask.
+:::
+
 <!-- ═══ parked ═══════════════════════════════════════════════════════════
      The three toy-experiment animations are kept in the deck but hidden from
      navigation (reveal's data-visibility="hidden"), so they can come back by
@@ -513,112 +811,6 @@ Quick setup beat. The mask is a top-hat and I'm shrinking it; watch the kernel u
 The width of the coupling kernel goes like one over the footprint width — a big contiguous
 survey couples a mode only to its immediate neighbours, a small one smears across dozens.
 Everything that follows is about what happens inside that width.
-:::
-
-## The diagonal is innocent {.nka-slide visibility="hidden"}
-
-```{=html}
-<div class="anim" id="s4">
-<div style="display:flex; gap:44px; align-items:flex-start;">
-  <div>
-    <canvas id="s4m" width="96" height="96" style="width:730px;height:730px"></canvas>
-    <div style="margin-top:10px; font-size:28px; color:#7A6F5C;">
-      iNKA covariance &nbsp;·&nbsp; <span style="color:#1B1611;font-weight:600"
-      id="s4b">bands kept</span></div>
-  </div>
-  <div style="flex:1;">
-    <svg id="s4c" viewBox="0 0 940 730" width="940" height="730"></svg>
-    <div style="font-size:28px; color:#7A6F5C; margin-left:90px;">
-      separation &nbsp;θ</div>
-  </div>
-</div>
-<div class="ctl"><button id="s4r">replay</button></div>
-</div>
-
-<script>
-(function(){
-  var D=window.NKA_DATA.slide4;
-  var NS='http://www.w3.org/2000/svg';
-  function el(p,t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);
-    p.appendChild(e);return e;}
-  function txt(p,x,y,s,a){var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,
-    fill:'#7A6F5C'},a||{}));e.textContent=s;return e;}
-
-  var KM=D.km, bin=atob(D.matrix), M=new Uint8Array(KM*KM);
-  for(var q=0;q<M.length;q++)M[q]=bin.charCodeAt(q);
-
-  var cv=document.getElementById('s4m'), ctx=cv.getContext('2d');
-  function drawMatrix(n){
-    var im=ctx.createImageData(KM,KM);
-    for(var i=0;i<KM;i++)for(var j=0;j<KM;j++){
-      var v=M[i*KM+j]/255, inb=Math.abs(i-j)<=n, o=4*(i*KM+j), u=Math.pow(v,0.55);
-      // in-band: ground -> cobalt.  outside (replaced by the exact answer): muted.
-      if(inb){ im.data[o]=247-186*u; im.data[o+1]=240-149*u; im.data[o+2]=225-65*u; }
-      else   { im.data[o]=247-55*u;  im.data[o+1]=240-58*u;  im.data[o+2]=225-64*u; }
-      im.data[o+3]=255;
-    }
-    ctx.putImageData(im,0,0);
-  }
-
-  var TH=D.theta, lo=Math.log10(TH[0]), hi=Math.log10(TH[TH.length-1]);
-  var X0=110, Y0=60, W=800, H=600, YLO=0.80, YHI=1.04;
-  function X(t){return X0+W*(Math.log10(t)-lo)/(hi-lo);}
-  function Y(r){return Y0+H*(1-(r-YLO)/(YHI-YLO));}
-  function drawCurve(n){
-    var s=document.getElementById('s4c');s.innerHTML='';
-    for(var g=0.85;g<1.041;g+=0.05){
-      el(s,'line',{x1:X0,y1:Y(g),x2:X0+W,y2:Y(g),stroke:'#E0D5BF','stroke-width':2});
-      txt(s,X0-78,Y(g)+10,g.toFixed(2));
-    }
-    el(s,'line',{x1:X0,y1:Y(1),x2:X0+W,y2:Y(1),stroke:'#1B1611','stroke-width':3});
-    txt(s,X0+W-150,Y(1)-16,'exact',{fill:'#1B1611'});
-    var r=D.ratios[n],d='';
-    for(var i=0;i<TH.length;i++)d+=(i?'L':'M')+X(TH[i]).toFixed(1)+' '+Y(r[i]).toFixed(1)+' ';
-    el(s,'path',{d:d,fill:'none',stroke:'#BC4538','stroke-width':4});
-    txt(s,X0+W-340,Y(0.815),'iNKA / exact   Cov(ξ,ξ)',{fill:'#BC4538'});
-    el(s,'circle',{cx:X(TH[0]),cy:Y(r[0]),r:9,fill:'#BC4538'});
-    txt(s,X(TH[0])+24,Y(r[0])-30,(100*(r[0]-1)).toFixed(1)+'%',
-        {fill:'#BC4538','font-size':46,'font-weight':600});
-  }
-
-  var i=0,timer=null;
-  function show(j){
-    var n=D.ns[j];
-    drawMatrix(n); drawCurve(j);
-    document.getElementById('s4b').textContent='|k − k′| ≤ '+n;
-
-  }
-  function play(){clearInterval(timer);i=0;show(0);
-    timer=setInterval(function(){i++;if(i>=D.ns.length){clearInterval(timer);return;}
-      show(i);},300);}
-  document.getElementById('s4r').onclick=play;
-  window.__jump=window.__jump||{};
-  window.__jump.s4=function(j){clearInterval(timer);show(j);};
-  show(0);
-  var sec=document.getElementById('s4').closest('section'), was=false;
-  setInterval(function(){var now=sec.classList.contains('present');
-    if(now&&!was)play(); if(!now&&was)clearInterval(timer); was=now;},250);
-})();
-</script>
-```
-
-::: {.notes}
-This is the experiment the paper doesn't do, and it settles the diagnosis.
-
-Start on the left with iNKA's covariance matrix, and keep only the bands within some
-separation of the diagonal — everything outside, greyed, I've replaced with the exact
-answer. At the start only the diagonal is iNKA's, and the real-space covariance on the
-right sits on top of the truth: one percent low. So the diagonal is fine.
-
-Now widen the band. As iNKA's own off-diagonals come back in, the curve peels away and
-settles at fifteen percent low — and it gets there by about the kernel width, twenty-five
-modes. Nothing outside the kernel matters.
-
-So: iNKA is right exactly where it was fitted, the harmonic diagonal, and real space
-weights precisely the part the fit never reached. And the reverse test says the same —
-zero those off-diagonals instead of correcting them and you lose eighty percent of the
-covariance. That band isn't a correction to the real-space covariance. It is the
-real-space covariance.
 :::
 
 ## Six patches, not one, is what breaks it {.nka-slide visibility="hidden"}

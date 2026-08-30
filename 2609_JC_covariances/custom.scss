@@ -363,3 +363,68 @@
     font-family: var(--r-code-font, monospace);
     font-size: 27px; color: #7A6F5C;
 }
+
+// ── the Nagura act ─────────────────────────────────────────────────────────
+// N1's menu of three approximations. Same card grammar as .corr (small-caps
+// name over symbols over a grey gloss) but laid out across rather than down,
+// because these are alternatives to choose between, not steps in a sequence.
+.reveal .nka .menu {
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: start;
+
+    > div {
+        display: flex; flex-direction: column; gap: 4px;
+        padding: 14px 18px;
+        border-left: 6px solid #BC4538;
+        background: rgba(188, 69, 56, 0.10);
+        min-height: 210px;
+    }
+    .nm {
+        font-size: 21px; line-height: 1.1; color: #7A6F5C;
+        font-variant: small-caps; letter-spacing: 0.04em;
+        sub { font-size: 0.72em; }
+    }
+    .eq { font-size: 25px; line-height: 1.2; margin: 6px 0 2px 0; }
+    .note {
+        font-size: 22px; line-height: 1.24; color: #7A6F5C;
+        b { color: #1B1611; font-weight: 600; }
+    }
+}
+
+// N3 puts two paper figures side by side, each over its own verbatim caption.
+// Captions go UNDER here rather than beside (as .figpair does) because two
+// figures plus two side-columns will not fit the stage width.
+.reveal .nka .figrow {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+
+    .figcell { flex: 1 1 0; min-width: 0; }
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 470px;
+        object-fit: contain;
+        object-position: center top;
+        box-shadow: none;
+        mix-blend-mode: multiply;
+    }
+    .papercap { flex: none; margin-top: 16px; }
+}
+
+// N5 closes the act, so its one line carries the weight a figure would.
+.reveal .nka .punch {
+    font-size: 54px;
+    line-height: 1.28;
+    color: #1B1611;
+    margin-top: 60px;
+    max-width: 1500px;
+
+    b { font-weight: 600; color: #BC4538; }
+    &.sub { font-size: 44px; margin-top: 26px; color: #7A6F5C;
+            b { color: #1B1611; } }
+}
