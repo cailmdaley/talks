@@ -49,12 +49,23 @@ include-in-header:
 ```{=html}
 <div id="nka-root">
 
+<!-- Five reveal fragments drive the six steps, so ←/→ walk them like slides.
+     They carry no content: the state machine listens for fragmentshown /
+     fragmenthidden and redraws. -->
+<span class="fragment nka-step" data-fragment-index="0"></span>
+<span class="fragment nka-step" data-fragment-index="1"></span>
+<span class="fragment nka-step" data-fragment-index="2"></span>
+<span class="fragment nka-step" data-fragment-index="3"></span>
+<span class="fragment nka-step" data-fragment-index="4"></span>
+
 <div class="nka-cap" id="nka-cap"></div>
 
 <div class="nka-eq">
-  <div id="eq1">\(\tilde a_k=\sum_{k'} W_{k-k'}\,a_{k'}\)</div>
-  <div id="eq2">\(\langle \tilde C_k\rangle=\sum_{k'} M_{kk'}\,C_{k'}\)</div>
-  <div id="eq3">\({\rm Cov}(\tilde C_k,\tilde C_{k'})\simeq C_{\bar k}C_{\bar k}\,\Xi_{kk'}(w_aw_c,w_bw_d)\)</div>
+  <div id="eq0">\(a(x)\)</div>
+  <div id="eq1">\(\tilde a(x)=w(x)\,a(x)\)</div>
+  <div id="eq2">\(\tilde a_k=\sum_{k'} W_{k-k'}\,a_{k'}\)</div>
+  <div id="eq3">\(\langle \tilde C_k\rangle=\sum_{k'} M_{kk'}\,C_{k'}\)</div>
+  <div id="eq4">\({\rm Cov}(\tilde C_k,\tilde C_{k'})\simeq C_{\bar k}C_{\bar k}\,\Xi_{kk'}(w_aw_c,w_bw_d)\)</div>
 </div>
 
 <div id="scene1">
@@ -65,7 +76,7 @@ include-in-header:
 <div id="scene2" class="hidden">
   <div style="display:flex; gap:34px; align-items:flex-start;" id="mrow">
     <div class="mcell" id="wE"><canvas id="cvE" style="width:460px;height:460px"></canvas>
-      <div class="mlab"><b>exact</b>direct sum<br><span style="font-size:24px">k, k' = 2 … 72</span></div></div>
+      <div class="mlab"><b>exact</b>direct sum<br><span style="font-size:24px">k, k' = 6 … 155</span></div></div>
     <div class="mcell" id="wN"><canvas id="cvN" style="width:460px;height:460px"></canvas>
       <div class="mlab"><b>NKA</b>one mask-product kernel</div></div>
     <div class="mcell" id="wD"><canvas id="cvD" style="width:460px;height:460px"></canvas>
@@ -79,8 +90,8 @@ include-in-header:
 <div class="nka-ctl">
   <div class="nka-slider hidden" id="fwrap">
     <label for="fslider">footprint</label>
-    <input id="fslider" type="range" min="6" max="90" value="35">
-    <span id="fval" style="width:3.6em; display:inline-block;">35%</span>
+    <input id="fslider" type="range" min="3" max="40" value="12">
+    <span id="fval" style="width:3.6em; display:inline-block;">12%</span>
   </div>
   <span class="dots" id="dots"></span>
   <button id="prev">&larr;</button>
@@ -94,14 +105,18 @@ include-in-header:
   if(!R) return;
 
   // ---------- config ----------
-  var N   = 192;            // signed mode index -N/2 .. N/2-1
-  var NX  = 512;            // real-space samples
-  var KLO = 2, KHI = 73;    // modes shown in covariance matrices
-  var NK  = KHI - KLO;      // 71
-  var frac = 0.35;          // footprint fraction of the box
+  var N   = 512;             // signed mode index -N/2 .. N/2-1
+  var NX  = 1024;            // real-space samples
+  var KLO = 6, KHI = 156;    // modes shown in the covariance matrices
+  var NK  = KHI - KLO;       // 150
+  var KMAX = 250;            // modes drawn in the harmonic panel
+  var frac = 0.12;           // footprint fraction of the box
 
+  // Everything scales with the box: the spectrum's curvature scale (k0 = 18) and
+  // the kernel width (~1/frac) keep the same ratio as the coarser version, so the
+  // physics is unchanged — there are simply ~3x more modes across each feature.
   function Cfun(k){ var a = Math.abs(k);
-    return (1.0/Math.pow(1.0 + a/6.0, 1.6)) * (1 + 0.9*Math.exp(-Math.pow((a-26)/4,2))); }
+    return (1.0/Math.pow(1.0 + a/18.0, 1.6)) * (1 + 0.9*Math.exp(-Math.pow((a-78)/12,2))); }
 
   // deterministic PRNG
   function mulberry(a){ return function(){
@@ -119,6 +134,7 @@ include-in-header:
     var rng = mulberry(20260903);
     for(var k=1;k<N/2;k++){
       var s = Math.sqrt(Cfun(k)/2), re = gauss(rng)*s, im = gauss(rng)*s;
+      if(s < 1e-6) continue;
       for(var j=0;j<NX;j++){
         var ph = 2*Math.PI*k*j/NX;
         field[j] += 2*(re*Math.cos(ph) - im*Math.sin(ph));
@@ -133,6 +149,9 @@ include-in-header:
   var Wre  = new Float64Array(N), Wim = new Float64Array(N), sumP = 1;
   var Ctil = new Float64Array(N/2), Cin = new Float64Array(N/2);
   var covE = new Float64Array(NK*NK), covN = new Float64Array(NK*NK);
+  // cos/sin tables — the DFT is the hot loop and this keeps a slider drag smooth
+  var COS = new Float64Array(NX), SIN = new Float64Array(NX);
+  for(var t=0;t<NX;t++){ COS[t]=Math.cos(2*Math.PI*t/NX); SIN[t]=Math.sin(2*Math.PI*t/NX); }
 
   function Wat(m, part){                       // m signed; 0 outside band
     if(m <= -N/2 || m >= N/2) return 0;
@@ -154,8 +173,8 @@ include-in-header:
     for(var mi=0; mi<N; mi++){
       var m = mi < N/2 ? mi : mi - N, sr = 0, si = 0;
       for(var jj=0; jj<NX; jj++){
-        var ph = 2*Math.PI*m*jj/NX;
-        sr += mask[jj]*Math.cos(ph); si -= mask[jj]*Math.sin(ph);
+        var idx = (m*jj) % NX; if(idx < 0) idx += NX;
+        sr += mask[jj]*COS[idx]; si -= mask[jj]*SIN[idx];
       }
       Wre[mi] = sr/NX; Wim[mi] = si/NX;
       sumP += Wre[mi]*Wre[mi] + Wim[mi]*Wim[mi];
@@ -186,21 +205,32 @@ include-in-header:
       }
       Xre[d+N]=ar; Xim[d+N]=ai;
     }
+    // cache the C-weighted rows of W once; the k,k' loop is then a dot product
     var n2 = sumP*sumP;
+    var Ar = new Float64Array(NK*N), Ai = new Float64Array(NK*N);
+    var Br = new Float64Array(NK*N), Bi = new Float64Array(NK*N);
     for(var i=0;i<NK;i++){
       var k = KLO + i;
-      for(var j=0;j<NK;j++){
-        var kp = KLO + j, sr=0, si=0;
-        for(var q=-N/2; q<N/2; q++){
-          var a1r=Wat(k-q,0), a1i=Wat(k-q,1), a2r=Wat(kp-q,0), a2i=Wat(kp-q,1);
-          var c = Cfun(q);
-          sr += (a1r*a2r + a1i*a2i)*c;
-          si += (a1i*a2r - a1r*a2i)*c;
+      for(var qi=0; qi<N; qi++){
+        var q = qi - N/2;
+        var wr = Wat(k-q,0), wi = Wat(k-q,1), c = Cfun(q);
+        Ar[i*N+qi] = wr*c; Ai[i*N+qi] = wi*c;    // C-weighted
+        Br[i*N+qi] = wr;   Bi[i*N+qi] = wi;      // plain
+      }
+    }
+    for(var a=0;a<NK;a++){
+      var ka = KLO + a, oa = a*N;
+      for(var b=0;b<NK;b++){
+        var kb = KLO + b, ob = b*N, sr=0, si=0;
+        for(var p=0;p<N;p++){
+          var x1r=Ar[oa+p], x1i=Ai[oa+p], x2r=Br[ob+p], x2i=Bi[ob+p];
+          sr += x1r*x2r + x1i*x2i;
+          si += x1i*x2r - x1r*x2i;
         }
-        covE[i*NK+j] = 2*(sr*sr + si*si)/n2;
-        var cb = Cfun((k+kp)/2), dd = k-kp+N;
+        covE[a*NK+b] = 2*(sr*sr + si*si)/n2;
+        var cb = Cfun((ka+kb)/2), dd = ka-kb+N;
         var nr = cb*Xre[dd], ni = cb*Xim[dd];
-        covN[i*NK+j] = 2*(nr*nr + ni*ni)/n2;
+        covN[a*NK+b] = 2*(nr*nr + ni*ni)/n2;
       }
     }
   }
@@ -257,29 +287,27 @@ include-in-header:
     }
     if(step >= 2){
       path(false,'#C5B89E',2,1); path(true,'#1B1611',3,1);
-      var lo2 = PAD + AW*(0.5 - frac/2);
       var ly = y0 - 22;
       el(s,'line',{x1:PAD,y1:ly-8,x2:PAD+46,y2:ly-8,stroke:'#C5B89E','stroke-width':3});
       txt(s, PAD+58, ly, 'field  a', {fill:'#9C8F79','font-size':28});
       el(s,'line',{x1:PAD+230,y1:ly-8,x2:PAD+276,y2:ly-8,stroke:'#1B1611','stroke-width':3});
       txt(s, PAD+288, ly, 'observed  w·a', {fill:'#1B1611','font-size':28});
-      if(lo2 < 0) {}
     }
     else path(false,'#1B1611',3,1);
   }
 
   // ---------- panel B: harmonic space ----------
-  var kMark = 34;
+  var kMark = 100;
   function drawB(step, kc){
     var s = document.getElementById('svgB'); s.innerHTML = '';
     if(step < 1){ return; }
-    var x0 = PAD, y0 = 14, h = 272, w = AW, kmax = 84;
+    var x0 = PAD, y0 = 14, h = 272, w = AW, kmax = KMAX;
     var lgmin = Math.log10(Cfun(kmax)), lgmax = Math.log10(Cfun(1));
     function X(k){ return x0 + w*(k-1)/(kmax-1); }
     function Y(c){ return y0 + h*(1 - (Math.log10(c)-lgmin)/(lgmax-lgmin)); }
     el(s,'line',{x1:x0,y1:y0+h,x2:x0+w,y2:y0+h,stroke:'#C5B89E','stroke-width':2});
     txt(s, x0, y0+h+44, 'wavenumber  k', {fill:'#7A6F5C'});
-    txt(s, 4, y0+18, 'C\u2096', {fill:'#7A6F5C'});
+    txt(s, 4, y0+18, 'Cₖ', {fill:'#7A6F5C'});
 
     var d1='', d2='';
     for(var k=1;k<kmax;k++){
@@ -287,12 +315,12 @@ include-in-header:
       d2 += (k>1?'L':'M') + X(k).toFixed(1) + ' ' + Y(Ctil[k]).toFixed(1) + ' ';
     }
     el(s,'path',{d:d1,fill:'none',stroke:'#1B1611','stroke-width':3.5});
-    txt(s, X(58), Y(Cin[58])-22, 'true  C\u2096', {fill:'#1B1611','font-size':28});
+    txt(s, X(132), Y(Cin[132])-26, 'true  Cₖ', {fill:'#1B1611','font-size':28});
 
     if(step >= 4){
       el(s,'path',{d:d2,fill:'none',stroke:'#BC4538','stroke-width':3.5,
                    'stroke-dasharray':'10 7'});
-      txt(s, X(58), Y(Ctil[58])+46, 'masked  C\u0303\u2096', {fill:'#BC4538','font-size':28});
+      txt(s, X(132), Y(Ctil[132])+50, 'masked  C̃ₖ', {fill:'#BC4538','font-size':28});
     }
     // mask kernel centred on kc
     if(step < 3) return;
@@ -307,20 +335,20 @@ include-in-header:
     el(s,'path',{d:dk,fill:'none',stroke:'#3D5BA0','stroke-width':3.5});
     el(s,'line',{x1:X(kc),y1:y0,x2:X(kc),y2:y0+h,stroke:'#3D5BA0',
                  'stroke-width':2,'stroke-dasharray':'6 8'});
-    txt(s, X(kc)+18, y0+26, 'mask kernel  |W|\u00b2', {fill:'#3D5BA0','font-size':28});
+    txt(s, X(kc)+18, y0+26, 'mask kernel  |W|²', {fill:'#3D5BA0','font-size':28});
   }
 
   // ---------- panel C: does C vary across the kernel? (scene 2) ----------
   function drawC(){
     var s = document.getElementById('svgC'); s.innerHTML='';
-    var x0 = PAD, y0 = 22, h = 132, w = AW, kmax = 84, kc = 12;
+    var x0 = PAD, y0 = 22, h = 132, w = AW, kmax = KMAX, kc = 36;
     var lgmin = Math.log10(Cfun(kmax)), lgmax = Math.log10(Cfun(1));
     function X(k){ return x0 + w*(k-1)/(kmax-1); }
     function Y(c){ return y0 + h*(1 - (Math.log10(c)-lgmin)/(lgmax-lgmin)); }
     var d='';
     for(var k=1;k<kmax;k++) d += (k>1?'L':'M')+X(k).toFixed(1)+' '+Y(Cfun(k)).toFixed(1)+' ';
     el(s,'path',{d:d,fill:'none',stroke:'#1B1611','stroke-width':3.5});
-    txt(s, X(62), Y(Cfun(62))-20, 'C\u2096', {fill:'#1B1611','font-size':28});
+    txt(s, X(190), Y(Cfun(190))-20, 'Cₖ', {fill:'#1B1611','font-size':28});
     var pk=0, ker=[];
     for(var m=-N/2+1;m<N/2;m++){ var wr=Wat(m,0), wi=Wat(m,1), p=wr*wr+wi*wi;
       ker.push([kc-m,p]); pk=Math.max(pk,p); }
@@ -339,7 +367,7 @@ include-in-header:
       el(s,'line',{x1:X(lo),y1:y0+h+28,x2:X(hi),y2:y0+h+28,
                    stroke: bad?'#BC4538':'#3D5BA0','stroke-width':4});
       txt(s, X(hi)+22, y0+h+38,
-          '\u00d7' + ratio.toFixed(1) + ' across the kernel',
+          '×' + ratio.toFixed(1) + ' across the kernel',
           {fill: bad?'#BC4538':'#3D5BA0', 'font-size':28});
     }
   }
@@ -363,21 +391,30 @@ include-in-header:
   // ---------- step machine ----------
   var CAPS = ['one field, modes independent',
               'we see only part of it',
-              'mask \u00d7 field  \u2192  kernel \u2217 modes',
+              'mask × field  →  kernel ∗ modes',
               'the kernel smears the spectrum',
-              'C flat across the kernel  \u2192  one kernel',
+              'C flat across the kernel  →  one kernel',
               'shrink the footprint'];
-  var SIDE = ['','','','','',''];
   var NSTEP = 6, step = 0;
   var caps = document.getElementById('nka-cap'), side = document.getElementById('nka-side');
   var dots = document.getElementById('dots');
   for(var i=0;i<NSTEP;i++) dots.appendChild(document.createElement('span'));
 
+  // Each equation appears with the concept it names, and stays.
+  // eq0 a(x) · eq1 masked field · eq2 convolution · eq3 coupling matrix · eq4 covariance
+  function equations(){
+    for(var i=0;i<5;i++){
+      var e = document.getElementById('eq'+i);
+      var on = (i <= 1) ? (step >= i) : (step >= i);
+      e.style.display = on ? '' : 'none';
+      var live = (i === step) || (i === 4 && step >= 4);
+      e.className = live ? 'on' : '';
+    }
+  }
+
   function render(){
-    caps.innerHTML = CAPS[step]; side.innerHTML = SIDE[step];
-    document.getElementById('eq1').className = (step===2||step===3) ? 'on' : '';
-    document.getElementById('eq2').className = (step===3) ? 'on' : '';
-    document.getElementById('eq3').className = (step>=4) ? 'on' : '';
+    caps.innerHTML = CAPS[step]; side.innerHTML = '';
+    equations();
     var s2 = step >= 4;
     document.getElementById('scene2').classList.toggle('solo', step === 4);
     R.classList.toggle('solo-mode', step === 4);
@@ -385,25 +422,61 @@ include-in-header:
     document.getElementById('scene2').classList.toggle('hidden', !s2);
     document.getElementById('fwrap').classList.toggle('hidden', step !== 5);
     for(var i=0;i<NSTEP;i++) dots.children[i].className = (i===step) ? 'on' : '';
-    document.getElementById('prev').disabled = (step===0);
-    document.getElementById('next').disabled = (step===NSTEP-1);
     if(s2){ drawMatrices(); drawC(); }
     else  { drawA(step+1); drawB(step+1, kMark); }
   }
 
+  function setStep(n){
+    n = Math.max(0, Math.min(NSTEP-1, n));
+    if(n === step) return;
+    step = n; render();
+  }
+
+  // ── reveal fragments own the stepping, so ←/→ walk the six states ──
+  //    fragment index f runs -1 … 4; step = f + 1.
+  function syncFromReveal(){
+    if(!window.Reveal || !Reveal.getIndices) return;
+    var idx = Reveal.getIndices();
+    var f = (typeof idx.f === 'number' && !isNaN(idx.f)) ? idx.f : -1;
+    setStep(f + 1);
+  }
+  // This script runs at parse time, before Quarto initialises Reveal, so the
+  // listeners have to wait for it. A slow poll backs them up: setStep is a no-op
+  // when the step is unchanged, so it costs nothing and it survives any version
+  // where the fragment events are named differently.
+  (function attach(){
+    if(window.Reveal && Reveal.on && typeof Reveal.getIndices === 'function'){
+      Reveal.on('fragmentshown',  syncFromReveal);
+      Reveal.on('fragmenthidden', syncFromReveal);
+      Reveal.on('slidechanged',   syncFromReveal);
+      syncFromReveal();
+      setInterval(syncFromReveal, 200);
+    } else setTimeout(attach, 100);
+  })();
+  // the in-slide buttons are a secondary control — they drive reveal, not the
+  // state directly, so both paths stay in sync
   document.getElementById('next').onclick = function(){
-    if(step < NSTEP-1){ step++; render(); } };
+    if(window.Reveal) Reveal.nextFragment(); };
   document.getElementById('prev').onclick = function(){
-    if(step > 0){ step--; render(); } };
+    if(window.Reveal) Reveal.prevFragment(); };
+
   var sl = document.getElementById('fslider');
+  var dirty = false;
   sl.oninput = function(){
     frac = (+sl.value)/100;
     document.getElementById('fval').textContent = sl.value + '%';
-    buildMask(frac); render();
+    dirty = true;
   };
+  // one rebuild per animation frame at most — the exact covariance is a real
+  // O(NK^2 N) sum and would otherwise queue up behind a fast drag
+  (function pump(){
+    if(dirty){ dirty = false; buildMask(frac); render(); }
+    requestAnimationFrame(pump);
+  })();
 
   buildMask(frac);
   render();
+  syncFromReveal();
 })();
 </script>
 ```

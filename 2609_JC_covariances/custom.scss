@@ -108,6 +108,11 @@
 .reveal #nka-root .hidden,
 .reveal .anim .hidden { display: none; }
 
+// The six steps are driven by five content-free reveal fragments, so the arrow
+// keys walk them. They must never occupy layout — reveal still toggles their
+// `visible` class while display:none, which is all the state machine reads.
+.reveal #nka-root .nka-step { display: none; }
+
 .reveal #nka-root .mcell canvas { display: block; }
 .reveal #nka-root #scene2.solo #wE,
 .reveal #nka-root #scene2.solo #wD { display: none; }
