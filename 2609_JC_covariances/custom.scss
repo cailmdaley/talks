@@ -244,6 +244,15 @@
 .reveal .nka .two.lower { gap: 30px; align-items: flex-start; }
 // beats the generic `.two > div { flex: 1 }` on class count
 .reveal .nka .two.lower > .toycol { flex: 0 0 520px; }
+// the bridge to the covariance slide; in HTML rather than inside the SVG so it
+// can wrap inside the column instead of running off the panel
+.reveal .nka .toyfoot {
+    font-size: 26px;
+    line-height: 1.32;
+    color: #1B1611;
+    margin: -6px 0 0 86px;
+    max-width: 420px;
+}
 .reveal .nka .figblock {
     flex: 1;
     display: flex;

@@ -182,8 +182,9 @@ papers.
 <div class="two lower">
   <div class="toycol">
     <svg class="pKC" data-h="150" data-x0="86" data-w="400"
-         data-foot="mode separation Δk — it never narrows"
-         viewBox="0 0 520 300" width="520" height="300"></svg>
+         data-foot="mode separation Δk"
+         viewBox="0 0 520 290" width="520" height="290"></svg>
+    <div class="toyfoot">The kernel never narrows — there is no narrow kernel to approximate with.</div>
   </div>
   <div class="figblock">
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo power spectrum">
