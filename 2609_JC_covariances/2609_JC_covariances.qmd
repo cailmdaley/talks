@@ -1,0 +1,454 @@
+---
+title: "Covariances three ways:<br>analytic, catalogue-based, and control-variate"
+subtitle: "arXiv 2607.14843 &nbsp;·&nbsp; 2605.16186 &nbsp;·&nbsp; 2605.28817"
+output-file: index.html
+occasion: CosmoStat Journal Club
+description: Three recent papers on pseudo-Cl covariance estimation
+draft: true
+author:
+  name: Cail Daley
+  affiliation: "CosmoStat, CEA Paris-Saclay"
+date: today
+date-format: long
+
+format:
+  revealjs:
+    width: 1920
+    height: 1080
+    theme: [default, custom.scss]
+    slide-number: true
+    fig-align: center
+    menu: false
+    include-after-body: assets/no_footer_on_titleslide.html
+    footer: "Cail Daley | CosmoStat JC | 3 Sep 2026"
+    history: false
+    hash: true
+    template-partials:
+      - title-slide.html
+    center-title-slide: false
+
+html-math-method:
+  method: mathjax
+  url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+include-in-header: assets/mathjax.html
+---
+
+## Masking makes every mode talk to its neighbours {.nka-slide data-prevent-swipe="true"}
+
+```{=html}
+<div id="nka-root">
+<style>
+#nka-root { --ink:#22262b; --mut:#7b838c; --acc:#c0392b; --acc2:#2471a3;
+            --band:#e8eef4; font-size:28px; color:var(--ink); position:relative; }
+#nka-root .nka-cap { font-size:30px; color:var(--mut); min-height:1.4em; margin:0 0 6px 0; }
+#nka-root .nka-cap b { color:var(--ink); font-weight:600; }
+#nka-root .nka-eq { display:flex; gap:26px; align-items:center; font-size:30px;
+                    margin:2px 0 6px 0; }
+#nka-root .nka-eq div { opacity:.3; transition:opacity .3s; padding:4px 16px;
+                        border-left:6px solid transparent; white-space:nowrap; }
+#nka-root .nka-eq div.on { opacity:1; border-left-color:var(--acc); background:#fbf1ef; }
+#nka-root .nka-ctl { position:absolute; bottom:-18px; right:0; display:flex;
+                     align-items:center; gap:18px; font-size:26px; }
+#nka-root button { font:inherit; font-size:26px; padding:6px 20px; border-radius:8px;
+                   border:2px solid var(--ink); background:#fff; color:var(--ink); cursor:pointer; }
+#nka-root button:disabled { opacity:.3; cursor:default; }
+#nka-root .dots span { display:inline-block; width:12px; height:12px; border-radius:50%;
+                       background:#cfd5db; margin:0 4px; }
+#nka-root .dots span.on { background:var(--acc); }
+#nka-root .nka-slider { display:flex; align-items:center; gap:14px; font-size:26px; }
+#nka-root input[type=range] { width:280px; }
+#nka-root canvas { image-rendering:pixelated; border:1px solid #cfd5db; }
+#nka-root #nka-side { font-size:28px; color:var(--mut); margin-top:10px; }
+#nka-root .mlab { font-size:27px; text-align:center; color:var(--mut); margin-top:6px; }
+#nka-root .mlab b { color:var(--ink); font-weight:600; display:block; font-size:29px; }
+#nka-root .hidden { display:none; }
+#nka-root .mcell canvas { display:block; }
+#nka-root #scene2.solo #wE, #nka-root #scene2.solo #wD { display:none; }
+#nka-root #scene2.solo #mrow { justify-content:flex-start; }
+#nka-root #scene2.solo canvas { width:470px !important; height:470px !important; }
+#nka-root.solo-mode #nka-side { position:absolute; left:600px; top:230px;
+                                width:640px; font-size:32px; line-height:1.5; }
+#nka-root .axlab { font-size:25px; color:var(--mut); }
+</style>
+
+<div class="nka-cap" id="nka-cap"></div>
+
+<div class="nka-eq">
+  <div id="eq1">\(\tilde a_k=\sum_{k'} W_{k-k'}\,a_{k'}\)</div>
+  <div id="eq2">\(\langle \tilde C_k\rangle=\sum_{k'} M_{kk'}\,C_{k'}\)</div>
+  <div id="eq3">\({\rm Cov}(\tilde C_k,\tilde C_{k'})\simeq C_{\bar k}C_{\bar k}\,\Xi_{kk'}(w_aw_c,w_bw_d)\)</div>
+</div>
+
+<div id="scene1">
+  <svg id="svgA" viewBox="0 0 1730 300" width="1730" height="300"></svg>
+  <svg id="svgB" viewBox="0 0 1730 350" width="1730" height="350"></svg>
+</div>
+
+<div id="scene2" class="hidden">
+  <div style="display:flex; gap:34px; align-items:flex-start;" id="mrow">
+    <div class="mcell" id="wE"><canvas id="cvE" style="width:460px;height:460px"></canvas>
+      <div class="mlab"><b>exact</b>direct sum<br><span style="font-size:24px">k, k' = 2 … 72</span></div></div>
+    <div class="mcell" id="wN"><canvas id="cvN" style="width:460px;height:460px"></canvas>
+      <div class="mlab"><b>NKA</b>one mask-product kernel</div></div>
+    <div class="mcell" id="wD"><canvas id="cvD" style="width:460px;height:460px"></canvas>
+      <div class="mlab"><b>NKA &minus; exact</b>error</div></div>
+  </div>
+  <svg id="svgC" viewBox="0 0 1730 230" width="1730" height="230"></svg>
+</div>
+
+<div id="nka-side"></div>
+
+<div class="nka-ctl">
+  <div class="nka-slider hidden" id="fwrap">
+    <label for="fslider">footprint</label>
+    <input id="fslider" type="range" min="6" max="90" value="35">
+    <span id="fval" style="width:3.6em; display:inline-block;">35%</span>
+  </div>
+  <span class="dots" id="dots"></span>
+  <button id="prev">&larr;</button>
+  <button id="next">&rarr;</button>
+</div>
+</div>
+
+<script>
+(function(){
+  var R = document.getElementById('nka-root');
+  if(!R) return;
+
+  // ---------- config ----------
+  var N   = 192;            // signed mode index -N/2 .. N/2-1
+  var NX  = 512;            // real-space samples
+  var KLO = 2, KHI = 73;    // modes shown in covariance matrices
+  var NK  = KHI - KLO;      // 71
+  var frac = 0.35;          // footprint fraction of the box
+
+  function Cfun(k){ var a = Math.abs(k);
+    return (1.0/Math.pow(1.0 + a/6.0, 1.6)) * (1 + 0.9*Math.exp(-Math.pow((a-26)/4,2))); }
+
+  // deterministic PRNG
+  function mulberry(a){ return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function gauss(rng){
+    var u = 1 - rng(), v = rng();
+    return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v); }
+
+  // ---------- realise one Gaussian field a(x) (fixed seed) ----------
+  var field = new Float64Array(NX);
+  (function(){
+    var rng = mulberry(20260903);
+    for(var k=1;k<N/2;k++){
+      var s = Math.sqrt(Cfun(k)/2), re = gauss(rng)*s, im = gauss(rng)*s;
+      for(var j=0;j<NX;j++){
+        var ph = 2*Math.PI*k*j/NX;
+        field[j] += 2*(re*Math.cos(ph) - im*Math.sin(ph));
+      }
+    }
+    var mx = 0; for(var j2=0;j2<NX;j2++) mx = Math.max(mx, Math.abs(field[j2]));
+    for(var j3=0;j3<NX;j3++) field[j3] /= mx;   // scale to [-1,1] for drawing
+  })();
+
+  // ---------- mask, its transform, and derived quantities ----------
+  var mask = new Float64Array(NX);
+  var Wre  = new Float64Array(N), Wim = new Float64Array(N), sumP = 1;
+  var Ctil = new Float64Array(N/2), Cin = new Float64Array(N/2);
+  var covE = new Float64Array(NK*NK), covN = new Float64Array(NK*NK);
+
+  function Wat(m, part){                       // m signed; 0 outside band
+    if(m <= -N/2 || m >= N/2) return 0;
+    var i = (m + N) % N;
+    return part ? Wim[i] : Wre[i];
+  }
+
+  function buildMask(f){
+    var taper = 0.015*NX, half = f*NX/2, mid = NX/2;
+    for(var j=0;j<NX;j++){
+      var d = Math.abs(j - mid);
+      var v = 0;
+      if(d <= half - taper) v = 1;
+      else if(d < half + taper) v = 0.5*(1 + Math.cos(Math.PI*(d - half + taper)/(2*taper)));
+      mask[j] = v;
+    }
+    // W_m = (1/NX) sum_j w_j exp(-2 pi i m j / NX)
+    sumP = 0;
+    for(var mi=0; mi<N; mi++){
+      var m = mi < N/2 ? mi : mi - N, sr = 0, si = 0;
+      for(var jj=0; jj<NX; jj++){
+        var ph = 2*Math.PI*m*jj/NX;
+        sr += mask[jj]*Math.cos(ph); si -= mask[jj]*Math.sin(ph);
+      }
+      Wre[mi] = sr/NX; Wim[mi] = si/NX;
+      sumP += Wre[mi]*Wre[mi] + Wim[mi]*Wim[mi];
+    }
+    // coupled spectrum  <Ctil_k> = sum_k' |W_{k-k'}|^2 C_k' / sumP
+    for(var k=0;k<N/2;k++){
+      Cin[k] = Cfun(k);
+      var acc = 0;
+      for(var kp=-N/2; kp<N/2; kp++){
+        var wr = Wat(k-kp,0), wi = Wat(k-kp,1);
+        acc += (wr*wr + wi*wi)*Cfun(kp);
+      }
+      Ctil[k] = acc/sumP;
+    }
+    covariances();
+  }
+
+  function covariances(){
+    // exact:  S_kk' = sum_k'' W_{k-k''} W*_{k'-k''} C_k''      Cov = 2|S|^2/sumP^2
+    // NKA:    C_k'' -> C_{(k+k')/2}  =>  S = C_kbar * Xi_{k-k'}
+    var Xre = new Float64Array(2*N), Xim = new Float64Array(2*N);   // Xi_delta, offset N
+    for(var d=-N+1; d<N; d++){
+      var ar=0, ai=0;
+      for(var m=-N/2; m<N/2; m++){
+        var wr1=Wat(d+m,0), wi1=Wat(d+m,1), wr2=Wat(m,0), wi2=Wat(m,1);
+        ar += wr1*wr2 + wi1*wi2;      // W * conj(W)
+        ai += wi1*wr2 - wr1*wi2;
+      }
+      Xre[d+N]=ar; Xim[d+N]=ai;
+    }
+    var n2 = sumP*sumP;
+    for(var i=0;i<NK;i++){
+      var k = KLO + i;
+      for(var j=0;j<NK;j++){
+        var kp = KLO + j, sr=0, si=0;
+        for(var q=-N/2; q<N/2; q++){
+          var a1r=Wat(k-q,0), a1i=Wat(k-q,1), a2r=Wat(kp-q,0), a2i=Wat(kp-q,1);
+          var c = Cfun(q);
+          sr += (a1r*a2r + a1i*a2i)*c;
+          si += (a1i*a2r - a1r*a2i)*c;
+        }
+        covE[i*NK+j] = 2*(sr*sr + si*si)/n2;
+        var cb = Cfun((k+kp)/2), dd = k-kp+N;
+        var nr = cb*Xre[dd], ni = cb*Xim[dd];
+        covN[i*NK+j] = 2*(nr*nr + ni*ni)/n2;
+      }
+    }
+  }
+
+  // ---------- drawing helpers ----------
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(p, t, at){ var e = document.createElementNS(NS,t);
+    for(var k in at) e.setAttribute(k, at[k]); p.appendChild(e); return e; }
+  function txt(p, x, y, s, at){ var e = el(p,'text',
+      Object.assign({x:x,y:y,'font-size':26,fill:'#22262b'}, at||{}));
+    e.textContent = s; return e; }
+
+  function divergent(v){                       // v in [-1,1]
+    var t = Math.max(-1, Math.min(1, v));
+    if(t >= 0){ var u = Math.pow(t,0.55);
+      return [255 - 210*u, 255 - 190*u, 255 - 100*u]; }        // white -> deep blue
+    var u2 = Math.pow(-t,0.55);
+    return [255 - 20*u2, 255 - 190*u2, 255 - 200*u2];          // white -> red
+  }
+  function heat(cv, mat, scale){
+    cv.width = NK; cv.height = NK;
+    var ctx = cv.getContext('2d'), im = ctx.createImageData(NK,NK);
+    for(var i=0;i<NK;i++) for(var j=0;j<NK;j++){
+      var c = divergent(mat[i*NK+j]/scale), o = 4*(i*NK+j);
+      im.data[o]=c[0]; im.data[o+1]=c[1]; im.data[o+2]=c[2]; im.data[o+3]=255;
+    }
+    ctx.putImageData(im,0,0);
+  }
+
+  // ---------- panel A: real space ----------
+  var PAD = 90, W1 = 1730, AW = W1 - PAD - 40;
+  function drawA(step){
+    var s = document.getElementById('svgA'); s.innerHTML = '';
+    var y0 = 62, h = 200, mid = y0 + h/2;
+    el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:'#dfe4e9','stroke-width':2});
+    txt(s, 10, mid+9, 'a(x)', {fill:'#7b838c'});
+    txt(s, PAD, 294, 'position  x', {fill:'#7b838c','font-size':26});
+
+    if(step >= 2){                                  // footprint band
+      var lo = PAD + AW*(0.5 - frac/2), hi = PAD + AW*(0.5 + frac/2);
+      el(s,'rect',{x:lo,y:y0,width:hi-lo,height:h,fill:'#e8eef4'});
+      el(s,'line',{x1:lo,y1:y0,x2:lo,y2:y0+h,stroke:'#2471a3','stroke-width':3});
+      el(s,'line',{x1:hi,y1:y0,x2:hi,y2:y0+h,stroke:'#2471a3','stroke-width':3});
+      txt(s,(lo+hi)/2 - 84, y0 - 22, 'mask w(x)', {fill:'#2471a3','font-size':27});
+    }
+    function path(scaleByMask, col, wid, op){
+      var d = '';
+      for(var j=0;j<NX;j++){
+        var v = field[j]*(scaleByMask ? mask[j] : 1);
+        d += (j?'L':'M') + (PAD + AW*j/(NX-1)).toFixed(1) + ' ' + (mid - v*h*0.44).toFixed(1) + ' ';
+      }
+      el(s,'path',{d:d,fill:'none',stroke:col,'stroke-width':wid,opacity:op});
+    }
+    if(step >= 2){
+      path(false,'#b9c1c9',2,1); path(true,'#22262b',3,1);
+      var lo2 = PAD + AW*(0.5 - frac/2);
+      var ly = y0 - 22;
+      el(s,'line',{x1:PAD,y1:ly-8,x2:PAD+46,y2:ly-8,stroke:'#b9c1c9','stroke-width':3});
+      txt(s, PAD+58, ly, 'field  a', {fill:'#9aa2ab','font-size':28});
+      el(s,'line',{x1:PAD+230,y1:ly-8,x2:PAD+276,y2:ly-8,stroke:'#22262b','stroke-width':3});
+      txt(s, PAD+288, ly, 'observed  w·a', {fill:'#22262b','font-size':28});
+      if(lo2 < 0) {}
+    }
+    else path(false,'#22262b',3,1);
+  }
+
+  // ---------- panel B: harmonic space ----------
+  var kMark = 34;
+  function drawB(step, kc){
+    var s = document.getElementById('svgB'); s.innerHTML = '';
+    if(step < 1){ return; }
+    var x0 = PAD, y0 = 14, h = 272, w = AW, kmax = 84;
+    var lgmin = Math.log10(Cfun(kmax)), lgmax = Math.log10(Cfun(1));
+    function X(k){ return x0 + w*(k-1)/(kmax-1); }
+    function Y(c){ return y0 + h*(1 - (Math.log10(c)-lgmin)/(lgmax-lgmin)); }
+    el(s,'line',{x1:x0,y1:y0+h,x2:x0+w,y2:y0+h,stroke:'#dfe4e9','stroke-width':2});
+    txt(s, x0, y0+h+44, 'wavenumber  k', {fill:'#7b838c'});
+    txt(s, 4, y0+18, 'C\u2096', {fill:'#7b838c'});
+
+    var d1='', d2='';
+    for(var k=1;k<kmax;k++){
+      d1 += (k>1?'L':'M') + X(k).toFixed(1) + ' ' + Y(Cin[k]).toFixed(1) + ' ';
+      d2 += (k>1?'L':'M') + X(k).toFixed(1) + ' ' + Y(Ctil[k]).toFixed(1) + ' ';
+    }
+    el(s,'path',{d:d1,fill:'none',stroke:'#22262b','stroke-width':3.5});
+    txt(s, X(58), Y(Cin[58])-22, 'true  C\u2096', {fill:'#22262b','font-size':28});
+
+    if(step >= 4){
+      el(s,'path',{d:d2,fill:'none',stroke:'#c0392b','stroke-width':3.5,
+                   'stroke-dasharray':'10 7'});
+      txt(s, X(58), Y(Ctil[58])+46, 'masked  C\u0303\u2096', {fill:'#c0392b','font-size':28});
+    }
+    // mask kernel centred on kc
+    if(step < 3) return;
+    var pk = 0, ker = [];
+    for(var m=-N/2+1;m<N/2;m++){ var wr=Wat(m,0), wi=Wat(m,1); var p = wr*wr+wi*wi;
+      ker.push([kc-m, p]); pk = Math.max(pk,p); }
+    var dk = '';
+    for(var i2=0;i2<ker.length;i2++){
+      var kk = ker[i2][0]; if(kk < 0.5 || kk > kmax) continue;
+      dk += (dk?'L':'M') + X(kk).toFixed(1) + ' ' + (y0+h - 175*ker[i2][1]/pk).toFixed(1) + ' ';
+    }
+    el(s,'path',{d:dk,fill:'none',stroke:'#2471a3','stroke-width':3.5});
+    el(s,'line',{x1:X(kc),y1:y0,x2:X(kc),y2:y0+h,stroke:'#2471a3',
+                 'stroke-width':2,'stroke-dasharray':'6 8'});
+    txt(s, X(kc)+18, y0+26, 'mask kernel  |W|\u00b2', {fill:'#2471a3','font-size':28});
+  }
+
+  // ---------- panel C: does C vary across the kernel? (scene 2) ----------
+  function drawC(){
+    var s = document.getElementById('svgC'); s.innerHTML='';
+    var x0 = PAD, y0 = 22, h = 132, w = AW, kmax = 84, kc = 12;
+    var lgmin = Math.log10(Cfun(kmax)), lgmax = Math.log10(Cfun(1));
+    function X(k){ return x0 + w*(k-1)/(kmax-1); }
+    function Y(c){ return y0 + h*(1 - (Math.log10(c)-lgmin)/(lgmax-lgmin)); }
+    var d='';
+    for(var k=1;k<kmax;k++) d += (k>1?'L':'M')+X(k).toFixed(1)+' '+Y(Cfun(k)).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke:'#22262b','stroke-width':3.5});
+    txt(s, X(62), Y(Cfun(62))-20, 'C\u2096', {fill:'#22262b','font-size':28});
+    var pk=0, ker=[];
+    for(var m=-N/2+1;m<N/2;m++){ var wr=Wat(m,0), wi=Wat(m,1), p=wr*wr+wi*wi;
+      ker.push([kc-m,p]); pk=Math.max(pk,p); }
+    var dk='';
+    for(var i=0;i<ker.length;i++){ var kk=ker[i][0]; if(kk<0.5||kk>kmax) continue;
+      dk += (dk?'L':'M')+X(kk).toFixed(1)+' '+(y0+h-100*ker[i][1]/pk).toFixed(1)+' '; }
+    el(s,'path',{d:dk,fill:'none',stroke:'#2471a3','stroke-width':3.5});
+    var lo=null, hi=null;
+    for(var i3=0;i3<ker.length;i3++) if(ker[i3][1] > pk/2){
+      var kk2=ker[i3][0]; if(lo===null||kk2<lo) lo=kk2; if(hi===null||kk2>hi) hi=kk2; }
+    if(lo!==null){
+      lo = Math.max(lo, 1); hi = Math.min(hi, kmax-1);
+      el(s,'rect',{x:X(lo),y:y0,width:Math.max(X(hi)-X(lo),3),height:h,
+                   fill:'#2471a3',opacity:0.12});
+      var ratio = Cfun(lo)/Cfun(hi), bad = ratio > 1.5;
+      el(s,'line',{x1:X(lo),y1:y0+h+28,x2:X(hi),y2:y0+h+28,
+                   stroke: bad?'#c0392b':'#2471a3','stroke-width':4});
+      txt(s, X(hi)+22, y0+h+38,
+          '\u00d7' + ratio.toFixed(1) + ' across the kernel',
+          {fill: bad?'#c0392b':'#2471a3', 'font-size':28});
+    }
+  }
+
+  // ---------- scene 2 matrices ----------
+  // shown as correlation matrices r = Cov / sqrt(diag_exact * diag_exact),
+  // so the band stays visible at every k instead of being swamped by C_k^2.
+  function drawMatrices(){
+    var rE = new Float64Array(NK*NK), rN = new Float64Array(NK*NK),
+        rD = new Float64Array(NK*NK), d = new Float64Array(NK);
+    for(var i=0;i<NK;i++) d[i] = Math.sqrt(covE[i*NK+i]);
+    for(var a=0;a<NK;a++) for(var b=0;b<NK;b++){
+      var q = a*NK+b, nrm = d[a]*d[b];
+      rE[q] = covE[q]/nrm; rN[q] = covN[q]/nrm; rD[q] = rN[q]-rE[q];
+    }
+    heat(document.getElementById('cvE'), rE, 1);
+    heat(document.getElementById('cvN'), rN, 1);
+    heat(document.getElementById('cvD'), rD, 0.35);
+  }
+
+  // ---------- step machine ----------
+  var CAPS = ['one field, modes independent',
+              'we see only part of it',
+              'mask \u00d7 field  \u2192  kernel \u2217 modes',
+              'the kernel smears the spectrum',
+              'C flat across the kernel  \u2192  one kernel',
+              'shrink the footprint'];
+  var SIDE = ['','','','','',''];
+  var NSTEP = 6, step = 0;
+  var caps = document.getElementById('nka-cap'), side = document.getElementById('nka-side');
+  var dots = document.getElementById('dots');
+  for(var i=0;i<NSTEP;i++) dots.appendChild(document.createElement('span'));
+
+  function render(){
+    caps.innerHTML = CAPS[step]; side.innerHTML = SIDE[step];
+    document.getElementById('eq1').className = (step===2||step===3) ? 'on' : '';
+    document.getElementById('eq2').className = (step===3) ? 'on' : '';
+    document.getElementById('eq3').className = (step>=4) ? 'on' : '';
+    var s2 = step >= 4;
+    document.getElementById('scene2').classList.toggle('solo', step === 4);
+    R.classList.toggle('solo-mode', step === 4);
+    document.getElementById('scene1').classList.toggle('hidden', s2);
+    document.getElementById('scene2').classList.toggle('hidden', !s2);
+    document.getElementById('fwrap').classList.toggle('hidden', step !== 5);
+    for(var i=0;i<NSTEP;i++) dots.children[i].className = (i===step) ? 'on' : '';
+    document.getElementById('prev').disabled = (step===0);
+    document.getElementById('next').disabled = (step===NSTEP-1);
+    if(s2){ drawMatrices(); drawC(); }
+    else  { drawA(step+1); drawB(step+1, kMark); }
+  }
+
+  document.getElementById('next').onclick = function(){
+    if(step < NSTEP-1){ step++; render(); } };
+  document.getElementById('prev').onclick = function(){
+    if(step > 0){ step--; render(); } };
+  var sl = document.getElementById('fslider');
+  sl.oninput = function(){
+    frac = (+sl.value)/100;
+    document.getElementById('fval').textContent = sl.value + '%';
+    buildMask(frac); render();
+  };
+
+  buildMask(frac);
+  render();
+})();
+</script>
+```
+
+::: {.notes}
+This is the one piece of machinery all three papers share, so it's worth ten minutes.
+
+Start with a Gaussian field on a line: every Fourier mode independent, covariance perfectly
+diagonal. Then multiply by a mask — we only see part of the sky. In harmonic space that
+multiplication becomes a convolution: each observed mode is a weighted sum of its neighbours,
+with the weight set by the mask's transform. The kernel's width goes like one over the
+footprint width — a big survey gives a narrow kernel.
+
+Take the expectation and you get the mode-coupling matrix: the measured pseudo-spectrum is a
+smeared version of the truth. That much is exact, and it's what NaMaster inverts.
+
+The covariance is where it gets hard, because you get four W's and a sum you can't do. The
+Narrow Kernel Approximation says: if the true spectrum barely changes across the kernel width,
+evaluate it once at the mean of the two multipoles and pull it outside the sum. What's left
+collapses into a single kernel — the transform of a *product* of masks. That's the whole trick,
+and it's exactly the step that fails for catalogue masks, where the product of two delta combs
+is zero.
+
+Then shrink the footprint. The kernel widens, the spectrum is no longer flat across it, and the
+off-diagonal band goes wrong — while the diagonal stays about right. That's the regime the
+three papers care about.
+:::
