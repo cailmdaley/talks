@@ -564,6 +564,198 @@ function boot(){
     }
   }
 
+  // ═══ catalogue masks (the Wolz act) ═══════════════════════════════════════
+  //  A catalogue's mask IS its sources: w(x) = sum_i w_i delta(x - x_i). There is
+  //  no separate footprint map, which is exactly what breaks the machinery above.
+  var NSRC = 160, THC = 0.0;          // sources, and the cloud size in units of L
+  var CATSEED = 90210;
+
+  function catPositions(n, seed){
+    var rng = mulberry(seed || CATSEED), xs = [];
+    for(var i=0;i<n;i++) xs.push(rng());
+    xs.sort(function(a,b){ return a-b; });
+    return xs;
+  }
+  //  On the grid: unit mean, so the delta comb is comparable with a continuous
+  //  mask. A cloud of size thc simply band-limits it.
+  function catGrid(xs, thc){
+    var w = new Float64Array(NX), amp = NX/xs.length;
+    if(thc <= 0){
+      for(var i=0;i<xs.length;i++) w[Math.min(NX-1, Math.floor(xs[i]*NX))] += amp;
+    } else {
+      var sg = thc*NX, half = Math.ceil(4*sg), norm = amp/(Math.sqrt(2*Math.PI)*sg);
+      for(var i2=0;i2<xs.length;i2++){
+        var c = xs[i2]*NX;
+        for(var d=-half; d<=half; d++){
+          var j = Math.round(c+d); j = ((j % NX) + NX) % NX;
+          w[j] += norm*Math.exp(-0.5*d*d/(sg*sg));
+        }
+      }
+    }
+    return w;
+  }
+  var CAT = {xs:null, n:0, thc:-1, W:null};
+  function catBuild(){
+    if(CAT.n !== NSRC) CAT.xs = catPositions(NSRC);
+    if(CAT.n !== NSRC || CAT.thc !== THC){
+      CAT.n = NSRC; CAT.thc = THC;
+      CAT.W = transform(catGrid(CAT.xs, THC));
+    }
+    return CAT;
+  }
+  function catKpow(m){
+    var i = (m + N) % N;
+    return CAT.W.re[i]*CAT.W.re[i] + CAT.W.im[i]*CAT.W.im[i];
+  }
+
+  //  W1 — the sources are the mask
+  function drawCatalogue(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, y0 = 34, h = opts.h || 250, mid = y0 + h/2;
+    catBuild();
+    el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
+    var d='';
+    for(var j=0;j<NX;j++) d += (j?'L':'M')+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(mid-field[j]*h*0.42).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke:FAINT,'stroke-width':2});
+    txt(s, Math.max(PAD-82,2), mid+9, 'a(x)', {fill:MUT});
+    // the sources: sampled values of the field
+    for(var i=0;i<CAT.xs.length;i++){
+      var xg = Math.min(NX-1, Math.floor(CAT.xs[i]*NX)), v = field[xg];
+      var X = PAD + AW*CAT.xs[i], Y = mid - v*h*0.42;
+      el(s,'circle',{cx:X,cy:Y,r:3.2+5*Math.abs(v),fill:INK,opacity:0.85});
+    }
+    // the same sources, as the mask: a comb of deltas
+    var by = y0 + h + 96;
+    el(s,'line',{x1:PAD,y1:by,x2:PAD+AW,y2:by,stroke:RULE,'stroke-width':2});
+    for(var i2=0;i2<CAT.xs.length;i2++){
+      var X2 = PAD + AW*CAT.xs[i2];
+      el(s,'line',{x1:X2,y1:by,x2:X2,y2:by-70,stroke:COB,'stroke-width':2.5});
+      el(s,'circle',{cx:X2,cy:by-70,r:4,fill:COB});
+    }
+    txt(s, Math.max(PAD-82,2), by+9, 'w(x)', {fill:COB});
+    txt(s, PAD, by+52, 'position  x', {fill:MUT});
+    txt(s, PAD+AW-360, y0+18, CAT.xs.length + ' sources', {fill:MUT});
+  }
+
+  //  the catalogue mask's kernel: flat and ratty — no scale below the spacing
+  function drawCatKernel(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, y0 = opts.y0 || 44, h = opts.h || 210, MM = 120;
+    catBuild();
+    var pk = 0, p = [], m;
+    for(m=-MM;m<=MM;m++){ var v = catKpow(m); p.push(v); if(v>pk) pk=v; }
+    el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
+    var d='';
+    for(var q=0;q<p.length;q++){
+      var lg = Math.log10(Math.max(p[q]/pk,1e-6))/6 + 1;
+      d += (q?'L':'M')+(PAD+AW*q/(p.length-1)).toFixed(1)+' '+(y0+h-lg*h).toFixed(1)+' ';
+    }
+    el(s,'path',{d:d,fill:'none',stroke:ACC,'stroke-width':2.5});
+    txt(s, PAD, y0-16, 'kernel  |W|²   (log)', {fill:ACC});
+    txt(s, PAD, y0+h+44, opts.foot || 'no scale below the source spacing — the kernel never narrows',
+        {fill:MUT,'font-size':27});
+  }
+
+  //  W2 — the products that break
+  function drawProducts(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w;
+    var xa = catPositions(Math.round(NSRC*0.5), 111), xc = catPositions(Math.round(NSRC*0.5), 222);
+    var yA = 132, yB = 254, yP = 356;
+    function comb(xs, y, col, up){
+      el(s,'line',{x1:PAD,y1:y,x2:PAD+AW,y2:y,stroke:RULE,'stroke-width':2});
+      for(var i=0;i<xs.length;i++){
+        var X = PAD + AW*xs[i];
+        el(s,'line',{x1:X,y1:y,x2:X,y2:y+(up?-56:56),stroke:col,'stroke-width':2.5});
+      }
+    }
+    comb(xa, yA, COB, true);   txt(s, PAD, yA+34, 'catalogue a', {fill:COB,'font-size':27});
+    comb(xc, yB, TEAL, true);  txt(s, PAD, yB+34, 'catalogue c', {fill:TEAL,'font-size':27});
+    el(s,'line',{x1:PAD,y1:yP,x2:PAD+AW,y2:yP,stroke:RULE,'stroke-width':3});
+    txt(s, PAD, yP+46, 'their product', {fill:INK,'font-size':27});
+    txt(s, PAD+AW/2-120, yP-16, 'zero, everywhere', {fill:ACC,'font-size':29});
+  }
+  function drawSelfProduct(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, y = 356;
+    catBuild();
+    el(s,'line',{x1:PAD,y1:y,x2:PAD+AW,y2:y,stroke:RULE,'stroke-width':3});
+    for(var i=0;i<CAT.xs.length;i++){
+      var X = PAD + AW*CAT.xs[i];
+      el(s,'line',{x1:X,y1:y,x2:X,y2:132,stroke:ACC,'stroke-width':2.5});
+    }
+    // the spikes leave the panel: mark them
+    txt(s, PAD+AW-70, 122, '∞', {fill:ACC,'font-size':56});
+    txt(s, PAD, 112, 'the same catalogue, squared', {fill:ACC,'font-size':27});
+    txt(s, PAD+AW/2-160, y+46, 'coincident deltas diverge', {fill:ACC,'font-size':29});
+  }
+
+  //  W2 — the fix: each source becomes a cloud, and the mask band-limits
+  function drawCloud(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, y0 = 40, h = opts.h || 150;
+    catBuild();
+    var w = catGrid(CAT.xs, THC), mx = 0, j;
+    for(j=0;j<NX;j++) mx = Math.max(mx, w[j]);
+    el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
+    var d = 'M ' + PAD + ' ' + (y0+h);
+    for(j=0;j<NX;j++) d += ' L ' + (PAD+AW*j/(NX-1)).toFixed(1) + ' ' + (y0+h-w[j]/mx*h).toFixed(1);
+    d += ' L ' + (PAD+AW) + ' ' + (y0+h) + ' Z';
+    el(s,'path',{d:d,fill:COB,opacity:0.16});
+    var d2='';
+    for(j=0;j<NX;j++) d2 += (j?'L':'M')+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(y0+h-w[j]/mx*h).toFixed(1)+' ';
+    el(s,'path',{d:d2,fill:'none',stroke:COB,'stroke-width':2.5});
+    txt(s, Math.max(PAD-82,2), y0+h*0.5, 'w̄(x)', {fill:COB});
+    var ip = 1/CAT.xs.length;
+    txt(s, PAD, y0+h+44,
+        'cloud size = ' + (THC/ip).toFixed(2) + ' × the mean source spacing',
+        {fill: (THC/ip > 0.6 && THC/ip < 1.8) ? TEAL : MUT, 'font-size':27});
+  }
+
+  //  W3 — the correlation-function view: distinct pairs vs the self-pair spike
+  function drawXi(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, y0 = 40, h = opts.h || 260, NT = 90;
+    var xi = [], var0 = 0, k;
+    for(k=1;k<KMAX;k++) var0 += 2*Cfun(k);
+    for(var t=0;t<NT;t++){
+      var th = t/(NT-1)*0.075, acc = 0;
+      for(k=1;k<KMAX;k++) acc += 2*Cfun(k)*Math.cos(2*Math.PI*k*th);
+      xi.push(acc);
+    }
+    var mx = var0;
+    function Y(v){ return y0 + h*(1 - 0.86*v/mx) - h*0.07; }
+    el(s,'line',{x1:PAD,y1:Y(0),x2:PAD+AW,y2:Y(0),stroke:RULE,'stroke-width':2});
+    var d='';
+    for(var t2=1;t2<NT;t2++) d += (t2>1?'L':'M')+(PAD+AW*t2/(NT-1)).toFixed(1)+' '+Y(xi[t2]).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke:INK,'stroke-width':3.5});
+    txt(s, PAD+AW*0.30, Y(xi[20])-30, 'distinct pairs  ξ(θ)', {fill:INK});
+    // the self-pair spike at zero lag
+    el(s,'line',{x1:PAD,y1:Y(0),x2:PAD,y2:Y(var0),stroke:ACC,'stroke-width':7,'stroke-linecap':'round'});
+    el(s,'circle',{cx:PAD,cy:Y(var0),r:9,fill:ACC});
+    txt(s, PAD+22, Y(var0)+10, 'self-pairs at zero separation:  ⟨a²⟩', {fill:ACC});
+    txt(s, Math.max(PAD-82,2), Y(0)+9, 'ξ', {fill:MUT});
+    txt(s, PAD, y0+h+44, 'separation  θ', {fill:MUT});
+  }
+  //  W3 — and in harmonic space it is a flat line
+  function drawWhite(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, y0 = opts.y0 || 30, h = opts.h || 260, Y = logY(y0,h,KMAX);
+    el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
+    txt(s, Math.max(PAD-86,2), y0+18, 'C(k)', {fill:MUT});
+    txt(s, PAD, y0+h+44, 'wavenumber  k', {fill:MUT});
+    var d='';
+    for(var k=1;k<KMAX;k++) d += (k>1?'L':'M')+XK(k,KMAX).toFixed(1)+' '+Y(Cfun(k)).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke:INK,'stroke-width':3.5});
+    txt(s, XK(150,KMAX), Y(Cfun(150))-26, 'signal  C(k)', {fill:INK});
+    // white level: the self-pair variance shared over the modes of the sample
+    var var0 = 0;
+    for(var k2=1;k2<KMAX;k2++) var0 += 2*Cfun(k2);
+    var wl = var0/NSRC;
+    el(s,'line',{x1:PAD,y1:Y(wl),x2:PAD+AW,y2:Y(wl),stroke:ACC,'stroke-width':3.5});
+    txt(s, XK(150,KMAX), Y(wl)-26, 'self-pairs: flat, at every k', {fill:ACC});
+  }
+
   // ---------- the equation ledger ----------
   //  Built here rather than pasted into every slide, so the sequence can only be
   //  defined once. MathJax has already run by now, so it is asked to typeset.
@@ -591,7 +783,13 @@ function boot(){
      note:'one sum over k″ for every element of the k, k′ matrix'},
     {tex:'{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,\\,w_bw_d)',
      step:5, name:'narrow-kernel approximation', col:1, row:2, span:4,
-     note:'Ξ: the same coupling coefficients as the estimator, built from the product of the masks'}
+     note:'Ξ: the same coupling coefficients as the estimator, built from the product of the masks'},
+    {tex:'\\tilde a(x)=\\sum_i w_i\\,a_i\\,\\delta(x-x_i)', step:6, name:'catalogue field', col:1, row:1, span:2},
+    {tex:'w(x)=\\sum_i w_i\\,\\delta(x-x_i)', step:6, name:'catalogue mask', col:3, row:1, span:2},
+    {tex:'\\bar w_k = w_k\\,\\phi(k),\\quad \\phi(k)=e^{-k^2\\theta_c^2/2}', step:7,
+     name:'cloud · band-limit', col:1, row:1, span:4,
+     note:'each source is smeared to the size you could resolve it at anyway'},
+    {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:1, row:1, span:2}
   ];
   function ledger(host, step, from){
     from = from || 0;
@@ -649,8 +847,10 @@ function boot(){
     // at the last beat), so renderOne must not overwrite it.
     var eqs = q('.eqs');
     if(eqs && !q('.pM')) ledger(eqs, step, +root.dataset.ledgerFrom || 0);
+    // .saywhat is auto-filled only where the script owns the words (the NKA
+    // slide); slides that hard-code their own line keep it.
     var say = q('.saywhat');
-    if(say) say.textContent = (step >= 5) ? SAY_NKA : '';
+    if(say && !say.dataset.own) say.textContent = (step === 5) ? SAY_NKA : '';
     var cost = q('.cost');
     if(cost) cost.innerHTML = COST[step] || '';
     // reserve the top-right for the cost label so the ledger cannot wrap under it
@@ -691,7 +891,29 @@ function boot(){
       label: pC.dataset.label !== '0',
       xlabel: pC.dataset.xlabel !== '0'
     });
-    var pZ = q('.pZ'); if(pZ) drawZoo(pZ);
+    var each = function(sel, fn){ var e = q(sel); if(e) fn(e, {
+      h: +e.dataset.h || undefined, x0: +e.dataset.x0 || undefined,
+      w: +e.dataset.w || undefined, foot: e.dataset.foot || undefined }); };
+    each('.pP',    drawCatalogue);
+    each('.pKC',   drawCatKernel);
+    each('.pProd', drawProducts);
+    each('.pSelf', drawSelfProduct);
+    each('.pCloud',drawCloud);
+    each('.pXi',   drawXi);
+    each('.pWhite',drawWhite);
+    var sl = root.querySelectorAll('input[type=range]');
+    for(var si=0; si<sl.length; si++) (function(inp){
+      if(inp.__wired) return; inp.__wired = 1;
+      inp.oninput = function(){
+        if(inp.dataset.var === 'N') NSRC = +inp.value;
+        if(inp.dataset.var === 'thc') THC = (+inp.value)/10000;
+        var lab = inp.parentNode.querySelector('.val');
+        if(lab) lab.textContent = inp.dataset.var === 'N'
+          ? inp.value + ' sources'
+          : 'θ_c';
+        renderOne(root); typeset();
+      };
+    })(sl[si]);
     if(q('canvas')) drawMatrices(root);
   }
   // MathJax is loaded async from a CDN and may not have started when this runs,
@@ -724,7 +946,7 @@ function boot(){
       var eqs = r.querySelector('.eqs');
       if(eqs) ledger(eqs, st, +r.dataset.ledgerFrom || 0);
       var say = r.querySelector('.saywhat');
-      if(say) say.textContent = (st >= 5) ? SAY_NKA : '';
+      if(say && !say.dataset.own) say.textContent = (st === 5) ? SAY_NKA : '';
       var cost = r.querySelector('.cost');
       if(cost){ cost.innerHTML = COST[st] || ''; }
       r.classList.toggle('has-cost', !!COST[st]);

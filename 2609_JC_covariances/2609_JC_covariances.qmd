@@ -167,6 +167,104 @@ Switch to the holed mask and the whole band goes wrong. That is the subject of t
 papers.
 :::
 
+## A catalogue is its own mask {.nka-slide}
+
+```{=html}
+<div class="nka" data-step="6" data-ledger-from="6">
+<div class="eqs"></div>
+<div class="ctl-slider">
+  <label>sources <input type="range" data-var="N" min="30" max="400" value="160"></label>
+</div>
+<svg class="pP" data-h="230" viewBox="0 0 1730 420" width="1730" height="420"></svg>
+<svg class="pKC" data-h="200" viewBox="0 0 1730 300" width="1730" height="300"></svg>
+</div>
+```
+
+::: {.notes}
+Everything so far assumed a mask you could draw: a smooth function of position. A catalogue is
+not that. The mask *is* the sources — a sum of delta functions at the places you actually
+observed. There is no separate footprint map; the window and the sampling are the same object.
+
+And look what that does to the kernel. It never comes down. A comb of deltas has power at every
+separation, all the way up, because there is no scale in it — nothing below the mean spacing
+between sources exists to be resolved. Slide the number of sources and it stays flat; you only
+move the level.
+
+So the narrow-kernel approximation has nothing to be narrow about, and the machinery from the
+last three slides does not start.
+:::
+
+## Mask products are zero or infinite {.nka-slide}
+
+```{=html}
+<div class="nka" data-step="7" data-ledger-from="7" data-frag-step="7">
+<div class="eqs"></div>
+<div class="two">
+  <div><svg class="pProd" data-x0="70" data-w="700" viewBox="0 0 820 440" width="820" height="440"></svg>
+    <div class="mlab"><b>two catalogues</b>different sources, never coincident</div></div>
+  <div><svg class="pSelf" data-x0="70" data-w="700" viewBox="0 0 820 440" width="820" height="440"></svg>
+    <div class="mlab"><b>one catalogue with itself</b>every source coincident with itself</div></div>
+</div>
+<div class="fragment">
+<div class="ctl-slider inline">
+  <label>cloud size <input type="range" data-var="thc" min="0" max="120" value="0"></label>
+</div>
+<svg class="pCloud" data-h="130" viewBox="0 0 1730 230" width="1730" height="230"></svg>
+</div>
+</div>
+```
+
+::: {.notes}
+The covariance needs products of masks — Ξ of w_a w_c. For catalogues those products do not
+exist. Two different catalogues never put a source in the same place, so the product is zero
+everywhere. One catalogue against itself puts every source exactly on top of itself, so the
+product is a delta squared, which diverges. Both ways, a dead end. That sentence is the whole
+motivation for the paper.
+
+The fix is to stop pretending you know where a source is to infinite precision. Give each one a
+cloud of finite size — band-limit the mask — and the products become ordinary finite numbers.
+Turn the knob. The sweet spot is around the mean source spacing, which is the resolution you
+had all along. Note what kind of move this is: θ_c is a choice, not a derivation. They justify
+it by showing the answer plateaus over a wide range of it.
+:::
+
+## Self-pairs are exactly white {.nka-slide}
+
+```{=html}
+<div class="nka" data-step="8" data-ledger-from="8">
+<div class="eqs"></div>
+<div class="saywhat" data-own="1">zero-separation information has no scale — its spectrum is flat. Handled exactly; the approximation only carries the distinct pairs.</div>
+<div class="two">
+  <div><svg class="pXi" data-h="290" data-x0="90" data-w="700" viewBox="0 0 840 400" width="840" height="400"></svg></div>
+  <div><svg class="pWhite" data-h="290" data-x0="90" data-w="700" viewBox="0 0 840 400" width="840" height="400"></svg></div>
+</div>
+<div class="splitlab">
+  <span>signal × signal</span><span>signal × noise</span><span>noise × noise</span>
+</div>
+</div>
+```
+
+::: {.notes}
+One more piece, and it is the part that turns out to be free.
+
+Split every pair of sources by whether they are two different sources or the same source twice.
+The distinct pairs at finite separation are the signal — that is the correlation function on the
+left. The self-pairs all sit at zero separation, and their height is the variance of the field at
+a point: the integral of the whole power spectrum.
+
+Now transform. A spike at zero lag is a flat line at every k. So the self-pair term behaves
+algebraically exactly like white noise — and that means the existing machinery for inhomogeneous
+white noise handles it, exactly, with no approximation at all. The covariance splits into three
+pieces: signal against signal, signal against noise, noise against noise. Only the first carries
+the approximation.
+
+Two things worth saying out loud. This term is there even for a perfectly noiseless field — it
+is the variance of the field at a point, and it is what penalises sparse samples with bigger
+error bars. And it is the flip side of the estimator's selling point: because the self-pair
+floor is known exactly, you can subtract it, which is why the catalogue estimator is immune to
+white noise in the first place.
+:::
+
 <!-- ═══ parked ═══════════════════════════════════════════════════════════
      The three toy-experiment animations are kept in the deck but hidden from
      navigation (reveal's data-visibility="hidden"), so they can come back by
