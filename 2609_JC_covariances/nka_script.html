@@ -1,0 +1,528 @@
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+//  The mask / mode-coupling / NKA sequence.
+//
+//  One engine, ten slides. Each slide carries a container   <div class="nka"
+//  data-step="N">   holding only the panels that step needs (.pA .pM .pC .pB
+//  .pZ .pMat .pick .cost .eqs); this script fills every container once at load
+//  and re-fills the mask-dependent ones when the mask picker changes.
+//
+//  Loaded through include-after-body so it runs after every slide is parsed.
+// ═══════════════════════════════════════════════════════════════════════════
+(function(){
+"use strict";
+function boot(){
+  var ROOTS = document.querySelectorAll('.nka[data-step]');
+  if(!ROOTS.length) return;
+
+  // ---------- config ----------
+  var N = 512, NX = 1024;          // modes, real-space samples
+  var KLO = 6, KHI = 156, NK = KHI - KLO;   // covariance matrix range
+  var KMAX = 250;                  // modes drawn in the harmonic panels
+  var K0 = 84;                     // where the kernel sits: on the bump's flank,
+                                   // where the NKA is visibly wrong but not absurd
+  var NB = 12;                     // bandpower width, ~ the kernel width
+  var MODES = [8, 30, 84];         // the three modes drawn in the decomposition
+
+  var INK='#1B1611', MUT='#7A6F5C', ACC='#BC4538', COB='#3D5BA0',
+      TEAL='#3F8278', RULE='#C5B89E', FAINT='#C5B89E', GRID='#E0D5BF';
+
+  // A pronounced bump gives two regimes: the smooth part, where the NKA holds,
+  // and the bump, where it does not.
+  function Cfun(k){ var a = Math.abs(k);
+    return (1.0/Math.pow(1.0 + a/18.0, 1.6)) * (1 + 2.5*Math.exp(-Math.pow((a-78)/6,2))); }
+
+  function mulberry(a){ return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function gauss(rng){ var u = 1 - rng(), v = rng();
+    return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v); }
+
+  // ---------- one realisation of the field, and its modes ----------
+  var field = new Float64Array(NX), fscale = 1;
+  var modeRe = {}, modeIm = {};
+  (function(){
+    var rng = mulberry(20260903), re = {}, im = {};
+    for(var k=1;k<N/2;k++){
+      var s = Math.sqrt(Cfun(k)/2);
+      re[k] = gauss(rng)*s; im[k] = gauss(rng)*s;
+      for(var j=0;j<NX;j++){
+        var ph = 2*Math.PI*k*j/NX;
+        field[j] += 2*(re[k]*Math.cos(ph) - im[k]*Math.sin(ph));
+      }
+    }
+    var mx = 0; for(var j2=0;j2<NX;j2++) mx = Math.max(mx, Math.abs(field[j2]));
+    fscale = mx;
+    for(var j3=0;j3<NX;j3++) field[j3] /= mx;
+    for(var q=0;q<MODES.length;q++){ modeRe[MODES[q]] = re[MODES[q]]/mx; modeIm[MODES[q]] = im[MODES[q]]/mx; }
+  })();
+  function modeAt(k, j){
+    var ph = 2*Math.PI*k*j/NX;
+    return 2*(modeRe[k]*Math.cos(ph) - modeIm[k]*Math.sin(ph));
+  }
+
+  // ---------- masks ----------
+  function ramp(t){ return 0.5*(1 - Math.cos(Math.PI*Math.max(0,Math.min(1,t)))); }
+  function makeMask(width, nholes, apod){
+    var w = new Float64Array(NX), ap = Math.max(apod*NX, 1);
+    var half = width*NX/2, mid = NX/2;
+    for(var j=0;j<NX;j++) w[j] = ramp((half - Math.abs(j-mid))/ap + 0.5);
+    if(nholes > 0){
+      var rng = mulberry(4242), inner = width*NX - 2*ap;
+      for(var h=0; h<nholes; h++){
+        var hw = Math.max(inner/(3.2*nholes), 2*ap*0.6);
+        var c  = mid - inner/2 + (h + 0.15 + 0.7*rng())*inner/nholes;
+        for(var j2=0;j2<NX;j2++) w[j2] *= 1 - ramp((hw/2 - Math.abs(j2-c))/ap + 0.5);
+      }
+    }
+    return w;
+  }
+  var MASKS = [
+    {w:0.55, h:0, a:0.070, name:'wide, smooth'},
+    {w:0.16, h:0, a:0.030, name:'small'},
+    {w:0.55, h:5, a:0.010, name:'holes'}
+  ];
+  var pick = 1;                    // the working mask
+
+  // ---------- transforms ----------
+  var COS = new Float64Array(NX), SIN = new Float64Array(NX);
+  for(var t0=0;t0<NX;t0++){ COS[t0]=Math.cos(2*Math.PI*t0/NX); SIN[t0]=Math.sin(2*Math.PI*t0/NX); }
+  function transform(w){
+    var re = new Float64Array(N), im = new Float64Array(N), sp = 0;
+    for(var mi=0; mi<N; mi++){
+      var m = mi < N/2 ? mi : mi - N, sr = 0, si = 0;
+      for(var jj=0; jj<NX; jj++){
+        var idx = (m*jj) % NX; if(idx < 0) idx += NX;
+        sr += w[jj]*COS[idx]; si -= w[jj]*SIN[idx];
+      }
+      re[mi] = sr/NX; im[mi] = si/NX;
+      sp += re[mi]*re[mi] + im[mi]*im[mi];
+    }
+    return {re:re, im:im, sumP:sp};
+  }
+
+  var mask, Wre, Wim, sumP;
+  function Wat(m, part){
+    if(m <= -N/2 || m >= N/2) return 0;
+    var i = (m + N) % N;
+    return part ? Wim[i] : Wre[i];
+  }
+  function kpow(m){ var r = Wat(m,0), i = Wat(m,1); return r*r + i*i; }
+
+  //  The reach of the OFF-diagonal coupling. The m = 0 self term carries most of
+  //  |W|^2 for any mask, so including it makes every mask look narrow.
+  function powerWidth(pow, mmax){
+    var tot = 0, m;
+    for(m=1;m<=mmax;m++) tot += 2*pow(m);
+    if(tot <= 0) return 1;
+    var acc = 0, n = 0;
+    while(acc < 0.5*tot && n < mmax){ n++; acc += pow(-n) + pow(n); }
+    return Math.max(2*n, 1);
+  }
+
+  // ---------- derived ----------
+  var Cin = new Float64Array(KMAX+2), Ctil = new Float64Array(KMAX+2);
+  var covE = new Float64Array(NK*NK), covN = new Float64Array(NK*NK);
+  var NBIN = Math.floor(KMAX/NB);
+  var Cdecb = new Float64Array(NBIN), Ctilb = new Float64Array(NBIN);
+  function binCentre(b){ return 1 + b*NB + (NB-1)/2; }
+
+  function buildAll(){
+    var M = MASKS[pick];
+    mask = makeMask(M.w, M.h, M.a);
+    var T = transform(mask); Wre = T.re; Wim = T.im; sumP = T.sumP;
+    for(var k=1;k<=KMAX;k++){
+      Cin[k] = Cfun(k);
+      var acc = 0;
+      for(var kp=-N/2; kp<N/2; kp++) acc += kpow(k-kp)*Cfun(kp);
+      Ctil[k] = acc/sumP;
+    }
+    decouple();
+    covariances();
+  }
+
+  // Bandpowers. The unbinned coupling matrix is not invertible in any useful
+  // sense — the symbol of the Toeplitz operator is the mask squared, so every
+  // mode the mask kills is a null direction. Binning to about the kernel width
+  // is what makes the inverse well posed, and it is what NaMaster does.
+  function decouple(){
+    var n = NBIN, A = new Float64Array(n*n), b = new Float64Array(n);
+    for(var i=0;i<n;i++){
+      for(var j=0;j<n;j++){
+        var acc = 0;
+        for(var k=0;k<NB;k++) for(var kp=0;kp<NB;kp++)
+          acc += kpow((1+i*NB+k) - (1+j*NB+kp));
+        A[i*n+j] = acc/(NB*sumP);
+      }
+      var st = 0;
+      for(var k2=0;k2<NB;k2++) st += Ctil[1+i*NB+k2];
+      b[i] = st/NB; Ctilb[i] = b[i];
+    }
+    for(var c=0;c<n;c++){
+      var piv = c, best = Math.abs(A[c*n+c]);
+      for(var r=c+1;r<n;r++){ var v = Math.abs(A[r*n+c]); if(v>best){best=v;piv=r;} }
+      if(best < 1e-13){ for(var z=0;z<n;z++) Cdecb[z] = NaN; return; }
+      if(piv !== c){
+        for(var q=0;q<n;q++){ var tm=A[c*n+q]; A[c*n+q]=A[piv*n+q]; A[piv*n+q]=tm; }
+        var tb=b[c]; b[c]=b[piv]; b[piv]=tb;
+      }
+      var d = A[c*n+c];
+      for(var q2=c;q2<n;q2++) A[c*n+q2] /= d;
+      b[c] /= d;
+      for(var r2=0;r2<n;r2++){
+        if(r2===c) continue;
+        var f = A[r2*n+c]; if(f === 0) continue;
+        for(var q3=c;q3<n;q3++) A[r2*n+q3] -= f*A[c*n+q3];
+        b[r2] -= f*b[c];
+      }
+    }
+    for(var o=0;o<n;o++) Cdecb[o] = b[o];
+  }
+
+  function covariances(){
+    var Xre = new Float64Array(2*N), Xim = new Float64Array(2*N);
+    for(var d=-N+1; d<N; d++){
+      var ar=0, ai=0;
+      for(var m=-N/2; m<N/2; m++){
+        var wr1=Wat(d+m,0), wi1=Wat(d+m,1), wr2=Wat(m,0), wi2=Wat(m,1);
+        ar += wr1*wr2 + wi1*wi2; ai += wi1*wr2 - wr1*wi2;
+      }
+      Xre[d+N]=ar; Xim[d+N]=ai;
+    }
+    var n2 = sumP*sumP;
+    var Ar = new Float64Array(NK*N), Ai = new Float64Array(NK*N);
+    var Br = new Float64Array(NK*N), Bi = new Float64Array(NK*N);
+    for(var i=0;i<NK;i++){
+      var k = KLO + i;
+      for(var qi=0; qi<N; qi++){
+        var q = qi - N/2, wr = Wat(k-q,0), wi = Wat(k-q,1), c = Cfun(q);
+        Ar[i*N+qi] = wr*c; Ai[i*N+qi] = wi*c;
+        Br[i*N+qi] = wr;   Bi[i*N+qi] = wi;
+      }
+    }
+    for(var a=0;a<NK;a++){
+      var ka = KLO + a, oa = a*N;
+      for(var b=0;b<NK;b++){
+        var kb = KLO + b, ob = b*N, sr=0, si=0;
+        for(var p=0;p<N;p++){
+          var x1r=Ar[oa+p], x1i=Ai[oa+p], x2r=Br[ob+p], x2i=Bi[ob+p];
+          sr += x1r*x2r + x1i*x2i; si += x1i*x2r - x1r*x2i;
+        }
+        covE[a*NK+b] = 2*(sr*sr + si*si)/n2;
+        var cb = Cfun((ka+kb)/2), dd = ka-kb+N;
+        var nr = cb*Xre[dd], ni = cb*Xim[dd];
+        covN[a*NK+b] = 2*(nr*nr + ni*ni)/n2;
+      }
+    }
+  }
+
+  // The error the NKA actually makes: it replaces the kernel-weighted average of
+  // C by C at the midpoint. (max/min across the kernel is the wrong statistic —
+  // at a local extremum C hardly "varies" either side yet the midpoint sits well
+  // above the average, which is exactly when the NKA fails.)
+  function pullOutError(kc){
+    var num = 0, den = 0;
+    for(var m=-N/2+1;m<N/2;m++){
+      var p = kpow(m), kk = kc - m;
+      if(kk < 1) continue;
+      num += p*Cfun(kk); den += p;
+    }
+    return den > 0 ? Cfun(kc)/(num/den) - 1 : 0;
+  }
+  function pct(x){ return (x>=0?'+':'') + (100*x).toFixed(0) + '%'; }
+
+  // ---------- svg helpers ----------
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(p,t,a){ var e=document.createElementNS(NS,t);
+    for(var k in a) e.setAttribute(k,a[k]); p.appendChild(e); return e; }
+  function txt(p,x,y,s,a){ var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,fill:INK},a||{}));
+    e.textContent=s; return e; }
+  function clear(s){ while(s.firstChild) s.removeChild(s.firstChild); }
+  var PAD = 90, W1 = 1730, AW = W1 - PAD - 40;
+  function XK(k, kmax){ return PAD + AW*(k-1)/((kmax||KMAX)-1); }
+
+  //  The range has to cover the whole curve: the bump peak is NOT the maximum —
+  //  C(1) is higher — and clipping the first few modes off the top looks like a
+  //  drawing bug.
+  function logY(y0,h,kmax){
+    var lgmax = Math.log10(Cfun(1)) + 0.06, lgmin = Math.log10(Cfun(kmax)) - 0.06;
+    return function(c){ return y0 + h*(1 - (Math.log10(c)-lgmin)/(lgmax-lgmin)); };
+  }
+
+  // ---------- panels ----------
+  function drawField(s, opts){
+    clear(s);
+    var h = opts.h, y0 = opts.y0 || 30, mid = y0 + h/2;
+    el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
+    if(opts.mask){
+      var d = 'M ' + PAD + ' ' + (y0+h);
+      for(var j=0;j<NX;j++) d += ' L ' + (PAD+AW*j/(NX-1)).toFixed(1) + ' ' + (y0+h-mask[j]*h*0.94).toFixed(1);
+      d += ' L ' + (PAD+AW) + ' ' + (y0+h) + ' Z';
+      el(s,'path',{d:d,fill:COB,opacity:0.13});
+      var d2='';
+      for(var j2=0;j2<NX;j2++) d2 += (j2?'L':'M')+(PAD+AW*j2/(NX-1)).toFixed(1)+' '+(y0+h-mask[j2]*h*0.94).toFixed(1)+' ';
+      el(s,'path',{d:d2,fill:'none',stroke:COB,'stroke-width':3});
+      txt(s, PAD+AW-230, y0+28, 'mask  w(x)', {fill:COB});
+    }
+    function path(masked, col, wid){
+      var d='';
+      for(var j=0;j<NX;j++){
+        var v = field[j]*(masked ? mask[j] : 1);
+        d += (j?'L':'M')+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(mid - v*h*0.44).toFixed(1)+' ';
+      }
+      el(s,'path',{d:d,fill:'none',stroke:col,'stroke-width':wid});
+    }
+    if(opts.mask){ path(false, FAINT, 2); path(true, INK, 3); }
+    else path(false, INK, 3);
+    txt(s, 8, mid+9, 'a(x)', {fill:MUT});
+    txt(s, PAD, y0+h+42, opts.xlabel || 'position  x', {fill:MUT});
+  }
+
+  function drawModes(s, opts){
+    clear(s);
+    var rowH = opts.rowH, big = 0;
+    for(var q0=0;q0<MODES.length;q0++)
+      for(var j0=0;j0<NX;j0+=4) big = Math.max(big, Math.abs(modeAt(MODES[q0], j0)));
+    var scale = rowH*0.40/Math.max(big,1e-9);   // largest mode fills its row
+    for(var q=0;q<MODES.length;q++){
+      var k = MODES[q], y = 34 + q*rowH, mid = y + rowH*0.45;
+      el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:GRID,'stroke-width':2});
+      var d='';
+      for(var j=0;j<NX;j++) d += (j?'L':'M')+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(mid - modeAt(k,j)*scale).toFixed(1)+' ';
+      el(s,'path',{d:d,fill:'none',stroke:COB,'stroke-width':3});
+      txt(s, 8, mid+9, 'k = '+k, {fill:MUT,'font-size':26});
+    }
+    if(opts.plus) txt(s, PAD+AW-150, 26, '+  …', {fill:MUT});
+  }
+
+  function drawSpectrum(s, opts){
+    clear(s);
+    var y0 = opts.y0 || 26, h = opts.h, Y = logY(y0,h,KMAX);
+    el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
+    txt(s, 4, y0+18, 'C(k)', {fill:MUT});
+    if(opts.xlabel !== false) txt(s, PAD, y0+h+42, 'wavenumber  k', {fill:MUT});
+
+    if(opts.bins){
+      for(var b=0;b<NBIN;b+=1){
+        if(b % 2) continue;
+        var xa = XK(1+b*NB, KMAX), xb = XK(Math.min(1+(b+1)*NB, KMAX), KMAX);
+        el(s,'rect',{x:xa,y:y0,width:xb-xa,height:h,fill:MUT,opacity:0.07});
+      }
+    }
+    var d='';
+    for(var k=1;k<KMAX;k++) d += (k>1?'L':'M')+XK(k,KMAX).toFixed(1)+' '+Y(Cin[k]).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke:INK,'stroke-width':3.5});
+    if(opts.label !== false) txt(s, XK(150,KMAX), Y(Cin[150])-26, 'true  C(k)', {fill:INK});
+
+    if(opts.marks) for(var q=0;q<MODES.length;q++){
+      var kk = MODES[q], last = (q === MODES.length-1);
+      el(s,'circle',{cx:XK(kk,KMAX),cy:Y(Cfun(kk)),r:9,fill:COB});
+      // the last mark sits on the bump's downslope, where "above" is occupied
+      txt(s, XK(kk,KMAX) + (last ? 20 : -26), Y(Cfun(kk)) + (last ? 38 : -24),
+          'k = '+kk, {fill:COB,'font-size':26});
+    }
+    if(opts.tilde){
+      var d2='';
+      for(var k2=1;k2<KMAX;k2++) d2 += (k2>1?'L':'M')+XK(k2,KMAX).toFixed(1)+' '+Y(Ctil[k2]).toFixed(1)+' ';
+      el(s,'path',{d:d2,fill:'none',stroke:ACC,'stroke-width':3.5,'stroke-dasharray':'10 7'});
+      txt(s, XK(150,KMAX), Y(Ctil[150])+50, 'masked  C̃(k)', {fill:ACC});
+    }
+    if(opts.binned) for(var b2=0;b2<NBIN;b2++){
+      var kc = binCentre(b2);
+      if(kc < 8 || kc > KMAX-14) continue;
+      el(s,'rect',{x:XK(kc,KMAX)-7,y:Y(Ctilb[b2])-7,width:14,height:14,fill:ACC});
+    }
+    if(opts.decoupled) for(var b3=0;b3<NBIN;b3++){
+      var kc3 = binCentre(b3);
+      if(kc3 < 8 || kc3 > KMAX-14) continue;
+      if(!isFinite(Cdecb[b3]) || Cdecb[b3] <= 0) continue;
+      el(s,'circle',{cx:XK(kc3,KMAX),cy:Y(Cdecb[b3]),r:9,fill:TEAL});
+    }
+    if(opts.kernel){
+      var pk = 0, m;
+      for(m=-N/2+1;m<N/2;m++) pk = Math.max(pk, kpow(m));
+      var dk='';
+      for(m=-N/2+1;m<N/2;m++){
+        var kk2 = K0 - m; if(kk2 < 0.5 || kk2 > KMAX) continue;
+        dk += (dk?'L':'M')+XK(kk2,KMAX).toFixed(1)+' '+(y0+h - (opts.kh||150)*kpow(m)/pk).toFixed(1)+' ';
+      }
+      var hw = powerWidth(kpow, N/2-1)/2;
+      var lo = Math.max(K0-hw,1), hi = Math.min(K0+hw,KMAX-1);
+      el(s,'rect',{x:XK(lo,KMAX),y:y0,width:Math.max(XK(hi,KMAX)-XK(lo,KMAX),3),height:h,fill:COB,opacity:0.10});
+      el(s,'path',{d:dk,fill:'none',stroke:COB,'stroke-width':3.5});
+      var lx = PAD + AW - 560, v = pullOutError(K0);
+      txt(s, lx, y0+26, 'kernel  |W|²  at  k₀ = '+K0, {fill:COB});
+      if(opts.err !== false)
+        txt(s, lx, y0+64, 'C at k₀ vs its kernel average:  '+pct(v),
+            {fill: Math.abs(v)>0.05 ? ACC : COB});
+    }
+  }
+
+  function drawZoo(s){
+    clear(s);
+    var MW = 700, KW = 760, KX = PAD + MW + 130, MM = 60;
+    for(var r=0;r<MASKS.length;r++){
+      var z = MASKS[r], y = 86 + r*192, h = 116;
+      var w = makeMask(z.w, z.h, z.a), T = transform(w);
+      var d = 'M ' + PAD + ' ' + (y+h);
+      for(var j=0;j<NX;j++) d += ' L ' + (PAD+MW*j/(NX-1)).toFixed(1) + ' ' + (y+h-w[j]*h).toFixed(1);
+      d += ' L ' + (PAD+MW) + ' ' + (y+h) + ' Z';
+      el(s,'path',{d:d,fill:COB,opacity:0.13});
+      var d2='';
+      for(var j2=0;j2<NX;j2++) d2 += (j2?'L':'M')+(PAD+MW*j2/(NX-1)).toFixed(1)+' '+(y+h-w[j2]*h).toFixed(1)+' ';
+      el(s,'path',{d:d2,fill:'none',stroke:COB,'stroke-width':3});
+      txt(s, PAD, y-14, z.name, {fill:MUT,'font-size':27});
+      var pk=0, p=[];
+      for(var m=-MM;m<=MM;m++){ var i=(m+N)%N, v=T.re[i]*T.re[i]+T.im[i]*T.im[i]; p.push(v); if(v>pk)pk=v; }
+      el(s,'line',{x1:KX,y1:y+h,x2:KX+KW,y2:y+h,stroke:RULE,'stroke-width':2});
+      var dk='';
+      for(var q=0;q<p.length;q++){
+        var lg = Math.log10(Math.max(p[q]/pk,1e-5))/5 + 1;
+        dk += (q?'L':'M')+(KX+KW*q/(p.length-1)).toFixed(1)+' '+(y+h-lg*h).toFixed(1)+' ';
+      }
+      el(s,'path',{d:dk,fill:'none',stroke:ACC,'stroke-width':3});
+      var wid = powerWidth(function(mm){ var ii=(mm+N)%N; return T.re[ii]*T.re[ii]+T.im[ii]*T.im[ii]; }, MM);
+      var cq=(p.length-1)/2, hw=wid/2;
+      el(s,'line',{x1:KX+KW*(cq-hw)/(p.length-1),y1:y+h+24,x2:KX+KW*(cq+hw)/(p.length-1),y2:y+h+24,
+                   stroke:ACC,'stroke-width':8,'stroke-linecap':'round'});
+      txt(s, KX+KW*(cq+hw)/(p.length-1)+20, y+h+34, wid+' modes', {fill:ACC,'font-size':27});
+    }
+    txt(s, PAD, 30, 'mask  w(x)', {fill:COB,'font-size':29});
+    txt(s, KX, 30, 'kernel  |W|²   (log)', {fill:ACC,'font-size':29});
+  }
+
+  function divergent(v){
+    var t = Math.max(-1, Math.min(1, v));
+    if(t >= 0){ var u = Math.pow(t,0.55); return [247-186*u, 240-149*u, 225-65*u]; }
+    var u2 = Math.pow(-t,0.55); return [247-59*u2, 240-171*u2, 225-169*u2];
+  }
+  function heat(cv, mat, scale){
+    cv.width = NK; cv.height = NK;
+    var ctx = cv.getContext('2d'), im = ctx.createImageData(NK,NK);
+    for(var i=0;i<NK;i++) for(var j=0;j<NK;j++){
+      var c = divergent(mat[i*NK+j]/scale), o = 4*(i*NK+j);
+      im.data[o]=c[0]; im.data[o+1]=c[1]; im.data[o+2]=c[2]; im.data[o+3]=255;
+    }
+    ctx.putImageData(im,0,0);
+  }
+  function drawMatrices(root){
+    var cvs = root.querySelectorAll('canvas');
+    if(cvs.length < 3) return;
+    var rE=new Float64Array(NK*NK), rN=new Float64Array(NK*NK), rD=new Float64Array(NK*NK),
+        d=new Float64Array(NK);
+    for(var i=0;i<NK;i++) d[i] = Math.sqrt(covE[i*NK+i]);
+    for(var a=0;a<NK;a++) for(var b=0;b<NK;b++){
+      var q=a*NK+b, nrm=d[a]*d[b];
+      rE[q]=covE[q]/nrm; rN[q]=covN[q]/nrm; rD[q]=rN[q]-rE[q];
+    }
+    heat(cvs[0], rE, 1); heat(cvs[1], rN, 1); heat(cvs[2], rD, 0.35);
+    var out = root.querySelector('.nkaerr');
+    if(out){
+      var ik = Math.round(K0) - KLO, e = covN[ik*NK+ik]/covE[ik*NK+ik] - 1;
+      out.textContent = 'NKA error at k₀:  ' + pct(e);
+    }
+  }
+
+  // ---------- the equation ledger ----------
+  //  Built here rather than pasted into ten slides, so the sequence can only be
+  //  defined once. MathJax has already run by now, so it is asked to typeset.
+  var EQS = [
+    ['a(x)', 0],
+    ['a_k=\\sum_x a(x)\\,e^{-ikx}', 1],
+    ['C(k)=\\langle |a_k|^2\\rangle', 2],
+    ['\\tilde a(x)=w(x)\\,a(x)', 3],
+    ['\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', 5],
+    ['\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', 6],
+    ['\\langle \\hat C_b\\rangle = (M_{bb\'})^{-1}\\langle \\tilde C_{b\'}\\rangle = C_b', 7],
+    ['{\\rm Cov}\\propto\\big|\\textstyle\\sum_{k\'\'} W_{k-k\'\'}W^{*}_{k\'-k\'\'}C(k\'\')\\big|^{2}', 8],
+    ['{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,w_bw_d)', 9]
+  ];
+  function ledger(host, step){
+    var html = '';
+    for(var i=0;i<EQS.length;i++){
+      if(EQS[i][1] > step) continue;
+      var live = (EQS[i][1] === step);
+      html += '<div class="' + (live?'on':'') + '">\\(' + EQS[i][0] + '\\)</div>';
+    }
+    host.innerHTML = html;
+  }
+
+  // ---------- mask picker ----------
+  function picker(host){
+    host.innerHTML = '';
+    for(var i=0;i<MASKS.length;i++){
+      (function(i){
+        var b = document.createElement('button');
+        b.textContent = MASKS[i].name;
+        b.className = (i === pick) ? 'on' : '';
+        b.onclick = function(){ pick = i; buildAll(); renderAll(); };
+        host.appendChild(b);
+      })(i);
+    }
+  }
+
+  // ---------- render one slide ----------
+  var COST = {8:'<i>O</i>(k<sub>max</sub><sup>6</sup>)',
+              9:'<i>O</i>(k<sub>max</sub><sup>3</sup>) — same as the estimator'};
+  function renderOne(root){
+    var step = +root.getAttribute('data-step');
+    var q = function(sel){ return root.querySelector(sel); };
+    var eqs = q('.eqs'); if(eqs) ledger(eqs, step);
+    var cost = q('.cost');
+    if(cost) cost.innerHTML = COST[step] || '';
+    // reserve the top-right for the cost label so the ledger cannot wrap under it
+    root.classList.toggle('has-cost', !!COST[step]);
+    var pk = q('.pick'); if(pk) picker(pk);
+
+    var pA = q('.pA');
+    if(pA) drawField(pA, {h: +pA.dataset.h || 200, mask: step >= 3});
+    var pM = q('.pM');
+    if(pM) drawModes(pM, {rowH: +pM.dataset.rowh || 120, plus: true});
+    var pC = q('.pC');
+    if(pC) drawSpectrum(pC, {
+      h: +pC.dataset.h || 260,
+      marks: pC.dataset.marks === '1',
+      kernel: pC.dataset.kernel === '1',
+      kh: +pC.dataset.kh || 150,
+      err: pC.dataset.err !== '0',
+      tilde: pC.dataset.tilde === '1',
+      bins: pC.dataset.bins === '1',
+      binned: pC.dataset.binned === '1',
+      decoupled: pC.dataset.decoupled === '1',
+      label: pC.dataset.label !== '0',
+      xlabel: pC.dataset.xlabel !== '0'
+    });
+    var pZ = q('.pZ'); if(pZ) drawZoo(pZ);
+    if(q('canvas')) drawMatrices(root);
+  }
+  // MathJax is loaded async from a CDN and may not have started when this runs,
+  // so wait on its startup promise; retry until it exists.
+  function typeset(){
+    if(window.MathJax && MathJax.startup && MathJax.startup.promise)
+      MathJax.startup.promise.then(function(){ return MathJax.typesetPromise(); })
+                             .catch(function(){});
+    else if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise();
+    else setTimeout(typeset, 150);
+  }
+  function renderAll(){
+    for(var i=0;i<ROOTS.length;i++) renderOne(ROOTS[i]);
+    typeset();
+  }
+
+  buildAll();
+  renderAll();
+  // reveal only lays a slide out when it becomes current; redraw then, cheaply
+  (function attach(){
+    if(window.Reveal && Reveal.on) Reveal.on('slidechanged', function(ev){
+      var r = ev.currentSlide && ev.currentSlide.querySelector('.nka[data-step]');
+      if(r){ renderOne(r); typeset(); }
+    });
+    else setTimeout(attach, 150);
+  })();
+}
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+else boot();
+})();
+</script>

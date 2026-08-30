@@ -60,22 +60,28 @@
     box-shadow: none;                     // opt out of the house figure halo
 }
 
-// ── Slide 2: the stepped NKA explainer ──────────────────────────────────────
-.reveal #nka-root .nka-cap {
-    font-size: 30px;
-    color: #7A6F5C;                       // $ink-muted
-    min-height: 1.4em;
-    margin: 0 0 6px 0;
+// ── The mask / coupling / NKA sequence (ten slides, one engine) ─────────────
+//   Each slide holds a `.nka[data-step]` container; nka_script.html fills it.
+//   Sizes here are explicit px: this is diagram furniture on a fixed 1920x1080
+//   stage, and nesting `em` under the deck's root size drops it below the
+//   readability floor.
 
-    b { color: #1B1611; font-weight: 600; }
+.reveal .nka {
+    position: relative;
+    text-align: left;
+    color: #1B1611;
 }
 
-.reveal #nka-root .nka-eq {
+// the equation ledger — grows one line per concept, wraps rather than shrinks
+.reveal .nka .eqs {
     display: flex;
+    flex-wrap: wrap;
     gap: 26px;
+    row-gap: 2px;
     align-items: center;
     font-size: 30px;
-    margin: 2px 0 6px 0;
+    margin: 0 0 8px 0;
+    min-height: 52px;
 
     div {
         opacity: .3;
@@ -87,48 +93,14 @@
     div.on {
         opacity: 1;
         border-left-color: #BC4538;
-        background: rgba(188, 69, 56, 0.10);   // $cinnabar-faint
+        background: rgba(188, 69, 56, 0.10);
     }
 }
 
-.reveal #nka-root .dots span {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #C5B89E;
-    margin: 0 4px;
+// the running cost annotation, pinned to the top right
+.reveal .nka.has-cost .eqs { padding-right: 560px; }
 
-    &.on { background: #BC4538; }
-}
-
-.reveal #nka-root .nka-mask {
-    display: flex;
-    align-items: center;
-    gap: 34px;
-
-    label { display: flex; align-items: center; gap: 12px; color: #7A6F5C; }
-}
-.reveal #nka-root input[type=range] { width: 190px; accent-color: #BC4538; }
-
-// The equation ledger grows to seven lines by the last step; let it wrap rather
-// than shrink below the readability floor.
-.reveal #nka-root .nka-eq { flex-wrap: wrap; row-gap: 2px; }
-
-.reveal #nka-root .hidden,
-.reveal .anim .hidden { display: none; }
-
-// The six steps are driven by five content-free reveal fragments, so the arrow
-// keys walk them. They must never occupy layout — reveal still toggles their
-// `visible` class while display:none, which is all the state machine reads.
-.reveal #nka-root .nka-step { display: none; }
-
-.reveal #nka-root .mcell canvas { display: block; }
-.reveal #nka-root #scene2.solo #wE,
-.reveal #nka-root #scene2.solo #wD { display: none; }
-.reveal #nka-root #scene2.solo canvas { width: 470px !important; height: 470px !important; }
-// The cost label: a running annotation pinned to the caption line, right-aligned.
-.reveal #nka-root #nka-side {
+.reveal .nka .cost {
     position: absolute;
     top: 0;
     right: 0;
@@ -136,12 +108,41 @@
     color: #BC4538;
     text-align: right;
 
-    sub { font-size: 0.62em; }
-    sup { font-size: 0.62em; }
-    i   { font-style: italic; }
+    sub, sup { font-size: 0.62em; }
+    i { font-style: italic; }
 }
 
-.reveal #nka-root .mlab {
+// mask picker
+.reveal .nka .pick {
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    display: flex;
+    gap: 16px;
+
+    button {
+        font-family: inherit;
+        font-size: 26px;
+        padding: 6px 22px;
+        border-radius: 8px;
+        border: 2px solid #C5B89E;
+        background: #FBF6E9;
+        color: #7A6F5C;
+        cursor: pointer;
+
+        &:hover { border-color: #BC4538; }
+        &.on { border-color: #BC4538; color: #1B1611; background: rgba(188,69,56,0.10); }
+    }
+}
+
+.reveal .nka .mrow { display: flex; gap: 34px; align-items: flex-start; }
+.reveal .nka canvas {
+    image-rendering: pixelated;
+    border: 1px solid #C5B89E;
+    box-shadow: none;
+    display: block;
+}
+.reveal .nka .mlab {
     font-size: 27px;
     text-align: center;
     color: #7A6F5C;
@@ -149,5 +150,10 @@
 
     b { color: #1B1611; font-weight: 600; display: block; font-size: 29px; }
 }
-
-
+.reveal .nka .nkaerr {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    font-size: 30px;
+    color: #BC4538;
+}
