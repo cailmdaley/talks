@@ -83,9 +83,9 @@ with open(OUT, "w") as fh:
     json.dump(data, fh, separators=(",", ":"))
     fh.write(";</script>\n")
 print("wrote", OUT)
-print("  slide4: fwhm", kw, "ns", len(NS), "theta", len(th),
+print("  slide4: width", kw, "ns", len(NS), "theta", len(th),
       "err_thmin[0]=%.4f full=%.4f" % (data["slide4"]["err_thmin"][0],
                                        data["slide4"]["err_thmin"][-1]))
 for c in s5:
-    print(f"  slide5 npatch={c['npatch']} fwhm={c['fwhm']} "
+    print(f"  slide5 npatch={c['npatch']} width={c['fwhm']} "
           f"ratio[0]={c['ratio'][0]:.3f} npts={len(c['theta'])}")

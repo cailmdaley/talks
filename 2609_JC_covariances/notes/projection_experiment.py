@@ -39,17 +39,33 @@ def C_of_k(k):
     return (1.0 + k / 8.0) ** -1.8
 
 
-def mask_tophat(frac, nhole=1, taper=0.004):
-    """nhole disjoint top-hats with total covered fraction `frac`, cosine-tapered edges."""
+def mask_tophat(frac, nhole=1, taper=0.004, seed=7):
+    """`nhole` cosine-tapered top-hats with total covered fraction `frac`.
+
+    For nhole > 1 the patch widths and the gaps between them are randomised
+    (fixed seed, so the mask is reproducible). Equally-spaced equal-width patches
+    make the mask a periodic comb, whose transform is a comb of delta-like spikes
+    and whose covariance reads as periodic stripes rather than a band — an artefact
+    of the regularity, not of disjointness. Real disjoint footprints (HSC-Y3's six
+    fields) are irregular, and give a broad kernel with modest sidelobes.
+    """
     x = np.arange(NX) / NX
     w = np.zeros(NX)
-    seg = frac / nhole                      # width of each patch
-    pitch = 1.0 / nhole
-    for i in range(nhole):
-        c = (i + 0.5) * pitch
+    if nhole == 1:
+        widths, gaps = np.array([frac]), np.array([1.0 - frac])
+    else:
+        rng = np.random.default_rng(seed)
+        widths = rng.uniform(0.45, 1.55, nhole)
+        widths *= frac / widths.sum()
+        gaps = rng.uniform(0.45, 1.55, nhole)
+        gaps *= (1.0 - frac) / gaps.sum()
+    edge = 0.5 * gaps[0]
+    for i in range(len(widths)):
+        c = edge + widths[i] / 2
         d = np.abs(((x - c + 0.5) % 1.0) - 0.5)
-        half = seg / 2
+        half = widths[i] / 2
         w += np.clip((half + taper - d) / (2 * taper), 0, 1)
+        edge += widths[i] + (gaps[(i + 1) % len(gaps)] if i + 1 < len(widths) else 0)
     return np.clip(w, 0, 1)
 
 
@@ -101,12 +117,19 @@ def covariances(w, inka=False):
     return exact, nka
 
 
-def kernel_width(w):
-    """FWHM of |W_m|^2, in modes — the NKA's coupling width."""
+def kernel_width(w, keep=0.5):
+    """Effective coupling width: the full width of the smallest symmetric window in
+    |W_m|^2 holding `keep` of the total kernel power, in modes.
+
+    Half-maximum is useless for an irregular disjoint mask — the kernel is a narrow
+    spike on a broad skirt, so FWHM reports 1 while modes tens apart are still
+    strongly coupled. Power containment measures how far a mode actually talks.
+    """
     Wfull, _ = W_of(w)
     p = np.abs(Wfull) ** 2
-    m = Q[p > p.max() / 2]
-    return m.max() - m.min() + 1
+    c = p[np.argsort(np.abs(Q), kind="stable")].cumsum()
+    n = int(np.searchsorted(c, keep * p.sum()))
+    return max(n, 1)
 
 
 THETA = np.logspace(np.log10(2e-3), np.log10(0.25), 48)   # in units of L
@@ -167,7 +190,7 @@ def fig_baseline(frac_cov=0.20, nhole=1, tag="f20"):
     ax[0].axhline(0, c="0.7", lw=1); ax[0].plot(K, 100 * dh, c="C3", label="NKA")
     ax[0].plot(K, 100 * dhi, c="C2", label="iNKA"); ax[0].legend(fontsize=8)
     ax[0].set(xlabel="k", ylabel="NKA error [%]",
-              title=f"harmonic diagonal (kernel FWHM {kw} modes)")
+              title=f"harmonic diagonal (kernel width {kw} modes)")
     kb = (np.arange(len(db)) + 0.5) * bw
     ax[1].axhline(0, c="0.7", lw=1); ax[1].plot(kb, 100 * db, c="C0")
     ax[1].set(xlabel="band centre k", title=f"bandpower diagonal (width {bw})")
@@ -241,7 +264,7 @@ def fig_truncation(frac_cov=0.20, nhole=1, tag="f20", inka=True):
                label=r"worst (significant $\theta$)")
         a.axhline(100 * full[0], ls="--", c="C0", lw=1)
         a.axhline(100 * np.abs(full[msk]).max(), ls="--", c="C1", lw=1)
-        a.axvline(kw, c="0.4", ls=":", label=f"kernel FWHM = {kw}")
+        a.axvline(kw, c="0.4", ls=":", label=f"kernel width = {kw}")
         a.set(xlabel="bands retained  n  (|k−k'| ≤ n)", title=t); a.grid(alpha=.25)
         a.legend(fontsize=8)
     ax[0].set_ylabel(r"error on $\mathrm{Cov}(\xi,\xi)$ diagonal [%]")
@@ -261,7 +284,7 @@ def fig_holes(frac_cov=0.20):
         kw = kernel_width(w)
         ax[0].axhline(0, c="0.9", lw=1)
         ax[0].plot(K, 100 * frac(np.diag(nk), np.diag(ex)), c=c,
-                   label=f"{nh} patch(es), FWHM {kw}")
+                   label=f"{nh} patch(es), width {kw}")
 
         x0, xw, f, xe, m = xi_metrics(ex, nk)
         ax[1].semilogx(THETA, 100 * f, c=c, lw=1, alpha=.25)
@@ -284,7 +307,7 @@ if __name__ == "__main__":
     np.set_printoptions(precision=3, suppress=True)
     b = fig_baseline(0.20, 1, "f20")
     fig_baseline(0.20, 6, "f20_6patch")
-    print(f"[f=20%, 1 patch] kernel FWHM {b['kw']} modes")
+    print(f"[f=20%, 1 patch] kernel width {b['kw']} modes")
     print(f"  harmonic diag  median {100*np.median(b['harm']):+.1f}%   "
           f"k<20 {100*np.median(b['harm'][:20]):+.1f}%  k>100 {100*np.median(b['harm'][100:]):+.1f}%")
     print(f"  bandpower diag median {100*np.median(b['band']):+.1f}%")
@@ -298,7 +321,7 @@ if __name__ == "__main__":
 
     fig_truncation(0.20, 6, "f20_6patch_nka", inka=False)
     ns, A, B, full, kw, msk = fig_truncation(0.20, 6, "f20_6patch")
-    print(f"\n[truncation, f=20%, 6 patches] kernel FWHM {kw}")
+    print(f"\n[truncation, f=20%, 6 patches] kernel width {kw}")
     print("  n :  A(th_min, worst)  B(th_min, worst)   [%]")
     for i, n in enumerate(ns):
         if n % 8 == 0:
@@ -308,5 +331,5 @@ if __name__ == "__main__":
 
     print("\n[holes, f=20%]")
     for nh, (kwid, hm, x0, xw) in fig_holes(0.20).items():
-        print(f"  {nh} patch(es): FWHM {kwid:3d}  harm median {100*hm:+6.2f}%  "
+        print(f"  {nh} patch(es): width {kwid:3d}  harm median {100*hm:+6.2f}%  "
               f"xi(theta_min) {100*x0:+6.2f}%  xi worst {100*xw:+7.2f}%")

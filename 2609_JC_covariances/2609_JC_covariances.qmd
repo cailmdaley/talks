@@ -496,9 +496,13 @@ three papers care about.
       for(var j=0;j<NX;j++){var ph=2*Math.PI*m*j/NX;sr+=w[j]*Math.cos(ph);si-=w[j]*Math.sin(ph);}
       var v=(sr*sr+si*si)/(NX*NX);p.push(v);if(v>mx)mx=v;}
     return p.map(function(v){return v/mx;});}
-  function fwhm(k){var lo=null,hi=null;
-    for(var i=0;i<k.length;i++)if(k[i]>0.5){if(lo===null)lo=i;hi=i;}
-    return hi-lo+1;}
+  // effective coupling width: full width of the smallest symmetric window in
+  // |W|^2 holding half the kernel power (same definition as the python side)
+  function kwidth(k){var c=(k.length-1)/2,tot=0,i;
+    for(i=0;i<k.length;i++)tot+=k[i];
+    var acc=k[c],n=0;
+    while(acc<0.5*tot&&n<c){n++;acc+=k[c-n]+k[c+n];}
+    return Math.max(2*n,1);}
 
   var PAD=90, AW=1730-PAD-40;
   function drawMask(f,w){
@@ -521,8 +525,8 @@ three papers care about.
     var A=30,B=130,NP=B-A;      // show the central +-50 modes
     for(var i=A;i<=B;i++)d+=(i>A?'L':'M')+(x0+AW*(i-A)/NP).toFixed(1)+' '+(y0+h-k[i]*h).toFixed(1)+' ';
     el(s,'path',{d:d,fill:'none',stroke:'#c0392b','stroke-width':4});
-    var lo=null,hi=null;
-    for(var q=A;q<=B;q++)if(k[q]>0.5){if(lo===null)lo=q-A;hi=q-A;}
+    var half=kwidth(k)/2, cc=(k.length-1)/2-A;
+    var lo=Math.max(cc-half,0), hi=Math.min(cc+half,NP);
     el(s,'line',{x1:x0+AW*lo/NP,y1:y0+h+26,x2:x0+AW*hi/NP,y2:y0+h+26,
                  stroke:'#c0392b','stroke-width':9,'stroke-linecap':'round'});
     txt(s,x0,y0-2,'mask kernel  |W|²',{fill:'#c0392b'});
@@ -531,7 +535,7 @@ three papers care about.
 
   var frames=[],i=0,timer=null;
   for(var t=0;t<28;t++){var f=0.60-(0.60-0.06)*t/27;var w=mask(f);var k=kern(w);
-    frames.push({f:f,w:w,k:k,fw:fwhm(k)});}
+    frames.push({f:f,w:w,k:k,fw:kwidth(k)});}
   function show(j){var fr=frames[j];drawMask(fr.f,fr.w);drawKernel(fr.k);
     document.getElementById('s3n').textContent='kernel  '+fr.fw+' modes';}
   function play(){clearInterval(timer);i=0;show(0);
@@ -704,8 +708,8 @@ real-space covariance.
     txt(s,X0,Y0-16,'kernel  |W|²');
     // FWHM bars — the width the comb structure hides
     for(var c3=0;c3<=upto;c3++){
-      var kk=C[c3].kernel,lo2=null,hi2=null;
-      for(var q=0;q<kk.length;q++)if(kk[q]>0.5){if(lo2===null)lo2=q;hi2=q;}
+      var kk=C[c3].kernel, cc=(kk.length-1)/2, hw=C[c3].fwhm/2;
+      var lo2=cc-hw, hi2=cc+hw;
       var yb=Y0+H+46+c3*44;
       el(s,'line',{x1:X0+W*lo2/(kk.length-1),y1:yb,x2:X0+W*hi2/(kk.length-1),y2:yb,
                    stroke:COL[c3],'stroke-width':9,'stroke-linecap':'round'});

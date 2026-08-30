@@ -11,7 +11,7 @@ obvious clean test — keep only the first *N* off-diagonal bands and project �
 This note runs that test in a toy where the exact answer is computable.
 
 **Answer: the diagnosis holds, and sharply.** With iNKA's off-diagonals replaced by the
-exact ones, the projected error falls from **−15.4% to −1.2%**. Restoring them band by
+exact ones, the projected error falls from **−18.6% to −0.6%**. Restoring them band by
 band brings most of it back by the time *N* reaches the mode-coupling kernel width. The
 diagonal is innocent; the error lives in the off-diagonal bands, and mostly inside the
 kernel.
@@ -48,8 +48,17 @@ García-García+ improvement that exists specifically to fix the harmonic diagon
     ξ(θ) = Σ_{k>0} P_k(θ) Ĉ_k,  P_k(θ) = 2 cos(2πkθ/L)
     Cov(ξ,ξ') = P Cov Pᵀ
 
-**Masks**: `nhole` disjoint cosine-tapered top-hats of equal width summing to a chosen
-area fraction. One patch = a compact survey; six patches = the HSC-Y3 situation.
+**Masks**: `nhole` disjoint cosine-tapered top-hats summing to a chosen area fraction.
+One patch = a compact survey; six patches = the HSC-Y3 situation. For more than one
+patch the widths and gaps are **randomised** (fixed seed): equally-spaced equal-width
+patches make the mask a periodic comb, whose transform is a comb of spikes and whose
+covariance reads as periodic stripes rather than a band — an artefact of the regularity,
+not of disjointness. Real disjoint footprints are irregular.
+
+**Kernel width** is quoted as the full width of the smallest symmetric window in |W_m|²
+holding half the kernel power. Half-maximum is useless for an irregular disjoint mask —
+the kernel is a narrow spike on a broad skirt, so FWHM reports 1 while modes tens apart
+are still strongly coupled.
 
 **A caveat on the error metric.** For a disjoint mask the exact Cov(ξ,ξ) diagonal
 passes through near-zero at intermediate θ, where a fractional error diverges for
@@ -66,50 +75,50 @@ artefact.
 
 Fractional error on the covariance, footprint area 20%:
 
-| mask | kernel FWHM | harmonic diag, NKA | harmonic diag, iNKA | ξ diag at θ_min, NKA | ξ diag at θ_min, iNKA |
+| mask | kernel width | harmonic diag, NKA | harmonic diag, iNKA | ξ diag at θ_min, NKA | ξ diag at θ_min, iNKA |
 |---|---|---|---|---|---|
-| 1 patch  |  5 |  −1.9% | −0.0% |  −6.9% |  −7.6% |
-| 3 patches | 13 |  −5.0% | −0.0% | −10.4% | −14.2% |
-| 6 patches | 25 | −10.2% | −0.0% | −12.8% | −15.4% |
+| 1 patch  |  2 |  −1.9% | −0.0% |  −6.9% |  −7.6% |
+| 3 patches |  7 |  −5.3% | −0.0% | −10.3% | −14.4% |
+| 6 patches | 15 |  −9.9% | −0.0% | −12.5% | −18.6% |
 
 iNKA's harmonic diagonal is exact here — **too** exact: in this toy the coupled spectrum
 *is* precisely what enters the diagonal, so iNKA nails it by construction where the real
 thing manages 10%. That makes the toy a clean, if flattering, version of the paper's
 setup. And it makes the point unmistakable: **a covariance that is exactly right on the
-harmonic diagonal is still 8–15% low on the real-space diagonal, and iNKA is *worse*
+harmonic diagonal is still 8–19% low on the real-space diagonal, and iNKA is *worse*
 than plain NKA on ξ in almost every configuration tested.** Harmonic diagonal accuracy
 carries no information about real space. That is Nagura's moral, reproduced.
 
 Bandpower binning does not rescue it either (`fig1_*`, middle panel): binning at the
-kernel width changes the harmonic diagonal error from −10.2% to −7.9% for the 6-patch
+kernel width changes the harmonic diagonal error from −9.9% to −8.4% for the 6-patch
 mask. The error is coherent, not noise, so averaging does nothing to it.
 
 ## 3. The truncation test — where the error lives
 
 `fig3_truncation_f20_6patch.png` (iNKA), `..._nka.png` (plain NKA). Footprint 20%,
-6 patches, kernel FWHM 25 modes. Keep (i)NKA only within |k−k′| ≤ n and fill the rest
+6 patches, kernel width 15 modes. Keep (i)NKA only within |k−k′| ≤ n and fill the rest
 with the exact covariance (left panel) or with zero (right panel), then project.
 
 iNKA, error on the Cov(ξ,ξ) diagonal at the smallest θ:
 
 | n | 0 | 8 | 16 | 24 | 32 | 48 | full |
 |---|---|---|---|---|---|---|---|
-| iNKA inside, **exact** outside | −1.2% | −7.8% | −12.0% | −12.7% | −13.2% | −15.1% | −15.4% |
-| iNKA inside, **zero** outside | −79.3% | −39.3% | −21.9% | −15.9% | −15.8% | −15.5% | −15.4% |
+| iNKA inside, **exact** outside | −0.6% | −10.4% | −14.5% | −15.7% | −16.9% | −18.1% | −18.6% |
+| iNKA inside, **zero** outside | −80.9% | −43.6% | −23.8% | −19.6% | −19.0% | −18.7% | −18.6% |
 
 Two things fall out.
 
 **The error is in the off-diagonals, and it is made inside the kernel width.** Give
-iNKA the exact off-diagonals and its −15.4% real-space error collapses to −1.2%.
-Restoring iNKA's own off-diagonals band by band recovers ~80% of the full error by
-n ≈ 16 and ~85% by n ≈ 24, the kernel FWHM being 25; the remaining ~15% accumulates
+iNKA the exact off-diagonals and its −18.6% real-space error collapses to −0.6%.
+Restoring iNKA's own off-diagonals band by band recovers ~78% of the full error by
+n ≈ 16 and ~84% by n ≈ 24, against a kernel width of 15; the remaining ~15% accumulates
 slowly out to n ≈ 48, so the cutoff is soft rather than sharp. The zero-filled variant
-converges harder — it is within 0.5 points of the full value by n = 24 and flat after.
+converges harder — it is within 1 point of the full value by n = 24 and flat after.
 This is the measurement the brief's question 1 asks for, and the answer is the one the
 paper asserts without showing: the damage is done by off-diagonal bands, the bulk of it
 within the coupling kernel.
 
-**The off-diagonals also carry most of the signal.** Zeroing them entirely costs 79% of
+**The off-diagonals also carry most of the signal.** Zeroing them entirely costs 81% of
 the ξ covariance amplitude. So the projection is not "eating" a small correction — the
 off-diagonal band *is* the real-space covariance, which is why an approximation tuned on
 the diagonal has no purchase on it.
@@ -121,17 +130,17 @@ the diagonal has no purchase on it.
 Same total area (20%), split into more patches — the perimeter-to-area lever that the
 brief's question 2 says the paper cannot address:
 
-| patches | kernel FWHM | harmonic diag (NKA) | ξ at θ_min | ξ worst |
+| patches | kernel width | harmonic diag (NKA) | ξ at θ_min (NKA) | ξ at θ_min (iNKA) |
 |---|---|---|---|---|
-| 1 |  5 |  −1.9% |  −6.9% |  −6.9% |
-| 3 | 13 |  −5.0% | −10.4% | +55% |
-| 6 | 25 | −10.2% | −12.8% | +91% |
+| 1 |  2 |  −1.9% |  −6.9% |  −7.6% |
+| 3 |  7 |  −5.3% | −10.3% | −14.4% |
+| 6 | 15 |  −9.9% | −12.5% | −18.6% |
 
-Splitting one patch into six at fixed area widens the kernel 5× and takes the
-real-space error from −7% (a level nobody would write a paper about) to −13% at small θ
-with wild intermediate-θ excursions. The footprint sweep says the same thing: for a
-contiguous mask above ~25% area the error is a couple of percent at most, while the
-6-patch mask is still at −5.5% with half the sky covered.
+Splitting one patch into six at fixed area widens the kernel ~7× and takes the iNKA
+real-space error from −7.6% (a level nobody would write a paper about) to −18.6%. The
+footprint sweep says the same thing: for a contiguous mask above ~25% area the error is
+a couple of percent at most, while the 6-patch mask is still at −5.3% (NKA) with half
+the sky covered.
 
 So the honest reading is that **Nagura's headline is a statement about HSC-Y3's geometry
 at least as much as about iNKA.** For a contiguous Rubin-like footprint this toy says
