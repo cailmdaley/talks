@@ -1,242 +1,133 @@
-
 /*-- scss:defaults --*/
 
-
-
-// font settings
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300..700;1,300..700&display=swap');
-$font-family-sans-serif: Raleway, sans-serif;
-body {
-    font-variant-numeric: lining-nums;
-    -moz-font-feature-settings: "lnum" 1; 
-    -moz-font-feature-settings: "lnum=1"; 
-    -ms-font-feature-settings: "lnum" 1; 
-    -o-font-feature-settings: "lnum" 1; 
-    -webkit-font-feature-settings: "lnum" 1; 
-    font-feature-settings: "lnum" 1;
-}
-
-
-$presentation-font-size-root: 45px;
-$presentation-h1-font-size: 2.5em;
-$presentation-h2-font-size: 1.35em;
-$presentation-h3-font-size: 1.5em;
-$presentation-h4-font-size: 1.3em;
-
+// Per-talk overrides for the CosmoStat JC covariance talk. The house look comes
+// from ../assets/house.scss (loaded before this file via the deck's `theme:`
+// list); this file holds only what is specific to this talk — the chrome around
+// the inline SVG/canvas animations.
 
 /*-- scss:rules --*/
 
-.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
-    font-weight: 600 !important;
-    font-synthesis: none;
-}
+// ── Animation chrome ────────────────────────────────────────────────────────
+//   The explainers are hand-drawn inline SVG + canvas. Their stroke and fill
+//   colours are set in JS from a palette object that mirrors the house tokens
+//   (see the PAL constant in each slide's script); these rules cover the DOM
+//   furniture around them.
 
-// Spaced bullets: more gap between bullets, normal line-height within
-.spaced-bullets li {
-    margin-bottom: 1.4em;
-}
-
-// /* Custom CSS for aligning figure captions */
-.caption-left {
+.reveal .anim,
+.reveal #nka-root {
+    position: relative;
+    font-size: 28px;                      // diagram furniture: fixed px, not em
+    color: #1B1611;                       // $ink
     text-align: left;
-    margin-left: 30px;        /* Remove default margins */
 }
 
-.fitcenter {
-    display: flex; 
-    justify-content: center; 
+.reveal .anim .big {
+    font-size: 44px;
+    font-weight: 600;
+}
+
+.reveal .anim .ctl,
+.reveal #nka-root .nka-ctl {
+    position: absolute;
+    bottom: 26px;
+    right: 0;
+    display: flex;
+    gap: 18px;
     align-items: center;
-    text-align:center;
+}
 
-    &.text-left {
-        text-align: left;
-        figcaption {
-            margin-left: 30px;        /* Remove default margins */
-        }
+.reveal .anim button,
+.reveal #nka-root button {
+    font-family: inherit;
+    font-size: 26px;
+    padding: 6px 22px;
+    border-radius: 8px;
+    border: 2px solid #C5B89E;            // $rule
+    background: #FBF6E9;                  // $rag
+    color: #1B1611;
+    cursor: pointer;
+
+    &:hover { border-color: #BC4538; }    // $cinnabar
+    &:disabled { opacity: .3; cursor: default; }
+}
+
+// Heatmaps: nearest-neighbour so single modes stay crisp, and a rule-coloured
+// edge rather than the browser's blue-grey default.
+.reveal .anim canvas,
+.reveal #nka-root canvas {
+    image-rendering: pixelated;
+    border: 1px solid #C5B89E;
+    box-shadow: none;                     // opt out of the house figure halo
+}
+
+// ── Slide 2: the stepped NKA explainer ──────────────────────────────────────
+.reveal #nka-root .nka-cap {
+    font-size: 30px;
+    color: #7A6F5C;                       // $ink-muted
+    min-height: 1.4em;
+    margin: 0 0 6px 0;
+
+    b { color: #1B1611; font-weight: 600; }
+}
+
+.reveal #nka-root .nka-eq {
+    display: flex;
+    gap: 26px;
+    align-items: center;
+    font-size: 30px;
+    margin: 2px 0 6px 0;
+
+    div {
+        opacity: .3;
+        transition: opacity .3s;
+        padding: 4px 16px;
+        border-left: 6px solid transparent;
+        white-space: nowrap;
     }
-    
-    &.text-right {
-        text-align: right;
-        figcaption {
-            margin-right: 30px;        /* Remove default margins */
-        }
+    div.on {
+        opacity: 1;
+        border-left-color: #BC4538;
+        background: rgba(188, 69, 56, 0.10);   // $cinnabar-faint
     }
 }
 
-.reveal img {
-    vertical-align: middle;
-    // max-width: 100%;
-    // padding: 10px 10px;
-    margin: 0
+.reveal #nka-root .dots span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #C5B89E;
+    margin: 0 4px;
+
+    &.on { background: #BC4538; }
 }
 
-.quarto-figure {
-    margin-bottom: 0;
-    padding: 0;
-}
+.reveal #nka-root .nka-slider { display: flex; align-items: center; gap: 14px; }
+.reveal #nka-root input[type=range] { width: 280px; accent-color: #BC4538; }
 
-.reveal .footer {
-    font-size: 2.7vh !important;
-    bottom: 0.45vh !important;
-    line-height: 1 !important;
-    opacity: 0.9;
-}
+.reveal #nka-root .hidden,
+.reveal .anim .hidden { display: none; }
 
-// .reveal .slide-logo {
-// //   height: 0.7em !important;
-//   height: 5.5vh !important;
-//   bottom: 0.5vh !important;
-// //   width: 100px !important;
-//   max-width: unset !important;
-//   max-height: unset !important;
-// }
-
-.cea-logo {
+.reveal #nka-root .mcell canvas { display: block; }
+.reveal #nka-root #scene2.solo #wE,
+.reveal #nka-root #scene2.solo #wD { display: none; }
+.reveal #nka-root #scene2.solo canvas { width: 470px !important; height: 470px !important; }
+.reveal #nka-root.solo-mode #nka-side {
     position: absolute;
-    bottom: -125px;
-    left: -110px;
-    width: 92px;
-    z-index: 2;
+    left: 600px;
+    top: 230px;
+    width: 640px;
+    font-size: 32px;
+    line-height: 1.5;
 }
 
-.cosmostat-logo {
-    position: absolute;
-    bottom: -146px;
-    left: -17px;
-    width: 300px;
-    z-index: 1;
-}
-
-.moriond-logo {
-    position: absolute;
-    bottom: -85px;
-    right: -115px;
-    width: 220px;
-    z-index: 2;
-}
-
-.quarto-title-block .quarto-title-authors {
-    margin-top: 1.5em;
-}
-
-.quarto-title-block .occasion {
-    margin-top: 2em;
-}
-
-.quarto-title-block .date {
-    margin-top: 0.6em;
-}
-
-.reveal .v-center-col > p,
-.reveal .v-center-col > .quarto-figure {
-    margin-top: 15%;
-}
-
-.reveal section.paper-divider h2 {
-    font-size: 3em;
+.reveal #nka-root .mlab {
+    font-size: 27px;
     text-align: center;
-    font-weight: 700;
-    margin-top: 0;
-}
-.reveal section.paper-divider .subtitle {
-    text-align: center;
-    font-size: 1.4em;
-    font-weight: 400;
-    color: #555;
-    margin-top: 0.6em;
+    color: #7A6F5C;
+    margin-top: 6px;
+
+    b { color: #1B1611; font-weight: 600; display: block; font-size: 29px; }
 }
 
-.reveal .team-photo-slide h2 {
-    display: none;
-}
-
-.reveal .team-photo-slide {
-    padding-top: 0 !important;
-}
-
-
-.reveal img.nopad {
-    padding: 0;
-}
-
-figcaption > span {
-    display: block !important;
-    position: relative !important;
-}
-
-.credit {
-    // font-size: 0.7em;
-    position: relative;
-    display: block;
-    // text-align: center;
-}
-
-.reveal .slide-number > a[href*='title-slide'] {
-  display: none;
-}
-
-.reveal .slides .full {
-    top: 0 !important;
-    padding: 0 0;
-    margin-top: 0px;
-}
-
-.pte-table-container {
-    position: relative;
-
-    .quarto-figure {
-        position: relative;
-    }
-
-    .quarto-figure::after {
-        content: "";
-        position: absolute;
-        // Size cuts / Fiducial row highlight
-        top: 43%;
-        left: 12%;
-        width: 76%;
-        height: 7.5%;
-        border: 3px solid rgba(0, 128, 128, 0.85);
-        background: rgba(0, 128, 128, 0.08);
-        border-radius: 4px;
-        pointer-events: none;
-        z-index: 10;
-    }
-}
-
-
-// .align-left p,
-// .align-left ul,
-// .align-left ol {
-//     text-align: left;
-// }
-
-// .reveal blockquote {
-//     width: 95%;
-//     margin-bottom: 5px;
-// }
-
-// .reveal section {
-//     height: 100%;
-//     display: flex;
-//     flex: 1;
-//     align-items: center;
-//     justify-content: center;
-// }
-
-// .reveal section.center {
-//     height: unset;
-// }
-
-// .reveal .center h1 {
-//     height: 2.5em;
-// }
-
-// .container {
-//     height: 90%;
-//     display: flex;
-//     flex: 1;
-//     overflow: auto;
-//     align-items: center;
-//     justify-content: center;
-// }
+.reveal #nka-root #nka-side { font-size: 28px; color: #7A6F5C; margin-top: 10px; }

@@ -1,77 +1,53 @@
 ---
-title: "Covariances three ways:<br>analytic, catalogue-based, and control-variate"
+# ════════════════════════════════════════════════════════════════════════════
+# CosmoStat journal club, Thu 3 Sep 2026. Informal, ~25 min.
+# Three covariance papers: 2607.14843 (Wolz+), 2605.16186 (Nagura+), 2605.28817.
+# The 1D toy behind slides 3–5 lives in notes/; see notes/projection-experiment.md.
+# ════════════════════════════════════════════════════════════════════════════
+title: "Covariances three ways:<br>analytic, catalogue-based,<br>and control-variate"
 subtitle: "arXiv 2607.14843 &nbsp;·&nbsp; 2605.16186 &nbsp;·&nbsp; 2605.28817"
 output-file: index.html
 occasion: CosmoStat Journal Club
 description: Three recent papers on pseudo-Cl covariance estimation
 draft: true
 author:
-  name: Cail Daley
-  affiliation: "CosmoStat, CEA Paris-Saclay"
-date: today
+    name: Cail Daley
+    affiliation: "Département d'Astrophysique / UMR AIM · CEA Paris-Saclay"
+date: September 3, 2026
 date-format: long
 
 format:
-  revealjs:
-    width: 1920
-    height: 1080
-    theme: [default, custom.scss]
-    slide-number: true
-    fig-align: center
-    menu: false
-    include-after-body: assets/no_footer_on_titleslide.html
-    footer: "Cail Daley | CosmoStat JC | 3 Sep 2026"
-    history: false
-    hash: true
-    template-partials:
-      - title-slide.html
-    center-title-slide: false
+    revealjs:
+        width:  1920
+        height: 1080
+        theme: [default, ../assets/house.scss, custom.scss]
+        slide-number: true
+        fig-align: center
+        menu: false
+        include-after-body:
+            - assets/no_footer_on_titleslide.html
+            - assets/figure-treatment.html
+        footer: "Cail Daley | CosmoStat JC | 3 September 2026"
+        history: false
+        hash: true
+        pdf-separate-fragments: true
+        pdf-max-pages-per-slide: 1
+        template-partials:
+            - title-slide.html
+        center-title-slide: false
 
 html-math-method:
-  method: mathjax
-  url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
+    method: mathjax
+    url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
 include-in-header:
-  - assets/mathjax.html
-  - nka_data.html
+    - assets/mathjax.html
+    - nka_data.html
 ---
 
 ## Masking makes every mode talk to its neighbours {.nka-slide data-prevent-swipe="true"}
 
 ```{=html}
 <div id="nka-root">
-<style>
-#nka-root { --ink:#22262b; --mut:#7b838c; --acc:#c0392b; --acc2:#2471a3;
-            --band:#e8eef4; font-size:28px; color:var(--ink); position:relative; }
-#nka-root .nka-cap { font-size:30px; color:var(--mut); min-height:1.4em; margin:0 0 6px 0; }
-#nka-root .nka-cap b { color:var(--ink); font-weight:600; }
-#nka-root .nka-eq { display:flex; gap:26px; align-items:center; font-size:30px;
-                    margin:2px 0 6px 0; }
-#nka-root .nka-eq div { opacity:.3; transition:opacity .3s; padding:4px 16px;
-                        border-left:6px solid transparent; white-space:nowrap; }
-#nka-root .nka-eq div.on { opacity:1; border-left-color:var(--acc); background:#fbf1ef; }
-#nka-root .nka-ctl { position:absolute; bottom:-18px; right:0; display:flex;
-                     align-items:center; gap:18px; font-size:26px; }
-#nka-root button { font:inherit; font-size:26px; padding:6px 20px; border-radius:8px;
-                   border:2px solid var(--ink); background:#fff; color:var(--ink); cursor:pointer; }
-#nka-root button:disabled { opacity:.3; cursor:default; }
-#nka-root .dots span { display:inline-block; width:12px; height:12px; border-radius:50%;
-                       background:#cfd5db; margin:0 4px; }
-#nka-root .dots span.on { background:var(--acc); }
-#nka-root .nka-slider { display:flex; align-items:center; gap:14px; font-size:26px; }
-#nka-root input[type=range] { width:280px; }
-#nka-root canvas { image-rendering:pixelated; border:1px solid #cfd5db; }
-#nka-root #nka-side { font-size:28px; color:var(--mut); margin-top:10px; }
-#nka-root .mlab { font-size:27px; text-align:center; color:var(--mut); margin-top:6px; }
-#nka-root .mlab b { color:var(--ink); font-weight:600; display:block; font-size:29px; }
-#nka-root .hidden { display:none; }
-#nka-root .mcell canvas { display:block; }
-#nka-root #scene2.solo #wE, #nka-root #scene2.solo #wD { display:none; }
-#nka-root #scene2.solo #mrow { justify-content:flex-start; }
-#nka-root #scene2.solo canvas { width:470px !important; height:470px !important; }
-#nka-root.solo-mode #nka-side { position:absolute; left:600px; top:230px;
-                                width:640px; font-size:32px; line-height:1.5; }
-#nka-root .axlab { font-size:25px; color:var(--mut); }
-</style>
 
 <div class="nka-cap" id="nka-cap"></div>
 
@@ -234,15 +210,16 @@ include-in-header:
   function el(p, t, at){ var e = document.createElementNS(NS,t);
     for(var k in at) e.setAttribute(k, at[k]); p.appendChild(e); return e; }
   function txt(p, x, y, s, at){ var e = el(p,'text',
-      Object.assign({x:x,y:y,'font-size':26,fill:'#22262b'}, at||{}));
+      Object.assign({x:x,y:y,'font-size':26,fill:'#1B1611'}, at||{}));
     e.textContent = s; return e; }
 
-  function divergent(v){                       // v in [-1,1]
+  // ground (#F7F0E1) -> cobalt for positive, -> cinnabar for negative
+  function divergent(v){
     var t = Math.max(-1, Math.min(1, v));
     if(t >= 0){ var u = Math.pow(t,0.55);
-      return [255 - 210*u, 255 - 190*u, 255 - 100*u]; }        // white -> deep blue
+      return [247 - 186*u, 240 - 149*u, 225 - 65*u]; }
     var u2 = Math.pow(-t,0.55);
-    return [255 - 20*u2, 255 - 190*u2, 255 - 200*u2];          // white -> red
+    return [247 - 59*u2, 240 - 171*u2, 225 - 169*u2];
   }
   function heat(cv, mat, scale){
     cv.width = NK; cv.height = NK;
@@ -259,16 +236,16 @@ include-in-header:
   function drawA(step){
     var s = document.getElementById('svgA'); s.innerHTML = '';
     var y0 = 62, h = 200, mid = y0 + h/2;
-    el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:'#dfe4e9','stroke-width':2});
-    txt(s, 10, mid+9, 'a(x)', {fill:'#7b838c'});
-    txt(s, PAD, 294, 'position  x', {fill:'#7b838c','font-size':26});
+    el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:'#C5B89E','stroke-width':2});
+    txt(s, 10, mid+9, 'a(x)', {fill:'#7A6F5C'});
+    txt(s, PAD, 294, 'position  x', {fill:'#7A6F5C','font-size':26});
 
     if(step >= 2){                                  // footprint band
       var lo = PAD + AW*(0.5 - frac/2), hi = PAD + AW*(0.5 + frac/2);
-      el(s,'rect',{x:lo,y:y0,width:hi-lo,height:h,fill:'#e8eef4'});
-      el(s,'line',{x1:lo,y1:y0,x2:lo,y2:y0+h,stroke:'#2471a3','stroke-width':3});
-      el(s,'line',{x1:hi,y1:y0,x2:hi,y2:y0+h,stroke:'#2471a3','stroke-width':3});
-      txt(s,(lo+hi)/2 - 84, y0 - 22, 'mask w(x)', {fill:'#2471a3','font-size':27});
+      el(s,'rect',{x:lo,y:y0,width:hi-lo,height:h,fill:'rgba(61,91,160,0.13)'});
+      el(s,'line',{x1:lo,y1:y0,x2:lo,y2:y0+h,stroke:'#3D5BA0','stroke-width':3});
+      el(s,'line',{x1:hi,y1:y0,x2:hi,y2:y0+h,stroke:'#3D5BA0','stroke-width':3});
+      txt(s,(lo+hi)/2 - 84, y0 - 22, 'mask w(x)', {fill:'#3D5BA0','font-size':27});
     }
     function path(scaleByMask, col, wid, op){
       var d = '';
@@ -279,16 +256,16 @@ include-in-header:
       el(s,'path',{d:d,fill:'none',stroke:col,'stroke-width':wid,opacity:op});
     }
     if(step >= 2){
-      path(false,'#b9c1c9',2,1); path(true,'#22262b',3,1);
+      path(false,'#C5B89E',2,1); path(true,'#1B1611',3,1);
       var lo2 = PAD + AW*(0.5 - frac/2);
       var ly = y0 - 22;
-      el(s,'line',{x1:PAD,y1:ly-8,x2:PAD+46,y2:ly-8,stroke:'#b9c1c9','stroke-width':3});
-      txt(s, PAD+58, ly, 'field  a', {fill:'#9aa2ab','font-size':28});
-      el(s,'line',{x1:PAD+230,y1:ly-8,x2:PAD+276,y2:ly-8,stroke:'#22262b','stroke-width':3});
-      txt(s, PAD+288, ly, 'observed  w·a', {fill:'#22262b','font-size':28});
+      el(s,'line',{x1:PAD,y1:ly-8,x2:PAD+46,y2:ly-8,stroke:'#C5B89E','stroke-width':3});
+      txt(s, PAD+58, ly, 'field  a', {fill:'#9C8F79','font-size':28});
+      el(s,'line',{x1:PAD+230,y1:ly-8,x2:PAD+276,y2:ly-8,stroke:'#1B1611','stroke-width':3});
+      txt(s, PAD+288, ly, 'observed  w·a', {fill:'#1B1611','font-size':28});
       if(lo2 < 0) {}
     }
-    else path(false,'#22262b',3,1);
+    else path(false,'#1B1611',3,1);
   }
 
   // ---------- panel B: harmonic space ----------
@@ -300,22 +277,22 @@ include-in-header:
     var lgmin = Math.log10(Cfun(kmax)), lgmax = Math.log10(Cfun(1));
     function X(k){ return x0 + w*(k-1)/(kmax-1); }
     function Y(c){ return y0 + h*(1 - (Math.log10(c)-lgmin)/(lgmax-lgmin)); }
-    el(s,'line',{x1:x0,y1:y0+h,x2:x0+w,y2:y0+h,stroke:'#dfe4e9','stroke-width':2});
-    txt(s, x0, y0+h+44, 'wavenumber  k', {fill:'#7b838c'});
-    txt(s, 4, y0+18, 'C\u2096', {fill:'#7b838c'});
+    el(s,'line',{x1:x0,y1:y0+h,x2:x0+w,y2:y0+h,stroke:'#C5B89E','stroke-width':2});
+    txt(s, x0, y0+h+44, 'wavenumber  k', {fill:'#7A6F5C'});
+    txt(s, 4, y0+18, 'C\u2096', {fill:'#7A6F5C'});
 
     var d1='', d2='';
     for(var k=1;k<kmax;k++){
       d1 += (k>1?'L':'M') + X(k).toFixed(1) + ' ' + Y(Cin[k]).toFixed(1) + ' ';
       d2 += (k>1?'L':'M') + X(k).toFixed(1) + ' ' + Y(Ctil[k]).toFixed(1) + ' ';
     }
-    el(s,'path',{d:d1,fill:'none',stroke:'#22262b','stroke-width':3.5});
-    txt(s, X(58), Y(Cin[58])-22, 'true  C\u2096', {fill:'#22262b','font-size':28});
+    el(s,'path',{d:d1,fill:'none',stroke:'#1B1611','stroke-width':3.5});
+    txt(s, X(58), Y(Cin[58])-22, 'true  C\u2096', {fill:'#1B1611','font-size':28});
 
     if(step >= 4){
-      el(s,'path',{d:d2,fill:'none',stroke:'#c0392b','stroke-width':3.5,
+      el(s,'path',{d:d2,fill:'none',stroke:'#BC4538','stroke-width':3.5,
                    'stroke-dasharray':'10 7'});
-      txt(s, X(58), Y(Ctil[58])+46, 'masked  C\u0303\u2096', {fill:'#c0392b','font-size':28});
+      txt(s, X(58), Y(Ctil[58])+46, 'masked  C\u0303\u2096', {fill:'#BC4538','font-size':28});
     }
     // mask kernel centred on kc
     if(step < 3) return;
@@ -327,10 +304,10 @@ include-in-header:
       var kk = ker[i2][0]; if(kk < 0.5 || kk > kmax) continue;
       dk += (dk?'L':'M') + X(kk).toFixed(1) + ' ' + (y0+h - 175*ker[i2][1]/pk).toFixed(1) + ' ';
     }
-    el(s,'path',{d:dk,fill:'none',stroke:'#2471a3','stroke-width':3.5});
-    el(s,'line',{x1:X(kc),y1:y0,x2:X(kc),y2:y0+h,stroke:'#2471a3',
+    el(s,'path',{d:dk,fill:'none',stroke:'#3D5BA0','stroke-width':3.5});
+    el(s,'line',{x1:X(kc),y1:y0,x2:X(kc),y2:y0+h,stroke:'#3D5BA0',
                  'stroke-width':2,'stroke-dasharray':'6 8'});
-    txt(s, X(kc)+18, y0+26, 'mask kernel  |W|\u00b2', {fill:'#2471a3','font-size':28});
+    txt(s, X(kc)+18, y0+26, 'mask kernel  |W|\u00b2', {fill:'#3D5BA0','font-size':28});
   }
 
   // ---------- panel C: does C vary across the kernel? (scene 2) ----------
@@ -342,28 +319,28 @@ include-in-header:
     function Y(c){ return y0 + h*(1 - (Math.log10(c)-lgmin)/(lgmax-lgmin)); }
     var d='';
     for(var k=1;k<kmax;k++) d += (k>1?'L':'M')+X(k).toFixed(1)+' '+Y(Cfun(k)).toFixed(1)+' ';
-    el(s,'path',{d:d,fill:'none',stroke:'#22262b','stroke-width':3.5});
-    txt(s, X(62), Y(Cfun(62))-20, 'C\u2096', {fill:'#22262b','font-size':28});
+    el(s,'path',{d:d,fill:'none',stroke:'#1B1611','stroke-width':3.5});
+    txt(s, X(62), Y(Cfun(62))-20, 'C\u2096', {fill:'#1B1611','font-size':28});
     var pk=0, ker=[];
     for(var m=-N/2+1;m<N/2;m++){ var wr=Wat(m,0), wi=Wat(m,1), p=wr*wr+wi*wi;
       ker.push([kc-m,p]); pk=Math.max(pk,p); }
     var dk='';
     for(var i=0;i<ker.length;i++){ var kk=ker[i][0]; if(kk<0.5||kk>kmax) continue;
       dk += (dk?'L':'M')+X(kk).toFixed(1)+' '+(y0+h-100*ker[i][1]/pk).toFixed(1)+' '; }
-    el(s,'path',{d:dk,fill:'none',stroke:'#2471a3','stroke-width':3.5});
+    el(s,'path',{d:dk,fill:'none',stroke:'#3D5BA0','stroke-width':3.5});
     var lo=null, hi=null;
     for(var i3=0;i3<ker.length;i3++) if(ker[i3][1] > pk/2){
       var kk2=ker[i3][0]; if(lo===null||kk2<lo) lo=kk2; if(hi===null||kk2>hi) hi=kk2; }
     if(lo!==null){
       lo = Math.max(lo, 1); hi = Math.min(hi, kmax-1);
       el(s,'rect',{x:X(lo),y:y0,width:Math.max(X(hi)-X(lo),3),height:h,
-                   fill:'#2471a3',opacity:0.12});
+                   fill:'#3D5BA0',opacity:0.12});
       var ratio = Cfun(lo)/Cfun(hi), bad = ratio > 1.5;
       el(s,'line',{x1:X(lo),y1:y0+h+28,x2:X(hi),y2:y0+h+28,
-                   stroke: bad?'#c0392b':'#2471a3','stroke-width':4});
+                   stroke: bad?'#BC4538':'#3D5BA0','stroke-width':4});
       txt(s, X(hi)+22, y0+h+38,
           '\u00d7' + ratio.toFixed(1) + ' across the kernel',
-          {fill: bad?'#c0392b':'#2471a3', 'font-size':28});
+          {fill: bad?'#BC4538':'#3D5BA0', 'font-size':28});
     }
   }
 
@@ -459,18 +436,6 @@ three papers care about.
 
 ```{=html}
 <div class="anim" id="s3">
-<style>
-.anim { --ink:#22262b; --mut:#7b838c; --acc:#c0392b; --acc2:#2471a3;
-        position:relative; font-size:28px; color:var(--ink); }
-.anim .lab { font-size:28px; fill:var(--mut); }
-.anim .big { font-size:44px; font-weight:600; }
-.anim .ctl { position:absolute; bottom:-14px; right:0; display:flex; gap:16px;
-             align-items:center; font-size:26px; }
-.anim button { font:inherit; font-size:26px; padding:6px 20px; border-radius:8px;
-               border:2px solid var(--ink); background:#fff; color:var(--ink);
-               cursor:pointer; }
-.anim canvas { image-rendering:pixelated; border:1px solid #cfd5db; }
-</style>
 
 <svg id="s3a" viewBox="0 0 1730 330" width="1730" height="330"></svg>
 <svg id="s3b" viewBox="0 0 1730 430" width="1730" height="430"></svg>
@@ -483,7 +448,7 @@ three papers care about.
   function el(p,t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);
     p.appendChild(e);return e;}
   function txt(p,x,y,s,a){var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,
-    fill:'#7b838c'},a||{}));e.textContent=s;return e;}
+    fill:'#7A6F5C'},a||{}));e.textContent=s;return e;}
 
   // mask + kernel are cheap enough to build in the browser
   var NX=512, N=192;
@@ -508,28 +473,28 @@ three papers care about.
   function drawMask(f,w){
     var s=document.getElementById('s3a');s.innerHTML='';
     var y0=56,h=230,mid=y0+h/2;
-    el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:'#dfe4e9','stroke-width':2});
+    el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:'#C5B89E','stroke-width':2});
     var d='';
     for(var j=0;j<NX;j++)d+=(j?'L':'M')+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(mid-w[j]*h*0.40).toFixed(1)+' ';
-    el(s,'path',{d:d,fill:'none',stroke:'#2471a3','stroke-width':4});
+    el(s,'path',{d:d,fill:'none',stroke:'#3D5BA0','stroke-width':4});
     var lo=PAD+AW*(0.5-f/2),hi=PAD+AW*(0.5+f/2);
-    el(s,'rect',{x:lo,y:mid-h*0.40,width:hi-lo,height:h*0.40,fill:'#2471a3',opacity:.10});
-    txt(s,PAD,y0-16,'mask  w(x)',{fill:'#2471a3'});
+    el(s,'rect',{x:lo,y:mid-h*0.40,width:hi-lo,height:h*0.40,fill:'#3D5BA0',opacity:.10});
+    txt(s,PAD,y0-16,'mask  w(x)',{fill:'#3D5BA0'});
     txt(s,PAD,y0+h+34,'position  x');
   }
   function drawKernel(k){
     var s=document.getElementById('s3b');s.innerHTML='';
     var y0=34,h=300,x0=PAD;
-    el(s,'line',{x1:x0,y1:y0+h,x2:x0+AW,y2:y0+h,stroke:'#dfe4e9','stroke-width':2});
+    el(s,'line',{x1:x0,y1:y0+h,x2:x0+AW,y2:y0+h,stroke:'#C5B89E','stroke-width':2});
     var d='';
     var A=30,B=130,NP=B-A;      // show the central +-50 modes
     for(var i=A;i<=B;i++)d+=(i>A?'L':'M')+(x0+AW*(i-A)/NP).toFixed(1)+' '+(y0+h-k[i]*h).toFixed(1)+' ';
-    el(s,'path',{d:d,fill:'none',stroke:'#c0392b','stroke-width':4});
+    el(s,'path',{d:d,fill:'none',stroke:'#BC4538','stroke-width':4});
     var half=kwidth(k)/2, cc=(k.length-1)/2-A;
     var lo=Math.max(cc-half,0), hi=Math.min(cc+half,NP);
     el(s,'line',{x1:x0+AW*lo/NP,y1:y0+h+26,x2:x0+AW*hi/NP,y2:y0+h+26,
-                 stroke:'#c0392b','stroke-width':9,'stroke-linecap':'round'});
-    txt(s,x0,y0-2,'mask kernel  |W|²',{fill:'#c0392b'});
+                 stroke:'#BC4538','stroke-width':9,'stroke-linecap':'round'});
+    txt(s,x0,y0-2,'mask kernel  |W|²',{fill:'#BC4538'});
     txt(s,x0,y0+h+74,'mode separation  k − k′');
   }
 
@@ -567,13 +532,13 @@ Everything that follows is about what happens inside that width.
 <div style="display:flex; gap:44px; align-items:flex-start;">
   <div>
     <canvas id="s4m" width="96" height="96" style="width:730px;height:730px"></canvas>
-    <div style="margin-top:10px; font-size:28px; color:#7b838c;">
-      iNKA covariance &nbsp;·&nbsp; <span style="color:#22262b;font-weight:600"
+    <div style="margin-top:10px; font-size:28px; color:#7A6F5C;">
+      iNKA covariance &nbsp;·&nbsp; <span style="color:#1B1611;font-weight:600"
       id="s4b">bands kept</span></div>
   </div>
   <div style="flex:1;">
     <svg id="s4c" viewBox="0 0 940 730" width="940" height="730"></svg>
-    <div style="font-size:28px; color:#7b838c; margin-left:90px;">
+    <div style="font-size:28px; color:#7A6F5C; margin-left:90px;">
       separation &nbsp;θ</div>
   </div>
 </div>
@@ -587,7 +552,7 @@ Everything that follows is about what happens inside that width.
   function el(p,t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);
     p.appendChild(e);return e;}
   function txt(p,x,y,s,a){var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,
-    fill:'#7b838c'},a||{}));e.textContent=s;return e;}
+    fill:'#7A6F5C'},a||{}));e.textContent=s;return e;}
 
   var KM=D.km, bin=atob(D.matrix), M=new Uint8Array(KM*KM);
   for(var q=0;q<M.length;q++)M[q]=bin.charCodeAt(q);
@@ -597,8 +562,9 @@ Everything that follows is about what happens inside that width.
     var im=ctx.createImageData(KM,KM);
     for(var i=0;i<KM;i++)for(var j=0;j<KM;j++){
       var v=M[i*KM+j]/255, inb=Math.abs(i-j)<=n, o=4*(i*KM+j), u=Math.pow(v,0.55);
-      if(inb){ im.data[o]=255-215*u; im.data[o+1]=255-195*u; im.data[o+2]=255-105*u; }
-      else   { im.data[o]=250-70*u;  im.data[o+1]=250-70*u;  im.data[o+2]=250-68*u; }
+      // in-band: ground -> cobalt.  outside (replaced by the exact answer): muted.
+      if(inb){ im.data[o]=247-186*u; im.data[o+1]=240-149*u; im.data[o+2]=225-65*u; }
+      else   { im.data[o]=247-55*u;  im.data[o+1]=240-58*u;  im.data[o+2]=225-64*u; }
       im.data[o+3]=255;
     }
     ctx.putImageData(im,0,0);
@@ -611,18 +577,18 @@ Everything that follows is about what happens inside that width.
   function drawCurve(n){
     var s=document.getElementById('s4c');s.innerHTML='';
     for(var g=0.85;g<1.041;g+=0.05){
-      el(s,'line',{x1:X0,y1:Y(g),x2:X0+W,y2:Y(g),stroke:'#eef1f4','stroke-width':2});
+      el(s,'line',{x1:X0,y1:Y(g),x2:X0+W,y2:Y(g),stroke:'#E0D5BF','stroke-width':2});
       txt(s,X0-78,Y(g)+10,g.toFixed(2));
     }
-    el(s,'line',{x1:X0,y1:Y(1),x2:X0+W,y2:Y(1),stroke:'#22262b','stroke-width':3});
-    txt(s,X0+W-150,Y(1)-16,'exact',{fill:'#22262b'});
+    el(s,'line',{x1:X0,y1:Y(1),x2:X0+W,y2:Y(1),stroke:'#1B1611','stroke-width':3});
+    txt(s,X0+W-150,Y(1)-16,'exact',{fill:'#1B1611'});
     var r=D.ratios[n],d='';
     for(var i=0;i<TH.length;i++)d+=(i?'L':'M')+X(TH[i]).toFixed(1)+' '+Y(r[i]).toFixed(1)+' ';
-    el(s,'path',{d:d,fill:'none',stroke:'#c0392b','stroke-width':4});
-    txt(s,X0+W-340,Y(0.815),'iNKA / exact   Cov(ξ,ξ)',{fill:'#c0392b'});
-    el(s,'circle',{cx:X(TH[0]),cy:Y(r[0]),r:9,fill:'#c0392b'});
+    el(s,'path',{d:d,fill:'none',stroke:'#BC4538','stroke-width':4});
+    txt(s,X0+W-340,Y(0.815),'iNKA / exact   Cov(ξ,ξ)',{fill:'#BC4538'});
+    el(s,'circle',{cx:X(TH[0]),cy:Y(r[0]),r:9,fill:'#BC4538'});
     txt(s,X(TH[0])+24,Y(r[0])-30,(100*(r[0]-1)).toFixed(1)+'%',
-        {fill:'#c0392b','font-size':46,'font-weight':600});
+        {fill:'#BC4538','font-size':46,'font-weight':600});
   }
 
   var i=0,timer=null;
@@ -672,7 +638,7 @@ real-space covariance.
 <div style="display:flex; gap:50px; align-items:flex-start;">
   <div><svg id="s5a" viewBox="0 0 720 730" width="720" height="730"></svg></div>
   <div style="flex:1;"><svg id="s5b" viewBox="0 0 940 730" width="940" height="730"></svg>
-    <div style="font-size:28px; color:#7b838c; margin-left:90px;">separation &nbsp;θ</div>
+    <div style="font-size:28px; color:#7A6F5C; margin-left:90px;">separation &nbsp;θ</div>
   </div>
 </div>
 <div class="ctl"><button id="s5r">replay</button></div>
@@ -681,25 +647,25 @@ real-space covariance.
 <script>
 (function(){
   var D=window.NKA_DATA.slide5, C=D.cases;
-  var NS='http://www.w3.org/2000/svg', COL=['#2471a3','#e08a1e','#c0392b'];
+  var NS='http://www.w3.org/2000/svg', COL=['#3D5BA0','#C49333','#BC4538'];
   function el(p,t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);
     p.appendChild(e);return e;}
   function txt(p,x,y,s,a){var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,
-    fill:'#7b838c'},a||{}));e.textContent=s;return e;}
+    fill:'#7A6F5C'},a||{}));e.textContent=s;return e;}
 
   function drawLeft(upto){
     var s=document.getElementById('s5a');s.innerHTML='';
     var X0=70,W=610;
     for(var c=0;c<=upto;c++){
       var m=C[c].mask, y=44+c*86, h=62;
-      el(s,'line',{x1:X0,y1:y+h,x2:X0+W,y2:y+h,stroke:'#eef1f4','stroke-width':2});
+      el(s,'line',{x1:X0,y1:y+h,x2:X0+W,y2:y+h,stroke:'#E0D5BF','stroke-width':2});
       var d='';
       for(var j=0;j<m.length;j++)d+=(j?'L':'M')+(X0+W*j/(m.length-1)).toFixed(1)+' '+(y+h-m[j]*h).toFixed(1)+' ';
       el(s,'path',{d:d,fill:'none',stroke:COL[c],'stroke-width':3.5});
     }
     txt(s,X0,28,'same area, split');
     var Y0=350,H=230;
-    el(s,'line',{x1:X0,y1:Y0+H,x2:X0+W,y2:Y0+H,stroke:'#dfe4e9','stroke-width':2});
+    el(s,'line',{x1:X0,y1:Y0+H,x2:X0+W,y2:Y0+H,stroke:'#C5B89E','stroke-width':2});
     for(var c2=0;c2<=upto;c2++){
       var k=C[c2].kernel,d2='';
       for(var i=0;i<k.length;i++)d2+=(i?'L':'M')+(X0+W*i/(k.length-1)).toFixed(1)+' '+(Y0+H-k[i]*H).toFixed(1)+' ';
@@ -724,11 +690,11 @@ real-space covariance.
   function drawRight(upto){
     var s=document.getElementById('s5b');s.innerHTML='';
     for(var g=0.80;g<1.041;g+=0.05){
-      el(s,'line',{x1:X0,y1:Y(g),x2:X0+W,y2:Y(g),stroke:'#eef1f4','stroke-width':2});
+      el(s,'line',{x1:X0,y1:Y(g),x2:X0+W,y2:Y(g),stroke:'#E0D5BF','stroke-width':2});
       txt(s,X0-78,Y(g)+10,g.toFixed(2));
     }
-    el(s,'line',{x1:X0,y1:Y(1),x2:X0+W,y2:Y(1),stroke:'#22262b','stroke-width':3});
-    txt(s,X0+W-150,Y(1)-16,'exact',{fill:'#22262b'});
+    el(s,'line',{x1:X0,y1:Y(1),x2:X0+W,y2:Y(1),stroke:'#1B1611','stroke-width':3});
+    txt(s,X0+W-150,Y(1)-16,'exact',{fill:'#1B1611'});
     for(var c=0;c<=upto;c++){
       var th=C[c].theta,r=C[c].ratio,d='';
       for(var i=0;i<th.length;i++)d+=(i?'L':'M')+X(th[i]).toFixed(1)+' '+Y(r[i]).toFixed(1)+' ';
