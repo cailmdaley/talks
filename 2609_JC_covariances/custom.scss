@@ -76,17 +76,21 @@
 .reveal .nka .eqs {
     display: flex;
     flex-wrap: wrap;
-    gap: 26px;
-    row-gap: 2px;
-    align-items: center;
-    font-size: 30px;
-    margin: 0 0 8px 0;
+    gap: 20px;
+    row-gap: 0;
+    align-items: flex-end;
+    font-size: 28px;
+    margin: 0 0 6px 0;
     min-height: 52px;
 
+    // each entry is a human name over the symbols
     div {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
         opacity: .3;
         transition: opacity .3s;
-        padding: 4px 16px;
+        padding: 2px 14px;
         border-left: 6px solid transparent;
         white-space: nowrap;
     }
@@ -95,6 +99,14 @@
         border-left-color: #BC4538;
         background: rgba(188, 69, 56, 0.10);
     }
+    .nm {
+        font-size: 20px;
+        line-height: 1.1;
+        color: #7A6F5C;
+        font-variant: small-caps;
+        letter-spacing: 0.04em;
+    }
+    .eq { line-height: 1.1; }
 }
 
 // the running cost annotation, pinned to the top right
@@ -114,6 +126,10 @@
 
 // the cinematic build: elements persist and only their opacity changes
 .reveal .nka .cine { transition: opacity .45s ease; }
+// used for one frame when a replay snaps back to empty, so the finished picture
+// does not cross-fade out while the first mode fades in
+.reveal .nka .nofade .cine,
+.reveal .nka svg.nofade .cine { transition: none !important; }
 
 .reveal .nka .replay {
     position: absolute;
@@ -134,7 +150,7 @@
 // mask picker
 .reveal .nka .pick {
     position: absolute;
-    bottom: 10px;
+    bottom: -34px;      // clear of the panel above, so curves do not run behind it
     right: 0;
     display: flex;
     gap: 16px;
@@ -171,7 +187,7 @@
 }
 .reveal .nka .nkaerr {
     position: absolute;
-    bottom: 10px;
+    bottom: -34px;
     left: 0;
     font-size: 30px;
     color: #BC4538;

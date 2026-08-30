@@ -58,7 +58,7 @@ include-in-header:
 Start as simply as possible. A Gaussian random field on a line — one realisation, one function of position. Everything today lives on this picture.
 :::
 
-## It is a sum of modes {.nka-slide}
+## It can be decomposed as a sum of modes {.nka-slide}
 
 ```{=html}
 <div class="nka" data-step="1">
@@ -174,14 +174,14 @@ The estimator is exact. Its uncertainty is not. The covariance of a quadratic es
 <div class="eqs"></div>
 <div class="cost"></div>
 <div class="mrow">
-  <div class="mcell"><canvas style="width:340px;height:340px"></canvas>
+  <div class="mcell"><canvas style="width:310px;height:310px"></canvas>
     <div class="mlab"><b>exact</b>direct sum</div></div>
-  <div class="mcell"><canvas style="width:340px;height:340px"></canvas>
+  <div class="mcell"><canvas style="width:310px;height:310px"></canvas>
     <div class="mlab"><b>NKA</b>one mask-product kernel</div></div>
-  <div class="mcell"><canvas style="width:340px;height:340px"></canvas>
+  <div class="mcell"><canvas style="width:310px;height:310px"></canvas>
     <div class="mlab"><b>NKA &minus; exact</b>error</div></div>
 </div>
-<svg class="pC" data-h="150" data-kernel="1" data-kh="110" data-label="0" data-xlabel="0" viewBox="0 0 1730 250" width="1730" height="250"></svg>
+<svg class="pC" data-h="132" data-kernel="1" data-kh="96" data-label="0" data-xlabel="0" viewBox="0 0 1730 200" width="1730" height="200"></svg>
 <div class="nkaerr"></div>
 <div class="pick"></div>
 </div>

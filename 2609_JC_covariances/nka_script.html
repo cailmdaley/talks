@@ -235,6 +235,7 @@ function boot(){
   function pct(x){ return (x>=0?'+':'') + (100*x).toFixed(0) + '%'; }
 
   // ---------- svg helpers ----------
+  var PRINT = /print-pdf/.test(window.location.search);
   var NS = 'http://www.w3.org/2000/svg';
   function el(p,t,a){ var e=document.createElementNS(NS,t);
     for(var k in a) e.setAttribute(k,a[k]); p.appendChild(e); return e; }
@@ -298,8 +299,8 @@ function boot(){
   function buildCine(s){
     clear(s);
     var SUMH = 190, LANE = 60, CY0 = 250 + MODES.length*LANE, CH = 230;
-    var st = {modes:[], labels:[], pts:[], plabels:[], sum:null, full:null,
-              curve:null, clabel:null, plus:null};
+    var st = {modes:[], labels:[], pts:[], plabels:[], sum:null,
+              curve:null, clabel:null, plus:null, done:null};
     var mid = 40 + SUMH/2;
     el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
     txt(s, 8, mid+9, 'a(x)', {fill:MUT});
@@ -332,7 +333,9 @@ function boot(){
       var t = txt(s, 8, lmid+9, 'k = '+k, {fill:MUT,'font-size':26, opacity:0, class:'cine'});
       st.labels.push(t);
     }
-    st.plus = txt(s, PAD+AW-260, 250 + MODES.length*LANE - 28, '+  everything else',
+    // above the sum row: it describes what got added to the sum, and every lane
+    // below is occupied by a full-width wave
+    st.plus = txt(s, PAD+AW-260, 26, '+  everything else',
                   {fill:MUT,'font-size':27, opacity:0, class:'cine'});
 
     // the spectrum panel
@@ -379,14 +382,27 @@ function boot(){
     st.plus.style.opacity = done ? 1 : 0;
     st.curve.style.opacity = done ? 1 : 0;
     st.clabel.style.opacity = done ? 1 : 0;
+    // Only touch the ledger when the state actually changes: re-rendering it on
+    // every beat re-ran MathJax seven times during the build, which flickers.
     var eqs = root.querySelector('.eqs');
-    if(eqs){ ledger(eqs, done ? 1 : 0); typeset(); }
+    if(eqs && st.done !== done){
+      st.done = done;
+      ledger(eqs, done ? 1 : 0);
+      typeset();
+    }
   }
   var cineTimer = null;
   function playCine(root, s){
+    if(PRINT) return;
     clearInterval(cineTimer);
     var n = 0;
+    // snap to empty with transitions off, so a replay does not cross-fade the
+    // finished picture out while the first mode is fading in
+    s.classList.add('nofade');
+    if(s.__cine) s.__cine.done = null;      // force the ledger back to its opening state
     setBeat(root, s, 0);
+    void s.getBoundingClientRect();
+    s.classList.remove('nofade');
     cineTimer = setInterval(function(){
       n++; setBeat(root, s, n);
       if(n > MODES.length) clearInterval(cineTimer);
@@ -524,23 +540,26 @@ function boot(){
   // ---------- the equation ledger ----------
   //  Built here rather than pasted into every slide, so the sequence can only be
   //  defined once. MathJax has already run by now, so it is asked to typeset.
+  //  [latex, the step it appears on, the name a person would say for it]
   var EQS = [
-    ['a(x)', 0],
-    ['a_k=\\sum_x a(x)\\,e^{-ikx}', 1],
-    ['C(k)=\\langle |a_k|^2\\rangle', 1],
-    ['\\tilde a(x)=w(x)\\,a(x)', 2],
-    ['\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', 4],
-    ['\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', 5],
-    ['\\langle \\hat C_b\\rangle = (M_{bb\'})^{-1}\\langle \\tilde C_{b\'}\\rangle = C_b', 6],
-    ['{\\rm Cov}\\propto\\big|\\textstyle\\sum_{k\'\'} W_{k-k\'\'}W^{*}_{k\'-k\'\'}C(k\'\')\\big|^{2}', 7],
-    ['{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,w_bw_d)', 8]
+    ['a(x)', 0, 'field'],
+    ['a_k=\\sum_x a(x)\\,e^{-ikx}', 1, 'Fourier transform'],
+    ['a(x)=\\sum_k a_k\\,e^{+ikx}', 1, 'inverse'],
+    ['C(k)=\\langle |a_k|^2\\rangle', 1, 'power spectrum'],
+    ['\\tilde a(x)=w(x)\\,a(x)', 2, 'mask'],
+    ['\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', 4, 'mode coupling'],
+    ['\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', 5, 'pseudo-C(k)'],
+    ['\\langle \\hat C_b\\rangle = (M_{bb\'})^{-1}\\langle \\tilde C_{b\'}\\rangle = C_b', 6, 'decoupling · bandpowers'],
+    ['{\\rm Cov}\\propto\\big|\\textstyle\\sum_{k\'\'} W_{k-k\'\'}W^{*}_{k\'-k\'\'}C(k\'\')\\big|^{2}', 7, 'four-point'],
+    ['{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,w_bw_d)', 8, 'narrow-kernel approximation']
   ];
   function ledger(host, step){
     var html = '';
     for(var i=0;i<EQS.length;i++){
       if(EQS[i][1] > step) continue;
       var live = (EQS[i][1] === step);
-      html += '<div class="' + (live?'on':'') + '">\\(' + EQS[i][0] + '\\)</div>';
+      html += '<div class="' + (live?'on':'') + '"><span class="nm">' + EQS[i][2] +
+              '</span><span class="eq">\\(' + EQS[i][0] + '\\)</span></div>';
     }
     host.innerHTML = html;
   }
@@ -565,7 +584,10 @@ function boot(){
   function renderOne(root){
     var step = +root.getAttribute('data-step');
     var q = function(sel){ return root.querySelector(sel); };
-    var eqs = q('.eqs'); if(eqs) ledger(eqs, step);
+    // On the build slide the animation owns the ledger (it reveals the relations
+    // at the last beat), so renderOne must not overwrite it.
+    var eqs = q('.eqs');
+    if(eqs && !q('.pM')) ledger(eqs, step);
     var cost = q('.cost');
     if(cost) cost.innerHTML = COST[step] || '';
     // reserve the top-right for the cost label so the ledger cannot wrap under it
@@ -576,10 +598,13 @@ function boot(){
     if(pA) drawField(pA, {h: +pA.dataset.h || 200, mask: step >= 2});
     var pM = q('.pM');
     if(pM){
-      if(!pM.__cine) buildCine(pM);
-      // built at the last beat so a static export shows the finished picture;
-      // entering the slide replays it from the top
-      setBeat(root, pM, MODES.length + 1);
+      if(!pM.__cine){
+        buildCine(pM);
+        //  Rest at beat 0 (empty). Painting the finished picture here and then
+        //  wiping it to start the build is exactly the flash you see on entry.
+        //  A print export has no animation, so give it the finished state.
+        setBeat(root, pM, PRINT ? MODES.length + 1 : 0);
+      }
       var rb = root.querySelector('.replay');
       if(rb) rb.onclick = function(){ playCine(root, pM); };
     }
