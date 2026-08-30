@@ -30,7 +30,9 @@ format:
 html-math-method:
   method: mathjax
   url: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js
-include-in-header: assets/mathjax.html
+include-in-header:
+  - assets/mathjax.html
+  - nka_data.html
 ---
 
 ## Masking makes every mode talk to its neighbours {.nka-slide data-prevent-swipe="true"}
@@ -451,4 +453,318 @@ is zero.
 Then shrink the footprint. The kernel widens, the spectrum is no longer flat across it, and the
 off-diagonal band goes wrong — while the diagonal stays about right. That's the regime the
 three papers care about.
+:::
+
+## A smaller footprint means a wider kernel {.nka-slide}
+
+```{=html}
+<div class="anim" id="s3">
+<style>
+.anim { --ink:#22262b; --mut:#7b838c; --acc:#c0392b; --acc2:#2471a3;
+        position:relative; font-size:28px; color:var(--ink); }
+.anim .lab { font-size:28px; fill:var(--mut); }
+.anim .big { font-size:44px; font-weight:600; }
+.anim .ctl { position:absolute; bottom:-14px; right:0; display:flex; gap:16px;
+             align-items:center; font-size:26px; }
+.anim button { font:inherit; font-size:26px; padding:6px 20px; border-radius:8px;
+               border:2px solid var(--ink); background:#fff; color:var(--ink);
+               cursor:pointer; }
+.anim canvas { image-rendering:pixelated; border:1px solid #cfd5db; }
+</style>
+
+<svg id="s3a" viewBox="0 0 1730 330" width="1730" height="330"></svg>
+<svg id="s3b" viewBox="0 0 1730 430" width="1730" height="430"></svg>
+<div class="ctl"><span id="s3n" class="big"></span><button id="s3r">replay</button></div>
+</div>
+
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  function el(p,t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);
+    p.appendChild(e);return e;}
+  function txt(p,x,y,s,a){var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,
+    fill:'#7b838c'},a||{}));e.textContent=s;return e;}
+
+  // mask + kernel are cheap enough to build in the browser
+  var NX=512, N=192;
+  function mask(f){var w=new Float64Array(NX),tp=0.015*NX,h=f*NX/2,m=NX/2;
+    for(var j=0;j<NX;j++){var d=Math.abs(j-m),v=0;
+      if(d<=h-tp)v=1;else if(d<h+tp)v=0.5*(1+Math.cos(Math.PI*(d-h+tp)/(2*tp)));w[j]=v;}
+    return w;}
+  function kern(w){var p=[],mx=0;
+    for(var m=-80;m<=80;m++){var sr=0,si=0;
+      for(var j=0;j<NX;j++){var ph=2*Math.PI*m*j/NX;sr+=w[j]*Math.cos(ph);si-=w[j]*Math.sin(ph);}
+      var v=(sr*sr+si*si)/(NX*NX);p.push(v);if(v>mx)mx=v;}
+    return p.map(function(v){return v/mx;});}
+  function fwhm(k){var lo=null,hi=null;
+    for(var i=0;i<k.length;i++)if(k[i]>0.5){if(lo===null)lo=i;hi=i;}
+    return hi-lo+1;}
+
+  var PAD=90, AW=1730-PAD-40;
+  function drawMask(f,w){
+    var s=document.getElementById('s3a');s.innerHTML='';
+    var y0=56,h=230,mid=y0+h/2;
+    el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:'#dfe4e9','stroke-width':2});
+    var d='';
+    for(var j=0;j<NX;j++)d+=(j?'L':'M')+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(mid-w[j]*h*0.40).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke:'#2471a3','stroke-width':4});
+    var lo=PAD+AW*(0.5-f/2),hi=PAD+AW*(0.5+f/2);
+    el(s,'rect',{x:lo,y:mid-h*0.40,width:hi-lo,height:h*0.40,fill:'#2471a3',opacity:.10});
+    txt(s,PAD,y0-16,'mask  w(x)',{fill:'#2471a3'});
+    txt(s,PAD,y0+h+34,'position  x');
+  }
+  function drawKernel(k){
+    var s=document.getElementById('s3b');s.innerHTML='';
+    var y0=34,h=300,x0=PAD;
+    el(s,'line',{x1:x0,y1:y0+h,x2:x0+AW,y2:y0+h,stroke:'#dfe4e9','stroke-width':2});
+    var d='';
+    var A=30,B=130,NP=B-A;      // show the central +-50 modes
+    for(var i=A;i<=B;i++)d+=(i>A?'L':'M')+(x0+AW*(i-A)/NP).toFixed(1)+' '+(y0+h-k[i]*h).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke:'#c0392b','stroke-width':4});
+    var lo=null,hi=null;
+    for(var q=A;q<=B;q++)if(k[q]>0.5){if(lo===null)lo=q-A;hi=q-A;}
+    el(s,'line',{x1:x0+AW*lo/NP,y1:y0+h+26,x2:x0+AW*hi/NP,y2:y0+h+26,
+                 stroke:'#c0392b','stroke-width':9,'stroke-linecap':'round'});
+    txt(s,x0,y0-2,'mask kernel  |W|²',{fill:'#c0392b'});
+    txt(s,x0,y0+h+74,'mode separation  k − k′');
+  }
+
+  var frames=[],i=0,timer=null;
+  for(var t=0;t<28;t++){var f=0.60-(0.60-0.06)*t/27;var w=mask(f);var k=kern(w);
+    frames.push({f:f,w:w,k:k,fw:fwhm(k)});}
+  function show(j){var fr=frames[j];drawMask(fr.f,fr.w);drawKernel(fr.k);
+    document.getElementById('s3n').textContent='kernel  '+fr.fw+' modes';}
+  function play(){clearInterval(timer);i=0;show(0);
+    timer=setInterval(function(){i++;if(i>=frames.length){clearInterval(timer);return;}
+      show(i);},260);}
+  document.getElementById('s3r').onclick=play;
+  window.__jump=window.__jump||{};
+  window.__jump.s3=function(j){clearInterval(timer);show(j);};
+  show(0);
+
+  var sec=document.getElementById('s3').closest('section'), was=false;
+  setInterval(function(){var now=sec.classList.contains('present');
+    if(now&&!was)play(); if(!now&&was)clearInterval(timer); was=now;},250);
+})();
+</script>
+```
+
+::: {.notes}
+Quick setup beat. The mask is a top-hat and I'm shrinking it; watch the kernel underneath.
+The width of the coupling kernel goes like one over the footprint width — a big contiguous
+survey couples a mode only to its immediate neighbours, a small one smears across dozens.
+Everything that follows is about what happens inside that width.
+:::
+
+## The diagonal is innocent {.nka-slide}
+
+```{=html}
+<div class="anim" id="s4">
+<div style="display:flex; gap:44px; align-items:flex-start;">
+  <div>
+    <canvas id="s4m" width="96" height="96" style="width:730px;height:730px"></canvas>
+    <div style="margin-top:10px; font-size:28px; color:#7b838c;">
+      iNKA covariance &nbsp;·&nbsp; <span style="color:#22262b;font-weight:600"
+      id="s4b">bands kept</span></div>
+  </div>
+  <div style="flex:1;">
+    <svg id="s4c" viewBox="0 0 940 730" width="940" height="730"></svg>
+    <div style="font-size:28px; color:#7b838c; margin-left:90px;">
+      separation &nbsp;θ</div>
+  </div>
+</div>
+<div class="ctl"><button id="s4r">replay</button></div>
+</div>
+
+<script>
+(function(){
+  var D=window.NKA_DATA.slide4;
+  var NS='http://www.w3.org/2000/svg';
+  function el(p,t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);
+    p.appendChild(e);return e;}
+  function txt(p,x,y,s,a){var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,
+    fill:'#7b838c'},a||{}));e.textContent=s;return e;}
+
+  var KM=D.km, bin=atob(D.matrix), M=new Uint8Array(KM*KM);
+  for(var q=0;q<M.length;q++)M[q]=bin.charCodeAt(q);
+
+  var cv=document.getElementById('s4m'), ctx=cv.getContext('2d');
+  function drawMatrix(n){
+    var im=ctx.createImageData(KM,KM);
+    for(var i=0;i<KM;i++)for(var j=0;j<KM;j++){
+      var v=M[i*KM+j]/255, inb=Math.abs(i-j)<=n, o=4*(i*KM+j), u=Math.pow(v,0.55);
+      if(inb){ im.data[o]=255-215*u; im.data[o+1]=255-195*u; im.data[o+2]=255-105*u; }
+      else   { im.data[o]=250-70*u;  im.data[o+1]=250-70*u;  im.data[o+2]=250-68*u; }
+      im.data[o+3]=255;
+    }
+    ctx.putImageData(im,0,0);
+  }
+
+  var TH=D.theta, lo=Math.log10(TH[0]), hi=Math.log10(TH[TH.length-1]);
+  var X0=110, Y0=60, W=800, H=600, YLO=0.80, YHI=1.04;
+  function X(t){return X0+W*(Math.log10(t)-lo)/(hi-lo);}
+  function Y(r){return Y0+H*(1-(r-YLO)/(YHI-YLO));}
+  function drawCurve(n){
+    var s=document.getElementById('s4c');s.innerHTML='';
+    for(var g=0.85;g<1.041;g+=0.05){
+      el(s,'line',{x1:X0,y1:Y(g),x2:X0+W,y2:Y(g),stroke:'#eef1f4','stroke-width':2});
+      txt(s,X0-78,Y(g)+10,g.toFixed(2));
+    }
+    el(s,'line',{x1:X0,y1:Y(1),x2:X0+W,y2:Y(1),stroke:'#22262b','stroke-width':3});
+    txt(s,X0+W-150,Y(1)-16,'exact',{fill:'#22262b'});
+    var r=D.ratios[n],d='';
+    for(var i=0;i<TH.length;i++)d+=(i?'L':'M')+X(TH[i]).toFixed(1)+' '+Y(r[i]).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke:'#c0392b','stroke-width':4});
+    txt(s,X0+W-340,Y(0.815),'iNKA / exact   Cov(ξ,ξ)',{fill:'#c0392b'});
+    el(s,'circle',{cx:X(TH[0]),cy:Y(r[0]),r:9,fill:'#c0392b'});
+    txt(s,X(TH[0])+24,Y(r[0])-30,(100*(r[0]-1)).toFixed(1)+'%',
+        {fill:'#c0392b','font-size':46,'font-weight':600});
+  }
+
+  var i=0,timer=null;
+  function show(j){
+    var n=D.ns[j];
+    drawMatrix(n); drawCurve(j);
+    document.getElementById('s4b').textContent='|k − k′| ≤ '+n;
+
+  }
+  function play(){clearInterval(timer);i=0;show(0);
+    timer=setInterval(function(){i++;if(i>=D.ns.length){clearInterval(timer);return;}
+      show(i);},300);}
+  document.getElementById('s4r').onclick=play;
+  window.__jump=window.__jump||{};
+  window.__jump.s4=function(j){clearInterval(timer);show(j);};
+  show(0);
+  var sec=document.getElementById('s4').closest('section'), was=false;
+  setInterval(function(){var now=sec.classList.contains('present');
+    if(now&&!was)play(); if(!now&&was)clearInterval(timer); was=now;},250);
+})();
+</script>
+```
+
+::: {.notes}
+This is the experiment the paper doesn't do, and it settles the diagnosis.
+
+Start on the left with iNKA's covariance matrix, and keep only the bands within some
+separation of the diagonal — everything outside, greyed, I've replaced with the exact
+answer. At the start only the diagonal is iNKA's, and the real-space covariance on the
+right sits on top of the truth: one percent low. So the diagonal is fine.
+
+Now widen the band. As iNKA's own off-diagonals come back in, the curve peels away and
+settles at fifteen percent low — and it gets there by about the kernel width, twenty-five
+modes. Nothing outside the kernel matters.
+
+So: iNKA is right exactly where it was fitted, the harmonic diagonal, and real space
+weights precisely the part the fit never reached. And the reverse test says the same —
+zero those off-diagonals instead of correcting them and you lose eighty percent of the
+covariance. That band isn't a correction to the real-space covariance. It is the
+real-space covariance.
+:::
+
+## Six patches, not one, is what breaks it {.nka-slide}
+
+```{=html}
+<div class="anim" id="s5">
+<div style="display:flex; gap:50px; align-items:flex-start;">
+  <div><svg id="s5a" viewBox="0 0 720 730" width="720" height="730"></svg></div>
+  <div style="flex:1;"><svg id="s5b" viewBox="0 0 940 730" width="940" height="730"></svg>
+    <div style="font-size:28px; color:#7b838c; margin-left:90px;">separation &nbsp;θ</div>
+  </div>
+</div>
+<div class="ctl"><button id="s5r">replay</button></div>
+</div>
+
+<script>
+(function(){
+  var D=window.NKA_DATA.slide5, C=D.cases;
+  var NS='http://www.w3.org/2000/svg', COL=['#2471a3','#e08a1e','#c0392b'];
+  function el(p,t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);
+    p.appendChild(e);return e;}
+  function txt(p,x,y,s,a){var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,
+    fill:'#7b838c'},a||{}));e.textContent=s;return e;}
+
+  function drawLeft(upto){
+    var s=document.getElementById('s5a');s.innerHTML='';
+    var X0=70,W=610;
+    for(var c=0;c<=upto;c++){
+      var m=C[c].mask, y=44+c*86, h=62;
+      el(s,'line',{x1:X0,y1:y+h,x2:X0+W,y2:y+h,stroke:'#eef1f4','stroke-width':2});
+      var d='';
+      for(var j=0;j<m.length;j++)d+=(j?'L':'M')+(X0+W*j/(m.length-1)).toFixed(1)+' '+(y+h-m[j]*h).toFixed(1)+' ';
+      el(s,'path',{d:d,fill:'none',stroke:COL[c],'stroke-width':3.5});
+    }
+    txt(s,X0,28,'same area, split');
+    var Y0=350,H=230;
+    el(s,'line',{x1:X0,y1:Y0+H,x2:X0+W,y2:Y0+H,stroke:'#dfe4e9','stroke-width':2});
+    for(var c2=0;c2<=upto;c2++){
+      var k=C[c2].kernel,d2='';
+      for(var i=0;i<k.length;i++)d2+=(i?'L':'M')+(X0+W*i/(k.length-1)).toFixed(1)+' '+(Y0+H-k[i]*H).toFixed(1)+' ';
+      el(s,'path',{d:d2,fill:'none',stroke:COL[c2],'stroke-width':3,opacity:.85});
+    }
+    txt(s,X0,Y0-16,'kernel  |W|²');
+    // FWHM bars — the width the comb structure hides
+    for(var c3=0;c3<=upto;c3++){
+      var kk=C[c3].kernel,lo2=null,hi2=null;
+      for(var q=0;q<kk.length;q++)if(kk[q]>0.5){if(lo2===null)lo2=q;hi2=q;}
+      var yb=Y0+H+46+c3*44;
+      el(s,'line',{x1:X0+W*lo2/(kk.length-1),y1:yb,x2:X0+W*hi2/(kk.length-1),y2:yb,
+                   stroke:COL[c3],'stroke-width':9,'stroke-linecap':'round'});
+      txt(s,X0+W*hi2/(kk.length-1)+20,yb+11,C[c3].fwhm+' modes',{fill:COL[c3]});
+    }
+  }
+
+  var lo=Math.log10(C[0].theta[0]), hi=Math.log10(C[0].theta[C[0].theta.length-1]);
+  var X0=110,Y0=60,W=790,H=580,YLO=0.78,YHI=1.05;
+  function X(t){return X0+W*(Math.log10(t)-lo)/(hi-lo);}
+  function Y(r){return Y0+H*(1-(r-YLO)/(YHI-YLO));}
+  function drawRight(upto){
+    var s=document.getElementById('s5b');s.innerHTML='';
+    for(var g=0.80;g<1.041;g+=0.05){
+      el(s,'line',{x1:X0,y1:Y(g),x2:X0+W,y2:Y(g),stroke:'#eef1f4','stroke-width':2});
+      txt(s,X0-78,Y(g)+10,g.toFixed(2));
+    }
+    el(s,'line',{x1:X0,y1:Y(1),x2:X0+W,y2:Y(1),stroke:'#22262b','stroke-width':3});
+    txt(s,X0+W-150,Y(1)-16,'exact',{fill:'#22262b'});
+    for(var c=0;c<=upto;c++){
+      var th=C[c].theta,r=C[c].ratio,d='';
+      for(var i=0;i<th.length;i++)d+=(i?'L':'M')+X(th[i]).toFixed(1)+' '+Y(r[i]).toFixed(1)+' ';
+      el(s,'path',{d:d,fill:'none',stroke:COL[c],'stroke-width':4});
+      el(s,'line',{x1:X0+30,y1:Y0+40+c*46,x2:X0+86,y2:Y0+40+c*46,
+                   stroke:COL[c],'stroke-width':5});
+      txt(s,X0+100,Y0+52+c*46,C[c].npatch+(C[c].npatch>1?' patches':' patch'),{fill:COL[c]});
+    }
+    txt(s,X0+W-340,Y(0.795),'iNKA / exact   Cov(ξ,ξ)');
+  }
+
+  var i=0,timer=null;
+  function show(j){drawLeft(j);drawRight(j);}
+  function play(){clearInterval(timer);i=0;show(0);
+    timer=setInterval(function(){i++;if(i>=C.length){clearInterval(timer);return;}
+      show(i);},1400);}
+  document.getElementById('s5r').onclick=play;
+  window.__jump=window.__jump||{};
+  window.__jump.s5=function(j){clearInterval(timer);show(j);};
+  show(0);
+  var sec=document.getElementById('s5').closest('section'), was=false;
+  setInterval(function(){var now=sec.classList.contains('present');
+    if(now&&!was)play(); if(!now&&was)clearInterval(timer); was=now;},250);
+})();
+</script>
+```
+
+::: {.notes}
+Last beat, and it's the one that decides how much we should care.
+
+Hold the survey area fixed at twenty percent and cut it into more pieces. One patch,
+three, six — HSC-Y3 is six disjoint fields. The kernel widens five-fold, from five modes
+to twenty-five, purely from the perimeter.
+
+And the real-space error tracks it: seven percent for the contiguous mask, thirteen for
+six patches. Seven percent is not a paper. Thirteen, with the wild intermediate-scale
+excursions I've cut off the top of this plot, is.
+
+So my honest reading is that this result is at least as much a statement about HSC's
+geometry as about iNKA. For a contiguous Rubin-like footprint, in this toy, the problem
+largely goes away — which is exactly the question the paper can't answer, because they
+have one mask.
 :::
