@@ -211,34 +211,6 @@
     &.inline { position: static; margin: 6px 0 2px 90px; }
 }
 
-// the three-term split, as labels
-.reveal .nka .splitlab {
-    display: flex;
-    gap: 60px;
-    margin: 8px 0 0 90px;
-    justify-content: center;
-    font-size: 28px;
-    color: #7A6F5C;
-
-    span { border-left: 5px solid #BC4538; padding-left: 14px; }
-    span:first-child { border-left-color: #1B1611; }
-    span:nth-child(2) { border-left-color: #3D5BA0; }
-}
-
-// a figure lifted from the paper, sitting on the parchment ground
-.reveal .nka .paperfig img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-height: 560px;
-    object-fit: contain;
-    box-shadow: none;
-    mix-blend-mode: multiply;   // white plot ground melts into the page
-}
-.reveal .nka .two > div { flex: 1; min-width: 0; }
-// an inset-sized paper figure, when it shares a row with a live panel
-.reveal .nka .paperfig.inset img { max-height: 286px; width: auto; margin: 0 auto; }
-
 // W1's lower band: the toy kernel on the left, then the paper figure at full
 // height with its caption in a column beside it rather than underneath
 .reveal .nka .two.lower { gap: 30px; align-items: flex-start; }
@@ -268,6 +240,7 @@
         mix-blend-mode: multiply;
     }
 }
+
 .reveal .nka .figside {
     flex: 1 1 auto;
     min-width: 420px;
@@ -285,14 +258,48 @@
         margin-bottom: 12px;
     }
 }
-// the shear panel is the upper half of a two-panel figure, so its x-axis is
-// unlabelled in the source; name it here rather than dragging in the B-mode panel
-.reveal .nka .axcap {
-    text-align: center;
-    font-size: 27px;
-    color: #7A6F5C;
-    margin-top: -4px;
+
+// a paper figure at full size with its own caption beside it, for digging in
+.reveal .nka .figpair { display: flex; gap: 34px; align-items: flex-start; }
+.reveal .nka .figmain { flex: 1 1 auto; min-width: 0; }
+.reveal .nka .figmain img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 660px;
+    object-fit: contain;
+    object-position: left top;
+    box-shadow: none;
+    mix-blend-mode: multiply;
 }
+.reveal .nka .takeaway {
+    font-size: 28px;
+    line-height: 1.34;
+    color: #7A6F5C;
+    margin-top: 16px;
+    max-width: 1080px;
+
+    b { color: #1B1611; font-weight: 600; }
+}
+.reveal .nka .papercap {
+    flex: 0 0 470px;
+    font-size: 23px;
+    line-height: 1.4;
+    color: #7A6F5C;
+    text-align: left;
+
+    .src {
+        display: block;
+        font-size: 21px;
+        font-variant: small-caps;
+        letter-spacing: 0.04em;
+        color: #C5B89E;
+        margin-bottom: 6px;
+    }
+    i { font-style: italic; }
+}
+// W1's caption column quotes the paper verbatim
+.reveal .nka .figside .verbatim { color: #1B1611; }
 
 .reveal .nka .mrow { display: flex; gap: 34px; align-items: flex-start; }
 .reveal .nka canvas {

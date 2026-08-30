@@ -190,11 +190,9 @@ papers.
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo power spectrum">
     <div class="figside">
       <div class="figtitle">power spectrum of the<br>Quaia catalogue mask</div>
-      <p><b>Ñ<sub>w</sub></b> \(=\sum_i w_i^2/4\pi\) — the mask&rsquo;s own white floor, its
-         self-pairs. The catalogue mask flattens onto it; a pixelated mask keeps falling, because
-         pixels are an implicit band-limit.</p>
-      <p><b>θ<sub>c</sub></b> — the cloud scale, about the mean source spacing. The dashed
-         π/θ<sub>c</sub> line marks it. Next slide turns this knob.</p>
+      <p class="verbatim">Mask pseudo power spectrum for the <i>Quaia</i> survey mask, comparing catalogue- and mask-based estimators. At the catalogue level, the constant shot noise floor (\(\tilde{N}_w\)) is reached at scales far below the mean interparticle scale (\(\theta_{\rm c}\)).</p>
+      <p><b>θ<sub>c</sub></b> — the cloud scale, about the mean source spacing;
+         the dashed π/θ<sub>c</sub> line marks it. Next slide turns this knob.</p>
     </div>
   </div>
 </div>
@@ -224,22 +222,16 @@ additive downstream — it becomes a convolutional problem for the data. That is
 band-limit the mask rather than to subtract its floor.
 :::
 
-## Mask products are zero or infinite {.nka-slide}
+## Catalogue masks are collections of delta functions {.nka-slide}
 
 ```{=html}
 <div class="nka" data-step="7" data-ledger-from="7" data-frag-step="7">
-<div class="eqs"></div>
-<div class="two">
-  <div><svg class="pProd" data-x0="70" data-w="700" viewBox="0 0 820 440" width="820" height="440"></svg>
-    <div class="mlab"><b>two catalogues</b>different sources, never coincident</div></div>
-  <div><svg class="pSelf" data-x0="70" data-w="700" viewBox="0 0 820 440" width="820" height="440"></svg>
-    <div class="mlab"><b>one catalogue with itself</b>every source coincident with itself</div></div>
-</div>
+<svg class="pProd" data-x0="90" data-w="1560" viewBox="0 0 1730 440" width="1730" height="440"></svg>
 <div class="fragment">
 <div class="ctl-slider inline">
-  <label>cloud size <input type="range" data-var="thc" min="0" max="120" value="0"></label>
+  <label>Gaussian cloud <input type="range" data-var="thc" min="0" max="120" value="0"></label>
 </div>
-<svg class="pCloud" data-h="130" viewBox="0 0 1730 230" width="1730" height="230"></svg>
+<svg class="pCloud" data-h="150" viewBox="0 0 1730 250" width="1730" height="250"></svg>
 </div>
 </div>
 ```
@@ -247,15 +239,17 @@ band-limit the mask rather than to subtract its floor.
 ::: {.notes}
 The covariance needs products of masks — Ξ of w_a w_c. For catalogues those products do not
 exist. Two different catalogues never put a source in the same place, so the product is zero
-everywhere. One catalogue against itself puts every source exactly on top of itself, so the
-product is a delta squared, which diverges. Both ways, a dead end. That sentence is the whole
-motivation for the paper.
+everywhere. And one catalogue against itself is worse: every source lands exactly on itself, so
+the product is a delta squared, which diverges. Both ways, a dead end — and that sentence is the
+whole motivation for the paper.
 
 The fix is to stop pretending you know where a source is to infinite precision. Give each one a
-cloud of finite size — band-limit the mask — and the products become ordinary finite numbers.
-Turn the knob. The sweet spot is around the mean source spacing, which is the resolution you
-had all along. Note what kind of move this is: θ_c is a choice, not a derivation. They justify
-it by showing the answer plateaus over a wide range of it.
+Gaussian cloud of finite size — band-limit the mask — and the products become ordinary finite
+numbers. Turn the knob. The sweet spot is around the mean source spacing, which is the
+resolution you had all along; it gives the catalogue mask the band-limit a pixel mask always
+secretly had, chosen at a scale that means something instead of at an arbitrary pixel size.
+Note what kind of move this is: θ_c is a choice, not a derivation. They justify it by showing
+the answer plateaus over a wide range of it.
 :::
 
 ## Self-pairs are exactly white {.nka-slide}
@@ -268,9 +262,7 @@ it by showing the answer plateaus over a wide range of it.
   <div><svg class="pXi" data-h="290" data-x0="90" data-w="700" viewBox="0 0 840 400" width="840" height="400"></svg></div>
   <div><svg class="pWhite" data-h="290" data-x0="90" data-w="700" viewBox="0 0 840 400" width="840" height="400"></svg></div>
 </div>
-<div class="splitlab">
-  <span>signal × signal</span><span>signal × noise</span><span>noise × noise</span>
-</div>
+
 </div>
 ```
 
@@ -301,43 +293,56 @@ be removed — and why the *mask's* floor, which feeds the coupling machinery ra
 measurement, had to be band-limited away instead.
 :::
 
-## It works where it has to {.nka-slide}
+## Noise-dominated: the exact term carries it {.nka-slide}
 
 ```{=html}
 <div class="nka" data-step="9" data-ledger-from="9">
-<div class="saywhat" data-own="1">Points are 1000 simulations; lines are the analytic covariance. Which of the two pieces is load-bearing is set by what dominates the variance — not by how dense the catalogue is.</div>
-<div class="two">
-  <div class="paperfig">
-    <img src="images/wolz_shear_cov.png" alt="DES-Y3-like cosmic shear covariance">
-    <div class="axcap">multipole ℓ</div>
-    <div class="mlab"><b>cosmic shear, DES-Y3-like</b>dense, but shape-noise-dominated — the exact self-pair term carries it at high ℓ</div>
+<div class="figpair">
+  <div class="figmain">
+    <img src="images/wolz_shear_full.png" alt="DES-like cosmic shear covariance">
+    <div class="takeaway">cosmic shear, DES-Y3-like — <b>dense, yet shape-noise-dominated</b>:
+      almost all the variance at high ℓ is the self-pair term, which is handled exactly.</div>
   </div>
-  <div class="paperfig">
-    <img src="images/wolz_clustering_cov.png" alt="DESI-LRG-like clustering covariance">
-    <div class="mlab"><b>clustering, DESI-LRG-like</b>sparser, but signal-dominated — the approximation carries it</div>
-  </div>
+  <div class="papercap"><span class="src">Wolz et al., Fig. 4</span>Power spectrum covariance for the DES-like simulated cosmic shear sample. Results are shown for the covariance between the \(E\)-mode and \(B\)-mode power spectra (left panels of the upper and lower figures). The right panels show the \(\chi^2\) distributions calculated using the analytical covariance against the empirical reference distribution (black histograms). The blue lines, points, and histograms show results from simulations in which only the lensing shear signal is sampled at the source positions, whereas results including both the signal and Gaussian uncorrelated noise are shown in red. In the latter case, we assume a noise standard deviation per component of \(\sigma_e=0.27\). The sample variance from 1000 realisations is shown as points, with the analytical prediction as solid lines. The dashed line and crosses show the first off-diagonal element of the covariance matrix.</div>
 </div>
 </div>
 ```
 
 ::: {.notes}
-Two cases from the paper, and the thing to notice is that density is not what decides.
+Cosmic shear, DES-Y3-like — and it is a *dense* catalogue, a few sources per square arcminute,
+of order a hundred million of them. But shape noise dominates its variance, so almost everything
+you see at high multipole is the self-pair term, and that is the part handled exactly. Red is
+with shape noise, blue without; the analytic lines sit on the simulated points in both, and the
+dashed line is the first off-diagonal, which is where an approximation shows its failure first.
 
-Cosmic shear on the left: a DES-Y3-like sample, which is *dense* — a few sources per square
-arcminute, of order a hundred million of them. But shape noise dominates its variance, so almost
-all of what you see at high multipole is the self-pair term, and that is the part they handle
-exactly. Red is with shape noise, blue without, and the analytic lines sit on the simulated
-points in both.
+The caption is there so you can dig in — the right-hand panels are the chi-squared distributions
+against the empirical reference.
+:::
 
-Clustering on the right: a DESI-LRG-like sample, much *sparser* than the shear catalogue. Yet
-here it is signal that dominates, so the load falls on the distinct pairs — the part carrying
-the approximation — and it holds. Red is the catalogue estimator with randoms, blue the
-traditional continuous mask, offset for clarity; the dashed line is the first off-diagonal,
-which is where an approximation shows its failure first.
+## Signal-dominated: the approximation carries it {.nka-slide}
+
+```{=html}
+<div class="nka" data-step="9" data-ledger-from="9">
+<div class="figpair">
+  <div class="figmain">
+    <img src="images/wolz_clustering_full.png" alt="LRG-like galaxy clustering covariance">
+    <div class="takeaway">galaxy clustering, DESI-LRG-like — <b>sparser, yet signal-dominated</b>:
+      the load falls on the distinct pairs, which is the part carrying the approximation.</div>
+  </div>
+  <div class="papercap"><span class="src">Wolz et al., Fig. 5</span><i>Left panel:</i> Power spectrum covariance for the LRG-like simulated galaxy clustering sample. Results are shown for power spectra calculated using random catalogues to quantify the sample completeness (red) and using a continuous mask (blue). For clarity, the mask-based results have been rescaled by a factor of 1.5. The points show the sample variance estimated from 1000 realisations, with the analytical Gaussian covariance as solid lines. The dashed line and crosses show the first off-diagonal element of the covariance matrix. <i>Right panels:</i> corresponding analytical \(\chi^2\) distributions from 1000 simulations, compared with the empirical distributions in black.</div>
+</div>
+</div>
+```
+
+::: {.notes}
+Clustering, DESI-LRG-like — much *sparser* than the shear catalogue. Yet here signal dominates,
+so the load falls on the distinct pairs, the part carrying the approximation, and it holds. Red
+is the catalogue estimator using randoms for completeness, blue the traditional continuous mask,
+rescaled for clarity.
 
 So the two axes come apart. Density sets how many sources you have; what dominates the variance
 sets which half of the machinery has to be right. Neither of these is a regime where it would
-break — for that, next paper.
+break — for that, the next paper.
 :::
 
 <!-- ═══ parked ═══════════════════════════════════════════════════════════

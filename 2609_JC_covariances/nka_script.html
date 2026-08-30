@@ -678,38 +678,29 @@ function boot(){
         {fill:MUT,'font-size':26});
   }
 
-  //  W2 — the products that break
+  //  W2 — the product that breaks. Two catalogues never coincide, so their mask
+  //  product is zero everywhere; the auto case is the opposite failure and gets
+  //  a three-word trace rather than a panel of its own.
   function drawProducts(s, opts){
     clear(s); geom(opts);
     var PAD = _x0, AW = _w;
     var xa = catPositions(Math.round(NSRC*0.5), 111), xc = catPositions(Math.round(NSRC*0.5), 222);
-    var yA = 132, yB = 254, yP = 356;
-    function comb(xs, y, col, up){
+    var yA = 120, yB = 240, yP = 348;
+    function comb(xs, y, col){
       el(s,'line',{x1:PAD,y1:y,x2:PAD+AW,y2:y,stroke:RULE,'stroke-width':2});
       for(var i=0;i<xs.length;i++){
         var X = PAD + AW*xs[i];
-        el(s,'line',{x1:X,y1:y,x2:X,y2:y+(up?-56:56),stroke:col,'stroke-width':2.5});
+        el(s,'line',{x1:X,y1:y,x2:X,y2:y-58,stroke:col,'stroke-width':2.5});
       }
     }
-    comb(xa, yA, COB, true);   txt(s, PAD, yA+34, 'catalogue a', {fill:COB,'font-size':27});
-    comb(xc, yB, TEAL, true);  txt(s, PAD, yB+34, 'catalogue c', {fill:TEAL,'font-size':27});
+    comb(xa, yA, COB);   txt(s, PAD, yA+34, 'catalogue a', {fill:COB,'font-size':27});
+    comb(xc, yB, TEAL);  txt(s, PAD, yB+34, 'catalogue c', {fill:TEAL,'font-size':27});
     el(s,'line',{x1:PAD,y1:yP,x2:PAD+AW,y2:yP,stroke:RULE,'stroke-width':3});
     txt(s, PAD, yP+46, 'their product', {fill:INK,'font-size':27});
-    txt(s, PAD+AW/2-120, yP-16, 'zero, everywhere', {fill:ACC,'font-size':29});
-  }
-  function drawSelfProduct(s, opts){
-    clear(s); geom(opts);
-    var PAD = _x0, AW = _w, y = 356;
-    catBuild();
-    el(s,'line',{x1:PAD,y1:y,x2:PAD+AW,y2:y,stroke:RULE,'stroke-width':3});
-    for(var i=0;i<CAT.xs.length;i++){
-      var X = PAD + AW*CAT.xs[i];
-      el(s,'line',{x1:X,y1:y,x2:X,y2:132,stroke:ACC,'stroke-width':2.5});
-    }
-    // the spikes leave the panel: mark them
-    txt(s, PAD+AW-70, 122, '∞', {fill:ACC,'font-size':56});
-    txt(s, PAD, 112, 'the same catalogue, squared', {fill:ACC,'font-size':27});
-    txt(s, PAD+AW/2-160, y+46, 'coincident deltas diverge', {fill:ACC,'font-size':29});
+    txt(s, PAD+AW/2-130, yP-18, 'zero, everywhere', {fill:ACC,'font-size':30});
+    // the auto case, in passing
+    txt(s, PAD+AW-340, yP+46, 'same catalogue:', {fill:MUT,'font-size':27});
+    txt(s, PAD+AW-124, yP+58, '\u221e', {fill:ACC,'font-size':50});
   }
 
   //  W2 — the fix: each source becomes a cloud, and the mask band-limits
@@ -808,9 +799,6 @@ function boot(){
      note:'Ξ: the same coupling coefficients as the estimator, built from the product of the masks'},
     {tex:'\\tilde a(x)=\\sum_i w_i\\,a_i\\,\\delta(x-x_i)', step:6, name:'catalogue field', col:1, row:1, span:2},
     {tex:'w(x)=\\sum_i w_i\\,\\delta(x-x_i)', step:6, name:'catalogue mask', col:3, row:1, span:2},
-    {tex:'\\bar w_k = w_k\\,\\phi(k),\\quad \\phi(k)=e^{-k^2\\theta_c^2/2}', step:7,
-     name:'cloud · band-limit', col:1, row:1, span:4,
-     note:'gives the catalogue mask the band-limit a pixel mask always secretly had — chosen at the source spacing, not at an arbitrary pixel size'},
     {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:1, row:1, span:2}
   ];
   function ledger(host, step, from, stage){
@@ -928,7 +916,6 @@ function boot(){
     each('.pP',    drawCatalogue);
     each('.pKC',   drawCatKernel);
     each('.pProd', drawProducts);
-    each('.pSelf', drawSelfProduct);
     each('.pCloud',drawCloud);
     each('.pXi',   drawXi);
     each('.pWhite',drawWhite);
