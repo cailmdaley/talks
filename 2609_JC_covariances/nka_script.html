@@ -549,11 +549,6 @@ function boot(){
       rE[q]=covE[q]/nrm; rN[q]=covN[q]/nrm; rD[q]=rN[q]-rE[q];
     }
     heat(cvs[0], rE, 1); heat(cvs[1], rN, 1); heat(cvs[2], rD, 0.35);
-    var out = root.querySelector('.nkaerr');
-    if(out){
-      var ik = Math.round(K0) - KLO, e = covN[ik*NK+ik]/covE[ik*NK+ik] - 1;
-      out.textContent = 'NKA error at k₀:  ' + pct(e);
-    }
   }
 
   // ═══ catalogue masks (the Wolz act) ═══════════════════════════════════════
@@ -629,20 +624,29 @@ function boot(){
     txt(s, PAD+AW-360, y0+18, CAT.xs.length + ' sources', {fill:MUT});
   }
 
-  //  the catalogue mask's kernel: flat and ratty — no scale below the spacing
+  //  the catalogue mask's kernel: flat and ratty. The mask is itself a catalogue,
+  //  so its own spectrum carries a white floor from its self-pairs — Nw = sum
+  //  w_i^2 / 4pi — that never decays. The kernel is built from that spectrum, so
+  //  it inherits the floor: flat forever, no scale anywhere.
   function drawCatKernel(s, opts){
     clear(s); geom(opts);
     var PAD = _x0, AW = _w, y0 = opts.y0 || 44, h = opts.h || 210, MM = 120;
     catBuild();
-    var pk = 0, p = [], m;
-    for(m=-MM;m<=MM;m++){ var v = catKpow(m); p.push(v); if(v>pk) pk=v; }
+    var pk = 0, p = [], m, floor = 0, nf = 0;
+    for(m=-MM;m<=MM;m++){ var v = catKpow(m); p.push(v); if(v>pk) pk=v;
+                          if(Math.abs(m) > 6){ floor += v; nf++; } }
+    floor = nf ? floor/nf : 0;
+    function Y(v){ return y0 + h - (Math.log10(Math.max(v/pk,1e-6))/6 + 1)*h; }
     el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
     var d='';
-    for(var q=0;q<p.length;q++){
-      var lg = Math.log10(Math.max(p[q]/pk,1e-6))/6 + 1;
-      d += (q?'L':'M')+(PAD+AW*q/(p.length-1)).toFixed(1)+' '+(y0+h-lg*h).toFixed(1)+' ';
-    }
-    el(s,'path',{d:d,fill:'none',stroke:ACC,'stroke-width':2.5});
+    for(var q=0;q<p.length;q++)
+      d += (q?'L':'M')+(PAD+AW*q/(p.length-1)).toFixed(1)+' '+Y(p[q]).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke:ACC,'stroke-width':2.5,opacity:0.75});
+    // the floor it rattles around
+    el(s,'line',{x1:PAD,y1:Y(floor),x2:PAD+AW,y2:Y(floor),stroke:INK,
+                 'stroke-width':3,'stroke-dasharray':'12 8'});
+    txt(s, PAD, Y(floor)-16, 'the mask\u2019s own white floor — its self-pairs, Σ wᵢ²',
+        {fill:INK,'font-size':27});
     txt(s, PAD, y0-16, 'kernel  |W|²   (log)', {fill:ACC});
     txt(s, PAD, y0+h+44, opts.foot || 'no scale below the source spacing — the kernel never narrows',
         {fill:MUT,'font-size':27});
@@ -780,7 +784,7 @@ function boot(){
     {tex:'w(x)=\\sum_i w_i\\,\\delta(x-x_i)', step:6, name:'catalogue mask', col:3, row:1, span:2},
     {tex:'\\bar w_k = w_k\\,\\phi(k),\\quad \\phi(k)=e^{-k^2\\theta_c^2/2}', step:7,
      name:'cloud · band-limit', col:1, row:1, span:4,
-     note:'each source is smeared to the size you could resolve it at anyway'},
+     note:'gives the catalogue mask the band-limit a pixel mask always secretly had — chosen at the source spacing, not at an arbitrary pixel size'},
     {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:1, row:1, span:2}
   ];
   function ledger(host, step, from, stage){

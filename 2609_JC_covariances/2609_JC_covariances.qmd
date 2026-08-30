@@ -146,7 +146,6 @@ And you invert it. But not mode by mode: the mask does not only smear modes, it 
   <div class="mcell fragment" data-fragment-index="1"><canvas style="width:400px;height:400px"></canvas>
     <div class="mlab"><b>NKA &minus; exact</b>error</div></div>
 </div>
-<div class="nkaerr fragment" data-fragment-index="1"></div>
 </div>
 ```
 
@@ -175,17 +174,18 @@ papers.
 ```{=html}
 <div class="nka" data-step="6" data-ledger-from="6">
 <div class="eqs"></div>
+<div class="saywhat" data-own="1">Points always carry a white floor — and the mask is made of points, so it has one of its own.</div>
 <div class="ctl-slider">
   <label>sources <input type="range" data-var="N" min="30" max="400" value="160"></label>
 </div>
-<svg class="pP" data-h="230" viewBox="0 0 1730 420" width="1730" height="420"></svg>
+<svg class="pP" data-h="190" viewBox="0 0 1730 360" width="1730" height="360"></svg>
 <div class="two">
-  <div><svg class="pKC" data-h="200" data-x0="90" data-w="700"
-       data-foot="the toy: no scale below the source spacing"
-       viewBox="0 0 850 300" width="850" height="300"></svg></div>
+  <div><svg class="pKC" data-h="172" data-x0="90" data-w="700"
+       data-foot="the toy: the kernel rattles around the floor and never narrows"
+       viewBox="0 0 850 272" width="850" height="272"></svg></div>
   <div class="paperfig inset">
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo-spectrum">
-    <div class="mlab"><b>the real sky</b>Quaia's catalogue mask flattens onto its white floor</div>
+    <div class="mlab"><b>the real sky</b>the catalogue mask falls onto its white floor; a pixelated mask keeps falling — pixels are an implicit band-limit</div>
   </div>
 </div>
 </div>

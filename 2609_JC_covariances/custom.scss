@@ -192,6 +192,10 @@
     color: #7A6F5C;
     margin: 2px 0 10px 0;
     max-width: 1400px;
+    // the line arrives on a fragment, so its space is reserved from the start —
+    // otherwise everything below it jumps down when it appears
+    min-height: 34px;
+    line-height: 34px;   // identical box empty or filled, so nothing moves
 }
 
 // a labelled range control
@@ -233,7 +237,7 @@
 }
 .reveal .nka .two > div { flex: 1; min-width: 0; }
 // an inset-sized paper figure, when it shares a row with a live panel
-.reveal .nka .paperfig.inset img { max-height: 330px; width: auto; margin: 0 auto; }
+.reveal .nka .paperfig.inset img { max-height: 286px; width: auto; margin: 0 auto; }
 // the shear panel is the upper half of a two-panel figure, so its x-axis is
 // unlabelled in the source; name it here rather than dragging in the B-mode panel
 .reveal .nka .axcap {
@@ -257,11 +261,4 @@
     margin-top: 6px;
 
     b { color: #1B1611; font-weight: 600; display: block; font-size: 29px; }
-}
-.reveal .nka .nkaerr {
-    position: absolute;
-    bottom: -52px;      // below the two-line matrix captions
-    left: 0;
-    font-size: 30px;
-    color: #BC4538;
 }
