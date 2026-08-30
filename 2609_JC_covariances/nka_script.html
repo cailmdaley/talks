@@ -645,10 +645,16 @@ function boot(){
     // the floor it rattles around
     el(s,'line',{x1:PAD,y1:Y(floor),x2:PAD+AW,y2:Y(floor),stroke:INK,
                  'stroke-width':3,'stroke-dasharray':'12 8'});
-    txt(s, PAD, Y(floor)-16, 'the mask\u2019s own white floor — its self-pairs, Σ wᵢ²',
+    // clear of the curve, which rattles about half a decade either side
+    txt(s, PAD, Y(floor)-40, 'the mask\u2019s own white floor — its self-pairs, Σ wᵢ²',
         {fill:INK,'font-size':27});
     txt(s, PAD, y0-16, 'kernel  |W|²   (log)', {fill:ACC});
-    txt(s, PAD, y0+h+44, opts.foot || 'no scale below the source spacing — the kernel never narrows',
+    // the axis is mode separation, so mark its origin
+    var cx = PAD + AW/2;
+    el(s,'line',{x1:cx,y1:y0+h,x2:cx,y2:y0+h+12,stroke:RULE,'stroke-width':2.5});
+    txt(s, cx-30, y0+h+40, 'Δk = 0', {fill:MUT,'font-size':26});
+    txt(s, PAD, y0+h+40, 'mode separation  Δk', {fill:MUT,'font-size':26});
+    txt(s, PAD, y0+h+78, opts.foot || 'no scale below the source spacing — the kernel never narrows',
         {fill:MUT,'font-size':27});
   }
 

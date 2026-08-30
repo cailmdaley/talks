@@ -180,9 +180,9 @@ papers.
 </div>
 <svg class="pP" data-h="190" viewBox="0 0 1730 360" width="1730" height="360"></svg>
 <div class="two">
-  <div><svg class="pKC" data-h="172" data-x0="90" data-w="700"
+  <div><svg class="pKC" data-h="164" data-x0="90" data-w="700"
        data-foot="the toy: the kernel rattles around the floor and never narrows"
-       viewBox="0 0 850 272" width="850" height="272"></svg></div>
+       viewBox="0 0 850 300" width="850" height="300"></svg></div>
   <div class="paperfig inset">
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo-spectrum">
     <div class="mlab"><b>the real sky</b>the catalogue mask falls onto its white floor; a pixelated mask keeps falling — pixels are an implicit band-limit</div>
@@ -203,6 +203,15 @@ move the level.
 
 So the narrow-kernel approximation has nothing to be narrow about, and the machinery from the
 last three slides does not start.
+
+Two things about that floor. First, it is the same object twice. The data's white floor is the
+sum of w-i squared a-i squared over four pi — the values at the source positions — and you can
+subtract it exactly, but only because you have the data values, not just the weights. The mask's
+floor is that identical formula with a-i set to one: the mask is a catalogue whose data is all
+ones. Second, and this is why it is a problem rather than a nuisance: the whole coupling
+machinery is built *from* mask spectra. An additive floor sitting in the mask does not stay
+additive downstream — it becomes a convolutional problem for the data. That is why the fix is to
+band-limit the mask rather than to subtract its floor.
 :::
 
 ## Mask products are zero or infinite {.nka-slide}
@@ -274,6 +283,12 @@ is the variance of the field at a point, and it is what penalises sparse samples
 error bars. And it is the flip side of the estimator's selling point: because the self-pair
 floor is known exactly, you can subtract it, which is why the catalogue estimator is immune to
 white noise in the first place.
+
+This is the same floor we met on the mask slide, and now with its proper name: the data's floor
+is the sum of w-i squared a-i squared over four pi. The mask's floor was that formula with the
+data set to one. Subtracting needs the data values, which is why the *data's* floor can simply
+be removed — and why the *mask's* floor, which feeds the coupling machinery rather than the
+measurement, had to be band-limited away instead.
 :::
 
 ## It works where it has to {.nka-slide}
