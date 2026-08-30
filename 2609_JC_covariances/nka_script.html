@@ -22,7 +22,8 @@ function boot(){
   var K0 = 84;                     // where the kernel sits: on the bump's flank,
                                    // where the NKA is visibly wrong but not absurd
   var NB = 12;                     // bandpower width, ~ the kernel width
-  var MODES = [8, 30, 84];         // the three modes drawn in the decomposition
+  var MODES = [4, 12, 30, 78, 150];   // the modes that build the field, low k to high
+  var BEAT  = 700;                    // ms between modes in the build
 
   var INK='#1B1611', MUT='#7A6F5C', ACC='#BC4538', COB='#3D5BA0',
       TEAL='#3F8278', RULE='#C5B89E', FAINT='#C5B89E', GRID='#E0D5BF';
@@ -280,21 +281,116 @@ function boot(){
     txt(s, PAD, y0+h+42, opts.xlabel || 'position  x', {fill:MUT});
   }
 
-  function drawModes(s, opts){
-    clear(s);
-    var rowH = opts.rowH, big = 0;
-    for(var q0=0;q0<MODES.length;q0++)
-      for(var j0=0;j0<NX;j0+=4) big = Math.max(big, Math.abs(modeAt(MODES[q0], j0)));
-    var scale = rowH*0.40/Math.max(big,1e-9);   // largest mode fills its row
-    for(var q=0;q<MODES.length;q++){
-      var k = MODES[q], y = 34 + q*rowH, mid = y + rowH*0.45;
-      el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:GRID,'stroke-width':2});
-      var d='';
-      for(var j=0;j<NX;j++) d += (j?'L':'M')+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(mid - modeAt(k,j)*scale).toFixed(1)+' ';
-      el(s,'path',{d:d,fill:'none',stroke:COB,'stroke-width':3});
-      txt(s, 8, mid+9, 'k = '+k, {fill:MUT,'font-size':26});
+  // ── the cinematic build ────────────────────────────────────────────────────
+  //   Modes fade in one at a time, low k to high; the running sum grows on top;
+  //   each mode's |a_k|^2 lights up on the spectrum below. The last beat adds
+  //   everything else at once, so the partial sum snaps onto the real field and
+  //   the five points become a curve. Elements are built once and only their
+  //   opacity changes, so the CSS transitions actually run.
+  function partialSum(upto){
+    var out = new Float64Array(NX);
+    for(var q=0;q<upto;q++){
+      var k = MODES[q];
+      for(var j=0;j<NX;j++) out[j] += modeAt(k,j);
     }
-    if(opts.plus) txt(s, PAD+AW-150, 26, '+  …', {fill:MUT});
+    return out;
+  }
+  function buildCine(s){
+    clear(s);
+    var SUMH = 190, LANE = 60, CY0 = 250 + MODES.length*LANE, CH = 230;
+    var st = {modes:[], labels:[], pts:[], plabels:[], sum:null, full:null,
+              curve:null, clabel:null, plus:null};
+    var mid = 40 + SUMH/2;
+    el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
+    txt(s, 8, mid+9, 'a(x)', {fill:MUT});
+
+    // one shared vertical scale for the lanes, so the spectrum is legible as
+    // amplitude: the k = 78 mode really is taller than k = 30, because of the bump
+    var big = 0, q, j;
+    for(q=0;q<MODES.length;q++)
+      for(j=0;j<NX;j+=4) big = Math.max(big, Math.abs(modeAt(MODES[q], j)));
+    var lscale = LANE*0.40/Math.max(big,1e-9);
+
+    function pathOf(vals, mid0, sc){
+      var d='';
+      for(var jj=0;jj<NX;jj++)
+        d += (jj?'L':'M')+(PAD+AW*jj/(NX-1)).toFixed(1)+' '+(mid0 - vals[jj]*sc).toFixed(1)+' ';
+      return d;
+    }
+    st.sum  = el(s,'path',{d:'', fill:'none', stroke:INK,'stroke-width':3.5,
+                           opacity:0, class:'cine'});
+    st.sumH = SUMH; st.sumMid = mid;
+    st.lanes = [];
+
+    for(q=0;q<MODES.length;q++){
+      var k = MODES[q], y = 250 + q*LANE, lmid = y + LANE*0.45, one = new Float64Array(NX);
+      for(j=0;j<NX;j++) one[j] = modeAt(k,j);
+      st.lanes.push(el(s,'line',{x1:PAD,y1:lmid,x2:PAD+AW,y2:lmid,stroke:GRID,
+                                 'stroke-width':2, opacity:0, class:'cine'}));
+      st.modes.push(el(s,'path',{d:pathOf(one, lmid, lscale), fill:'none',
+                                 stroke:COB,'stroke-width':3, opacity:0, class:'cine'}));
+      var t = txt(s, 8, lmid+9, 'k = '+k, {fill:MUT,'font-size':26, opacity:0, class:'cine'});
+      st.labels.push(t);
+    }
+    st.plus = txt(s, PAD+AW-260, 250 + MODES.length*LANE - 28, '+  everything else',
+                  {fill:MUT,'font-size':27, opacity:0, class:'cine'});
+
+    // the spectrum panel
+    var Y = logY(CY0, CH, KMAX);
+    el(s,'line',{x1:PAD,y1:CY0+CH,x2:PAD+AW,y2:CY0+CH,stroke:RULE,'stroke-width':2});
+    txt(s, 4, CY0+18, 'C(k)', {fill:MUT});
+    txt(s, PAD, CY0+CH+42, 'wavenumber  k', {fill:MUT});
+    var dc='';
+    for(var kk=1;kk<KMAX;kk++) dc += (kk>1?'L':'M')+XK(kk,KMAX).toFixed(1)+' '+Y(Cin[kk]).toFixed(1)+' ';
+    st.curve = el(s,'path',{d:dc,fill:'none',stroke:INK,'stroke-width':3.5,opacity:0,class:'cine'});
+    st.clabel = txt(s, XK(150,KMAX), Y(Cfun(150))-26, 'true  C(k)', {fill:INK,opacity:0,class:'cine'});
+    for(q=0;q<MODES.length;q++){
+      var kq = MODES[q], last = (q === MODES.length-1);
+      st.pts.push(el(s,'circle',{cx:XK(kq,KMAX),cy:Y(Cfun(kq)),r:10,fill:COB,opacity:0,class:'cine'}));
+      st.plabels.push(txt(s, XK(kq,KMAX) + (last?-90:-30), Y(Cfun(kq)) + (last?-26:-26),
+                          '|a|²', {fill:COB,'font-size':25,opacity:0,class:'cine'}));
+    }
+    s.__cine = st;
+    return st;
+  }
+  function setBeat(root, s, n){
+    var st = s.__cine; if(!st) return;
+    for(var q=0;q<MODES.length;q++){
+      var on = (n > q) ? 1 : 0;
+      st.modes[q].style.opacity  = on ? (n > MODES.length ? 0.35 : 1) : 0;
+      st.lanes[q].style.opacity  = on ? 1 : 0;
+      st.labels[q].style.opacity = on ? 1 : 0;
+      st.pts[q].style.opacity    = on ? 1 : 0;
+      st.plabels[q].style.opacity = (n === q+1) ? 1 : 0;
+    }
+    var done = n > MODES.length;
+    // Each beat is rescaled to fill its row. A partial sum of a few modes really
+    // is a fraction of the field's amplitude, and drawn on a fixed scale it looks
+    // like nothing is happening — what changes beat to beat is the STRUCTURE.
+    st.sum.setAttribute('d', (function(){
+      var vals = done ? field : partialSum(Math.min(n, MODES.length)), mx = 0, jj;
+      for(jj=0;jj<NX;jj++) mx = Math.max(mx, Math.abs(vals[jj]));
+      var sc = st.sumH*0.44/Math.max(mx,1e-9), d='';
+      for(jj=0;jj<NX;jj++)
+        d += (jj?'L':'M')+(PAD+AW*jj/(NX-1)).toFixed(1)+' '+(st.sumMid - vals[jj]*sc).toFixed(1)+' ';
+      return d;
+    })());
+    st.sum.style.opacity = n > 0 ? 1 : 0;
+    st.plus.style.opacity = done ? 1 : 0;
+    st.curve.style.opacity = done ? 1 : 0;
+    st.clabel.style.opacity = done ? 1 : 0;
+    var eqs = root.querySelector('.eqs');
+    if(eqs){ ledger(eqs, done ? 1 : 0); typeset(); }
+  }
+  var cineTimer = null;
+  function playCine(root, s){
+    clearInterval(cineTimer);
+    var n = 0;
+    setBeat(root, s, 0);
+    cineTimer = setInterval(function(){
+      n++; setBeat(root, s, n);
+      if(n > MODES.length) clearInterval(cineTimer);
+    }, BEAT);
   }
 
   function drawSpectrum(s, opts){
@@ -426,18 +522,18 @@ function boot(){
   }
 
   // ---------- the equation ledger ----------
-  //  Built here rather than pasted into ten slides, so the sequence can only be
+  //  Built here rather than pasted into every slide, so the sequence can only be
   //  defined once. MathJax has already run by now, so it is asked to typeset.
   var EQS = [
     ['a(x)', 0],
     ['a_k=\\sum_x a(x)\\,e^{-ikx}', 1],
-    ['C(k)=\\langle |a_k|^2\\rangle', 2],
-    ['\\tilde a(x)=w(x)\\,a(x)', 3],
-    ['\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', 5],
-    ['\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', 6],
-    ['\\langle \\hat C_b\\rangle = (M_{bb\'})^{-1}\\langle \\tilde C_{b\'}\\rangle = C_b', 7],
-    ['{\\rm Cov}\\propto\\big|\\textstyle\\sum_{k\'\'} W_{k-k\'\'}W^{*}_{k\'-k\'\'}C(k\'\')\\big|^{2}', 8],
-    ['{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,w_bw_d)', 9]
+    ['C(k)=\\langle |a_k|^2\\rangle', 1],
+    ['\\tilde a(x)=w(x)\\,a(x)', 2],
+    ['\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', 4],
+    ['\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', 5],
+    ['\\langle \\hat C_b\\rangle = (M_{bb\'})^{-1}\\langle \\tilde C_{b\'}\\rangle = C_b', 6],
+    ['{\\rm Cov}\\propto\\big|\\textstyle\\sum_{k\'\'} W_{k-k\'\'}W^{*}_{k\'-k\'\'}C(k\'\')\\big|^{2}', 7],
+    ['{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,w_bw_d)', 8]
   ];
   function ledger(host, step){
     var html = '';
@@ -464,8 +560,8 @@ function boot(){
   }
 
   // ---------- render one slide ----------
-  var COST = {8:'<i>O</i>(k<sub>max</sub><sup>6</sup>)',
-              9:'<i>O</i>(k<sub>max</sub><sup>3</sup>) — same as the estimator'};
+  var COST = {7:'<i>O</i>(k<sub>max</sub><sup>6</sup>)',
+              8:'<i>O</i>(k<sub>max</sub><sup>3</sup>) — same as the estimator'};
   function renderOne(root){
     var step = +root.getAttribute('data-step');
     var q = function(sel){ return root.querySelector(sel); };
@@ -477,9 +573,16 @@ function boot(){
     var pk = q('.pick'); if(pk) picker(pk);
 
     var pA = q('.pA');
-    if(pA) drawField(pA, {h: +pA.dataset.h || 200, mask: step >= 3});
+    if(pA) drawField(pA, {h: +pA.dataset.h || 200, mask: step >= 2});
     var pM = q('.pM');
-    if(pM) drawModes(pM, {rowH: +pM.dataset.rowh || 120, plus: true});
+    if(pM){
+      if(!pM.__cine) buildCine(pM);
+      // built at the last beat so a static export shows the finished picture;
+      // entering the slide replays it from the top
+      setBeat(root, pM, MODES.length + 1);
+      var rb = root.querySelector('.replay');
+      if(rb) rb.onclick = function(){ playCine(root, pM); };
+    }
     var pC = q('.pC');
     if(pC) drawSpectrum(pC, {
       h: +pC.dataset.h || 260,
@@ -517,7 +620,10 @@ function boot(){
   (function attach(){
     if(window.Reveal && Reveal.on) Reveal.on('slidechanged', function(ev){
       var r = ev.currentSlide && ev.currentSlide.querySelector('.nka[data-step]');
-      if(r){ renderOne(r); typeset(); }
+      if(!r) return;
+      renderOne(r); typeset();
+      var cine = r.querySelector('.pM');
+      if(cine && cine.__cine) playCine(r, cine);
     });
     else setTimeout(attach, 150);
   })();

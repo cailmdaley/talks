@@ -63,33 +63,29 @@ Start as simply as possible. A Gaussian random field on a line — one realisati
 ```{=html}
 <div class="nka" data-step="1">
 <div class="eqs"></div>
-<svg class="pA" data-h="180" viewBox="0 0 1730 270" width="1730" height="270"></svg>
-<svg class="pM" data-rowh="130" viewBox="0 0 1730 430" width="1730" height="430"></svg>
+<svg class="pM" viewBox="0 0 1730 850" width="1730" height="850"></svg>
+<button class="replay">replay</button>
 </div>
 ```
 
 ::: {.notes}
-Decompose it. Each Fourier mode is one wavenumber — one wavelength, one amplitude, one phase — and adding them all back up returns the field exactly. These three are actual components of the realisation above, not cartoons.
-:::
+Watch it assemble. Each wave is one Fourier mode of the field above — one wavenumber, one
+amplitude, one phase — and they add up, low k first, into the field itself. The last beat
+throws in everything else at once, and the sum snaps onto the real thing.
 
-## The spectrum is what's left {.nka-slide}
+Below, the spectrum is assembling alongside it. Every mode that lands puts one point on that
+curve: the expected squared amplitude at its wavenumber. Notice the fourth one — it is bigger
+than the mode before it, and that is the bump you can see in the spectrum. Keep it in mind,
+because everything that goes wrong later goes wrong there.
 
-```{=html}
-<div class="nka" data-step="2">
-<div class="eqs"></div>
-<svg class="pM" data-rowh="100" viewBox="0 0 1730 330" width="1730" height="330"></svg>
-<svg class="pC" data-h="300" data-marks="1" viewBox="0 0 1730 400" width="1730" height="400"></svg>
-</div>
-```
-
-::: {.notes}
-Throw away the phases, keep the expected squared amplitude of each mode, and you have the power spectrum. Three modes, three points on the curve. C(k) is the whole statistical content of a Gaussian field, and it is what we are trying to measure.
+Throw away the phases, keep the squared amplitudes, and C(k) is the whole statistical content
+of a Gaussian field. It is what we are trying to measure.
 :::
 
 ## We only see part of it {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="3">
+<div class="nka" data-step="2">
 <div class="eqs"></div>
 <svg class="pA" data-h="260" viewBox="0 0 1730 350" width="1730" height="350"></svg>
 <svg class="pC" data-h="250" viewBox="0 0 1730 340" width="1730" height="340"></svg>
@@ -103,7 +99,7 @@ Now the mask. We observe the field times a window — and note the window is not
 ## Complexity, not size, sets the kernel {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="4">
+<div class="nka" data-step="3">
 <div class="eqs"></div>
 <svg class="pZ" viewBox="0 0 1730 660" width="1730" height="660"></svg>
 </div>
@@ -116,7 +112,7 @@ Multiplying in position space is convolving in harmonic space, and the shape of 
 ## Multiplying by the mask convolves the modes {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="5">
+<div class="nka" data-step="4">
 <div class="eqs"></div>
 <svg class="pA" data-h="200" viewBox="0 0 1730 290" width="1730" height="290"></svg>
 <svg class="pC" data-h="290" data-kernel="1" viewBox="0 0 1730 390" width="1730" height="390"></svg>
@@ -131,7 +127,7 @@ So each observed mode is no longer its own. It is a weighted sum of its neighbou
 ## The kernel smears the spectrum {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="6">
+<div class="nka" data-step="5">
 <div class="eqs"></div>
 <svg class="pC" data-h="440" data-kernel="1" data-tilde="1" data-kh="220" viewBox="0 0 1730 560" width="1730" height="560"></svg>
 <div class="pick"></div>
@@ -145,7 +141,7 @@ Take the expectation and the smearing becomes a matrix. The pseudo-spectrum you 
 ## Bandpowers make the coupling invertible {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="7">
+<div class="nka" data-step="6">
 <div class="eqs"></div>
 <svg class="pC" data-h="440" data-tilde="1" data-bins="1" data-binned="1" data-decoupled="1" viewBox="0 0 1730 560" width="1730" height="560"></svg>
 <div class="pick"></div>
@@ -159,7 +155,7 @@ And you invert it. But not mode by mode: the mask does not only smear modes, it 
 ## The error bar needs a four-point sum {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="8">
+<div class="nka" data-step="7">
 <div class="eqs"></div>
 <div class="cost"></div>
 <svg class="pC" data-h="420" data-kernel="1" data-kh="210" viewBox="0 0 1730 540" width="1730" height="540"></svg>
@@ -174,7 +170,7 @@ The estimator is exact. Its uncertainty is not. The covariance of a quadratic es
 ## The narrow-kernel approximation {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="9">
+<div class="nka" data-step="8">
 <div class="eqs"></div>
 <div class="cost"></div>
 <div class="mrow">
