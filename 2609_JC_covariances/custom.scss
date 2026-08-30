@@ -256,20 +256,11 @@
     display: block;
     width: 100%;
     height: auto;
-    max-height: 660px;
+    max-height: 800px;
     object-fit: contain;
     object-position: left top;
     box-shadow: none;
     mix-blend-mode: multiply;
-}
-.reveal .nka .takeaway {
-    font-size: 28px;
-    line-height: 1.34;
-    color: #7A6F5C;
-    margin-top: 16px;
-    max-width: 1080px;
-
-    b { color: #1B1611; font-weight: 600; }
 }
 // provenance badge: one consistent tag for every figure imported from a
 // paper, so paper imports are instantly distinguishable from our own toy
@@ -309,4 +300,66 @@
     margin-top: 6px;
 
     b { color: #1B1611; font-weight: 600; display: block; font-size: 29px; }
+}
+
+// slide 9's lower half: the three corrections, one per fragment. Same visual
+// grammar as the ledger (small-caps name over symbols over a grey gloss), but
+// a stacked column rather than the ledger grid — these are steps in a sequence,
+// not a table of related objects.
+.reveal .nka .corr {
+    margin-top: 8px;
+    display: flex; flex-direction: column; gap: 11px;
+
+    > div {
+        display: flex; flex-direction: column; gap: 2px;
+        padding: 2px 14px;
+        border-left: 6px solid #BC4538;
+        background: rgba(188, 69, 56, 0.10);
+    }
+    .nm {
+        font-size: 20px; line-height: 1.1; color: #7A6F5C;
+        font-variant: small-caps; letter-spacing: 0.04em;
+    }
+    .eq { font-size: 28px; line-height: 1.15; }
+    .note {
+        font-size: 22px; line-height: 1.2; color: #7A6F5C;
+        margin-top: 3px; max-width: 1680px;
+        i { font-style: italic; }
+    }
+}
+
+// the closing slide: the method ships. Near-wordless, centred block.
+.reveal .nka.ship { text-align: left; margin-top: 40px; }
+.reveal .nka .shiplink {
+    font-family: var(--r-code-font, monospace);
+    font-size: 54px; color: #BC4538; margin-top: 10px; letter-spacing: -0.01em;
+}
+.reveal .nka .shipline {
+    font-size: 34px; color: #1B1611; margin: 4px 0 0 0;
+    b { font-weight: 600; }
+    // the inline package name is a word in a sentence, not a code block
+    code { background: none; padding: 0; border: none; color: #3D5BA0; }
+}
+// the code example: real pymaster 3.0, highlighted by hand in the house
+// palette rather than by a highlighter, so the colours mean what they mean
+// everywhere else in the deck (cinnabar = the thing being asserted, cobalt =
+// the mask side, muted = commentary).
+.reveal .nka .shipcode {
+    font-family: var(--r-code-font, monospace);
+    font-size: 27px; line-height: 1.42;
+    color: #1B1611; background: rgba(188, 69, 56, 0.07);
+    border-left: 6px solid #BC4538;
+    margin: 30px 0 0 0; padding: 20px 26px;
+    white-space: pre; overflow-x: auto;
+
+    .c { color: #7A6F5C; font-style: italic; }   // comments narrate
+    .f { color: #BC4538; }                       // the calls that matter
+    .v { color: #3D5BA0; }                       // what you get back
+    .n { color: #3F8278; }
+}
+
+.reveal .nka .shipdocs {
+    margin-top: 28px;
+    font-family: var(--r-code-font, monospace);
+    font-size: 27px; color: #7A6F5C;
 }

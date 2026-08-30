@@ -184,13 +184,12 @@ papers.
 </div>
 <svg class="pP" data-h="140" viewBox="0 0 1730 330" width="1730" height="330"></svg>
 <div class="two lower">
-  <div class="toycol">
-    <svg class="pKC" data-h="150" data-x0="86" data-w="400"
-         data-foot="mode separation Δk"
-         viewBox="0 0 520 290" width="520" height="290"></svg>
-    <div class="toyfoot">…and this same curve is the coupling kernel, at separation Δk. It never narrows.</div>
+  <div class="toycol fragment">
+    <svg class="pKC" data-h="170" data-x0="86" data-w="400"
+         viewBox="0 0 520 262" width="520" height="262"></svg>
+    <div class="toyfoot">the coupling kernel, at separation Δk. It never narrows.</div>
   </div>
-  <div class="figblock">
+  <div class="figblock fragment">
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo power spectrum">
     <div class="figside">
       <span class="src">Wolz et al., arXiv:2607.14843 — Fig. 1</span>
@@ -228,13 +227,11 @@ band-limit the mask rather than to subtract its floor.
 ## Products of delta functions are zero or infinite {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="7" data-ledger-from="7" data-frag-step="7">
-<svg class="pProd" data-x0="90" data-w="1560" viewBox="0 0 1730 440" width="1730" height="440"></svg>
-<div class="fragment">
+<div class="nka" data-step="7" data-ledger-from="7">
+<svg class="pProd" data-x0="90" data-w="1560" viewBox="0 0 1730 268" width="1730" height="268"></svg>
+<svg class="pCloud" data-h="115" data-x0="90" data-w="1560" viewBox="0 0 1730 200" width="1730" height="200"></svg>
 <div class="ctl-slider inline">
-  <label>Gaussian cloud <input type="range" data-var="thc" min="0" max="120" value="0"></label>
-</div>
-<svg class="pCloud" data-h="150" viewBox="0 0 1730 250" width="1730" height="250"></svg>
+  <label>Gaussian cloud <input type="range" data-var="thc" min="0" max="420" value="0"></label>
 </div>
 </div>
 ```
@@ -260,10 +257,27 @@ the answer plateaus over a wide range of it.
 ```{=html}
 <div class="nka" data-step="8" data-ledger-from="8">
 <div class="eqs"></div>
-<div class="saywhat" data-own="1">zero-separation information has no scale — its spectrum is flat. Handled exactly; the approximation only carries the distinct pairs.</div>
+<div class="saywhat" data-own="1">zero-separation information has no scale — its spectrum is flat, so the white-noise machinery handles it exactly.</div>
 <div class="two">
-  <div><svg class="pXi" data-h="290" data-x0="90" data-w="700" viewBox="0 0 840 400" width="840" height="400"></svg></div>
-  <div><svg class="pWhite" data-h="290" data-x0="90" data-w="700" viewBox="0 0 840 400" width="840" height="400"></svg></div>
+  <div><svg class="pXi" data-h="200" data-x0="90" data-w="700" viewBox="0 0 840 300" width="840" height="300"></svg></div>
+  <div><svg class="pWhite" data-h="200" data-x0="90" data-w="700" viewBox="0 0 840 300" width="840" height="300"></svg></div>
+</div>
+<div class="corr">
+  <div class="fragment">
+    <span class="nm">correction 1 — band-limit the mask</span>
+    <span class="eq">\( w(x)=\sum_i w_i\,\delta(x-x_i) \;\longrightarrow\; \bar w(x)=\sum_i w_i\,G_{\theta_{\rm c}}(x-x_i) \)</span>
+    <span class="note">every source becomes a cloud, so mask products are finite.</span>
+  </div>
+  <div class="fragment">
+    <span class="nm">correction 2 — take the self-pairs back out</span>
+    <span class="eq">\( \mathcal{W}_{ac}\;\equiv\;\bar w_a\bar w_c-\delta_{ac}\,\overline{w_a^{2}} \)</span>
+    <span class="note">leave the self-pairs in and they are counted twice. \(\overline{w^2}\) is its own catalogue field: the transform of the <i>squared</i> cloud, not the square of the transform.</span>
+  </div>
+  <div class="fragment">
+    <span class="nm">correction 3 — and back in, exactly</span>
+    <span class="eq">\( {\rm Cov}\;\simeq\;\underbrace{\bar C\,\bar C\;\Xi\big(\mathcal{W},\mathcal{W}\big)}_{\rm sig\times sig}\;+\;\underbrace{2\,\bar C\;\Xi\big(\mathcal{W},\,\overline{(aw)^2}\big)}_{\rm sig\times noise}\;+\;\underbrace{\Xi\big(\overline{(aw)^2},\,\overline{(aw)^2}\big)}_{\rm noise\times noise} \)</span>
+    <span class="note">the approximation carries only the distinct pairs; everything involving a self-pair is exact.</span>
+  </div>
 </div>
 
 </div>
@@ -303,8 +317,6 @@ measurement, had to be band-limited away instead.
 <div class="figpair">
   <div class="figmain">
     <img src="images/wolz_shear_full.png" alt="DES-like cosmic shear covariance">
-    <div class="takeaway">cosmic shear, DES-Y3-like — <b>dense, yet shape-noise-dominated</b>:
-      almost all the variance at high ℓ is the self-pair term, which is handled exactly.</div>
   </div>
   <div class="papercap"><span class="src">Wolz et al., arXiv:2607.14843 — Fig. 4</span>Power spectrum covariance for the DES-like simulated cosmic shear sample. Results are shown for the covariance between the \(E\)-mode and \(B\)-mode power spectra (left panels of the upper and lower figures). The right panels show the \(\chi^2\) distributions calculated using the analytical covariance against the empirical reference distribution (black histograms). The blue lines, points, and histograms show results from simulations in which only the lensing shear signal is sampled at the source positions, whereas results including both the signal and Gaussian uncorrelated noise are shown in red. In the latter case, we assume a noise standard deviation per component of \(\sigma_e=0.27\). The sample variance from 1000 realisations is shown as points, with the analytical prediction as solid lines. The dashed line and crosses show the first off-diagonal element of the covariance matrix.</div>
 </div>
@@ -312,14 +324,23 @@ measurement, had to be band-limited away instead.
 ```
 
 ::: {.notes}
-Cosmic shear, DES-Y3-like — and it is a *dense* catalogue, a few sources per square arcminute,
-of order a hundred million of them. But shape noise dominates its variance, so almost everything
-you see at high multipole is the self-pair term, and that is the part handled exactly. Red is
-with shape noise, blue without; the analytic lines sit on the simulated points in both, and the
-dashed line is the first off-diagonal, which is where an approximation shows its failure first.
+Cosmic shear, DES-Y3-like. The takeaway in one line: this is a *dense* catalogue — a few
+sources per square arcminute, twenty-five million of them over four thousand square degrees —
+and yet shape noise dominates its variance, so almost everything you see at high multipole is
+the self-pair term, and that is the part handled exactly.
 
-The caption is there so you can dig in — the right-hand panels are the chi-squared distributions
-against the empirical reference.
+Reading the figure: upper block is E-modes, lower is B-modes. Red is with shape noise at sigma-e
+0.27, blue without. Points are the sample variance from a thousand realisations, solid lines the
+analytic prediction — they sit on top of each other in both. Right-hand panels are the
+chi-squared distributions against the empirical reference in black, and the PTE coverage numbers
+are in the legends: four per cent against a nominal five in the noisy case, 5.9 in the noiseless.
+
+Now the dashed line, because it is the pivot to the next paper. That is the FIRST OFF-DIAGONAL
+of the covariance — the correlation between neighbouring bandpowers, a few per cent of the main
+diagonal here, and the first place an approximation shows its failure. Hold onto it. Nagura and
+collaborators take exactly this object and ask what its errors do once you Legendre-transform
+back to real space: a small error spread across the off-diagonals in harmonic space does not
+stay small when you sum over multipoles to get xi-plus and xi-minus. That is the second paper.
 :::
 
 ## Signal-dominated: the approximation carries it {.nka-slide}
@@ -329,8 +350,6 @@ against the empirical reference.
 <div class="figpair">
   <div class="figmain">
     <img src="images/wolz_clustering_full.png" alt="LRG-like galaxy clustering covariance">
-    <div class="takeaway">galaxy clustering, DESI-LRG-like — <b>sparser, yet signal-dominated</b>:
-      the load falls on the distinct pairs, which is the part carrying the approximation.</div>
   </div>
   <div class="papercap"><span class="src">Wolz et al., arXiv:2607.14843 — Fig. 5</span><i>Left panel:</i> Power spectrum covariance for the LRG-like simulated galaxy clustering sample. Results are shown for power spectra calculated using random catalogues to quantify the sample completeness (red) and using a continuous mask (blue). For clarity, the mask-based results have been rescaled by a factor of 1.5. The points show the sample variance estimated from 1000 realisations, with the analytical Gaussian covariance as solid lines. The dashed line and crosses show the first off-diagonal element of the covariance matrix. <i>Right panels:</i> corresponding analytical \(\chi^2\) distributions from 1000 simulations, compared with the empirical distributions in black.</div>
 </div>
@@ -338,14 +357,59 @@ against the empirical reference.
 ```
 
 ::: {.notes}
-Clustering, DESI-LRG-like — much *sparser* than the shear catalogue. Yet here signal dominates,
-so the load falls on the distinct pairs, the part carrying the approximation, and it holds. Red
-is the catalogue estimator using randoms for completeness, blue the traditional continuous mask,
-rescaled for clarity.
+Clustering, DESI-LRG-like. The takeaway, and it is the mirror image of the last slide: this
+catalogue is much *sparser* than the shear one, yet here the signal dominates, so the load falls
+on the distinct pairs — the part that carries the approximation — and it still holds.
+
+Red is the catalogue estimator using randoms for completeness, blue the traditional continuous
+mask, rescaled by a factor of 1.5 for clarity. Points are sample variance from a thousand
+realisations, solid lines analytic, and again the dashed line and crosses are the first
+off-diagonal.
 
 So the two axes come apart. Density sets how many sources you have; what dominates the variance
 sets which half of the machinery has to be right. Neither of these is a regime where it would
 break — for that, the next paper.
+:::
+
+## Implemented in NaMaster {.nka-slide}
+
+```{=html}
+<div class="nka ship">
+  <div class="shipline">catalogue-based pseudo-\(C_\ell\) spectra <b>and</b> their covariances, shipped in <code>pymaster</code> 3.0.</div>
+<pre class="shipcode"><span class="c"># positions = [theta, phi] in radians; the mask IS the catalogue</span>
+<span class="v">f</span>  = nmt.<span class="f">NmtFieldCatalog</span>(positions, weights, [values], lmax=lmax)
+<span class="v">b</span>  = nmt.NmtBin.<span class="f">from_lmax_linear</span>(lmax=lmax, nlb=<span class="n">10</span>)
+
+<span class="c"># decouple with the binned coupling matrix</span>
+<span class="v">w</span>  = nmt.NmtWorkspace.<span class="f">from_fields</span>(f, f, b)
+<span class="v">cl</span> = w.<span class="f">decouple_cell</span>(nmt.<span class="f">compute_coupled_cell</span>(f, f))
+
+<span class="c"># the distinct pairs are approximated, the self-pairs exact</span>
+<span class="v">cw</span>  = nmt.NmtCovarianceWorkspace.<span class="f">from_fields</span>(f, f, f, f)
+<span class="v">cli</span> = nmt.<span class="f">get_iNKA_cell</span>(f, f, cl_guess=cl_theory)
+<span class="v">cov</span> = cw.<span class="f">gaussian_covariance</span>(cli, cli, cli, cli, wa=w, wb=w)</pre>
+  <div class="shipdocs">github.com/LSSTDESC/NaMaster &nbsp;·&nbsp; namaster.readthedocs.io &nbsp;·&nbsp; examples 11 &amp; 12</div>
+</div>
+```
+
+::: {.notes}
+And it ships — this is not a method waiting on an implementation. It is in NaMaster, the public
+code most of us already use for pseudo-C-ell, as of version three, which came out in July. So
+about six weeks old.
+
+The code is real, not pseudocode. Three moves. Build a catalogue field: you hand it positions,
+weights and values, and there is no mask argument, because the positions are the mask — that is
+the whole first half of this talk in one constructor. Then the spectrum, which is the ordinary
+workspace flow you already know: nothing about decoupling changed. Then the covariance, and the
+only unfamiliar name is get-i-N-K-A-cell, which builds the effective spectra the approximation
+needs — the C-bars from the corrections slide.
+
+Two things to flag if anyone asks. Version three moved the workspaces to from-fields
+constructors, so the covariance coupling coefficients are computed when you build the object
+rather than in a separate call — if you have old covariance code, that is what will break. And
+there are two new field classes beside this one: catalogue-momentum, where the mask comes from
+randoms or a completeness map, and catalogue-clustering, which is that with the sampled field
+set to one. Worked notebooks are examples eleven and twelve in the docs.
 :::
 
 <!-- ═══ parked ═══════════════════════════════════════════════════════════
