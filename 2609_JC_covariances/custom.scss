@@ -102,8 +102,18 @@
     &.on { background: #BC4538; }
 }
 
-.reveal #nka-root .nka-slider { display: flex; align-items: center; gap: 14px; }
-.reveal #nka-root input[type=range] { width: 280px; accent-color: #BC4538; }
+.reveal #nka-root .nka-mask {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+
+    label { display: flex; align-items: center; gap: 12px; color: #7A6F5C; }
+}
+.reveal #nka-root input[type=range] { width: 190px; accent-color: #BC4538; }
+
+// The equation ledger grows to seven lines by the last step; let it wrap rather
+// than shrink below the readability floor.
+.reveal #nka-root .nka-eq { flex-wrap: wrap; row-gap: 2px; }
 
 .reveal #nka-root .hidden,
 .reveal .anim .hidden { display: none; }

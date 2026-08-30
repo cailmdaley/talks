@@ -49,14 +49,16 @@ include-in-header:
 ```{=html}
 <div id="nka-root">
 
-<!-- Five reveal fragments drive the six steps, so ←/→ walk them like slides.
-     They carry no content: the state machine listens for fragmentshown /
+<!-- Seven content-free reveal fragments drive the eight steps, so the arrow keys
+     walk them like slides. The state machine listens for fragmentshown /
      fragmenthidden and redraws. -->
 <span class="fragment nka-step" data-fragment-index="0"></span>
 <span class="fragment nka-step" data-fragment-index="1"></span>
 <span class="fragment nka-step" data-fragment-index="2"></span>
 <span class="fragment nka-step" data-fragment-index="3"></span>
 <span class="fragment nka-step" data-fragment-index="4"></span>
+<span class="fragment nka-step" data-fragment-index="5"></span>
+<span class="fragment nka-step" data-fragment-index="6"></span>
 
 <div class="nka-cap" id="nka-cap"></div>
 
@@ -65,7 +67,9 @@ include-in-header:
   <div id="eq1">\(\tilde a(x)=w(x)\,a(x)\)</div>
   <div id="eq2">\(\tilde a_k=\sum_{k'} W_{k-k'}\,a_{k'}\)</div>
   <div id="eq3">\(\langle \tilde C_k\rangle=\sum_{k'} M_{kk'}\,C_{k'}\)</div>
-  <div id="eq4">\({\rm Cov}(\tilde C_k,\tilde C_{k'})\simeq C_{\bar k}C_{\bar k}\,\Xi_{kk'}(w_aw_c,w_bw_d)\)</div>
+  <div id="eq4">\(\langle \hat C_k\rangle = M^{-1}\langle \tilde C_k\rangle = C_k\)</div>
+  <div id="eq5">\({\rm Cov}\propto\big|\textstyle\sum_{k''} W_{k-k''}W^{*}_{k'-k''}C_{k''}\big|^{2}\)</div>
+  <div id="eq6">\({\rm Cov}\simeq C_{\bar k}C_{\bar k}\,\Xi_{kk'}(w_aw_c,w_bw_d)\)</div>
 </div>
 
 <div id="scene1">
@@ -73,25 +77,29 @@ include-in-header:
   <svg id="svgB" viewBox="0 0 1730 350" width="1730" height="350"></svg>
 </div>
 
+<div id="sceneZoo" class="hidden">
+  <svg id="svgZ" viewBox="0 0 1730 660" width="1730" height="660"></svg>
+</div>
+
 <div id="scene2" class="hidden">
   <div style="display:flex; gap:34px; align-items:flex-start;" id="mrow">
-    <div class="mcell" id="wE"><canvas id="cvE" style="width:460px;height:460px"></canvas>
+    <div class="mcell" id="wE"><canvas id="cvE" style="width:360px;height:360px"></canvas>
       <div class="mlab"><b>exact</b>direct sum<br><span style="font-size:24px">k, k' = 6 … 155</span></div></div>
-    <div class="mcell" id="wN"><canvas id="cvN" style="width:460px;height:460px"></canvas>
+    <div class="mcell" id="wN"><canvas id="cvN" style="width:360px;height:360px"></canvas>
       <div class="mlab"><b>NKA</b>one mask-product kernel</div></div>
-    <div class="mcell" id="wD"><canvas id="cvD" style="width:460px;height:460px"></canvas>
+    <div class="mcell" id="wD"><canvas id="cvD" style="width:360px;height:360px"></canvas>
       <div class="mlab"><b>NKA &minus; exact</b>error</div></div>
   </div>
-  <svg id="svgC" viewBox="0 0 1730 230" width="1730" height="230"></svg>
+  <svg id="svgC" viewBox="0 0 1730 250" width="1730" height="250"></svg>
 </div>
 
 <div id="nka-side"></div>
 
 <div class="nka-ctl">
-  <div class="nka-slider hidden" id="fwrap">
-    <label for="fslider">footprint</label>
-    <input id="fslider" type="range" min="3" max="40" value="12">
-    <span id="fval" style="width:3.6em; display:inline-block;">12%</span>
+  <div class="nka-mask hidden" id="mwrap">
+    <label>mask width<input id="sWidth" type="range" min="4" max="70" value="16"></label>
+    <label>holes<input id="sHoles" type="range" min="0" max="6" value="0"></label>
+    <label>apodization<input id="sApod" type="range" min="2" max="90" value="30"></label>
   </div>
   <span class="dots" id="dots"></span>
   <button id="prev">&larr;</button>
@@ -110,13 +118,16 @@ include-in-header:
   var KLO = 6, KHI = 156;    // modes shown in the covariance matrices
   var NK  = KHI - KLO;       // 150
   var KMAX = 250;            // modes drawn in the harmonic panel
-  var frac = 0.12;           // footprint fraction of the box
+  var KP   = 250;            // modes in the coupling matrix we actually invert
 
-  // Everything scales with the box: the spectrum's curvature scale (k0 = 18) and
-  // the kernel width (~1/frac) keep the same ratio as the coarser version, so the
-  // physics is unchanged — there are simply ~3x more modes across each feature.
+  // the working mask: width, number of holes, apodization length (all fractions of L)
+  var mW = 0.16, mH = 0, mA = 0.030;
+  var k0 = 78;               // where the kernel sits — draggable
+
+  // A pronounced bump gives the slide two regimes: the smooth falling part, where
+  // C is flat across the kernel and the NKA holds, and the bump, where it does not.
   function Cfun(k){ var a = Math.abs(k);
-    return (1.0/Math.pow(1.0 + a/18.0, 1.6)) * (1 + 0.9*Math.exp(-Math.pow((a-78)/12,2))); }
+    return (1.0/Math.pow(1.0 + a/18.0, 1.6)) * (1 + 2.5*Math.exp(-Math.pow((a-78)/6,2))); }
 
   // deterministic PRNG
   function mulberry(a){ return function(){
@@ -134,7 +145,6 @@ include-in-header:
     var rng = mulberry(20260903);
     for(var k=1;k<N/2;k++){
       var s = Math.sqrt(Cfun(k)/2), re = gauss(rng)*s, im = gauss(rng)*s;
-      if(s < 1e-6) continue;
       for(var j=0;j<NX;j++){
         var ph = 2*Math.PI*k*j/NX;
         field[j] += 2*(re*Math.cos(ph) - im*Math.sin(ph));
@@ -144,68 +154,136 @@ include-in-header:
     for(var j3=0;j3<NX;j3++) field[j3] /= mx;   // scale to [-1,1] for drawing
   })();
 
-  // ---------- mask, its transform, and derived quantities ----------
-  var mask = new Float64Array(NX);
-  var Wre  = new Float64Array(N), Wim = new Float64Array(N), sumP = 1;
-  var Ctil = new Float64Array(N/2), Cin = new Float64Array(N/2);
-  var covE = new Float64Array(NK*NK), covN = new Float64Array(NK*NK);
-  // cos/sin tables — the DFT is the hot loop and this keeps a slider drag smooth
-  var COS = new Float64Array(NX), SIN = new Float64Array(NX);
-  for(var t=0;t<NX;t++){ COS[t]=Math.cos(2*Math.PI*t/NX); SIN[t]=Math.sin(2*Math.PI*t/NX); }
+  // ---------- masks ----------
+  //  A C2 cosine (Hann) ramp of length `apod` on every edge — of the footprint and
+  //  of every hole. Apodization is the lever that suppresses the kernel's sidelobes,
+  //  so it has to be visible as a ramp, not a hairline.
+  function ramp(t){ return 0.5*(1 - Math.cos(Math.PI*Math.max(0,Math.min(1,t)))); }
 
-  function Wat(m, part){                       // m signed; 0 outside band
+  function makeMask(width, nholes, apod){
+    var w = new Float64Array(NX), ap = Math.max(apod*NX, 1);
+    var half = width*NX/2, mid = NX/2;
+    for(var j=0;j<NX;j++){
+      var d = Math.abs(j - mid);
+      w[j] = ramp((half - d)/ap + 0.5);
+    }
+    if(nholes > 0){
+      // holes at fixed pseudo-random positions inside the footprint, each apodized
+      var rng = mulberry(4242), inner = width*NX - 2*ap;
+      for(var h=0; h<nholes; h++){
+        var hw = Math.max(inner/(3.2*nholes), 2*ap*0.6);
+        var c  = mid - inner/2 + (h + 0.15 + 0.7*rng())*inner/nholes;
+        for(var j2=0;j2<NX;j2++){
+          var dd = Math.abs(j2 - c);
+          w[j2] *= 1 - ramp((hw/2 - dd)/ap + 0.5);
+        }
+      }
+    }
+    return w;
+  }
+
+  // ---------- transforms ----------
+  var COS = new Float64Array(NX), SIN = new Float64Array(NX);
+  for(var t0=0;t0<NX;t0++){ COS[t0]=Math.cos(2*Math.PI*t0/NX); SIN[t0]=Math.sin(2*Math.PI*t0/NX); }
+
+  function transform(w, nmodes){
+    var re = new Float64Array(nmodes), im = new Float64Array(nmodes), sp = 0;
+    for(var mi=0; mi<nmodes; mi++){
+      var m = mi < nmodes/2 ? mi : mi - nmodes, sr = 0, si = 0;
+      for(var jj=0; jj<NX; jj++){
+        var idx = (m*jj) % NX; if(idx < 0) idx += NX;
+        sr += w[jj]*COS[idx]; si -= w[jj]*SIN[idx];
+      }
+      re[mi] = sr/NX; im[mi] = si/NX;
+      sp += re[mi]*re[mi] + im[mi]*im[mi];
+    }
+    return {re:re, im:im, sumP:sp};
+  }
+
+  var mask = null, Wre = null, Wim = null, sumP = 1;
+  function Wat(m, part){
     if(m <= -N/2 || m >= N/2) return 0;
     var i = (m + N) % N;
     return part ? Wim[i] : Wre[i];
   }
+  function kernelPower(m){ var r = Wat(m,0), i = Wat(m,1); return r*r + i*i; }
 
-  function buildMask(f){
-    var taper = 0.015*NX, half = f*NX/2, mid = NX/2;
-    for(var j=0;j<NX;j++){
-      var d = Math.abs(j - mid);
-      var v = 0;
-      if(d <= half - taper) v = 1;
-      else if(d < half + taper) v = 0.5*(1 + Math.cos(Math.PI*(d - half + taper)/(2*taper)));
-      mask[j] = v;
-    }
-    // W_m = (1/NX) sum_j w_j exp(-2 pi i m j / NX)
-    sumP = 0;
-    for(var mi=0; mi<N; mi++){
-      var m = mi < N/2 ? mi : mi - N, sr = 0, si = 0;
-      for(var jj=0; jj<NX; jj++){
-        var idx = (m*jj) % NX; if(idx < 0) idx += NX;
-        sr += mask[jj]*COS[idx]; si -= mask[jj]*SIN[idx];
-      }
-      Wre[mi] = sr/NX; Wim[mi] = si/NX;
-      sumP += Wre[mi]*Wre[mi] + Wim[mi]*Wim[mi];
-    }
-    // coupled spectrum  <Ctil_k> = sum_k' |W_{k-k'}|^2 C_k' / sumP
-    for(var k=0;k<N/2;k++){
+  // ---------- derived quantities ----------
+  var Cin = new Float64Array(KMAX+2), Ctil = new Float64Array(KMAX+2);
+  var covE = new Float64Array(NK*NK), covN = new Float64Array(NK*NK);
+
+  // Decoupling is done in BANDPOWERS, because the unbinned coupling matrix is not
+  // invertible in any useful sense: the symbol of the Toeplitz operator M is the
+  // mask squared, so every mode the mask kills is a null direction. Binning to
+  // roughly the kernel width is exactly what NaMaster does, and what makes the
+  // inverse well posed.
+  var NB = 6, NBIN = Math.floor(KP/NB);
+  var Cdecb = new Float64Array(NBIN), Ctrueb = new Float64Array(NBIN);
+  function binCentre(b){ return 1 + b*NB + (NB-1)/2; }
+
+  function buildAll(){
+    mask = makeMask(mW, mH, mA);
+    var T = transform(mask, N); Wre = T.re; Wim = T.im; sumP = T.sumP;
+
+    for(var k=1;k<=KMAX;k++){
       Cin[k] = Cfun(k);
       var acc = 0;
-      for(var kp=-N/2; kp<N/2; kp++){
-        var wr = Wat(k-kp,0), wi = Wat(k-kp,1);
-        acc += (wr*wr + wi*wi)*Cfun(kp);
-      }
-      Ctil[k] = acc/sumP;
+      for(var kp=-N/2; kp<N/2; kp++) acc += kernelPower(k-kp)*Cfun(kp);
+      Ctil[k] = acc/sumP;                       // <Ctil> = M C, full sum
     }
+    decouple();
     covariances();
   }
 
+  // Mb_{bb'} = (1/NB) sum_{k in b} sum_{k' in b'} |W_{k-k'}|^2 / sumP,
+  // then solve Mb x = <Ctil>_b.  x comes back as the binned true spectrum.
+  function decouple(){
+    var n = NBIN, A = new Float64Array(n*n), b = new Float64Array(n);
+    for(var i=0;i<n;i++){
+      for(var j=0;j<n;j++){
+        var acc = 0;
+        for(var k=0;k<NB;k++) for(var kp=0;kp<NB;kp++)
+          acc += kernelPower((1+i*NB+k) - (1+j*NB+kp));
+        A[i*n+j] = acc/(NB*sumP);
+      }
+      var st = 0, tr = 0;
+      for(var k2=0;k2<NB;k2++){ st += Ctil[1+i*NB+k2]; tr += Cfun(1+i*NB+k2); }
+      b[i] = st/NB; Ctrueb[i] = tr/NB;
+    }
+    // Gauss-Jordan with partial pivoting
+    for(var c=0;c<n;c++){
+      var piv = c, best = Math.abs(A[c*n+c]);
+      for(var r=c+1;r<n;r++){ var v = Math.abs(A[r*n+c]); if(v>best){best=v;piv=r;} }
+      if(best < 1e-13){ for(var z=0;z<n;z++) Cdecb[z] = NaN; return; }
+      if(piv !== c){
+        for(var q=0;q<n;q++){ var tm=A[c*n+q]; A[c*n+q]=A[piv*n+q]; A[piv*n+q]=tm; }
+        var tb=b[c]; b[c]=b[piv]; b[piv]=tb;
+      }
+      var d = A[c*n+c];
+      for(var q2=c;q2<n;q2++) A[c*n+q2] /= d;
+      b[c] /= d;
+      for(var r2=0;r2<n;r2++){
+        if(r2===c) continue;
+        var f = A[r2*n+c];
+        if(f === 0) continue;
+        for(var q3=c;q3<n;q3++) A[r2*n+q3] -= f*A[c*n+q3];
+        b[r2] -= f*b[c];
+      }
+    }
+    for(var o=0;o<n;o++) Cdecb[o] = b[o];
+  }
+
   function covariances(){
-    // exact:  S_kk' = sum_k'' W_{k-k''} W*_{k'-k''} C_k''      Cov = 2|S|^2/sumP^2
-    // NKA:    C_k'' -> C_{(k+k')/2}  =>  S = C_kbar * Xi_{k-k'}
-    var Xre = new Float64Array(2*N), Xim = new Float64Array(2*N);   // Xi_delta, offset N
+    var Xre = new Float64Array(2*N), Xim = new Float64Array(2*N);
     for(var d=-N+1; d<N; d++){
       var ar=0, ai=0;
       for(var m=-N/2; m<N/2; m++){
         var wr1=Wat(d+m,0), wi1=Wat(d+m,1), wr2=Wat(m,0), wi2=Wat(m,1);
-        ar += wr1*wr2 + wi1*wi2;      // W * conj(W)
+        ar += wr1*wr2 + wi1*wi2;
         ai += wi1*wr2 - wr1*wi2;
       }
       Xre[d+N]=ar; Xim[d+N]=ai;
     }
-    // cache the C-weighted rows of W once; the k,k' loop is then a dot product
     var n2 = sumP*sumP;
     var Ar = new Float64Array(NK*N), Ai = new Float64Array(NK*N);
     var Br = new Float64Array(NK*N), Bi = new Float64Array(NK*N);
@@ -214,8 +292,8 @@ include-in-header:
       for(var qi=0; qi<N; qi++){
         var q = qi - N/2;
         var wr = Wat(k-q,0), wi = Wat(k-q,1), c = Cfun(q);
-        Ar[i*N+qi] = wr*c; Ai[i*N+qi] = wi*c;    // C-weighted
-        Br[i*N+qi] = wr;   Bi[i*N+qi] = wi;      // plain
+        Ar[i*N+qi] = wr*c; Ai[i*N+qi] = wi*c;
+        Br[i*N+qi] = wr;   Bi[i*N+qi] = wi;
       }
     }
     for(var a=0;a<NK;a++){
@@ -243,8 +321,7 @@ include-in-header:
       Object.assign({x:x,y:y,'font-size':26,fill:'#1B1611'}, at||{}));
     e.textContent = s; return e; }
 
-  // ground (#F7F0E1) -> cobalt for positive, -> cinnabar for negative
-  function divergent(v){
+  function divergent(v){                       // ground -> cobalt / cinnabar
     var t = Math.max(-1, Math.min(1, v));
     if(t >= 0){ var u = Math.pow(t,0.55);
       return [247 - 186*u, 240 - 149*u, 225 - 65*u]; }
@@ -261,6 +338,49 @@ include-in-header:
     ctx.putImageData(im,0,0);
   }
 
+  // Effective coupling width: full width of the smallest symmetric window in
+  // |W_m|^2 holding half the kernel power. Half-maximum is useless here — a
+  // complex mask gives a narrow spike on a broad skirt, and FWHM reports 1 while
+  // modes tens apart are still strongly coupled. Same definition as slides 3 & 5.
+  //   The m = 0 self-coupling carries most of |W|^2 for any mask, so including it
+  //   makes every mask look narrow. What we want is the reach of the OFF-diagonal
+  //   coupling: how far a mode talks to modes that are not itself.
+  function powerWidth(pow, mmax){
+    var tot = 0, m;
+    for(m=1;m<=mmax;m++) tot += 2*pow(m);
+    if(tot <= 0) return 1;
+    var acc = 0, n = 0;
+    while(acc < 0.5*tot && n < mmax){ n++; acc += pow(-n) + pow(n); }
+    return Math.max(2*n, 1);
+  }
+
+  // The span the kernel actually couples over, and the peak for scaling the draw.
+  // It uses the off-diagonal power width, not half-maximum: with a complex mask the
+  // kernel is a spike on a broad skirt, and half-maximum would report a couple of
+  // modes while the covariance is visibly wrong — the two readouts have to agree.
+  function kernelSpan(){
+    var pk = 0, m;
+    for(m=-N/2+1;m<N/2;m++) pk = Math.max(pk, kernelPower(m));
+    var hw = powerWidth(kernelPower, N/2-1)/2;
+    return {lo:-hw, hi:hw, pk:pk};
+  }
+  // The error the NKA actually makes, stated exactly: it replaces the
+  // kernel-weighted average of C by C at the midpoint. Returns the fractional
+  // difference between the two. (max/min across the span is the wrong statistic —
+  // at the peak of a bump C hardly "varies" either side yet the midpoint value
+  // sits well above the average, which is precisely when the NKA fails.)
+  function pullOutError(kc){
+    var num = 0, den = 0;
+    for(var m=-N/2+1;m<N/2;m++){
+      var p = kernelPower(m), kk = kc - m;
+      if(kk < 1) continue;
+      num += p*Cfun(kk); den += p;
+    }
+    if(den <= 0) return 0;
+    return Cfun(kc)/(num/den) - 1;
+  }
+  function pct(x){ return (x>=0?'+':'') + (100*x).toFixed(0) + '%'; }
+
   // ---------- panel A: real space ----------
   var PAD = 90, W1 = 1730, AW = W1 - PAD - 40;
   function drawA(step){
@@ -270,111 +390,172 @@ include-in-header:
     txt(s, 10, mid+9, 'a(x)', {fill:'#7A6F5C'});
     txt(s, PAD, 294, 'position  x', {fill:'#7A6F5C','font-size':26});
 
-    if(step >= 2){                                  // footprint band
-      var lo = PAD + AW*(0.5 - frac/2), hi = PAD + AW*(0.5 + frac/2);
-      el(s,'rect',{x:lo,y:y0,width:hi-lo,height:h,fill:'rgba(61,91,160,0.13)'});
-      el(s,'line',{x1:lo,y1:y0,x2:lo,y2:y0+h,stroke:'#3D5BA0','stroke-width':3});
-      el(s,'line',{x1:hi,y1:y0,x2:hi,y2:y0+h,stroke:'#3D5BA0','stroke-width':3});
-      txt(s,(lo+hi)/2 - 84, y0 - 22, 'mask w(x)', {fill:'#3D5BA0','font-size':27});
+    if(step >= 1){
+      // the mask as a filled window function — the taper is the point, so it is
+      // drawn as an area under the curve rather than as a box
+      var d = 'M ' + PAD + ' ' + (y0+h);
+      for(var j=0;j<NX;j++)
+        d += ' L ' + (PAD + AW*j/(NX-1)).toFixed(1) + ' ' + (y0 + h - mask[j]*h*0.94).toFixed(1);
+      d += ' L ' + (PAD+AW) + ' ' + (y0+h) + ' Z';
+      el(s,'path',{d:d,fill:'#3D5BA0',opacity:0.13});
+      var d2 = '';
+      for(var j2=0;j2<NX;j2++)
+        d2 += (j2?'L':'M') + (PAD + AW*j2/(NX-1)).toFixed(1) + ' ' + (y0 + h - mask[j2]*h*0.94).toFixed(1) + ' ';
+      el(s,'path',{d:d2,fill:'none',stroke:'#3D5BA0','stroke-width':3});
+      txt(s, PAD+AW-250, y0 + 26, 'mask  w(x)', {fill:'#3D5BA0','font-size':28});
     }
-    function path(scaleByMask, col, wid, op){
+    function path(scaleByMask, col, wid){
       var d = '';
       for(var j=0;j<NX;j++){
         var v = field[j]*(scaleByMask ? mask[j] : 1);
         d += (j?'L':'M') + (PAD + AW*j/(NX-1)).toFixed(1) + ' ' + (mid - v*h*0.44).toFixed(1) + ' ';
       }
-      el(s,'path',{d:d,fill:'none',stroke:col,'stroke-width':wid,opacity:op});
+      el(s,'path',{d:d,fill:'none',stroke:col,'stroke-width':wid});
     }
-    if(step >= 2){
-      path(false,'#C5B89E',2,1); path(true,'#1B1611',3,1);
+    if(step >= 1){
+      path(false,'#C5B89E',2); path(true,'#1B1611',3);
       var ly = y0 - 22;
       el(s,'line',{x1:PAD,y1:ly-8,x2:PAD+46,y2:ly-8,stroke:'#C5B89E','stroke-width':3});
       txt(s, PAD+58, ly, 'field  a', {fill:'#9C8F79','font-size':28});
       el(s,'line',{x1:PAD+230,y1:ly-8,x2:PAD+276,y2:ly-8,stroke:'#1B1611','stroke-width':3});
       txt(s, PAD+288, ly, 'observed  w·a', {fill:'#1B1611','font-size':28});
     }
-    else path(false,'#1B1611',3,1);
+    else path(false,'#1B1611',3);
   }
 
   // ---------- panel B: harmonic space ----------
-  var kMark = 100;
-  function drawB(step, kc){
+  var By0 = 14, Bh = 272, Bkmax = KMAX;
+  function BX(k){ return PAD + AW*(k-1)/(Bkmax-1); }
+  function Bk(x){ return 1 + (x - PAD)*(Bkmax-1)/AW; }
+  function drawB(step){
     var s = document.getElementById('svgB'); s.innerHTML = '';
-    if(step < 1){ return; }
-    var x0 = PAD, y0 = 14, h = 272, w = AW, kmax = KMAX;
-    var lgmin = Math.log10(Cfun(kmax)), lgmax = Math.log10(Cfun(1));
-    function X(k){ return x0 + w*(k-1)/(kmax-1); }
-    function Y(c){ return y0 + h*(1 - (Math.log10(c)-lgmin)/(lgmax-lgmin)); }
-    el(s,'line',{x1:x0,y1:y0+h,x2:x0+w,y2:y0+h,stroke:'#C5B89E','stroke-width':2});
-    txt(s, x0, y0+h+44, 'wavenumber  k', {fill:'#7A6F5C'});
-    txt(s, 4, y0+18, 'Cₖ', {fill:'#7A6F5C'});
+    var lgmin = Math.log10(Cfun(Bkmax)), lgmax = Math.log10(Cfun(78));
+    function Y(c){ return By0 + Bh*(1 - (Math.log10(c)-lgmin)/(lgmax-lgmin)); }
+    el(s,'line',{x1:PAD,y1:By0+Bh,x2:PAD+AW,y2:By0+Bh,stroke:'#C5B89E','stroke-width':2});
+    txt(s, PAD, By0+Bh+44, 'wavenumber  k', {fill:'#7A6F5C'});
+    txt(s, 4, By0+18, 'Cₖ', {fill:'#7A6F5C'});
 
     var d1='', d2='';
-    for(var k=1;k<kmax;k++){
-      d1 += (k>1?'L':'M') + X(k).toFixed(1) + ' ' + Y(Cin[k]).toFixed(1) + ' ';
-      d2 += (k>1?'L':'M') + X(k).toFixed(1) + ' ' + Y(Ctil[k]).toFixed(1) + ' ';
+    for(var k=1;k<Bkmax;k++){
+      d1 += (k>1?'L':'M') + BX(k).toFixed(1) + ' ' + Y(Cin[k]).toFixed(1) + ' ';
+      d2 += (k>1?'L':'M') + BX(k).toFixed(1) + ' ' + Y(Ctil[k]).toFixed(1) + ' ';
     }
     el(s,'path',{d:d1,fill:'none',stroke:'#1B1611','stroke-width':3.5});
-    txt(s, X(132), Y(Cin[132])-26, 'true  Cₖ', {fill:'#1B1611','font-size':28});
+    txt(s, BX(150), Y(Cin[150])-26, 'true  Cₖ', {fill:'#1B1611','font-size':28});
 
     if(step >= 4){
       el(s,'path',{d:d2,fill:'none',stroke:'#BC4538','stroke-width':3.5,
                    'stroke-dasharray':'10 7'});
-      txt(s, X(132), Y(Ctil[132])+50, 'masked  C̃ₖ', {fill:'#BC4538','font-size':28});
+      txt(s, BX(150), Y(Ctil[150])+50, 'masked  C̃ₖ', {fill:'#BC4538','font-size':28});
     }
-    // mask kernel centred on kc
+    if(step >= 5){
+      // the decoupled bandpowers, landing back on the truth
+      for(var bi=0; bi<NBIN; bi++){
+        var kc = binCentre(bi);
+        if(kc < 8 || kc > Bkmax-22) continue;
+        if(!isFinite(Cdecb[bi]) || Cdecb[bi] <= 0) continue;
+        el(s,'circle',{cx:BX(kc),cy:Y(Cdecb[bi]),r:7,fill:'#3F8278'});
+      }
+      txt(s, BX(150), Y(Cfun(150))-84, 'decoupled bandpowers  M⁻¹C̃', {fill:'#3F8278','font-size':28});
+    }
     if(step < 3) return;
-    var pk = 0, ker = [];
-    for(var m=-N/2+1;m<N/2;m++){ var wr=Wat(m,0), wi=Wat(m,1); var p = wr*wr+wi*wi;
-      ker.push([kc-m, p]); pk = Math.max(pk,p); }
-    var dk = '';
-    for(var i2=0;i2<ker.length;i2++){
-      var kk = ker[i2][0]; if(kk < 0.5 || kk > kmax) continue;
-      dk += (dk?'L':'M') + X(kk).toFixed(1) + ' ' + (y0+h - 175*ker[i2][1]/pk).toFixed(1) + ' ';
+
+    // the kernel, parked at k0 — draggable
+    var span = kernelSpan(), dk = '';
+    for(var m=-N/2+1;m<N/2;m++){
+      var kk = k0 - m; if(kk < 0.5 || kk > Bkmax) continue;
+      dk += (dk?'L':'M') + BX(kk).toFixed(1) + ' ' + (By0+Bh - 150*kernelPower(m)/span.pk).toFixed(1) + ' ';
     }
     el(s,'path',{d:dk,fill:'none',stroke:'#3D5BA0','stroke-width':3.5});
-    el(s,'line',{x1:X(kc),y1:y0,x2:X(kc),y2:y0+h,stroke:'#3D5BA0',
-                 'stroke-width':2,'stroke-dasharray':'6 8'});
-    txt(s, X(kc)+18, y0+26, 'mask kernel  |W|²', {fill:'#3D5BA0','font-size':28});
+    var lo = Math.max(k0 - span.hi, 1), hi = Math.min(k0 - span.lo, Bkmax-1);
+    el(s,'rect',{x:BX(lo),y:By0,width:Math.max(BX(hi)-BX(lo),3),height:Bh,
+                 fill:'#3D5BA0',opacity:0.10});
+    // the readout lives in a fixed corner: parked next to the kernel it collides
+    // with whichever part of the spectrum the kernel is sitting on
+    var v = pullOutError(k0), bad = Math.abs(v) > 0.05, lx = PAD + AW - 560;
+    txt(s, lx, By0+26, 'kernel  |W|²  — drag me along k', {fill:'#3D5BA0','font-size':28});
+    txt(s, lx, By0+64, 'C at k₀ vs its kernel average:  ' + pct(v),
+        {fill: bad ? '#BC4538' : '#3D5BA0', 'font-size':28});
   }
 
-  // ---------- panel C: does C vary across the kernel? (scene 2) ----------
+  // ---------- the mask zoo: complexity, not size alone ----------
+  var ZOO = [
+    {w:0.55, h:0, a:0.070, name:'wide, smoothly apodized'},
+    {w:0.16, h:0, a:0.030, name:'small'},
+    {w:0.55, h:5, a:0.010, name:'holes and sharp edges'}
+  ];
+  function drawZoo(){
+    var s = document.getElementById('svgZ'); s.innerHTML='';
+    var MW = 720, KW = 780, KX = PAD + MW + 110;
+    for(var r=0;r<ZOO.length;r++){
+      var z = ZOO[r], y = 86 + r*192, h = 116;
+      var w = makeMask(z.w, z.h, z.a), T = transform(w, N);
+      // mask
+      var d = 'M ' + PAD + ' ' + (y+h);
+      for(var j=0;j<NX;j++) d += ' L ' + (PAD + MW*j/(NX-1)).toFixed(1) + ' ' + (y + h - w[j]*h).toFixed(1);
+      d += ' L ' + (PAD+MW) + ' ' + (y+h) + ' Z';
+      el(s,'path',{d:d,fill:'#3D5BA0',opacity:0.13});
+      var d2='';
+      for(var j2=0;j2<NX;j2++) d2 += (j2?'L':'M') + (PAD + MW*j2/(NX-1)).toFixed(1) + ' ' + (y + h - w[j2]*h).toFixed(1) + ' ';
+      el(s,'path',{d:d2,fill:'none',stroke:'#3D5BA0','stroke-width':3});
+      txt(s, PAD, y - 14, z.name, {fill:'#7A6F5C','font-size':27});
+      // kernel, log power so the sidelobes show
+      var pk = 0, MM = 60, p = [];
+      for(var m=-MM;m<=MM;m++){
+        var i = (m + N) % N, v = T.re[i]*T.re[i] + T.im[i]*T.im[i];
+        p.push(v); if(v>pk) pk=v;
+      }
+      el(s,'line',{x1:KX,y1:y+h,x2:KX+KW,y2:y+h,stroke:'#C5B89E','stroke-width':2});
+      var dk='';
+      for(var q=0;q<p.length;q++){
+        var lg = Math.log10(Math.max(p[q]/pk, 1e-5))/5 + 1;     // 0 at 1e-5, 1 at peak
+        dk += (q?'L':'M') + (KX + KW*q/(p.length-1)).toFixed(1) + ' ' + (y + h - lg*h).toFixed(1) + ' ';
+      }
+      el(s,'path',{d:dk,fill:'none',stroke:'#BC4538','stroke-width':3});
+      var wid = powerWidth(function(m){ var i=(m+N)%N; return T.re[i]*T.re[i]+T.im[i]*T.im[i]; }, MM);
+      var cq = (p.length-1)/2, hw = wid/2;
+      el(s,'line',{x1:KX + KW*(cq-hw)/(p.length-1),y1:y+h+24,
+                   x2:KX + KW*(cq+hw)/(p.length-1),y2:y+h+24,
+                   stroke:'#BC4538','stroke-width':8,'stroke-linecap':'round'});
+      txt(s, KX + KW*(cq+hw)/(p.length-1) + 20, y+h+34, wid + ' modes',
+          {fill:'#BC4538','font-size':27});
+    }
+    txt(s, PAD, 30, 'mask  w(x)', {fill:'#3D5BA0','font-size':29});
+    txt(s, KX, 30, 'kernel  |W|²   (log)', {fill:'#BC4538','font-size':29});
+  }
+
+  // ---------- panel C: C across the kernel (scene 2) ----------
   function drawC(){
     var s = document.getElementById('svgC'); s.innerHTML='';
-    var x0 = PAD, y0 = 22, h = 132, w = AW, kmax = KMAX, kc = 36;
-    var lgmin = Math.log10(Cfun(kmax)), lgmax = Math.log10(Cfun(1));
+    var x0 = PAD, y0 = 22, h = 132, w = AW, kmax = KMAX;
+    var lgmin = Math.log10(Cfun(kmax)), lgmax = Math.log10(Cfun(78));
     function X(k){ return x0 + w*(k-1)/(kmax-1); }
     function Y(c){ return y0 + h*(1 - (Math.log10(c)-lgmin)/(lgmax-lgmin)); }
     var d='';
     for(var k=1;k<kmax;k++) d += (k>1?'L':'M')+X(k).toFixed(1)+' '+Y(Cfun(k)).toFixed(1)+' ';
     el(s,'path',{d:d,fill:'none',stroke:'#1B1611','stroke-width':3.5});
-    txt(s, X(190), Y(Cfun(190))-20, 'Cₖ', {fill:'#1B1611','font-size':28});
-    var pk=0, ker=[];
-    for(var m=-N/2+1;m<N/2;m++){ var wr=Wat(m,0), wi=Wat(m,1), p=wr*wr+wi*wi;
-      ker.push([kc-m,p]); pk=Math.max(pk,p); }
-    var dk='';
-    for(var i=0;i<ker.length;i++){ var kk=ker[i][0]; if(kk<0.5||kk>kmax) continue;
-      dk += (dk?'L':'M')+X(kk).toFixed(1)+' '+(y0+h-100*ker[i][1]/pk).toFixed(1)+' '; }
+    var span = kernelSpan(), dk='';
+    for(var m=-N/2+1;m<N/2;m++){
+      var kk = k0 - m; if(kk<0.5||kk>kmax) continue;
+      dk += (dk?'L':'M')+X(kk).toFixed(1)+' '+(y0+h-90*kernelPower(m)/span.pk).toFixed(1)+' ';
+    }
     el(s,'path',{d:dk,fill:'none',stroke:'#3D5BA0','stroke-width':3.5});
-    var lo=null, hi=null;
-    for(var i3=0;i3<ker.length;i3++) if(ker[i3][1] > pk/2){
-      var kk2=ker[i3][0]; if(lo===null||kk2<lo) lo=kk2; if(hi===null||kk2>hi) hi=kk2; }
-    if(lo!==null){
-      lo = Math.max(lo, 1); hi = Math.min(hi, kmax-1);
-      el(s,'rect',{x:X(lo),y:y0,width:Math.max(X(hi)-X(lo),3),height:h,
-                   fill:'#3D5BA0',opacity:0.12});
-      var ratio = Cfun(lo)/Cfun(hi), bad = ratio > 1.5;
-      el(s,'line',{x1:X(lo),y1:y0+h+28,x2:X(hi),y2:y0+h+28,
-                   stroke: bad?'#BC4538':'#3D5BA0','stroke-width':4});
-      txt(s, X(hi)+22, y0+h+38,
-          '×' + ratio.toFixed(1) + ' across the kernel',
-          {fill: bad?'#BC4538':'#3D5BA0', 'font-size':28});
+    var lo = Math.max(k0-span.hi,1), hi = Math.min(k0-span.lo,kmax-1);
+    el(s,'rect',{x:X(lo),y:y0,width:Math.max(X(hi)-X(lo),3),height:h,fill:'#3D5BA0',opacity:0.12});
+    var v = pullOutError(k0), bad = Math.abs(v) > 0.05;
+    el(s,'line',{x1:X(lo),y1:y0+h+28,x2:X(hi),y2:y0+h+28,
+                 stroke: bad?'#BC4538':'#3D5BA0','stroke-width':4});
+    txt(s, X(hi)+22, y0+h+38, 'C at k₀ vs its kernel average:  ' + pct(v),
+        {fill: bad?'#BC4538':'#3D5BA0','font-size':28});
+    // live NKA error on the covariance diagonal at the kernel's location
+    var ik = Math.round(k0) - KLO;
+    if(ik >= 0 && ik < NK){
+      var e = covN[ik*NK+ik]/covE[ik*NK+ik] - 1;
+      txt(s, X(1), y0+h+38, 'NKA error at k₀: ' + (100*e).toFixed(1) + '%',
+          {fill: Math.abs(e)>0.05 ? '#BC4538' : '#7A6F5C','font-size':28});
     }
   }
 
-  // ---------- scene 2 matrices ----------
-  // shown as correlation matrices r = Cov / sqrt(diag_exact * diag_exact),
-  // so the band stays visible at every k instead of being swamped by C_k^2.
   function drawMatrices(){
     var rE = new Float64Array(NK*NK), rN = new Float64Array(NK*NK),
         rD = new Float64Array(NK*NK), d = new Float64Array(NK);
@@ -389,25 +570,28 @@ include-in-header:
   }
 
   // ---------- step machine ----------
-  var CAPS = ['one field, modes independent',
-              'we see only part of it',
-              'mask × field  →  kernel ∗ modes',
-              'the kernel smears the spectrum',
-              'C flat across the kernel  →  one kernel',
-              'shrink the footprint'];
-  var NSTEP = 6, step = 0;
+  var CAPS = [
+    'one field, modes independent',
+    'we only see part of it — and the mask is apodized',
+    'complexity, not size: holes and sharp edges widen the kernel',
+    'mask × field  →  kernel ∗ modes',
+    'the kernel smears the spectrum',
+    'the estimator is exact: invert the coupling',
+    'the error bar needs a four-point sum — O(k⁶)',
+    'narrow-kernel approximation: pull C out, one kernel is left'
+  ];
+  var NSTEP = 8, step = 0;
   var caps = document.getElementById('nka-cap'), side = document.getElementById('nka-side');
   var dots = document.getElementById('dots');
   for(var i=0;i<NSTEP;i++) dots.appendChild(document.createElement('span'));
 
   // Each equation appears with the concept it names, and stays.
-  // eq0 a(x) · eq1 masked field · eq2 convolution · eq3 coupling matrix · eq4 covariance
+  var EQ_STEP = [0, 1, 3, 4, 5, 6, 7];
   function equations(){
-    for(var i=0;i<5;i++){
+    for(var i=0;i<EQ_STEP.length;i++){
       var e = document.getElementById('eq'+i);
-      var on = (i <= 1) ? (step >= i) : (step >= i);
-      e.style.display = on ? '' : 'none';
-      var live = (i === step) || (i === 4 && step >= 4);
+      e.style.display = (step >= EQ_STEP[i]) ? '' : 'none';
+      var live = (EQ_STEP[i] === step) || (i === 6 && step >= 7);
       e.className = live ? 'on' : '';
     }
   }
@@ -415,15 +599,15 @@ include-in-header:
   function render(){
     caps.innerHTML = CAPS[step]; side.innerHTML = '';
     equations();
-    var s2 = step >= 4;
-    document.getElementById('scene2').classList.toggle('solo', step === 4);
-    R.classList.toggle('solo-mode', step === 4);
-    document.getElementById('scene1').classList.toggle('hidden', s2);
+    var zoo = (step === 2), s2 = step >= 7;
+    document.getElementById('scene1').classList.toggle('hidden', zoo || s2);
+    document.getElementById('sceneZoo').classList.toggle('hidden', !zoo);
     document.getElementById('scene2').classList.toggle('hidden', !s2);
-    document.getElementById('fwrap').classList.toggle('hidden', step !== 5);
+    document.getElementById('mwrap').classList.toggle('hidden', step !== 7);
     for(var i=0;i<NSTEP;i++) dots.children[i].className = (i===step) ? 'on' : '';
-    if(s2){ drawMatrices(); drawC(); }
-    else  { drawA(step+1); drawB(step+1, kMark); }
+    if(zoo) drawZoo();
+    else if(s2){ drawMatrices(); drawC(); }
+    else { drawA(step); drawB(step); }
   }
 
   function setStep(n){
@@ -432,8 +616,7 @@ include-in-header:
     step = n; render();
   }
 
-  // ── reveal fragments own the stepping, so ←/→ walk the six states ──
-  //    fragment index f runs -1 … 4; step = f + 1.
+  // ── reveal fragments own the stepping, so ←/→ walk the eight states ──
   function syncFromReveal(){
     if(!window.Reveal || !Reveal.getIndices) return;
     var idx = Reveal.getIndices();
@@ -441,9 +624,8 @@ include-in-header:
     setStep(f + 1);
   }
   // This script runs at parse time, before Quarto initialises Reveal, so the
-  // listeners have to wait for it. A slow poll backs them up: setStep is a no-op
-  // when the step is unchanged, so it costs nothing and it survives any version
-  // where the fragment events are named differently.
+  // listeners have to wait for it; the slow poll is a backstop (setStep is a
+  // no-op when the step is unchanged).
   (function attach(){
     if(window.Reveal && Reveal.on && typeof Reveal.getIndices === 'function'){
       Reveal.on('fragmentshown',  syncFromReveal);
@@ -453,28 +635,48 @@ include-in-header:
       setInterval(syncFromReveal, 200);
     } else setTimeout(attach, 100);
   })();
-  // the in-slide buttons are a secondary control — they drive reveal, not the
-  // state directly, so both paths stay in sync
   document.getElementById('next').onclick = function(){
     if(window.Reveal) Reveal.nextFragment(); };
   document.getElementById('prev').onclick = function(){
     if(window.Reveal) Reveal.prevFragment(); };
 
-  var sl = document.getElementById('fslider');
-  var dirty = false;
-  sl.oninput = function(){
-    frac = (+sl.value)/100;
-    document.getElementById('fval').textContent = sl.value + '%';
-    dirty = true;
-  };
-  // one rebuild per animation frame at most — the exact covariance is a real
-  // O(NK^2 N) sum and would otherwise queue up behind a fast drag
+  // ── controls ──
+  var dirty = false, redrawOnly = false;
+  function markMask(){ dirty = true; }
+  function markDraw(){ redrawOnly = true; }
+
+  document.getElementById('sWidth').oninput = function(){ mW = (+this.value)/100; markMask(); };
+  document.getElementById('sHoles').oninput = function(){ mH = +this.value;       markMask(); };
+  document.getElementById('sApod').oninput  = function(){ mA = (+this.value)/1000; markMask(); };
+
+  // drag the kernel along k, on either harmonic panel
+  function dragTarget(svg){
+    if(!svg) return;
+    var down = false;
+    function set(ev){
+      var r = svg.getBoundingClientRect();
+      var x = (ev.clientX - r.left) * (W1 / r.width);
+      k0 = Math.max(12, Math.min(KMAX-12, Math.round(Bk(x))));
+      markDraw();
+    }
+    svg.style.cursor = 'ew-resize';
+    svg.addEventListener('pointerdown', function(ev){ down = true; svg.setPointerCapture(ev.pointerId); set(ev); });
+    svg.addEventListener('pointermove', function(ev){ if(down) set(ev); });
+    svg.addEventListener('pointerup',   function(){ down = false; });
+    svg.addEventListener('pointercancel', function(){ down = false; });
+  }
+  dragTarget(document.getElementById('svgB'));
+  dragTarget(document.getElementById('svgC'));
+
+  // one rebuild per animation frame at most — the exact covariance and the matrix
+  // inverse are real O(NK²N) / O(KP³) work and would otherwise queue behind a drag
   (function pump(){
-    if(dirty){ dirty = false; buildMask(frac); render(); }
+    if(dirty){ dirty = false; redrawOnly = false; buildAll(); render(); }
+    else if(redrawOnly){ redrawOnly = false; render(); }
     requestAnimationFrame(pump);
   })();
 
-  buildMask(frac);
+  buildAll();
   render();
   syncFromReveal();
 })();
@@ -484,25 +686,35 @@ include-in-header:
 ::: {.notes}
 This is the one piece of machinery all three papers share, so it's worth ten minutes.
 
-Start with a Gaussian field on a line: every Fourier mode independent, covariance perfectly
-diagonal. Then multiply by a mask — we only see part of the sky. In harmonic space that
-multiplication becomes a convolution: each observed mode is a weighted sum of its neighbours,
-with the weight set by the mask's transform. The kernel's width goes like one over the
-footprint width — a big survey gives a narrow kernel.
+A Gaussian field on a line: every Fourier mode independent, covariance perfectly diagonal.
+Now we only observe part of it. Note the mask isn't a box — the edges are tapered, apodized,
+and that taper matters more than you'd think.
 
-Take the expectation and you get the mode-coupling matrix: the measured pseudo-spectrum is a
-smeared version of the truth. That much is exact, and it's what NaMaster inverts.
+Because what the mask does in harmonic space is convolve. And the shape of that kernel is set
+by the mask's *complexity*, not just its size. Here are three: a wide smoothly apodized one,
+a small one, and one with holes and hard edges. Bigger and smoother buys you a narrow kernel;
+holes and edges buy you a broad one with sidelobes that reach a long way. HSC-Y3 is the third
+picture.
 
-The covariance is where it gets hard, because you get four W's and a sum you can't do. The
-Narrow Kernel Approximation says: if the true spectrum barely changes across the kernel width,
-evaluate it once at the mean of the two multipoles and pull it outside the sum. What's left
-collapses into a single kernel — the transform of a *product* of masks. That's the whole trick,
-and it's exactly the step that fails for catalogue masks, where the product of two delta combs
-is zero.
+So each observed mode is a weighted sum of its neighbours within the kernel width. Take the
+expectation and you get the mode-coupling matrix: the measured pseudo-spectrum is a smeared
+version of the truth.
 
-Then shrink the footprint. The kernel widens, the spectrum is no longer flat across it, and the
-off-diagonal band goes wrong — while the diagonal stays about right. That's the regime the
-three papers care about.
+Now — and this is the thing people get wrong — that smearing is not something you approximate.
+You invert it. M is exact and you compute it exactly; the decoupled estimator lands back on the
+true spectrum, which is what NaMaster does and it costs you order k-cubed. **The estimator is
+exact. Only its covariance is approximated.**
+
+Because the covariance is a four-point object: a sum over a third mode of W times W-star times
+C, for every pair. That's order k to the sixth, and it is genuinely intractable at Euclid
+multipoles.
+
+Hence the narrow-kernel approximation. If C barely changes across the kernel width, evaluate it
+once at the midpoint of the two modes and pull it outside the sum — what's left collapses into a
+single kernel, the transform of a product of masks. Drag the kernel onto the bump and watch the
+number: where C is smooth the approximation is exact to a fraction of a percent, and where the
+spectrum has structure on the kernel's scale it falls apart. That is the entire subject of the
+first two papers.
 :::
 
 ## A smaller footprint means a wider kernel {.nka-slide}
