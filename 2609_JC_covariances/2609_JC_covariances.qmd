@@ -63,7 +63,7 @@ Start as simply as possible. A Gaussian random field on a line — one realisati
 ```{=html}
 <div class="nka" data-step="1">
 <div class="eqs"></div>
-<svg class="pM" viewBox="0 0 1730 850" width="1730" height="850"></svg>
+<svg class="pM" viewBox="0 0 1730 736" width="1730" height="736"></svg>
 <button class="replay">replay</button>
 </div>
 ```
@@ -91,9 +91,9 @@ of a Gaussian field. It is what we are trying to measure.
 <span class="fragment nka-step"></span>
 <span class="fragment nka-step"></span>
 <svg class="pA" data-h="230" viewBox="0 0 1730 320" width="1730" height="320"></svg>
-<svg class="pC" data-h="300" data-kernel="1" data-kernel-at="1" data-kh="190"
+<svg class="pC" data-h="230" data-kernel="1" data-kernel-at="1" data-kh="148"
      data-tilde="1" data-tilde-at="2"
-     viewBox="0 0 1730 420" width="1730" height="420"></svg>
+     viewBox="0 0 1730 336" width="1730" height="336"></svg>
 </div>
 ```
 

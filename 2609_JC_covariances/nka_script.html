@@ -1,13 +1,104 @@
 <script>
 // ═══════════════════════════════════════════════════════════════════════════
-//  The mask / mode-coupling / NKA sequence.
+//  HANDOFF — the engine behind the CosmoStat JC covariance deck
+//  (2609_JC_covariances). Read this before changing anything here.
 //
-//  One engine, ten slides. Each slide carries a container   <div class="nka"
-//  data-step="N">   holding only the panels that step needs (.pA .pM .pC .pB
-//  .pZ .pMat .pick .cost .eqs); this script fills every container once at load
-//  and re-fills the mask-dependent ones when the mask picker changes.
+//  WHAT THIS IS
+//  One script drives every animated slide. Each slide carries a container
+//      <div class="nka" data-step="N"> … </div>
+//  holding only the panels that step needs. This file fills every container
+//  once at load, and re-fills the mask-dependent ones when the picker changes.
+//  It is pulled in through `include-after-body` in the qmd, so it runs after
+//  every slide has been parsed — do NOT move it into a slide's html block.
 //
-//  Loaded through include-after-body so it runs after every slide is parsed.
+//  DELIVERY FLOW (do all four, in order)
+//    1. cd ~/Documents/projects/talks
+//    2. quarto render 2609_JC_covariances/2609_JC_covariances.qmd \
+//         -M embed-resources:true          # sibling assets do not resolve in
+//                                          # Cail's viewer; must be self-contained
+//    3. cp _site/2609_JC_covariances/index.html \
+//         ~/loom/.felt/work/talks/2609-jc-covariances/deck.html
+//    4. screenshot the LOOM COPY, not the _site build, and look at the images.
+//
+//  QA LOOP — three checks, all of which have caught real bugs
+//    a) node --check <(sed -n '/^<script>/,/^<\/script>/p' nka_script.html \
+//                      | sed '1d;$d')
+//       Splicing this file by string index has twice deleted a function or left
+//       a duplicated tail, which blanks every slide. Run this after every edit.
+//    b) puppeteer + a console/pageerror listener. A blank panel is usually a
+//       ReferenceError, not a layout problem. (`Cannot read … 'Config'` on load
+//       comes from the shared MathJax asset and is harmless.)
+//    c) OVERFLOW must be measured in SLIDE coordinates, not viewport pixels.
+//       Reveal scales the 1920x1080 stage (≈0.9 here) and centres it, so a
+//       getBoundingClientRect().bottom of 1005 can be 1057 on the slide. Walk
+//       the DOM summing offsetTop to the section and compare against 1080 (the
+//       slide box; the footer sits at ≈1090). Keep content ≤ ~990 for margin.
+//
+//  ARCHITECTURE
+//  · data-step  — which point in the argument the slide is at. Drives which
+//                 ledger entries exist and which cost label shows.
+//  · EQS        — the ledger, one array, rendered as a CSS grid. Each entry is
+//                 {tex, step, name, col, row, span?, note?, sub?}. The GRID IS
+//                 THE ARGUMENT: row 1 is the unmasked field, row 2 is what the
+//                 mask does with each masked object directly under its unmasked
+//                 twin, row 3 is how you undo it. Do not reflow it casually.
+//                 `sub` lights one entry per fragment on a staged slide.
+//                 data-ledger-from makes a slide start a fresh ledger (the
+//                 covariance and Wolz slides do).
+//  · data-staged — the slide reveals its own panels with reveal fragments;
+//                 stageOf() turns the fragment index into a stage number that
+//                 the panel options and ledger `sub` read. Used by slide 4.
+//  · data-frag-step — simpler variant: the slide's step advances by one once
+//                 any fragment shows (the covariance slide: four-point → NKA).
+//  · cine       — the "sum of modes" build. Elements are created ONCE by
+//                 buildCine() and only their opacity changes, so the CSS
+//                 transitions actually run. setBeat(n) is the whole state
+//                 machine; the beat plan is documented above it. The running
+//                 sum is two cross-faded paths because path geometry cannot be
+//                 tweened, and it is rescaled every beat so what changes is the
+//                 STRUCTURE (a two-mode partial sum on a fixed scale looks like
+//                 nothing is happening).
+//  · picker / NSRC / THC — module-level globals, deliberately shared across
+//                 slides: one mask and one catalogue run through the whole
+//                 deck, so changing sources on W1 is visible on W2 and W3.
+//                 buildAll() recomputes everything; renderAll() redraws.
+//  · panels     — a slide asks for panels by class: .pA field, .pM cine,
+//                 .pC spectrum, .pZ zoo (unused now), .pP catalogue,
+//                 .pKC catalogue kernel, .pProd mask products, .pCloud clouds,
+//                 .pXi correlation function, .pWhite white floor, plus canvases
+//                 for the covariance matrices. Options come from data-* on the
+//                 element; geom() lets a panel take a sub-width so panels can
+//                 sit in columns.
+//
+//  TWO GOTCHAS THAT WILL BITE
+//  · Reveal is NOT ready when this file runs. attach() polls until
+//    Reveal.on/getIndices exist. Registering listeners unguarded silently does
+//    nothing — the fragments advance and the drawing never changes.
+//  · MathJax is loaded async and has already typeset the page by the time any
+//    ledger is injected. Every path that rewrites .eqs innerHTML must call
+//    typeset() afterwards — including the slider handlers. Missing it shows raw
+//    \( … \) on the slide.
+//
+//  PHYSICS NOTES worth keeping
+//  · Kernel width is quoted as a RADIUS: "± n modes", n = mixRadius(), the
+//    half-width holding half the OFF-diagonal coupling power. The m = 0 self
+//    term dominates |W|² for any mask, so counting it makes every mask look
+//    narrow. Same words and same definition on every slide.
+//  · The NKA readout is pullOutError(): C at the midpoint divided by the
+//    kernel-weighted mean of C. That is exactly what the approximation does.
+//    max/min across the kernel is WRONG at a local extremum — on the bump peak
+//    it read ×1.1 while the covariance error was +25%.
+//  · Decoupling is done in BANDPOWERS. The unbinned coupling matrix is not
+//    invertible in any useful sense (its Toeplitz symbol is the mask squared,
+//    so every mode the mask kills is a null direction) — the first attempt
+//    returned NaN. Binning to about the kernel width is what NaMaster does.
+//
+//  ELSEWHERE
+//  · The 1D toy that backs slides 3–5 and the parked Nagura slides lives in
+//    notes/projection_experiment.py, written up in notes/projection-experiment.md.
+//  · Three parked slides sit at the end of the qmd behind reveal's
+//    visibility="hidden"; their data ships in nka_data.html. Delete one
+//    attribute to bring each back.
 // ═══════════════════════════════════════════════════════════════════════════
 (function(){
 "use strict";
@@ -322,10 +413,10 @@ function boot(){
   }
   function buildCine(s){
     clear(s);
-    var SUMH = 190, LANE = 60, CY0 = 250 + MODES.length*LANE, CH = 230;
+    var SUMH = 168, LANE = 52, CY0 = 226 + MODES.length*LANE, CH = 196;
     var st = {modes:[], labels:[], pts:[], sumA:null, sumB:null, which:0, laneY:[],
               curve:null, clabel:null, plus:null, link:null, done:null};
-    var mid = 40 + SUMH/2;
+    var mid = 34 + SUMH/2;
     el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
     txt(s, Math.max(PAD-82, 2), mid+9, 'a(x)', {fill:MUT});
 
@@ -354,7 +445,7 @@ function boot(){
     st.lanes = [];
 
     for(q=0;q<MODES.length;q++){
-      var k = MODES[q], y = 250 + q*LANE, lmid = y + LANE*0.45, one = new Float64Array(NX);
+      var k = MODES[q], y = 226 + q*LANE, lmid = y + LANE*0.45, one = new Float64Array(NX);
       for(j=0;j<NX;j++) one[j] = modeAt(k,j);
       st.lanes.push(el(s,'line',{x1:PAD,y1:lmid,x2:PAD+AW,y2:lmid,stroke:GRID,
                                  'stroke-width':2, opacity:0, class:'cine'}));
