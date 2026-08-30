@@ -23,7 +23,8 @@ function boot(){
                                    // where the NKA is visibly wrong but not absurd
   var NB = 12;                     // bandpower width, ~ the kernel width
   var MODES = [4, 12, 30, 78, 150];   // the modes that build the field, low k to high
-  var BEAT  = 700;                    // ms between modes in the build
+  var BEAT  = 620;                    // ms between beats; the fades run longer,
+                                      // so consecutive beats overlap slightly
 
   var INK='#1B1611', MUT='#7A6F5C', ACC='#BC4538', COB='#3D5BA0',
       TEAL='#3F8278', RULE='#C5B89E', FAINT='#C5B89E', GRID='#E0D5BF';
@@ -311,7 +312,7 @@ function boot(){
   function buildCine(s){
     clear(s);
     var SUMH = 190, LANE = 60, CY0 = 250 + MODES.length*LANE, CH = 230;
-    var st = {modes:[], labels:[], pts:[], sum:null, laneY:[],
+    var st = {modes:[], labels:[], pts:[], sumA:null, sumB:null, which:0, laneY:[],
               curve:null, clabel:null, plus:null, link:null, done:null};
     var mid = 40 + SUMH/2;
     el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
@@ -330,8 +331,14 @@ function boot(){
         d += (jj?'L':'M')+(PAD+AW*jj/(NX-1)).toFixed(1)+' '+(mid0 - vals[jj]*sc).toFixed(1)+' ';
       return d;
     }
-    st.sum  = el(s,'path',{d:'', fill:'none', stroke:INK,'stroke-width':3.5,
+    //  Two sum paths, cross-faded: the running sum's geometry changes every
+    //  beat and cannot be tweened directly, so the old curve dissolves into the
+    //  new one instead of snapping.
+    st.sumA = el(s,'path',{d:'', fill:'none', stroke:INK,'stroke-width':3.5,
                            opacity:0, class:'cine'});
+    st.sumB = el(s,'path',{d:'', fill:'none', stroke:INK,'stroke-width':3.5,
+                           opacity:0, class:'cine'});
+    st.which = 0;
     st.sumH = SUMH; st.sumMid = mid;
     st.lanes = [];
 
@@ -409,15 +416,23 @@ function boot(){
     // Each beat is rescaled to fill its row. A partial sum of a few modes really
     // is a fraction of the field's amplitude, and drawn on a fixed scale it looks
     // like nothing is happening — what changes beat to beat is the STRUCTURE.
-    st.sum.setAttribute('d', (function(){
+    var newD = (function(){
       var vals = summed ? field : partialSum(landed), mx = 0, jj;
       for(jj=0;jj<NX;jj++) mx = Math.max(mx, Math.abs(vals[jj]));
       var sc = st.sumH*0.44/Math.max(mx,1e-9), d='';
       for(jj=0;jj<NX;jj++)
         d += (jj?'L':'M')+(PAD+AW*jj/(NX-1)).toFixed(1)+' '+(st.sumMid - vals[jj]*sc).toFixed(1)+' ';
       return d;
-    })());
-    st.sum.style.opacity   = n > 0 ? 1 : 0;
+    })();
+    var live = st.which ? st.sumB : st.sumA, dead = st.which ? st.sumA : st.sumB;
+    if(live.getAttribute('d') !== newD){
+      dead.setAttribute('d', newD);
+      dead.style.opacity = n > 0 ? 1 : 0;
+      live.style.opacity = 0;
+      st.which = st.which ? 0 : 1;
+    } else {
+      live.style.opacity = n > 0 ? 1 : 0;
+    }
     st.plus.style.opacity  = summed ? 1 : 0;
     st.curve.style.opacity = curve ? 1 : 0;
     st.clabel.style.opacity = curve ? 1 : 0;
@@ -553,27 +568,44 @@ function boot(){
   //  Built here rather than pasted into every slide, so the sequence can only be
   //  defined once. MathJax has already run by now, so it is asked to typeset.
   //  [latex, the step it appears on, the name a person would say for it]
+  //  The ledger is a grid, and the grid is the argument: row 1 is the unmasked
+  //  field, row 2 is what the mask does to it — each masked object sitting
+  //  directly under its unmasked twin — and row 3 is how you undo it.
+  //  {tex, step it appears on, name, column, row, optional note, optional span}
   var EQS = [
-    ['a(x)', 0, 'field'],
-    ['a_k=\\sum_x a(x)\\,e^{-ikx}', 1, 'Fourier transform'],
-    ['a(x)=\\sum_k a_k\\,e^{+ikx}', 1, 'inverse'],
-    ['C(k)=\\langle |a_k|^2\\rangle', 1, 'power spectrum'],
-    ['\\tilde a(x)=w(x)\\,a(x)', 2, 'mask'],
-    ['\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', 2, 'mode coupling'],
-    ['\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', 2, 'pseudo-C(k)'],
-    ['\\tilde C_b=\\frac{1}{N_b}\\sum_{k\\in b}\\tilde C(k)', 3, 'bandpower'],
-    ['M_{bb\'}=\\frac{1}{N_b}\\sum_{k\\in b}\\sum_{k\'\\in b\'} M_{kk\'}', 3, 'binned coupling'],
-    ['\\hat C_b=(M_{bb\'})^{-1}\\,\\tilde C_{b\'}', 3, 'decoupled'],
-    ['{\\rm Cov}\\propto\\big|\\textstyle\\sum_{k\'\'} W_{k-k\'\'}W^{*}_{k\'-k\'\'}C(k\'\')\\big|^{2}', 4, 'four-point'],
-    ['{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,w_bw_d)', 5, 'narrow-kernel approximation']
+    {tex:'a(x)', step:0, name:'field', col:1, row:1},
+    {tex:'a_k=\\sum_x a(x)\\,e^{-ikx}', step:1, name:'Fourier transform', col:2, row:1},
+    {tex:'a(x)=\\sum_k a_k\\,e^{+ikx}', step:1, name:'inverse', col:3, row:1},
+    {tex:'C(k)=\\langle |a_k|^2\\rangle', step:1, name:'power spectrum', col:4, row:1},
+
+    {tex:'\\tilde a(x)=w(x)\\,a(x)', step:2, name:'mask', col:1, row:2},
+    {tex:'\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', step:2, name:'mode coupling', col:2, row:2},
+    {tex:'\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', step:2, name:'pseudo-C(k)', col:4, row:2},
+
+    {tex:'\\tilde C_b=\\frac{1}{N_b}\\sum_{k\\in b}\\tilde C(k)', step:3, name:'bandpower', col:1, row:3},
+    {tex:'M_{bb\'}=\\frac{1}{N_b}\\sum_{k\\in b}\\sum_{k\'\\in b\'} M_{kk\'}', step:3, name:'binned coupling', col:2, row:3},
+    {tex:'\\hat C_b=(M_{bb\'})^{-1}\\,\\tilde C_{b\'}', step:3, name:'decoupled', col:3, row:3},
+
+    {tex:'{\\rm Cov}\\big(\\tilde C(k),\\tilde C(k\')\\big)\\propto\\Big|\\sum_{k\'\'} W_{k-k\'\'}\\,W^{*}_{k\'-k\'\'}\\,C(k\'\')\\Big|^{2}',
+     step:4, name:'four-point', col:1, row:1, span:4,
+     note:'one sum over k″ for every element of the k, k′ matrix'},
+    {tex:'{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,\\,w_bw_d)',
+     step:5, name:'narrow-kernel approximation', col:1, row:2, span:4,
+     note:'Ξ: the same coupling coefficients as the estimator, built from the product of the masks'}
   ];
-  function ledger(host, step){
+  function ledger(host, step, from){
+    from = from || 0;
     var html = '';
     for(var i=0;i<EQS.length;i++){
-      if(EQS[i][1] > step) continue;
-      var live = (EQS[i][1] === step);
-      html += '<div class="' + (live?'on':'') + '"><span class="nm">' + EQS[i][2] +
-              '</span><span class="eq">\\(' + EQS[i][0] + '\\)</span></div>';
+      var e = EQS[i];
+      if(e.step > step || e.step < from) continue;
+      var live = (e.step === step);
+      html += '<div class="' + (live?'on':'') + '" style="grid-column:' + e.col +
+              (e.span ? ' / span ' + e.span : '') + ';grid-row:' + e.row + '">' +
+              '<span class="nm">' + e.name + '</span>' +
+              '<span class="eq">\\(' + e.tex + '\\)</span>' +
+              (e.note ? '<span class="note">' + e.note + '</span>' : '') +
+              '</div>';
     }
     host.innerHTML = html;
   }
@@ -593,6 +625,9 @@ function boot(){
   }
 
   // ---------- render one slide ----------
+  //  The approximation, said once in words where it is introduced.
+  var SAY_NKA = 'assume the kernel is narrow compared to the features of C(k) — ' +
+                'then C barely varies across it, and comes out of the sum';
   var COST = {4:'<i>O</i>(k<sub>max</sub><sup>6</sup>)',
               5:'<i>O</i>(k<sub>max</sub><sup>3</sup>) — same as the estimator'};
   //  A slide may advance its ledger with a reveal fragment: data-frag-step is the
@@ -613,7 +648,9 @@ function boot(){
     // On the build slide the animation owns the ledger (it reveals the relations
     // at the last beat), so renderOne must not overwrite it.
     var eqs = q('.eqs');
-    if(eqs && !q('.pM')) ledger(eqs, step);
+    if(eqs && !q('.pM')) ledger(eqs, step, +root.dataset.ledgerFrom || 0);
+    var say = q('.saywhat');
+    if(say) say.textContent = (step >= 5) ? SAY_NKA : '';
     var cost = q('.cost');
     if(cost) cost.innerHTML = COST[step] || '';
     // reserve the top-right for the cost label so the ledger cannot wrap under it
@@ -684,7 +721,10 @@ function boot(){
       var r = document.querySelector('.present .nka[data-frag-step]');
       if(!r) return;
       var st = effectiveStep(r);
-      var eqs = r.querySelector('.eqs'); if(eqs) ledger(eqs, st);
+      var eqs = r.querySelector('.eqs');
+      if(eqs) ledger(eqs, st, +r.dataset.ledgerFrom || 0);
+      var say = r.querySelector('.saywhat');
+      if(say) say.textContent = (st >= 5) ? SAY_NKA : '';
       var cost = r.querySelector('.cost');
       if(cost){ cost.innerHTML = COST[st] || ''; }
       r.classList.toggle('has-cost', !!COST[st]);

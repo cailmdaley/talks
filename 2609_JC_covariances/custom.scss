@@ -74,11 +74,14 @@
 
 // the equation ledger — grows one line per concept, wraps rather than shrinks
 .reveal .nka .eqs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    row-gap: 0;
-    align-items: flex-end;
+    // A grid, not a wrapping row: row 2 sits under row 1 column by column, so a
+    // masked object is always directly beneath its unmasked twin.
+    display: grid;
+    grid-template-columns: repeat(4, max-content);
+    column-gap: 26px;
+    row-gap: 2px;
+    align-items: end;
+    justify-items: start;
     font-size: 28px;
     margin: 0 0 6px 0;
     min-height: 52px;
@@ -107,6 +110,14 @@
         letter-spacing: 0.04em;
     }
     .eq { line-height: 1.1; }
+    .note {
+        font-size: 21px;
+        line-height: 1.15;
+        color: #7A6F5C;
+        margin-top: 2px;
+        white-space: normal;
+        max-width: 1100px;
+    }
 }
 
 // the running cost annotation, pinned to the top right
@@ -130,7 +141,7 @@
 }
 
 // the cinematic build: elements persist and only their opacity changes
-.reveal .nka .cine { transition: opacity .45s ease; }
+.reveal .nka .cine { transition: opacity .82s cubic-bezier(0.65, 0, 0.35, 1); }
 // used for one frame when a replay snaps back to empty, so the finished picture
 // does not cross-fade out while the first mode fades in
 .reveal .nka .nofade .cine,
@@ -173,6 +184,14 @@
         &:hover { border-color: #BC4538; }
         &.on { border-color: #BC4538; color: #1B1611; background: rgba(188,69,56,0.10); }
     }
+}
+
+// the approximation, said once in words
+.reveal .nka .saywhat {
+    font-size: 27px;
+    color: #7A6F5C;
+    margin: 2px 0 10px 0;
+    max-width: 1400px;
 }
 
 .reveal .nka .mrow { display: flex; gap: 34px; align-items: flex-start; }

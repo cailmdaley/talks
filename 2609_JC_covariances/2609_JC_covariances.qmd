@@ -130,19 +130,20 @@ And you invert it. But not mode by mode: the mask does not only smear modes, it 
 ## The covariance is where it gets expensive {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="4" data-frag-step="5">
+<div class="nka" data-step="4" data-frag-step="5" data-ledger-from="4">
 <div class="eqs"></div>
 <div class="cost"></div>
+<div class="saywhat"></div>
 <div class="pick"></div>
 <div class="mrow">
   <div class="mcell"><canvas style="width:400px;height:400px"></canvas>
     <div class="mlab"><b>exact</b>direct sum over modes</div></div>
-  <div class="mcell fragment"><canvas style="width:400px;height:400px"></canvas>
+  <div class="mcell fragment" data-fragment-index="0"><canvas style="width:400px;height:400px"></canvas>
     <div class="mlab"><b>NKA</b>one mask-product kernel</div></div>
-  <div class="mcell fragment"><canvas style="width:400px;height:400px"></canvas>
+  <div class="mcell fragment" data-fragment-index="1"><canvas style="width:400px;height:400px"></canvas>
     <div class="mlab"><b>NKA &minus; exact</b>error</div></div>
 </div>
-<div class="nkaerr"></div>
+<div class="nkaerr fragment" data-fragment-index="1"></div>
 </div>
 ```
 
