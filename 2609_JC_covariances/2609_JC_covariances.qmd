@@ -45,12 +45,12 @@ include-in-header:
     - nka_data.html
 ---
 
-## A field, in position space {.nka-slide}
+## A field in position space {.nka-slide auto-animate="true" auto-animate-duration="0"}
 
 ```{=html}
 <div class="nka" data-step="0">
 <div class="eqs"></div>
-<svg class="pA" data-h="340" viewBox="0 0 1730 430" width="1730" height="430"></svg>
+<svg class="pA" data-h="170" viewBox="0 0 1730 260" width="1730" height="260"></svg>
 </div>
 ```
 
@@ -58,25 +58,30 @@ include-in-header:
 Start as simply as possible. A Gaussian random field on a line — one realisation, one function of position. Everything today lives on this picture.
 :::
 
-## It can be decomposed as a sum of modes {.nka-slide}
+## A field in position space can be decomposed as a sum of modes {.nka-slide auto-animate="true" auto-animate-duration="0"}
 
 ```{=html}
-<div class="nka" data-step="1">
+<div class="nka" data-step="1" data-staged="1">
 <div class="eqs"></div>
-<svg class="pM" viewBox="0 0 1730 736" width="1730" height="736"></svg>
-<button class="replay">replay</button>
+<svg class="pA" data-h="170" viewBox="0 0 1730 260" width="1730" height="260"></svg>
+<svg class="pM" viewBox="0 0 1730 460" width="1730" height="460"></svg>
+<span class="fragment nka-step"></span>
+<span class="fragment nka-step"></span>
+<span class="fragment nka-step"></span>
+<span class="fragment nka-step"></span>
+<span class="fragment nka-step"></span>
 </div>
 ```
 
 ::: {.notes}
-Watch it assemble. Each wave is one Fourier mode of the field above — one wavenumber, one
-amplitude, one phase — and they add up, low k first, into the field itself. The last beat
-throws in everything else at once, and the sum snaps onto the real thing.
+Same field. Each wave below is one Fourier mode of it — one wavenumber, one amplitude, one
+phase. Click through them, low k first.
 
-Below, the spectrum is assembling alongside it. Every mode that lands puts one point on that
-curve: the expected squared amplitude at its wavenumber. Notice the fourth one — it is bigger
-than the mode before it, and that is the bump you can see in the spectrum. Keep it in mind,
-because everything that goes wrong later goes wrong there.
+Each one also puts a point on the spectrum underneath: the expected squared amplitude at that
+wavenumber, sitting right on the true curve. Watch the fourth one land above the third — that's
+the bump you can see in the curve. Keep it in mind, because everything that goes wrong later
+goes wrong there. There are more modes than these five; they'd fill out the rest of the curve
+the same way.
 
 Throw away the phases, keep the squared amplitudes, and C(k) is the whole statistical content
 of a Gaussian field. It is what we are trying to measure.
@@ -90,7 +95,7 @@ of a Gaussian field. It is what we are trying to measure.
 <div class="pick"></div>
 <span class="fragment nka-step"></span>
 <span class="fragment nka-step"></span>
-<svg class="pA" data-h="230" viewBox="0 0 1730 320" width="1730" height="320"></svg>
+<svg class="pA" data-h="170" viewBox="0 0 1730 260" width="1730" height="260"></svg>
 <svg class="pC" data-h="230" data-kernel="1" data-kernel-at="1" data-kh="148"
      data-tilde="1" data-tilde-at="2"
      viewBox="0 0 1730 336" width="1730" height="336"></svg>
@@ -119,7 +124,7 @@ entirely complexity. Everything downstream is a consequence of this number.
 ## Bandpowers make the coupling invertible {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="3">
+<div class="nka" data-step="3" data-ledger-from="3">
 <div class="eqs"></div>
 <svg class="pC" data-h="440" data-tilde="1" data-bins="1" data-binned="1" data-decoupled="1" data-kernel="1" data-kh="150" viewBox="0 0 1730 560" width="1730" height="560"></svg>
 <div class="pick"></div>
@@ -169,12 +174,11 @@ Switch to the holed mask and the whole band goes wrong. That is the subject of t
 papers.
 :::
 
-## A catalogue is its own mask {.nka-slide}
+## A catalogue mask is a set of delta functions {.nka-slide}
 
 ```{=html}
 <div class="nka" data-step="6" data-ledger-from="6">
 <div class="eqs"></div>
-<div class="saywhat" data-own="1">Points always carry a white floor — and the mask is made of points, so it has one of its own.</div>
 <div class="ctl-slider">
   <label>sources <input type="range" data-var="N" min="30" max="400" value="160"></label>
 </div>
@@ -184,15 +188,14 @@ papers.
     <svg class="pKC" data-h="150" data-x0="86" data-w="400"
          data-foot="mode separation Δk"
          viewBox="0 0 520 290" width="520" height="290"></svg>
-    <div class="toyfoot">The kernel never narrows — there is no narrow kernel to approximate with.</div>
+    <div class="toyfoot">…and this same curve is the coupling kernel, at separation Δk. It never narrows.</div>
   </div>
   <div class="figblock">
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo power spectrum">
     <div class="figside">
+      <span class="src">Wolz et al., arXiv:2607.14843 — Fig. 1</span>
       <div class="figtitle">power spectrum of the<br>Quaia catalogue mask</div>
       <p class="verbatim">Mask pseudo power spectrum for the <i>Quaia</i> survey mask, comparing catalogue- and mask-based estimators. At the catalogue level, the constant shot noise floor (\(\tilde{N}_w\)) is reached at scales far below the mean interparticle scale (\(\theta_{\rm c}\)).</p>
-      <p><b>θ<sub>c</sub></b> — the cloud scale, about the mean source spacing;
-         the dashed π/θ<sub>c</sub> line marks it. Next slide turns this knob.</p>
     </div>
   </div>
 </div>
@@ -222,7 +225,7 @@ additive downstream — it becomes a convolutional problem for the data. That is
 band-limit the mask rather than to subtract its floor.
 :::
 
-## Catalogue masks are collections of delta functions {.nka-slide}
+## Products of delta functions are zero or infinite {.nka-slide}
 
 ```{=html}
 <div class="nka" data-step="7" data-ledger-from="7" data-frag-step="7">
@@ -303,7 +306,7 @@ measurement, had to be band-limited away instead.
     <div class="takeaway">cosmic shear, DES-Y3-like — <b>dense, yet shape-noise-dominated</b>:
       almost all the variance at high ℓ is the self-pair term, which is handled exactly.</div>
   </div>
-  <div class="papercap"><span class="src">Wolz et al., Fig. 4</span>Power spectrum covariance for the DES-like simulated cosmic shear sample. Results are shown for the covariance between the \(E\)-mode and \(B\)-mode power spectra (left panels of the upper and lower figures). The right panels show the \(\chi^2\) distributions calculated using the analytical covariance against the empirical reference distribution (black histograms). The blue lines, points, and histograms show results from simulations in which only the lensing shear signal is sampled at the source positions, whereas results including both the signal and Gaussian uncorrelated noise are shown in red. In the latter case, we assume a noise standard deviation per component of \(\sigma_e=0.27\). The sample variance from 1000 realisations is shown as points, with the analytical prediction as solid lines. The dashed line and crosses show the first off-diagonal element of the covariance matrix.</div>
+  <div class="papercap"><span class="src">Wolz et al., arXiv:2607.14843 — Fig. 4</span>Power spectrum covariance for the DES-like simulated cosmic shear sample. Results are shown for the covariance between the \(E\)-mode and \(B\)-mode power spectra (left panels of the upper and lower figures). The right panels show the \(\chi^2\) distributions calculated using the analytical covariance against the empirical reference distribution (black histograms). The blue lines, points, and histograms show results from simulations in which only the lensing shear signal is sampled at the source positions, whereas results including both the signal and Gaussian uncorrelated noise are shown in red. In the latter case, we assume a noise standard deviation per component of \(\sigma_e=0.27\). The sample variance from 1000 realisations is shown as points, with the analytical prediction as solid lines. The dashed line and crosses show the first off-diagonal element of the covariance matrix.</div>
 </div>
 </div>
 ```
@@ -329,7 +332,7 @@ against the empirical reference.
     <div class="takeaway">galaxy clustering, DESI-LRG-like — <b>sparser, yet signal-dominated</b>:
       the load falls on the distinct pairs, which is the part carrying the approximation.</div>
   </div>
-  <div class="papercap"><span class="src">Wolz et al., Fig. 5</span><i>Left panel:</i> Power spectrum covariance for the LRG-like simulated galaxy clustering sample. Results are shown for power spectra calculated using random catalogues to quantify the sample completeness (red) and using a continuous mask (blue). For clarity, the mask-based results have been rescaled by a factor of 1.5. The points show the sample variance estimated from 1000 realisations, with the analytical Gaussian covariance as solid lines. The dashed line and crosses show the first off-diagonal element of the covariance matrix. <i>Right panels:</i> corresponding analytical \(\chi^2\) distributions from 1000 simulations, compared with the empirical distributions in black.</div>
+  <div class="papercap"><span class="src">Wolz et al., arXiv:2607.14843 — Fig. 5</span><i>Left panel:</i> Power spectrum covariance for the LRG-like simulated galaxy clustering sample. Results are shown for power spectra calculated using random catalogues to quantify the sample completeness (red) and using a continuous mask (blue). For clarity, the mask-based results have been rescaled by a factor of 1.5. The points show the sample variance estimated from 1000 realisations, with the analytical Gaussian covariance as solid lines. The dashed line and crosses show the first off-diagonal element of the covariance matrix. <i>Right panels:</i> corresponding analytical \(\chi^2\) distributions from 1000 simulations, compared with the empirical distributions in black.</div>
 </div>
 </div>
 ```

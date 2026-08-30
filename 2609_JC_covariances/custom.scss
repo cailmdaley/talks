@@ -123,14 +123,16 @@
 // the running cost annotation, pinned to the top right
 .reveal .nka.has-cost .eqs { padding-right: 560px; }
 
-// the mask slide: two columns, picker pinned top-right beside the ledger
+// the mask slide: two columns
 .reveal .nka .two { display: flex; gap: 40px; align-items: flex-start; }
-.reveal .nka[data-step="2"] .eqs { padding-right: 520px; }
-.reveal .nka[data-step="2"] .pick { top: 2px; bottom: auto; }
 
+// pinned beside the matrix row rather than beside the ledger: the
+// narrow-kernel-approximation entry's note line can run wide enough to
+// reach the old top-right position and collide with it in every fragment
+// state that shows that entry.
 .reveal .nka .cost {
     position: absolute;
-    top: 0;
+    top: 168px;
     right: 0;
     font-size: 34px;
     color: #BC4538;
@@ -140,34 +142,22 @@
     i { font-style: italic; }
 }
 
-// the cinematic build: elements persist and only their opacity changes
-.reveal .nka .cine { transition: opacity .82s cubic-bezier(0.65, 0, 0.35, 1); }
-// used for one frame when a replay snaps back to empty, so the finished picture
-// does not cross-fade out while the first mode fades in
-.reveal .nka .nofade .cine,
-.reveal .nka svg.nofade .cine { transition: none !important; }
+// the click-driven mode build (slide 3): elements persist and only their
+// opacity changes, fragment click to fragment click. No eased transition —
+// click-driven state appears instantly, the way the fragment itself does.
 
-.reveal .nka .replay {
-    position: absolute;
-    bottom: 10px;
-    right: 0;
-    font-family: inherit;
-    font-size: 26px;
-    padding: 6px 22px;
-    border-radius: 8px;
-    border: 2px solid #C5B89E;
-    background: #FBF6E9;
-    color: #7A6F5C;
-    cursor: pointer;
-
-    &:hover { border-color: #BC4538; }
-}
-
-// mask picker
+// mask picker — ONE fixed position on every slide that carries it (bottom
+// left), so it does not jump around between slides. `.nka`'s own top offset
+// is identical on every content slide (measured: 201.47px viewport on the
+// mask/bandpowers/covariance slides), so an absolute `top` here lands at the
+// same screen position regardless of how tall that slide's own content is —
+// `bottom` would not, since .nka's height varies slide to slide. 843px clears
+// the tallest content on all three (mask slide bottoms out at 876px viewport,
+// well above this) and clears the footer (starts at 1035px viewport) below.
 .reveal .nka .pick {
     position: absolute;
-    bottom: -34px;      // clear of the panel above, so curves do not run behind it
-    right: 0;
+    top: 843px;
+    left: 0;
     display: flex;
     gap: 16px;
 
@@ -281,6 +271,18 @@
 
     b { color: #1B1611; font-weight: 600; }
 }
+// provenance badge: one consistent tag for every figure imported from a
+// paper, so paper imports are instantly distinguishable from our own toy
+// panels. Used inside .papercap (the two Wolz simulation slides) and inside
+// .figside (the Quaia figure), wherever an imported figure needs crediting.
+.reveal .nka .src {
+    display: block;
+    font-size: 21px;
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    color: #C5B89E;
+    margin-bottom: 6px;
+}
 .reveal .nka .papercap {
     flex: 0 0 470px;
     font-size: 23px;
@@ -288,14 +290,6 @@
     color: #7A6F5C;
     text-align: left;
 
-    .src {
-        display: block;
-        font-size: 21px;
-        font-variant: small-caps;
-        letter-spacing: 0.04em;
-        color: #C5B89E;
-        margin-bottom: 6px;
-    }
     i { font-style: italic; }
 }
 // W1's caption column quotes the paper verbatim

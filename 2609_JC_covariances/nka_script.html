@@ -47,17 +47,19 @@
 //                 covariance and Wolz slides do).
 //  · data-staged — the slide reveals its own panels with reveal fragments;
 //                 stageOf() turns the fragment index into a stage number that
-//                 the panel options and ledger `sub` read. Used by slide 4.
+//                 the panel options and ledger `sub` read. Used by slide 3
+//                 (the click-driven mode build below) and slide 4.
 //  · data-frag-step — simpler variant: the slide's step advances by one once
 //                 any fragment shows (the covariance slide: four-point → NKA).
-//  · cine       — the "sum of modes" build. Elements are created ONCE by
-//                 buildCine() and only their opacity changes, so the CSS
-//                 transitions actually run. setBeat(n) is the whole state
-//                 machine; the beat plan is documented above it. The running
-//                 sum is two cross-faded paths because path geometry cannot be
-//                 tweened, and it is rescaled every beat so what changes is the
-//                 STRUCTURE (a two-mode partial sum on a fixed scale looks like
-//                 nothing is happening).
+//  · cine       — the "modes" build on slide 3. Elements are created ONCE by
+//                 buildModes() and only their opacity changes, so the CSS
+//                 transitions actually run. setModeBeat(n) is the whole state
+//                 machine, n = stageOf(root) = how many mode-pairs have been
+//                 clicked in (0..5) — a pure function of n, so ArrowLeft
+//                 exactly undoes ArrowRight. No timer, no autoplay. The true
+//                 C(k) curve is drawn from the start; each click's dot lands
+//                 visibly ON that pre-drawn curve, which is what used to take
+//                 a "sum snaps to field" animation to show.
 //  · picker / NSRC / THC — module-level globals, deliberately shared across
 //                 slides: one mask and one catalogue run through the whole
 //                 deck, so changing sources on W1 is visible on W2 and W3.
@@ -114,8 +116,6 @@ function boot(){
                                    // where the NKA is visibly wrong but not absurd
   var NB = 12;                     // bandpower width, ~ the kernel width
   var MODES = [4, 12, 30, 78, 150];   // the modes that build the field, low k to high
-  var BEAT  = 620;                    // ms between beats; the fades run longer,
-                                      // so consecutive beats overlap slightly
 
   var INK='#1B1611', MUT='#7A6F5C', ACC='#BC4538', COB='#3D5BA0',
       TEAL='#3F8278', RULE='#C5B89E', FAINT='#C5B89E', GRID='#E0D5BF';
@@ -207,8 +207,9 @@ function boot(){
   //   How many neighbours each mode mixes with: the half-width of the smallest
   //   symmetric window in |W_m|^2 holding half the OFF-diagonal coupling power.
   //   The m = 0 self term carries most of |W|^2 for any mask, so counting it makes
-  //   every mask look narrow. One name for this everywhere in the deck: "± n
-  //   modes", said as "each k mixes with its n neighbours either side".
+  //   every mask look narrow. Used only to size the shaded kernel-width rect now
+  //   -- the "± n modes" label and caption that used to sit beside it were
+  //   retired; the number is said in words instead.
   function mixRadius(pow, mmax){
     var tot = 0, m;
     for(m=1;m<=mmax;m++) tot += 2*pow(m);
@@ -217,8 +218,6 @@ function boot(){
     while(acc < 0.5*tot && n < mmax){ n++; acc += pow(-n) + pow(n); }
     return Math.max(n, 1);
   }
-  function pmLabel(n){ return '\u00b1' + n + (n === 1 ? ' mode' : ' modes'); }
-  var WIDTH_CAPTION = 'kernel width — how many neighbouring modes each k mixes with';
 
   // ---------- derived ----------
   var Cin = new Float64Array(KMAX+2), Ctil = new Float64Array(KMAX+2);
@@ -397,33 +396,27 @@ function boot(){
     txt(s, PAD, y0+h+42, opts.xlabel || 'position  x', {fill:MUT});
   }
 
-  // ── the cinematic build ────────────────────────────────────────────────────
-  //   Modes fade in one at a time, low k to high; the running sum grows on top;
-  //   each mode's |a_k|^2 lights up on the spectrum below. The last beat adds
-  //   everything else at once, so the partial sum snaps onto the real field and
-  //   the five points become a curve. Elements are built once and only their
-  //   opacity changes, so the CSS transitions actually run.
-  function partialSum(upto){
-    var out = new Float64Array(NX);
-    for(var q=0;q<upto;q++){
-      var k = MODES[q];
-      for(var j=0;j<NX;j++) out[j] += modeAt(k,j);
-    }
-    return out;
-  }
-  function buildCine(s){
+  // ── the click-driven mode build ────────────────────────────────────────────
+  //   Slide 3 shows the true field once, up top (the .pA panel, shared with
+  //   slide 2). This panel is only the mode lanes + the spectrum: five clicks,
+  //   each landing one mode's lane and its |a_k|^2 dot together, with a dashed
+  //   connector between them while that pair is the most recent. The true
+  //   C(k) curve is drawn from the start (slide 3 opens with it already on
+  //   screen), so each dot's arrival is the moment it visibly lands ON the
+  //   curve — no snap animation needed to make that point. Elements are built
+  //   once and only their opacity changes, so the CSS transitions actually run.
+  //   Driven by stage = stageOf(root) (data-staged fragments), NOT a timer.
+  var NM = MODES.length;
+  function buildModes(s){
     clear(s);
-    var SUMH = 168, LANE = 52, CY0 = 226 + MODES.length*LANE, CH = 196;
-    var st = {modes:[], labels:[], pts:[], sumA:null, sumB:null, which:0, laneY:[],
-              curve:null, clabel:null, plus:null, link:null, done:null};
-    var mid = 34 + SUMH/2;
-    el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
-    txt(s, Math.max(PAD-82, 2), mid+9, 'a(x)', {fill:MUT});
+    var LANE = 42, CY0 = 30 + NM*LANE, CH = 170;
+    var st = {modes:[], labels:[], pts:[], lanes:[], laneY:[], curve:null, clabel:null,
+              plus:null, link:null};
 
     // one shared vertical scale for the lanes, so the spectrum is legible as
     // amplitude: the k = 78 mode really is taller than k = 30, because of the bump
     var big = 0, q, j;
-    for(q=0;q<MODES.length;q++)
+    for(q=0;q<NM;q++)
       for(j=0;j<NX;j+=4) big = Math.max(big, Math.abs(modeAt(MODES[q], j)));
     var lscale = LANE*0.40/Math.max(big,1e-9);
 
@@ -433,19 +426,9 @@ function boot(){
         d += (jj?'L':'M')+(PAD+AW*jj/(NX-1)).toFixed(1)+' '+(mid0 - vals[jj]*sc).toFixed(1)+' ';
       return d;
     }
-    //  Two sum paths, cross-faded: the running sum's geometry changes every
-    //  beat and cannot be tweened directly, so the old curve dissolves into the
-    //  new one instead of snapping.
-    st.sumA = el(s,'path',{d:'', fill:'none', stroke:INK,'stroke-width':3.5,
-                           opacity:0, class:'cine'});
-    st.sumB = el(s,'path',{d:'', fill:'none', stroke:INK,'stroke-width':3.5,
-                           opacity:0, class:'cine'});
-    st.which = 0;
-    st.sumH = SUMH; st.sumMid = mid;
-    st.lanes = [];
 
-    for(q=0;q<MODES.length;q++){
-      var k = MODES[q], y = 226 + q*LANE, lmid = y + LANE*0.45, one = new Float64Array(NX);
+    for(q=0;q<NM;q++){
+      var k = MODES[q], y = 30 + q*LANE, lmid = y + LANE*0.45, one = new Float64Array(NX);
       for(j=0;j<NX;j++) one[j] = modeAt(k,j);
       st.lanes.push(el(s,'line',{x1:PAD,y1:lmid,x2:PAD+AW,y2:lmid,stroke:GRID,
                                  'stroke-width':2, opacity:0, class:'cine'}));
@@ -455,107 +438,57 @@ function boot(){
       var t = txt(s, 8, lmid+9, 'k = '+k, {fill:MUT,'font-size':26, opacity:0, class:'cine'});
       st.labels.push(t);
     }
-    // above the sum row: it describes what got added to the sum, and every lane
-    // below is occupied by a full-width wave
-    st.plus = txt(s, PAD+AW-260, 26, '+  everything else',
+    // shown once every mode has landed: there are more modes than the five drawn
+    st.plus = txt(s, PAD+AW-320, 26, '+  every other mode',
                   {fill:MUT,'font-size':27, opacity:0, class:'cine'});
 
-    // the spectrum panel
+    // the spectrum panel — the true curve is drawn immediately, not staged
     var Y = logY(CY0, CH, KMAX);
     el(s,'line',{x1:PAD,y1:CY0+CH,x2:PAD+AW,y2:CY0+CH,stroke:RULE,'stroke-width':2});
     txt(s, 4, CY0+18, 'C(k)', {fill:MUT});
     txt(s, PAD, CY0+CH+42, 'wavenumber  k', {fill:MUT});
     var dc='';
     for(var kk=1;kk<KMAX;kk++) dc += (kk>1?'L':'M')+XK(kk,KMAX).toFixed(1)+' '+Y(Cin[kk]).toFixed(1)+' ';
-    st.curve = el(s,'path',{d:dc,fill:'none',stroke:INK,'stroke-width':3.5,opacity:0,class:'cine'});
-    st.clabel = txt(s, XK(150,KMAX), Y(Cfun(150))-26, 'true  C(k)', {fill:INK,opacity:0,class:'cine'});
-    // the connector that links a lane to its point while both are lit
+    st.curve = el(s,'path',{d:dc,fill:'none',stroke:INK,'stroke-width':3.5,opacity:1});
+    // labelled well clear of k=150 (the last mode dot lands right at k=150,
+    // and its connector would otherwise cut through the label)
+    st.clabel = txt(s, XK(115,KMAX), Y(Cfun(115))-26, 'true  C(k)', {fill:INK,opacity:1});
+    // the connector that links a lane to its point while both are the latest
     st.link = el(s,'line',{x1:0,y1:0,x2:0,y2:0,stroke:COB,'stroke-width':2,
                            'stroke-dasharray':'5 7',opacity:0,class:'cine'});
-    for(q=0;q<MODES.length;q++){
+    for(q=0;q<NM;q++){
       var kq = MODES[q];
       st.pts.push(el(s,'circle',{cx:XK(kq,KMAX),cy:Y(Cfun(kq)),r:10,fill:COB,opacity:0,class:'cine'}));
     }
-    s.__cine = st;
+    s.__modes = st;
     return st;
   }
-  //  Beat plan:  1..5  modes land, the running sum grows
-  //              6      "+ everything else": the sum snaps to the real field
-  //              7      the spectrum's curve draws, and the relations arrive
-  //              8..12  each mode's |a_k|^2 lands on the curve, flashing with
-  //                     its own lane so the two pictures are visibly the same
-  //                     five objects
-  var NM = MODES.length;
-  function setBeat(root, s, n){
-    var st = s.__cine; if(!st) return;
-    var landed = Math.min(n, NM);                 // how many modes are in
-    var summed = n >= NM + 1;                     // the field is complete
-    var curve  = n >= NM + 2;                     // the spectrum is drawn
-    var pt     = curve ? Math.min(n - (NM + 2), NM) : 0;   // points placed
-    var flash  = (curve && n <= 2*NM + 2) ? n - (NM + 2) : -1;  // 1-based lane
-
+  //  n = how many mode-pairs have landed (0..NM), driven directly by the
+  //  fragment stage — no timer, no autoplay. Clicking back to a lower n
+  //  exactly undoes the higher-n state since it's a pure function of n.
+  function setModeBeat(s, n){
+    var st = s.__modes; if(!st) return;
+    var landed = Math.min(n, NM);
     for(var q=0;q<NM;q++){
-      var on = (q < landed);
-      var lit = (flash === q + 1);
-      st.modes[q].style.opacity  = on ? (lit ? 1 : (summed ? 0.30 : 1)) : 0;
+      var on = (q < landed), lit = (q === landed - 1);
+      st.modes[q].style.opacity  = on ? 1 : 0;
       st.modes[q].setAttribute('stroke-width', lit ? 5 : 3);
       st.lanes[q].style.opacity  = on ? 1 : 0;
       st.labels[q].style.opacity = on ? 1 : 0;
       st.labels[q].setAttribute('fill', lit ? COB : MUT);
-      st.pts[q].style.opacity    = (q < pt) ? 1 : 0;
+      st.pts[q].style.opacity    = on ? 1 : 0;
       st.pts[q].setAttribute('r', lit ? 14 : 10);
     }
     st.link.style.opacity = 0;
-    if(flash >= 1 && flash <= NM){
-      var i = flash - 1;
+    if(landed >= 1){
+      var i = landed - 1;
       st.link.setAttribute('x1', st.pts[i].getAttribute('cx'));
       st.link.setAttribute('x2', st.pts[i].getAttribute('cx'));
       st.link.setAttribute('y1', st.laneY[i]);
       st.link.setAttribute('y2', st.pts[i].getAttribute('cy'));
       st.link.style.opacity = 1;
     }
-
-    // Each beat is rescaled to fill its row. A partial sum of a few modes really
-    // is a fraction of the field's amplitude, and drawn on a fixed scale it looks
-    // like nothing is happening — what changes beat to beat is the STRUCTURE.
-    var newD = (function(){
-      var vals = summed ? field : partialSum(landed), mx = 0, jj;
-      for(jj=0;jj<NX;jj++) mx = Math.max(mx, Math.abs(vals[jj]));
-      var sc = st.sumH*0.44/Math.max(mx,1e-9), d='';
-      for(jj=0;jj<NX;jj++)
-        d += (jj?'L':'M')+(PAD+AW*jj/(NX-1)).toFixed(1)+' '+(st.sumMid - vals[jj]*sc).toFixed(1)+' ';
-      return d;
-    })();
-    var live = st.which ? st.sumB : st.sumA, dead = st.which ? st.sumA : st.sumB;
-    if(live.getAttribute('d') !== newD){
-      dead.setAttribute('d', newD);
-      dead.style.opacity = n > 0 ? 1 : 0;
-      live.style.opacity = 0;
-      st.which = st.which ? 0 : 1;
-    } else {
-      live.style.opacity = n > 0 ? 1 : 0;
-    }
-    st.plus.style.opacity  = summed ? 1 : 0;
-    st.curve.style.opacity = curve ? 1 : 0;
-    st.clabel.style.opacity = curve ? 1 : 0;
-
-  }
-  var cineTimer = null;
-  function playCine(root, s){
-    if(PRINT) return;
-    clearInterval(cineTimer);
-    var n = 0, LAST = 2*NM + 2;
-    // snap to empty with transitions off, so a replay does not cross-fade the
-    // finished picture out while the first mode is fading in
-    s.classList.add('nofade');
-    if(s.__cine) s.__cine.done = null;
-    setBeat(root, s, 0);
-    void s.getBoundingClientRect();
-    s.classList.remove('nofade');
-    cineTimer = setInterval(function(){
-      n++; setBeat(root, s, n);
-      if(n >= LAST) clearInterval(cineTimer);
-    }, BEAT);
+    st.plus.style.opacity = (landed >= NM) ? 1 : 0;
   }
 
   function drawSpectrum(s, opts){
@@ -582,7 +515,9 @@ function boot(){
       var d2='';
       for(var k2=1;k2<KMAX;k2++) d2 += (k2>1?'L':'M')+XK(k2,KMAX).toFixed(1)+' '+Y(Ctil[k2]).toFixed(1)+' ';
       el(s,'path',{d:d2,fill:'none',stroke:COB,'stroke-width':3.5,'stroke-dasharray':'10 7'});
-      txt(s, XK(150,KMAX), Y(Ctil[150])+50, 'masked  C̃(k)', {fill:COB});
+      // up in the top-right corner, clear of both curves — following the
+      // curve down to k=150 runs it into the true-C(k) line and label there
+      txt(s, PAD+AW-380, y0+26, 'masked  C̃(k)', {fill:COB});
     }
     if(opts.binned) for(var b2=0;b2<NBIN;b2++){
       var kc = binCentre(b2);
@@ -596,6 +531,10 @@ function boot(){
       el(s,'circle',{cx:XK(kc3,KMAX),cy:Y(Cdecb[b3]),r:9,fill:TEAL});
     }
     if(opts.kernel){
+      // just the bump, unannotated — the width/±N mode-counting furniture
+      // (the "kernel |W|² at k0" label, the "how many neighbouring modes"
+      // caption, and the ±N bar under it) is said in words now, not labelled
+      // on every slide that shows the bump.
       var pk = 0, m;
       for(m=-N/2+1;m<N/2;m++) pk = Math.max(pk, kpow(m));
       var dk='';
@@ -608,16 +547,9 @@ function boot(){
       el(s,'rect',{x:XK(lo,KMAX),y:y0,width:Math.max(XK(hi,KMAX)-XK(lo,KMAX),3),height:h,
                    fill:COB,opacity:0.10});
       el(s,'path',{d:dk,fill:'none',stroke:COB,'stroke-width':3.5});
-      // the ± n bar, on the kernel itself, with one name for the concept
-      el(s,'line',{x1:XK(lo,KMAX),y1:y0+h+26,x2:XK(hi,KMAX),y2:y0+h+26,
-                   stroke:COB,'stroke-width':8,'stroke-linecap':'round'});
-      txt(s, XK(hi,KMAX)+18, y0+h+36, pmLabel(hw), {fill:COB,'font-size':29});
-      var lx = PAD + AW - 790;
-      txt(s, lx, y0+26, 'kernel  |W|²  at  k₀ = '+K0, {fill:COB});
-      txt(s, lx, y0+64, WIDTH_CAPTION, {fill:MUT,'font-size':26});
       if(opts.err === true){
         var v = pullOutError(K0);
-        txt(s, lx, y0+102, 'C at k₀ vs its kernel average:  '+pct(v),
+        txt(s, PAD+AW-790, y0+26, 'C at k₀ vs its kernel average:  '+pct(v),
             {fill: Math.abs(v)>0.05 ? ACC : COB});
       }
     }
@@ -659,9 +591,27 @@ function boot(){
   var NSRC = 160, THC = 0.0;          // sources, and the cloud size in units of L
   var CATSEED = 90210;
 
+  //  Reject-sampled with a minimum grid-cell separation: two sources with no
+  //  separation enforced can land in the same NX cell (or drift there as N
+  //  grows), and at minimum cloud width (thc=0, catGrid's delta branch)
+  //  those collide into one spike of double height — reads as a bug, not the
+  //  "weights add" story this slide is not telling. minSep degrades toward 1
+  //  cell as n approaches NX so placement always stays feasible.
   function catPositions(n, seed){
     var rng = mulberry(seed || CATSEED), xs = [];
-    for(var i=0;i<n;i++) xs.push(rng());
+    var minSep = Math.max(1, Math.min(4, Math.floor(NX/n/1.5))) / NX;
+    for(var i=0;i<n;i++){
+      var x, ok, tries = 0;
+      do {
+        x = rng(); ok = true;
+        for(var j=0;j<xs.length;j++){
+          var d = Math.abs(x - xs[j]); d = Math.min(d, 1-d);
+          if(d < minSep){ ok = false; break; }
+        }
+        tries++;
+      } while(!ok && tries < 200);
+      xs.push(x);
+    }
     xs.sort(function(a,b){ return a-b; });
     return xs;
   }
@@ -737,36 +687,41 @@ function boot(){
     txt(s, PAD, by+58, 'position  x', {fill:MUT});
   }
 
-  //  the catalogue mask's kernel: flat and ratty. The mask is itself a catalogue,
-  //  so its own spectrum carries a white floor from its self-pairs — Nw = sum
-  //  w_i^2 / 4pi — that never decays. The kernel is built from that spectrum, so
-  //  it inherits the floor: flat forever, no scale anywhere.
+  //  the catalogue mask's own power spectrum, C-tilde^w(k) -- plotted vs mode
+  //  separation Δk on a log-log axis, the same idiom as the Quaia figure
+  //  beside it. It is also literally the coupling kernel: in this formalism
+  //  the kernel at separation Δk IS the mask power spectrum at k = Δk, so one
+  //  curve carries both readings. The toy mask has no large-scale envelope
+  //  (its sources are drawn uniformly), so unlike Quaia it never has a
+  //  falling part to show -- it is flat and ratty at every separation, which
+  //  is itself the point: a comb of deltas has power at every scale, so
+  //  there is no scale for a kernel to narrow around. The floor it rattles
+  //  around is Nw, the mask's own shot-noise floor: sum w_i^2 / 4pi.
   function drawCatKernel(s, opts){
     clear(s); geom(opts);
-    var PAD = _x0, AW = _w, y0 = opts.y0 || 44, h = opts.h || 210, MM = 120;
+    // y0 carries real headroom above the plot: the toy floor sits within ~13px
+    // of the top of the log axis (the curve barely varies at all), so the
+    // title needs real clearance above y0 or it collides with the floor label.
+    var PAD = _x0, AW = _w, y0 = opts.y0 || 80, h = opts.h || 150, MM = 120;
     catBuild();
     var pk = 0, p = [], m, floor = 0, nf = 0;
-    for(m=-MM;m<=MM;m++){ var v = catKpow(m); p.push(v); if(v>pk) pk=v;
-                          if(Math.abs(m) > 6){ floor += v; nf++; } }
+    for(m=1;m<=MM;m++){ var v = catKpow(m); p.push(v); if(v>pk) pk=v;
+                        if(m > 6){ floor += v; nf++; } }
     floor = nf ? floor/nf : 0;
     function Y(v){ return y0 + h - (Math.log10(Math.max(v/pk,1e-6))/6 + 1)*h; }
+    function X(m){ return PAD + AW*Math.log10(m)/Math.log10(MM); }
     el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
     var d='';
     for(var q=0;q<p.length;q++)
-      d += (q?'L':'M')+(PAD+AW*q/(p.length-1)).toFixed(1)+' '+Y(p[q]).toFixed(1)+' ';
+      d += (q?'L':'M')+X(q+1).toFixed(1)+' '+Y(p[q]).toFixed(1)+' ';
     el(s,'path',{d:d,fill:'none',stroke:ACC,'stroke-width':2.5,opacity:0.75});
-    // the floor it rattles around
+    // the floor it rattles around, in the paper's own notation
     el(s,'line',{x1:PAD,y1:Y(floor),x2:PAD+AW,y2:Y(floor),stroke:INK,
                  'stroke-width':3,'stroke-dasharray':'12 8'});
-    // clear of the curve, which rattles about half a decade either side
-    txt(s, PAD, Y(floor)-40, 'the mask\u2019s own white floor', {fill:INK,'font-size':27});
-    txt(s, PAD, y0-16, 'kernel  |W|²   (log)', {fill:ACC});
-    // the axis is mode separation, so mark its origin
-    var cx = PAD + AW/2;
-    el(s,'line',{x1:cx,y1:y0+h,x2:cx,y2:y0+h+12,stroke:RULE,'stroke-width':2.5});
-    txt(s, cx-34, y0+h+40, 'Δk = 0', {fill:MUT,'font-size':26});
-    txt(s, PAD, y0+h+78, opts.foot || 'mode separation Δk — the kernel never narrows',
-        {fill:MUT,'font-size':26});
+    txtsub(s, PAD, Y(floor)-24, 'N', 'w', '  —  the mask\u2019s own shot-noise floor',
+           {fill:INK,'font-size':27});
+    txt(s, PAD, y0-56, 'power spectrum of the toy mask   (log)', {fill:ACC});
+    txt(s, PAD, y0+h+44, opts.foot || 'mode separation Δk   (log)', {fill:MUT,'font-size':26});
   }
 
   //  W2 — the product that breaks. Two catalogues never coincide, so their mask
@@ -876,11 +831,11 @@ function boot(){
 
     {tex:'\\tilde a(x)=w(x)\\,a(x)', step:2, name:'mask', col:1, row:2, sub:0},
     {tex:'\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', step:2, name:'mode coupling', col:2, row:2, sub:1},
-    {tex:'\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', step:2, name:'pseudo-C(k)', col:4, row:2, sub:2},
+    {tex:'\\langle \\tilde C(k)\\rangle=\\sum_{k\'} |W_{k-k\'}|^2\\,C(k\')', step:2, name:'pseudo-C(k)', col:4, row:2, sub:2},
 
     {tex:'\\tilde C_b=\\frac{1}{N_b}\\sum_{k\\in b}\\tilde C(k)', step:3, name:'bandpower', col:1, row:3},
-    {tex:'M_{bb\'}=\\frac{1}{N_b}\\sum_{k\\in b}\\sum_{k\'\\in b\'} M_{kk\'}', step:3, name:'binned coupling', col:2, row:3},
-    {tex:'\\hat C_b=(M_{bb\'})^{-1}\\,\\tilde C_{b\'}', step:3, name:'decoupled', col:3, row:3},
+    {tex:'(|W|^2)_{bb\'}=\\frac{1}{N_b}\\sum_{k\\in b}\\sum_{k\'\\in b\'} |W_{k-k\'}|^2', step:3, name:'binned coupling', col:2, row:3},
+    {tex:'\\hat C_b=\\big[(|W|^2)_{bb\'}\\big]^{-1}\\,\\tilde C_{b\'}', step:3, name:'decoupled', col:3, row:3},
 
     {tex:'{\\rm Cov}\\big(\\tilde C(k),\\tilde C(k\')\\big)\\propto\\Big|\\sum_{k\'\'} W_{k-k\'\'}\\,W^{*}_{k\'-k\'\'}\\,C(k\'\')\\Big|^{2}',
      step:4, name:'four-point', col:1, row:1, span:2,
@@ -899,6 +854,9 @@ function boot(){
     for(var i=0;i<EQS.length;i++){
       var e = EQS[i];
       if(e.step > step || e.step < from) continue;
+      // a staged equation (has `sub`) is invisible until the fragment that
+      // introduces it — not just un-highlighted. After that it stays, dimmed.
+      if(e.sub != null && e.step === step && stage < e.sub) continue;
       var live = (e.step === step) && (e.sub == null || e.sub === stage);
       html += '<div class="' + (live?'on':'') + '" style="grid-column:' + e.col +
               (e.span ? ' / span ' + e.span : '') + ';grid-row:' + e.row + '">' +
@@ -972,15 +930,10 @@ function boot(){
                           x0: +pA.dataset.x0 || undefined, w: +pA.dataset.w || undefined});
     var pM = q('.pM');
     if(pM){
-      if(!pM.__cine){
-        buildCine(pM);
-        //  Rest at beat 0 (empty). Painting the finished picture here and then
-        //  wiping it to start the build is exactly the flash you see on entry.
-        //  A print export has no animation, so give it the finished state.
-        setBeat(root, pM, PRINT ? MODES.length + 1 : 0);
-      }
-      var rb = root.querySelector('.replay');
-      if(rb) rb.onclick = function(){ playCine(root, pM); };
+      if(!pM.__modes) buildModes(pM);
+      // click-driven: n is the fragment stage (0 = nothing landed yet). A
+      // print export has no clicks to walk, so give it the finished state.
+      setModeBeat(pM, PRINT ? NM : stage);
     }
     var pK = q('.pK');
     if(pK) drawKernelPanel(pK, {h: +pK.dataset.h || 200,
@@ -1069,8 +1022,6 @@ function boot(){
       var r = ev.currentSlide && ev.currentSlide.querySelector('.nka[data-step]');
       if(!r) return;
       renderOne(r); typeset();
-      var cine = r.querySelector('.pM');
-      if(cine && cine.__cine) playCine(r, cine);
     });
   })();
 }
