@@ -127,13 +127,18 @@
 .reveal #nka-root #scene2.solo #wE,
 .reveal #nka-root #scene2.solo #wD { display: none; }
 .reveal #nka-root #scene2.solo canvas { width: 470px !important; height: 470px !important; }
-.reveal #nka-root.solo-mode #nka-side {
+// The cost label: a running annotation pinned to the caption line, right-aligned.
+.reveal #nka-root #nka-side {
     position: absolute;
-    left: 600px;
-    top: 230px;
-    width: 640px;
-    font-size: 32px;
-    line-height: 1.5;
+    top: 0;
+    right: 0;
+    font-size: 34px;
+    color: #BC4538;
+    text-align: right;
+
+    sub { font-size: 0.62em; }
+    sup { font-size: 0.62em; }
+    i   { font-style: italic; }
 }
 
 .reveal #nka-root .mlab {
@@ -145,4 +150,4 @@
     b { color: #1B1611; font-weight: 600; display: block; font-size: 29px; }
 }
 
-.reveal #nka-root #nka-side { font-size: 28px; color: #7A6F5C; margin-top: 10px; }
+

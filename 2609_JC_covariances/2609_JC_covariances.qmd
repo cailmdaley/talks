@@ -577,9 +577,14 @@ include-in-header:
     'mask × field  →  kernel ∗ modes',
     'the kernel smears the spectrum',
     'the estimator is exact: invert the coupling',
-    'the error bar needs a four-point sum — O(k⁶)',
+    'the error bar needs a four-point sum',
     'narrow-kernel approximation: pull C out, one kernel is left'
   ];
+  // The cost, as a running label: the exact four-point sum, then what the NKA
+  // buys you. Written as HTML because MathJax has already typeset the page.
+  var COST = ['','','','','','',
+              '<i>O</i>(k<sub>max</sub><sup>6</sup>)',
+              '<i>O</i>(k<sub>max</sub><sup>3</sup>) — same as the estimator'];
   var NSTEP = 8, step = 0;
   var caps = document.getElementById('nka-cap'), side = document.getElementById('nka-side');
   var dots = document.getElementById('dots');
@@ -597,7 +602,7 @@ include-in-header:
   }
 
   function render(){
-    caps.innerHTML = CAPS[step]; side.innerHTML = '';
+    caps.innerHTML = CAPS[step]; side.innerHTML = COST[step];
     equations();
     var zoo = (step === 2), s2 = step >= 7;
     document.getElementById('scene1').classList.toggle('hidden', zoo || s2);
