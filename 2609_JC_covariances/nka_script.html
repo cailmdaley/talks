@@ -112,16 +112,21 @@ function boot(){
   }
   function kpow(m){ var r = Wat(m,0), i = Wat(m,1); return r*r + i*i; }
 
-  //  The reach of the OFF-diagonal coupling. The m = 0 self term carries most of
-  //  |W|^2 for any mask, so including it makes every mask look narrow.
-  function powerWidth(pow, mmax){
+  //   How many neighbours each mode mixes with: the half-width of the smallest
+  //   symmetric window in |W_m|^2 holding half the OFF-diagonal coupling power.
+  //   The m = 0 self term carries most of |W|^2 for any mask, so counting it makes
+  //   every mask look narrow. One name for this everywhere in the deck: "± n
+  //   modes", said as "each k mixes with its n neighbours either side".
+  function mixRadius(pow, mmax){
     var tot = 0, m;
     for(m=1;m<=mmax;m++) tot += 2*pow(m);
     if(tot <= 0) return 1;
     var acc = 0, n = 0;
     while(acc < 0.5*tot && n < mmax){ n++; acc += pow(-n) + pow(n); }
-    return Math.max(2*n, 1);
+    return Math.max(n, 1);
   }
+  function pmLabel(n){ return '\u00b1' + n + (n === 1 ? ' mode' : ' modes'); }
+  var WIDTH_CAPTION = 'kernel width — how many neighbouring modes each k mixes with';
 
   // ---------- derived ----------
   var Cin = new Float64Array(KMAX+2), Ctil = new Float64Array(KMAX+2);
@@ -243,7 +248,12 @@ function boot(){
     e.textContent=s; return e; }
   function clear(s){ while(s.firstChild) s.removeChild(s.firstChild); }
   var PAD = 90, W1 = 1730, AW = W1 - PAD - 40;
-  function XK(k, kmax){ return PAD + AW*(k-1)/((kmax||KMAX)-1); }
+  //  Panels take an optional plot width so they can sit side by side in columns;
+  //  everything defaults to the full-bleed geometry.
+  var _x0 = PAD, _w = AW;
+  function geom(opts){ _x0 = (opts && opts.x0 != null) ? opts.x0 : PAD;
+                       _w  = (opts && opts.w  != null) ? opts.w  : AW; }
+  function XK(k, kmax){ return _x0 + _w*(k-1)/((kmax||KMAX)-1); }
 
   //  The range has to cover the whole curve: the bump peak is NOT the maximum —
   //  C(1) is higher — and clipping the first few modes off the top looks like a
@@ -255,7 +265,8 @@ function boot(){
 
   // ---------- panels ----------
   function drawField(s, opts){
-    clear(s);
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w;
     var h = opts.h, y0 = opts.y0 || 30, mid = y0 + h/2;
     el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
     if(opts.mask){
@@ -267,6 +278,7 @@ function boot(){
       for(var j2=0;j2<NX;j2++) d2 += (j2?'L':'M')+(PAD+AW*j2/(NX-1)).toFixed(1)+' '+(y0+h-mask[j2]*h*0.94).toFixed(1)+' ';
       el(s,'path',{d:d2,fill:'none',stroke:COB,'stroke-width':3});
       txt(s, PAD+AW-230, y0+28, 'mask  w(x)', {fill:COB});
+      txt(s, PAD, y0+28, 'observed  w·a', {fill:INK, 'font-size':27});
     }
     function path(masked, col, wid){
       var d='';
@@ -278,7 +290,7 @@ function boot(){
     }
     if(opts.mask){ path(false, FAINT, 2); path(true, INK, 3); }
     else path(false, INK, 3);
-    txt(s, 8, mid+9, 'a(x)', {fill:MUT});
+    txt(s, Math.max(PAD-82, 2), mid+9, 'a(x)', {fill:MUT});
     txt(s, PAD, y0+h+42, opts.xlabel || 'position  x', {fill:MUT});
   }
 
@@ -303,7 +315,7 @@ function boot(){
               curve:null, clabel:null, plus:null, done:null};
     var mid = 40 + SUMH/2;
     el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
-    txt(s, 8, mid+9, 'a(x)', {fill:MUT});
+    txt(s, Math.max(PAD-82, 2), mid+9, 'a(x)', {fill:MUT});
 
     // one shared vertical scale for the lanes, so the spectrum is legible as
     // amplitude: the k = 78 mode really is taller than k = 30, because of the bump
@@ -410,10 +422,11 @@ function boot(){
   }
 
   function drawSpectrum(s, opts){
-    clear(s);
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w;
     var y0 = opts.y0 || 26, h = opts.h, Y = logY(y0,h,KMAX);
     el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
-    txt(s, 4, y0+18, 'C(k)', {fill:MUT});
+    txt(s, Math.max(PAD-86, 2), y0+18, 'C(k)', {fill:MUT});
     if(opts.xlabel !== false) txt(s, PAD, y0+h+42, 'wavenumber  k', {fill:MUT});
 
     if(opts.bins){
@@ -460,7 +473,7 @@ function boot(){
         var kk2 = K0 - m; if(kk2 < 0.5 || kk2 > KMAX) continue;
         dk += (dk?'L':'M')+XK(kk2,KMAX).toFixed(1)+' '+(y0+h - (opts.kh||150)*kpow(m)/pk).toFixed(1)+' ';
       }
-      var hw = powerWidth(kpow, N/2-1)/2;
+      var hw = mixRadius(kpow, N/2-1);
       var lo = Math.max(K0-hw,1), hi = Math.min(K0+hw,KMAX-1);
       el(s,'rect',{x:XK(lo,KMAX),y:y0,width:Math.max(XK(hi,KMAX)-XK(lo,KMAX),3),height:h,fill:COB,opacity:0.10});
       el(s,'path',{d:dk,fill:'none',stroke:COB,'stroke-width':3.5});
@@ -470,6 +483,29 @@ function boot(){
         txt(s, lx, y0+64, 'C at k₀ vs its kernel average:  '+pct(v),
             {fill: Math.abs(v)>0.05 ? ACC : COB});
     }
+  }
+
+  //  The kernel on its own axes, in mode separation, with the "± n modes" bar.
+  //  Log power, because a complex mask's damage is in sidelobes that a linear
+  //  axis hides completely.
+  function drawKernelPanel(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, y0 = opts.y0 || 46, h = opts.h || 200, MM = 60;
+    var pk = 0, p = [], m;
+    for(m=-MM;m<=MM;m++){ var v = kpow(m); p.push(v); if(v>pk) pk=v; }
+    el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
+    var d='';
+    for(var q=0;q<p.length;q++){
+      var lg = Math.log10(Math.max(p[q]/pk,1e-5))/5 + 1;
+      d += (q?'L':'M')+(PAD+AW*q/(p.length-1)).toFixed(1)+' '+(y0+h-lg*h).toFixed(1)+' ';
+    }
+    el(s,'path',{d:d,fill:'none',stroke:ACC,'stroke-width':3});
+    var n = mixRadius(kpow, MM), cq = (p.length-1)/2;
+    el(s,'line',{x1:PAD+AW*(cq-n)/(p.length-1),y1:y0+h+26,x2:PAD+AW*(cq+n)/(p.length-1),y2:y0+h+26,
+                 stroke:ACC,'stroke-width':8,'stroke-linecap':'round'});
+    txt(s, PAD+AW*(cq+n)/(p.length-1)+18, y0+h+36, pmLabel(n), {fill:ACC,'font-size':29});
+    txt(s, PAD, y0-16, 'kernel  |W|²   (log)', {fill:ACC,'font-size':28});
+    txt(s, PAD, y0+h+70, WIDTH_CAPTION, {fill:MUT,'font-size':26});
   }
 
   function drawZoo(s){
@@ -495,11 +531,11 @@ function boot(){
         dk += (q?'L':'M')+(KX+KW*q/(p.length-1)).toFixed(1)+' '+(y+h-lg*h).toFixed(1)+' ';
       }
       el(s,'path',{d:dk,fill:'none',stroke:ACC,'stroke-width':3});
-      var wid = powerWidth(function(mm){ var ii=(mm+N)%N; return T.re[ii]*T.re[ii]+T.im[ii]*T.im[ii]; }, MM);
-      var cq=(p.length-1)/2, hw=wid/2;
+      var wid = mixRadius(function(mm){ var ii=(mm+N)%N; return T.re[ii]*T.re[ii]+T.im[ii]*T.im[ii]; }, MM);
+      var cq=(p.length-1)/2, hw=wid;
       el(s,'line',{x1:KX+KW*(cq-hw)/(p.length-1),y1:y+h+24,x2:KX+KW*(cq+hw)/(p.length-1),y2:y+h+24,
                    stroke:ACC,'stroke-width':8,'stroke-linecap':'round'});
-      txt(s, KX+KW*(cq+hw)/(p.length-1)+20, y+h+34, wid+' modes', {fill:ACC,'font-size':27});
+      txt(s, KX+KW*(cq+hw)/(p.length-1)+20, y+h+34, pmLabel(wid), {fill:ACC,'font-size':27});
     }
     txt(s, PAD, 30, 'mask  w(x)', {fill:COB,'font-size':29});
     txt(s, KX, 30, 'kernel  |W|²   (log)', {fill:ACC,'font-size':29});
@@ -547,11 +583,11 @@ function boot(){
     ['a(x)=\\sum_k a_k\\,e^{+ikx}', 1, 'inverse'],
     ['C(k)=\\langle |a_k|^2\\rangle', 1, 'power spectrum'],
     ['\\tilde a(x)=w(x)\\,a(x)', 2, 'mask'],
-    ['\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', 4, 'mode coupling'],
-    ['\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', 5, 'pseudo-C(k)'],
-    ['\\langle \\hat C_b\\rangle = (M_{bb\'})^{-1}\\langle \\tilde C_{b\'}\\rangle = C_b', 6, 'decoupling · bandpowers'],
-    ['{\\rm Cov}\\propto\\big|\\textstyle\\sum_{k\'\'} W_{k-k\'\'}W^{*}_{k\'-k\'\'}C(k\'\')\\big|^{2}', 7, 'four-point'],
-    ['{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,w_bw_d)', 8, 'narrow-kernel approximation']
+    ['\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', 2, 'mode coupling'],
+    ['\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', 2, 'pseudo-C(k)'],
+    ['\\langle \\hat C_b\\rangle = (M_{bb\'})^{-1}\\langle \\tilde C_{b\'}\\rangle = C_b', 3, 'decoupling · bandpowers'],
+    ['{\\rm Cov}\\propto\\big|\\textstyle\\sum_{k\'\'} W_{k-k\'\'}W^{*}_{k\'-k\'\'}C(k\'\')\\big|^{2}', 4, 'four-point'],
+    ['{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,w_bw_d)', 5, 'narrow-kernel approximation']
   ];
   function ledger(host, step){
     var html = '';
@@ -579,8 +615,8 @@ function boot(){
   }
 
   // ---------- render one slide ----------
-  var COST = {7:'<i>O</i>(k<sub>max</sub><sup>6</sup>)',
-              8:'<i>O</i>(k<sub>max</sub><sup>3</sup>) — same as the estimator'};
+  var COST = {4:'<i>O</i>(k<sub>max</sub><sup>6</sup>)',
+              5:'<i>O</i>(k<sub>max</sub><sup>3</sup>) — same as the estimator'};
   function renderOne(root){
     var step = +root.getAttribute('data-step');
     var q = function(sel){ return root.querySelector(sel); };
@@ -595,7 +631,8 @@ function boot(){
     var pk = q('.pick'); if(pk) picker(pk);
 
     var pA = q('.pA');
-    if(pA) drawField(pA, {h: +pA.dataset.h || 200, mask: step >= 2});
+    if(pA) drawField(pA, {h: +pA.dataset.h || 200, mask: step >= 2,
+                          x0: +pA.dataset.x0 || undefined, w: +pA.dataset.w || undefined});
     var pM = q('.pM');
     if(pM){
       if(!pM.__cine){
@@ -608,9 +645,14 @@ function boot(){
       var rb = root.querySelector('.replay');
       if(rb) rb.onclick = function(){ playCine(root, pM); };
     }
+    var pK = q('.pK');
+    if(pK) drawKernelPanel(pK, {h: +pK.dataset.h || 200,
+                                x0: +pK.dataset.x0 || undefined, w: +pK.dataset.w || undefined});
     var pC = q('.pC');
     if(pC) drawSpectrum(pC, {
       h: +pC.dataset.h || 260,
+      x0: +pC.dataset.x0 || undefined,
+      w:  +pC.dataset.w  || undefined,
       marks: pC.dataset.marks === '1',
       kernel: pC.dataset.kernel === '1',
       kh: +pC.dataset.kh || 150,

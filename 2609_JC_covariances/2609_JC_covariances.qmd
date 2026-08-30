@@ -82,66 +82,49 @@ Throw away the phases, keep the squared amplitudes, and C(k) is the whole statis
 of a Gaussian field. It is what we are trying to measure.
 :::
 
-## We only see part of it {.nka-slide}
+## Multiplying by a mask convolves the modes {.nka-slide}
 
 ```{=html}
 <div class="nka" data-step="2">
 <div class="eqs"></div>
-<svg class="pA" data-h="260" viewBox="0 0 1730 350" width="1730" height="350"></svg>
-<svg class="pC" data-h="250" viewBox="0 0 1730 340" width="1730" height="340"></svg>
-</div>
-```
-
-::: {.notes}
-Now the mask. We observe the field times a window — and note the window is not a box. Its edges are tapered, apodized, and that taper turns out to matter as much as the size of the footprint.
-:::
-
-## Complexity, not size, sets the kernel {.nka-slide}
-
-```{=html}
-<div class="nka" data-step="3">
-<div class="eqs"></div>
-<svg class="pZ" viewBox="0 0 1730 660" width="1730" height="660"></svg>
-</div>
-```
-
-::: {.notes}
-Multiplying in position space is convolving in harmonic space, and the shape of that convolution kernel is set by the mask's complexity, not just its area. Wide and smoothly apodized buys a compact kernel. Small buys a broader one. Holes and hard edges buy a kernel with sidelobes that reach across tens of modes — and that third picture is what a real survey footprint looks like.
-:::
-
-## Multiplying by the mask convolves the modes {.nka-slide}
-
-```{=html}
-<div class="nka" data-step="4">
-<div class="eqs"></div>
-<svg class="pA" data-h="200" viewBox="0 0 1730 290" width="1730" height="290"></svg>
-<svg class="pC" data-h="290" data-kernel="1" viewBox="0 0 1730 390" width="1730" height="390"></svg>
 <div class="pick"></div>
+<div class="two">
+  <div>
+    <svg class="pA" data-h="470" data-x0="96" data-w="664"
+         viewBox="0 0 790 610" width="790" height="610"></svg>
+  </div>
+  <div>
+    <svg class="pK" data-h="190" data-x0="104" data-w="726"
+         viewBox="0 0 880 330" width="880" height="330"></svg>
+    <svg class="pC" data-h="250" data-x0="104" data-w="726" data-tilde="1"
+         viewBox="0 0 880 340" width="880" height="340"></svg>
+  </div>
+</div>
 </div>
 ```
 
 ::: {.notes}
-So each observed mode is no longer its own. It is a weighted sum of its neighbours, with the weights given by the mask's transform. Switch masks and watch the kernel: this is the object that everything downstream depends on.
-:::
+Now the mask, and this is the slide the rest of the talk leans on.
 
-## The kernel smears the spectrum {.nka-slide}
+On the left: we observe the field times a window. Note the window is not a box — its edges are
+tapered, apodized, and that taper matters as much as the size of the footprint.
 
-```{=html}
-<div class="nka" data-step="5">
-<div class="eqs"></div>
-<svg class="pC" data-h="440" data-kernel="1" data-tilde="1" data-kh="220" viewBox="0 0 1730 560" width="1730" height="560"></svg>
-<div class="pick"></div>
-</div>
-```
+On the right, what that does. Multiplying in position space is convolving in harmonic space,
+so each observed mode is no longer its own: it is a weighted sum of its neighbours, and the
+kernel says how many neighbours. Take the expectation and the smearing becomes a matrix —
+the pseudo-spectrum, in red, is the true spectrum seen through the coupling matrix. Watch the
+bump get rounded off.
 
-::: {.notes}
-Take the expectation and the smearing becomes a matrix. The pseudo-spectrum you measure is the true spectrum seen through the coupling matrix M — the bump gets rounded off, the whole curve shifts. That much is exact: M is something you compute, not something you approximate.
+Now switch masks. Wide and smoothly apodized mixes each mode with one neighbour either side.
+Small, a couple. Holes and hard edges — and that is what a real survey footprint looks like —
+five, with sidelobes reaching much further than that. Same area in the last two cases; the
+difference is entirely complexity. Everything downstream is a consequence of this number.
 :::
 
 ## Bandpowers make the coupling invertible {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="6">
+<div class="nka" data-step="3">
 <div class="eqs"></div>
 <svg class="pC" data-h="440" data-tilde="1" data-bins="1" data-binned="1" data-decoupled="1" viewBox="0 0 1730 560" width="1730" height="560"></svg>
 <div class="pick"></div>
@@ -155,7 +138,7 @@ And you invert it. But not mode by mode: the mask does not only smear modes, it 
 ## The error bar needs a four-point sum {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="7">
+<div class="nka" data-step="4">
 <div class="eqs"></div>
 <div class="cost"></div>
 <svg class="pC" data-h="420" data-kernel="1" data-kh="210" viewBox="0 0 1730 540" width="1730" height="540"></svg>
@@ -170,7 +153,7 @@ The estimator is exact. Its uncertainty is not. The covariance of a quadratic es
 ## The narrow-kernel approximation {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="8">
+<div class="nka" data-step="5">
 <div class="eqs"></div>
 <div class="cost"></div>
 <div class="mrow">
@@ -222,11 +205,15 @@ Here is the trick. If C barely changes across the width of the kernel, evaluate 
     return p.map(function(v){return v/mx;});}
   // effective coupling width: full width of the smallest symmetric window in
   // |W|^2 holding half the kernel power (same definition as the python side)
+  // half-width of the smallest symmetric window holding half the OFF-diagonal
+  // coupling power — "± n modes", the same quantity and the same words as the
+  // rest of the deck
   function kwidth(k){var c=(k.length-1)/2,tot=0,i;
-    for(i=0;i<k.length;i++)tot+=k[i];
-    var acc=k[c],n=0;
+    for(i=1;i<=c;i++)tot+=k[c-i]+k[c+i];
+    var acc=0,n=0;
     while(acc<0.5*tot&&n<c){n++;acc+=k[c-n]+k[c+n];}
-    return Math.max(2*n,1);}
+    return Math.max(n,1);}
+  function pmLabel(n){return '\u00b1'+n+(n===1?' mode':' modes');}
 
   var PAD=90, AW=1730-PAD-40;
   function drawMask(f,w){
@@ -249,19 +236,19 @@ Here is the trick. If C barely changes across the width of the kernel, evaluate 
     var A=30,B=130,NP=B-A;      // show the central +-50 modes
     for(var i=A;i<=B;i++)d+=(i>A?'L':'M')+(x0+AW*(i-A)/NP).toFixed(1)+' '+(y0+h-k[i]*h).toFixed(1)+' ';
     el(s,'path',{d:d,fill:'none',stroke:'#BC4538','stroke-width':4});
-    var half=kwidth(k)/2, cc=(k.length-1)/2-A;
+    var half=kwidth(k), cc=(k.length-1)/2-A;
     var lo=Math.max(cc-half,0), hi=Math.min(cc+half,NP);
     el(s,'line',{x1:x0+AW*lo/NP,y1:y0+h+26,x2:x0+AW*hi/NP,y2:y0+h+26,
                  stroke:'#BC4538','stroke-width':9,'stroke-linecap':'round'});
     txt(s,x0,y0-2,'mask kernel  |W|²',{fill:'#BC4538'});
-    txt(s,x0,y0+h+74,'mode separation  k − k′');
+    txt(s,x0,y0+h+74,'kernel width — how many neighbouring modes each k mixes with',{fill:'#7A6F5C'});
   }
 
   var frames=[],i=0,timer=null;
   for(var t=0;t<28;t++){var f=0.60-(0.60-0.06)*t/27;var w=mask(f);var k=kern(w);
     frames.push({f:f,w:w,k:k,fw:kwidth(k)});}
   function show(j){var fr=frames[j];drawMask(fr.f,fr.w);drawKernel(fr.k);
-    document.getElementById('s3n').textContent='kernel  '+fr.fw+' modes';}
+    document.getElementById('s3n').textContent=pmLabel(fr.fw);}
   function play(){clearInterval(timer);i=0;show(0);
     timer=setInterval(function(){i++;if(i>=frames.length){clearInterval(timer);return;}
       show(i);},260);}
@@ -407,6 +394,7 @@ real-space covariance.
 (function(){
   var D=window.NKA_DATA.slide5, C=D.cases;
   var NS='http://www.w3.org/2000/svg', COL=['#3D5BA0','#C49333','#BC4538'];
+  function pm(n){return '\u00b1'+n+(n===1?' mode':' modes');}
   function el(p,t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);
     p.appendChild(e);return e;}
   function txt(p,x,y,s,a){var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,
@@ -431,14 +419,14 @@ real-space covariance.
       el(s,'path',{d:d2,fill:'none',stroke:COL[c2],'stroke-width':3,opacity:.85});
     }
     txt(s,X0,Y0-16,'kernel  |W|²');
-    // FWHM bars — the width the comb structure hides
+    // kernel-width bars: the reach the comb structure hides
     for(var c3=0;c3<=upto;c3++){
-      var kk=C[c3].kernel, cc=(kk.length-1)/2, hw=C[c3].fwhm/2;
+      var kk=C[c3].kernel, cc=(kk.length-1)/2, hw=Math.max(1,Math.round(C[c3].fwhm/2));
       var lo2=cc-hw, hi2=cc+hw;
       var yb=Y0+H+46+c3*44;
       el(s,'line',{x1:X0+W*lo2/(kk.length-1),y1:yb,x2:X0+W*hi2/(kk.length-1),y2:yb,
                    stroke:COL[c3],'stroke-width':9,'stroke-linecap':'round'});
-      txt(s,X0+W*hi2/(kk.length-1)+20,yb+11,C[c3].fwhm+' modes',{fill:COL[c3]});
+      txt(s,X0+W*hi2/(kk.length-1)+20,yb+11,pm(Math.max(1,Math.round(C[c3].fwhm/2))),{fill:COL[c3]});
     }
   }
 

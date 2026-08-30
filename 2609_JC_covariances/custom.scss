@@ -112,6 +112,11 @@
 // the running cost annotation, pinned to the top right
 .reveal .nka.has-cost .eqs { padding-right: 560px; }
 
+// the mask slide: two columns, picker pinned top-right beside the ledger
+.reveal .nka .two { display: flex; gap: 40px; align-items: flex-start; }
+.reveal .nka[data-step="2"] .eqs { padding-right: 520px; }
+.reveal .nka[data-step="2"] .pick { top: 2px; bottom: auto; }
+
 .reveal .nka .cost {
     position: absolute;
     top: 0;
