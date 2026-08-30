@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" width="760" height="440" role="img" aria-labelledby="title desc" font-family="EB Garamond, Georgia, serif">
+  <title id="title">UNIONS-3500 five-paper release dependency schematic</title>
+  <desc id="desc">One blinded catalog (Papers I and V) feeds Paper II B-mode systematics, which sets frozen scale cuts feeding two independent cosmology analyses (Papers III and IV).</desc>
+
+  <defs>
+    <!-- small open arrowhead, ink-muted -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L8.5 5 L1 9" fill="none" stroke="#7A6F5C" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <!-- small open arrowhead, cinnabar (for the lines leaving Paper II) -->
+    <marker id="arrow-cin" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L8.5 5 L1 9" fill="none" stroke="#BC4538" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- ============================ CONNECTORS (drawn first, beneath nodes) ============================ -->
+
+  <!-- Node 1 cluster -> Paper II : two hairlines converging, with a small open arrowhead at Paper II -->
+  <g fill="none" stroke="#C5B89E" stroke-width="1">
+    <!-- Paper I (upper) curves down into the left face of Paper II -->
+    <path d="M210 152 C 252 152, 258 196, 298 207" marker-end="url(#arrow)"/>
+    <!-- Paper V (lower) curves up into the left face of Paper II -->
+    <path d="M210 288 C 252 288, 258 244, 298 233" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- Paper II -> split -> Papers III & IV : single line out of the right face, then a fork -->
+  <g fill="none" stroke="#C5B89E" stroke-width="1">
+    <!-- single trunk out of Paper II's right face to the fork point -->
+    <path d="M462 220 L 528 220"/>
+    <!-- upper branch into Paper III -->
+    <path d="M528 220 C 544 220, 544 156, 556 152" marker-end="url(#arrow-cin)"/>
+    <!-- lower branch into Paper IV -->
+    <path d="M528 220 C 544 220, 544 288, 556 288" marker-end="url(#arrow-cin)"/>
+  </g>
+  <!-- fork node (tiny tick) -->
+  <circle cx="528" cy="220" r="1.7" fill="#C5B89E"/>
+
+  <!-- ============================ ANNOTATIONS ON THE SPINE (lifted clear of the connectors) ============================ -->
+  <!-- "one blinded catalog" between Node 1 cluster and Paper II -->
+  <text x="248" y="190" text-anchor="middle" font-size="13" font-style="italic" fill="#7A6F5C" letter-spacing="0.2">one blinded catalog</text>
+
+  <!-- "frozen scale cuts" between Paper II and the split -->
+  <text x="496" y="198" text-anchor="middle" font-size="13" font-style="italic" fill="#7A6F5C" letter-spacing="0.2">frozen scale cuts</text>
+
+  <!-- ============================ NODE 1 CLUSTER: Papers I & V (left) ============================ -->
+  <!-- Paper I -->
+  <g>
+    <rect x="30" y="124" width="180" height="56" rx="9" ry="9" fill="none" stroke="#C5B89E" stroke-width="1"/>
+    <text x="44" y="150" font-size="15" font-weight="700" fill="#1B1611">Paper I</text>
+    <text x="44" y="168" font-size="13.5" fill="#1B1611">Catalog construction</text>
+    <text x="196" y="150" text-anchor="end" font-size="11.5" fill="#7A6F5C" font-style="italic">Hervas-Peters</text>
+  </g>
+  <!-- Paper V -->
+  <g>
+    <rect x="30" y="260" width="180" height="56" rx="9" ry="9" fill="none" stroke="#C5B89E" stroke-width="1"/>
+    <text x="44" y="286" font-size="15" font-weight="700" fill="#1B1611">Paper V</text>
+    <text x="44" y="304" font-size="13.5" fill="#1B1611">Image simulations</text>
+    <text x="196" y="286" text-anchor="end" font-size="11.5" fill="#7A6F5C" font-style="italic">Hervas-Peters</text>
+  </g>
+
+  <!-- ============================ NODE 2: Paper II (center, emphasized) ============================ -->
+  <g>
+    <!-- "this talk" tag sitting just above the node, cinnabar -->
+    <text x="380" y="172" text-anchor="middle" font-size="11.5" fill="#BC4538" letter-spacing="1.4" font-family="IBM Plex Mono, monospace">THIS TALK</text>
+    <!-- the one accented node: cinnabar 1.5px border + faint cinnabar-tint fill -->
+    <rect x="298" y="184" width="164" height="72" rx="11" ry="11" fill="rgba(188,69,56,0.08)" stroke="#BC4538" stroke-width="1.5"/>
+    <text x="380" y="214" text-anchor="middle" font-size="16.5" font-weight="700" fill="#1B1611">Paper II</text>
+    <text x="380" y="234" text-anchor="middle" font-size="14" fill="#1B1611">B-mode systematics</text>
+    <text x="380" y="250" text-anchor="middle" font-size="12" fill="#7A6F5C" font-style="italic">Daley</text>
+  </g>
+
+  <!-- ============================ NODE 3 CLUSTER: Papers III & IV (right) ============================ -->
+  <!-- Paper III -->
+  <g>
+    <rect x="558" y="124" width="194" height="56" rx="9" ry="9" fill="none" stroke="#C5B89E" stroke-width="1"/>
+    <text x="572" y="149" font-size="15" font-weight="700" fill="#1B1611">Paper III</text>
+    <text x="738" y="149" text-anchor="end" font-size="11.5" fill="#7A6F5C" font-style="italic">Goh</text>
+    <text x="572" y="168" font-size="12.5" fill="#1B1611">Configuration-space cosmology</text>
+  </g>
+  <!-- Paper IV -->
+  <g>
+    <rect x="558" y="260" width="194" height="56" rx="9" ry="9" fill="none" stroke="#C5B89E" stroke-width="1"/>
+    <text x="572" y="285" font-size="15" font-weight="700" fill="#1B1611">Paper IV</text>
+    <text x="738" y="285" text-anchor="end" font-size="11.5" fill="#7A6F5C" font-style="italic">Guerrini</text>
+    <text x="572" y="304" font-size="12.5" fill="#1B1611">Harmonic-space cosmology</text>
+  </g>
+
+  <!-- ============================ FOOTING: the one-glance reading ============================ -->
+  <text x="380" y="402" text-anchor="middle" font-size="13.5" fill="#7A6F5C" letter-spacing="0.3">
+    <tspan font-style="italic">one catalog</tspan><tspan dx="6" font-style="normal" letter-spacing="2">&#8594;</tspan><tspan dx="6" font-style="italic" fill="#BC4538">systematics gate</tspan><tspan dx="6" font-style="normal" letter-spacing="2">&#8594;</tspan><tspan dx="6" font-style="italic">two cosmologies</tspan>
+  </text>
+</svg>

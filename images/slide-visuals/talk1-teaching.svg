@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 740" role="img" aria-labelledby="t d">
+  <title id="t">Division of labour, and what is scarce now</title>
+  <desc id="d">Left: a reciprocal pair — the supervisor reproduces, checks, and unblocks; the student finds what does not make sense and where to look. Right: an inversion of scarcity — experiment is a long, near-empty bar (nearly free), while curiosity and perseverance is a short, accented bar (the real constraint). Beneath both: teach verifying, not typing.</desc>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap');
+      .node   { fill: #FBF6E9; stroke: #C5B89E; stroke-width: 2; }
+      .name   { font-family: 'EB Garamond', Georgia, serif; font-size: 34px; font-weight: 600; fill: #1B1611; }
+      .flow   { font-family: 'EB Garamond', Georgia, serif; font-size: 23px; font-style: italic; fill: #7A6F5C; }
+      .arrow  { stroke: #7A6F5C; stroke-width: 1.8; fill: none; }
+      .barlbl { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 21px; font-weight: 500; fill: #1B1611; letter-spacing: 0.06em; }
+      .ann    { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 16px; font-weight: 400; fill: #7A6F5C; letter-spacing: 0.05em; }
+      .annhot { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 16px; font-weight: 500; fill: #BC4538; letter-spacing: 0.05em; }
+      .eyebrow{ font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 16px; font-weight: 400; fill: #7A6F5C; letter-spacing: 0.22em; }
+      .caption{ font-family: 'EB Garamond', Georgia, serif; font-size: 30px; font-weight: 600; fill: #3F8278; letter-spacing: 0.01em; }
+    </style>
+    <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#7A6F5C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- ============ LEFT HALF — the reciprocal pair ============ -->
+  <text class="eyebrow" x="90" y="92" text-anchor="start">DIVISION OF LABOUR</text>
+
+  <!-- Supervisor node (left) -->
+  <rect class="node" x="92" y="312" width="244" height="96" rx="48"/>
+  <text class="name" x="214" y="371" text-anchor="middle">Supervisor</text>
+
+  <!-- Student node (right) -->
+  <rect class="node" x="468" y="312" width="200" height="96" rx="48"/>
+  <text class="name" x="568" y="371" text-anchor="middle">Student</text>
+
+  <!-- supervisor -> student (upper arc): reproduce · check · unblock -->
+  <path class="arrow" d="M 338 332 C 392 296, 414 296, 466 332" marker-end="url(#ah)"/>
+  <text class="flow" x="402" y="276" text-anchor="middle">reproduce &#183; check &#183; unblock</text>
+
+  <!-- student -> supervisor (lower arc): finds what doesn't make sense / where to look -->
+  <path class="arrow" d="M 466 388 C 414 424, 392 424, 338 388" marker-end="url(#ah)"/>
+  <text class="flow" x="402" y="470" text-anchor="middle"><tspan x="402">finds what doesn&#8217;t make sense,</tspan><tspan x="402" dy="28">where to look</tspan></text>
+
+  <!-- ============ editorial divider ============ -->
+  <line x1="752" y1="84" x2="752" y2="568" stroke="#C5B89E" stroke-width="1" stroke-opacity="0.7"/>
+
+  <!-- ============ RIGHT HALF — what is scarce now ============ -->
+  <text class="eyebrow" x="838" y="92" text-anchor="start">WHAT IS SCARCE NOW</text>
+
+  <!-- experiment: long, near-empty bar -->
+  <text class="barlbl" x="838" y="232" text-anchor="start">experiment</text>
+  <rect x="838" y="252" width="556" height="30" rx="3" fill="#FBF6E9" stroke="#C5B89E" stroke-width="1.5"/>
+  <rect x="838" y="252" width="556" height="30" rx="3" fill="#7A6F5C" fill-opacity="0.10"/>
+  <text class="ann" x="838" y="312" text-anchor="start">nearly free</text>
+
+  <!-- curiosity · perseverance: short, accented bar -->
+  <text class="barlbl" x="838" y="416" text-anchor="start">curiosity &#183; perseverance</text>
+  <rect x="838" y="436" width="150" height="30" rx="3" fill="#BC4538"/>
+  <text class="annhot" x="1002" y="458" text-anchor="start">the real constraint</text>
+
+  <!-- ============ bridging caption ============ -->
+  <line x1="430" y1="636" x2="1070" y2="636" stroke="#C5B89E" stroke-width="1" stroke-opacity="0.55"/>
+  <text class="caption" x="750" y="688" text-anchor="middle">teach verifying, not typing</text>
+</svg>

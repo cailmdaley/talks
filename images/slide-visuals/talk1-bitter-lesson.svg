@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 780" width="1500" height="780" role="img" aria-label="Two timescales out of step: AI capability compounds about 2,500 times over four years while a single cosmology analysis takes about five years.">
+  <title>Two clocks out of step</title>
+  <desc>A two-timescale contrast on a shared four-year axis. The upper track shows AI capability as a steep cinnabar doubling line rising to about 2,500 times. The lower track shows one cosmology analysis as a single flat teal bar spanning the full window, about five years and hundreds of decisions. The wide gap between the soaring line and the slow bar is the point.</desc>
+
+  <defs>
+    <style>
+      .gar      { font-family: 'EB Garamond', Georgia, serif; }
+      .mono     { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+      .ink      { fill: #1B1611; }
+      .muted    { fill: #7A6F5C; }
+      .cinnabar { fill: #BC4538; }
+      .teal     { fill: #3F8278; }
+      .ochre    { fill: #C49333; }
+    </style>
+  </defs>
+
+  <!-- ───────────── TOP TRACK — AI capability ───────────── -->
+
+  <!-- track label -->
+  <text x="250" y="58" class="gar muted" font-size="25" font-style="italic">AI capability</text>
+
+  <!-- log-y doubling line: a clean rising diagonal, each x2 a constant vertical step -->
+  <line x1="250" y1="470" x2="1150" y2="119"
+        stroke="#BC4538" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- first doubling step, drawn explicitly: the x2 / ~4 months cadence -->
+  <!-- vertical rise of one doubling = 33.5px; horizontal = 92.1px -->
+  <g stroke="#BC4538" stroke-width="1.1" fill="none" opacity="0.55">
+    <!-- step bracket from YR1 origin up one doubling -->
+    <path d="M 250 470 L 342 470 L 342 436.5"/>
+    <!-- tiny end ticks -->
+    <line x1="250" y1="466" x2="250" y2="474"/>
+    <line x1="338" y1="436.5" x2="346" y2="436.5"/>
+  </g>
+  <text x="356" y="448" class="mono cinnabar" font-size="17">×2 / ~4 months</text>
+
+  <!-- endpoint marker + bold endpoint label, set into the top-right whitespace -->
+  <circle cx="1150" cy="119" r="4.6" fill="#BC4538"/>
+  <text x="1466" y="92"  class="gar ink"   font-size="48" font-weight="700" text-anchor="end">~2,500×</text>
+  <text x="1466" y="122" class="gar muted" font-size="22" font-style="italic" text-anchor="end">in four years</text>
+
+  <!-- faint ochre hairline margin note, leader touching the curve -->
+  <g opacity="0.9">
+    <line x1="772" y1="269" x2="772" y2="318" stroke="#C49333" stroke-width="1" opacity="0.7"/>
+    <text x="790" y="324" class="gar muted" font-size="20" font-style="italic">bet on what scales with compute</text>
+  </g>
+
+  <!-- ───────────── shared four-year axis (faint hairline baseline) ───────────── -->
+
+  <line x1="250" y1="470" x2="1340" y2="470" stroke="#C5B89E" stroke-width="1"/>
+
+  <!-- year ticks YR 1..YR 4 -->
+  <g stroke="#C5B89E" stroke-width="1">
+    <line x1="250"  y1="466" x2="250"  y2="478"/>
+    <line x1="510"  y1="466" x2="510"  y2="478"/>
+    <line x1="770"  y1="466" x2="770"  y2="478"/>
+    <line x1="1030" y1="466" x2="1030" y2="478"/>
+    <line x1="1290" y1="466" x2="1290" y2="478"/>
+  </g>
+  <g class="mono muted" font-size="17" text-anchor="middle">
+    <text x="250"  y="500">YR 1</text>
+    <text x="510"  y="500">YR 2</text>
+    <text x="770"  y="500">YR 3</text>
+    <text x="1030" y="500">YR 4</text>
+  </g>
+
+  <!-- ───────────── BOTTOM TRACK — one cosmology analysis ───────────── -->
+
+  <!-- track label -->
+  <text x="250" y="610" class="gar muted" font-size="25" font-style="italic">one cosmology analysis</text>
+
+  <!-- a single long flat teal bar spanning the full window and overrunning past YR 4 -->
+  <!-- (~5 years reads as longer than the whole four-year AI window) -->
+  <rect x="250" y="638" width="1100" height="26" rx="3" fill="#3F8278"/>
+  <!-- soft end-cap tick marking the ~5-yr overrun beyond YR 4 -->
+  <line x1="1290" y1="630" x2="1290" y2="672" stroke="#C5B89E" stroke-width="1"/>
+
+  <!-- bar label, set inside on the rag-light caption space below -->
+  <text x="262" y="708" class="gar ink" font-size="27">~5 years, hundreds of decisions</text>
+
+</svg>

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 132 1480 460" role="img" aria-labelledby="jt jd">
+  <title id="jt">The judgment gate</title>
+  <desc id="jd">A result arrives from the agents; the human judgment node weighs expectation against data and makes the recurring call — signal, to trust, or systematic, to chase. A five-year analysis is hundreds of these decisions.</desc>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap');
+      .gar   { font-family: 'EB Garamond', Georgia, serif; fill: #1b1611; }
+      .node  { font-family: 'EB Garamond', Georgia, serif; font-weight: 600; font-size: 38px; fill: #1b1611; }
+      .sub   { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 25px; fill: #7a6f5c; }
+      .ask   { font-family: 'EB Garamond', Georgia, serif; font-weight: 600; font-size: 34px; fill: #bc4538; }
+      .src   { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 27px; fill: #7a6f5c; }
+      .cap   { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 27px; fill: #7a6f5c; }
+      .pill  { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-weight: 500; font-size: 24px; letter-spacing: 0.13em; }
+      .pillv { font-family: 'EB Garamond', Georgia, serif; font-size: 25px; }
+    </style>
+    <marker id="jcin" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="7.2" markerHeight="7.2" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#bc4538"/>
+    </marker>
+    <marker id="jmut" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="6.6" markerHeight="6.6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a6f5c"/>
+    </marker>
+    <radialGradient id="jseat" cx="50%" cy="50%" r="62%">
+      <stop offset="0%"  stop-color="#fbf6e9" stop-opacity="0.92"/>
+      <stop offset="58%" stop-color="#fbf6e9" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#fbf6e9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ── incoming result, from the agents / execution (faint, never the accent) ── -->
+  <text class="src" x="92" y="350" text-anchor="start">a result</text>
+  <text class="gar" x="92" y="378" text-anchor="start" font-size="19" fill="#7a6f5c" letter-spacing="0.04em">from the agents</text>
+  <path d="M 232 365 H 408" fill="none" stroke="#7a6f5c" stroke-width="1.6" stroke-opacity="0.62" marker-end="url(#jmut)"/>
+
+  <!-- ── the judgment node — a lozenge, seated on the ground ── -->
+  <ellipse cx="560" cy="362" rx="240" ry="170" fill="url(#jseat)"/>
+  <path d="M 560 222 L 762 362 L 560 502 L 358 362 Z"
+        fill="#fbf6e9" stroke="#c5b89e" stroke-width="1.6"/>
+  <text class="sub"  x="560" y="288" text-anchor="middle">judgment</text>
+  <text class="node" x="560" y="352" text-anchor="middle">expectation vs. data</text>
+  <line x1="446" y1="376" x2="674" y2="376" stroke="#c5b89e" stroke-width="1" stroke-opacity="0.7"/>
+  <text class="ask"  x="560" y="422" text-anchor="middle">signal, or systematic?</text>
+
+  <!-- ── the recurring call: two cinnabar arrows, the only accent on the slide ── -->
+  <path d="M 700 300 C 812 252, 904 232, 1012 224" fill="none" stroke="#bc4538" stroke-width="3" stroke-linecap="round" marker-end="url(#jcin)"/>
+  <path d="M 700 424 C 812 472, 904 492, 1012 500" fill="none" stroke="#bc4538" stroke-width="3" stroke-linecap="round" marker-end="url(#jcin)"/>
+
+  <!-- ── outcome A: SIGNAL (teal pill) ── -->
+  <g transform="translate(1016 196)">
+    <rect x="0" y="0" width="236" height="74" rx="37" fill="#fbf6e9" stroke="#3f8278" stroke-width="1.8"/>
+    <text class="pill" x="118" y="35" text-anchor="middle" fill="#3f8278">SIGNAL</text>
+    <text class="pillv" x="118" y="59" text-anchor="middle" fill="#7a6f5c">trust it</text>
+  </g>
+
+  <!-- ── outcome B: SYSTEMATIC (ochre pill) ── -->
+  <g transform="translate(1016 454)">
+    <rect x="0" y="0" width="236" height="74" rx="37" fill="#fbf6e9" stroke="#c49333" stroke-width="1.8"/>
+    <text class="pill" x="118" y="35" text-anchor="middle" fill="#c49333">SYSTEMATIC</text>
+    <text class="pillv" x="118" y="59" text-anchor="middle" fill="#7a6f5c">chase it</text>
+  </g>
+
+  <!-- ── hairline brace gathering both outcomes + the scale of it ── -->
+  <path d="M 1268 206 q 14 0 14 16 V 355 q 0 16 14 16 q -14 0 -14 16 V 502 q 0 16 -14 16"
+        fill="none" stroke="#c5b89e" stroke-width="1.4"/>
+  <text class="cap" x="1306" y="356" text-anchor="start">a five-year</text>
+  <text class="cap" x="1306" y="388" text-anchor="start">analysis is</text>
+  <text class="cap" x="1306" y="420" text-anchor="start">hundreds of</text>
+  <text class="cap" x="1306" y="452" text-anchor="start">these calls</text>
+</svg>

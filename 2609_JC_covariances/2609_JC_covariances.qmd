@@ -85,11 +85,14 @@ of a Gaussian field. It is what we are trying to measure.
 ## Multiplying by a mask convolves the modes {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="2">
+<div class="nka" data-step="2" data-staged="1">
 <div class="eqs"></div>
 <div class="pick"></div>
+<span class="fragment nka-step"></span>
+<span class="fragment nka-step"></span>
 <svg class="pA" data-h="230" viewBox="0 0 1730 320" width="1730" height="320"></svg>
-<svg class="pC" data-h="300" data-kernel="1" data-kh="190" data-tilde="1"
+<svg class="pC" data-h="300" data-kernel="1" data-kernel-at="1" data-kh="190"
+     data-tilde="1" data-tilde-at="2"
      viewBox="0 0 1730 420" width="1730" height="420"></svg>
 </div>
 ```
@@ -118,7 +121,7 @@ entirely complexity. Everything downstream is a consequence of this number.
 ```{=html}
 <div class="nka" data-step="3">
 <div class="eqs"></div>
-<svg class="pC" data-h="440" data-tilde="1" data-bins="1" data-binned="1" data-decoupled="1" viewBox="0 0 1730 560" width="1730" height="560"></svg>
+<svg class="pC" data-h="440" data-tilde="1" data-bins="1" data-binned="1" data-decoupled="1" data-kernel="1" data-kh="150" viewBox="0 0 1730 560" width="1730" height="560"></svg>
 <div class="pick"></div>
 </div>
 ```
@@ -176,7 +179,15 @@ papers.
   <label>sources <input type="range" data-var="N" min="30" max="400" value="160"></label>
 </div>
 <svg class="pP" data-h="230" viewBox="0 0 1730 420" width="1730" height="420"></svg>
-<svg class="pKC" data-h="200" viewBox="0 0 1730 300" width="1730" height="300"></svg>
+<div class="two">
+  <div><svg class="pKC" data-h="200" data-x0="90" data-w="700"
+       data-foot="the toy: no scale below the source spacing"
+       viewBox="0 0 850 300" width="850" height="300"></svg></div>
+  <div class="paperfig inset">
+    <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo-spectrum">
+    <div class="mlab"><b>the real sky</b>Quaia's catalogue mask flattens onto its white floor</div>
+  </div>
+</div>
 </div>
 ```
 
@@ -263,6 +274,45 @@ is the variance of the field at a point, and it is what penalises sparse samples
 error bars. And it is the flip side of the estimator's selling point: because the self-pair
 floor is known exactly, you can subtract it, which is why the catalogue estimator is immune to
 white noise in the first place.
+:::
+
+## It works where it has to {.nka-slide}
+
+```{=html}
+<div class="nka" data-step="9" data-ledger-from="9">
+<div class="saywhat" data-own="1">Points are 1000 simulations; lines are the analytic covariance. Which of the two pieces is load-bearing is set by what dominates the variance — not by how dense the catalogue is.</div>
+<div class="two">
+  <div class="paperfig">
+    <img src="images/wolz_shear_cov.png" alt="DES-Y3-like cosmic shear covariance">
+    <div class="axcap">multipole ℓ</div>
+    <div class="mlab"><b>cosmic shear, DES-Y3-like</b>dense, but shape-noise-dominated — the exact self-pair term carries it at high ℓ</div>
+  </div>
+  <div class="paperfig">
+    <img src="images/wolz_clustering_cov.png" alt="DESI-LRG-like clustering covariance">
+    <div class="mlab"><b>clustering, DESI-LRG-like</b>sparser, but signal-dominated — the approximation carries it</div>
+  </div>
+</div>
+</div>
+```
+
+::: {.notes}
+Two cases from the paper, and the thing to notice is that density is not what decides.
+
+Cosmic shear on the left: a DES-Y3-like sample, which is *dense* — a few sources per square
+arcminute, of order a hundred million of them. But shape noise dominates its variance, so almost
+all of what you see at high multipole is the self-pair term, and that is the part they handle
+exactly. Red is with shape noise, blue without, and the analytic lines sit on the simulated
+points in both.
+
+Clustering on the right: a DESI-LRG-like sample, much *sparser* than the shear catalogue. Yet
+here it is signal that dominates, so the load falls on the distinct pairs — the part carrying
+the approximation — and it holds. Red is the catalogue estimator with randoms, blue the
+traditional continuous mask, offset for clarity; the dashed line is the first off-diagonal,
+which is where an approximation shows its failure first.
+
+So the two axes come apart. Density sets how many sources you have; what dominates the variance
+sets which half of the machinery has to be right. Neither of these is a regime where it would
+break — for that, next paper.
 :::
 
 <!-- ═══ parked ═══════════════════════════════════════════════════════════

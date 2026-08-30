@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 760" role="img" aria-labelledby="t d">
+  <title id="t">Agentic research flywheel</title>
+  <desc id="d">A three-step cycle — agents run and validate the pipeline, the team explores every analysis choice, each release sharpens the next — spinning faster over time.</desc>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;display=swap');
+      .node  { fill: #fbf6e9; stroke: #c5b89e; stroke-width: 2.5; }
+      .lbl   { font-family: 'EB Garamond', Georgia, serif; font-size: 30px; font-weight: 600; fill: #1b1611; }
+      .hub   { font-family: 'EB Garamond', Georgia, serif; font-size: 25px; font-style: italic; fill: #7a6f5c; }
+    </style>
+    <marker id="fa" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#bc4538"/>
+    </marker>
+  </defs>
+
+  <!-- clockwise arrows (drawn first, behind the nodes) -->
+  <path d="M 636 214 C 770 268, 838 360, 792 452" fill="none" stroke="#bc4538" stroke-width="6" stroke-linecap="round" stroke-opacity="0.85" marker-end="url(#fa)"/>
+  <path d="M 700 566 C 612 624, 488 624, 400 566" fill="none" stroke="#bc4538" stroke-width="6" stroke-linecap="round" stroke-opacity="0.85" marker-end="url(#fa)"/>
+  <path d="M 308 452 C 262 360, 330 268, 464 214" fill="none" stroke="#bc4538" stroke-width="6" stroke-linecap="round" stroke-opacity="0.85" marker-end="url(#fa)"/>
+
+  <!-- node A (top): agents run the pipeline -->
+  <circle class="node" cx="550" cy="158" r="92"/>
+  <text class="lbl" x="550" y="140" text-anchor="middle"><tspan x="550">Agents run &amp;</tspan><tspan x="550" dy="34">validate the</tspan><tspan x="550" dy="34">full pipeline</tspan></text>
+
+  <!-- node B (lower-right): each release sharpens -->
+  <circle class="node" cx="748" cy="500" r="92"/>
+  <text class="lbl" x="748" y="482" text-anchor="middle"><tspan x="748">Each release</tspan><tspan x="748" dy="34">sharpens</tspan><tspan x="748" dy="34">the next</tspan></text>
+
+  <!-- node C (lower-left): explore every choice -->
+  <circle class="node" cx="352" cy="500" r="92"/>
+  <text class="lbl" x="352" y="482" text-anchor="middle"><tspan x="352">We explore</tspan><tspan x="352" dy="34">every analysis</tspan><tspan x="352" dy="34">choice</tspan></text>
+
+  <!-- hub -->
+  <text class="hub" x="550" y="372" text-anchor="middle"><tspan x="550">spins faster</tspan><tspan x="550" dy="30">each release</tspan></text>
+</svg>

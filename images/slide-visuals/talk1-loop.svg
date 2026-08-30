@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1300 760" role="img" aria-labelledby="t d">
+  <title id="t">The dual-modality loop</title>
+  <desc id="d">Two nodes — an AI-first practice and real cosmology — bound in one mutual loop: the practice is the best way to do the cosmology, and the cosmology is how the practice is learned. One loop, both ways.</desc>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;display=swap');
+      .node  { fill: #fbf6e9; stroke: #c5b89e; stroke-width: 2.5; }
+      .lbl   { font-family: 'EB Garamond', Georgia, serif; font-size: 40px; font-weight: 600; fill: #1b1611; }
+      .arclbl{ font-family: 'EB Garamond', Georgia, serif; font-size: 27px; font-style: italic; fill: #7a6f5c; }
+      .hub   { font-family: 'EB Garamond', Georgia, serif; font-size: 28px; font-style: italic; fill: #7a6f5c; letter-spacing: 0.4px; }
+    </style>
+    <marker id="fa" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#bc4538"/>
+    </marker>
+  </defs>
+
+  <!-- ── the two arrows: drawn first, behind the nodes ── -->
+  <!-- top arc: AI-first practice  →  real cosmology  ("is the best way to do") -->
+  <path d="M 392 318 C 560 224, 740 224, 908 318"
+        fill="none" stroke="#bc4538" stroke-width="6"
+        stroke-linecap="round" stroke-opacity="0.85" marker-end="url(#fa)"/>
+  <!-- bottom arc: real cosmology  →  AI-first practice  ("is how I learn") -->
+  <path d="M 908 462 C 740 556, 560 556, 392 462"
+        fill="none" stroke="#bc4538" stroke-width="6"
+        stroke-linecap="round" stroke-opacity="0.85" marker-end="url(#fa)"/>
+
+  <!-- ── arc labels, set in the open space each arc opens toward ── -->
+  <text class="arclbl" x="650" y="202" text-anchor="middle">is the best way to do</text>
+  <text class="arclbl" x="650" y="596" text-anchor="middle">is how I learn</text>
+
+  <!-- ── left node: AI-first practice ── -->
+  <circle class="node" cx="290" cy="390" r="150"/>
+  <text class="lbl" x="290" y="378" text-anchor="middle"><tspan x="290">AI-first</tspan><tspan x="290" dy="46">practice</tspan></text>
+
+  <!-- ── right node: real cosmology ── -->
+  <circle class="node" cx="1010" cy="390" r="150"/>
+  <text class="lbl" x="1010" y="378" text-anchor="middle"><tspan x="1010">real</tspan><tspan x="1010" dy="46">cosmology</tspan></text>
+
+  <!-- ── centre caption: the loop named once ── -->
+  <text class="hub" x="650" y="400" text-anchor="middle">one loop, both ways</text>
+</svg>

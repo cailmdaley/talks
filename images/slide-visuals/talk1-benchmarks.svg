@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 620" width="1600" height="620" font-family="EB Garamond, Georgia, serif" role="img" aria-label="A pipeline: real scientific work becomes a certification, becomes a synthetic environment, becomes a sovereign training signal, with a re-certify loop.">
+  <title>From real scientific work to a sovereign training signal</title>
+
+  <!-- ============================================================
+       Geometry. Four stages, evenly spaced, on a baseline row.
+       Box width 330, height 196, top at y=190. Gaps carry arrows.
+         Stage 1: x =  40
+         Stage 2: x = 442
+         Stage 3: x = 844
+         Stage 4: x = 1246
+       The return arc loops above the row (stage 3 -> stage 1).
+       ============================================================ -->
+
+  <defs>
+    <!-- Small, restrained arrowhead for the forward cinnabar flow -->
+    <marker id="tip" viewBox="0 0 10 10" refX="8.5" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M1,1.4 L8.6,5 L1,8.6" fill="none" stroke="#BC4538"
+            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <!-- Even smaller, fainter arrowhead for the ochre return loop -->
+    <marker id="tip-loop" viewBox="0 0 10 10" refX="7.5" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2,2 L7.8,5 L2,8" fill="none" stroke="#C49333"
+            stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- ====================== RETURN LOOP ======================
+       A faint ochre hairline arc from the top of stage 3 back to
+       the top of stage 1: "the practice keeps re-certifying."
+       Drawn first so the boxes sit cleanly on top of it.
+       ========================================================= -->
+  <g fill="none" stroke="#C49333" stroke-width="1.25" opacity="0.85">
+    <path d="M 1009,190 C 1009,70 607,70 607,190" stroke-linecap="round"
+          stroke-dasharray="1 6" marker-end="url(#tip-loop)"/>
+  </g>
+  <text x="808" y="60" text-anchor="middle" font-size="23" font-style="italic"
+        fill="#C49333" letter-spacing="0.02em">re-certify</text>
+
+  <!-- ====================== FORWARD ARROWS ======================
+       Thin cinnabar connectors, round caps, small heads. Sit on the
+       vertical midline of the boxes (y = 288). Span the 72px gaps.
+       ============================================================ -->
+  <g fill="none" stroke="#BC4538" stroke-width="2" stroke-linecap="round">
+    <line x1="378" y1="288" x2="436" y2="288" marker-end="url(#tip)"/>
+    <line x1="780" y1="288" x2="838" y2="288" marker-end="url(#tip)"/>
+    <line x1="1182" y1="288" x2="1240" y2="288" marker-end="url(#tip)"/>
+  </g>
+
+  <!-- ====================== STAGE 1 ====================== -->
+  <g>
+    <rect x="40" y="190" width="330" height="196" rx="12"
+          fill="#FBF6E9" stroke="#C5B89E" stroke-width="1.25"/>
+    <text x="68" y="244" font-family="IBM Plex Mono, monospace" font-size="20"
+          fill="#7A6F5C" letter-spacing="0.08em">01</text>
+    <text x="68" y="300" font-size="32" font-weight="600" fill="#1B1611">Real scientific work</text>
+    <text x="68" y="340" font-size="23" fill="#7A6F5C" font-style="italic">open-ended, messy,</text>
+    <text x="68" y="368" font-size="23" fill="#7A6F5C" font-style="italic">many defensible paths</text>
+  </g>
+
+  <!-- ====================== STAGE 2 ====================== -->
+  <g>
+    <rect x="442" y="190" width="330" height="196" rx="12"
+          fill="#FBF6E9" stroke="#C5B89E" stroke-width="1.25"/>
+    <text x="470" y="244" font-family="IBM Plex Mono, monospace" font-size="20"
+          fill="#7A6F5C" letter-spacing="0.08em">02</text>
+    <text x="470" y="300" font-size="34" font-weight="600" fill="#1B1611">Certification</text>
+    <text x="470" y="340" font-size="23" fill="#7A6F5C" font-style="italic">sound result +</text>
+    <text x="470" y="368" font-size="23" fill="#7A6F5C" font-style="italic">defensible record</text>
+  </g>
+
+  <!-- ====================== STAGE 3 ====================== -->
+  <g>
+    <rect x="844" y="190" width="330" height="196" rx="12"
+          fill="#FBF6E9" stroke="#C5B89E" stroke-width="1.25"/>
+    <text x="872" y="244" font-family="IBM Plex Mono, monospace" font-size="20"
+          fill="#7A6F5C" letter-spacing="0.08em">03</text>
+    <text x="872" y="300" font-size="30" font-weight="600" fill="#1B1611">Synthetic environment</text>
+    <text x="872" y="340" font-size="23" fill="#7A6F5C">synthetic data <tspan fill="#C5B89E">·</tspan> RL</text>
+  </g>
+
+  <!-- ============== STAGE 4 — the payoff (emphasis) ==============
+       Cinnabar left-border + cinnabar title mark the single beat
+       the eye should land on.
+       ============================================================ -->
+  <g>
+    <rect x="1246" y="190" width="330" height="196" rx="12"
+          fill="#FBF6E9" stroke="#C5B89E" stroke-width="1.25"/>
+    <!-- thin cinnabar left-border, inset within the rounded corner -->
+    <rect x="1246" y="202" width="4" height="172" rx="2" fill="#BC4538"/>
+    <text x="1278" y="244" font-family="IBM Plex Mono, monospace" font-size="20"
+          fill="#7A6F5C" letter-spacing="0.08em">04</text>
+    <text x="1278" y="298" font-size="33" font-weight="600" fill="#BC4538">Sovereign</text>
+    <text x="1278" y="338" font-size="33" font-weight="600" fill="#BC4538">training signal</text>
+    <text x="1278" y="378" font-size="23" fill="#7A6F5C" font-style="italic">grounded in real science</text>
+  </g>
+
+  <!-- ============== TEAL TAG — under the payoff ============== -->
+  <g>
+    <line x1="1576" y1="430" x2="1576" y2="446" stroke="#3F8278"
+          stroke-width="1.25" stroke-linecap="round" opacity="0.5"/>
+    <text x="1576" y="458" text-anchor="end" font-size="18" fill="#3F8278" letter-spacing="0.005em">with DATAIA <tspan fill="#3F8278" opacity="0.5">·</tspan> PostGenAI@Paris <tspan fill="#3F8278" opacity="0.5">·</tspan> Pleias</text>
+  </g>
+</svg>

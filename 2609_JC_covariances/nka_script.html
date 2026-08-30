@@ -437,14 +437,6 @@ function boot(){
     st.curve.style.opacity = curve ? 1 : 0;
     st.clabel.style.opacity = curve ? 1 : 0;
 
-    // Only touch the ledger when the state actually changes: re-rendering it on
-    // every beat re-ran MathJax, which flickers.
-    var eqs = root.querySelector('.eqs');
-    if(eqs && st.done !== curve){
-      st.done = curve;
-      ledger(eqs, curve ? 1 : 0);
-      typeset();
-    }
   }
   var cineTimer = null;
   function playCine(root, s){
@@ -770,19 +762,19 @@ function boot(){
     {tex:'a(x)=\\sum_k a_k\\,e^{+ikx}', step:1, name:'inverse', col:3, row:1},
     {tex:'C(k)=\\langle |a_k|^2\\rangle', step:1, name:'power spectrum', col:4, row:1},
 
-    {tex:'\\tilde a(x)=w(x)\\,a(x)', step:2, name:'mask', col:1, row:2},
-    {tex:'\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', step:2, name:'mode coupling', col:2, row:2},
-    {tex:'\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', step:2, name:'pseudo-C(k)', col:4, row:2},
+    {tex:'\\tilde a(x)=w(x)\\,a(x)', step:2, name:'mask', col:1, row:2, sub:0},
+    {tex:'\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', step:2, name:'mode coupling', col:2, row:2, sub:1},
+    {tex:'\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', step:2, name:'pseudo-C(k)', col:4, row:2, sub:2},
 
     {tex:'\\tilde C_b=\\frac{1}{N_b}\\sum_{k\\in b}\\tilde C(k)', step:3, name:'bandpower', col:1, row:3},
     {tex:'M_{bb\'}=\\frac{1}{N_b}\\sum_{k\\in b}\\sum_{k\'\\in b\'} M_{kk\'}', step:3, name:'binned coupling', col:2, row:3},
     {tex:'\\hat C_b=(M_{bb\'})^{-1}\\,\\tilde C_{b\'}', step:3, name:'decoupled', col:3, row:3},
 
     {tex:'{\\rm Cov}\\big(\\tilde C(k),\\tilde C(k\')\\big)\\propto\\Big|\\sum_{k\'\'} W_{k-k\'\'}\\,W^{*}_{k\'-k\'\'}\\,C(k\'\')\\Big|^{2}',
-     step:4, name:'four-point', col:1, row:1, span:4,
+     step:4, name:'four-point', col:1, row:1, span:2,
      note:'one sum over k″ for every element of the k, k′ matrix'},
     {tex:'{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,\\,w_bw_d)',
-     step:5, name:'narrow-kernel approximation', col:1, row:2, span:4,
+     step:5, name:'narrow-kernel approximation', col:3, row:1, span:2,
      note:'Ξ: the same coupling coefficients as the estimator, built from the product of the masks'},
     {tex:'\\tilde a(x)=\\sum_i w_i\\,a_i\\,\\delta(x-x_i)', step:6, name:'catalogue field', col:1, row:1, span:2},
     {tex:'w(x)=\\sum_i w_i\\,\\delta(x-x_i)', step:6, name:'catalogue mask', col:3, row:1, span:2},
@@ -791,13 +783,14 @@ function boot(){
      note:'each source is smeared to the size you could resolve it at anyway'},
     {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:1, row:1, span:2}
   ];
-  function ledger(host, step, from){
+  function ledger(host, step, from, stage){
     from = from || 0;
+    if(stage == null) stage = Infinity;
     var html = '';
     for(var i=0;i<EQS.length;i++){
       var e = EQS[i];
       if(e.step > step || e.step < from) continue;
-      var live = (e.step === step);
+      var live = (e.step === step) && (e.sub == null || e.sub === stage);
       html += '<div class="' + (live?'on':'') + '" style="grid-column:' + e.col +
               (e.span ? ' / span ' + e.span : '') + ';grid-row:' + e.row + '">' +
               '<span class="nm">' + e.name + '</span>' +
@@ -831,6 +824,14 @@ function boot(){
   //  A slide may advance its ledger with a reveal fragment: data-frag-step is the
   //  step it moves to once any fragment on the slide is showing. Used by the
   //  covariance slide to stage exact -> NKA -> error.
+  //  A staged slide reveals its panels one fragment at a time; stage 0 is the
+  //  base state. Unstaged slides are "everything on".
+  function stageOf(root){
+    if(!root.dataset.staged) return Infinity;
+    if(!(window.Reveal && Reveal.getIndices)) return 0;
+    var f = Reveal.getIndices().f;
+    return (typeof f === 'number' && f >= 0) ? f + 1 : 0;
+  }
   function effectiveStep(root){
     var base = +root.getAttribute('data-step');
     var fs = root.getAttribute('data-frag-step');
@@ -841,12 +842,12 @@ function boot(){
     return base;
   }
   function renderOne(root){
-    var step = effectiveStep(root);
+    var step = effectiveStep(root), stage = stageOf(root);
     var q = function(sel){ return root.querySelector(sel); };
     // On the build slide the animation owns the ledger (it reveals the relations
     // at the last beat), so renderOne must not overwrite it.
     var eqs = q('.eqs');
-    if(eqs && !q('.pM')) ledger(eqs, step, +root.dataset.ledgerFrom || 0);
+    if(eqs) ledger(eqs, step, +root.dataset.ledgerFrom || 0, stage);
     // .saywhat is auto-filled only where the script owns the words (the NKA
     // slide); slides that hard-code their own line keep it.
     var say = q('.saywhat');
@@ -858,7 +859,7 @@ function boot(){
     var pk = q('.pick'); if(pk) picker(pk);
 
     var pA = q('.pA');
-    if(pA) drawField(pA, {h: +pA.dataset.h || 200, mask: step >= 2,
+    if(pA) drawField(pA, {h: +pA.dataset.h || 200, mask: step >= 2 && stage >= 0,
                           x0: +pA.dataset.x0 || undefined, w: +pA.dataset.w || undefined});
     var pM = q('.pM');
     if(pM){
@@ -881,10 +882,10 @@ function boot(){
       x0: +pC.dataset.x0 || undefined,
       w:  +pC.dataset.w  || undefined,
       marks: pC.dataset.marks === '1',
-      kernel: pC.dataset.kernel === '1',
+      kernel: pC.dataset.kernel === '1' && stage >= (+pC.dataset.kernelAt || 0),
       kh: +pC.dataset.kh || 150,
       err: pC.dataset.err === '1',
-      tilde: pC.dataset.tilde === '1',
+      tilde: pC.dataset.tilde === '1' && stage >= (+pC.dataset.tildeAt || 0),
       bins: pC.dataset.bins === '1',
       binned: pC.dataset.binned === '1',
       decoupled: pC.dataset.decoupled === '1',
@@ -940,6 +941,8 @@ function boot(){
     // A slide that stages itself with fragments re-renders its ledger and cost
     // label as they come and go (the covariance slide: four-point -> NKA).
     function refresh(){
+      var st0 = document.querySelector('.present .nka[data-staged]');
+      if(st0){ renderOne(st0); typeset(); }
       var r = document.querySelector('.present .nka[data-frag-step]');
       if(!r) return;
       var st = effectiveStep(r);

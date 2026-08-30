@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 760" font-family="EB Garamond, Georgia, serif" fill="none">
+  <!-- ============================================================
+       Sovereignty is trained people, not only sovereign models.
+       Transparent ground (parchment shows through). House palette:
+         ink #1B1611  ink-muted #7A6F5C  rag #FBF6E9  rule #C5B89E
+         cinnabar #BC4538 (single sparing accent)  teal #3F8278  ochre #C49333
+       Reading order, per column: science axis → lab home → people.
+       Two columns side by side: the two homes map onto the two axes,
+       the people already attached beneath. A quiet capability/practice
+       contrast sits at top; the sovereign-AI ecosystem band at the foot.
+       ============================================================ -->
+
+  <!-- ───────────────────────── TOP STRIP — the single quiet contrast ───────────────────────── -->
+  <!-- capability : rentable  (faint, ink-muted, ochre) -->
+  <text x="245" y="56" text-anchor="middle" font-size="29" font-weight="600" fill="#7A6F5C"
+        letter-spacing="0.4">capability</text>
+  <rect x="105" y="76" width="280" height="9" rx="2" fill="#C49333" fill-opacity="0.40"/>
+  <text x="245" y="114" text-anchor="middle" font-size="20" font-style="italic" fill="#7A6F5C"
+        letter-spacing="0.2">rentable</text>
+
+  <!-- the quiet hinge -->
+  <line x1="435" y1="80" x2="565" y2="80" stroke="#C5B89E" stroke-width="1.4"/>
+  <text x="500" y="74" text-anchor="middle" font-size="22" fill="#7A6F5C" font-style="italic">vs</text>
+
+  <!-- diffused practice : must be built, diffuses slowly  (cinnabar accent, ink) -->
+  <text x="755" y="56" text-anchor="middle" font-size="29" font-weight="600" fill="#1B1611"
+        letter-spacing="0.4">diffused practice</text>
+  <!-- the one cinnabar accent in the whole figure -->
+  <rect x="615" y="76" width="280" height="9" rx="2" fill="#BC4538"/>
+  <text x="755" y="114" text-anchor="middle" font-size="20" font-style="italic" fill="#1B1611"
+        letter-spacing="0.2">must be built — diffuses slowly</text>
+
+  <!-- strip-closing hairline, and the quiet right-hand caption -->
+  <text x="1500" y="56" text-anchor="end" font-size="19" fill="#7A6F5C" font-style="italic"
+        letter-spacing="0.3">the team &amp; ecosystem, already in place</text>
+  <line x1="105" y1="156" x2="1495" y2="156" stroke="#C5B89E" stroke-width="1" stroke-opacity="0.7"/>
+
+  <!-- ───────────────────────── MAIN MAP — two axes → two homes → people ─────────────────────────
+       Column A (left) — UNIONS axis → CosmoStat.   Column B (right) — Euclid×CMB axis → IAS.       -->
+
+  <!-- ══ AXIS HEADERS (teal) ══ -->
+  <!-- A: UNIONS axis -->
+  <text x="355" y="218" text-anchor="middle" font-size="26" font-weight="600" fill="#3F8278">UNIONS axis</text>
+  <text x="355" y="248" text-anchor="middle" font-size="19" fill="#7A6F5C" font-style="italic">tomographic → multi-probe</text>
+  <!-- B: Euclid × CMB axis -->
+  <text x="1140" y="218" text-anchor="middle" font-size="26" font-weight="600" fill="#3F8278">Euclid &#215; CMB axis</text>
+  <text x="1140" y="248" text-anchor="middle" font-size="19" fill="#7A6F5C" font-style="italic">multi-probe cross-correlations</text>
+
+  <!-- ══ ties: axis → home (short vertical hairlines, teal terminus tick at the axis) ══ -->
+  <g stroke="#C5B89E" stroke-width="1.4">
+    <line x1="355" y1="266" x2="355" y2="306"/>
+    <line x1="1140" y1="266" x2="1140" y2="306"/>
+  </g>
+  <g fill="#3F8278">
+    <circle cx="355" cy="266" r="3.4"/>
+    <circle cx="1140" cy="266" r="3.4"/>
+  </g>
+
+  <!-- ══ HOME 1 : CosmoStat (UMR AIM) ══ -->
+  <rect x="135" y="306" width="440" height="132" rx="8" fill="#FBF6E9" stroke="#C5B89E" stroke-width="1.6"/>
+  <text x="355" y="368" text-anchor="middle" font-size="36" font-weight="600" fill="#1B1611">CosmoStat</text>
+  <text x="355" y="402" text-anchor="middle" font-size="21" fill="#7A6F5C" letter-spacing="0.3">UMR AIM</text>
+  <line x1="159" y1="328" x2="197" y2="328" stroke="#7A6F5C" stroke-width="1.2" stroke-opacity="0.5"/>
+
+  <!-- ══ HOME 2 : IAS ══ -->
+  <rect x="920" y="306" width="440" height="132" rx="8" fill="#FBF6E9" stroke="#C5B89E" stroke-width="1.6"/>
+  <text x="1140" y="362" text-anchor="middle" font-size="36" font-weight="600" fill="#1B1611">IAS</text>
+  <text x="1140" y="400" text-anchor="middle" font-size="20" fill="#7A6F5C" letter-spacing="0.2">Institut d&#8217;Astrophysique Spatiale</text>
+  <line x1="944" y1="328" x2="982" y2="328" stroke="#7A6F5C" stroke-width="1.2" stroke-opacity="0.5"/>
+
+  <!-- ══ ties: home → people ══ -->
+  <g stroke="#C5B89E" stroke-width="1.1" stroke-opacity="0.85">
+    <line x1="355" y1="438" x2="355" y2="476"/>
+    <line x1="1140" y1="438" x2="1140" y2="476"/>
+  </g>
+
+  <!-- ══ PEOPLE — small ink-muted labels, attached to the relevant home ══ -->
+  <!-- under CosmoStat -->
+  <g fill="#7A6F5C">
+    <circle cx="195" cy="498" r="2.6"/>
+    <text x="211" y="505" font-size="22">2 PhD &#8212; Kilbinger &#183; Farrens</text>
+    <circle cx="195" cy="538" r="2.6"/>
+    <text x="211" y="545" font-size="22">1 postdoc &#8212; agentic methods</text>
+    <circle cx="195" cy="578" r="2.6"/>
+    <text x="211" y="585" font-size="22">AI guidance &#8212; Lanusse</text>
+  </g>
+  <!-- under IAS -->
+  <g fill="#7A6F5C">
+    <circle cx="980" cy="498" r="2.6"/>
+    <text x="996" y="505" font-size="22">Euclid CMB working-group role</text>
+    <circle cx="980" cy="538" r="2.6"/>
+    <text x="996" y="545" font-size="22">SPT MOU &#8212; foundation in place</text>
+  </g>
+
+  <!-- ───────────────────────── LOWER BAND — sovereign AI ecosystem ───────────────────────── -->
+  <line x1="105" y1="636" x2="1495" y2="636" stroke="#C5B89E" stroke-width="1" stroke-opacity="0.7"/>
+  <text x="105" y="676" font-size="20" fill="#7A6F5C" font-style="italic" letter-spacing="0.3">sovereign AI ecosystem</text>
+
+  <!-- three small institutional tags -->
+  <rect x="105" y="698" width="190" height="52" rx="6" fill="#FBF6E9" stroke="#C5B89E" stroke-width="1.3"/>
+  <text x="200" y="732" text-anchor="middle" font-size="24" font-weight="600" fill="#1B1611">DATAIA</text>
+
+  <rect x="323" y="698" width="288" height="52" rx="6" fill="#FBF6E9" stroke="#C5B89E" stroke-width="1.3"/>
+  <text x="467" y="732" text-anchor="middle" font-size="24" font-weight="600" fill="#1B1611">PostGenAI@Paris</text>
+
+  <rect x="639" y="698" width="158" height="52" rx="6" fill="#FBF6E9" stroke="#C5B89E" stroke-width="1.3"/>
+  <text x="718" y="732" text-anchor="middle" font-size="24" font-weight="600" fill="#1B1611">Pleias</text>
+
+  <text x="835" y="732" font-size="19" fill="#7A6F5C" font-style="italic">French Science Commons &#183; sovereign training signal</text>
+
+</svg>

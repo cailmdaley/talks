@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="255 36 1245 520" role="img" aria-labelledby="t d">
+  <title id="t">One trajectory, always close to the data</title>
+  <desc id="d">A left-to-right time arrow with two milestones — a PhD at the University of Illinois Urbana-Champaign on SPT-3G CMB lensing (2018–2024), then a postdoc at CEA / UMR AIM on UNIONS and Euclid weak lensing (2024–present). Above the arrow, four stacked layers run from maps up through catalogs and estimators to cosmology; at every point along the trajectory the work spans the full stack.</desc>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap');
+      .layer    { font-family: 'EB Garamond', Georgia, serif; font-size: 25px; font-weight: 500; fill: #7A6F5C; letter-spacing: 0.01em; }
+      .ms       { font-family: 'EB Garamond', Georgia, serif; font-size: 28px; font-weight: 600; fill: #1B1611; }
+      .loc      { font-family: 'EB Garamond', Georgia, serif; font-size: 21px; font-weight: 500; fill: #9A8F7C; }
+      .sub      { font-family: 'EB Garamond', Georgia, serif; font-size: 24px; font-weight: 500; fill: #3F8278; }
+      .yr       { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 18px; font-weight: 500; fill: #7A6F5C; letter-spacing: 0.14em; }
+      .spine    { stroke: #BC4538; stroke-width: 2.5; fill: none; }
+      .layerbar { stroke: #C5B89E; stroke-width: 1.5; fill: none; }
+      .riser    { stroke: #C5B89E; stroke-width: 1.5; fill: none; }
+      .dot      { fill: #BC4538; }
+      .ring     { fill: none; stroke: #BC4538; stroke-width: 1.5; }
+    </style>
+  </defs>
+
+  <!-- ============================================================= -->
+  <!-- geometry: stack bars at y = 78/126/174/222; spine at y=362.    -->
+  <!-- stack spans x = 415 .. 1392 ; milestones at x=590 and x=1140.  -->
+  <!-- ============================================================= -->
+
+  <!-- ── the depth-of-stack: four hairline data layers ─────────────── -->
+  <!-- top → bottom : cosmology · estimators · catalogs · maps ──────── -->
+  <line class="layerbar" x1="415" y1="78" x2="1392" y2="78"/>
+  <text class="layer"    x="398" y="86" text-anchor="end">cosmology</text>
+
+  <line class="layerbar" x1="415" y1="126" x2="1392" y2="126"/>
+  <text class="layer"    x="398" y="134" text-anchor="end">estimators</text>
+
+  <line class="layerbar" x1="415" y1="174" x2="1392" y2="174"/>
+  <text class="layer"    x="398" y="182" text-anchor="end">catalogs</text>
+
+  <line class="layerbar" x1="415" y1="222" x2="1392" y2="222"/>
+  <text class="layer"    x="398" y="230" text-anchor="end">maps</text>
+
+  <!-- ── time arrow: a single thin cinnabar spine, arrowhead right ─── -->
+  <line class="spine" x1="415" y1="362" x2="1430" y2="362"/>
+  <path d="M1430 362 L1408 352 L1408 372 Z" fill="#BC4538"/>
+
+  <!-- ====================== milestone 1 : PhD ====================== -->
+  <!-- vertical riser climbs from the spine up through the full stack:  -->
+  <!-- the work at this point reaches from maps to cosmology.           -->
+  <line class="riser" x1="590" y1="353" x2="590" y2="78"/>
+  <circle class="dot"  cx="590" cy="78"  r="4.5"/>
+  <circle class="dot"  cx="590" cy="126" r="4.5"/>
+  <circle class="dot"  cx="590" cy="174" r="4.5"/>
+  <circle class="dot"  cx="590" cy="222" r="4.5"/>
+
+  <!-- milestone dot on the spine -->
+  <circle class="dot"  cx="590" cy="362" r="9"/>
+  <circle class="ring" cx="590" cy="362" r="15"/>
+
+  <text class="yr"  x="590" y="424" text-anchor="middle">2018 – 2024</text>
+  <text class="ms"  x="590" y="460" text-anchor="middle">PhD · University of Illinois</text>
+  <text class="loc" x="590" y="492" text-anchor="middle">Urbana-Champaign, USA</text>
+  <text class="sub" x="590" y="528" text-anchor="middle">SPT-3G — CMB lensing</text>
+
+  <!-- ====================== milestone 2 : Now ====================== -->
+  <line class="riser" x1="1140" y1="353" x2="1140" y2="78"/>
+  <circle class="dot"  cx="1140" cy="78"  r="4.5"/>
+  <circle class="dot"  cx="1140" cy="126" r="4.5"/>
+  <circle class="dot"  cx="1140" cy="174" r="4.5"/>
+  <circle class="dot"  cx="1140" cy="222" r="4.5"/>
+
+  <circle class="dot"  cx="1140" cy="362" r="9"/>
+  <circle class="ring" cx="1140" cy="362" r="15"/>
+
+  <text class="yr"  x="1140" y="424" text-anchor="middle">2024 – present</text>
+  <text class="ms"  x="1140" y="460" text-anchor="middle">Postdoc · CEA / UMR AIM</text>
+  <text class="loc" x="1140" y="492" text-anchor="middle">Paris-Saclay, France</text>
+  <text class="sub" x="1140" y="528" text-anchor="middle">UNIONS · Euclid — weak lensing</text>
+</svg>

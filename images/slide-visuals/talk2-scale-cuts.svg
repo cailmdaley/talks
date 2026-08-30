@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 444" width="760" height="444" role="img" aria-labelledby="title desc" font-family="EB Garamond, Georgia, serif">
+  <title id="title">The B-mode disagreement selects the fiducial catalog and freezes the scale cuts</title>
+  <desc id="desc">Of four UNIONS-3500 catalog variants, only the size-cut catalog (v1.4.6.3) passes all three E/B-separable statistics; it is selected as fiducial. The angular scale cut that suppresses the CCD-scale B-mode signal becomes the cosmology papers' scale cut. All locked blind, before any S8 is seen.</desc>
+
+  <defs>
+    <style>
+      .smallcaps { font-family:'EB Garamond',Georgia,serif; fill:#7A6F5C; letter-spacing:0.26em; }
+      .ver       { font-family:'IBM Plex Mono',ui-monospace,monospace; letter-spacing:0.02em; }
+      .colhead   { font-family:'IBM Plex Mono',ui-monospace,monospace; letter-spacing:0.06em; fill:#7A6F5C; }
+    </style>
+    <!-- hairline open arrowhead, ink-muted -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.4" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M1 1 L8.4 5 L1 9" fill="none" stroke="#7A6F5C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- ===================== TOP BRACKET — discipline made visible ===================== -->
+  <text class="smallcaps" x="380" y="20" text-anchor="middle" font-size="12.5">LOCKED BLIND&#160;&#160;&#183;&#160;&#160;BEFORE ANY S&#8328;</text>
+  <path d="M44 30 v9 H716 v-9" fill="none" stroke="#C5B89E" stroke-width="1"/>
+
+  <!-- ===================== COLUMN HEADER: the three statistics that must all pass ===================== -->
+  <text class="colhead" x="262" y="70" text-anchor="end" font-size="10.5">
+    <tspan>&#958;&#177;</tspan><tspan dy="-4" font-size="7.5">B</tspan><tspan dy="4">&#160;&#183;&#160;COSEBIs&#160;&#183;&#160;C</tspan><tspan font-size="7.5" dy="-4">BB</tspan>
+  </text>
+  <text x="262" y="84" text-anchor="end" font-size="10.5" font-style="italic" fill="#7A6F5C">three E/B-separable tests</text>
+
+  <!-- ===================== LEFT: four catalog variants ===================== -->
+  <!-- each box: x=44 w=218 h=54, vertical pitch 76, tops at 96 / 172 / 248 / 324 -->
+
+  <!-- v1.4.5  — Initial — REJECTED (fails harmonic) -->
+  <g opacity="0.62">
+    <rect x="44" y="96" width="218" height="54" rx="9" fill="none" stroke="#C5B89E" stroke-width="1"/>
+    <text class="ver" x="62" y="120" font-size="12.5" fill="#7A6F5C">v1.4.5</text>
+    <text x="62" y="139" font-size="15" fill="#7A6F5C">Initial</text>
+    <text x="206" y="129" text-anchor="end" font-size="10.5" font-style="italic" fill="#7A6F5C">fails harmonic</text>
+  </g>
+  <!-- cinnabar reject mark -->
+  <text x="240" y="129" text-anchor="middle" font-size="15" fill="#BC4538" opacity="0.85">&#10007;</text>
+
+  <!-- v1.4.6.3 — Size cut — SELECTED (passes all three) -->
+  <g>
+    <text class="ver" x="50" y="166" font-size="9.5" fill="#BC4538" letter-spacing="0.18em">FIDUCIAL</text>
+    <rect x="44" y="172" width="218" height="54" rx="9" fill="#BC4538" fill-opacity="0.07" stroke="#BC4538" stroke-width="1.6"/>
+    <text class="ver" x="62" y="196" font-size="12.5" fill="#1B1611">v1.4.6.3</text>
+    <text x="62" y="215" font-size="15.5" font-weight="600" fill="#1B1611">Size cut</text>
+    <text x="206" y="205" text-anchor="end" font-size="10.5" font-style="italic" fill="#7A6F5C">passes all three</text>
+  </g>
+  <!-- cinnabar select mark -->
+  <text x="240" y="206" text-anchor="middle" font-size="16" fill="#BC4538">&#10003;</text>
+
+  <!-- v1.4.8  — Masking (star-halo) — REJECTED (mask geometry) -->
+  <g opacity="0.62">
+    <rect x="44" y="248" width="218" height="54" rx="9" fill="none" stroke="#C5B89E" stroke-width="1"/>
+    <text class="ver" x="62" y="272" font-size="12.5" fill="#7A6F5C">v1.4.8</text>
+    <text x="62" y="291" font-size="15" fill="#7A6F5C">Stellar-halo mask</text>
+  </g>
+  <text x="240" y="281" text-anchor="middle" font-size="15" fill="#BC4538" opacity="0.85">&#10007;</text>
+  <!-- the honest detail: tests, not priors, chose -->
+  <text x="44" y="319" font-size="10.5" font-style="italic" fill="#7A6F5C">
+    <tspan x="44">aggressive mask geometry</tspan><tspan x="44" dy="13">&#8594; new pure-mode failures</tspan>
+  </text>
+
+  <!-- v1.4.11.3 — Relaxed flags — REJECTED (fails harmonic) -->
+  <g opacity="0.62">
+    <rect x="44" y="346" width="218" height="54" rx="9" fill="none" stroke="#C5B89E" stroke-width="1"/>
+    <text class="ver" x="62" y="370" font-size="12.5" fill="#7A6F5C">v1.4.11.3</text>
+    <text x="62" y="389" font-size="15" fill="#7A6F5C">Relaxed flags</text>
+    <text x="206" y="379" text-anchor="end" font-size="10.5" font-style="italic" fill="#7A6F5C">fails harmonic</text>
+  </g>
+  <text x="240" y="379" text-anchor="middle" font-size="15" fill="#BC4538" opacity="0.85">&#10007;</text>
+
+  <!-- ===================== FLOW: selected catalog -> scale cuts ===================== -->
+  <!-- hairline from the right face of the fiducial box, gentle rise to the axis -->
+  <path d="M262 199 C 330 199, 360 250, 426 250" fill="none" stroke="#C5B89E" stroke-width="1" marker-end="url(#arrow)"/>
+  <text x="356" y="227" text-anchor="middle" font-size="11.5" font-style="italic" fill="#7A6F5C">freezes the</text>
+
+  <!-- ===================== RIGHT: angular-scale axis with adopted band ===================== -->
+  <!-- axis from x=448 (theta small) to x=712 (theta large), baseline y=250.
+       log-spaced ticks: 1' / 6' / 14' / 12'.. 83' / 250'. adopted band 12-83'. CCD region 6-14'. -->
+  <g>
+    <!-- adopted band: faint ochre fill, 12' (x=540) to 83' (x=668) -->
+    <rect x="540" y="216" width="128" height="44" fill="#C49333" fill-opacity="0.10"/>
+
+    <!-- CCD-contaminated region 6-14' (x=505 to x=550), hairline hatch below the axis -->
+    <g stroke="#7A6F5C" stroke-width="0.7" opacity="0.5">
+      <line x1="508" y1="262" x2="514" y2="268"/>
+      <line x1="518" y1="262" x2="524" y2="268"/>
+      <line x1="528" y1="262" x2="534" y2="268"/>
+      <line x1="538" y1="262" x2="544" y2="268"/>
+      <line x1="548" y1="262" x2="552" y2="266"/>
+    </g>
+
+    <!-- axis line -->
+    <line x1="448" y1="260" x2="712" y2="260" stroke="#C5B89E" stroke-width="1"/>
+    <path d="M712 260 L703 256 L703 264 Z" fill="#C5B89E"/>
+
+    <!-- minor ticks along the axis (1', 6', 250') -->
+    <g stroke="#C5B89E" stroke-width="1">
+      <line x1="460" y1="256" x2="460" y2="264"/>
+      <line x1="505" y1="256" x2="505" y2="264"/>
+      <line x1="700" y1="256" x2="700" y2="264"/>
+    </g>
+    <text x="460" y="278" text-anchor="middle" font-size="9.5" class="ver" fill="#7A6F5C">1&#8242;</text>
+    <text x="700" y="278" text-anchor="middle" font-size="9.5" class="ver" fill="#7A6F5C">250&#8242;</text>
+
+    <!-- the two scale-cut bounds: cinnabar tick-marks at 12' and 83' -->
+    <g stroke="#BC4538" stroke-width="1.4">
+      <line x1="540" y1="208" x2="540" y2="266"/>
+      <line x1="668" y1="208" x2="668" y2="266"/>
+    </g>
+    <text x="540" y="200" text-anchor="middle" font-size="9.5" class="ver" fill="#BC4538">12&#8242;</text>
+    <text x="668" y="200" text-anchor="middle" font-size="9.5" class="ver" fill="#BC4538">83&#8242;</text>
+
+    <!-- band label: scale cuts (cinnabar, sparing) -->
+    <text x="604" y="234" text-anchor="middle" font-size="12.5" fill="#BC4538" letter-spacing="0.04em">scale cuts</text>
+    <text x="604" y="249" text-anchor="middle" font-size="10" font-style="italic" fill="#7A6F5C">adopted range</text>
+
+    <!-- axis title -->
+    <text x="580" y="298" text-anchor="middle" font-size="11.5" font-style="italic" fill="#7A6F5C">angular scale&#160;&#160;&#952;</text>
+
+    <!-- CCD annotation, tied to the excluded small-scale region (6-14', hatched, left of the 12' cut) -->
+    <text x="505" y="324" text-anchor="middle" font-size="10.5" font-style="italic" fill="#7A6F5C">
+      <tspan x="505">cut suppresses</tspan><tspan x="505" dy="13">CCD signal (6&#8211;14&#8242;)</tspan>
+    </text>
+    <!-- thin pointer from annotation up into the hatched CCD region -->
+    <path d="M512 302 C 520 292, 524 282, 526 272" fill="none" stroke="#C5B89E" stroke-width="0.8"/>
+  </g>
+
+  <!-- ===================== FOOTING: the one-glance reading ===================== -->
+  <text x="380" y="426" text-anchor="middle" font-size="12.5" fill="#7A6F5C" letter-spacing="0.2">
+    <tspan font-style="italic">null tests select the catalog</tspan><tspan dx="7" letter-spacing="2">&#8594;</tspan><tspan dx="6" font-style="italic" fill="#BC4538">and freeze the scale cuts</tspan><tspan dx="7" letter-spacing="2">&#8594;</tspan><tspan dx="6" font-style="italic">then S&#8328;</tspan>
+  </text>
+</svg>

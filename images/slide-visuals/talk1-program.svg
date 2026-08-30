@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1740 568" role="img" aria-labelledby="t d">
+  <title id="t">A four-year program on two parallel science axes</title>
+  <desc id="d">Two parallel science axes laid on one shared four-year timeline. Above the spine, UNIONS advances from tomographic cosmic shear in Year 1 to a multi-probe 3x2pt analysis in Year 3. Below the spine, Euclid cross-CMB advances from DR1 cross-correlations with SPT, ACT, and Planck in Years 1 to 2 to a comprehensive multi-probe analysis with DR2 in Years 3 to 4. Euclid DR1 and DR2 are external anchors. Milestones are scientific deliverables, not tooling.</desc>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap');
+      .yrtick { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 16px; font-weight: 500; fill: #7A6F5C; letter-spacing: 0.12em; }
+      .kick   { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 16px; font-weight: 500; letter-spacing: 0.12em; }
+      .kickA  { fill: #BC4538; }
+      .kickB  { fill: #3F8278; }
+      .ms     { font-family: 'EB Garamond', Georgia, serif; font-size: 25px; font-weight: 600; fill: #1B1611; }
+      .axis   { font-family: 'EB Garamond', Georgia, serif; font-size: 22px; font-weight: 700; letter-spacing: 0.02em; }
+      .axisA  { fill: #BC4538; }
+      .axisB  { fill: #3F8278; }
+      .ext    { font-family: 'EB Garamond', Georgia, serif; font-size: 21px; font-weight: 600; fill: #3F8278; }
+      .date   { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 16px; font-weight: 400; fill: #7A6F5C; letter-spacing: 0.05em; }
+      .now    { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 16px; font-weight: 500; fill: #BC4538; letter-spacing: 0.16em; }
+      .prog   { font-family: 'EB Garamond', Georgia, serif; font-size: 21px; font-style: italic; fill: #7A6F5C; letter-spacing: 0.02em; }
+      .spine  { stroke: #C5B89E; stroke-width: 2.5; fill: none; }
+      .tickln { stroke: #C5B89E; stroke-width: 1.5; }
+      .connA  { stroke: #BC4538; stroke-width: 1.5; opacity: 0.55; }
+      .connB  { stroke: #3F8278; stroke-width: 1.5; opacity: 0.55; }
+      .connt  { stroke: #3F8278; stroke-width: 1.5; stroke-dasharray: 2 4; }
+      .bracket{ stroke: #C5B89E; stroke-width: 1.5; fill: none; }
+      .dotA   { fill: #BC4538; }
+      .dotB   { fill: #3F8278; }
+    </style>
+  </defs>
+
+  <!-- ===================== shared time spine ===================== -->
+  <!-- spine y = 300; usable span x = 150 .. 1640. Year ticks at the quarter marks. -->
+  <line class="spine" x1="150" y1="300" x2="1648" y2="300"/>
+  <path d="M1648 300 L1627 290 L1627 310 Z" fill="#BC4538"/>
+
+  <!-- year ticks: Y1=460, Y2=830, Y3=1200, Y4=1570 -->
+  <g>
+    <line class="tickln" x1="460"  y1="294" x2="460"  y2="306"/>
+    <line class="tickln" x1="830"  y1="294" x2="830"  y2="306"/>
+    <line class="tickln" x1="1200" y1="294" x2="1200" y2="306"/>
+    <line class="tickln" x1="1570" y1="294" x2="1570" y2="306"/>
+    <text class="yrtick" x="460"  y="333" text-anchor="middle">YEAR 1</text>
+    <text class="yrtick" x="830"  y="333" text-anchor="middle">YEAR 2</text>
+    <text class="yrtick" x="1200" y="333" text-anchor="middle">YEAR 3</text>
+    <text class="yrtick" x="1570" y="333" text-anchor="middle">YEAR 4</text>
+  </g>
+
+  <!-- NOW: you-are-here, at the program start -->
+  <circle class="dotA" cx="200" cy="300" r="9"/>
+  <circle cx="200" cy="300" r="15" fill="none" stroke="#BC4538" stroke-width="1.5"/>
+  <text class="now" x="200" y="349" text-anchor="middle">NOW</text>
+
+  <!-- ===================== TRACK A — UNIONS (above) ===================== -->
+  <text class="axis axisA" x="150" y="60">UNIONS · cosmic shear → multi-probe</text>
+
+  <!-- A1: Year 1 — tomographic cosmic shear -->
+  <line class="connA" x1="460" y1="294" x2="460" y2="150"/>
+  <circle class="dotA" cx="460" cy="300" r="9"/>
+  <text class="kick kickA" x="460" y="118" text-anchor="middle">YEAR 1</text>
+  <text class="ms" x="460" y="152" text-anchor="middle"><tspan x="460">Tomographic</tspan><tspan x="460" dy="30">cosmic shear</tspan></text>
+
+  <!-- A2: Year 3 — multi-probe 3x2pt -->
+  <line class="connA" x1="1200" y1="294" x2="1200" y2="150"/>
+  <circle class="dotA" cx="1200" cy="300" r="9"/>
+  <text class="kick kickA" x="1200" y="118" text-anchor="middle">YEAR 3</text>
+  <text class="ms" x="1200" y="152" text-anchor="middle"><tspan x="1200">Multi-probe 3×2pt</tspan><tspan x="1200" dy="30">shear + GGL + clustering</tspan></text>
+
+  <!-- ===================== TRACK B — Euclid x CMB (below) ===================== -->
+  <text class="axis axisB" x="150" y="528">Euclid × CMB · cross-correlations</text>
+
+  <!-- B1: Years 1–2 — DR1 cross-correlations -->
+  <line class="connB" x1="645" y1="306" x2="645" y2="408"/>
+  <circle class="dotB" cx="645" cy="300" r="9"/>
+  <text class="kick kickB" x="645" y="438" text-anchor="middle">YEARS 1–2</text>
+  <text class="ms" x="645" y="470" text-anchor="middle"><tspan x="645">DR1 cross-correlations</tspan><tspan x="645" dy="30">SPT · ACT · Planck</tspan></text>
+
+  <!-- B2: Years 3–4 — comprehensive multi-probe with DR2 -->
+  <line class="connB" x1="1385" y1="306" x2="1385" y2="408"/>
+  <circle class="dotB" cx="1385" cy="300" r="9"/>
+  <text class="kick kickB" x="1385" y="438" text-anchor="middle">YEARS 3–4</text>
+  <text class="ms" x="1385" y="470" text-anchor="middle"><tspan x="1385">Comprehensive</tspan><tspan x="1385" dy="30">multi-probe with DR2</tspan></text>
+
+  <!-- ===================== external Euclid anchors (diamonds on the spine) ===================== -->
+  <!-- Placed at their true release dates, distinct from the milestone dots; labels sit in the
+       clear band just above the spine, between the UNIONS milestone block and the rule. -->
+  <!-- Euclid DR1 — Jun 2027 (~Year 1) -->
+  <path d="M545 290 l10 10 l-10 10 l-10 -10 Z" fill="#3F8278"/>
+  <text class="ext"  x="545" y="252" text-anchor="middle">Euclid DR1</text>
+  <text class="date" x="545" y="274" text-anchor="middle">JUN 2027</text>
+
+  <!-- Euclid DR2 — Mar 2029 (between Year 3 and Year 4) -->
+  <path d="M1320 290 l10 10 l-10 10 l-10 -10 Z" fill="#3F8278"/>
+  <text class="ext"  x="1320" y="252" text-anchor="middle">Euclid DR2</text>
+  <text class="date" x="1320" y="274" text-anchor="middle">MAR 2029</text>
+
+  <!-- ===================== four-year program bracket ===================== -->
+  <path class="bracket" d="M200 540 v9 H1570 v-9"/>
+  <text class="prog" x="885" y="556" text-anchor="middle">the four-year program</text>
+</svg>

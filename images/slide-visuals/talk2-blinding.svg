@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 210" width="920" height="210" role="img" aria-labelledby="title desc" font-family="EB Garamond, Georgia, serif">
+  <title id="title">Blinded analysis pipeline: obfuscated catalog, a null-test gate, then unblinding to S8</title>
+  <desc id="desc">The catalog enters obfuscated (veiled behind hatch lines). It can only pass a cinnabar gate labelled NULL TESTS once three E/B-mode statistics — xi-plus/minus B, COSEBIs, and C-ell BB — all pass. Only then is the data unblinded to a crisp S8. A no-return arc with a cinnabar cross shows analysis choices are frozen and cannot be retuned.</desc>
+
+  <defs>
+    <!-- small open arrowhead, ink-muted -->
+    <marker id="bl-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L8.5 5 L1 9" fill="none" stroke="#7A6F5C" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <!-- small open arrowhead, cinnabar (no-return arc) -->
+    <marker id="bl-arrow-cin" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M1 1 L8.5 5 L1 9" fill="none" stroke="#BC4538" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <!-- diagonal hatch veil over the catalog (obfuscation) -->
+    <pattern id="bl-veil" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(28)">
+      <line x1="0" y1="0" x2="0" y2="9" stroke="#C5B89E" stroke-width="1"/>
+    </pattern>
+    <!-- clip so the veil sits inside the catalog plate -->
+    <clipPath id="bl-catalog-clip">
+      <rect x="44" y="74" width="150" height="62" rx="8" ry="8"/>
+    </clipPath>
+  </defs>
+
+  <!-- ============================ (1) CATALOG — veiled / obfuscated ============================ -->
+  <g>
+    <!-- soft plate, hairline -->
+    <rect x="44" y="74" width="150" height="62" rx="8" ry="8" fill="none" stroke="#C5B89E" stroke-width="1"/>
+    <!-- the word, set in ink then crossed by the hatch so it reads 'hidden' -->
+    <text x="119" y="111" text-anchor="middle" font-size="22" fill="#1B1611" opacity="0.5" letter-spacing="0.3">Catalog</text>
+    <!-- diagonal veil drawn over the word, clipped to the plate -->
+    <rect x="44" y="74" width="150" height="62" fill="url(#bl-veil)" clip-path="url(#bl-catalog-clip)"/>
+    <!-- caption -->
+    <text x="119" y="156" text-anchor="middle" font-size="12.5" font-style="italic" fill="#7A6F5C" letter-spacing="0.2">obfuscated</text>
+  </g>
+
+  <!-- arrow: catalog -> gate -->
+  <line x1="202" y1="105" x2="318" y2="105" fill="none" stroke="#C5B89E" stroke-width="1" marker-end="url(#bl-arrow)"/>
+
+  <!-- ============================ (2) GATE — the single cinnabar accent ============================ -->
+  <text x="409" y="46" text-anchor="middle" font-size="13" fill="#BC4538" letter-spacing="2.2" font-family="IBM Plex Mono, monospace">NULL&#8201;TESTS</text>
+
+  <g stroke="#BC4538" fill="none" stroke-width="1.6" stroke-linecap="round">
+    <!-- double bar with a lock-like notch: two uprights, the right one stepped to read as a latch -->
+    <path d="M338 60 L338 150"/>
+    <!-- latched bar: a notch out of the top, suggesting a closed lock that opens only on pass -->
+    <path d="M362 60 L362 92 L356 98 L362 104 L362 150"/>
+    <!-- small horizontal lock tongue between the bars -->
+    <path d="M338 98 L350 98"/>
+  </g>
+
+  <!-- three stacked tick-rows: each statistic with an open checkbox, IBM Plex Mono -->
+  <g font-family="IBM Plex Mono, monospace" font-size="14" fill="#7A6F5C">
+    <!-- row 1 -->
+    <rect x="386" y="68" width="11" height="11" rx="1.5" fill="none" stroke="#7A6F5C" stroke-width="1"/>
+    <text x="406" y="78" font-size="13.5"><tspan font-style="italic" font-family="EB Garamond, Georgia, serif">&#958;</tspan><tspan dy="3" font-size="10">&#177;</tspan><tspan dy="-3" font-size="11" baseline-shift="super">B</tspan></text>
+    <!-- row 2 -->
+    <rect x="386" y="98" width="11" height="11" rx="1.5" fill="none" stroke="#7A6F5C" stroke-width="1"/>
+    <text x="406" y="108">COSEBIs</text>
+    <!-- row 3 -->
+    <rect x="386" y="128" width="11" height="11" rx="1.5" fill="none" stroke="#7A6F5C" stroke-width="1"/>
+    <text x="406" y="138">C<tspan font-size="10" dy="3">&#8467;</tspan><tspan font-size="11" dy="-7" baseline-shift="super">BB</tspan></text>
+  </g>
+
+  <!-- arrow: gate -> unblind (drawn from past the statistic stack) -->
+  <line x1="506" y1="105" x2="628" y2="105" fill="none" stroke="#C5B89E" stroke-width="1" marker-end="url(#bl-arrow)"/>
+  <text x="567" y="96" text-anchor="middle" font-size="12.5" font-style="italic" fill="#7A6F5C" letter-spacing="0.2">all pass</text>
+
+  <!-- ============================ (3) UNBLIND -> S8 — crisp ink payoff ============================ -->
+  <g>
+    <text x="700" y="78" text-anchor="middle" font-size="13" fill="#1B1611" letter-spacing="2.2" font-family="IBM Plex Mono, monospace">UNBLIND</text>
+    <text x="700" y="92" text-anchor="middle" font-size="20" fill="#7A6F5C">&#8595;</text>
+    <!-- S8 rendered crisp and sharp, the contrast to the veiled Catalog -->
+    <text x="700" y="140" text-anchor="middle" font-size="46" fill="#1B1611">S<tspan font-size="26" dy="9">8</tspan></text>
+  </g>
+
+  <!-- ============================ NO-RETURN ARC — choices frozen ============================ -->
+  <!-- a hairline arc sweeping back from the result toward the catalog, with a cinnabar cross at its apex -->
+  <path d="M648 170 C 520 196, 380 196, 200 174" fill="none" stroke="#C5B89E" stroke-width="1" stroke-dasharray="1 4" marker-end="url(#bl-arrow-cin)"/>
+  <!-- cinnabar cross sitting on the arc apex, marking 'no return' -->
+  <g stroke="#BC4538" stroke-width="1.6" stroke-linecap="round">
+    <line x1="418" y1="186" x2="426" y2="194"/>
+    <line x1="426" y1="186" x2="418" y2="194"/>
+  </g>
+  <text x="565" y="194" text-anchor="middle" font-size="12.5" font-style="italic" fill="#7A6F5C" letter-spacing="0.2">choices frozen &#8212; no retuning</text>
+</svg>

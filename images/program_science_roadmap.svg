@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2080 432" role="img" aria-labelledby="t d">
+  <title id="t">Four-year program and science roadmap</title>
+  <desc id="d">Dated timeline of the four-year program (fall 2026 to fall 2030): program milestones above the line (postdoc Jan 2027, two PhDs Oct 2027, workshop 2028, benchmarks 2029, synthetic RL environments 2030) and cosmology results below (first cosmology results Jun 2027 from Euclid DR1 and UNIONS, multi-probe cosmology Mar 2029 from Euclid DR2 and UNIONS).</desc>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap');
+      .leftlbl { font-family: 'EB Garamond', Georgia, serif; font-size: 34px; font-weight: 600; fill: #1B1611; }
+      .date    { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 24px; font-weight: 500; fill: #BC4538; letter-spacing: 0.03em; }
+      .start   { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 19px; font-weight: 400; fill: #9A8E76; letter-spacing: 0.03em; }
+      .mtop    { font-family: 'EB Garamond', Georgia, serif; font-size: 34px; font-weight: 600; fill: #3F8278; }
+      .mbot    { font-family: 'EB Garamond', Georgia, serif; font-size: 34px; font-weight: 600; fill: #1B1611; }
+      .sub     { font-family: 'EB Garamond', Georgia, serif; font-size: 23px; font-weight: 400; fill: #7A6F5C; }
+      .spine   { stroke: #C5B89E; stroke-width: 3.5; fill: none; }
+      .conn    { stroke: #C5B89E; stroke-width: 1.5; }
+      .dott    { fill: #3F8278; }
+      .dotb    { fill: #BC4538; }
+    </style>
+  </defs>
+
+  <!-- left label, one line, inline with the spine -->
+  <text class="leftlbl" x="430" y="253" text-anchor="end">The four-year program:</text>
+
+  <!-- spine + forward arrowhead -->
+  <line class="spine" x1="462" y1="245" x2="2040" y2="245"/>
+  <path d="M2040 245 L2016 233 L2016 257 Z" fill="#BC4538"/>
+
+  <!-- start anchor: fall 2026 = now -->
+  <circle class="dotb" cx="462" cy="245" r="6"/>
+  <text class="start" x="478" y="279" text-anchor="start">fall 2026</text>
+
+  <!-- ===== TOP: program milestones (teal) ===== -->
+  <circle class="dott" cx="560" cy="245" r="8"/>
+  <line class="conn" x1="560" y1="232" x2="560" y2="196"/>
+  <text class="date" x="560" y="182" text-anchor="middle">Jan 2027</text>
+  <text class="mtop" x="560" y="150" text-anchor="middle">Postdoc</text>
+
+  <circle class="dott" cx="855" cy="245" r="8"/>
+  <line class="conn" x1="855" y1="232" x2="855" y2="196"/>
+  <text class="date" x="855" y="182" text-anchor="middle">Oct 2027</text>
+  <text class="mtop" x="855" y="150" text-anchor="middle">Two PhDs</text>
+
+  <circle class="dott" cx="1215" cy="245" r="8"/>
+  <line class="conn" x1="1215" y1="232" x2="1215" y2="196"/>
+  <text class="date" x="1215" y="182" text-anchor="middle">2028</text>
+  <text class="mtop" x="1215" y="150" text-anchor="middle">Workshop</text>
+
+  <circle class="dott" cx="1545" cy="245" r="8"/>
+  <line class="conn" x1="1545" y1="232" x2="1545" y2="196"/>
+  <text class="date" x="1545" y="182" text-anchor="middle">2029</text>
+  <text class="mtop" x="1545" y="150" text-anchor="middle">Benchmarks</text>
+
+  <circle class="dott" cx="1910" cy="245" r="8"/>
+  <line class="conn" x1="1910" y1="232" x2="1910" y2="196"/>
+  <text class="date" x="1910" y="182" text-anchor="middle">2030</text>
+  <text class="mtop" x="1910" y="150" text-anchor="middle">RL environments</text>
+  <text class="mtop" x="1910" y="118" text-anchor="middle">Synthetic</text>
+
+  <!-- ===== BOTTOM: cosmology results (ink) ===== -->
+  <circle class="dotb" cx="725" cy="245" r="8"/>
+  <line class="conn" x1="725" y1="258" x2="725" y2="294"/>
+  <text class="date" x="725" y="318" text-anchor="middle">Jun 2027</text>
+  <text class="mbot" x="725" y="350" text-anchor="middle">First cosmology results</text>
+  <text class="sub"  x="725" y="378" text-anchor="middle">Euclid DR1, UNIONS</text>
+
+  <circle class="dotb" cx="1411" cy="245" r="8"/>
+  <line class="conn" x1="1411" y1="258" x2="1411" y2="294"/>
+  <text class="date" x="1411" y="318" text-anchor="middle">Mar 2029</text>
+  <text class="mbot" x="1411" y="350" text-anchor="middle">Multi-probe cosmology</text>
+  <text class="sub"  x="1411" y="378" text-anchor="middle">Euclid DR2, UNIONS</text>
+</svg>

@@ -221,6 +221,28 @@
     span:nth-child(2) { border-left-color: #3D5BA0; }
 }
 
+// a figure lifted from the paper, sitting on the parchment ground
+.reveal .nka .paperfig img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 560px;
+    object-fit: contain;
+    box-shadow: none;
+    mix-blend-mode: multiply;   // white plot ground melts into the page
+}
+.reveal .nka .two > div { flex: 1; min-width: 0; }
+// an inset-sized paper figure, when it shares a row with a live panel
+.reveal .nka .paperfig.inset img { max-height: 330px; width: auto; margin: 0 auto; }
+// the shear panel is the upper half of a two-panel figure, so its x-axis is
+// unlabelled in the source; name it here rather than dragging in the B-mode panel
+.reveal .nka .axcap {
+    text-align: center;
+    font-size: 27px;
+    color: #7A6F5C;
+    margin-top: -4px;
+}
+
 .reveal .nka .mrow { display: flex; gap: 34px; align-items: flex-start; }
 .reveal .nka canvas {
     image-rendering: pixelated;
