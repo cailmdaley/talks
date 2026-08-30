@@ -88,37 +88,29 @@ of a Gaussian field. It is what we are trying to measure.
 <div class="nka" data-step="2">
 <div class="eqs"></div>
 <div class="pick"></div>
-<div class="two">
-  <div>
-    <svg class="pA" data-h="470" data-x0="96" data-w="664"
-         viewBox="0 0 790 610" width="790" height="610"></svg>
-  </div>
-  <div>
-    <svg class="pK" data-h="190" data-x0="104" data-w="726"
-         viewBox="0 0 880 330" width="880" height="330"></svg>
-    <svg class="pC" data-h="250" data-x0="104" data-w="726" data-tilde="1"
-         viewBox="0 0 880 340" width="880" height="340"></svg>
-  </div>
-</div>
+<svg class="pA" data-h="230" viewBox="0 0 1730 320" width="1730" height="320"></svg>
+<svg class="pC" data-h="300" data-kernel="1" data-kh="190" data-tilde="1"
+     viewBox="0 0 1730 420" width="1730" height="420"></svg>
 </div>
 ```
 
 ::: {.notes}
 Now the mask, and this is the slide the rest of the talk leans on.
 
-On the left: we observe the field times a window. Note the window is not a box — its edges are
-tapered, apodized, and that taper matters as much as the size of the footprint.
+Top row, real space: we observe the field times a window. The window is not a box — its edges
+are tapered, apodized, and that taper matters as much as the size of the footprint.
 
-On the right, what that does. Multiplying in position space is convolving in harmonic space,
-so each observed mode is no longer its own: it is a weighted sum of its neighbours, and the
-kernel says how many neighbours. Take the expectation and the smearing becomes a matrix —
-the pseudo-spectrum, in red, is the true spectrum seen through the coupling matrix. Watch the
-bump get rounded off.
+Bottom row, harmonic space. Multiplying in position space is convolving in harmonic space, so
+each observed mode is no longer its own: it is a weighted sum of its neighbours, and the blue
+bump is the kernel that says which ones. The bar under it is the number to remember — how many
+neighbours each mode mixes with. Take the expectation and the smearing becomes a matrix: the
+blue curve, the pseudo-spectrum, is the true spectrum seen through the coupling. Watch the bump
+get rounded off.
 
 Now switch masks. Wide and smoothly apodized mixes each mode with one neighbour either side.
 Small, a couple. Holes and hard edges — and that is what a real survey footprint looks like —
-five, with sidelobes reaching much further than that. Same area in the last two cases; the
-difference is entirely complexity. Everything downstream is a consequence of this number.
+five, with sidelobes reaching much further. The last two have the same area; the difference is
+entirely complexity. Everything downstream is a consequence of this number.
 :::
 
 ## Bandpowers make the coupling invertible {.nka-slide}
@@ -135,46 +127,52 @@ difference is entirely complexity. Everything downstream is a consequence of thi
 And you invert it. But not mode by mode: the mask does not only smear modes, it deletes them, and a matrix that annihilates directions cannot be inverted. So you average into bandpowers about as wide as the kernel — the red squares — bin the coupling matrix to match, and invert that. The decoupled bandpowers land back on the truth. Binning is how you stop asking the data about what the mask threw away. The estimator is exact.
 :::
 
-## The error bar needs a four-point sum {.nka-slide}
+## The covariance is where it gets expensive {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="4">
+<div class="nka" data-step="4" data-frag-step="5">
 <div class="eqs"></div>
 <div class="cost"></div>
-<svg class="pC" data-h="420" data-kernel="1" data-kh="210" viewBox="0 0 1730 540" width="1730" height="540"></svg>
 <div class="pick"></div>
-</div>
-```
-
-::: {.notes}
-The estimator is exact. Its uncertainty is not. The covariance of a quadratic estimator is a four-point object: for every pair of modes, a sum over a third mode of W times W-star times C. That is a cost that scales as the sixth power of the largest mode, and at survey resolution it is simply not computable.
-:::
-
-## The narrow-kernel approximation {.nka-slide}
-
-```{=html}
-<div class="nka" data-step="5">
-<div class="eqs"></div>
-<div class="cost"></div>
 <div class="mrow">
-  <div class="mcell"><canvas style="width:310px;height:310px"></canvas>
-    <div class="mlab"><b>exact</b>direct sum</div></div>
-  <div class="mcell"><canvas style="width:310px;height:310px"></canvas>
+  <div class="mcell"><canvas style="width:400px;height:400px"></canvas>
+    <div class="mlab"><b>exact</b>direct sum over modes</div></div>
+  <div class="mcell fragment"><canvas style="width:400px;height:400px"></canvas>
     <div class="mlab"><b>NKA</b>one mask-product kernel</div></div>
-  <div class="mcell"><canvas style="width:310px;height:310px"></canvas>
+  <div class="mcell fragment"><canvas style="width:400px;height:400px"></canvas>
     <div class="mlab"><b>NKA &minus; exact</b>error</div></div>
 </div>
-<svg class="pC" data-h="132" data-kernel="1" data-kh="96" data-label="0" data-xlabel="0" viewBox="0 0 1730 200" width="1730" height="200"></svg>
 <div class="nkaerr"></div>
-<div class="pick"></div>
 </div>
 ```
 
 ::: {.notes}
-Here is the trick. If C barely changes across the width of the kernel, evaluate it once at the midpoint of the two modes and pull it outside the sum. What is left collapses into a single kernel — the transform of a product of masks — and the cost drops to the same order as the estimator itself. Where the spectrum is smooth that is nearly exact. Where it has structure on the kernel's scale, it is not, and the error is in the off-diagonals. Switch to the holed mask and the whole band goes wrong. That is the subject of the first two papers.
+The estimator is exact. Its uncertainty is not.
+
+The covariance of a quadratic estimator is a four-point object: for every pair of modes, a sum
+over a third mode of W times W-star times C. That is a cost scaling as the sixth power of the
+largest mode, and at survey resolution it is simply not computable. On the left is the answer
+you cannot afford — the exact covariance of the pseudo-spectrum, banded because the mask
+couples neighbours.
+
+So: the narrow-kernel approximation. If C barely changes across the width of the kernel,
+evaluate it once at the midpoint of the two modes and pull it outside the sum. What is left
+collapses into a single kernel — the transform of a product of masks — and the cost drops to
+the same order as the estimator itself.
+
+And the difference. Where the spectrum is smooth it is nearly exact; where it has structure on
+the kernel's scale it is not, and the error lives in the off-diagonals, not on the diagonal.
+Switch to the holed mask and the whole band goes wrong. That is the subject of the first two
+papers.
 :::
 
-## A smaller footprint means a wider kernel {.nka-slide}
+<!-- ═══ parked ═══════════════════════════════════════════════════════════
+     The three toy-experiment animations are kept in the deck but hidden from
+     navigation (reveal's data-visibility="hidden"), so they can come back by
+     deleting one attribute. Their data still ships in nka_data.html.
+     ══════════════════════════════════════════════════════════════════════ -->
+
+## A smaller footprint means a wider kernel {.nka-slide visibility="hidden"}
 
 ```{=html}
 <div class="anim" id="s3">
@@ -271,7 +269,7 @@ survey couples a mode only to its immediate neighbours, a small one smears acros
 Everything that follows is about what happens inside that width.
 :::
 
-## The diagonal is innocent {.nka-slide}
+## The diagonal is innocent {.nka-slide visibility="hidden"}
 
 ```{=html}
 <div class="anim" id="s4">
@@ -377,7 +375,7 @@ covariance. That band isn't a correction to the real-space covariance. It is the
 real-space covariance.
 :::
 
-## Six patches, not one, is what breaks it {.nka-slide}
+## Six patches, not one, is what breaks it {.nka-slide visibility="hidden"}
 
 ```{=html}
 <div class="anim" id="s5">

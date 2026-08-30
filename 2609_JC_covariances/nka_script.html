@@ -311,8 +311,8 @@ function boot(){
   function buildCine(s){
     clear(s);
     var SUMH = 190, LANE = 60, CY0 = 250 + MODES.length*LANE, CH = 230;
-    var st = {modes:[], labels:[], pts:[], plabels:[], sum:null,
-              curve:null, clabel:null, plus:null, done:null};
+    var st = {modes:[], labels:[], pts:[], sum:null, laneY:[],
+              curve:null, clabel:null, plus:null, link:null, done:null};
     var mid = 40 + SUMH/2;
     el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
     txt(s, Math.max(PAD-82, 2), mid+9, 'a(x)', {fill:MUT});
@@ -342,6 +342,7 @@ function boot(){
                                  'stroke-width':2, opacity:0, class:'cine'}));
       st.modes.push(el(s,'path',{d:pathOf(one, lmid, lscale), fill:'none',
                                  stroke:COB,'stroke-width':3, opacity:0, class:'cine'}));
+      st.laneY.push(lmid);
       var t = txt(s, 8, lmid+9, 'k = '+k, {fill:MUT,'font-size':26, opacity:0, class:'cine'});
       st.labels.push(t);
     }
@@ -359,47 +360,74 @@ function boot(){
     for(var kk=1;kk<KMAX;kk++) dc += (kk>1?'L':'M')+XK(kk,KMAX).toFixed(1)+' '+Y(Cin[kk]).toFixed(1)+' ';
     st.curve = el(s,'path',{d:dc,fill:'none',stroke:INK,'stroke-width':3.5,opacity:0,class:'cine'});
     st.clabel = txt(s, XK(150,KMAX), Y(Cfun(150))-26, 'true  C(k)', {fill:INK,opacity:0,class:'cine'});
+    // the connector that links a lane to its point while both are lit
+    st.link = el(s,'line',{x1:0,y1:0,x2:0,y2:0,stroke:COB,'stroke-width':2,
+                           'stroke-dasharray':'5 7',opacity:0,class:'cine'});
     for(q=0;q<MODES.length;q++){
-      var kq = MODES[q], last = (q === MODES.length-1);
+      var kq = MODES[q];
       st.pts.push(el(s,'circle',{cx:XK(kq,KMAX),cy:Y(Cfun(kq)),r:10,fill:COB,opacity:0,class:'cine'}));
-      st.plabels.push(txt(s, XK(kq,KMAX) + (last?-90:-30), Y(Cfun(kq)) + (last?-26:-26),
-                          '|a|²', {fill:COB,'font-size':25,opacity:0,class:'cine'}));
     }
     s.__cine = st;
     return st;
   }
+  //  Beat plan:  1..5  modes land, the running sum grows
+  //              6      "+ everything else": the sum snaps to the real field
+  //              7      the spectrum's curve draws, and the relations arrive
+  //              8..12  each mode's |a_k|^2 lands on the curve, flashing with
+  //                     its own lane so the two pictures are visibly the same
+  //                     five objects
+  var NM = MODES.length;
   function setBeat(root, s, n){
     var st = s.__cine; if(!st) return;
-    for(var q=0;q<MODES.length;q++){
-      var on = (n > q) ? 1 : 0;
-      st.modes[q].style.opacity  = on ? (n > MODES.length ? 0.35 : 1) : 0;
+    var landed = Math.min(n, NM);                 // how many modes are in
+    var summed = n >= NM + 1;                     // the field is complete
+    var curve  = n >= NM + 2;                     // the spectrum is drawn
+    var pt     = curve ? Math.min(n - (NM + 2), NM) : 0;   // points placed
+    var flash  = (curve && n <= 2*NM + 2) ? n - (NM + 2) : -1;  // 1-based lane
+
+    for(var q=0;q<NM;q++){
+      var on = (q < landed);
+      var lit = (flash === q + 1);
+      st.modes[q].style.opacity  = on ? (lit ? 1 : (summed ? 0.30 : 1)) : 0;
+      st.modes[q].setAttribute('stroke-width', lit ? 5 : 3);
       st.lanes[q].style.opacity  = on ? 1 : 0;
       st.labels[q].style.opacity = on ? 1 : 0;
-      st.pts[q].style.opacity    = on ? 1 : 0;
-      st.plabels[q].style.opacity = (n === q+1) ? 1 : 0;
+      st.labels[q].setAttribute('fill', lit ? COB : MUT);
+      st.pts[q].style.opacity    = (q < pt) ? 1 : 0;
+      st.pts[q].setAttribute('r', lit ? 14 : 10);
     }
-    var done = n > MODES.length;
+    st.link.style.opacity = 0;
+    if(flash >= 1 && flash <= NM){
+      var i = flash - 1;
+      st.link.setAttribute('x1', st.pts[i].getAttribute('cx'));
+      st.link.setAttribute('x2', st.pts[i].getAttribute('cx'));
+      st.link.setAttribute('y1', st.laneY[i]);
+      st.link.setAttribute('y2', st.pts[i].getAttribute('cy'));
+      st.link.style.opacity = 1;
+    }
+
     // Each beat is rescaled to fill its row. A partial sum of a few modes really
     // is a fraction of the field's amplitude, and drawn on a fixed scale it looks
     // like nothing is happening — what changes beat to beat is the STRUCTURE.
     st.sum.setAttribute('d', (function(){
-      var vals = done ? field : partialSum(Math.min(n, MODES.length)), mx = 0, jj;
+      var vals = summed ? field : partialSum(landed), mx = 0, jj;
       for(jj=0;jj<NX;jj++) mx = Math.max(mx, Math.abs(vals[jj]));
       var sc = st.sumH*0.44/Math.max(mx,1e-9), d='';
       for(jj=0;jj<NX;jj++)
         d += (jj?'L':'M')+(PAD+AW*jj/(NX-1)).toFixed(1)+' '+(st.sumMid - vals[jj]*sc).toFixed(1)+' ';
       return d;
     })());
-    st.sum.style.opacity = n > 0 ? 1 : 0;
-    st.plus.style.opacity = done ? 1 : 0;
-    st.curve.style.opacity = done ? 1 : 0;
-    st.clabel.style.opacity = done ? 1 : 0;
+    st.sum.style.opacity   = n > 0 ? 1 : 0;
+    st.plus.style.opacity  = summed ? 1 : 0;
+    st.curve.style.opacity = curve ? 1 : 0;
+    st.clabel.style.opacity = curve ? 1 : 0;
+
     // Only touch the ledger when the state actually changes: re-rendering it on
-    // every beat re-ran MathJax seven times during the build, which flickers.
+    // every beat re-ran MathJax, which flickers.
     var eqs = root.querySelector('.eqs');
-    if(eqs && st.done !== done){
-      st.done = done;
-      ledger(eqs, done ? 1 : 0);
+    if(eqs && st.done !== curve){
+      st.done = curve;
+      ledger(eqs, curve ? 1 : 0);
       typeset();
     }
   }
@@ -407,17 +435,17 @@ function boot(){
   function playCine(root, s){
     if(PRINT) return;
     clearInterval(cineTimer);
-    var n = 0;
+    var n = 0, LAST = 2*NM + 2;
     // snap to empty with transitions off, so a replay does not cross-fade the
     // finished picture out while the first mode is fading in
     s.classList.add('nofade');
-    if(s.__cine) s.__cine.done = null;      // force the ledger back to its opening state
+    if(s.__cine) s.__cine.done = null;
     setBeat(root, s, 0);
     void s.getBoundingClientRect();
     s.classList.remove('nofade');
     cineTimer = setInterval(function(){
       n++; setBeat(root, s, n);
-      if(n > MODES.length) clearInterval(cineTimer);
+      if(n >= LAST) clearInterval(cineTimer);
     }, BEAT);
   }
 
@@ -429,35 +457,28 @@ function boot(){
     txt(s, Math.max(PAD-86, 2), y0+18, 'C(k)', {fill:MUT});
     if(opts.xlabel !== false) txt(s, PAD, y0+h+42, 'wavenumber  k', {fill:MUT});
 
-    if(opts.bins){
-      for(var b=0;b<NBIN;b+=1){
-        if(b % 2) continue;
-        var xa = XK(1+b*NB, KMAX), xb = XK(Math.min(1+(b+1)*NB, KMAX), KMAX);
-        el(s,'rect',{x:xa,y:y0,width:xb-xa,height:h,fill:MUT,opacity:0.07});
-      }
+    if(opts.bins) for(var b=0;b<NBIN;b+=2){
+      var xa = XK(1+b*NB, KMAX), xb = XK(Math.min(1+(b+1)*NB, KMAX), KMAX);
+      el(s,'rect',{x:xa,y:y0,width:xb-xa,height:h,fill:MUT,opacity:0.07});
     }
+
     var d='';
     for(var k=1;k<KMAX;k++) d += (k>1?'L':'M')+XK(k,KMAX).toFixed(1)+' '+Y(Cin[k]).toFixed(1)+' ';
     el(s,'path',{d:d,fill:'none',stroke:INK,'stroke-width':3.5});
     if(opts.label !== false) txt(s, XK(150,KMAX), Y(Cin[150])-26, 'true  C(k)', {fill:INK});
 
-    if(opts.marks) for(var q=0;q<MODES.length;q++){
-      var kk = MODES[q], last = (q === MODES.length-1);
-      el(s,'circle',{cx:XK(kk,KMAX),cy:Y(Cfun(kk)),r:9,fill:COB});
-      // the last mark sits on the bump's downslope, where "above" is occupied
-      txt(s, XK(kk,KMAX) + (last ? 20 : -26), Y(Cfun(kk)) + (last ? 38 : -24),
-          'k = '+kk, {fill:COB,'font-size':26});
-    }
+    //  The masked spectrum is blue, the same blue as the mask and its kernel:
+    //  everything the mask did to the measurement reads as one colour.
     if(opts.tilde){
       var d2='';
       for(var k2=1;k2<KMAX;k2++) d2 += (k2>1?'L':'M')+XK(k2,KMAX).toFixed(1)+' '+Y(Ctil[k2]).toFixed(1)+' ';
-      el(s,'path',{d:d2,fill:'none',stroke:ACC,'stroke-width':3.5,'stroke-dasharray':'10 7'});
-      txt(s, XK(150,KMAX), Y(Ctil[150])+50, 'masked  C̃(k)', {fill:ACC});
+      el(s,'path',{d:d2,fill:'none',stroke:COB,'stroke-width':3.5,'stroke-dasharray':'10 7'});
+      txt(s, XK(150,KMAX), Y(Ctil[150])+50, 'masked  C̃(k)', {fill:COB});
     }
     if(opts.binned) for(var b2=0;b2<NBIN;b2++){
       var kc = binCentre(b2);
       if(kc < 8 || kc > KMAX-14) continue;
-      el(s,'rect',{x:XK(kc,KMAX)-7,y:Y(Ctilb[b2])-7,width:14,height:14,fill:ACC});
+      el(s,'rect',{x:XK(kc,KMAX)-7,y:Y(Ctilb[b2])-7,width:14,height:14,fill:COB});
     }
     if(opts.decoupled) for(var b3=0;b3<NBIN;b3++){
       var kc3 = binCentre(b3);
@@ -475,73 +496,26 @@ function boot(){
       }
       var hw = mixRadius(kpow, N/2-1);
       var lo = Math.max(K0-hw,1), hi = Math.min(K0+hw,KMAX-1);
-      el(s,'rect',{x:XK(lo,KMAX),y:y0,width:Math.max(XK(hi,KMAX)-XK(lo,KMAX),3),height:h,fill:COB,opacity:0.10});
+      el(s,'rect',{x:XK(lo,KMAX),y:y0,width:Math.max(XK(hi,KMAX)-XK(lo,KMAX),3),height:h,
+                   fill:COB,opacity:0.10});
       el(s,'path',{d:dk,fill:'none',stroke:COB,'stroke-width':3.5});
-      var lx = PAD + AW - 560, v = pullOutError(K0);
+      // the ± n bar, on the kernel itself, with one name for the concept
+      el(s,'line',{x1:XK(lo,KMAX),y1:y0+h+26,x2:XK(hi,KMAX),y2:y0+h+26,
+                   stroke:COB,'stroke-width':8,'stroke-linecap':'round'});
+      txt(s, XK(hi,KMAX)+18, y0+h+36, pmLabel(hw), {fill:COB,'font-size':29});
+      var lx = PAD + AW - 790;
       txt(s, lx, y0+26, 'kernel  |W|²  at  k₀ = '+K0, {fill:COB});
-      if(opts.err !== false)
-        txt(s, lx, y0+64, 'C at k₀ vs its kernel average:  '+pct(v),
+      txt(s, lx, y0+64, WIDTH_CAPTION, {fill:MUT,'font-size':26});
+      if(opts.err === true){
+        var v = pullOutError(K0);
+        txt(s, lx, y0+102, 'C at k₀ vs its kernel average:  '+pct(v),
             {fill: Math.abs(v)>0.05 ? ACC : COB});
-    }
-  }
-
-  //  The kernel on its own axes, in mode separation, with the "± n modes" bar.
-  //  Log power, because a complex mask's damage is in sidelobes that a linear
-  //  axis hides completely.
-  function drawKernelPanel(s, opts){
-    clear(s); geom(opts);
-    var PAD = _x0, AW = _w, y0 = opts.y0 || 46, h = opts.h || 200, MM = 60;
-    var pk = 0, p = [], m;
-    for(m=-MM;m<=MM;m++){ var v = kpow(m); p.push(v); if(v>pk) pk=v; }
-    el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
-    var d='';
-    for(var q=0;q<p.length;q++){
-      var lg = Math.log10(Math.max(p[q]/pk,1e-5))/5 + 1;
-      d += (q?'L':'M')+(PAD+AW*q/(p.length-1)).toFixed(1)+' '+(y0+h-lg*h).toFixed(1)+' ';
-    }
-    el(s,'path',{d:d,fill:'none',stroke:ACC,'stroke-width':3});
-    var n = mixRadius(kpow, MM), cq = (p.length-1)/2;
-    el(s,'line',{x1:PAD+AW*(cq-n)/(p.length-1),y1:y0+h+26,x2:PAD+AW*(cq+n)/(p.length-1),y2:y0+h+26,
-                 stroke:ACC,'stroke-width':8,'stroke-linecap':'round'});
-    txt(s, PAD+AW*(cq+n)/(p.length-1)+18, y0+h+36, pmLabel(n), {fill:ACC,'font-size':29});
-    txt(s, PAD, y0-16, 'kernel  |W|²   (log)', {fill:ACC,'font-size':28});
-    txt(s, PAD, y0+h+70, WIDTH_CAPTION, {fill:MUT,'font-size':26});
-  }
-
-  function drawZoo(s){
-    clear(s);
-    var MW = 700, KW = 760, KX = PAD + MW + 130, MM = 60;
-    for(var r=0;r<MASKS.length;r++){
-      var z = MASKS[r], y = 86 + r*192, h = 116;
-      var w = makeMask(z.w, z.h, z.a), T = transform(w);
-      var d = 'M ' + PAD + ' ' + (y+h);
-      for(var j=0;j<NX;j++) d += ' L ' + (PAD+MW*j/(NX-1)).toFixed(1) + ' ' + (y+h-w[j]*h).toFixed(1);
-      d += ' L ' + (PAD+MW) + ' ' + (y+h) + ' Z';
-      el(s,'path',{d:d,fill:COB,opacity:0.13});
-      var d2='';
-      for(var j2=0;j2<NX;j2++) d2 += (j2?'L':'M')+(PAD+MW*j2/(NX-1)).toFixed(1)+' '+(y+h-w[j2]*h).toFixed(1)+' ';
-      el(s,'path',{d:d2,fill:'none',stroke:COB,'stroke-width':3});
-      txt(s, PAD, y-14, z.name, {fill:MUT,'font-size':27});
-      var pk=0, p=[];
-      for(var m=-MM;m<=MM;m++){ var i=(m+N)%N, v=T.re[i]*T.re[i]+T.im[i]*T.im[i]; p.push(v); if(v>pk)pk=v; }
-      el(s,'line',{x1:KX,y1:y+h,x2:KX+KW,y2:y+h,stroke:RULE,'stroke-width':2});
-      var dk='';
-      for(var q=0;q<p.length;q++){
-        var lg = Math.log10(Math.max(p[q]/pk,1e-5))/5 + 1;
-        dk += (q?'L':'M')+(KX+KW*q/(p.length-1)).toFixed(1)+' '+(y+h-lg*h).toFixed(1)+' ';
       }
-      el(s,'path',{d:dk,fill:'none',stroke:ACC,'stroke-width':3});
-      var wid = mixRadius(function(mm){ var ii=(mm+N)%N; return T.re[ii]*T.re[ii]+T.im[ii]*T.im[ii]; }, MM);
-      var cq=(p.length-1)/2, hw=wid;
-      el(s,'line',{x1:KX+KW*(cq-hw)/(p.length-1),y1:y+h+24,x2:KX+KW*(cq+hw)/(p.length-1),y2:y+h+24,
-                   stroke:ACC,'stroke-width':8,'stroke-linecap':'round'});
-      txt(s, KX+KW*(cq+hw)/(p.length-1)+20, y+h+34, pmLabel(wid), {fill:ACC,'font-size':27});
     }
-    txt(s, PAD, 30, 'mask  w(x)', {fill:COB,'font-size':29});
-    txt(s, KX, 30, 'kernel  |W|²   (log)', {fill:ACC,'font-size':29});
   }
 
-  function divergent(v){
+  // ---------- covariance matrices ----------
+  function divergent(v){                       // ground -> cobalt / cinnabar
     var t = Math.max(-1, Math.min(1, v));
     if(t >= 0){ var u = Math.pow(t,0.55); return [247-186*u, 240-149*u, 225-65*u]; }
     var u2 = Math.pow(-t,0.55); return [247-59*u2, 240-171*u2, 225-169*u2];
@@ -555,6 +529,8 @@ function boot(){
     }
     ctx.putImageData(im,0,0);
   }
+  //  Shown as correlation matrices, Cov / sqrt(diag diag), so the band stays
+  //  visible at every k instead of being swamped by C(k)^2.
   function drawMatrices(root){
     var cvs = root.querySelectorAll('canvas');
     if(cvs.length < 3) return;
@@ -585,7 +561,9 @@ function boot(){
     ['\\tilde a(x)=w(x)\\,a(x)', 2, 'mask'],
     ['\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', 2, 'mode coupling'],
     ['\\langle \\tilde C(k)\\rangle=\\sum_{k\'} M_{kk\'}\\,C(k\')', 2, 'pseudo-C(k)'],
-    ['\\langle \\hat C_b\\rangle = (M_{bb\'})^{-1}\\langle \\tilde C_{b\'}\\rangle = C_b', 3, 'decoupling · bandpowers'],
+    ['\\tilde C_b=\\frac{1}{N_b}\\sum_{k\\in b}\\tilde C(k)', 3, 'bandpower'],
+    ['M_{bb\'}=\\frac{1}{N_b}\\sum_{k\\in b}\\sum_{k\'\\in b\'} M_{kk\'}', 3, 'binned coupling'],
+    ['\\hat C_b=(M_{bb\'})^{-1}\\,\\tilde C_{b\'}', 3, 'decoupled'],
     ['{\\rm Cov}\\propto\\big|\\textstyle\\sum_{k\'\'} W_{k-k\'\'}W^{*}_{k\'-k\'\'}C(k\'\')\\big|^{2}', 4, 'four-point'],
     ['{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,w_bw_d)', 5, 'narrow-kernel approximation']
   ];
@@ -617,8 +595,20 @@ function boot(){
   // ---------- render one slide ----------
   var COST = {4:'<i>O</i>(k<sub>max</sub><sup>6</sup>)',
               5:'<i>O</i>(k<sub>max</sub><sup>3</sup>) — same as the estimator'};
+  //  A slide may advance its ledger with a reveal fragment: data-frag-step is the
+  //  step it moves to once any fragment on the slide is showing. Used by the
+  //  covariance slide to stage exact -> NKA -> error.
+  function effectiveStep(root){
+    var base = +root.getAttribute('data-step');
+    var fs = root.getAttribute('data-frag-step');
+    if(fs && window.Reveal && Reveal.getIndices){
+      var f = Reveal.getIndices().f;
+      if(typeof f === 'number' && f >= 0) return +fs;
+    }
+    return base;
+  }
   function renderOne(root){
-    var step = +root.getAttribute('data-step');
+    var step = effectiveStep(root);
     var q = function(sel){ return root.querySelector(sel); };
     // On the build slide the animation owns the ledger (it reveals the relations
     // at the last beat), so renderOne must not overwrite it.
@@ -656,7 +646,7 @@ function boot(){
       marks: pC.dataset.marks === '1',
       kernel: pC.dataset.kernel === '1',
       kh: +pC.dataset.kh || 150,
-      err: pC.dataset.err !== '0',
+      err: pC.dataset.err === '1',
       tilde: pC.dataset.tilde === '1',
       bins: pC.dataset.bins === '1',
       binned: pC.dataset.binned === '1',
@@ -685,14 +675,30 @@ function boot(){
   renderAll();
   // reveal only lays a slide out when it becomes current; redraw then, cheaply
   (function attach(){
-    if(window.Reveal && Reveal.on) Reveal.on('slidechanged', function(ev){
+    if(!(window.Reveal && Reveal.on && typeof Reveal.getIndices === 'function')){
+      setTimeout(attach, 150); return;
+    }
+    // A slide that stages itself with fragments re-renders its ledger and cost
+    // label as they come and go (the covariance slide: four-point -> NKA).
+    function refresh(){
+      var r = document.querySelector('.present .nka[data-frag-step]');
+      if(!r) return;
+      var st = effectiveStep(r);
+      var eqs = r.querySelector('.eqs'); if(eqs) ledger(eqs, st);
+      var cost = r.querySelector('.cost');
+      if(cost){ cost.innerHTML = COST[st] || ''; }
+      r.classList.toggle('has-cost', !!COST[st]);
+      typeset();
+    }
+    Reveal.on('fragmentshown',  refresh);
+    Reveal.on('fragmenthidden', refresh);
+    Reveal.on('slidechanged', function(ev){
       var r = ev.currentSlide && ev.currentSlide.querySelector('.nka[data-step]');
       if(!r) return;
       renderOne(r); typeset();
       var cine = r.querySelector('.pM');
       if(cine && cine.__cine) playCine(r, cine);
     });
-    else setTimeout(attach, 150);
   })();
 }
 if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
