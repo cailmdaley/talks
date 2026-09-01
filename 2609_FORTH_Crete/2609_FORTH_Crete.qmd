@@ -356,7 +356,7 @@ picture, made deliberate.
 <rect x="1392" y="440" width="60" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
 <text x="1422" y="477" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">model</text>
 <g font-family="EB Garamond, serif" font-size="30">
-<rect x="120" y="560" width="40" height="26" rx="5" fill="url(#hatch)" stroke="#3D5BA0" stroke-width="2"/><text x="175" y="582" fill="#1B1611">read from cache · ~10× cheaper · no prefill latency</text>
+<rect x="120" y="560" width="40" height="26" rx="5" fill="url(#hatch)" stroke="#3D5BA0" stroke-width="2"/><text x="175" y="582" fill="#1B1611">read from cache · 10–40× cheaper · no prefill latency</text>
 <rect x="900" y="560" width="40" height="26" rx="5" fill="#BC4538" fill-opacity="0.9"/><text x="955" y="582" fill="#1B1611">new tokens · computed this step</text>
 </g></svg>
 ```
@@ -364,6 +364,8 @@ picture, made deliberate.
 
 ::: {style="text-align:center;margin-top:26px;color:#7A6F5C;font-size:0.8em"}
 [design rule: stable system prompt first · append-only history · never edit the middle]{style="font-family:'IBM Plex Mono',monospace;font-size:0.85em"}
+
+[Sep 2026: cache reads $0.25/MTok vs $10 fresh — **the more agentic the workload, the cheaper the token.** Structure work as long-running threads, bursts of steps on a warm cache, not many cold starts.]{style="font-size:0.95em"}
 :::
 
 ::: notes
@@ -385,6 +387,15 @@ That's the design rule at the bottom, and once you know it you'll recognise it e
 these tools behave — why they compact context rather than reorder it, why long stable instructions
 are cheap and mid-conversation changes aren't. Hold onto it; it's what makes the tutorial's
 twenty-minute session cost cents.
+[DRAFT — new, Sep 2026.] And the pricing is moving *toward* this. This month's frontier release
+cut cache reads to $0.25 per million tokens against $10 for fresh input — forty to one. The
+press release said "15% cheaper for typical use, 35% for agentic use", and the reason is exactly
+this picture: an agentic step is a huge hatched region and a sliver of red, so a cache-read price
+cut lands almost entirely on agentic traffic. The inversion is worth saying out loud: the more
+agentic your workload — more model steps per human step — the *cheaper* each token gets. Which
+has a design consequence for how you structure your own work. Prefer one long-running thread with
+bursts of many steps on a warm cache over many short cold sessions; every fresh session pays the
+prefix at full price, every step inside a running one pays a fortieth. Keep the loop hot.
 :::
 
 
