@@ -365,7 +365,7 @@ picture, made deliberate.
 ::: {style="text-align:center;margin-top:26px;color:#7A6F5C;font-size:0.8em"}
 [design rule: stable system prompt first · append-only history · never edit the middle]{style="font-family:'IBM Plex Mono',monospace;font-size:0.85em"}
 
-[Sep 2026: cache reads $0.25/MTok vs $10 fresh — **the more agentic the workload, the cheaper the token.** Structure work as long-running threads, bursts of steps on a warm cache, not many cold starts.]{style="font-size:0.95em"}
+[Sep 2026 pricing: cache reads $0.25/MTok · fresh input $10 · output $50. **Look at the rows — where does that land? What does it tell you about how to shape your own work?**]{style="font-size:0.95em"}
 :::
 
 ::: notes
@@ -387,15 +387,16 @@ That's the design rule at the bottom, and once you know it you'll recognise it e
 these tools behave — why they compact context rather than reorder it, why long stable instructions
 are cheap and mid-conversation changes aren't. Hold onto it; it's what makes the tutorial's
 twenty-minute session cost cents.
-[DRAFT — new, Sep 2026.] And the pricing is moving *toward* this. This month's frontier release
-cut cache reads to $0.25 per million tokens against $10 for fresh input — forty to one. The
-press release said "15% cheaper for typical use, 35% for agentic use", and the reason is exactly
-this picture: an agentic step is a huge hatched region and a sliver of red, so a cache-read price
-cut lands almost entirely on agentic traffic. The inversion is worth saying out loud: the more
-agentic your workload — more model steps per human step — the *cheaper* each token gets. Which
-has a design consequence for how you structure your own work. Prefer one long-running thread with
-bursts of many steps on a warm cache over many short cold sessions; every fresh session pays the
-prefix at full price, every step inside a running one pays a fortieth. Keep the loop hot.
+[DRAFT — new, Sep 2026.] One more thing, and I want you to do the reasoning rather than
+me. This month's frontier release priced cache reads at twenty-five cents per million tokens,
+against ten dollars for fresh input and fifty for output. Look at the rows. [Pause.] Where does
+a price cut on the hatched region land — on step one, or on step four? So as the number of
+model steps per human step goes up, what happens to the cost of a token? [Let them get there:
+it *falls*. The press release said 15% cheaper for chat, 35% for agentic use — that asymmetry
+is this diagram.] Now the question that matters for you: given that, how would you shape your
+own work — many short sessions, or fewer long ones? What does a cold start cost, and what does
+one more step inside a running loop cost? I'll leave it there; you'll have a view by the end of
+the tutorial, and it'll be your own.
 :::
 
 
