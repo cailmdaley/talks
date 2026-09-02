@@ -631,7 +631,7 @@ function boot(){
     var u2 = Math.pow(-t,0.55); return [247-59*u2, 240-171*u2, 225-169*u2];
   }
   //  TWO maps, and they share no hue. A covariance is cobalt <- cream -> teal;
-  //  an error is cinnabar <- cream -> charcoal. Red therefore appears in the
+  //  an error is cinnabar <- cream -> muted brown. Red therefore appears in the
   //  Delta column and nowhere else on these slides, so a glance can never take
   //  an error for a covariance. Both are centred on zero: the projected
   //  Cov(xi_i, xi_j) reaches -0.5, real anti-correlation at large separation,
@@ -650,7 +650,7 @@ function boot(){
   function errmap(v){
     var t = Math.max(-1, Math.min(1, v));
     if(t >= 0) return [247-59*t, 240-171*t, 225-169*t];
-    var u = -t; return [247-220*u, 240-218*u, 225-208*u];
+    var u = -t; return [247-125*u, 240-129*u, 225-133*u];
   }
   function heat(cv, mat, scale){
     cv.width = NK; cv.height = NK;
@@ -677,6 +677,24 @@ function boot(){
       im.data[o]=c[0]; im.data[o+1]=c[1]; im.data[o+2]=c[2]; im.data[o+3]=255;
     }
     ctx.putImageData(im,0,0);
+  }
+
+  //  heatN paints one image pixel per matrix element, which is right when the
+  //  matrix is drawn LARGER than it is (the 22x22 configuration panels). It is
+  //  wrong for the 150x150 harmonic panels at 250 px: 150 -> 250 is a 1.67x
+  //  upsample, and bilinear interpolation at that ratio turns the iNKA kernel's
+  //  fine ringing into grey stripes -- an artefact of the resampling, not of the
+  //  physics. heatUp paints each element as an UP x UP block first, so the
+  //  browser is downsampling (600 -> 250) and box-averages the ringing into the
+  //  band you are meant to see. This is what makes slide 7's matrices read: it
+  //  draws 150 elements across 730 px, ~5 px each, and never resamples up.
+  function heatUp(cv, mat, n, scale, mode, up){
+    var off = document.createElement('canvas');
+    heatN(off, mat, n, scale, mode);
+    cv.width = n*up; cv.height = n*up;
+    var ctx = cv.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(off, 0, 0, n*up, n*up);
   }
 
   //  Cov(xi_i, xi_j) in angular bins, got the honest way: a harmonic covariance
@@ -784,9 +802,13 @@ function boot(){
     //  whole point washes out. Saturating the diagonal costs nothing -- nobody
     //  needs to read "1" off a diagonal -- and buys the band.
     var HSC = 0.18;
-    put('hExact',P.hE, NK, HSC, 'cov'); put('cExact',P.cE, NTH, 1, 'cov');
+    //  the f_sky harmonic panel is a ONE-ELEMENT-WIDE diagonal and stays on the
+    //  plain painter with pixelated rendering: box-averaging would fade the only
+    //  thing it has to show.
+    function putUp(c, m, n, sc){ var cv = q(c); if(cv) heatUp(cv, m, n, sc, 'cov', 4); }
+    putUp('hExact', P.hE, NK, HSC);     put('cExact',P.cE, NTH, 1, 'cov');
     put('hFsky', P.hF, NK, HSC, 'cov'); put('cFsky', P.cF, NTH, 1, 'cov');
-    put('hInka', P.hI, NK, HSC, 'cov'); put('cInka', P.cI, NTH, 1, 'cov');
+    putUp('hInka',  P.hI, NK, HSC);     put('cInka', P.cI, NTH, 1, 'cov');
                                         put('cQuar', P.cE, NTH, 1, 'cov');
     //  ONE scale for the whole Delta column, so the two panels are directly
     //  comparable, with a signed square-root stretch on top of it. f_sky peaks

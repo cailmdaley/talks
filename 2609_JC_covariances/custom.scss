@@ -438,7 +438,13 @@
 // them a moire that is an artefact of the toy's resolution, not of the physics,
 // so they interpolate. The f_sky panel does NOT: it is a one-pixel diagonal
 // line, and smoothing would fade it to nothing.
-.reveal .nka canvas.hExact, .reveal .nka canvas.hInka { image-rendering: auto; }
+// these two are painted supersampled (600 px backing) by heatUp, so the browser
+// is DOWNsampling and must be allowed to interpolate -- the selector has to beat
+// the `.mpix canvas` / `.amat canvas` pixelated rule, which is why it is written
+// this long.
+.reveal .nka .mpix canvas.hInka,
+.reveal .nka .mpix canvas.hExact,
+.reveal .nka .amat canvas.hExact { image-rendering: auto; }
 .reveal .nka .acap { display: block; font-size: 28px; color: #7A6F5C; margin-top: 8px; }
 .reveal .nka .akey { display: block; font-size: 26px; color: #7A6F5C; margin-top: 1px; }
 .reveal .nka .aarrow { font-size: 46px; color: #7A6F5C; margin-top: 310px; }
@@ -513,7 +519,7 @@
 .reveal .nka .ekey {
     display: block; width: 130px; height: 14px; margin: 4px auto 0;
     border: 1px solid #C5B89E;
-    background: linear-gradient(90deg, #1B1611 0%, #F7F0E1 50%, #BC4538 100%);
+    background: linear-gradient(90deg, #7A6F5C 0%, #F7F0E1 50%, #BC4538 100%);
 }
 // the quartic row has no harmonic matrix by construction: hold the slot open
 // and draw nothing in it, so the two columns to its right stay aligned.
