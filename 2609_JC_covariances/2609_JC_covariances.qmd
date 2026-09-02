@@ -92,7 +92,7 @@ the bump you can see in the curve. Keep it in mind, because everything that goes
 goes wrong there. There are more modes than these five; they'd fill out the rest of the curve
 the same way.
 
-Throw away the phases, keep the squared amplitudes, and C(k) is the whole statistical content
+Throw away the phases, keep the squared amplitudes, and C-ell is the whole statistical content
 of a Gaussian field. It is what we are trying to measure.
 :::
 
@@ -175,7 +175,7 @@ So: the narrow-kernel approximation. If C barely changes across the width of the
 evaluate it once at the midpoint of the two modes — C-bar, the average of C at k and at k-prime
 — and pull it outside the sum. What is left collapses into a single kernel, Xi, and the cost
 drops to the same order as the estimator itself. And notice what Xi is: it is exactly the
-coupling kernel from three slides ago, the mask's own power at mode separation k minus k-prime
+coupling kernel from three slides ago, the mask's own power at mode separation ell minus ell-prime
 — except built from w squared instead of w, because a covariance is a four-point object and the
 masks come in pairs.
 
@@ -348,7 +348,7 @@ has something to be narrow about.
   </div>
   <div class="fragment" data-fragment-index="3">
     <span class="nm">catalogue covariance</span>
-    <span class="eq">\( {\rm Cov}\big(\tilde C(k),\tilde C(k')\big)\;\simeq\;2\Big[\;\underbrace{\bar C_{kk'}^{\,2}\,\big|\mathcal{W}_{k-k'}\big|^{2}}_{\rm sig\times sig}\;+\;\underbrace{2\,\bar C_{kk'}\,{\rm Re}\big(\mathcal{W}_{k-k'}\,n^{*}_{k-k'}\big)}_{\rm sig\times noise}\;+\;\underbrace{\big|n_{k-k'}\big|^{2}}_{\rm noise\times noise}\;\Big] \)</span>
+    <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;2\Big[\;\underbrace{\bar C_{\ell\ell'}^{\,2}\,\big|\mathcal{W}_{\ell-\ell'}\big|^{2}}_{\rm sig\times sig}\;+\;\underbrace{2\,\bar C_{\ell\ell'}\,{\rm Re}\big(\mathcal{W}_{\ell-\ell'}\,n^{*}_{\ell-\ell'}\big)}_{\rm sig\times noise}\;+\;\underbrace{\big|n_{\ell-\ell'}\big|^{2}}_{\rm noise\times noise}\;\Big] \)</span>
   </div>
 </div>
 
@@ -516,7 +516,7 @@ set to one. Worked notebooks are examples eleven and twelve in the docs.
 ```{=html}
 <div class="nka" data-step="10" data-ledger-from="10" data-staged="1">
 <div class="eqs"></div>
-<svg class="pPair" data-h="150" viewBox="0 0 1730 262" width="1730" height="262"></svg>
+<svg class="pPair" data-h="150" viewBox="0 0 1730 306" width="1730" height="306"></svg>
 <svg class="pXiC" data-h="270" viewBox="0 0 1730 348" width="1730" height="348"></svg>
 <div class="fragment" style="height:0"></div>
 <div class="fragment" style="height:0"></div>
@@ -531,8 +531,8 @@ one step further — what happens when you take a harmonic covariance into real 
 any of the algebra, I want the object itself, because it is the most concrete thing in the talk.
 
 Here is the catalogue again. Forget the mask for a moment; these are just sources with values.
-Pick a separation. Every pair of sources at that separation — and there are hundreds of them,
-that web is all of them — contributes the product of its two values. Add those up, divide by how
+Pick a separation. Every pair of sources at that separation — that web is all of them, a few
+dozen at this bin width — contributes the product of its two values. Add those up, divide by how
 many pairs you had, and that is one point of xi. That is the whole estimator. Sum of w-i w-j a-i
 a-j over the pairs in the bin, divided by the sum of w-i w-j.
 
@@ -554,29 +554,28 @@ That linearity is what makes the next slide inevitable.
 ## The projection sums over every off-diagonal {.nka-slide}
 
 ```{=html}
-<div class="nka">
+<div class="nka" data-frag-step="5">
   <div class="corr big">
     <div>
       <span class="nm">a linear map in, so the covariance is a <i>double</i> sum</span>
-      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;\propto\;\sum_{\ell}\sum_{\ell'}\big[P_{\ell+1}-P_{\ell-1}\big]_i\,\big[P_{\ell'+1}-P_{\ell'-1}\big]_j\;{\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big) \)</span>
-      <span class="note">every off-diagonal element contributes — and the exact \({\rm Cov}(\tilde C_\ell,\tilde C_{\ell'})\) costs \(\mathcal{O}(\ell_{\rm max}^{6})\), intractable at \(\ell_{\rm max}\simeq6000\). An approximation is forced.</span>
+      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;\propto\;\sum_{\ell}\sum_{\ell'}\big[P_{\ell+1}-P_{\ell-1}\big]_i\,\big[P_{\ell'+1}-P_{\ell'-1}\big]_j\;{\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big) \)
+        <span class="tag">\( \mathcal{O}(\ell_{\rm max}^{6}) \)</span></span>
     </div>
   </div>
-  <div class="menu">
+  <div class="menu wide">
     <div class="fragment">
-      <span class="nm">f<sub>sky</sub> — Knox</span>
-      <span class="eq">\( \delta_{\ell\ell'}\dfrac{2C_\ell^2}{(2\ell+1)f_{\rm sky}} \)</span>
+      <span class="nm">f<sub>sky</sub> (Knox)</span>
+      <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\delta^K_{\ell\ell'}\,\dfrac{2\,C_\ell^{2}}{(2\ell+1)\,f_{\rm sky}} \)</span>
       <span class="note">pretend the mask deletes modes but never couples them: diagonal, divided by the sky fraction.</span>
     </div>
     <div class="fragment">
-      <span class="nm">iNKA — the one we know</span>
-      <span class="eq">\( \tfrac12\Big(\dfrac{\tilde C_\ell+\tilde C_{\ell'}}{\langle w^2\rangle}\Big)^{2}\,\Xi_{\ell\ell'}(w^2,w^2) \)</span>
-      <span class="note">pull the signal out of the coupling sum; what is left is pure geometry, built from the squared mask.</span>
+      <span class="nm">iNKA</span>
+      <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\dfrac12\Big(\dfrac{\tilde C_\ell+\tilde C_{\ell'}}{\langle w^2\rangle}\Big)^{2}\Big|\textstyle\sum_x w^2(x)\,e^{-i(\ell-\ell')x}\Big|^{2} \)</span>
     </div>
     <div class="fragment">
-      <span class="nm">quartic counts — Schneider, Shirasaki</span>
-      <span class="eq">\( \sum_{\rm pairs\;of\;pairs} w^4\;\dfrac{\xi\xi+\xi\xi}{2} \)</span>
-      <span class="note">Wick's theorem in configuration space, on the real galaxies. The window is never modelled — it is <b>counted</b>.</span>
+      <span class="nm">quartic counts (Schneider; Shirasaki)</span>
+      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;=\;\dfrac{1}{N_{{\rm pair},i}N_{{\rm pair},j}}\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\,\dfrac{\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})}{2} \)</span>
+      <span class="note">no \(\ell\) anywhere: the window is <b>counted</b>, not modelled.</span>
     </div>
   </div>
 </div>

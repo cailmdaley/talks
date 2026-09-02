@@ -435,7 +435,7 @@ function boot(){
       st.modes.push(el(s,'path',{d:pathOf(one, lmid, lscale), fill:'none',
                                  stroke:COB,'stroke-width':3, opacity:0, class:'cine'}));
       st.laneY.push(lmid);
-      var t = txt(s, 8, lmid+9, 'k = '+k, {fill:MUT,'font-size':26, opacity:0, class:'cine'});
+      var t = txt(s, 8, lmid+9, 'ℓ = '+k, {fill:MUT,'font-size':26, opacity:0, class:'cine'});
       st.labels.push(t);
     }
     // shown once every mode has landed: there are more modes than the five drawn
@@ -445,14 +445,14 @@ function boot(){
     // the spectrum panel — the true curve is drawn immediately, not staged
     var Y = logY(CY0, CH, KMAX);
     el(s,'line',{x1:PAD,y1:CY0+CH,x2:PAD+AW,y2:CY0+CH,stroke:RULE,'stroke-width':2});
-    txt(s, 4, CY0+18, 'C(k)', {fill:MUT});
-    txt(s, PAD, CY0+CH+42, 'wavenumber  k', {fill:MUT});
+    txtsub(s, 4, CY0+18, 'C', 'ℓ', '', {fill:MUT});
+    txt(s, PAD, CY0+CH+42, 'multipole  ℓ', {fill:MUT});
     var dc='';
     for(var kk=1;kk<KMAX;kk++) dc += (kk>1?'L':'M')+XK(kk,KMAX).toFixed(1)+' '+Y(Cin[kk]).toFixed(1)+' ';
     st.curve = el(s,'path',{d:dc,fill:'none',stroke:INK,'stroke-width':3.5,opacity:1});
     // labelled well clear of k=150 (the last mode dot lands right at k=150,
     // and its connector would otherwise cut through the label)
-    st.clabel = txt(s, XK(115,KMAX), Y(Cfun(115))-26, 'true  C(k)', {fill:INK,opacity:1});
+    st.clabel = txt(s, XK(115,KMAX), Y(Cfun(115))-26, 'true  Cℓ', {fill:INK,opacity:1});
     // the connector that links a lane to its point while both are the latest
     st.link = el(s,'line',{x1:0,y1:0,x2:0,y2:0,stroke:COB,'stroke-width':2,
                            'stroke-dasharray':'5 7',opacity:0,class:'cine'});
@@ -533,8 +533,8 @@ function boot(){
     var PAD = _x0, AW = _w;
     var y0 = opts.y0 || 26, h = opts.h, Y = logY(y0,h,KMAX);
     el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
-    txt(s, Math.max(PAD-86, 2), y0+18, 'C(k)', {fill:MUT});
-    if(opts.xlabel !== false) txt(s, PAD, y0+h+42, 'wavenumber  k', {fill:MUT});
+    txtsub(s, Math.max(PAD-86, 2), y0+18, 'C', 'ℓ', '', {fill:MUT});
+    if(opts.xlabel !== false) txt(s, PAD, y0+h+42, 'multipole  ℓ', {fill:MUT});
 
     if(opts.bins) for(var b=0;b<NBIN;b+=2){
       var xa = XK(1+b*NB, KMAX), xb = XK(Math.min(1+(b+1)*NB, KMAX), KMAX);
@@ -548,7 +548,7 @@ function boot(){
     function legAt(kind, col, label){
       legendRow(s, LEGX, LEGY + LEGDY*LEG_SLOT[kind], kind, col, label);
     }
-    if(opts.label !== false) legAt('truth', INK, 'true  C(k)');
+    if(opts.label !== false) legAt('truth', INK, 'true  Cℓ');
 
     //  The masked spectrum is blue, the same blue as the mask and its kernel:
     //  everything the mask did to the measurement reads as one colour.
@@ -556,7 +556,7 @@ function boot(){
       var d2='';
       for(var k2=1;k2<KMAX;k2++) d2 += (k2>1?'L':'M')+XK(k2,KMAX).toFixed(1)+' '+Y(Ctil[k2]).toFixed(1)+' ';
       el(s,'path',{d:d2,fill:'none',stroke:COB,'stroke-width':3.5,'stroke-dasharray':'10 7'});
-      if(opts.label !== false) legAt('masked', COB, 'masked  C̃(k)');
+      if(opts.label !== false) legAt('masked', COB, 'masked  C̃ℓ');
     }
     if(opts.binned) for(var b2=0;b2<NBIN;b2++){
       var kc = binCentre(b2);
@@ -590,7 +590,7 @@ function boot(){
       el(s,'path',{d:dk,fill:'none',stroke:COB,'stroke-width':3.5});
       if(opts.err === true){
         var v = pullOutError(K0);
-        txt(s, PAD+AW-790, y0+26, 'C at k₀ vs its kernel average:  '+pct(v),
+        txt(s, PAD+AW-790, y0+26, 'C at ℓ₀ vs its kernel average:  '+pct(v),
             {fill: Math.abs(v)>0.05 ? ACC : COB});
       }
     }
@@ -920,8 +920,8 @@ function boot(){
     }
     el(s,'path',{d:d,fill:'none',stroke: holed?ACC:COB,'stroke-width':2.8});
 
-    txtsub(s, Math.max(PAD-72,2), y0+20, '|w', 'k', '|²', {fill:MUT,'font-size':27});
-    txt(s, PAD, y0+h+40, 'wavenumber  k', {fill:MUT,'font-size':26});
+    txtsub(s, Math.max(PAD-72,2), y0+20, '|W', 'ℓ', '|²', {fill:MUT,'font-size':27});
+    txt(s, PAD, y0+h+40, 'multipole  ℓ', {fill:MUT,'font-size':26});
   }
 
   //  W1 — the sources are the mask
@@ -1064,9 +1064,14 @@ function boot(){
   //  autocorrelation, which is what the thin reference line is: not the
   //  ensemble C(k) transform, but this realisation's, so the scatter you see is
   //  honest sampling scatter and nothing else.
-  var XIMAX = 0.15, XINB = 24;
+  //  0.04 of the box, not 0.15. The toy field's spectrum turns over near mode
+  //  18 and the phase is 2 pi k x, so its correlation length is 1/(2 pi 18),
+  //  about 0.009 -- a xi plotted out to 0.15 is a spike against the axis
+  //  followed by nothing. At 0.04 the decay takes a quarter of the panel and
+  //  the bump's ringing (period 1/78) is a few bins wide.
+  var XIMAX = 0.04, XINB = 20;
   //  the three separations the fragments stop at, in bins
-  var XISTOP = [2, 8, 17];
+  var XISTOP = [4, 9, 16];
   function xibin(th){ return Math.floor(th/XIMAX*XINB); }
   var XIC = null;
   function xiBuild(){
@@ -1112,13 +1117,15 @@ function boot(){
     var bsel = (st >= 1 && st <= XISTOP.length) ? XISTOP[st-1] : -1;
     if(bsel >= 0){
       var lo = bsel/XINB*XIMAX, hi = (bsel+1)/XINB*XIMAX, arcs = 0, best = -1, bj = -1;
-      var yb = y0 + h + 14;
+      var yb = y0 + h + 16;
       for(var i=0;i<xs.length;i++) for(var k=i+1;k<xs.length;k++){
         var dd = xs[k]-xs[i]; if(dd >= hi) break;
         if(dd < lo) continue;
         var xa = PAD+AW*xs[i], xb2 = PAD+AW*xs[k], r = (xb2-xa)/2;
-        el(s,'path',{d:'M'+xa.toFixed(1)+' '+yb+' A '+r.toFixed(1)+' '+Math.min(r,26).toFixed(1)+
-                        ' 0 0 1 '+xb2.toFixed(1)+' '+yb, fill:'none',stroke:COB,
+        //  sweep 0, not 1: the arc bows DOWN and its two ends point up at the
+        //  pair of sources it joins, instead of arching over them
+        el(s,'path',{d:'M'+xa.toFixed(1)+' '+yb+' A '+r.toFixed(1)+' '+Math.min(r,34).toFixed(1)+
+                        ' 0 0 0 '+xb2.toFixed(1)+' '+yb, fill:'none',stroke:COB,
                      'stroke-width':1.6,opacity:0.32});
         arcs++;
         //  one pair, near the middle, gets the label
@@ -1128,7 +1135,7 @@ function boot(){
         var xa2 = PAD+AW*xs[best], xb3 = PAD+AW*xs[bj];
         el(s,'circle',{cx:xa2,cy:mid-X.av[best]*h*0.42,r:9,fill:'none',stroke:ACC,'stroke-width':3.5});
         el(s,'circle',{cx:xb3,cy:mid-X.av[bj]*h*0.42,r:9,fill:'none',stroke:ACC,'stroke-width':3.5});
-        var yt = y0 + h + 66;
+        var yt = y0 + h + 74;
         el(s,'line',{x1:xa2,y1:yt,x2:xb3,y2:yt,stroke:ACC,'stroke-width':3.5});
         el(s,'line',{x1:xa2,y1:yt-10,x2:xa2,y2:yt+10,stroke:ACC,'stroke-width':3});
         el(s,'line',{x1:xb3,y1:yt-10,x2:xb3,y2:yt+10,stroke:ACC,'stroke-width':3});
@@ -1142,7 +1149,7 @@ function boot(){
       var v = X.av[q2];
       el(s,'circle',{cx:PAD+AW*xs[q2],cy:mid-v*h*0.42,r:3+4.5*Math.abs(v),fill:INK,opacity:0.85});
     }
-    txt(s, PAD, y0+h+40, 'position  x', {fill:MUT});
+    txt(s, PAD, y0+h+112, 'position  x', {fill:MUT});
   }
 
   //  N1 lower panel: xi(theta) accumulating bin by bin as the fragments advance
@@ -1151,10 +1158,11 @@ function boot(){
     var PAD = _x0, AW = _w, y0 = opts.y0 || 30, h = opts.h || 240;
     catBuild(); var X = xiBuild();
     var st = opts.stage == null ? 0 : opts.stage;
-    //  bin 0 straddles zero separation, where xi is the field VARIANCE and an
-    //  order of magnitude above everything else; keeping it would flatten the
-    //  whole curve onto the axis. The panel starts at the second bin.
-    var B0 = 1, mx = 0, b;
+    //  Bin 0 is kept. It straddles the smallest separations, where xi is close
+    //  to the field's variance, and it is what makes the panel read as a
+    //  correlation function -- large and positive, decaying, with the bump's
+    //  ringing on the way down -- rather than as scatter about zero.
+    var B0 = 0, mx = 0, b;
     for(b=B0;b<XINB;b++){ mx = Math.max(mx, Math.abs(X.xi[b]), Math.abs(X.tru[b])); }
     mx *= 1.15;
     function Y(v){ return y0 + h/2 - h/2*v/mx; }
@@ -1171,7 +1179,8 @@ function boot(){
       var dt='';
       for(b=B0;b<XINB;b++) dt += (b>B0?'L':'M')+XT(xiTheta(b)).toFixed(1)+' '+Y(X.tru[b]).toFixed(1)+' ';
       el(s,'path',{d:dt,fill:'none',stroke:MUT,'stroke-width':2});
-      txt(s, PAD+AW-470, Y(X.tru[XINB-1])-16, 'the field’s own ξ(θ)', {fill:MUT,'font-size':25});
+      txt(s, PAD+AW-560, y0+30, 'ξ(θ) of the field, sampled everywhere', {fill:MUT,'font-size':26});
+      txt(s, PAD+AW-560, y0+66, 'ξ̂(θ) from ' + CAT.xs.length + ' sources', {fill:COB,'font-size':26});
     }
     var shown = [];
     if(st >= 1 && st <= XISTOP.length) shown = XISTOP.slice(0, st);
@@ -1284,18 +1293,18 @@ function boot(){
     clear(s); geom(opts);
     var PAD = _x0, AW = _w, y0 = opts.y0 || 30, h = opts.h || 260, Y = logY(y0,h,KMAX);
     el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
-    txt(s, Math.max(PAD-86,2), y0+18, 'C(k)', {fill:MUT});
-    txt(s, PAD, y0+h+44, 'wavenumber  k', {fill:MUT});
+    txtsub(s, Math.max(PAD-86,2), y0+18, 'C', 'ℓ', '', {fill:MUT});
+    txt(s, PAD, y0+h+44, 'multipole  ℓ', {fill:MUT});
     var d='';
     for(var k=1;k<KMAX;k++) d += (k>1?'L':'M')+XK(k,KMAX).toFixed(1)+' '+Y(Cfun(k)).toFixed(1)+' ';
     el(s,'path',{d:d,fill:'none',stroke:INK,'stroke-width':3.5});
-    txt(s, XK(150,KMAX), Y(Cfun(150))-26, 'signal  C(k)', {fill:INK});
+    txt(s, XK(150,KMAX), Y(Cfun(150))-26, 'signal  Cℓ', {fill:INK});
     // white level: the self-pair variance shared over the modes of the sample
     var var0 = 0;
     for(var k2=1;k2<KMAX;k2++) var0 += 2*Cfun(k2);
     var wl = var0/NSRC;
     el(s,'line',{x1:PAD,y1:Y(wl),x2:PAD+AW,y2:Y(wl),stroke:ACC,'stroke-width':3.5});
-    txt(s, XK(150,KMAX), Y(wl)-26, 'self-pairs: flat, at every k', {fill:ACC});
+    txt(s, XK(150,KMAX), Y(wl)-26, 'self-pairs: flat, at every ℓ', {fill:ACC});
   }
 
   // ---------- the equation ledger ----------
@@ -1308,27 +1317,27 @@ function boot(){
   //  {tex, step it appears on, name, column, row, optional note, optional span}
   var EQS = [
     {tex:'a(x)', step:0, name:'field', col:1, row:1},
-    {tex:'a_k=\\sum_x a(x)\\,e^{-ikx}', step:1, name:'Fourier transform', col:2, row:1},
-    {tex:'a(x)=\\sum_k a_k\\,e^{+ikx}', step:1, name:'inverse', col:3, row:1},
-    {tex:'C(k)=\\langle |a_k|^2\\rangle', step:1, name:'power spectrum', col:4, row:1},
+    {tex:'a_\\ell=\\sum_x a(x)\\,e^{-i\\ell x}', step:1, name:'Fourier transform', col:2, row:1},
+    {tex:'a(x)=\\sum_\\ell a_\\ell\\,e^{+i\\ell x}', step:1, name:'inverse', col:3, row:1},
+    {tex:'C_\\ell=\\langle |a_\\ell|^2\\rangle', step:1, name:'power spectrum', col:4, row:1},
 
     {tex:'\\tilde a(x)=w(x)\\,a(x)', step:2, name:'mask', col:1, row:2, sub:0},
     //  W is used three slides running -- here, in the four-point line, and in
     //  the narrow-kernel line -- so it gets defined the moment it appears.
-    {tex:'W_k=\\sum_x w(x)\\,e^{-ikx}', step:2, name:'mask modes', col:2, row:2, sub:0},
-    {tex:'\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', step:2, name:'mode coupling', col:3, row:2, sub:1},
-    {tex:'\\langle \\tilde C(k)\\rangle=\\sum_{k\'} |W_{k-k\'}|^2\\,C(k\')', step:2, name:'pseudo-C(k)', col:4, row:2, sub:2},
+    {tex:'W_\\ell=\\sum_x w(x)\\,e^{-i\\ell x}', step:2, name:'mask modes', col:2, row:2, sub:0},
+    {tex:'\\tilde a_\\ell=\\sum_{\\ell\'} W_{\\ell-\\ell\'}\\,a_{\\ell\'}', step:2, name:'mode coupling', col:3, row:2, sub:1},
+    {tex:'\\langle \\tilde C_\\ell\\rangle=\\sum_{\\ell\'} |W_{\\ell-\\ell\'}|^2\\,C_{\\ell\'}', step:2, name:'pseudo-Cℓ', col:4, row:2, sub:2},
 
-    {tex:'\\tilde C_b=\\frac{1}{N_b}\\sum_{k\\in b}\\tilde C(k)', step:3, name:'bandpower', col:1, row:3},
-    {tex:'(|W|^2)_{bb\'}=\\frac{1}{N_b}\\sum_{k\\in b}\\sum_{k\'\\in b\'} |W_{k-k\'}|^2', step:3, name:'binned coupling', col:2, row:3},
+    {tex:'\\tilde C_b=\\frac{1}{N_b}\\sum_{\\ell\\in b}\\tilde C_\\ell', step:3, name:'bandpower', col:1, row:3},
+    {tex:'(|W|^2)_{bb\'}=\\frac{1}{N_b}\\sum_{\\ell\\in b}\\sum_{\\ell\'\\in b\'} |W_{\\ell-\\ell\'}|^2', step:3, name:'binned coupling', col:2, row:3},
     {tex:'\\hat C_b=\\big[(|W|^2)_{bb\'}\\big]^{-1}\\,\\tilde C_{b\'}', step:3, name:'decoupled', col:3, row:3},
 
-    {tex:'{\\rm Cov}\\big(\\tilde C(k),\\tilde C(k\')\\big)\\propto\\Big|\\sum_{k\'\'} W_{k-k\'\'}\\,W^{*}_{k\'-k\'\'}\\,C(k\'\')\\Big|^{2}',
+    {tex:'{\\rm Cov}\\big(\\tilde C_\\ell,\\tilde C_{\\ell\'}\\big)\\propto\\Big|\\sum_{\\ell\'\'} W_{\\ell-\\ell\'\'}\\,W^{*}_{\\ell\'-\\ell\'\'}\\,C_{\\ell\'\'}\\Big|^{2}',
      step:4, name:'four-point', col:1, row:1, span:2,
-     note:'one sum over k″ for every element of the k, k′ matrix'},
-    {tex:'{\\rm Cov}\\big(\\tilde C(k),\\tilde C(k\')\\big)\\simeq 2\\,\\bar C_{kk\'}^{\\,2}\\,\\Big|\\textstyle\\sum_x w^2(x)\\,e^{-i(k-k\')x}\\Big|^{2}',
+     note:'one sum over ℓ″ for every element of the ℓ, ℓ′ matrix'},
+    {tex:'{\\rm Cov}\\big(\\tilde C_\\ell,\\tilde C_{\\ell\'}\\big)\\simeq 2\\,\\bar C_{\\ell\\ell\'}^{\\,2}\\,\\Big|\\textstyle\\sum_x w^2(x)\\,e^{-i(\\ell-\\ell\')x}\\Big|^{2}',
      step:5, name:'narrow-kernel approximation', col:1, row:2, span:3, hold:true},
-    {tex:'\\bar C_{kk\'}\\equiv\\tfrac12\\big[C(k)+C(k\')\\big]', step:5, name:'C at the midpoint', col:4, row:2, hold:true},
+    {tex:'\\bar C_{\\ell\\ell\'}\\equiv\\tfrac12\\big[C_\\ell+C_{\\ell\'}\\big]', step:5, name:'C at the midpoint', col:4, row:2, hold:true},
     //  The narrow-kernel line is written out in full -- no Xi, no W^(2). The
     //  coupling kernel of a covariance is built from the SQUARED mask, and
     //  |sum_x w^2(x) e^{-i(k-k')x}|^2 is not |W_{k-k'}|^2; spelling the sum out
@@ -1345,7 +1354,7 @@ function boot(){
     //  the object-wise twin of a_k = sum_x a(x) e^{-ikx} on slide 3. The deck
     //  stops the ledger here on purpose: everything downstream of the modes is
     //  unchanged from slides 3-5, and what breaks is upstream, in the mask.
-    {tex:'\\tilde a_k=\\sum_i w_i\\,a_i\\,e^{-ikx_i}', step:6, name:'catalogue modes', col:3, row:1},
+    {tex:'\\tilde a_\\ell=\\sum_i w_i\\,a_i\\,e^{-i\\ell x_i}', step:6, name:'catalogue modes', col:3, row:1},
     //  Slide 11 opens on the PROBLEM, not on the answer: once the mask is
     //  band-limited the covariance kernel wants the mask PRODUCT, and for a
     //  catalogue against itself that product carries every source paired with
@@ -1353,7 +1362,7 @@ function boot(){
     //  sum is kept and treated exactly.
     {tex:'\\bar w^{2}(x)=\\underbrace{\\textstyle\\sum_{i\\neq j} w_iw_j\\,G\\,G}_{\\rm distinct\\;pairs}+\\underbrace{\\textstyle\\sum_i w_i^{2}\\,G^{2}}_{\\rm self\\;pairs}',
      step:8, name:'the mask product contains every source paired with itself', col:1, row:1, span:3, sub:0},
-    {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:4, row:1, sub:1, hold:true},
+    {tex:'\\langle a^2\\rangle=\\textstyle\\sum_\\ell C_\\ell', step:8, name:'self-pair variance', col:4, row:1, sub:1, hold:true},
 
     //  The Nagura act opens on the pair count itself. The two entries are the
     //  same object twice: the thing you measure, and the thing it equals in
@@ -1362,7 +1371,12 @@ function boot(){
     {tex:'\\hat\\xi(\\theta)=\\frac{\\sum_{ij\\in\\theta} w_iw_j\\,a_ia_j}{\\sum_{ij\\in\\theta} w_iw_j}',
      step:10, name:'pair count', col:1, row:1, span:2},
     {tex:'\\xi_i=\\frac{n^2}{N_{{\\rm pair},i}}\\,2\\pi\\sum_\\ell\\big[P_{\\ell+1}-P_{\\ell-1}\\big]_i\\,\\tilde C_\\ell',
-     step:10, name:'its transform', col:3, row:1, span:2, sub:4}
+     step:10, name:'its transform', col:3, row:1, span:2, sub:4},
+    //  Nagura eq. 10: the kernel is the Legendre polynomial P_l(cos theta),
+    //  averaged over the angular bin via the recursion relation -- which is
+    //  what the bracket with the two cos-theta limits means.
+    {tex:'\\big[P_{\\ell+1}-P_{\\ell-1}\\big]_i\\equiv\\big[P_{\\ell+1}(x)-P_{\\ell-1}(x)\\big]_{\\cos\\theta_{i,+}}^{\\cos\\theta_{i,-}}',
+     step:10, name:'legendre kernel, averaged over bin i', col:1, row:2, span:2, sub:4}
   ];
   function ledger(host, step, from, stage){
     from = from || 0;
@@ -1410,8 +1424,8 @@ function boot(){
   //  restates the equation beside it is the gloss this deck keeps cutting; it
   //  lives in the speaker notes. Slides that hard-code their own .saywhat (the
   //  self-pair slide) still have one.
-  var COST = {4:'<i>O</i>(k<sub>max</sub><sup>6</sup>)',
-              5:'<i>O</i>(k<sub>max</sub><sup>3</sup>) — same as the estimator'};
+  var COST = {4:'<i>O</i>(ℓ<sub>max</sub><sup>6</sup>)',
+              5:'<i>O</i>(ℓ<sub>max</sub><sup>3</sup>) — same as the estimator'};
   //  A slide may advance its ledger with a reveal fragment: data-frag-step is the
   //  step it moves to once any fragment on the slide is showing. Used by the
   //  covariance slide to stage exact -> NKA -> error.

@@ -408,6 +408,24 @@
 .reveal .nka .menu .nm { font-size: 24px; }
 .reveal .nka .menu .note { font-size: 25px; line-height: 1.3; }
 
+// The Nagura menu stacked, not in three columns: two of the three entries are
+// full covariance statements and the quartic-count sum is very wide. One
+// column per row gives every equation the slide's full width at ledger size.
+.reveal .nka .menu.wide {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    > div { min-height: 0; padding: 6px 18px; }
+    .nm { font-size: 26px; }
+    .eq { font-size: 34px; margin: 4px 0 2px 0; }
+    .note { font-size: 27px; }
+}
+
+// the cost, riding along with the equation it prices rather than on its own line
+.reveal .nka .corr .tag {
+    margin-left: 46px;
+    color: #BC4538;
+}
+
 // paper cards: a cropped first page, as large as fits, and one source line.
 // Nothing else on the slide -- these are punctuation between the acts.
 //  the h2 is empty on these slides -- kill the heading and its rule so the
