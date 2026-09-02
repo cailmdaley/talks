@@ -1,11 +1,11 @@
 ---
 # ════════════════════════════════════════════════════════════════════════════
 # CosmoStat journal club, Thu 3 Sep 2026. Informal, ~25 min.
-# Three covariance papers: 2607.14843 (Wolz+), 2605.16186 (Nagura+), 2605.28817.
+# Two covariance papers: 2607.14843 (Wolz+) and 2605.16186 (Nagura+).
 # The 1D toy behind slides 3–5 lives in notes/; see notes/projection-experiment.md.
 # ════════════════════════════════════════════════════════════════════════════
 title: "Covariances under the<br>narrow-kernel approximation"
-subtitle: "arXiv 2607.14843 &nbsp;·&nbsp; 2605.16186 &nbsp;·&nbsp; 2605.28817"
+subtitle: "arXiv 2607.14843 &nbsp;·&nbsp; 2605.16186"
 output-file: index.html
 occasion: CosmoStat Journal Club
 description: Three recent papers on pseudo-Cl covariance estimation
@@ -173,9 +173,17 @@ you cannot afford — the exact covariance of the pseudo-spectrum, banded becaus
 couples neighbours.
 
 So: the narrow-kernel approximation. If C barely changes across the width of the kernel,
-evaluate it once at the midpoint of the two modes and pull it outside the sum. What is left
-collapses into a single kernel — the transform of a product of masks — and the cost drops to
-the same order as the estimator itself.
+evaluate it once at the midpoint of the two modes — C-bar, the average of C at k and at k-prime
+— and pull it outside the sum. What is left collapses into a single kernel, Xi, and the cost
+drops to the same order as the estimator itself. And notice what Xi is: it is exactly the
+coupling kernel from three slides ago, the mask's own power at mode separation k minus k-prime
+— except built from w squared instead of w, because a covariance is a four-point object and the
+masks come in pairs.
+
+I have written this for one field and one mask, which is all this toy has. In general there are
+four of them: the covariance of C-tilde-ab with C-tilde-cd, and then the two C factors are
+C-ac and C-bd, and Xi takes two mask products, w-a w-c and w-b w-d, plus the term with c and d
+swapped. That is where the a, b, c, d you will see in the paper come from. Nothing else changes.
 
 And the difference. Where the spectrum is smooth it is nearly exact; where it has structure on
 the kernel's scale it is not, and the error lives in the off-diagonals, not on the diagonal.
@@ -188,13 +196,17 @@ papers.
 ```{=html}
 <div class="nka" data-step="6" data-ledger-from="6" data-staged="1">
 <div class="eqs"></div>
-<svg class="pP" data-h="80" data-foot-at="1" viewBox="0 0 1730 252" width="1730" height="252"></svg>
+<svg class="pP" data-h="80" data-foot-at="2" viewBox="0 0 1730 252" width="1730" height="252"></svg>
 <div class="two lower">
-  <div class="toycol">
-    <svg class="pMps" data-h="300" data-foot-at="1" data-x0="132" data-w="352"
+  <div class="toycol fragment" data-fragment-index="0">
+    <svg class="pMps" data-h="300" data-foot-at="2" data-x0="132" data-w="352"
          viewBox="0 0 520 392" width="520" height="392"></svg>
+    <div class="eqblock">
+      <span class="nm">mask shot noise</span>
+      <span class="eq">\( \tilde N_w=\tfrac{1}{4\pi}\sum_i w_i^2 \)</span>
+    </div>
   </div>
-  <div class="figblock">
+  <div class="figblock fragment" data-fragment-index="2">
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo power spectrum">
     <div class="figside">
       <span class="src">Wolz et al., arXiv:2607.14843 — Fig. 1</span>
@@ -202,7 +214,7 @@ papers.
     </div>
   </div>
 </div>
-<div class="fragment" style="height:0"></div>
+<div class="fragment" data-fragment-index="1" style="height:0"></div>
 </div>
 ```
 
@@ -217,19 +229,19 @@ slides. What breaks is upstream.
 
 So ask the simplest question you can ask about a mask: what is its own power spectrum? Bottom
 left. Uniform random positions, and I am just summing e-to-the-minus-i-k-x over the sources I
-drew. It is flat. At every k the phases of three hundred deltas point in random
+drew. It is flat. At every k the phases of a hundred and forty deltas point in random
 directions, so they add *incoherently* — the sum is a random walk, and its square is the number
 of sources. That is the shot-noise floor, N-w-tilde, the sum of w-i squared over four pi, and it
-is reached almost immediately, an order of magnitude in k below pi over theta-c.
+is reached almost immediately, well below pi over theta-c.
 
-Now drop a real footprint on it — edges, and a few holes. Sources inside the gaps simply do not
+Now drop a real footprint on it — edges, and a couple of holes. Sources inside the gaps simply do not
 exist; there is nothing else to remove. Watch the low k. Below the inverse footprint scale the
 deltas are no longer randomly placed: they are all sitting inside the same window, their phases
 line up, and they add *coherently*. The sum stops being a random walk and starts tracing the
 footprint, so the spectrum lifts off the floor — and by k of about fifteen it has fallen back onto the floor
-again, ten times below pi over theta-c. Red rise, white floor. That is the shape on the right,
-in Quaia, from the paper. Ours is a decade and a half; theirs is six, and the only difference is
-the number of sources — the rise cannot exceed N, and Quaia has millions.
+again, well below pi over theta-c. Red rise, white floor. That is the shape on the right, in
+Quaia, from the paper. Ours is a decade; theirs is six, and the only difference is the number of
+sources — the rise cannot exceed N, and Quaia has millions.
 
 Two things about that floor. First, it is the same object twice. The data's white floor is the
 sum of w-i squared a-i squared over four pi — the values at the source positions — and you can
@@ -244,16 +256,26 @@ band-limit the mask rather than to subtract its floor.
 ## Band-limit the mask {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="7" data-ledger-from="6">
+<div class="nka" data-step="6" data-ledger-from="6">
 <div class="eqs"></div>
-<div class="ctl-slider cloud">
-  <label>cloud size <input type="range" data-var="thc" min="0" max="140" value="0">
-    <span class="val"></span></label>
-</div>
 <svg class="pP" data-h="80" data-foot-at="0" data-cloud="1"
      viewBox="0 0 1730 252" width="1730" height="252"></svg>
-<svg class="pMps" data-h="316" data-foot-at="0" data-cloud="1" data-x0="132" data-w="1560"
-     viewBox="0 0 1730 404" width="1730" height="404"></svg>
+<div class="two lower">
+  <div class="toycol wide">
+    <svg class="pMps" data-h="300" data-foot-at="0" data-cloud="1" data-pixel="1"
+         data-x0="132" data-w="820" viewBox="0 0 990 392" width="990" height="392"></svg>
+  </div>
+  <div class="cloudcol">
+    <div class="eqblock">
+      <span class="nm">band-limited mask</span>
+      <span class="eq">\( \bar w(x)=\sum_i w_i\,G_{\theta_{\rm c}}(x-x_i) \)</span>
+    </div>
+    <div class="ctl-slider inline cloud">
+      <label>cloud size <input type="range" data-var="thc" min="0" max="140" value="0">
+        <span class="val"></span></label>
+    </div>
+  </div>
+</div>
 </div>
 ```
 
@@ -268,8 +290,16 @@ give each source a Gaussian cloud of size theta-c. In real space the comb blooms
 clouds merge, and the mask becomes an ordinary continuous window again. In harmonic space that
 is a multiplication by the cloud's transform, e to the minus k squared theta-c squared — and
 watch what it does. The coherent part at low k, which is the actual footprint, is untouched. The
-white floor above pi over theta-c is cut off. The thing you wanted gone is gone and the thing
-you wanted kept is kept.
+white floor is cut off. The thing you wanted gone is gone and the thing you wanted kept is kept.
+
+The blue curve is what you are aiming at: the power spectrum of the smooth footprint on its own,
+with no sources in it — the thing a pixelised map of the same window would measure. Red is the
+catalogue. Red is blue plus a flat N-w, which is the entire content of the paper's figure one.
+So drag until the red lies on the blue for as far in k as you can get it.
+
+Two scales, and they are not the same. The Gaussian is down to one over e at k equals one over
+theta-c; the marker I am drawing is at pi over theta-c, which is the scale the paper uses for
+the shot-noise subtraction. The roll-off starts a factor of three before the marker.
 
 Drag it and find the sweet spot: about the mean source spacing. Which is the honest statement of
 what has happened here. A pixel mask was always band-limited too — at the pixel scale, which is
@@ -286,20 +316,20 @@ has something to be narrow about.
 ## Self-pairs are exactly white {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="8" data-ledger-from="8">
+<div class="nka" data-step="8" data-ledger-from="8" data-staged="1">
 <div class="eqs"></div>
-<div class="saywhat" data-own="1">zero-separation information has no scale — its spectrum is flat, so the white-noise machinery handles it exactly.</div>
-<div class="two">
+<div class="saywhat fragment" data-fragment-index="0" data-own="1">zero-separation information has no scale — its spectrum is flat, so the white-noise machinery handles it exactly.</div>
+<div class="two fragment" data-fragment-index="0">
   <div><svg class="pXi" data-h="200" data-x0="90" data-w="700" viewBox="0 0 840 300" width="840" height="300"></svg></div>
   <div><svg class="pWhite" data-h="200" data-x0="90" data-w="700" viewBox="0 0 840 300" width="840" height="300"></svg></div>
 </div>
 <div class="corr">
-  <div class="fragment">
+  <div class="fragment" data-fragment-index="1">
     <span class="nm">take the self-pairs back out</span>
     <span class="eq">\( \mathcal{W}_{ac}\;\equiv\;\bar w_a\bar w_c-\delta_{ac}\,\overline{w_a^{2}} \)</span>
     <span class="note">leave the self-pairs in and they are counted twice. \(\overline{w^2}\) is its own catalogue field: the transform of the <i>squared</i> cloud, not the square of the transform.</span>
   </div>
-  <div class="fragment">
+  <div class="fragment" data-fragment-index="2">
     <span class="nm">and back in, exactly</span>
     <span class="eq">\( {\rm Cov}\;\simeq\;\underbrace{\bar C\,\bar C\;\Xi\big(\mathcal{W},\mathcal{W}\big)}_{\rm sig\times sig}\;+\;\underbrace{2\,\bar C\;\Xi\big(\mathcal{W},\,\overline{(aw)^2}\big)}_{\rm sig\times noise}\;+\;\underbrace{\Xi\big(\overline{(aw)^2},\,\overline{(aw)^2}\big)}_{\rm noise\times noise} \)</span>
     <span class="note">the approximation carries only the distinct pairs; everything involving a self-pair is exact.</span>
@@ -310,7 +340,15 @@ has something to be narrow about.
 ```
 
 ::: {.notes}
-One more piece, and it is the part that turns out to be free.
+So the mask is smooth now. What is the next problem?
+
+This. The covariance kernel does not want the mask; it wants the mask *product*, w-bar times
+w-bar. Write that out for a catalogue against itself and you get two sums: one over distinct
+pairs, i not equal to j, which is a perfectly ordinary object, and one over every source paired
+with itself. That second sum does not go away when you smooth. It is the diagonal of the product,
+and it is there in every catalogue auto-spectrum.
+
+The good news is what that term looks like once you transform it.
 
 Split every pair of sources by whether they are two different sources or the same source twice.
 The distinct pairs at finite separation are the signal — that is the correlation function on the

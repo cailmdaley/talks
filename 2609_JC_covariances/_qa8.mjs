@@ -6,7 +6,7 @@ p.on('pageerror', e=>console.log('PAGEERROR', e.message));
 await p.setViewport({width:1920,height:1080,deviceScaleFactor:1});
 await p.goto("file://"+file,{waitUntil:'networkidle0'});
 await new Promise(r=>setTimeout(r,1500));
-await p.evaluate(()=>Reveal.slide(7,0));
+await p.evaluate(()=>Reveal.slide(8,0));
 await new Promise(r=>setTimeout(r,600));
 for (const v of [0,20,33,70,140]){
   await p.evaluate((v)=>{const i=document.querySelector('section.present input[type=range]'); i.value=v; i.oninput();}, v);

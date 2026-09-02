@@ -629,11 +629,13 @@ function boot(){
   // ═══ catalogue masks (the Wolz act) ═══════════════════════════════════════
   //  A catalogue's mask IS its sources: w(x) = sum_i w_i delta(x - x_i). There is
   //  no separate footprint map, which is exactly what breaks the machinery above.
-  //  300, not 160: the coherent rise the mask spectrum can show is capped at
-  //  N (the k -> 0 power is (sum w)^2 = N^2 against a floor of N), so the
-  //  catalogue has to be dense enough for a decade and a half to be visible.
-  //  The comb reads as a picket fence at this density, which is the point.
-  var NSRC = 300, THC = 0.0;          // sources, and the cloud size in units of L
+  //  140. Two pulls in opposite directions: the coherent rise the mask spectrum
+  //  can show is capped at N, which wants MORE sources; but the k axis has to
+  //  run past pi/theta_c = N/2, so the footprint-scale rise (fixed at k of a
+  //  few tens) occupies a share of the axis that goes like 1/N, which wants
+  //  FEWER. At 300 the rise was a spike against the left edge. 140 keeps well
+  //  over a decade of rise and gives it a quarter of the axis.
+  var NSRC = 140, THC = 0.0;          // sources, and the cloud size in units of L
   var CATSEED = 90210;
 
   //  Plain uniform iid, sorted. An earlier pass added minimum-separation
@@ -732,12 +734,11 @@ function boot(){
   //  Wolz Fig. 1 shows. The ceiling on the rise is N times the coverage, so at
   //  the deck's 160 sources it is about a decade and a half; Quaia has millions
   //  of sources and gets six.
-  //  ONE contiguous survey region with ONE gap. Earlier versions used three
-  //  graded holes, which spread the coherent power over a wider band of k but
-  //  made the rise low and ratty; a single window puts almost all of it at the
-  //  lowest few modes, which is both the cleaner picture and the honest shape
-  //  of a real footprint's transform.
-  var HOLES = [[0.430,0.060]];
+  //  One contiguous survey region with TWO gaps of different size. The single
+  //  gap put nearly all the coherent power in the first few modes; a second,
+  //  narrower gap adds structure at its own inverse scale and carries the rise
+  //  out to k of about twenty-five without making it ratty.
+  var HOLES = [[0.408,0.055],[0.610,0.024]];
   function footAt(x){
     var v = ramp((0.27 - Math.abs(x-0.5))/0.028 + 0.5);
     for(var i=0;i<HOLES.length;i++)
@@ -763,7 +764,17 @@ function boot(){
   //  Band-averaged over +-3 modes: a single realisation of |w_k|^2 is
   //  exponentially distributed and the raw curve is unreadable scatter; the
   //  paper's own red curve is an m-average at each multipole for the same reason.
-  var MPS = 200, MPSW = 20;
+  //  The plotted range follows the catalogue. pi/theta_c sits at mode N/2, and
+  //  the axis stops just past it, so that marker lands near the right edge and
+  //  the footprint-scale rise -- which lives at a k of order ten whatever N is
+  //  -- keeps a fifth of the width instead of being a spike on the left edge.
+  //  Nothing is hidden by stopping there: past pi/theta_c the curve is flat
+  //  shot noise, which the visible four fifths of the axis already establishes.
+  var MPS = 200, MPSW = 12;
+  function setMPS(n){
+    var m = Math.max(60, Math.round(0.55*n));
+    if(m !== MPS){ MPS = m; MPSC = {}; }
+  }
   function catMaskPS(xs){
     var raw = new Float64Array(MPS+1+MPSW), out = new Float64Array(MPS+1);
     for(var m=1;m<=MPS+MPSW;m++){
@@ -771,21 +782,55 @@ function boot(){
       for(var i=0;i<xs.length;i++){ var ph=2*Math.PI*m*xs[i]; sr+=Math.cos(ph); si-=Math.sin(ph); }
       raw[m]=sr*sr+si*si;
     }
-    //  a window PROPORTIONAL to k -- band-powers, in effect. A single
+    //  a window PROPORTIONAL to k -- band-powers, in effect -- never narrower
+    //  than one neighbour either side, because a single-mode null at k = 1
+    //  drops the curve to the floor of the box and reads as a drawing bug. A single
     //  realisation of |w_k|^2 is exponentially distributed, so a fixed narrow
     //  average leaves chance excursions of two or three times the floor that
     //  read as features; averaging over ~25% of k flattens the floor to a few
     //  percent while leaving the lowest modes, where the coherent rise lives,
     //  essentially unsmoothed.
     for(var q=1;q<=MPS;q++){
-      var wq = Math.min(MPSW, Math.floor(q*0.25)), a=0, n=0;
+      var wq = Math.max(1, Math.min(MPSW, Math.floor(q*0.30))), a=0, n=0;
       for(var d=-wq; d<=wq; d++){ var mm=q+d; if(mm>=1 && mm<=MPS+MPSW){ a+=raw[mm]; n++; } }
       out[q]=a/n;
     }
     return out;
   }
+  //  The SMOOTH footprint's own |W_k|^2 -- what a pixelised map of the same
+  //  window would measure, with no shot noise in it at all. Normalised to the
+  //  same total weight as the catalogue (W(x) = N foot(x) / mean(foot)), so the
+  //  two curves are directly comparable: the catalogue's spectrum IS this plus
+  //  a flat Nw. Band-averaged with the same window as the catalogue's, or the
+  //  comparison would be between a smooth curve and a ratty one.
+  var FPSC = null;
+  function footPS(n){
+    if(FPSC && FPSC.n === n && FPSC.mps === MPS) return FPSC.p;
+    var raw = new Float64Array(MPS+MPSW+1), j, m, f0 = 0;
+    for(j=0;j<NX;j++) f0 += footAt(j/NX);
+    f0 /= NX;
+    for(m=1;m<=MPS+MPSW;m++){
+      var sr=0, si=0;
+      for(j=0;j<NX;j++){
+        var ph = 2*Math.PI*m*j/NX, fv = footAt(j/NX);
+        sr += fv*Math.cos(ph); si -= fv*Math.sin(ph);
+      }
+      sr = n*sr/(NX*f0); si = n*si/(NX*f0);
+      raw[m] = sr*sr + si*si;
+    }
+    var out = new Float64Array(MPS+1);
+    for(var q=1;q<=MPS;q++){
+      var wq = Math.max(1, Math.min(MPSW, Math.floor(q*0.30))), a=0, nn=0;
+      for(var d=-wq; d<=wq; d++){ var mm=q+d; if(mm>=1 && mm<=MPS+MPSW){ a+=raw[mm]; nn++; } }
+      out[q] = a/nn;
+    }
+    FPSC = {n:n, mps:MPS, p:out};
+    return out;
+  }
+
   var MPSC = {};
   function maskPSof(key, xs){
+    key = key + '@' + MPS;
     if(!MPSC[key]) MPSC[key] = catMaskPS(xs);
     return MPSC[key];
   }
@@ -805,7 +850,7 @@ function boot(){
   function drawMaskPS(s, opts){
     clear(s); geom(opts);
     var PAD = _x0, AW = _w, y0 = opts.y0 || 34, h = opts.h || 200;
-    catBuild();
+    catBuild(); setMPS(CAT.xs.length);
     var holed = !!opts.foot, cloud = !!opts.cloud;
     var xs = holed ? footKeep(CAT.xs) : CAT.xs;
     var ps = maskPSof((holed?'h':'u') + xs.length, xs);
@@ -831,14 +876,31 @@ function boot(){
     if(mc > 2 && mc < MPS){
       el(s,'line',{x1:X(mc),y1:y0,x2:X(mc),y2:y0+h,stroke:INK,'stroke-width':2.5,
                    'stroke-dasharray':'11 8'});
-      txtsub(s, X(mc)+12, y0+24, 'π/θ', 'c', '', {fill:INK,'font-size':26});
+      //  the marker sits near the right edge once the axis is cut just past it,
+      //  so the label flips to the inside rather than running off the panel
+      var lx = X(mc), rgt = lx > PAD + 0.72*AW;
+      txtsub(s, rgt ? lx-14 : lx+12, y0+24, 'π/θ', 'c', '',
+             {fill:INK,'font-size':26,'text-anchor': rgt ? 'end' : 'start'});
     }
 
     //  the shot-noise floor, named on the line so it is visibly not zero
     var yf = Y(floor*G2(0));
     el(s,'line',{x1:PAD,y1:Y(floor),x2:PAD+AW,y2:Y(floor),stroke:MUT,'stroke-width':2.5,
                  'stroke-dasharray':'7 7'});
-    txtsub(s, Math.max(PAD-72,2), Y(floor)+9, 'Ñ', 'w', '', {fill:MUT,'font-size':28});
+
+
+    //  the smooth footprint's own spectrum: no shot noise, so it is the thing
+    //  the band-limited catalogue mask is trying to become. Dragging theta_c
+    //  until the red lies on the blue is the whole slide.
+    if(opts.pixel){
+      var fp = footPS(xs.length), dp = '', op = false;
+      for(var mp=1;mp<=MPS;mp++){
+        if(Math.log10(Math.max(fp[mp],1e-12)) < lg0){ op = false; continue; }
+        dp += (op?'L':'M')+X(mp).toFixed(1)+' '+Y(fp[mp]).toFixed(1)+' '; op = true;
+      }
+      el(s,'path',{d:dp,fill:'none',stroke:COB,'stroke-width':3,opacity:0.85});
+      txt(s, PAD+AW-330, y0+h-16, 'the footprint alone', {fill:COB,'font-size':26});
+    }
 
     //  everything the curve carries ABOVE the floor, shaded: that band is the
     //  coherent part, and it is what the paper's red curve shows.
@@ -1258,18 +1320,34 @@ function boot(){
     {tex:'{\\rm Cov}\\big(\\tilde C(k),\\tilde C(k\')\\big)\\propto\\Big|\\sum_{k\'\'} W_{k-k\'\'}\\,W^{*}_{k\'-k\'\'}\\,C(k\'\')\\Big|^{2}',
      step:4, name:'four-point', col:1, row:1, span:2,
      note:'one sum over k″ for every element of the k, k′ matrix'},
-    {tex:'{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,\\,w_bw_d)',
-     step:5, name:'narrow-kernel approximation', col:3, row:1, span:2,
-     note:'Ξ: the same coupling coefficients as the estimator, built from the product of the masks'},
+    //  The paper's eq:nka_simple is
+    //      Cov(C~^ab_l, C~^cd_l') = C^ac_(l,l') C^bd_(l,l') Xi_ll'(w_a w_c, w_b w_d) + (c<->d)
+    //  with C_(l,l') = (C_l + C_l')/2. This deck has ONE field and ONE mask, so
+    //  a = b = c = d: both C factors are the same Cbar, both mask arguments are
+    //  w^2, and the (c<->d) term doubles it. The a,b,c,d indices are said in the
+    //  notes, where the several-field case belongs -- carrying them on the slide
+    //  made the entry unreadable.
+    //  Xi is spelled out rather than glossed: in 1D the sum over l'' against the
+    //  3j symbol IS the mask-power convolution kernel, so Xi_kk'(w^2) is
+    //  slide 5's |W_{k-k'}|^2 with w^2 in place of w.
+    {tex:'{\\rm Cov}\\big(\\tilde C(k),\\tilde C(k\')\\big)\\simeq 2\\,\\bar C^{2}\\,\\Xi_{kk\'}(w^2)',
+     step:5, name:'narrow-kernel approximation', col:3, row:1, span:2},
+    {tex:'\\bar C=\\tfrac12\\big[C(k)+C(k\')\\big]', step:5, name:'C at the midpoint', col:3, row:2},
+    {tex:'\\Xi_{kk\'}(w^2)=\\big|(w^2)_{k-k\'}\\big|^{2}', step:5, name:'coupling kernel, from w² not w', col:4, row:2},
     {tex:'\\tilde a(x)=\\sum_i w_i\\,a_i\\,\\delta(x-x_i)', step:6, name:'catalogue field', col:1, row:1},
     {tex:'w(x)=\\sum_i w_i\\,\\delta(x-x_i)', step:6, name:'catalogue mask', col:2, row:1},
     //  the object-wise twin of a_k = sum_x a(x) e^{-ikx} on slide 3. The deck
     //  stops the ledger here on purpose: everything downstream of the modes is
     //  unchanged from slides 3-5, and what breaks is upstream, in the mask.
     {tex:'\\tilde a_k=\\sum_i w_i\\,a_i\\,e^{-ikx_i}', step:6, name:'catalogue modes', col:3, row:1},
-    {tex:'\\tilde N_w=\\tfrac{1}{4\\pi}\\sum_i w_i^2', step:6, name:'mask shot noise', col:4, row:1},
-    {tex:'\\bar w(x)=\\sum_i w_i\\,G_{\\theta_{\\rm c}}(x-x_i)', step:7, name:'band-limited mask', col:1, row:2, span:2},
-    {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:1, row:1, span:2},
+    //  Slide 11 opens on the PROBLEM, not on the answer: once the mask is
+    //  band-limited the covariance kernel wants the mask PRODUCT, and for a
+    //  catalogue against itself that product carries every source paired with
+    //  itself. Wolz eq. 2.24 -- distinct pairs go through the NKA, the self-pair
+    //  sum is kept and treated exactly.
+    {tex:'\\bar w^{2}(x)=\\underbrace{\\textstyle\\sum_{i\\neq j} w_iw_j\\,G\\,G}_{\\rm distinct\\;pairs}+\\underbrace{\\textstyle\\sum_i w_i^{2}\\,G^{2}}_{\\rm self\\;pairs}',
+     step:8, name:'the mask product contains every source paired with itself', col:1, row:1, span:3},
+    {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:4, row:1, sub:1},
 
     //  The Nagura act opens on the pair count itself. The two entries are the
     //  same object twice: the thing you measure, and the thing it equals in
@@ -1398,6 +1476,7 @@ function boot(){
       //  slider drives it -- the comb blooms into clouds, the spectrum picks up
       //  the cloud's transform.
       cloud: e.dataset.cloud === '1',
+      pixel: e.dataset.pixel === '1',
       stage: stage }); };
     each('.pP',    drawCatalogue);
     each('.pPair', drawPairs);
@@ -1412,7 +1491,7 @@ function boot(){
     var v0 = root.querySelector('.ctl-slider .val');
     if(v0) v0.innerHTML = THC <= 0
       ? '= 0 — bare deltas'
-      : '= ' + (THC*CAT.xs.length).toFixed(2) + ' × the source spacing';
+      : '= ' + (THC*CAT.xs.length).toFixed(2) + ' × the spacing';
     var sl = root.querySelectorAll('input[type=range]');
     for(var si=0; si<sl.length; si++) (function(inp){
       if(inp.__wired) return; inp.__wired = 1;
@@ -1422,7 +1501,7 @@ function boot(){
         var lab = inp.parentNode.querySelector('.val');
         if(lab && inp.dataset.var === 'thc') lab.innerHTML = THC <= 0
           ? '= 0 — bare deltas'
-          : '= ' + (THC*CAT.xs.length).toFixed(2) + ' × the source spacing';
+          : '= ' + (THC*CAT.xs.length).toFixed(2) + ' × the spacing';
         renderOne(root); typeset();
       };
     })(sl[si]);
