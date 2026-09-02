@@ -410,44 +410,40 @@
 .reveal .nka .menu .nm { font-size: 24px; }
 .reveal .nka .menu .note { font-size: 25px; line-height: 1.3; }
 
-// The Nagura menu stacked, not in three columns: two of the three entries are
-// full covariance statements and the quartic-count sum is very wide. One
-// column per row gives every equation the slide's full width at ledger size.
-.reveal .nka .menu.wide {
-    grid-template-columns: 1fr;
-    gap: 14px;
-    > div { min-height: 0; padding: 6px 18px; }
-    .nm { font-size: 26px; }
-    .eq { font-size: 31px; margin: 4px 0 2px 0; }
-    .note { font-size: 27px; }
+// The projection slide: three methods, each with its equation on the left and
+// its matrices on the right, all drawn from the 1D toy. Every configuration
+// matrix is the SAME cosine sandwich applied to a different harmonic matrix, so
+// the comparison is through one pipeline; the last column is the difference
+// from the exact projection with the diagonal zeroed.
+.reveal .nka .methods { margin-top: 10px; }
+.reveal .nka .mhead,
+.reveal .nka .mrow2 {
+    display: flex; flex-direction: row; align-items: center; gap: 14px;
 }
-
-// Each method carries its own picture on the right, inside its own row, so the
-// illustration is aligned with its equation for free and arrives on the same
-// fragment. The matrices are drawn from the toy: f_sky is a bare diagonal,
-// iNKA is the banded matrix from the covariance slide, and quartic counts is
-// an ANGULAR matrix -- there is no harmonic one to draw, which is the point.
-.reveal .nka .menu.wide > div.withpic,
-.reveal .nka .corr.big > div.withpic {
-    //  the selector has to out-specify `.reveal .nka .menu > div`, which sets
-    //  flex-direction: column
-    display: flex; flex-direction: row; align-items: center; gap: 26px;
-
-    > .txt { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-    > .pic { flex: 0 0 132px; text-align: center; }
-    > svg  { flex: 0 0 330px; }
+.reveal .nka .mrow2 {
+    padding: 5px 16px; margin-bottom: 10px;
+    border-left: 6px solid #BC4538;
+    background: rgba(188, 69, 56, 0.10);
+}
+// the quartic-counts row never goes through l at all, so it is set apart
+.reveal .nka .mrow2.apart { margin-top: 26px; border-top: 2px solid #C5B89E; padding-top: 10px; }
+.reveal .nka .mtxt {
+    flex: 1 1 auto; min-width: 0;
+    display: flex; flex-direction: column; gap: 1px;
+    .nm { font-size: 25px; line-height: 1.1; color: #7A6F5C;
+          font-variant: small-caps; letter-spacing: 0.04em; }
+    .eq { font-size: 30px; line-height: 1.2; }
+}
+.reveal .nka .mpix {
+    flex: 0 0 208px; text-align: center;
     canvas {
-        width: 132px; height: 132px; display: block;
+        width: 208px; height: 208px; display: block;
         image-rendering: pixelated; border: 1px solid #C5B89E; box-shadow: none;
     }
-    .pic > span { display: block; font-size: 23px; color: #7A6F5C; margin-top: 3px; }
+    > span { display: block; font-size: 25px; color: #7A6F5C; }
 }
-
-// the cost, riding along with the equation it prices rather than on its own line
-.reveal .nka .corr .tag {
-    margin-left: 46px;
-    color: #BC4538;
-}
+.reveal .nka .marrow { flex: 0 0 34px; text-align: center; font-size: 34px; color: #7A6F5C; }
+.reveal .nka .mhead { padding: 0 16px 2px 22px; }
 
 // paper cards: a cropped first page, as large as fits, and one source line.
 // Nothing else on the slide -- these are punctuation between the acts.

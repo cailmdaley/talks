@@ -233,7 +233,9 @@ function boot(){
 
   // ---------- derived ----------
   var Cin = new Float64Array(KMAX+2), Ctil = new Float64Array(KMAX+2);
-  var covE = new Float64Array(NK*NK), covN = new Float64Array(NK*NK);
+  var covE = new Float64Array(NK*NK), covN = new Float64Array(NK*NK),
+      covI = new Float64Array(NK*NK);   // iNKA, for the projection slide
+  var MW2 = 1;                          // <w^2> over the grid
   var NBIN = Math.floor(KMAX/NB);
   var Cdecb = new Float64Array(NBIN), Ctilb = new Float64Array(NBIN);
   function binCentre(b){ return 1 + b*NB + (NB-1)/2; }
@@ -242,6 +244,7 @@ function boot(){
     var M = MASKS[pick];
     mask = makeMask(M.w, M.h, M.a);
     var T = transform(mask); Wre = T.re; Wim = T.im; sumP = T.sumP;
+    MW2 = 0; for(var mj=0;mj<NX;mj++) MW2 += mask[mj]*mask[mj]; MW2 /= NX;
     for(var k=1;k<=KMAX;k++){
       Cin[k] = Cfun(k);
       var acc = 0;
@@ -250,6 +253,7 @@ function boot(){
     }
     decouple();
     covariances();
+    PROJ = null;
   }
 
   // Bandpowers. The unbinned coupling matrix is not invertible in any useful
@@ -320,9 +324,21 @@ function boot(){
           sr += x1r*x2r + x1i*x2i; si += x1i*x2r - x1r*x2i;
         }
         covE[a*NK+b] = 2*(sr*sr + si*si)/n2;
-        var cb = Cfun((ka+kb)/2), dd = ka-kb+N;
+        //  Cbar = (C_l + C_l')/2, the arithmetic mean the slide-7 entry states.
+        //  This used to be C((l+l')/2), the spectrum at the midpoint ARGUMENT,
+        //  which differs at second order in l-l' and did not match the equation.
+        var cb = 0.5*(Cfun(ka) + Cfun(kb)), dd = ka-kb+N;
         var nr = cb*Xre[dd], ni = cb*Xim[dd];
         covN[a*NK+b] = 2*(nr*nr + ni*ni)/n2;
+        //  iNKA, the form the projection slide quotes: the MASK-CONVOLVED
+        //  spectrum at the two multipoles, over the mean squared mask. The
+        //  <w^2> of the equation is already in Ctil -- it is stored divided by
+        //  sumP, and by Parseval sumP = <w^2> -- so dividing again here would
+        //  square the mask fraction and blow the matrix up by ~1/f_sky^2, which
+        //  is exactly what it did on the first attempt.
+        var ci = 0.5*(Ctil[ka] + Ctil[kb]);
+        var ir = ci*Xre[dd], ii = ci*Xim[dd];
+        covI[a*NK+b] = 2*(ir*ir + ii*ii)/n2;
       }
     }
   }
@@ -640,88 +656,84 @@ function boot(){
     ctx.putImageData(im,0,0);
   }
 
-  //  Cov(xi_i, xi_j) in angular bins, got the honest way: the EXACT harmonic
-  //  covariance sandwiched between two transform kernels, which is the paper's
-  //  eq. 12 with the 1D analogue of [P_{l+1}-P_{l-1}]. In one dimension
-  //  xi(theta) = sum_k 2 C_k cos(2 pi k theta), so the kernel is a cosine,
-  //  bin-averaged. This is what quartic counts compute -- the same number by a
-  //  configuration-space route -- so it stands in for them.
-  var NTH = 26, XICOV = null;
+  //  Cov(xi_i, xi_j) in angular bins, got the honest way: a harmonic covariance
+  //  sandwiched between two transform kernels, which is Nagura eq. 12 with the
+  //  1D analogue of [P_{l+1}-P_{l-1}]. In one dimension
+  //  xi(theta) = sum_l 2 C_l cos(2 pi l theta), so the kernel is a cosine over
+  //  the same l range the covariance matrices cover. Every configuration-space
+  //  panel on the projection slide is this applied to a different harmonic
+  //  matrix, so the three methods are compared through one identical pipeline.
+  var NTH = 22, THMAX = 0.05, PK = null;
   function projKernel(){
-    var T = new Float64Array(NTH*NK), i, ki;
-    for(i=0;i<NTH;i++){
-      var th = (i+0.5)/NTH*0.05;
-      for(ki=0;ki<NK;ki++) T[i*NK+ki] = 2*Math.cos(2*Math.PI*(KLO+ki)*th);
+    if(PK) return PK;
+    PK = new Float64Array(NTH*NK);
+    for(var i=0;i<NTH;i++){
+      var th = (i+0.5)/NTH*THMAX;
+      for(var ki=0; ki<NK; ki++) PK[i*NK+ki] = 2*Math.cos(2*Math.PI*(KLO+ki)*th);
     }
-    return T;
+    return PK;
   }
-  function covXi(){
-    if(XICOV) return XICOV;
+  function project(cov){
     var T = projKernel(), M = new Float64Array(NTH*NK), out = new Float64Array(NTH*NTH),
-        i, j, a, b;
-    for(i=0;i<NTH;i++) for(b=0;b<NK;b++){
+        i, j, aa, bb;
+    for(i=0;i<NTH;i++) for(bb=0;bb<NK;bb++){
       var acc = 0;
-      for(a=0;a<NK;a++) acc += T[i*NK+a]*covE[a*NK+b];
-      M[i*NK+b] = acc;
+      for(aa=0;aa<NK;aa++) acc += T[i*NK+aa]*cov[aa*NK+bb];
+      M[i*NK+bb] = acc;
     }
-    var mx = 0;
     for(i=0;i<NTH;i++) for(j=0;j<NTH;j++){
       var v = 0;
-      for(b=0;b<NK;b++) v += M[i*NK+b]*T[j*NK+b];
+      for(bb=0;bb<NK;bb++) v += M[i*NK+bb]*T[j*NK+bb];
       out[i*NTH+j] = v;
     }
-    //  correlation, not covariance: the diagonal spans orders of magnitude and
-    //  the point is the off-diagonal STRUCTURE
-    var d = new Float64Array(NTH);
-    for(i=0;i<NTH;i++) d[i] = Math.sqrt(Math.abs(out[i*NTH+i])) || 1;
-    for(i=0;i<NTH;i++) for(j=0;j<NTH;j++) out[i*NTH+j] /= d[i]*d[j];
-    XICOV = out; return out;
+    return out;
+  }
+  //  correlation matrices, always normalised by the EXACT diagonal, so the
+  //  three methods sit on one scale and a difference means something
+  function normBy(m, d, n){
+    var o = new Float64Array(n*n);
+    for(var i=0;i<n;i++) for(var j=0;j<n;j++) o[i*n+j] = m[i*n+j]/(d[i]*d[j]);
+    return o;
+  }
+  function diagOf(m, n){
+    var d = new Float64Array(n);
+    for(var i=0;i<n;i++) d[i] = Math.sqrt(Math.abs(m[i*n+i])) || 1;
+    return d;
+  }
+  //  the difference panels answer "where is the error", so the diagonal -- which
+  //  every method gets nearly right, and which would dominate the colour scale
+  //  -- is zeroed. That is the paper's whole point about off-diagonals.
+  function diffNoDiag(a2, b2, n){
+    var o = new Float64Array(n*n);
+    for(var i=0;i<n;i++) for(var j=0;j<n;j++) o[i*n+j] = (i===j) ? 0 : a2[i*n+j]-b2[i*n+j];
+    return o;
+  }
+
+  var PROJ = null;
+  function projSet(){
+    if(PROJ) return PROJ;
+    var i, j;
+    var dH = diagOf(covE, NK);
+    var Fh = new Float64Array(NK*NK);            // f_sky: the diagonal, nothing else
+    for(i=0;i<NK;i++) Fh[i*NK+i] = covE[i*NK+i];
+    var pE = project(covE), pF = project(Fh), pI = project(covI);
+    var dC = diagOf(pE, NTH);
+    var nE = normBy(pE, dC, NTH), nF = normBy(pF, dC, NTH), nI = normBy(pI, dC, NTH);
+    PROJ = {
+      hE: normBy(covE, dH, NK), hF: normBy(Fh, dH, NK), hI: normBy(covI, dH, NK),
+      cE: nE, cF: nF, cI: nI,
+      dF: diffNoDiag(nF, nE, NTH), dI: diffNoDiag(nI, nE, NTH),
+      dQ: new Float64Array(NTH*NTH)              // quartic counts ARE the exact answer
+    };
+    return PROJ;
   }
 
   function drawProj(root){
-    var cf = root.querySelector('canvas.cFsky'),
-        ci = root.querySelector('canvas.cInka'),
-        cq = root.querySelector('canvas.cQuar');
-    if(!cf || !ci || !cq) return;
-    var d = new Float64Array(NK), i, j, q;
-    for(i=0;i<NK;i++) d[i] = Math.sqrt(covE[i*NK+i]);
-    //  f_sky: a diagonal and nothing else -- that IS the approximation
-    var F = new Float64Array(NK*NK);
-    for(i=0;i<NK;i++) F[i*NK+i] = 1;
-    heatN(cf, F, NK, 1);
-    //  iNKA: the banded matrix from the covariance slide, same normalisation
-    var N2 = new Float64Array(NK*NK);
-    for(i=0;i<NK;i++) for(j=0;j<NK;j++) N2[i*NK+j] = covN[i*NK+j]/(d[i]*d[j]);
-    heatN(ci, N2, NK, 1);
-    //  quartic counts: no harmonic matrix at all -- an angular one
-    heatN(cq, covXi(), NTH, 1);
-  }
-
-  //  The Legendre sandwich: the exact harmonic covariance with the oscillating
-  //  transform kernel drawn along its top and left edges, so that "the double
-  //  sum eats the off-diagonals" is a picture rather than a sentence. The
-  //  matrix is rendered to an offscreen canvas and embedded, because an svg is
-  //  the only place the two kernel curves can sit beside it.
-  function drawSandwich(s, opts){
-    clear(s);
-    var S = opts.h || 210, PADL = 62, PADT = 62;
-    var cv = document.createElement('canvas'), d = new Float64Array(NK), i, j;
-    for(i=0;i<NK;i++) d[i] = Math.sqrt(covE[i*NK+i]);
-    var E = new Float64Array(NK*NK);
-    for(i=0;i<NK;i++) for(j=0;j<NK;j++) E[i*NK+j] = covE[i*NK+j]/(d[i]*d[j]);
-    heatN(cv, E, NK, 1);
-    el(s,'image',{x:PADL,y:PADT,width:S,height:S,'image-rendering':'pixelated',
-                  href:cv.toDataURL('image/png')});
-    el(s,'rect',{x:PADL,y:PADT,width:S,height:S,fill:'none',stroke:RULE,'stroke-width':1.5});
-    //  the kernel: the same cosine that projects the matrix, one copy per axis
-    var dtop='', dlef='', n=160;
-    for(i=0;i<n;i++){
-      var t = i/(n-1), v = Math.cos(2*Math.PI*7*t)*Math.exp(-1.6*t);
-      dtop += (i?'L':'M')+(PADL+S*t).toFixed(1)+' '+(PADT-8-20*v).toFixed(1)+' ';
-      dlef += (i?'L':'M')+(PADL-8-20*v).toFixed(1)+' '+(PADT+S*t).toFixed(1)+' ';
-    }
-    el(s,'path',{d:dtop,fill:'none',stroke:ACC,'stroke-width':2.2});
-    el(s,'path',{d:dlef,fill:'none',stroke:ACC,'stroke-width':2.2});
+    var P = projSet(), q = function(c){ return root.querySelector('canvas.'+c); };
+    function put(c, m, n, sc){ var cv = q(c); if(cv) heatN(cv, m, n, sc); }
+    put('hFsky', P.hF, NK, 1);   put('cFsky', P.cF, NTH, 1);   put('dFsky', P.dF, NTH, 0.5);
+    put('hInka', P.hI, NK, 1);   put('cInka', P.cI, NTH, 1);   put('dInka', P.dI, NTH, 0.5);
+                                 put('cQuar', P.cE, NTH, 1);   put('dQuar', P.dQ, NTH, 0.5);
   }
 
   function drawMatrices(root){
@@ -1265,10 +1277,8 @@ function boot(){
         el(s,'line',{x1:xa2,y1:yt-10,x2:xa2,y2:yt+10,stroke:ACC,'stroke-width':3});
         el(s,'line',{x1:xb3,y1:yt-10,x2:xb3,y2:yt+10,stroke:ACC,'stroke-width':3});
         txt(s, xb3+18, yt+9, 'θ', {fill:ACC,'font-size':30,'font-style':'italic'});
-        txt(s, PAD+AW-360, y0+16, arcs + ' pairs at this θ', {fill:COB});
+          txt(s, PAD+AW-360, y0+16, arcs + ' pairs at this θ', {fill:COB});
       }
-    } else if(st > XISTOP.length){
-      txt(s, PAD+AW-360, y0+16, 'every pair, every θ', {fill:COB});
     }
     for(var q2=0;q2<xs.length;q2++){
       var v = X.av[q2];
@@ -1298,15 +1308,10 @@ function boot(){
     txt(s, Math.max(PAD-64,2), Y(0)+9, 'ξ', {fill:MUT,'font-size':30,'font-style':'italic'});
     txt(s, PAD, y0+h+40, 'separation  θ', {fill:MUT,'font-size':26});
 
-    //  the field's own correlation function, thin: what the pair count is
-    //  estimating, so the scatter can be read as scatter
-    if(st > XISTOP.length){
-      var dt='';
-      for(b=B0;b<XINB;b++) dt += (b>B0?'L':'M')+XT(xiTheta(b)).toFixed(1)+' '+Y(X.tru[b]).toFixed(1)+' ';
-      el(s,'path',{d:dt,fill:'none',stroke:MUT,'stroke-width':2});
-      txt(s, PAD+AW-560, y0+30, 'ξ(θ) of the field, sampled everywhere', {fill:MUT,'font-size':26});
-      txt(s, PAD+AW-560, y0+66, 'ξ̂(θ) from ' + CAT.xs.length + ' sources', {fill:COB,'font-size':26});
-    }
+    //  No reference curve and no in-plot legend: the panel carries the pair
+    //  count and its axes, nothing else. The field's own correlation function
+    //  is still computed (xiBuild) -- it sets the vertical scale -- but it is
+    //  not drawn.
     var shown = [];
     if(st >= 1 && st <= XISTOP.length) shown = XISTOP.slice(0, st);
     else if(st > XISTOP.length){ for(b=B0;b<XINB;b++) shown.push(b); }
@@ -1627,7 +1632,6 @@ function boot(){
     each('.pP',    drawCatalogue);
     each('.pPair', drawPairs);
     each('.pXiC',  drawXiCat);
-    var sand = q('.pSand'); if(sand) drawSandwich(sand, {h: +sand.dataset.h || 210});
     drawProj(root);
     each('.pMps',  drawMaskPS);
     each('.pKC',   drawCatKernel);

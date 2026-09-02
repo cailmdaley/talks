@@ -565,38 +565,53 @@ That linearity is what makes the next slide inevitable.
 ```{=html}
 <div class="nka" data-step="10">
   <div class="corr big">
-    <div class="withpic">
-      <div class="txt">
-        <span class="nm">a linear map in, so the covariance is a <i>double</i> sum</span>
-        <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;\propto\;\sum_{\ell}\sum_{\ell'}\big[P_{\ell+1}-P_{\ell-1}\big]_i\,\big[P_{\ell'+1}-P_{\ell'-1}\big]_j\;{\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big) \)
-          <span class="tag">\( \mathcal{O}(\ell_{\rm max}^{6}) \)</span></span>
-      </div>
-      <svg class="pSand" data-h="196" viewBox="0 0 330 290" width="330" height="290"></svg>
+    <div>
+      <span class="nm">a linear map in, so the covariance is a <i>double</i> sum</span>
+      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;\propto\;\sum_{\ell}\sum_{\ell'}\big[P_{\ell+1}-P_{\ell-1}\big]_i\,\big[P_{\ell'+1}-P_{\ell'-1}\big]_j\;{\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big) \)
+        <span class="tag">\( \mathcal{O}(\ell_{\rm max}^{6}) \)</span></span>
     </div>
   </div>
-  <div class="menu wide">
-    <div class="fragment withpic">
-      <div class="txt">
+
+  <div class="methods">
+    <div class="mhead">
+      <div class="mtxt"></div>
+      <div class="mpix"><span>\( {\rm Cov}(\tilde C_\ell,\tilde C_{\ell'}) \)</span></div>
+      <div class="marrow"></div>
+      <div class="mpix"><span>\( {\rm Cov}(\xi_i,\xi_j) \)</span></div>
+      <div class="mpix"><span>&minus; exact</span></div>
+    </div>
+
+    <div class="mrow2 fragment">
+      <div class="mtxt">
         <span class="nm">f<sub>sky</sub> (Knox)</span>
         <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\delta^K_{\ell\ell'}\,\dfrac{2\,C_\ell^{2}}{(2\ell+1)\,f_{\rm sky}} \)</span>
-        <span class="note">pretend the mask deletes modes but never couples them: diagonal, divided by the sky fraction.</span>
       </div>
-      <div class="pic"><canvas class="cFsky"></canvas><span>\( \ell,\ell' \)</span></div>
+      <div class="mpix"><canvas class="hFsky"></canvas></div>
+      <div class="marrow">→</div>
+      <div class="mpix"><canvas class="cFsky"></canvas></div>
+      <div class="mpix"><canvas class="dFsky"></canvas></div>
     </div>
-    <div class="fragment withpic">
-      <div class="txt">
+
+    <div class="mrow2 fragment">
+      <div class="mtxt">
         <span class="nm">iNKA</span>
         <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\dfrac12\Big(\dfrac{\tilde C_\ell+\tilde C_{\ell'}}{\langle w^2\rangle}\Big)^{2}\Big|\textstyle\sum_x w^2(x)\,e^{-i(\ell-\ell')x}\Big|^{2} \)</span>
       </div>
-      <div class="pic"><canvas class="cInka"></canvas><span>\( \ell,\ell' \)</span></div>
+      <div class="mpix"><canvas class="hInka"></canvas></div>
+      <div class="marrow">→</div>
+      <div class="mpix"><canvas class="cInka"></canvas></div>
+      <div class="mpix"><canvas class="dInka"></canvas></div>
     </div>
-    <div class="fragment withpic">
-      <div class="txt">
+
+    <div class="mrow2 apart fragment">
+      <div class="mtxt">
         <span class="nm">quartic counts (Schneider; Shirasaki)</span>
-        <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;=\;\dfrac{1}{N_{{\rm pair},i}N_{{\rm pair},j}}\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\,\dfrac{\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})}{2} \)</span>
-        <span class="note">no \(\ell\) anywhere: the window is <b>counted</b>, not modelled.</span>
+        <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\dfrac{1}{N_{{\rm pair},i}N_{{\rm pair},j}}\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\,\dfrac{\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})}{2} \)</span>
       </div>
-      <div class="pic"><canvas class="cQuar"></canvas><span>\( \theta_i,\theta_j \)</span></div>
+      <div class="mpix"></div>
+      <div class="marrow"></div>
+      <div class="mpix"><canvas class="cQuar"></canvas></div>
+      <div class="mpix"><canvas class="dQuar"></canvas></div>
     </div>
   </div>
 </div>
