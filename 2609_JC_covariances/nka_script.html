@@ -985,6 +985,144 @@ function boot(){
     txtsub(s, PAD, Y(floor)+40, 'N', 'w', '', {fill:INK,'font-size':26});
   }
 
+  //  N1 -- the correlation function as a PAIR COUNT, on the same drawn
+  //  catalogue as the mask slides. The Nagura act opens with a covariance
+  //  double sum that lands cold; this builds the object first.
+  //
+  //  Bins are linear in separation over [0, XIMAX]. XIMAX = 0.15 of the box
+  //  covers both features of the toy field: the broad decay set by the
+  //  spectrum's turnover near k = 18, and the oscillation at 1/78 from the
+  //  bump. The estimator is the ordinary one, unit weights,
+  //      xi(theta) = sum_{pairs in bin} a_i a_j / N_pair,
+  //  summed over the actual drawn positions -- noisy, and true. Because a_i is
+  //  the field sampled exactly at x_i, it is unbiased for the FIELD's own
+  //  autocorrelation, which is what the thin reference line is: not the
+  //  ensemble C(k) transform, but this realisation's, so the scatter you see is
+  //  honest sampling scatter and nothing else.
+  var XIMAX = 0.15, XINB = 24;
+  //  the three separations the fragments stop at, in bins
+  var XISTOP = [2, 8, 17];
+  function xibin(th){ return Math.floor(th/XIMAX*XINB); }
+  var XIC = null;
+  function xiBuild(){
+    if(XIC && XIC.n === CAT.xs.length) return XIC;
+    var xs = CAT.xs, n = xs.length;
+    var sum = new Float64Array(XINB), cnt = new Float64Array(XINB), i, j, b;
+    var av = new Float64Array(n);
+    for(i=0;i<n;i++) av[i] = field[Math.min(NX-1, Math.floor(xs[i]*NX))];
+    for(i=0;i<n;i++) for(j=i+1;j<n;j++){
+      var d = xs[j]-xs[i]; if(d > 0.5) d = 1-d;       // periodic box
+      if(d >= XIMAX) continue;
+      var b = xibin(d); sum[b] += av[i]*av[j]; cnt[b] += 1;
+    }
+    var xi = new Float64Array(XINB);
+    for(b=0;b<XINB;b++) xi[b] = cnt[b] ? sum[b]/cnt[b] : 0;
+    //  the field's own autocorrelation, on the same bin centres
+    var tru = new Float64Array(XINB);
+    for(b=0;b<XINB;b++){
+      var lag = Math.round((b+0.5)/XINB*XIMAX*NX), a2 = 0;
+      for(var q=0;q<NX;q++) a2 += field[q]*field[(q+lag)%NX];
+      tru[b] = a2/NX;
+    }
+    XIC = {n:n, xi:xi, cnt:cnt, tru:tru, av:av};
+    return XIC;
+  }
+  function xiTheta(b){ return (b+0.5)/XINB*XIMAX; }
+
+  //  N1 top panel: the catalogue, with every pair at one separation drawn.
+  //  The web of thin lines is the point -- a pair count at one theta is
+  //  hundreds of pairs, not the one the bracket labels.
+  function drawPairs(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, y0 = 30, h = opts.h || 150, mid = y0 + h/2;
+    catBuild(); var X = xiBuild(), xs = CAT.xs;
+    var st = opts.stage == null ? 0 : opts.stage;
+    el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
+    var d='';
+    for(var j=0;j<NX;j++) d += (j?'L':'M')+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(mid-field[j]*h*0.42).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke:FAINT,'stroke-width':2});
+    txt(s, Math.max(PAD-82,2), mid+9, 'a(x)', {fill:MUT});
+
+    //  the pairs at the fragment's separation, drawn as arcs beneath the axis
+    var bsel = (st >= 1 && st <= XISTOP.length) ? XISTOP[st-1] : -1;
+    if(bsel >= 0){
+      var lo = bsel/XINB*XIMAX, hi = (bsel+1)/XINB*XIMAX, arcs = 0, best = -1, bj = -1;
+      var yb = y0 + h + 14;
+      for(var i=0;i<xs.length;i++) for(var k=i+1;k<xs.length;k++){
+        var dd = xs[k]-xs[i]; if(dd >= hi) break;
+        if(dd < lo) continue;
+        var xa = PAD+AW*xs[i], xb2 = PAD+AW*xs[k], r = (xb2-xa)/2;
+        el(s,'path',{d:'M'+xa.toFixed(1)+' '+yb+' A '+r.toFixed(1)+' '+Math.min(r,26).toFixed(1)+
+                        ' 0 0 1 '+xb2.toFixed(1)+' '+yb, fill:'none',stroke:COB,
+                     'stroke-width':1.6,opacity:0.32});
+        arcs++;
+        //  one pair, near the middle, gets the label
+        if(best < 0 && xs[i] > 0.44){ best = i; bj = k; }
+      }
+      if(best >= 0){
+        var xa2 = PAD+AW*xs[best], xb3 = PAD+AW*xs[bj];
+        el(s,'circle',{cx:xa2,cy:mid-X.av[best]*h*0.42,r:9,fill:'none',stroke:ACC,'stroke-width':3.5});
+        el(s,'circle',{cx:xb3,cy:mid-X.av[bj]*h*0.42,r:9,fill:'none',stroke:ACC,'stroke-width':3.5});
+        var yt = y0 + h + 66;
+        el(s,'line',{x1:xa2,y1:yt,x2:xb3,y2:yt,stroke:ACC,'stroke-width':3.5});
+        el(s,'line',{x1:xa2,y1:yt-10,x2:xa2,y2:yt+10,stroke:ACC,'stroke-width':3});
+        el(s,'line',{x1:xb3,y1:yt-10,x2:xb3,y2:yt+10,stroke:ACC,'stroke-width':3});
+        txt(s, xb3+18, yt+9, 'θ', {fill:ACC,'font-size':30,'font-style':'italic'});
+        txt(s, PAD+AW-360, y0+16, arcs + ' pairs at this θ', {fill:COB});
+      }
+    } else if(st > XISTOP.length){
+      txt(s, PAD+AW-360, y0+16, 'every pair, every θ', {fill:COB});
+    }
+    for(var q2=0;q2<xs.length;q2++){
+      var v = X.av[q2];
+      el(s,'circle',{cx:PAD+AW*xs[q2],cy:mid-v*h*0.42,r:3+4.5*Math.abs(v),fill:INK,opacity:0.85});
+    }
+    txt(s, PAD, y0+h+40, 'position  x', {fill:MUT});
+  }
+
+  //  N1 lower panel: xi(theta) accumulating bin by bin as the fragments advance
+  function drawXiCat(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, y0 = opts.y0 || 30, h = opts.h || 240;
+    catBuild(); var X = xiBuild();
+    var st = opts.stage == null ? 0 : opts.stage;
+    //  bin 0 straddles zero separation, where xi is the field VARIANCE and an
+    //  order of magnitude above everything else; keeping it would flatten the
+    //  whole curve onto the axis. The panel starts at the second bin.
+    var B0 = 1, mx = 0, b;
+    for(b=B0;b<XINB;b++){ mx = Math.max(mx, Math.abs(X.xi[b]), Math.abs(X.tru[b])); }
+    mx *= 1.15;
+    function Y(v){ return y0 + h/2 - h/2*v/mx; }
+    var T0 = xiTheta(B0), T1 = xiTheta(XINB-1);
+    function XT(t){ return PAD + AW*(t-T0)/(T1-T0); }
+    el(s,'line',{x1:PAD,y1:Y(0),x2:PAD+AW,y2:Y(0),stroke:RULE,'stroke-width':2});
+    el(s,'line',{x1:PAD,y1:y0,x2:PAD,y2:y0+h,stroke:RULE,'stroke-width':2});
+    txt(s, Math.max(PAD-64,2), Y(0)+9, 'ξ', {fill:MUT,'font-size':30,'font-style':'italic'});
+    txt(s, PAD, y0+h+40, 'separation  θ', {fill:MUT,'font-size':26});
+
+    //  the field's own correlation function, thin: what the pair count is
+    //  estimating, so the scatter can be read as scatter
+    if(st > XISTOP.length){
+      var dt='';
+      for(b=B0;b<XINB;b++) dt += (b>B0?'L':'M')+XT(xiTheta(b)).toFixed(1)+' '+Y(X.tru[b]).toFixed(1)+' ';
+      el(s,'path',{d:dt,fill:'none',stroke:MUT,'stroke-width':2});
+      txt(s, PAD+AW-470, Y(X.tru[XINB-1])-16, 'the field’s own ξ(θ)', {fill:MUT,'font-size':25});
+    }
+    var shown = [];
+    if(st >= 1 && st <= XISTOP.length) shown = XISTOP.slice(0, st);
+    else if(st > XISTOP.length){ for(b=B0;b<XINB;b++) shown.push(b); }
+    if(st > XISTOP.length){
+      var dd='';
+      for(b=B0;b<XINB;b++) dd += (b>B0?'L':'M')+XT(xiTheta(b)).toFixed(1)+' '+Y(X.xi[b]).toFixed(1)+' ';
+      el(s,'path',{d:dd,fill:'none',stroke:COB,'stroke-width':3});
+    }
+    for(var q=0;q<shown.length;q++){
+      var bb = shown[q];
+      el(s,'circle',{cx:XT(xiTheta(bb)),cy:Y(X.xi[bb]),r: st>XISTOP.length ? 6 : 11,
+                     fill: st>XISTOP.length ? COB : ACC});
+    }
+  }
+
   //  W2 -- the product that breaks, folded into the two rows themselves: no
   //  separate "their product" row. Two catalogues never coincide, so their
   //  product is zero everywhere -- that's catalogue c's label. One catalogue
@@ -1131,7 +1269,16 @@ function boot(){
     {tex:'\\tilde a_k=\\sum_i w_i\\,a_i\\,e^{-ikx_i}', step:6, name:'catalogue modes', col:3, row:1},
     {tex:'\\tilde N_w=\\tfrac{1}{4\\pi}\\sum_i w_i^2', step:6, name:'mask shot noise', col:4, row:1},
     {tex:'\\bar w(x)=\\sum_i w_i\\,G_{\\theta_{\\rm c}}(x-x_i)', step:7, name:'band-limited mask', col:1, row:2, span:2},
-    {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:1, row:1, span:2}
+    {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:1, row:1, span:2},
+
+    //  The Nagura act opens on the pair count itself. The two entries are the
+    //  same object twice: the thing you measure, and the thing it equals in
+    //  harmonic space -- a linear map of the WINDOWED spectrum, normalised by
+    //  the pairs that actually exist (Nagura eq. 8, from Friedrich 2020 app. C).
+    {tex:'\\hat\\xi(\\theta)=\\frac{\\sum_{ij\\in\\theta} w_iw_j\\,a_ia_j}{\\sum_{ij\\in\\theta} w_iw_j}',
+     step:10, name:'pair count', col:1, row:1, span:2},
+    {tex:'\\xi_i=\\frac{n^2}{N_{{\\rm pair},i}}\\,2\\pi\\sum_\\ell\\big[P_{\\ell+1}-P_{\\ell-1}\\big]_i\\,\\tilde C_\\ell',
+     step:10, name:'its transform', col:3, row:1, span:2, sub:4}
   ];
   function ledger(host, step, from, stage){
     from = from || 0;
@@ -1250,8 +1397,11 @@ function boot(){
       //  data-cloud="1": this panel is on the band-limit slide, so the theta_c
       //  slider drives it -- the comb blooms into clouds, the spectrum picks up
       //  the cloud's transform.
-      cloud: e.dataset.cloud === '1' }); };
+      cloud: e.dataset.cloud === '1',
+      stage: stage }); };
     each('.pP',    drawCatalogue);
+    each('.pPair', drawPairs);
+    each('.pXiC',  drawXiCat);
     each('.pMps',  drawMaskPS);
     each('.pKC',   drawCatKernel);
     each('.pProd', drawProducts);

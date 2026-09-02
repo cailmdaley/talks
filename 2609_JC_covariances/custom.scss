@@ -329,6 +329,40 @@
         i { font-style: italic; }
     }
 }
+// the Nagura projection slide carries one equation and nothing else competes
+// with it, so it is set at the ledger's size rather than the stacked-list size
+.reveal .nka .corr.big {
+    .nm { font-size: 24px; }
+    .eq { font-size: 36px; line-height: 1.2; }
+    .note { font-size: 26px; line-height: 1.25; }
+}
+.reveal .nka .menu .eq { font-size: 30px; }
+.reveal .nka .menu .nm { font-size: 24px; }
+.reveal .nka .menu .note { font-size: 25px; line-height: 1.3; }
+
+// paper cards: a cropped first page, as large as fits, and one source line.
+// Nothing else on the slide -- these are punctuation between the acts.
+//  the h2 is empty on these slides -- kill the heading and its rule so the
+//  page sits alone on the ground
+.reveal section.paper-card { text-align: center;
+    > h2 { display: none; }
+}
+.reveal .cardwrap {
+    display: flex; flex-direction: column; align-items: center; gap: 22px;
+    //  the two cards are different heights; centring them in the same box stops
+    //  the deck jumping when you land on one
+    min-height: 940px; justify-content: center;
+    img {
+        max-height: 880px; max-width: 1560px; width: auto; height: auto;
+        box-shadow: 0 3px 22px rgba(27, 22, 17, 0.16);
+        background: #fff;
+    }
+    img.tall { max-height: 800px; }
+    .src {
+        font-size: 26px; color: #7A6F5C;
+        font-variant: small-caps; letter-spacing: 0.05em;
+    }
+}
 
 // the closing slide: the method ships. Near-wordless, centred block.
 .reveal .nka.ship { text-align: left; margin-top: 40px; }

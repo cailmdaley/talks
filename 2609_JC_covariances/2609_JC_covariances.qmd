@@ -4,7 +4,7 @@
 # Three covariance papers: 2607.14843 (Wolz+), 2605.16186 (Nagura+), 2605.28817.
 # The 1D toy behind slides 3–5 lives in notes/; see notes/projection-experiment.md.
 # ════════════════════════════════════════════════════════════════════════════
-title: "Covariances three ways:<br>analytic, catalogue-based,<br>and control-variate"
+title: "Covariances under the<br>narrow-kernel approximation"
 subtitle: "arXiv 2607.14843 &nbsp;·&nbsp; 2605.16186 &nbsp;·&nbsp; 2605.28817"
 output-file: index.html
 occasion: CosmoStat Journal Club
@@ -44,6 +44,15 @@ include-in-header:
     - assets/mathjax.html
     - nka_data.html
 ---
+
+## {.paper-card}
+
+```{=html}
+<div class="cardwrap">
+  <img src="images_local/wolz_firstpage.png" alt="Wolz et al. first page">
+  <div class="src">Wolz, Farah, Reischke, Alonso &amp; Nicola &mdash; arXiv:2607.14843</div>
+</div>
+```
 
 ## A field in position space {.nka-slide auto-animate="true" auto-animate-duration="0"}
 
@@ -429,18 +438,62 @@ randoms or a completeness map, and catalogue-clustering, which is that with the 
 set to one. Worked notebooks are examples eleven and twelve in the docs.
 :::
 
+## {.paper-card}
+
+```{=html}
+<div class="cardwrap">
+  <img src="images_local/nagura_firstpage.png" alt="Nagura et al. first page" >
+  <div class="src">Nagura, Terasawa, Terawaki &amp; Takada &mdash; arXiv:2605.16186</div>
+</div>
+```
+
+## A correlation function is a pair count {.nka-slide}
+
+```{=html}
+<div class="nka" data-step="10" data-ledger-from="10" data-staged="1">
+<div class="eqs"></div>
+<svg class="pPair" data-h="150" viewBox="0 0 1730 262" width="1730" height="262"></svg>
+<svg class="pXiC" data-h="270" viewBox="0 0 1730 348" width="1730" height="348"></svg>
+<div class="fragment" style="height:0"></div>
+<div class="fragment" style="height:0"></div>
+<div class="fragment" style="height:0"></div>
+<div class="fragment" style="height:0"></div>
+</div>
+```
+
+::: {.notes}
+Second paper: Nagura, Terasawa, Terawaki and Takada, from Kavli IPMU and Chiba. Same machinery,
+one step further — what happens when you take a harmonic covariance into real space. And before
+any of the algebra, I want the object itself, because it is the most concrete thing in the talk.
+
+Here is the catalogue again. Forget the mask for a moment; these are just sources with values.
+Pick a separation. Every pair of sources at that separation — and there are hundreds of them,
+that web is all of them — contributes the product of its two values. Add those up, divide by how
+many pairs you had, and that is one point of xi. That is the whole estimator. Sum of w-i w-j a-i
+a-j over the pairs in the bin, divided by the sum of w-i w-j.
+
+Bigger separation, different set of pairs, another point. And again. Do every bin and you get the
+correlation function — noisy, because it is one realisation and a finite number of pairs, and it
+scatters around the thin line, which is the actual correlation function of the field these
+sources were drawn from.
+
+Now the thing worth noticing, and it is the structural fact the whole paper leans on, from
+Friedrich's appendix C. Nothing in that procedure knows about a mask. A pair count cannot be
+biased by the survey window: you counted the pairs you have. But write the same quantity in
+harmonic space and what appears is C-tilde — the *windowed* spectrum — with the number of pairs
+that actually exist in the footprint as the normalisation. So xi is a linear map of the windowed
+spectrum. The geometry enters twice, and it enters exactly, not as a model.
+
+That linearity is what makes the next slide inevitable.
+:::
+
 ## The projection sums over every off-diagonal {.nka-slide}
 
 ```{=html}
 <div class="nka">
-  <div class="corr">
+  <div class="corr big">
     <div>
-      <span class="nm">the correlation function is a linear map of the <i>windowed</i> spectrum</span>
-      <span class="eq">\( \xi_i = \frac{n^2}{N_{{\rm pair},i}}\;2\pi\sum_\ell \big[P_{\ell+1}-P_{\ell-1}\big]_i\;\tilde C_\ell \)</span>
-      <span class="note">a pair count is unbiased by the mask — the geometry enters as the normalisation, through the pairs that actually exist.</span>
-    </div>
-    <div>
-      <span class="nm">so its covariance is a <i>double</i> sum</span>
+      <span class="nm">a linear map in, so the covariance is a <i>double</i> sum</span>
       <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;\propto\;\sum_{\ell}\sum_{\ell'}\big[P_{\ell+1}-P_{\ell-1}\big]_i\,\big[P_{\ell'+1}-P_{\ell'-1}\big]_j\;{\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big) \)</span>
       <span class="note">every off-diagonal element contributes — and the exact \({\rm Cov}(\tilde C_\ell,\tilde C_{\ell'})\) costs \(\mathcal{O}(\ell_{\rm max}^{6})\), intractable at \(\ell_{\rm max}\simeq6000\). An approximation is forced.</span>
     </div>
@@ -466,32 +519,24 @@ set to one. Worked notebooks are examples eleven and twelve in the docs.
 ```
 
 ::: {.notes}
-Second paper. Nagura, Terasawa, Terawaki and Takada, from Kavli IPMU and Chiba. Same
-machinery, one step further: what happens when you take a harmonic-space covariance and
-go to real space.
+So: xi is a linear transform of C-tilde. Linear transform in means the covariance propagates by
+sandwiching — and that is a *double* sum, over ell and ell-prime. Every off-diagonal element of
+the harmonic covariance contributes, weighted by two oscillating Legendre kernels. There is no
+way to get the real-space covariance right while getting the harmonic off-diagonals wrong.
 
-Top line, and it is the structural fact the paper leans on, from Friedrich's appendix C:
-xi is a linear transform of the *windowed* spectrum. A pair count is not biased by the
-mask — but its harmonic representation is in terms of C-tilde, and the normalisation is
-the number of pairs that actually exist in the footprint, not an idealised area. So the
-geometry enters twice.
+And the exact harmonic covariance is order ell-max to the sixth, which the paper calls
+intractable at six thousand. So you are forced to approximate, and that is where the trouble
+enters.
 
-Second line is the load-bearing equation. Linear transform in, so the covariance
-propagates by sandwiching — and that is a *double* sum over ell and ell-prime. Every
-off-diagonal element of the harmonic covariance contributes, weighted by two oscillating
-Legendre kernels. And the exact harmonic covariance is order ell-max to the sixth, which
-the paper calls intractable at six thousand. So you are forced to approximate, and that
-is where the trouble enters.
-
-Three things people actually use. F-sky, the Knox formula: strictly diagonal, inflated by
-one over f-sky, pretending the mask deletes modes without coupling them. iNKA, which we
-spent the first half of the talk on. And the one that is going to win: weighted quartic
-counts, from Schneider and from Shirasaki. Take every pair in bin i and every pair in bin
-j, and the Gaussian four-point function factorises into two cross-pairings, each the
-theory xi at the actual separations. Notice what is absent: there is no window function
-anywhere. No coupling matrix, no f-sky, no assumption about the kernel — because the sum
-runs over real positions, so the footprint, the holes, the boundaries and the weights are
-all encoded exactly by which quadruplets exist. The window is not modelled. It is counted.
+Three things people actually use. F-sky, the Knox formula: strictly diagonal, inflated by one
+over f-sky, pretending the mask deletes modes without coupling them. iNKA, which we spent the
+first half of the talk on. And the one that is going to win: weighted quartic counts, from
+Schneider and from Shirasaki. Take every pair in bin i and every pair in bin j, and the Gaussian
+four-point function factorises into two cross-pairings, each the theory xi at the actual
+separations. Notice what is absent: there is no window function anywhere. No coupling matrix, no
+f-sky, no assumption about the kernel — because the sum runs over real positions, so the
+footprint, the holes, the boundaries and the weights are all encoded exactly by which
+quadruplets exist. The window is not modelled. It is counted.
 :::
 
 ## The diagonal is innocent {.nka-slide}
