@@ -673,7 +673,8 @@ people actually use.
     <div class="mrow2 apart fragment">
       <div class="mtxt"><div class="mbox">
         <span class="nm">quartic counts (Schneider; Shirasaki)</span>
-        <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\big(N_{{\rm pair},i}N_{{\rm pair},j}\big)^{-1}\textstyle\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\cdot\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)</span>
+        <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\big(N_{{\rm pair},i}N_{{\rm pair},j}\big)^{-1}\textstyle\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd}) \)</span>
+        <span class="eq">\( \qquad\qquad\times\;\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)</span>
         </div>
       </div>
       <div class="mpix nohar"></div>
@@ -728,9 +729,12 @@ to a real error bar.
   <div class="corr big">
     <div>
       <span class="nm">quartic counts (Schneider; Shirasaki)</span>
-      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\big(N_{{\rm pair},i}N_{{\rm pair},j}\big)^{-1}\textstyle\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\cdot\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)</span>
+      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\big(N_{{\rm pair},i}N_{{\rm pair},j}\big)^{-1}\textstyle\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd}) \)</span>
+        <span class="eq">\( \qquad\qquad\times\;\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)</span>
     </div>
   </div>
+  <span class="fragment nka-step"></span>
+  <span class="fragment nka-step"></span>
   <span class="fragment nka-step"></span>
   <span class="fragment nka-step"></span>
   <span class="fragment nka-step"></span>
@@ -819,10 +823,12 @@ So I ran it. Next slide.
   <div class="figside">
   <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 — Fig. 5</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using analytical methods (solid lines). Note that we consider XMM field only for this figure.</div>
     <div class="punchbox">
-      <span class="nm">iNKA vs simulations</span>
-      <span class="pv">10% in harmonic space</span>
+      <span class="nm">\( {\rm Cov}^{\rm iNKA}/{\rm Cov}^{\rm sim}-1 \), HSC-Y3 mask</span>
+      <span class="pq">on \( {\rm diag}\,{\rm Cov}(\tilde C_\ell,\tilde C_\ell) \)</span>
+      <span class="pv">within 10% &nbsp;<i class="pvs">Fig. 2</i></span>
       <span class="par">&darr;</span>
-      <span class="pv hot">25&ndash;30% in \( \xi(\theta) \)</span>
+      <span class="pq">on \( {\rm diag}\,{\rm Cov}(\xi,\xi) \), \( \theta\approx6' \)</span>
+      <span class="pv hot">&minus;25 to &minus;30% &nbsp;<i class="pvs">Fig. 3</i></span>
     </div>
   </div>
 </div>

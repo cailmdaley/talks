@@ -1357,9 +1357,16 @@ function boot(){
   //  about 0.009 -- a xi plotted out to 0.15 is a spike against the axis
   //  followed by nothing. At 0.04 the decay takes a quarter of the panel and
   //  the bump's ringing (period 1/78) is a few bins wide.
-  var XIMAX = 0.04, XINB = 20;
+  //  0.5 of the box, which is the largest separation that exists in a periodic
+  //  box and therefore half the x extent of the field panel above it. It was
+  //  0.04 -- a twelfth of the panel -- so the correlation function on screen
+  //  covered a sliver of the separations the picture above it was showing.
+  //  40 bins keeps the curve readable over the wider range.
+  var XIMAX = 0.5, XINB = 40;
   //  the three separations the fragments stop at, in bins
-  var XISTOP = [4, 9, 16];
+  //  small, medium and large, spread across the new range rather than bunched
+  //  in its first tenth
+  var XISTOP = [2, 13, 30];
   function xibin(th){ return Math.floor(th/XIMAX*XINB); }
   var XIC = null;
   function xiBuild(){
@@ -1406,6 +1413,15 @@ function boot(){
     if(bsel >= 0){
       var lo = bsel/XINB*XIMAX, hi = (bsel+1)/XINB*XIMAX, arcs = 0, best = -1, bj = -1;
       var yb = y0 + h + 16;
+      //  count first: a bin at half the box holds several hundred pairs, and at
+      //  the fixed opacity that was tuned for forty the web painted as a solid
+      //  block. Opacity now falls with the count, so the texture survives.
+      var npair = 0;
+      for(var ci=0;ci<xs.length;ci++) for(var ck=ci+1;ck<xs.length;ck++){
+        var cd = xs[ck]-xs[ci]; if(cd >= hi) break;
+        if(cd >= lo) npair++;
+      }
+      var aop = Math.max(0.06, Math.min(0.32, 14/Math.sqrt(Math.max(1,npair))));
       for(var i=0;i<xs.length;i++) for(var k=i+1;k<xs.length;k++){
         var dd = xs[k]-xs[i]; if(dd >= hi) break;
         if(dd < lo) continue;
@@ -1414,7 +1430,7 @@ function boot(){
         //  pair of sources it joins, instead of arching over them
         el(s,'path',{d:'M'+xa.toFixed(1)+' '+yb+' A '+r.toFixed(1)+' '+Math.min(r,34).toFixed(1)+
                         ' 0 0 0 '+xb2.toFixed(1)+' '+yb, fill:'none',stroke:COB,
-                     'stroke-width':1.6,opacity:0.32});
+                     'stroke-width':1.6,opacity:aop});
         arcs++;
         //  one pair, near the middle, gets the label
         if(best < 0 && xs[i] > 0.44){ best = i; bj = k; }
@@ -1450,6 +1466,12 @@ function boot(){
   //
   //  xi at the CROSS separations is the field's own autocorrelation at any lag,
   //  so it is tabulated over the whole box rather than over XIMAX.
+  //  Its OWN binning, deliberately NOT slide 15's. The cost of this matrix is
+  //  (pairs per bin)^2 per bin pair; slide 15's xi now runs to half the box, and
+  //  at that range a bin holds several hundred pairs, which is tens of millions
+  //  of quadruplets to sum at page load. QMAX keeps the walkthrough's bins small
+  //  enough to compute honestly and exhaustively rather than by sampling.
+  var QMAX = 0.08, QNB = 20;
   var QUAD = null;
   function xiFull(){
     var t = new Float64Array(NX/2+1);
@@ -1471,14 +1493,14 @@ function boot(){
       var w = f - k; return XT[k]*(1-w) + XT[k+1]*w;
     }
     //  pairs, bucketed by separation bin
-    var bins = []; for(b=0;b<XINB;b++) bins.push([]);
+    var bins = []; for(b=0;b<QNB;b++) bins.push([]);
     for(i=0;i<n;i++) for(j=i+1;j<n;j++){
       var d = xs[j]-xs[i]; if(d > 0.5) d = 1-d;
-      if(d >= XIMAX) continue;
-      bins[xibin(d)].push(i, j);
+      if(d >= QMAX) continue;
+      bins[Math.floor(d/QMAX*QNB)].push(i, j);
     }
-    var cov = new Float64Array(XINB*XINB);
-    for(var bi=0; bi<XINB; bi++) for(var bj=bi; bj<XINB; bj++){
+    var cov = new Float64Array(QNB*QNB);
+    for(var bi=0; bi<QNB; bi++) for(var bj=bi; bj<QNB; bj++){
       var A = bins[bi], B = bins[bj], acc = 0, cnt = 0;
       for(var p1=0; p1<A.length; p1+=2){
         var a = xs[A[p1]], b2 = xs[A[p1+1]];
@@ -1490,35 +1512,43 @@ function boot(){
         }
       }
       var v = cnt ? acc/cnt : 0;
-      cov[bi*XINB+bj] = v; cov[bj*XINB+bi] = v;
+      cov[bi*QNB+bj] = v; cov[bj*QNB+bi] = v;
     }
-    var dg = diagOf(cov, XINB);
-    QUAD = {n:n, cov:cov, cor:normBy(cov, dg, XINB), bins:bins};
+    var dg = diagOf(cov, QNB);
+    QUAD = {n:n, cov:cov, cor:normBy(cov, dg, QNB), bins:bins, xi:xi};
     return QUAD;
   }
 
-  //  which two bins the walkthrough uses, and where along the box to look for a
-  //  concrete pair in each -- far enough apart that the four cross-links are
-  //  four visibly different lengths
-  //  Which two bins the walkthrough uses, and roughly where along the box to
-  //  look for a concrete pair in each. The panel ZOOMS to a window rather than
-  //  showing the whole box: a separation bin is a few percent of the box, which
-  //  is about ten pixels at full width -- the two sources of a "pair" landed on
-  //  top of each other and the bracket was unreadable. In the window the same
-  //  pair is ~70 px and the four cross-links are four visibly different lengths.
-  var QBI = 8, QBJ = 17, QAX = 0.33, QCX = 0.53;
+  //  The walkthrough uses two bins and three concrete pairs: one pair in bin i,
+  //  a SECOND pair also in bin i (which is what a diagonal element of the
+  //  covariance is made of), and a pair in bin j (an off-diagonal element). The
+  //  panel zooms to a window rather than showing the whole box: at full width a
+  //  separation bin is about ten pixels and the two sources of a "pair" sit on
+  //  top of each other.
+  var QBI = 8, QBJ = 17, QAX = 0.33, QCX_I = 0.50, QCX_J = 0.55;
   var QWLO = 0.245, QWHI = 0.625;
-  function pickPair(bin, near){
+  //  A drawable pair, not merely a pair in the bin. Two guards, both of which
+  //  produced nonsense on the first attempt: the bin index uses the PERIODIC
+  //  separation, so a pair at x=0.02 and x=0.99 is a close pair that draws as a
+  //  line across the whole panel; and a pair outside the zoom window draws its
+  //  bracket and its cross-links off the edge of the picture.
+  function pickPair(bin, near, avoid){
     var Q = quadSet(), L = Q.bins[bin], xs = CAT.xs, best = -1, bd = 9;
     for(var p=0;p<L.length;p+=2){
-      var m = 0.5*(xs[L[p]] + xs[L[p+1]]), e = Math.abs(m-near);
+      var u1 = xs[L[p]], u2 = xs[L[p+1]];
+      if(Math.abs(u2-u1) > 0.5) continue;                       // wraps the box
+      if(u1 < QWLO || u1 > QWHI || u2 < QWLO || u2 > QWHI) continue;  // off panel
+      if(avoid && (L[p] === avoid[0] || L[p] === avoid[1] ||
+                   L[p+1] === avoid[0] || L[p+1] === avoid[1])) continue;
+      var m = 0.5*(u1 + u2), e = Math.abs(m-near);
       if(e < bd){ bd = e; best = p; }
     }
     return best < 0 ? null : [L[best], L[best+1]];
   }
   //  text with subscript runs: "xi(th_ac) xi(th_bd)" as real subscripts
-  function xiProd(p, x, y, s1, s2, col){
-    var e = el(p,'text',{x:x, y:y, 'font-size':32, fill:col});
+  function xiProd(p, x, y, s1, s2, col, op){
+    var e = el(p,'text',{x:x, y:y, 'font-size':32, fill:col,
+                         opacity: op == null ? 1 : op});
     function part(sub){
       e.appendChild(document.createTextNode('ξ(θ'));
       var t = document.createElementNS(NS,'tspan');
@@ -1529,7 +1559,7 @@ function boot(){
     }
     part(s1);
     var m = document.createElementNS(NS,'tspan');
-    m.textContent = ' · '; e.appendChild(m);
+    m.textContent = ' · '; e.appendChild(m);
     part(s2);
     return e;
   }
@@ -1538,19 +1568,27 @@ function boot(){
     clear(s); geom(opts);
     var PAD = _x0, AW = _w, st = opts.stage == null ? 0 : opts.stage;
     var Q = quadSet(), X = xiBuild(), xs = CAT.xs;
-    var MS = 440, MX = PAD + AW - MS, CELL = MS/XINB;
+    var MS = 440, MX = PAD + AW - MS, CELL = MS/QNB;
     var CW = MX - PAD - 100;
     var mid = 320, h = 150;
     function PX(u){ return PAD + CW*(u - QWLO)/(QWHI - QWLO); }
     function PY(v){ return mid - v*h*0.42; }
     function inW(u){ return u >= QWLO && u <= QWHI; }
 
+    //  which cell the sweep is filling, and which bin the second pair is in.
+    //  Stages 2-4 keep the second pair in bin i: that is what makes a DIAGONAL
+    //  element. It moves to bin j at stage 5, and the off-diagonal element is
+    //  the same construction with one pair relocated.
+    var partnerBin = (st >= 5) ? QBJ : QBI;
+    var fillDiag = (st >= 4), fillOff = (st >= 6);
+
     // ---- the matrix, its full grid present from the base so nothing moves ----
     var my0 = mid - MS/2;
-    for(var i=0;i<XINB;i++) for(var j=0;j<XINB;j++){
-      var hit = (i===QBI && j===QBJ) || (i===QBJ && j===QBI);
-      var show = (st >= 5) || (st === 4 && hit);
-      var c = show ? covmap(Q.cor[i*XINB+j]) : null;
+    for(var i=0;i<QNB;i++) for(var j=0;j<QNB;j++){
+      var onDiag = (i===QBI && j===QBI);
+      var offDiag = (i===QBI && j===QBJ) || (i===QBJ && j===QBI);
+      var show = (st >= 7) || (fillDiag && onDiag) || (fillOff && offDiag);
+      var c = show ? covmap(Q.cor[i*QNB+j]) : null;
       el(s,'rect',{x:(MX+j*CELL).toFixed(1), y:(my0+i*CELL).toFixed(1),
                    width:(CELL+0.4).toFixed(1), height:(CELL+0.4).toFixed(1),
                    fill: c ? 'rgb('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+')' : 'none',
@@ -1558,20 +1596,23 @@ function boot(){
     }
     el(s,'rect',{x:MX,y:my0,width:MS,height:MS,fill:'none',stroke:RULE,'stroke-width':1.5});
     txt(s, MX, my0 - 22, 'Cov(ξᵢ, ξⱼ)', {fill:MUT, 'font-size':28});
-    //  the two bins are marked on the axes from the first fragment: the cell
-    //  that lights up at the accumulate step is visibly their intersection
     if(st >= 1){
       el(s,'rect',{x:MX-18,y:my0+QBI*CELL,width:11,height:CELL,fill:ACC});
       txt(s, MX-56, my0+QBI*CELL+CELL, 'i', {fill:ACC,'font-size':30,'font-style':'italic'});
     }
+    //  the column mark follows the second pair: over i while the pair is in bin
+    //  i, over j once it moves
     if(st >= 2){
-      el(s,'rect',{x:MX+QBJ*CELL,y:my0-18,width:CELL,height:11,fill:COB});
-      txt(s, MX+QBJ*CELL+1, my0-30, 'j', {fill:COB,'font-size':30,'font-style':'italic'});
+      var cb = partnerBin, cc = (st >= 5) ? COB : ACC;
+      el(s,'rect',{x:MX+cb*CELL,y:my0-18,width:CELL,height:11,fill:cc});
+      txt(s, MX+cb*CELL+1, my0-30, (st>=5)?'j':'i',
+          {fill:cc,'font-size':30,'font-style':'italic'});
     }
-    //  the count belongs to the cell it fills, not to the field panel
-    if(st >= 4)
-      txt(s, MX, my0 + MS + 38, (Q.bins[QBI].length/2|0) + ' × ' + (Q.bins[QBJ].length/2|0) +
-          ' quadruplets', {fill:MUT,'font-size':28});
+    if(st >= 4){
+      var lab = (st >= 6) ? 'diagonal, then off-diagonal'
+                          : 'both pairs in bin i:  the diagonal';
+      txt(s, MX, my0 + MS + 38, lab, {fill:MUT,'font-size':28});
+    }
 
     // ---- the catalogue, zoomed to the window ----
     el(s,'line',{x1:PAD,y1:mid,x2:PAD+CW,y2:mid,stroke:RULE,'stroke-width':2});
@@ -1585,13 +1626,14 @@ function boot(){
       if(!inW(xs[k])) continue;
       el(s,'circle',{cx:PX(xs[k]),cy:PY(X.av[k]),r:3+5*Math.abs(X.av[k]),fill:INK,opacity:0.8});
     }
-    //  parked at the far right of its own axis: the accumulation strip's label
-    //  lives under the left end and the two were stacking on each other
     txt(s, PAD + CW - 190, mid + 292, 'position  x', {fill:MUT, 'font-size':26});
 
-    var P1 = pickPair(QBI, QAX), P2 = pickPair(QBJ, QCX);
-    if(!P1 || !P2) return;
+    var P1 = pickPair(QBI, QAX);
+    if(!P1) return;
+    var P2 = (st >= 5) ? pickPair(QBJ, QCX_J, P1) : pickPair(QBI, QCX_I, P1);
+    if(!P2) return;
     var a = xs[P1[0]], b = xs[P1[1]], c = xs[P2[0]], dd = xs[P2[1]];
+    var pcol = (st >= 5) ? COB : ACC;
 
     function bracket(u1, u2, y, col, label){
       var x1 = PX(u1), x2 = PX(u2);
@@ -1601,47 +1643,41 @@ function boot(){
       txtsub(s, (x1+x2)/2 - 14, y + 44, 'θ', label, '',
              {fill:col,'font-size':32,'font-style':'italic'});
     }
-    //  dx pushes each label AWAY from its partner: the two sources of a pair are
-    //  only ~45 px apart at this zoom and centred labels collided
     function ring(u, vi, col, tag, dx){
       el(s,'circle',{cx:PX(u),cy:PY(X.av[vi]),r:13,fill:'none',stroke:col,'stroke-width':4});
       txt(s, PX(u)-8+(dx||0), PY(X.av[vi])-32, tag, {fill:col,'font-size':32,
               'font-style':'italic','font-weight':600});
     }
-    //  Cross-links arc ABOVE the axis, and never with a lift under 70: the field
-    //  trace swings +-63 px about the axis, and a flatter arc reads as part of
-    //  it. Each carries its own two-index tag at the apex, in the colour of the
-    //  pairing it belongs to, so the legend and the arcs say the same thing.
-    //  tpos slides a tag along its own arc. The b-c and b-d arcs share a left
-    //  endpoint and similar lifts, so their apex tags landed on each other.
-    function link(u1, u2, col, lift, dash, tag, tpos){
+    function link(u1, u2, col, lift, dash, tag, tpos, op){
       var x1 = PX(u1), x2 = PX(u2), r = Math.abs(x2-x1)/2;
       el(s,'path',{d:'M'+Math.min(x1,x2).toFixed(1)+' '+mid+' A '+r.toFixed(1)+' '+lift+
                       ' 0 0 1 '+Math.max(x1,x2).toFixed(1)+' '+mid, fill:'none',stroke:col,
-                   'stroke-width':3.2, 'stroke-dasharray': dash || 'none'});
+                   'stroke-width':3.2, 'stroke-dasharray': dash || 'none', opacity: op});
       if(tag){
         var f = tpos == null ? 0.5 : tpos, lo = Math.min(x1,x2), hi = Math.max(x1,x2);
         var tx = lo + (hi-lo)*f;
-        //  height of the ellipse at fraction f of its span
         var ty = mid - lift*Math.sqrt(Math.max(0, 1 - Math.pow(2*f-1, 2)));
-        txt(s, tx - 20, ty + 26, tag, {fill:col,'font-size':26,'font-style':'italic'});
+        txt(s, tx - 20, ty + 26, tag, {fill:col,'font-size':26,'font-style':'italic',
+                                       opacity: op});
       }
     }
 
-    //  The accumulation is a deliberate STRIP, not a scatter: two ruled rows,
-    //  one per bin, each carrying every pair in that bin as a segment at its own
-    //  separation, labelled at the left with the same i and j that mark the
-    //  matrix axes. Loose segments under the field read as leftover debris.
-    if(st >= 4){
-      var rows = [[QBI, mid+206, ACC, 'i'], [QBJ, mid+250, COB, 'j']];
+    //  the accumulation, as a ruled strip: one row per bin in play
+    if(fillDiag){
+      var rows = [[QBI, mid+206, ACC, 'i']];
+      if(st >= 5) rows.push([partnerBin, mid+250, COB, 'j']);
       for(var rr=0; rr<rows.length; rr++){
         var bnum = rows[rr][0], ry = rows[rr][1], rc = rows[rr][2], L = Q.bins[bnum];
-        el(s,'line',{x1:PAD+34,y1:ry,x2:PAD+CW,y2:ry,stroke:RULE,'stroke-width':1});
+        el(s,'line',{x1:PAD+42,y1:ry,x2:PAD+CW,y2:ry,stroke:RULE,'stroke-width':1});
         txt(s, PAD, ry+9, rows[rr][3], {fill:rc,'font-size':28,'font-style':'italic'});
         for(var z=0; z<L.length; z+=2){
           if(!inW(xs[L[z]]) || !inW(xs[L[z+1]])) continue;
+          if(Math.abs(xs[L[z+1]]-xs[L[z]]) > 0.5) continue;
+          //  a bin-j pair is ~175 px wide in this window and there are dozens of
+          //  them: at the width and opacity tuned for bin i they merged into one
+          //  solid bar. Thinner and fainter keeps the row reading as many pairs.
           el(s,'line',{x1:PX(xs[L[z]]),y1:ry,x2:PX(xs[L[z+1]]),y2:ry,
-                       stroke:rc,'stroke-width':7,opacity:0.34,'stroke-linecap':'round'});
+                       stroke:rc,'stroke-width':5,opacity:0.20,'stroke-linecap':'round'});
         }
       }
       txt(s, PAD, mid + 292, 'every pair in each bin', {fill:MUT,'font-size':26});
@@ -1652,16 +1688,30 @@ function boot(){
       bracket(a, b, mid + 112, ACC, 'i');
     }
     if(st >= 2){
-      ring(c, P2[0], COB, 'c', -26); ring(dd, P2[1], COB, 'd', 26);
-      bracket(c, dd, mid + 112, COB, 'j');
+      ring(c, P2[0], pcol, 'c', -26); ring(dd, P2[1], pcol, 'd', 26);
+      bracket(c, dd, mid + 112, pcol, (st>=5)?'j':'i');
     }
     if(st >= 3){
-      link(a, c,  TEAL, 134, null,   'ac', 0.50);
-      link(b, dd, TEAL,  92, null,   'bd', 0.74);
-      link(a, dd, INK,  200, '12 9', 'ad', 0.50);
-      link(b, c,  INK,   70, '12 9', 'bc', 0.28);
-      xiProd(s, PAD, mid - 250, 'ac', 'bd', TEAL);
-      xiProd(s, PAD, mid - 210, 'ad', 'bc', INK);
+      //  Opacity carries the VALUE of each pairing: xi(th_ac) xi(th_bd) against
+      //  xi(th_ad) xi(th_bc), on one shared scale. It is the reason the diagonal
+      //  is strong -- when the two pairs sit close together the cross
+      //  separations are small, xi is large, and the term is worth something;
+      //  drag them apart and it fades. Honest: these are the same xi values the
+      //  matrix on the right is summing.
+      var xi = Q.xi;
+      var vT = Math.abs(xi(Math.abs(a-c))*xi(Math.abs(b-dd)));
+      var vI = Math.abs(xi(Math.abs(a-dd))*xi(Math.abs(b-c)));
+      var vmx = Math.max(vT, vI, 1e-30);
+      //  floor at 0.38, not 0. The ratio between the two pairings is the point,
+      //  but a pairing rendered invisible stops reading as one of the two terms
+      //  in Wick's theorem, which is the other thing this picture has to say.
+      var oT = 0.38 + 0.62*vT/vmx, oI = 0.38 + 0.62*vI/vmx;
+      link(a, c,  TEAL, 134, null,   'ac', 0.50, oT);
+      link(b, dd, TEAL,  92, null,   'bd', 0.74, oT);
+      link(a, dd, INK,  200, '12 9', 'ad', 0.50, oI);
+      link(b, c,  INK,   70, '12 9', 'bc', 0.28, oI);
+      xiProd(s, PAD, mid - 250, 'ac', 'bd', TEAL, oT);
+      xiProd(s, PAD, mid - 210, 'ad', 'bc', INK,  oI);
     }
   }
 

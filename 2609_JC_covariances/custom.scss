@@ -303,14 +303,19 @@
 // panels. Used inside .papercap (the two Wolz simulation slides) and inside
 // .figside (the Quaia figure), wherever an imported figure needs crediting.
 // Never wrapped: a citation broken across lines reads as two things.
-.reveal .nka .figside .src { white-space: nowrap; font-size: 24px; }
+// A source line is an attribution, not fine print: 28 px, ink, semibold,
+// everywhere it appears. It was 21 px in a pale sand that vanished against the
+// ground -- unreadable from the room, and the one thing on a figure slide that
+// has to be readable is whose figure it is.
+.reveal .nka .figside .src { white-space: nowrap; }
 .reveal .nka .src {
     display: block;
-    font-size: 21px;
+    font-size: 28px;
     font-variant: small-caps;
     letter-spacing: 0.04em;
-    color: #C5B89E;
-    margin-bottom: 6px;
+    font-weight: 600;
+    color: #1B1611;
+    margin-bottom: 8px;
 }
 // ONE caption size for the whole deck. Every verbatim quotation from a paper
 // -- the Quaia figure's, both simulation figures', the N3 pair -- inherits it,
@@ -477,6 +482,12 @@
     .mbox { min-width: 0; }
 }
 .reveal .nka .mbox {
+    // max-content, not the flex track's width: MathJax lays an equation out at
+    // its natural size and never reflows, so a box sized to the track was
+    // painted narrower than the equation sitting in it -- the overflow Cail saw.
+    // On the quartic row what it overflows into is the empty harmonic slot, the
+    // one place on the slide with room for it.
+    width: max-content; max-width: 1560px;
     display: flex; flex-direction: column; gap: 1px;
     padding: 6px 18px 8px 14px;
     border-left: 6px solid #BC4538;
@@ -566,7 +577,7 @@
     }
     img.tall { max-height: 800px; }
     .src {
-        font-size: 26px; color: #7A6F5C;
+        font-size: 28px; color: #1B1611; font-weight: 600;
         font-variant: small-caps; letter-spacing: 0.05em;
     }
 }
@@ -710,9 +721,16 @@
     background: rgba(188, 69, 56, 0.10);
     .nm { font-size: 26px; color: #7A6F5C;
           font-variant: small-caps; letter-spacing: 0.04em; }
-    .pv { font-size: 34px; color: #1B1611; }
+    .pv { font-size: 30px; color: #1B1611; }
     .pv.hot { color: #BC4538; font-weight: 600; }
-    .par { font-size: 30px; color: #7A6F5C; line-height: 0.9; }
+    // which figure the number is read off: an attribution, so it is a label and
+    // not a footnote, but it must not compete with the number above it
+    // the quantity on one line, its value on the next, so the wrap happens where
+    // I choose it rather than mid-number in a 470 px column
+    .pq { font-size: 27px; color: #7A6F5C; line-height: 1.2; }
+    .pvs { font-size: 24px; color: #7A6F5C; font-style: normal;
+           font-variant: small-caps; letter-spacing: 0.04em; }
+    .par { font-size: 30px; color: #7A6F5C; line-height: 1.0; margin: 2px 0; }
 }
 
 // ── slide 10: the two-point split ───────────────────────────────────────────
