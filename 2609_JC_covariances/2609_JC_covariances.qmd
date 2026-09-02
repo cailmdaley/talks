@@ -177,27 +177,25 @@ papers.
 ## A catalogue mask is a set of delta functions {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="6" data-ledger-from="6">
+<div class="nka" data-step="6" data-ledger-from="6" data-staged="1">
 <div class="eqs"></div>
-<div class="ctl-slider">
-  <label>sources <input type="range" data-var="N" min="30" max="400" value="160"></label>
-</div>
-<svg class="pP" data-h="140" viewBox="0 0 1730 330" width="1730" height="330"></svg>
+<svg class="pP" data-h="110" data-foot-at="1" viewBox="0 0 1730 300" width="1730" height="300"></svg>
 <div class="two lower">
-  <div class="toycol fragment">
-    <svg class="pKC" data-h="170" data-x0="86" data-w="400"
-         viewBox="0 0 520 262" width="520" height="262"></svg>
-    <div class="toyfoot">the coupling kernel, at separation Δk. It never narrows.</div>
+  <div class="toycol">
+    <svg class="pMps" data-h="234" data-foot-at="1" data-x0="92" data-w="392"
+         viewBox="0 0 520 326" width="520" height="326"></svg>
+    <div class="toyfoot"></div>
   </div>
-  <div class="figblock fragment">
+  <div class="figblock">
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo power spectrum">
     <div class="figside">
       <span class="src">Wolz et al., arXiv:2607.14843 — Fig. 1</span>
-      <div class="figtitle">power spectrum of the<br>Quaia catalogue mask</div>
+      <div class="figtitle">the same shape, in Quaia</div>
       <p class="verbatim">Mask pseudo power spectrum for the <i>Quaia</i> survey mask, comparing catalogue- and mask-based estimators. At the catalogue level, the constant shot noise floor (\(\tilde{N}_w\)) is reached at scales far below the mean interparticle scale (\(\theta_{\rm c}\)).</p>
     </div>
   </div>
 </div>
+<div class="fragment" style="height:0"></div>
 </div>
 ```
 
@@ -205,14 +203,26 @@ papers.
 Everything so far assumed a mask you could draw: a smooth function of position. A catalogue is
 not that. The mask *is* the sources — a sum of delta functions at the places you actually
 observed. There is no separate footprint map; the window and the sampling are the same object.
+And the modes follow the same way: instead of summing over pixels you sum over objects, weight
+times value times a phase. That is the last line of the ledger, and I am stopping it there on
+purpose — everything downstream of the modes is exactly the machinery from the last three
+slides. What breaks is upstream.
 
-And look what that does to the kernel. It never comes down. A comb of deltas has power at every
-separation, all the way up, because there is no scale in it — nothing below the mean spacing
-between sources exists to be resolved. Slide the number of sources and it stays flat; you only
-move the level.
+So ask the simplest question you can ask about a mask: what is its own power spectrum? Bottom
+left. Uniform random positions, and I am just summing e-to-the-minus-i-k-x over the sources I
+drew. It is flat. At every k the phases of a hundred and sixty deltas point in random
+directions, so they add *incoherently* — the sum is a random walk, and its square is the number
+of sources. That is the shot-noise floor, sigma w-i squared, and it is reached almost
+immediately, an order of magnitude in k below pi over theta-c.
 
-So the narrow-kernel approximation has nothing to be narrow about, and the machinery from the
-last three slides does not start.
+Now drop a real footprint on it — edges, and a few holes. Sources inside the gaps simply do not
+exist; there is nothing else to remove. Watch the low k. Below the inverse footprint scale the
+deltas are no longer randomly placed: they are all sitting inside the same window, their phases
+line up, and they add *coherently*. The sum stops being a random walk and starts tracing the
+footprint, so the spectrum lifts off the floor — and by k of about ten it has fallen back onto the floor
+again, ten times below pi over theta-c. Red rise, white floor. That is the shape on the right,
+in Quaia, from the paper. Ours is a decade; theirs is six, and the only difference is the number
+of sources — the rise is capped at N times the coverage, and Quaia has millions.
 
 Two things about that floor. First, it is the same object twice. The data's white floor is the
 sum of w-i squared a-i squared over four pi — the values at the source positions — and you can

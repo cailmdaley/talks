@@ -206,14 +206,19 @@
 .reveal .nka .two.lower { gap: 30px; align-items: flex-start; }
 // beats the generic `.two > div { flex: 1 }` on class count
 .reveal .nka .two.lower > .toycol { flex: 0 0 520px; }
+// the Wolz figure is the evidence on this slide, so it gets the height and the
+// caption column is squeezed to whatever is left
+.reveal .nka .two.lower > .figblock { gap: 22px; }
+.reveal .nka .two.lower .figblock img { height: 428px; }
+.reveal .nka .two.lower .figside { min-width: 300px; }
 // the bridge to the covariance slide; in HTML rather than inside the SVG so it
 // can wrap inside the column instead of running off the panel
 .reveal .nka .toyfoot {
     font-size: 26px;
     line-height: 1.32;
     color: #1B1611;
-    margin: -6px 0 0 86px;
-    max-width: 420px;
+    margin: 4px 0 0 92px;
+    max-width: 424px;
 }
 .reveal .nka .figblock {
     flex: 1;

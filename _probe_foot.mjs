@@ -1,0 +1,21 @@
+import puppeteer from 'puppeteer';
+const url = process.argv[2];
+const b = await puppeteer.launch();
+const p = await b.newPage();
+await p.setViewport({width:1920,height:1080,deviceScaleFactor:1});
+await p.goto(url,{waitUntil:'networkidle0'});
+await new Promise(r=>setTimeout(r,1000));
+await p.evaluate(()=>{ window.Reveal.slide(24); });
+await new Promise(r=>setTimeout(r,500));
+const info = await p.evaluate(()=>{
+  const s = document.querySelector('.reveal .slides section.present');
+  const caps = s.querySelectorAll('div');
+  let capBottom = 0;
+  caps.forEach(d=>{ const r=d.getBoundingClientRect(); if(r.bottom>capBottom && d.textContent.includes('settles back')) capBottom=r.bottom; });
+  const footer = document.querySelector('.footer, .reveal .footer, footer');
+  const fTop = footer ? footer.getBoundingClientRect().top : null;
+  const h2 = s.querySelector('h2').getBoundingClientRect();
+  return { h2lines: Math.round(h2.height), capBottom: Math.round(capBottom), footerTop: fTop?Math.round(fTop):'n/a', viewportH:1080 };
+});
+console.log(JSON.stringify(info));
+await b.close();

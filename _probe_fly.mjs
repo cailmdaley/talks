@@ -1,0 +1,20 @@
+import puppeteer from 'puppeteer';
+const file = process.argv[2];
+const b = await puppeteer.launch({args:['--no-sandbox']});
+const p = await b.newPage();
+await p.setViewport({width:1920,height:1080,deviceScaleFactor:1});
+await p.goto("file://"+file,{waitUntil:'networkidle0'});
+await new Promise(r=>setTimeout(r,1500));
+await p.evaluate(()=>window.Reveal.slide(7));
+await new Promise(r=>setTimeout(r,800));
+const info = await p.evaluate(()=>{
+  const sec = document.getElementById('proof');
+  const img = sec.querySelector('img');
+  const col = img.closest('.column');
+  const r = img.getBoundingClientRect();
+  const cr = col.getBoundingClientRect();
+  const scale = window.Reveal.getScale();
+  return {scale, imgW:r.width, imgH:r.height, colW:cr.width, imgClass:img.className, imgStyle:img.getAttribute('style'), natW:img.naturalWidth, natH:img.naturalHeight, parentTag:img.parentElement.tagName, parentClass:img.parentElement.className};
+});
+console.log(JSON.stringify(info,null,2));
+await b.close();

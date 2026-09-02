@@ -701,32 +701,190 @@ function boot(){
     return xs;
   }
 
+  //  W1 fragment 2 — a real survey footprint dropped onto the catalogue.
+  //  A smooth window with three gaps, in catalogue coordinates x in [0,1).
+  //  Sources survive with probability footAt(x): a catalogue has no separate
+  //  window map, so the footprint can only show up as which objects exist.
+  //  A CONTIGUOUS region with two gaps, not a row of equal blocks. The shape
+  //  matters: what lifts |w_k|^2 off the floor is the window's own transform,
+  //  and evenly-spaced blocks put all of that at one k (the block period)
+  //  instead of across low k. One survey region behaves like a top hat — power
+  //  at the lowest k, falling back to the floor by k ~ 10 — which is the shape
+  //  Wolz Fig. 1 shows. The ceiling on the rise is N times the coverage, so at
+  //  the deck's 160 sources it is about a decade and a half; Quaia has millions
+  //  of sources and gets six.
+  //  Holes of THREE different sizes on purpose: each one puts power at its own
+  //  inverse scale, and together with the survey edges they spread the coherent
+  //  rise across k = 1..10 instead of spiking at a single mode.
+  var HOLES = [[0.300,0.080],[0.545,0.045],[0.735,0.022]];
+  function footAt(x){
+    var v = ramp((0.37 - Math.abs(x-0.5))/0.030 + 0.5);
+    for(var i=0;i<HOLES.length;i++)
+      v *= 1 - ramp((HOLES[i][1] - Math.abs(x-HOLES[i][0]))/0.024 + 0.5);
+    return v;
+  }
+  //  Deterministic per-source draw, so the surviving set never flickers between
+  //  redraws (reveal re-renders the slide on every fragment change).
+  var FOOTU = null;
+  function footKeep(xs){
+    if(!FOOTU || FOOTU.length < xs.length){
+      var r = mulberry(31337); FOOTU = [];
+      for(var i=0;i<xs.length+64;i++) FOOTU.push(r());
+    }
+    var out = [];
+    for(var j=0;j<xs.length;j++) if(FOOTU[j] < footAt(xs[j])) out.push(xs[j]);
+    return out;
+  }
+
+  //  |w_k|^2 of the catalogue mask itself, summed honestly over the drawn
+  //  positions: w_k = sum_i e^{-ikx_i} with k = 2*pi*m. 160 sources x 200 modes
+  //  is nothing, so there is no need for the gridded transform used elsewhere.
+  //  Band-averaged over +-3 modes: a single realisation of |w_k|^2 is
+  //  exponentially distributed and the raw curve is unreadable scatter; the
+  //  paper's own red curve is an m-average at each multipole for the same reason.
+  var MPS = 200, MPSW = 3;
+  function catMaskPS(xs){
+    var raw = new Float64Array(MPS+1+MPSW), out = new Float64Array(MPS+1);
+    for(var m=1;m<=MPS+MPSW;m++){
+      var sr=0, si=0;
+      for(var i=0;i<xs.length;i++){ var ph=2*Math.PI*m*xs[i]; sr+=Math.cos(ph); si-=Math.sin(ph); }
+      raw[m]=sr*sr+si*si;
+    }
+    //  the window narrows towards k = 1: the coherent rise is only a few modes
+    //  wide, and a fixed +-3 average would smear it into the floor.
+    for(var q=1;q<=MPS;q++){
+      var wq = Math.min(MPSW, Math.floor((q-1)/3)), a=0, n=0;
+      for(var d=-wq; d<=wq; d++){ var mm=q+d; if(mm>=1 && mm<=MPS+MPSW){ a+=raw[mm]; n++; } }
+      out[q]=a/n;
+    }
+    return out;
+  }
+  var MPSC = {};
+  function maskPSof(key, xs){
+    if(!MPSC[key]) MPSC[key] = catMaskPS(xs);
+    return MPSC[key];
+  }
+
+  //  W1 — the mask's OWN power spectrum, the toy version of Wolz Fig. 1.
+  //  Fragment 0: uniform positions, so the deltas add incoherently at every k
+  //  and |w_k|^2 is a flat floor at sum w_i^2 = N.
+  //  Fragment 1: a footprint with holes. Below the inverse footprint scale the
+  //  deltas add COHERENTLY -- they trace the window -- and the spectrum lifts
+  //  off the floor. That lift is the whole shape of the paper's red curve.
+  //  Axes are identical in both fragments on purpose: the floor must not move.
+  function drawMaskPS(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, y0 = opts.y0 || 34, h = opts.h || 200;
+    catBuild();
+    var holed = !!opts.foot;
+    var xs = holed ? footKeep(CAT.xs) : CAT.xs;
+    var ps = maskPSof((holed?'h':'u') + xs.length, xs);
+    var floor = xs.length;                       // sum w_i^2 with unit weights
+    //  The AXIS is anchored to the full catalogue's floor in both fragments, so
+    //  the box does not rescale under the fragment and the rise is read against
+    //  a fixed ruler. The dashed line still sits at this catalogue's own
+    //  Sum w_i^2, which drops a little once the footprint removes sources —
+    //  that is real, and it is a third of a decade, not the effect on show.
+    var fref = CAT.xs.length;
+    //  2.4 decades: the coherent rise a 160-source catalogue can produce is
+    //  about one decade (it is capped by N times the coverage), so a taller box
+    //  would just pin the whole curve to the bottom.
+    var lg0 = Math.log10(fref) - 0.9, lg1 = Math.log10(fref) + 1.5;
+    function Y(v){ return y0 + h*(1 - Math.min(1, Math.max(0,
+                     (Math.log10(Math.max(v,1e-9)) - lg0)/(lg1-lg0)))); }
+    function X(m){ return PAD + AW*(m-1)/(MPS-1); }
+
+    el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
+    el(s,'line',{x1:PAD,y1:y0,x2:PAD,y2:y0+h,stroke:RULE,'stroke-width':2});
+
+    //  pi/theta_c, with theta_c the mean source spacing 1/N: in mode number
+    //  that is N/2. The paper's point is that the floor is reached FAR below
+    //  this line -- and in the toy it is, by an order of magnitude in k.
+    var mc = CAT.xs.length/2;
+    if(mc > 2 && mc < MPS){
+      el(s,'line',{x1:X(mc),y1:y0,x2:X(mc),y2:y0+h,stroke:INK,'stroke-width':2.5,
+                   'stroke-dasharray':'11 8'});
+      txtsub(s, X(mc)+12, y0+24, 'π/θ', 'c', '', {fill:INK,'font-size':26});
+    }
+    el(s,'line',{x1:PAD,y1:Y(floor),x2:PAD+AW,y2:Y(floor),stroke:MUT,'stroke-width':2.5,
+                 'stroke-dasharray':'7 7'});
+
+    //  everything the curve carries ABOVE the shot-noise floor, shaded: that
+    //  band IS the coherent part, and it is what the paper's red curve shows.
+    var yf = Y(floor), dfill = 'M '+PAD+' '+yf.toFixed(1);
+    for(var mf=1;mf<=MPS;mf++)
+      dfill += ' L '+X(mf).toFixed(1)+' '+Math.min(yf, Y(ps[mf])).toFixed(1);
+    dfill += ' L '+(PAD+AW).toFixed(1)+' '+yf.toFixed(1)+' Z';
+    el(s,'path',{d:dfill,fill: holed?ACC:COB,opacity:0.16});
+
+    var d='';
+    for(var m2=1;m2<=MPS;m2++) d += (m2>1?'L':'M')+X(m2).toFixed(1)+' '+Y(ps[m2]).toFixed(1)+' ';
+    el(s,'path',{d:d,fill:'none',stroke: holed?ACC:COB,'stroke-width':2.8});
+
+    txtsub(s, Math.max(PAD-80,2), y0+20, '|w', 'k', '|²', {fill:MUT,'font-size':27});
+    txt(s, PAD, y0+h+40, 'wavenumber  k', {fill:MUT,'font-size':26});
+    //  a legend swatch in the bottom-left corner rather than a label pinned to
+    //  the floor line: at fragment 0 the curve straddles that line everywhere,
+    //  so anything sitting on it is unreadable.
+    //  top right: the curve peaks at low k in both fragments and never climbs
+    //  into this corner, and the pi/theta_c label sits well to the left of it.
+    var lgy = y0 + 28, lgx = PAD + AW - 158;
+    el(s,'line',{x1:lgx,y1:lgy-8,x2:lgx+40,y2:lgy-8,stroke:MUT,'stroke-width':2.5,
+                 'stroke-dasharray':'7 7'});
+    txtsub(s, lgx+52, lgy, 'Σw', 'i', '²  floor', {fill:MUT,'font-size':25});
+
+    //  the one sentence under the panel, swapped with the fragment: the panel
+    //  itself stays near-wordless and the caption carries incoherent/coherent.
+    var cap = s.parentNode && s.parentNode.querySelector('.toyfoot');
+    if(cap) cap.innerHTML = holed
+      ? 'inside a footprint the phases line up: they add <b>coherently</b>.'
+      : 'random positions, random phases: the deltas add <b>incoherently</b>.';
+  }
+
   //  W1 — the sources are the mask
   function drawCatalogue(s, opts){
     clear(s); geom(opts);
     var PAD = _x0, AW = _w, y0 = 34, h = opts.h || 250, mid = y0 + h/2;
     catBuild();
+    //  Fragment 1 drops a survey footprint on the catalogue. There is no
+    //  separate window to draw over the field: the footprint IS which sources
+    //  exist, so it shows up as sources going missing from both rows at once.
+    var SRC = opts.foot ? footKeep(CAT.xs) : CAT.xs;
     el(s,'line',{x1:PAD,y1:mid,x2:PAD+AW,y2:mid,stroke:RULE,'stroke-width':2});
     var d='';
     for(var j=0;j<NX;j++) d += (j?'L':'M')+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(mid-field[j]*h*0.42).toFixed(1)+' ';
     el(s,'path',{d:d,fill:'none',stroke:FAINT,'stroke-width':2});
     txt(s, Math.max(PAD-82,2), mid+9, 'a(x)', {fill:MUT});
     // the sources: sampled values of the field
-    for(var i=0;i<CAT.xs.length;i++){
-      var xg = Math.min(NX-1, Math.floor(CAT.xs[i]*NX)), v = field[xg];
-      var X = PAD + AW*CAT.xs[i], Y = mid - v*h*0.42;
+    for(var i=0;i<SRC.length;i++){
+      var xg = Math.min(NX-1, Math.floor(SRC[i]*NX)), v = field[xg];
+      var X = PAD + AW*SRC[i], Y = mid - v*h*0.42;
       el(s,'circle',{cx:X,cy:Y,r:3.2+5*Math.abs(v),fill:INK,opacity:0.85});
     }
     // the same sources, as the mask: a comb of deltas
-    var by = y0 + h + 96;
+    var by = y0 + h + 86;
+    if(opts.foot){
+      //  the footprint itself, as a smooth band behind the comb — the shape the
+      //  surviving deltas are tracing, and the reason they add coherently
+      var df = 'M ' + PAD + ' ' + by, NF = 400;
+      for(var jf=0; jf<=NF; jf++)
+        df += ' L ' + (PAD+AW*jf/NF).toFixed(1) + ' ' + (by - 64*footAt(jf/NF)).toFixed(1);
+      df += ' L ' + (PAD+AW) + ' ' + by + ' Z';
+      el(s,'path',{d:df,fill:COB,opacity:0.12});
+      var df2='';
+      for(var jg=0; jg<=NF; jg++)
+        df2 += (jg?'L':'M')+(PAD+AW*jg/NF).toFixed(1)+' '+(by - 64*footAt(jg/NF)).toFixed(1)+' ';
+      el(s,'path',{d:df2,fill:'none',stroke:COB,'stroke-width':2.5,opacity:0.55});
+      txt(s, PAD+AW-320, by-74, 'survey footprint', {fill:COB,'font-size':26,opacity:0.8});
+    }
     el(s,'line',{x1:PAD,y1:by,x2:PAD+AW,y2:by,stroke:RULE,'stroke-width':2});
-    for(var i2=0;i2<CAT.xs.length;i2++){
-      var X2 = PAD + AW*CAT.xs[i2];
-      el(s,'line',{x1:X2,y1:by,x2:X2,y2:by-70,stroke:COB,'stroke-width':2.5});
-      el(s,'circle',{cx:X2,cy:by-70,r:4,fill:COB});
+    for(var i2=0;i2<SRC.length;i2++){
+      var X2 = PAD + AW*SRC[i2];
+      el(s,'line',{x1:X2,y1:by,x2:X2,y2:by-62,stroke:COB,'stroke-width':2.5});
+      el(s,'circle',{cx:X2,cy:by-62,r:4,fill:COB});
     }
     txt(s, Math.max(PAD-82,2), by+9, 'w(x)', {fill:COB});
-    txt(s, PAD+AW-360, y0+18, CAT.xs.length + ' sources', {fill:MUT});
+    txt(s, PAD+AW-360, y0+18, SRC.length + ' sources', {fill:MUT});
 
     //  The cloud scale: theta_c drawn as the MEAN interparticle spacing, 1/N,
     //  and the bar parked on the real gap closest to that length so it spans
@@ -737,18 +895,18 @@ function boot(){
     //  (main.tex 458), which for a Poisson sample is about a third of this —
     //  three pixels here, too small to see. This bar is the legible proxy the
     //  label promises ("source spacing"), not theta_ip to the letter.
-    var tc = 1/CAT.xs.length, best = 1, bd = Infinity;
-    for(var q=1; q<CAT.xs.length; q++){
-      var dq = Math.abs((CAT.xs[q]-CAT.xs[q-1]) - tc);
+    var tc = 1/SRC.length, best = 1, bd = Infinity;
+    for(var q=1; q<SRC.length; q++){
+      var dq = Math.abs((SRC[q]-SRC[q-1]) - tc);
       if(dq < bd){ bd = dq; best = q; }
     }
-    var cmid = 0.5*(CAT.xs[best-1] + CAT.xs[best]);
-    var xL = PAD + AW*(cmid - tc/2), xR = PAD + AW*(cmid + tc/2), yb2 = by + 30;
+    var cmid = 0.5*(SRC[best-1] + SRC[best]);
+    var xL = PAD + AW*(cmid - tc/2), xR = PAD + AW*(cmid + tc/2), yb2 = by + 28;
     el(s,'line',{x1:xL,y1:yb2,x2:xR,y2:yb2,stroke:TEAL,'stroke-width':4,'stroke-linecap':'round'});
     el(s,'line',{x1:xL,y1:yb2-9,x2:xL,y2:yb2+9,stroke:TEAL,'stroke-width':3});
     el(s,'line',{x1:xR,y1:yb2-9,x2:xR,y2:yb2+9,stroke:TEAL,'stroke-width':3});
     txtsub(s, xR+16, yb2+9, 'θ', 'c', '  ≈  source spacing', {fill:TEAL,'font-size':26});
-    txt(s, PAD, by+58, 'position  x', {fill:MUT});
+    txt(s, PAD, by+56, 'position  x', {fill:MUT});
   }
 
   //  W1 — THE COUPLING KERNEL of the catalogue mask: |W_m|^2 against mode
@@ -927,8 +1085,12 @@ function boot(){
     {tex:'{\\rm Cov}\\simeq C(\\bar k)\\,C(\\bar k)\\,\\Xi_{kk\'}(w_aw_c,\\,w_bw_d)',
      step:5, name:'narrow-kernel approximation', col:3, row:1, span:2,
      note:'Ξ: the same coupling coefficients as the estimator, built from the product of the masks'},
-    {tex:'\\tilde a(x)=\\sum_i w_i\\,a_i\\,\\delta(x-x_i)', step:6, name:'catalogue field', col:1, row:1, span:2},
-    {tex:'w(x)=\\sum_i w_i\\,\\delta(x-x_i)', step:6, name:'catalogue mask', col:3, row:1, span:2},
+    {tex:'\\tilde a(x)=\\sum_i w_i\\,a_i\\,\\delta(x-x_i)', step:6, name:'catalogue field', col:1, row:1},
+    {tex:'w(x)=\\sum_i w_i\\,\\delta(x-x_i)', step:6, name:'catalogue mask', col:2, row:1},
+    //  the object-wise twin of a_k = sum_x a(x) e^{-ikx} on slide 3. The deck
+    //  stops the ledger here on purpose: everything downstream of the modes is
+    //  unchanged from slides 3-5, and what breaks is upstream, in the mask.
+    {tex:'\\tilde a_k=\\sum_i w_i\\,a_i\\,e^{-ikx_i}', step:6, name:'catalogue modes', col:3, row:1},
     {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:1, row:1, span:2}
   ];
   function ledger(host, step, from, stage){
@@ -1040,8 +1202,13 @@ function boot(){
     });
     var each = function(sel, fn){ var e = q(sel); if(e) fn(e, {
       h: +e.dataset.h || undefined, x0: +e.dataset.x0 || undefined,
-      w: +e.dataset.w || undefined, foot: e.dataset.foot || undefined }); };
+      w: +e.dataset.w || undefined,
+      //  data-foot-at="1": this panel switches to the holed-footprint catalogue
+      //  once fragment 1 is showing. PRINT has no fragments to walk, so a pdf
+      //  export gets the finished state.
+      foot: e.dataset.footAt != null && (PRINT || stage >= +e.dataset.footAt) }); };
     each('.pP',    drawCatalogue);
+    each('.pMps',  drawMaskPS);
     each('.pKC',   drawCatKernel);
     each('.pProd', drawProducts);
     each('.pCloud',drawCloud);
