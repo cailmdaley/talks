@@ -341,27 +341,21 @@ has something to be narrow about.
 <span class="fragment nka-step" data-fragment-index="0"></span>
 <span class="fragment nka-step" data-fragment-index="1"></span>
 
-<div class="two split">
-  <div class="splitfig">
-    <svg class="pSplit" data-h="270" data-x0="96" data-w="880"
-         viewBox="0 0 1000 366" width="1000" height="366"></svg>
-  </div>
-  <div class="toystack fragment" data-fragment-index="2">
-    <svg class="pXi" data-h="124" data-x0="76" data-w="452" viewBox="0 0 560 214" width="560" height="214"></svg>
-    <svg class="pWhite" data-h="124" data-x0="76" data-w="452" viewBox="0 0 560 214" width="560" height="214"></svg>
-  </div>
+<div class="splitfig">
+  <svg class="pSplit" data-h="336" data-x0="104" data-w="1520"
+       viewBox="0 0 1730 446" width="1730" height="446"></svg>
 </div>
 
 <div class="corr big tight">
-  <div class="fragment" data-fragment-index="3">
-    <span class="nm noise">self-pair field, and its transform</span>
-    <span class="eq">\( n(x)\;\equiv\;\langle a^{2}\rangle\,\textstyle\sum_i w_i^{2}\,G^{2}(x-x_i),\qquad \langle a^{2}\rangle=\textstyle\sum_\ell C_\ell,\qquad N_{\ell-\ell'}=\textstyle\sum_x n(x)\,e^{-i(\ell-\ell')x} \)</span>
+  <div class="fragment" data-fragment-index="2">
+    <span class="nm noise">self-pair field</span>
+    <span class="eq">\( n(x)\;\equiv\;\textstyle\sum_i w_i^{2}\,a_i^{2}\,G^{2}(x-x_i),\qquad N_{\ell-\ell'}=\textstyle\sum_x n(x)\,e^{-i(\ell-\ell')x} \)</span>
   </div>
-  <div class="fragment" data-fragment-index="3">
+  <div class="fragment" data-fragment-index="2">
     <span class="nm signal">distinct-pair mask product</span>
     <span class="eq">\( \mathcal{W}(x)\;\equiv\;\bar w^{2}(x)\;-\;\textstyle\sum_i w_i^{2}\,G^{2}(x-x_i) \)</span>
   </div>
-  <div class="fragment" data-fragment-index="4">
+  <div class="fragment" data-fragment-index="3">
     <span class="nm">catalogue covariance</span>
     <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;2\Big[\;\underbrace{\bar C_{\ell\ell'}^{\,2}\,\big|\mathcal{W}_{\ell-\ell'}\big|^{2}}_{\rm sig\times sig}\;+\;\underbrace{2\,\bar C_{\ell\ell'}\,{\rm Re}\big(\mathcal{W}_{\ell-\ell'}\,N^{*}_{\ell-\ell'}\big)}_{\rm sig\times noise}\;+\;\underbrace{\big|N_{\ell-\ell'}\big|^{2}}_{\rm noise\times noise}\;\Big] \)</span>
   </div>
@@ -383,28 +377,30 @@ That split is the whole slide, and every line under it is forced by it.
 
 Distinct pairs, i not equal to j, carry the correlation between two different points — that is
 the signal, and it is mask-coupled in the ordinary way. Self-pairs, i equal to i, carry the
-variance of the field at a single point. And look at the phase on that second term: it depends
-only on ell minus ell-prime. Not on ell and ell-prime separately. That is the algebraic signature
-of a statistically homogeneous noise field, and it does not go away when you smooth the mask.
+square of the field at a single point. And look at the phase on that second term: it depends only
+on ell minus ell-prime. Not on ell and ell-prime separately. That is the algebraic signature of a
+statistically homogeneous noise field, and it does not go away when you smooth the mask. A spike
+at zero lag is a flat line at every multipole, so the self-pair term behaves exactly like white
+noise — and white noise is the one thing this machinery already handles exactly.
 
-The two panels on the right are why "noise" is the right word rather than a metaphor. Split every
-pair of sources by separation. The distinct pairs sit at finite separation and trace the
-correlation function. The self-pairs all sit at zero separation, with height equal to the variance
-at a point, which is the integral of the whole power spectrum. Transform that. A spike at zero
-lag is a flat line at every multipole. So the self-pair term behaves exactly like white noise —
-and white noise is the one thing this machinery already handles exactly.
+The picture is the same split, in position space. Blue is the band-limited mask from the previous
+slide. Square it, because the covariance kernel wants the mask product, and the square separates
+into two stacked bands — the thin blue outline is the mask itself, still there underneath. The red
+floor is every source paired with itself; the blue bulk above it is every distinct pair. The red
+band tracks the source density, it is largest where sources are sparse relative to the cloud size,
+and it is there for a perfectly noiseless field.
 
-Now the picture on the left, which is the same split in position space. Blue is the band-limited
-mask from the previous slide. Square it, because the covariance kernel wants the mask product,
-and the square separates into two stacked bands: the red floor is every source paired with
-itself, and the blue bulk above it is every distinct pair. The red band tracks the source density
-— it is largest where sources are sparse relative to the cloud size — and it is there for a
-perfectly noiseless field.
-
-So, first line underneath. Name the self-pair piece: it is a local variance map, the variance at a
-point times the self-pair half of the mask product, and its transform is the N that appears in the
-covariance. That is the connection — the noise in the covariance is literally the harmonic
+So, first line underneath. Name the self-pair piece. It is a local variance map — literally the
+data squared, source by source, smeared by the squared cloud — and its transform is the N that
+appears in the covariance. That is the connection: the noise in the covariance is the harmonic
 transform of that red band.
+
+A footnote I will not put on the slide. Strictly that map wants the expectation of a-i squared,
+and what you have is one realisation, so the paper substitutes a-i squared itself. That is
+unbiased in the mean but its pseudo-spectrum then involves fourth moments, and because the
+expectation of a product is not the product of expectations it overestimates the variance map's
+power at high ell. They correct it analytically by Wick — a self-pair correction to a self-pair
+term. Ask me if you want the details.
 
 Second line: take the self-pairs out of the mask product, or they get counted twice. What is left
 is exactly the distinct-pair sum. Note that the subtracted piece is its own catalogue field, built

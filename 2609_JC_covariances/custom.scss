@@ -737,12 +737,12 @@
 // Left, the mask product coloured by pair type; right, the two toys stacked so
 // they form a square block beside it. Both halves are one argument: the split
 // happens in position space on the left and in theta / ell on the right.
-.reveal .nka .two.split { gap: 34px; align-items: flex-start; margin-top: 2px; }
-.reveal .nka .two.split > .splitfig { flex: 1 1 auto; min-width: 0; }
-.reveal .nka .two.split > .toystack {
-    flex: 0 0 560px; display: flex; flex-direction: column; gap: 0;
-}
-.reveal .nka .two.split svg { display: block; }
+// The panel carries the argument alone now: the two toys that used to sit beside
+// it (the zero-lag spike and the flat white floor) said "why white" a second
+// time, and the split in position space says it once, on the object the
+// equations below are actually about.
+.reveal .nka .splitfig { margin-top: 2px; }
+.reveal .nka .splitfig svg { display: block; }
 // the three entries under the graphic are one line each, so they can sit closer
 .reveal .nka .corr.big.tight { gap: 6px; margin-top: 4px;
     .eq { font-size: 30px; }

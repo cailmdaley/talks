@@ -1886,12 +1886,20 @@ function boot(){
     }
     var ZERO = new Float64Array(NX);
 
-    if(st === 1){
+    //  wbar is drawn on BOTH beats. On the first it is the subject; on the
+    //  second it stays as a low-alpha outline under the two bands, so the eye
+    //  reads "mask, then mask SQUARED" rather than meeting a new curve.
+    if(st >= 1){
       var dw='';
       for(var j2=0;j2<NX;j2++)
         dw += (j2?'L':'M')+(PAD+AW*j2/(NX-1)).toFixed(1)+' '+(y0+h-h*0.92*B.wbar[j2]/wmx).toFixed(1)+' ';
-      el(s,'path',{d:dw,fill:'none',stroke:COB,'stroke-width':3.5});
-      txt(s, PAD+AW-250, y0+26, 'mask  w̄(x)', {fill:COB,'font-size':28});
+      //  Both curves are peak-normalised, so the pale outline is not a second
+      //  value on the same axis but the SAME shape before squaring -- and the
+      //  gap between it and the black outline is exactly what squaring does,
+      //  moving weight into the densest region and flattening the rest.
+      el(s,'path',{d:dw,fill:'none',stroke:COB,'stroke-width': st>=2 ? 2 : 3.5,
+                   opacity: st>=2 ? 0.35 : 1});
+      if(st === 1) txt(s, PAD+AW-250, y0+26, 'mask  w̄(x)', {fill:COB,'font-size':28});
     }
     if(st >= 2){
       //  stacked, self-pairs on the bottom: the noise floor is what sits under
@@ -1910,9 +1918,9 @@ function boot(){
       //  one legend, two entries, in the colours the equations below use. It
       //  rides on the axis line rather than over the bands.
       el(s,'rect',{x:PAD+AW-470,y:y0+h+24,width:26,height:16,fill:COB,opacity:0.45});
-      txt(s, PAD+AW-434, y0+h+38, 'distinct pairs', {fill:COB,'font-size':27});
-      el(s,'rect',{x:PAD+AW-244,y:y0+h+24,width:26,height:16,fill:ACC,opacity:0.65});
-      txt(s, PAD+AW-208, y0+h+38, 'self-pairs', {fill:ACC,'font-size':27});
+      txt(s, PAD+AW-434, y0+h+38, 'distinct pairs: signal', {fill:COB,'font-size':27});
+      el(s,'rect',{x:PAD+AW-186,y:y0+h+24,width:26,height:16,fill:ACC,opacity:0.65});
+      txt(s, PAD+AW-150, y0+h+38, 'self-pairs: noise', {fill:ACC,'font-size':27});
     }
   }
 
@@ -2024,7 +2032,7 @@ function boot(){
      //  the slide's foundation rendered as its faintest object. Without one it
      //  stays live for the whole slide, which is what a single-entry ledger
      //  should do.
-     step:8, name:'two-point function of the catalogue modes', col:1, row:1, span:4},
+     step:8, name:'catalogue two-point function', col:1, row:1, span:4},
 
     //  The Nagura act opens on the pair count itself. The two entries are the
     //  same object twice: the thing you measure, and the thing it equals in
