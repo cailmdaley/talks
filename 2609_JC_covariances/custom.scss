@@ -90,6 +90,9 @@
     row-gap: 2px;
     align-items: end;
     justify-items: start;
+    //  .stretch: every cell in a row takes the row's full height, so a one-line
+    //  definition sits in the same box as the multi-line entry beside it
+    &.stretch { align-items: stretch; }
     font-size: 36px;
     margin: 0 0 6px 0;
     min-height: 52px;
@@ -105,6 +108,9 @@
         border-left: 6px solid transparent;
         white-space: nowrap;
     }
+    //  a `hold` entry, rendered one step early so its box exists but is not
+    //  yet part of the argument
+    div.ghost { visibility: hidden; }
     div.on {
         opacity: 1;
         border-left-color: #BC4538;
@@ -268,7 +274,7 @@
 .reveal .nka .figside {
     flex: 1 1 auto;
     min-width: 420px;
-    font-size: 27px;
+    font-size: 29px;
     line-height: 1.34;
     color: #7A6F5C;
 
@@ -301,7 +307,7 @@
 // panels. Used inside .papercap (the two Wolz simulation slides) and inside
 // .figside (the Quaia figure), wherever an imported figure needs crediting.
 // Never wrapped: a citation broken across lines reads as two things.
-.reveal .nka .figside .src { white-space: nowrap; }
+.reveal .nka .figside .src { white-space: nowrap; font-size: 24px; }
 .reveal .nka .src {
     display: block;
     font-size: 21px;
@@ -324,6 +330,9 @@
 
 .reveal .nka .mrow { display: flex; gap: 26px; align-items: flex-start; }
 
+// UNUSED since the narrow-kernel entries went back into the ledger (which now
+// reserves their boxes with `hold`). Kept for a panel that wants a stacked
+// equation column beside it.
 // The covariance slide's equation column: the narrow-kernel approximation and
 // its two definitions, stacked between the NKA matrix and the error matrix.
 // It is a reveal fragment, and reveal keeps a hidden fragment's box, so the

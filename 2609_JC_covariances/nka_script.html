@@ -1313,7 +1313,10 @@ function boot(){
     {tex:'C(k)=\\langle |a_k|^2\\rangle', step:1, name:'power spectrum', col:4, row:1},
 
     {tex:'\\tilde a(x)=w(x)\\,a(x)', step:2, name:'mask', col:1, row:2, sub:0},
-    {tex:'\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', step:2, name:'mode coupling', col:2, row:2, sub:1},
+    //  W is used three slides running -- here, in the four-point line, and in
+    //  the narrow-kernel line -- so it gets defined the moment it appears.
+    {tex:'W_k=\\sum_x w(x)\\,e^{-ikx}', step:2, name:'mask modes', col:2, row:2, sub:0},
+    {tex:'\\tilde a_k=\\sum_{k\'} W_{k-k\'}\\,a_{k\'}', step:2, name:'mode coupling', col:3, row:2, sub:1},
     {tex:'\\langle \\tilde C(k)\\rangle=\\sum_{k\'} |W_{k-k\'}|^2\\,C(k\')', step:2, name:'pseudo-C(k)', col:4, row:2, sub:2},
 
     {tex:'\\tilde C_b=\\frac{1}{N_b}\\sum_{k\\in b}\\tilde C(k)', step:3, name:'bandpower', col:1, row:3},
@@ -1323,10 +1326,14 @@ function boot(){
     {tex:'{\\rm Cov}\\big(\\tilde C(k),\\tilde C(k\')\\big)\\propto\\Big|\\sum_{k\'\'} W_{k-k\'\'}\\,W^{*}_{k\'-k\'\'}\\,C(k\'\')\\Big|^{2}',
      step:4, name:'four-point', col:1, row:1, span:2,
      note:'one sum over k″ for every element of the k, k′ matrix'},
-    //  The NKA itself is NOT here. It is three stacked entries in the covariance
-    //  slide's own .eqcol, sitting between the NKA matrix and the error matrix,
-    //  because putting them in this grid added a second ledger row that shoved
-    //  the matrices down the moment a fragment fired.
+    {tex:'{\\rm Cov}\\big(\\tilde C(k),\\tilde C(k\')\\big)\\simeq 2\\,\\bar C_{kk\'}^{\\,2}\\,\\Big|\\textstyle\\sum_x w^2(x)\\,e^{-i(k-k\')x}\\Big|^{2}',
+     step:5, name:'narrow-kernel approximation', col:1, row:2, span:3, hold:true},
+    {tex:'\\bar C_{kk\'}\\equiv\\tfrac12\\big[C(k)+C(k\')\\big]', step:5, name:'C at the midpoint', col:4, row:2, hold:true},
+    //  The narrow-kernel line is written out in full -- no Xi, no W^(2). The
+    //  coupling kernel of a covariance is built from the SQUARED mask, and
+    //  |sum_x w^2(x) e^{-i(k-k')x}|^2 is not |W_{k-k'}|^2; spelling the sum out
+    //  is the only way to show that without inventing a second symbol.
+    //  Both entries carry hold:true, so their boxes exist from the base state.
     //  For the record, the paper's eq:nka_simple is
     //      Cov(C~^ab_l, C~^cd_l') = C^ac_(l,l') C^bd_(l,l') Xi_ll'(w_a w_c, w_b w_d) + (c<->d)
     //  with C_(l,l') = (C_l + C_l')/2. This deck has ONE field and ONE mask, so
@@ -1345,8 +1352,8 @@ function boot(){
     //  itself. Wolz eq. 2.24 -- distinct pairs go through the NKA, the self-pair
     //  sum is kept and treated exactly.
     {tex:'\\bar w^{2}(x)=\\underbrace{\\textstyle\\sum_{i\\neq j} w_iw_j\\,G\\,G}_{\\rm distinct\\;pairs}+\\underbrace{\\textstyle\\sum_i w_i^{2}\\,G^{2}}_{\\rm self\\;pairs}',
-     step:8, name:'the mask product contains every source paired with itself', col:1, row:1, span:3},
-    {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:4, row:1, sub:1},
+     step:8, name:'the mask product contains every source paired with itself', col:1, row:1, span:3, sub:0},
+    {tex:'\\langle a^2\\rangle=\\textstyle\\int C(k)\\,dk', step:8, name:'self-pair variance', col:4, row:1, sub:1, hold:true},
 
     //  The Nagura act opens on the pair count itself. The two entries are the
     //  same object twice: the thing you measure, and the thing it equals in
@@ -1363,12 +1370,17 @@ function boot(){
     var html = '';
     for(var i=0;i<EQS.length;i++){
       var e = EQS[i];
-      if(e.step > step || e.step < from) continue;
+      //  `hold` entries render one step EARLY, invisible: the slide reserves
+      //  their box from the base state so nothing below the ledger moves when
+      //  the fragment that lights them fires.
+      var ghost = false;
+      if(e.step > step){ if(!e.hold || e.step !== step + 1) continue; ghost = true; }
+      if(e.step < from) continue;
       // a staged equation (has `sub`) is invisible until the fragment that
       // introduces it — not just un-highlighted. After that it stays, dimmed.
       if(e.sub != null && e.step === step && stage < e.sub) continue;
-      var live = (e.step === step) && (e.sub == null || e.sub === stage);
-      html += '<div class="' + (live?'on':'') + '" style="grid-column:' + e.col +
+      var live = !ghost && (e.step === step) && (e.sub == null || e.sub === stage);
+      html += '<div class="' + (live?'on':'') + (ghost?' ghost':'') + '" style="grid-column:' + e.col +
               (e.span ? ' / span ' + e.span : '') + ';grid-row:' + e.row + '">' +
               '<span class="nm">' + e.name + '</span>' +
               '<span class="eq">\\(' + e.tex + '\\)</span>' +

@@ -152,26 +152,11 @@ And you invert it. But not mode by mode: the mask does not only smear modes, it 
 <div class="cost"></div>
 <div class="pick"></div>
 <div class="mrow">
-  <div class="mcell"><canvas style="width:380px;height:380px"></canvas>
+  <div class="mcell"><canvas style="width:400px;height:400px"></canvas>
     <div class="mlab"><b>exact</b>direct sum over modes</div></div>
-  <div class="mcell fragment" data-fragment-index="0"><canvas style="width:380px;height:380px"></canvas>
+  <div class="mcell fragment" data-fragment-index="0"><canvas style="width:400px;height:400px"></canvas>
     <div class="mlab"><b>NKA</b>one mask-product kernel</div></div>
-  <div class="eqcol fragment" data-fragment-index="0">
-    <div>
-      <span class="nm">narrow-kernel approximation</span>
-      <span class="eq">\( {\rm Cov}\big(\tilde C(k),\tilde C(k')\big)\;\simeq\;2\,\bar C_{kk'}^{\,2}\;\Xi_{kk'} \)</span>
-    </div>
-    <div>
-      <span class="nm">C at the midpoint</span>
-      <span class="eq">\( \bar C_{kk'}\;\equiv\;\tfrac12\big[C(k)+C(k')\big] \)</span>
-    </div>
-    <div>
-      <span class="nm">coupling kernel</span>
-      <span class="eq">\( \Xi_{kk'}\;=\;\big|W^{(2)}_{k-k'}\big|^{2} \)</span>
-      <span class="eq">\( W^{(2)}_{k}\;\equiv\;\textstyle\sum_x w^2(x)\,e^{-ikx} \)</span>
-    </div>
-  </div>
-  <div class="mcell fragment" data-fragment-index="1"><canvas style="width:380px;height:380px"></canvas>
+  <div class="mcell fragment" data-fragment-index="1"><canvas style="width:400px;height:400px"></canvas>
     <div class="mlab"><b>NKA &minus; exact</b>error</div></div>
 </div>
 </div>
@@ -347,22 +332,23 @@ has something to be narrow about.
 
 ```{=html}
 <div class="nka" data-step="8" data-ledger-from="8" data-staged="1">
-<div class="eqs"></div>
-<div class="saywhat fragment" data-fragment-index="0" data-own="1">zero-separation information has no scale — its spectrum is flat, so the white-noise machinery handles it exactly.</div>
+<div class="eqs stretch"></div>
 <div class="two fragment" data-fragment-index="0">
-  <div><svg class="pXi" data-h="200" data-x0="90" data-w="700" viewBox="0 0 840 300" width="840" height="300"></svg></div>
-  <div><svg class="pWhite" data-h="200" data-x0="90" data-w="700" viewBox="0 0 840 300" width="840" height="300"></svg></div>
+  <div><svg class="pXi" data-h="215" data-x0="90" data-w="700" viewBox="0 0 840 306" width="840" height="306"></svg></div>
+  <div><svg class="pWhite" data-h="215" data-x0="90" data-w="700" viewBox="0 0 840 306" width="840" height="306"></svg></div>
 </div>
-<div class="corr">
+<div class="corr big">
   <div class="fragment" data-fragment-index="1">
-    <span class="nm">take the self-pairs back out</span>
-    <span class="eq">\( \mathcal{W}_{ac}\;\equiv\;\bar w_a\bar w_c-\delta_{ac}\,\overline{w_a^{2}} \)</span>
-    <span class="note">leave the self-pairs in and they are counted twice. \(\overline{w^2}\) is its own catalogue field: the transform of the <i>squared</i> cloud, not the square of the transform.</span>
+    <span class="nm">distinct-pair mask product</span>
+    <span class="eq">\( \mathcal{W}(x)\;\equiv\;\bar w^{2}(x)\;-\;\textstyle\sum_i w_i^{2}\,G^{2} \)</span>
   </div>
   <div class="fragment" data-fragment-index="2">
-    <span class="nm">and back in, exactly</span>
-    <span class="eq">\( {\rm Cov}\;\simeq\;\underbrace{\bar C\,\bar C\;\Xi\big(\mathcal{W},\mathcal{W}\big)}_{\rm sig\times sig}\;+\;\underbrace{2\,\bar C\;\Xi\big(\mathcal{W},\,\overline{(aw)^2}\big)}_{\rm sig\times noise}\;+\;\underbrace{\Xi\big(\overline{(aw)^2},\,\overline{(aw)^2}\big)}_{\rm noise\times noise} \)</span>
-    <span class="note">the approximation carries only the distinct pairs; everything involving a self-pair is exact.</span>
+    <span class="nm">self-pair field</span>
+    <span class="eq">\( n(x)\;\equiv\;\textstyle\sum_i w_i^{2}\,a_i^{2}\,G^{2} \)</span>
+  </div>
+  <div class="fragment" data-fragment-index="3">
+    <span class="nm">catalogue covariance</span>
+    <span class="eq">\( {\rm Cov}\big(\tilde C(k),\tilde C(k')\big)\;\simeq\;2\Big[\;\underbrace{\bar C_{kk'}^{\,2}\,\big|\mathcal{W}_{k-k'}\big|^{2}}_{\rm sig\times sig}\;+\;\underbrace{2\,\bar C_{kk'}\,{\rm Re}\big(\mathcal{W}_{k-k'}\,n^{*}_{k-k'}\big)}_{\rm sig\times noise}\;+\;\underbrace{\big|n_{k-k'}\big|^{2}}_{\rm noise\times noise}\;\Big] \)</span>
   </div>
 </div>
 
@@ -373,23 +359,33 @@ has something to be narrow about.
 So the mask is smooth now. What is the next problem?
 
 This. The covariance kernel does not want the mask; it wants the mask *product*, w-bar times
-w-bar. Write that out for a catalogue against itself and you get two sums: one over distinct
-pairs, i not equal to j, which is a perfectly ordinary object, and one over every source paired
-with itself. That second sum does not go away when you smooth. It is the diagonal of the product,
-and it is there in every catalogue auto-spectrum.
+w-bar. Write that out for a catalogue against itself and it splits in two: a sum over distinct
+pairs, i not equal to j, which is a perfectly ordinary object; and a sum over every source paired
+with itself. That second sum does not go away when you smooth. It is the diagonal of the
+product, it is there in every catalogue auto-spectrum, and it is white noise sitting inside your
+mask — which would go straight through the narrow-kernel machinery and corrupt it.
 
-The good news is what that term looks like once you transform it.
+But look at what kind of object it is, and this is the part that turns out to be free.
 
 Split every pair of sources by whether they are two different sources or the same source twice.
 The distinct pairs at finite separation are the signal — that is the correlation function on the
 left. The self-pairs all sit at zero separation, and their height is the variance of the field at
-a point: the integral of the whole power spectrum.
+a point: the integral of the whole power spectrum. Now transform. A spike at zero lag is a flat
+line at every k. So the self-pair term behaves algebraically exactly like white noise.
 
-Now transform. A spike at zero lag is a flat line at every k. So the self-pair term behaves
-algebraically exactly like white noise — and that means the existing machinery for inhomogeneous
-white noise handles it, exactly, with no approximation at all. The covariance splits into three
-pieces: signal against signal, signal against noise, noise against noise. Only the first carries
-the approximation.
+And white noise is the one thing this machinery already handles exactly. So: take the self-pairs
+out of the mask product — that is the first line, w-bar squared minus the self-pair sum, and if
+you leave them in they are counted twice. Note what that subtracted piece is: it is its own
+catalogue field, the transform of the *squared* cloud, not the square of the transform, because
+squaring a Gaussian halves its width.
+
+Then put them back, with the data in them. The second line is the same sum with a-i squared
+inside it — the local variance map. It is the data's shot-noise floor, the same object as
+N-w-tilde on the mask slide with the values put back.
+
+And then the covariance is three terms: signal against signal, signal against noise, noise
+against noise. Only the first carries the approximation. Everything with a self-pair in it is
+exact.
 
 Two things worth saying out loud. This term is there even for a perfectly noiseless field — it
 is the variance of the field at a point, and it is what penalises sparse samples with bigger
