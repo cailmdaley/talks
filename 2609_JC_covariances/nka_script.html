@@ -1582,8 +1582,15 @@ function boot(){
     //  Stages 2-4 keep the second pair in bin i: that is what makes a DIAGONAL
     //  element. It moves to bin j at stage 5, and the off-diagonal element is
     //  the same construction with one pair relocated.
-    var partnerBin = (st >= 5) ? QBJ : QBI;
-    var fillDiag = (st >= 4), fillOff = (st >= 6);
+    //  The DIAGONAL is shown as the term that dominates it: the pair (a,b)
+    //  paired with ITSELF. Then the cross-pairings degenerate -- a with a and b
+    //  with b are both at zero separation, and a with b appears twice -- so the
+    //  quadruplet contributes 1/2[ xi(0)^2 + xi(theta_i)^2 ]. That is a real
+    //  term of the sum, not an illustration of one, and it is why the diagonal
+    //  is large. Only then does a second, different pair arrive.
+    var selfPair = (st >= 2 && st < 3);
+    var fillDiag = (st >= 2), fillOff = (st >= 5);
+    var showPartner = (st >= 3), showCross = (st >= 4), showStrip = (st >= 5);
 
     // ---- the matrix, its full grid present from the base so nothing moves ----
     var my0 = mid - MS/2;
@@ -1605,15 +1612,15 @@ function boot(){
     }
     //  the column mark follows the second pair: over i while the pair is in bin
     //  i, over j once it moves
-    if(st >= 2){
-      var cb = partnerBin, cc = (st >= 5) ? COB : ACC;
+    if(st >= 1){
+      var cb = showPartner ? QBJ : QBI, cc = showPartner ? COB : ACC;
       el(s,'rect',{x:MX+cb*CELL,y:my0-18,width:CELL,height:11,fill:cc});
-      txt(s, MX+cb*CELL+1, my0-30, (st>=5)?'j':'i',
+      txt(s, MX+cb*CELL+1, my0-30, showPartner?'j':'i',
           {fill:cc,'font-size':30,'font-style':'italic'});
     }
-    if(st >= 4){
-      var lab = (st >= 6) ? 'diagonal, then off-diagonal'
-                          : 'both pairs in bin i:  the diagonal';
+    if(fillDiag){
+      var lab = fillOff ? 'diagonal, then off-diagonal'
+                        : 'the pair with itself:  the diagonal';
       txt(s, MX, my0 + MS + 38, lab, {fill:MUT,'font-size':28});
     }
 
@@ -1633,10 +1640,9 @@ function boot(){
 
     var P1 = pickPair(QBI, QAX);
     if(!P1) return;
-    var P2 = (st >= 5) ? pickPair(QBJ, QCX_J, P1) : pickPair(QBI, QCX_I, P1);
-    if(!P2) return;
-    var a = xs[P1[0]], b = xs[P1[1]], c = xs[P2[0]], dd = xs[P2[1]];
-    var pcol = (st >= 5) ? COB : ACC;
+    var P2 = showPartner ? pickPair(QBJ, QCX_J, P1) : null;
+    var a = xs[P1[0]], b = xs[P1[1]];
+    var c = P2 ? xs[P2[0]] : 0, dd = P2 ? xs[P2[1]] : 0;
 
     function bracket(u1, u2, y, col, label){
       var x1 = PX(u1), x2 = PX(u2);
@@ -1666,9 +1672,8 @@ function boot(){
     }
 
     //  the accumulation, as a ruled strip: one row per bin in play
-    if(fillDiag){
-      var rows = [[QBI, mid+206, ACC, 'i']];
-      if(st >= 5) rows.push([partnerBin, mid+250, COB, 'j']);
+    if(showStrip){
+      var rows = [[QBI, mid+206, ACC, 'i'], [QBJ, mid+250, COB, 'j']];
       for(var rr=0; rr<rows.length; rr++){
         var bnum = rows[rr][0], ry = rows[rr][1], rc = rows[rr][2], L = Q.bins[bnum];
         el(s,'line',{x1:PAD+42,y1:ry,x2:PAD+CW,y2:ry,stroke:RULE,'stroke-width':1});
@@ -1690,11 +1695,27 @@ function boot(){
       ring(a, P1[0], ACC, 'a', -26); ring(b, P1[1], ACC, 'b', 26);
       bracket(a, b, mid + 112, ACC, 'i');
     }
-    if(st >= 2){
-      ring(c, P2[0], pcol, 'c', -26); ring(dd, P2[1], pcol, 'd', 26);
-      bracket(c, dd, mid + 112, pcol, (st>=5)?'j':'i');
+    //  the degenerate beat: the same two sources standing in for c and d
+    if(selfPair){
+      txt(s, PX(a)-8+26, PY(X.av[P1[0]])-32, '= c', {fill:ACC,'font-size':30,
+              'font-style':'italic',opacity:0.8});
+      txt(s, PX(b)-8+62, PY(X.av[P1[1]])-32, '= d', {fill:ACC,'font-size':30,
+              'font-style':'italic',opacity:0.8});
+      //  a with a and b with b: zero separation, drawn as a loop on the source
+      el(s,'circle',{cx:PX(a),cy:mid-56,r:20,fill:'none',stroke:TEAL,'stroke-width':3.2});
+      el(s,'circle',{cx:PX(b),cy:mid-56,r:20,fill:'none',stroke:TEAL,'stroke-width':3.2});
+      //  a with b, twice
+      link(a, b, INK, 104, '12 9', null, 0.5, 1);
+      link(a, b, INK, 132, '12 9', null, 0.5, 1);
+      //  zero separation is xi(0), not xi(theta_0) -- write it literally
+      txt(s, PAD, mid - 250, 'ξ(0) · ξ(0)', {fill:TEAL,'font-size':32});
+      xiProd(s, PAD, mid - 210, 'i', 'i', INK, 1);
     }
-    if(st >= 3){
+    if(showPartner){
+      ring(c, P2[0], COB, 'c', -26); ring(dd, P2[1], COB, 'd', 26);
+      bracket(c, dd, mid + 112, COB, 'j');
+    }
+    if(showCross){
       //  Opacity carries the VALUE of each pairing: xi(th_ac) xi(th_bd) against
       //  xi(th_ad) xi(th_bc), on one shared scale. It is the reason the diagonal
       //  is strong -- when the two pairs sit close together the cross
@@ -1920,10 +1941,10 @@ function boot(){
       txt(s, PAD+AW-320, y0+26, 'mask product  w̄²(x)', {fill:INK,'font-size':28});
       //  one legend, two entries, in the colours the equations below use. It
       //  rides on the axis line rather than over the bands.
-      el(s,'rect',{x:PAD+AW-470,y:y0+h+24,width:26,height:16,fill:COB,opacity:0.45});
-      txt(s, PAD+AW-434, y0+h+38, 'distinct pairs: signal', {fill:COB,'font-size':27});
-      el(s,'rect',{x:PAD+AW-186,y:y0+h+24,width:26,height:16,fill:ACC,opacity:0.65});
-      txt(s, PAD+AW-150, y0+h+38, 'self-pairs: noise', {fill:ACC,'font-size':27});
+      el(s,'rect',{x:PAD+AW-620,y:y0+h+24,width:26,height:16,fill:COB,opacity:0.45});
+      txt(s, PAD+AW-584, y0+h+38, '𝒲(x)   distinct pairs', {fill:COB,'font-size':27});
+      el(s,'rect',{x:PAD+AW-224,y:y0+h+24,width:26,height:16,fill:ACC,opacity:0.65});
+      txt(s, PAD+AW-188, y0+h+38, 'Σᵢ wᵢ² G²(x−xᵢ)   self-pairs', {fill:ACC,'font-size':27});
     }
   }
 
@@ -2049,7 +2070,7 @@ function boot(){
     //  averaged over the angular bin via the recursion relation -- which is
     //  what the bracket with the two cos-theta limits means.
     {tex:'\\big[P_{\\ell+1}-P_{\\ell-1}\\big]_i\\equiv\\big[P_{\\ell+1}(x)-P_{\\ell-1}(x)\\big]_{\\cos\\theta_{i,+}}^{\\cos\\theta_{i,-}}',
-     step:10, name:'legendre kernel, averaged over bin i', col:3, row:1, sub:4}
+     step:10, name:'Legendre polynomials Pℓ, bin-averaged', col:3, row:1, sub:4}
   ];
   function ledger(host, step, from, stage){
     from = from || 0;

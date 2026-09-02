@@ -390,6 +390,10 @@ floor is every source paired with itself; the blue bulk above it is every distin
 band tracks the source density, it is largest where sources are sparse relative to the cloud size,
 and it is there for a perfectly noiseless field.
 
+One thing about the red band: it is the self-pair part of the MASK product, sum of w-i squared
+times the squared cloud. The local variance map on the next line is that same band weighted by
+the data, a-i squared source by source. Same geometry, different weight.
+
 So, first line underneath. Name the self-pair piece. It is a local variance map — literally the
 data squared, source by source, smeared by the squared cloud — and its transform is the N that
 appears in the covariance. That is the connection: the noise in the covariance is the harmonic
@@ -429,7 +433,7 @@ measurement, had to be band-limited away instead.
 
 ```{=html}
 <div class="nka" data-step="9" data-ledger-from="9">
-<div class="figpair">
+<div class="figpair wide">
   <div class="figmain">
     <img src="images/wolz_shear_full.png" alt="DES-like cosmic shear covariance">
   </div>
@@ -718,6 +722,58 @@ Hold on to the middle column. Slides seventeen to twenty are all about what thos
 to a real error bar.
 :::
 
+## Off-diagonal errors are amplified by the Legendre transform {.nka-slide}
+
+```{=html}
+<div class="nka">
+<div class="r-stack figswap">
+  <div class="figone fragment fade-out" data-fragment-index="0">
+    <img src="images/nagura_matrix_r.png" alt="Correlation matrices of the harmonic covariance: iNKA, simulations, and their ratio">
+    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 &mdash; Fig. 4</span>Correlation matrices of \(\mathrm{Cov}(\tilde C_\ell,\tilde C_{\ell'})\) computed using the iNKA (left) and measured from Gaussian simulations (center). The right plot shows the fractional difference \(\mathrm{Cov}^{\rm iNKA}/\mathrm{Cov}^{\rm sim}-1\).</div>
+  </div>
+  <div class="figone withbox fragment fade-in" data-fragment-index="0">
+    <div class="figbox">
+    <div class="punchbox">
+      <span class="nm">\( {\rm Cov}^{\rm iNKA}/{\rm Cov}^{\rm sim}-1 \), HSC-Y3 mask</span>
+      <span class="pq">on \( {\rm diag}\,{\rm Cov}(\tilde C_\ell,\tilde C_\ell) \)</span>
+      <span class="pv">within 10% &nbsp;<i class="pvs">Fig. 2</i></span>
+      <span class="par">&darr;</span>
+      <span class="pq">on \( {\rm diag}\,{\rm Cov}(\xi,\xi) \), \( \theta\approx6' \)</span>
+      <span class="pv hot">&minus;25 to &minus;30% &nbsp;<i class="pvs">Fig. 3</i></span>
+    </div>
+    </div>
+    <img src="images/nagura_cov_xi.png" alt="Cov(xi,xi) diagonal: sims, projected sim harmonic covariance, projected iNKA">
+    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 &mdash; Fig. 3</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using Eq. 12 (solid lines).</div>
+  </div>
+</div>
+</div>
+```
+
+::: {.notes}
+Left is the controlled experiment, and it is the cleanest thing in the paper. Black dashed
+is the covariance of xi measured directly from a thousand simulations. Blue is the
+*simulated harmonic* covariance pushed through that double Legendre sum. Blue lands on
+black — so the transform, the pair-count normalisation, and the ell-max of six thousand
+are all fine. Red is iNKA through the same machinery, and it sits visibly low: twenty-five
+to thirty percent at six arcminutes, shrinking to nothing by a couple of hundred. The
+failure is isolated to the covariance model. Nothing else in the chain is at fault.
+
+Right is their diagnosis. iNKA's correlation matrix on the left, the simulated one in the
+middle, ratio on the right: sharp diagonal reproduced, off-diagonal not.
+
+Now, a caveat I want to say out loud, because I think it is the weakest link. That ratio
+panel divides by a sample covariance from a thousand realisations at six thousand unbinned
+multipoles. Off the diagonal, the sampling scatter on a correlation coefficient is about
+one over root-N, three percent, around a true value that is itself tiny — the middle panel
+is visibly pure speckle. So dividing a smooth iNKA prediction by a noisy near-zero
+denominator gives you a ratio that is not a pointwise error map, and the uniform blue is
+what you would get from signal much smaller than noise with random sign. The *result* on
+the left I believe completely. The *diagnosis* is argued by elimination. The obvious clean
+test — keep only the first N off-diagonal bands and project — is not in the paper.
+
+So I ran it. Next slide.
+:::
+
 ## Pairs of pairs {.nka-slide}
 
 ```{=html}
@@ -726,10 +782,9 @@ to a real error bar.
     <div>
       <span class="nm">quartic counts (Schneider; Shirasaki)</span>
       <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\big(N_{{\rm pair},i}N_{{\rm pair},j}\big)^{-1}\textstyle\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd}) \)</span>
-        <span class="eq">\( \qquad\qquad\times\;\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)</span>
+        <span class="eq">\( \qquad\qquad\times\;\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)<span class="tag">\( \mathcal{O}(N_{{\rm pair},i}N_{{\rm pair},j}) \) per element</span></span>
     </div>
   </div>
-  <span class="fragment nka-step"></span>
   <span class="fragment nka-step"></span>
   <span class="fragment nka-step"></span>
   <span class="fragment nka-step"></span>
@@ -764,48 +819,15 @@ coupling matrix, no f-sky, no assumption about a kernel width. The footprint, th
 boundaries and the weights are all encoded exactly by which quadruplets exist to be counted. The
 window is not modelled. It is counted. That is the entire idea, and the matrix on the right is
 the one you saw in the last row of the previous slide.
-:::
 
-## Off-diagonal errors are amplified by the Legendre transform {.nka-slide}
-
-```{=html}
-<div class="nka">
-<div class="r-stack figswap">
-  <div class="figone fragment fade-out" data-fragment-index="0">
-    <img src="images/nagura_matrix_r.png" alt="Correlation matrices of the harmonic covariance: iNKA, simulations, and their ratio">
-    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 &mdash; Fig. 4</span>Correlation matrices of \(\mathrm{Cov}(\tilde C_\ell,\tilde C_{\ell'})\) computed using the iNKA (left) and measured from Gaussian simulations (center). The right plot shows the fractional difference \(\mathrm{Cov}^{\rm iNKA}/\mathrm{Cov}^{\rm sim}-1\).</div>
-  </div>
-  <div class="figone fragment fade-in" data-fragment-index="0">
-    <img src="images/nagura_cov_xi.png" alt="Cov(xi,xi) diagonal: sims, projected sim harmonic covariance, projected iNKA">
-    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 &mdash; Fig. 3</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using Eq. 12 (solid lines).</div>
-  </div>
-</div>
-</div>
-```
-
-::: {.notes}
-Left is the controlled experiment, and it is the cleanest thing in the paper. Black dashed
-is the covariance of xi measured directly from a thousand simulations. Blue is the
-*simulated harmonic* covariance pushed through that double Legendre sum. Blue lands on
-black — so the transform, the pair-count normalisation, and the ell-max of six thousand
-are all fine. Red is iNKA through the same machinery, and it sits visibly low: twenty-five
-to thirty percent at six arcminutes, shrinking to nothing by a couple of hundred. The
-failure is isolated to the covariance model. Nothing else in the chain is at fault.
-
-Right is their diagnosis. iNKA's correlation matrix on the left, the simulated one in the
-middle, ratio on the right: sharp diagonal reproduced, off-diagonal not.
-
-Now, a caveat I want to say out loud, because I think it is the weakest link. That ratio
-panel divides by a sample covariance from a thousand realisations at six thousand unbinned
-multipoles. Off the diagonal, the sampling scatter on a correlation coefficient is about
-one over root-N, three percent, around a true value that is itself tiny — the middle panel
-is visibly pure speckle. So dividing a smooth iNKA prediction by a noisy near-zero
-denominator gives you a ratio that is not a pointwise error map, and the uniform blue is
-what you would get from signal much smaller than noise with random sign. The *result* on
-the left I believe completely. The *diagnosis* is argued by elimination. The obvious clean
-test — keep only the first N off-diagonal bands and project — is not in the paper.
-
-So I ran it. Next slide.
+Cost, since the badge is on the slide. Naively this is the number of pairs in bin i times the
+number in bin j, for every element — order N to the fourth in the sources. Their contribution is
+a matrix rewrite that turns it into BLAS-3 products over pair-indexed vectors, plus coarse-graining
+the galaxies onto an N-side of two fifty-six or five twelve depending on the angular bin. Worth
+saying out loud: they report no wall-clock time, no scaling law and no memory footprint anywhere,
+so the practical case for the method rests on a cost they never state. And the coarse-graining is
+the same band-limiting move as Wolz's clouds, chosen for the same reason and with the same
+arbitrariness.
 :::
 
 ## Accounting for geometry with counts {.nka-slide}
@@ -816,17 +838,7 @@ So I ran it. Next slide.
   <div class="figmain">
     <img src="images/nagura_analytic_comp.png" alt="Cov(xi,xi) diagonal for the XMM field: simulations, iNKA, f_sky and quartic counts">
   </div>
-  <div class="figside">
   <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 — Fig. 5</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using analytical methods (solid lines). Note that we consider XMM field only for this figure.</div>
-    <div class="punchbox">
-      <span class="nm">\( {\rm Cov}^{\rm iNKA}/{\rm Cov}^{\rm sim}-1 \), HSC-Y3 mask</span>
-      <span class="pq">on \( {\rm diag}\,{\rm Cov}(\tilde C_\ell,\tilde C_\ell) \)</span>
-      <span class="pv">within 10% &nbsp;<i class="pvs">Fig. 2</i></span>
-      <span class="par">&darr;</span>
-      <span class="pq">on \( {\rm diag}\,{\rm Cov}(\xi,\xi) \), \( \theta\approx6' \)</span>
-      <span class="pv hot">&minus;25 to &minus;30% &nbsp;<i class="pvs">Fig. 3</i></span>
-    </div>
-  </div>
 </div>
 </div>
 ```
@@ -852,6 +864,10 @@ unquantified non-Gaussian error. And shape noise is dropped from the comparison 
 while for real cosmic shear the noise and mixed terms dominate the small-theta covariance.
 So a fair question is whether a twenty-five percent error on the sample-variance term
 survives adding shape noise in quadrature at six arcminutes.
+
+And the scope of this figure specifically: the XMM field alone, one of six, with ten bins instead
+of twenty, to keep the cost down. So the best method is never tested on the full footprint the
+failure was diagnosed on — the two key figures are not on the same configuration.
 
 Where that leaves us.
 

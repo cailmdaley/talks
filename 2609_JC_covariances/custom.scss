@@ -334,6 +334,14 @@
     p { margin: 0 0 14px 0; }
 }
 .reveal .nka .papercap { flex: 0 0 470px; }
+// slide 11 only: the cosmic-shear panel is the evidence a lensing audience came
+// for, so it takes 20% more height and its caption column widens to keep that
+// block roughly square beside it. Scoped to .wide -- the same .figpair grammar
+// carries slides 12 and 20, and .two.lower carries slide 8, which is why the
+// first attempt at this pushed slide 8 forty pixels past the footer.
+.reveal .nka .figpair.wide { gap: 44px; }
+.reveal .nka .figpair.wide .figmain img { max-height: 800px; }
+.reveal .nka .figpair.wide .papercap { flex: 0 0 560px; }
 
 .reveal .nka .mrow { display: flex; gap: 26px; align-items: flex-start; }
 
@@ -420,6 +428,10 @@
 // along its top and left edges, so the double sum is a thing you can point at.
 // the cost badge rides at the end of the equation line -- inside .eq, because
 // that is the span MathJax typesets; a sibling div renders as an empty box.
+// the cost badge on the quartic-counts entry: the naive per-element count, which
+// is what a reader needs to feel the expense. The paper's matrix rewrite makes
+// it BLAS-3 over pair-indexed vectors, but reports no wall clock and no scaling
+// law -- that caveat is in the notes, not on the slide.
 .reveal .nka .corr.big .eq .tag {
     display: inline-block; margin-left: 44px;
     color: #BC4538; white-space: nowrap;
@@ -698,6 +710,17 @@
 // Slide 19 shows two full-slide figures one at a time in ONE reserved area, so
 // the fragment swap moves nothing. r-stack centres them on each other.
 .reveal .nka .figswap { width: 100%; }
+// Fig 3 carries the numbers it is the evidence for. The row keeps the same
+// reserved area as the Fig 4 fragment beside it in the r-stack, so the swap
+// moves nothing; the figure shifts left at unchanged size and the box takes
+// what is left.
+.reveal .nka .figone.withbox {
+    display: grid; grid-template-columns: auto 470px; column-gap: 40px;
+    align-items: center; justify-content: center;
+    img { grid-column: 1; grid-row: 1; }
+    .papercap { grid-column: 1; grid-row: 2; }
+    .figbox { grid-column: 2; grid-row: 1 / span 2; }
+}
 .reveal .nka .figone {
     display: flex; flex-direction: column; align-items: center; gap: 8px;
     img { max-width: 1700px; max-height: 700px; object-fit: contain; }
@@ -744,8 +767,10 @@
 .reveal .nka .splitfig { margin-top: 2px; }
 .reveal .nka .splitfig svg { display: block; }
 // the three entries under the graphic are one line each, so they can sit closer
+// slide 10's three consequences are set at the ledger's own size, like the
+// opener above them: they are the same kind of object and there is room.
 .reveal .nka .corr.big.tight { gap: 6px; margin-top: 4px;
-    .eq { font-size: 30px; }
+    .eq { font-size: 36px; }
     .nm.noise  { color: #BC4538; }
     .nm.signal { color: #3D5BA0; }
 }
