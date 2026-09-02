@@ -484,18 +484,26 @@
     display: flex; flex-direction: row; align-items: center; gap: 12px;
     canvas { flex: 0 0 250px; }
     > span { flex: 1 1 auto; text-align: left; }
-    > span.dpk { font-size: 28px; color: #BC4538; }
+    > span.dpk { font-size: 28px; color: #7A6F5C; }
     // quartic counts have no residual to draw: the slot is held at full size
     // and says so, rather than showing an empty bordered box that reads as a
     // missing figure.
     .dzero {
         flex: 0 0 250px; height: 250px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 46px; color: #BC4538;
+        font-size: 46px; color: #7A6F5C;
     }
 }
-// the header label belongs over the PANEL, not over the panel-plus-number
+// the header label belongs over the PANEL, not over the panel-plus-number.
+// The key rides with it: the difference panels use teal <-> cinnabar, a
+// DIFFERENT pairing from the cobalt <-> cinnabar of every covariance panel, so
+// an error can never be mistaken for a covariance. Stated once, here.
 .reveal .nka .mhead .mpix.dcol > span { flex: 0 0 250px; text-align: center; }
+.reveal .nka .ekey {
+    display: inline-block; width: 92px; height: 15px; vertical-align: middle;
+    margin-left: 10px; border: 1px solid #C5B89E;
+    background: linear-gradient(90deg, #3F8278 0%, #F7F0E1 50%, #BC4538 100%);
+}
 // the quartic row has no harmonic matrix by construction: hold the slot open
 // and draw nothing in it, so the two columns to its right stay aligned.
 .reveal .nka .mpix.nohar { height: 250px; }

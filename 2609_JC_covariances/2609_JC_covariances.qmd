@@ -623,7 +623,7 @@ people actually use.
       <div class="mpix"><span>\( {\rm Cov}(\tilde C_\ell,\tilde C_{\ell'}) \)</span></div>
       <div class="marrow"></div>
       <div class="mpix"><span>\( {\rm Cov}(\xi_i,\xi_j) \)</span></div>
-      <div class="mpix dcol"><span>&minus; exact</span></div>
+      <div class="mpix dcol"><span>&minus; exact <i class="ekey"></i></span></div>
     </div>
 
     <div class="mrow2 fragment">

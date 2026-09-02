@@ -630,14 +630,17 @@ function boot(){
     if(t >= 0){ var u = Math.pow(t,0.55); return [247-186*u, 240-149*u, 225-65*u]; }
     var u2 = Math.pow(-t,0.55); return [247-59*u2, 240-171*u2, 225-169*u2];
   }
-  //  Sequential ground -> cobalt: the positive branch of divergent(), on its
-  //  own. Anything that IS a covariance is drawn with this, so a red pixel
-  //  anywhere on the projection slides means ERROR and nothing else. Negative
-  //  correlation clamps to the ground -- see SEQFLOOR below for why that is
-  //  honest here rather than a lie.
-  function sequential(v){
-    var t = Math.max(0, Math.min(1, v)), u = Math.pow(t, 0.55);
-    return [247-186*u, 240-149*u, 225-65*u];
+  //  The ERROR map, for the difference panels only: teal <- cream -> cinnabar,
+  //  centred on zero. Covariances keep divergent() (cobalt/cinnabar), because
+  //  the projected Cov(xi_i, xi_j) genuinely goes to -0.5 -- that is real
+  //  anti-correlation at large separation, and a sequential ramp would clip it.
+  //  So the two families are told apart by HUE PAIRING rather than by red
+  //  alone: cobalt/cinnabar is a covariance, teal/cinnabar is an error. The
+  //  Delta column header carries the key.
+  function errmap(v){
+    var t = Math.max(-1, Math.min(1, v));
+    if(t >= 0){ var u = Math.pow(t,0.55); return [247-59*u, 240-171*u, 225-169*u]; }
+    var u2 = Math.pow(-t,0.55); return [247-184*u2, 240-110*u2, 225-105*u2];
   }
   function heat(cv, mat, scale){
     cv.width = NK; cv.height = NK;
@@ -657,7 +660,7 @@ function boot(){
   //  the NK x NK covariance and is left alone.
   function heatN(cv, mat, n, scale, mode){
     cv.width = n; cv.height = n;
-    var map = (mode === 'div') ? divergent : sequential;
+    var map = (mode === 'err') ? errmap : divergent;
     var ctx = cv.getContext('2d'), im = ctx.createImageData(n,n);
     for(var i=0;i<n;i++) for(var j=0;j<n;j++){
       var c = map(mat[i*n+j]/scale), o = 4*(i*n+j);
@@ -766,8 +769,8 @@ function boot(){
   function drawProj(root){
     var P = projSet(), q = function(c){ return root.querySelector('canvas.'+c); };
     function put(c, m, n, sc, md){ var cv = q(c); if(cv) heatN(cv, m, n, sc, md); }
-    //  covariances sequential, differences divergent -- red means error
-    //  HSC = 0.30: the harmonic correlation matrix is 1 on the diagonal and a
+    //  covariances cobalt/cinnabar; differences teal/cinnabar -- see errmap()
+    //  HSC = 0.18: the harmonic correlation matrix is 1 on the diagonal and a
     //  few tenths in the coupling band, so at unit scale the band that IS the
     //  whole point washes out. Saturating the diagonal costs nothing -- nobody
     //  needs to read "1" off a diagonal -- and buys the band.
@@ -790,7 +793,7 @@ function boot(){
   function dput(root, cls, m){
     var cv = root.querySelector('canvas.'+cls); if(!cv) return;
     var pk = 0; for(var i=0;i<m.length;i++){ var a = Math.abs(m[i]); if(a>pk) pk=a; }
-    heatN(cv, m, NTH, pk || 1, 'div');
+    heatN(cv, m, NTH, pk || 1, 'err');
     var lab = cv.parentNode.querySelector('.dpk');
     if(lab) lab.textContent = pk < 1e-9 ? 'exact' : '±' + pk.toFixed(2);
   }
