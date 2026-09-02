@@ -179,18 +179,16 @@ papers.
 ```{=html}
 <div class="nka" data-step="6" data-ledger-from="6" data-staged="1">
 <div class="eqs"></div>
-<svg class="pP" data-h="110" data-foot-at="1" viewBox="0 0 1730 300" width="1730" height="300"></svg>
+<svg class="pP" data-h="80" data-foot-at="1" viewBox="0 0 1730 252" width="1730" height="252"></svg>
 <div class="two lower">
   <div class="toycol">
-    <svg class="pMps" data-h="234" data-foot-at="1" data-x0="92" data-w="392"
-         viewBox="0 0 520 326" width="520" height="326"></svg>
-    <div class="toyfoot"></div>
+    <svg class="pMps" data-h="300" data-foot-at="1" data-x0="132" data-w="352"
+         viewBox="0 0 520 392" width="520" height="392"></svg>
   </div>
   <div class="figblock">
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo power spectrum">
     <div class="figside">
       <span class="src">Wolz et al., arXiv:2607.14843 — Fig. 1</span>
-      <div class="figtitle">the same shape, in Quaia</div>
       <p class="verbatim">Mask pseudo power spectrum for the <i>Quaia</i> survey mask, comparing catalogue- and mask-based estimators. At the catalogue level, the constant shot noise floor (\(\tilde{N}_w\)) is reached at scales far below the mean interparticle scale (\(\theta_{\rm c}\)).</p>
     </div>
   </div>
@@ -210,19 +208,19 @@ slides. What breaks is upstream.
 
 So ask the simplest question you can ask about a mask: what is its own power spectrum? Bottom
 left. Uniform random positions, and I am just summing e-to-the-minus-i-k-x over the sources I
-drew. It is flat. At every k the phases of a hundred and sixty deltas point in random
+drew. It is flat. At every k the phases of three hundred deltas point in random
 directions, so they add *incoherently* — the sum is a random walk, and its square is the number
-of sources. That is the shot-noise floor, sigma w-i squared, and it is reached almost
-immediately, an order of magnitude in k below pi over theta-c.
+of sources. That is the shot-noise floor, N-w-tilde, the sum of w-i squared over four pi, and it
+is reached almost immediately, an order of magnitude in k below pi over theta-c.
 
 Now drop a real footprint on it — edges, and a few holes. Sources inside the gaps simply do not
 exist; there is nothing else to remove. Watch the low k. Below the inverse footprint scale the
 deltas are no longer randomly placed: they are all sitting inside the same window, their phases
 line up, and they add *coherently*. The sum stops being a random walk and starts tracing the
-footprint, so the spectrum lifts off the floor — and by k of about ten it has fallen back onto the floor
+footprint, so the spectrum lifts off the floor — and by k of about fifteen it has fallen back onto the floor
 again, ten times below pi over theta-c. Red rise, white floor. That is the shape on the right,
-in Quaia, from the paper. Ours is a decade; theirs is six, and the only difference is the number
-of sources — the rise is capped at N times the coverage, and Quaia has millions.
+in Quaia, from the paper. Ours is a decade and a half; theirs is six, and the only difference is
+the number of sources — the rise cannot exceed N, and Quaia has millions.
 
 Two things about that floor. First, it is the same object twice. The data's white floor is the
 sum of w-i squared a-i squared over four pi — the values at the source positions — and you can
@@ -234,32 +232,46 @@ additive downstream — it becomes a convolutional problem for the data. That is
 band-limit the mask rather than to subtract its floor.
 :::
 
-## Products of delta functions are zero or infinite {.nka-slide}
+## Band-limit the mask {.nka-slide}
 
 ```{=html}
-<div class="nka" data-step="7" data-ledger-from="7">
-<svg class="pProd" data-x0="90" data-w="1560" viewBox="0 0 1730 268" width="1730" height="268"></svg>
-<svg class="pCloud" data-h="115" data-x0="90" data-w="1560" viewBox="0 0 1730 200" width="1730" height="200"></svg>
-<div class="ctl-slider inline">
-  <label>Gaussian cloud <input type="range" data-var="thc" min="0" max="420" value="0"></label>
+<div class="nka" data-step="7" data-ledger-from="6">
+<div class="eqs"></div>
+<div class="ctl-slider cloud">
+  <label>cloud size <input type="range" data-var="thc" min="0" max="140" value="0">
+    <span class="val"></span></label>
 </div>
+<svg class="pP" data-h="80" data-foot-at="0" data-cloud="1"
+     viewBox="0 0 1730 252" width="1730" height="252"></svg>
+<svg class="pMps" data-h="316" data-foot-at="0" data-cloud="1" data-x0="132" data-w="1560"
+     viewBox="0 0 1730 404" width="1730" height="404"></svg>
 </div>
 ```
 
 ::: {.notes}
-The covariance needs products of masks — Ξ of w_a w_c. For catalogues those products do not
-exist. Two different catalogues never put a source in the same place, so the product is zero
-everywhere. And one catalogue against itself is worse: every source lands exactly on itself, so
-the product is a delta squared, which diverges. Both ways, a dead end — and that sentence is the
-whole motivation for the paper.
+So the mask has a floor. You cannot subtract it, because the mask spectrum is not the
+measurement — it is the machinery that the measurement is deconvolved with, and an additive
+floor in the machinery is a convolutional problem in the data. What you can do is get rid of it.
 
-The fix is to stop pretending you know where a source is to infinite precision. Give each one a
-Gaussian cloud of finite size — band-limit the mask — and the products become ordinary finite
-numbers. Turn the knob. The sweet spot is around the mean source spacing, which is the
-resolution you had all along; it gives the catalogue mask the band-limit a pixel mask always
-secretly had, chosen at a scale that means something instead of at an arbitrary pixel size.
-Note what kind of move this is: θ_c is a choice, not a derivation. They justify it by showing
-the answer plateaus over a wide range of it.
+Where does the floor come from? From pretending you know where a source is to infinite
+precision. A delta function has power at every k, all the way up, forever. So stop pretending:
+give each source a Gaussian cloud of size theta-c. In real space the comb blooms; overlapping
+clouds merge, and the mask becomes an ordinary continuous window again. In harmonic space that
+is a multiplication by the cloud's transform, e to the minus k squared theta-c squared — and
+watch what it does. The coherent part at low k, which is the actual footprint, is untouched. The
+white floor above pi over theta-c is cut off. The thing you wanted gone is gone and the thing
+you wanted kept is kept.
+
+Drag it and find the sweet spot: about the mean source spacing. Which is the honest statement of
+what has happened here. A pixel mask was always band-limited too — at the pixel scale, which is
+an arbitrary number you inherited from whoever made the map. Here the band-limit is a parameter,
+and you get to set it at the scale that actually means something: the resolution the catalogue
+had all along. Note what kind of move this is, though: theta-c is a choice, not a derivation.
+They justify it by showing the answer plateaus over a wide range of it.
+
+And once the mask is a smooth function again, everything from the first half of the talk starts
+working: mask products are finite, the coupling kernels exist, the narrow-kernel approximation
+has something to be narrow about.
 :::
 
 ## Self-pairs are exactly white {.nka-slide}
@@ -274,17 +286,12 @@ the answer plateaus over a wide range of it.
 </div>
 <div class="corr">
   <div class="fragment">
-    <span class="nm">correction 1 — band-limit the mask</span>
-    <span class="eq">\( w(x)=\sum_i w_i\,\delta(x-x_i) \;\longrightarrow\; \bar w(x)=\sum_i w_i\,G_{\theta_{\rm c}}(x-x_i) \)</span>
-    <span class="note">every source becomes a cloud, so mask products are finite.</span>
-  </div>
-  <div class="fragment">
-    <span class="nm">correction 2 — take the self-pairs back out</span>
+    <span class="nm">take the self-pairs back out</span>
     <span class="eq">\( \mathcal{W}_{ac}\;\equiv\;\bar w_a\bar w_c-\delta_{ac}\,\overline{w_a^{2}} \)</span>
     <span class="note">leave the self-pairs in and they are counted twice. \(\overline{w^2}\) is its own catalogue field: the transform of the <i>squared</i> cloud, not the square of the transform.</span>
   </div>
   <div class="fragment">
-    <span class="nm">correction 3 — and back in, exactly</span>
+    <span class="nm">and back in, exactly</span>
     <span class="eq">\( {\rm Cov}\;\simeq\;\underbrace{\bar C\,\bar C\;\Xi\big(\mathcal{W},\mathcal{W}\big)}_{\rm sig\times sig}\;+\;\underbrace{2\,\bar C\;\Xi\big(\mathcal{W},\,\overline{(aw)^2}\big)}_{\rm sig\times noise}\;+\;\underbrace{\Xi\big(\overline{(aw)^2},\,\overline{(aw)^2}\big)}_{\rm noise\times noise} \)</span>
     <span class="note">the approximation carries only the distinct pairs; everything involving a self-pair is exact.</span>
   </div>

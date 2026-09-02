@@ -209,16 +209,13 @@
 // the Wolz figure is the evidence on this slide, so it gets the height and the
 // caption column is squeezed to whatever is left
 .reveal .nka .two.lower > .figblock { gap: 22px; }
-.reveal .nka .two.lower .figblock img { height: 428px; }
+.reveal .nka .two.lower .figblock img { height: 500px; }
 .reveal .nka .two.lower .figside { min-width: 300px; }
-// the bridge to the covariance slide; in HTML rather than inside the SVG so it
-// can wrap inside the column instead of running off the panel
-.reveal .nka .toyfoot {
-    font-size: 26px;
-    line-height: 1.32;
-    color: #1B1611;
-    margin: 4px 0 0 92px;
-    max-width: 424px;
+// the band-limit slide's theta_c control, top right beside the ledger
+.reveal .nka .ctl-slider.cloud {
+    top: 84px; font-size: 28px;
+    input[type=range] { width: 340px; }
+    .val { color: #1B1611; min-width: 340px; }
 }
 .reveal .nka .figblock {
     flex: 1;
