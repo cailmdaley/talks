@@ -1652,9 +1652,13 @@ function boot(){
       txtsub(s, (x1+x2)/2 - 14, y + 44, 'θ', label, '',
              {fill:col,'font-size':32,'font-style':'italic'});
     }
-    function ring(u, vi, col, tag, dx){
+    //  On the self-pair beat the label is one string, "a = c", set above the
+    //  zero-separation loop rather than beside the ring: as two labels either
+    //  side of the circle the equals sign landed on the circle itself.
+    function ring(u, vi, col, tag, dx, hi){
       el(s,'circle',{cx:PX(u),cy:PY(X.av[vi]),r:13,fill:'none',stroke:col,'stroke-width':4});
-      txt(s, PX(u)-8+(dx||0), PY(X.av[vi])-32, tag, {fill:col,'font-size':32,
+      var ty = hi ? mid - 92 : PY(X.av[vi]) - 32;
+      txt(s, PX(u)-(hi?34:8)+(dx||0), ty, tag, {fill:col,'font-size':32,
               'font-style':'italic','font-weight':600});
     }
     function link(u1, u2, col, lift, dash, tag, tpos, op){
@@ -1692,15 +1696,13 @@ function boot(){
     }
 
     if(st >= 1){
-      ring(a, P1[0], ACC, 'a', -26); ring(b, P1[1], ACC, 'b', 26);
+      var tagA = selfPair ? 'a = c' : 'a', tagB = selfPair ? 'b = d' : 'b';
+      ring(a, P1[0], ACC, tagA, selfPair ? -18 : -26, selfPair);
+      ring(b, P1[1], ACC, tagB, selfPair ?  18 :  26, selfPair);
       bracket(a, b, mid + 112, ACC, 'i');
     }
     //  the degenerate beat: the same two sources standing in for c and d
     if(selfPair){
-      txt(s, PX(a)-8+26, PY(X.av[P1[0]])-32, '= c', {fill:ACC,'font-size':30,
-              'font-style':'italic',opacity:0.8});
-      txt(s, PX(b)-8+62, PY(X.av[P1[1]])-32, '= d', {fill:ACC,'font-size':30,
-              'font-style':'italic',opacity:0.8});
       //  a with a and b with b: zero separation, drawn as a loop on the source
       el(s,'circle',{cx:PX(a),cy:mid-56,r:20,fill:'none',stroke:TEAL,'stroke-width':3.2});
       el(s,'circle',{cx:PX(b),cy:mid-56,r:20,fill:'none',stroke:TEAL,'stroke-width':3.2});
