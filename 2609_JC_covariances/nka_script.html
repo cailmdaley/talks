@@ -1394,9 +1394,11 @@ function boot(){
   }
 
   // ---------- render one slide ----------
-  //  The approximation, said once in words where it is introduced.
-  var SAY_NKA = 'assume the kernel is narrow compared to the features of C(k) — ' +
-                'then C barely varies across it, and comes out of the sum';
+  //  The NKA used to carry a sentence under the ledger saying what the
+  //  approximation assumes. The entry names now carry it, and a sentence that
+  //  restates the equation beside it is the gloss this deck keeps cutting; it
+  //  lives in the speaker notes. Slides that hard-code their own .saywhat (the
+  //  self-pair slide) still have one.
   var COST = {4:'<i>O</i>(k<sub>max</sub><sup>6</sup>)',
               5:'<i>O</i>(k<sub>max</sub><sup>3</sup>) — same as the estimator'};
   //  A slide may advance its ledger with a reveal fragment: data-frag-step is the
@@ -1426,13 +1428,8 @@ function boot(){
     // at the last beat), so renderOne must not overwrite it.
     var eqs = q('.eqs');
     if(eqs) ledger(eqs, step, +root.dataset.ledgerFrom || 0, stage);
-    // .saywhat is auto-filled only where the script owns the words (the NKA
-    // slide); slides that hard-code their own line keep it.
-    var say = q('.saywhat');
-    if(say && !say.dataset.own) say.textContent = (step === 5) ? SAY_NKA : '';
     var cost = q('.cost');
     if(cost) cost.innerHTML = COST[step] || '';
-    // reserve the top-right for the cost label so the ledger cannot wrap under it
     root.classList.toggle('has-cost', !!COST[step]);
     var pk = q('.pick'); if(pk) picker(pk);
 
@@ -1538,8 +1535,6 @@ function boot(){
       var st = effectiveStep(r);
       var eqs = r.querySelector('.eqs');
       if(eqs) ledger(eqs, st, +r.dataset.ledgerFrom || 0);
-      var say = r.querySelector('.saywhat');
-      if(say && !say.dataset.own) say.textContent = (st === 5) ? SAY_NKA : '';
       var cost = r.querySelector('.cost');
       if(cost){ cost.innerHTML = COST[st] || ''; }
       r.classList.toggle('has-cost', !!COST[st]);

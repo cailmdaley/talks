@@ -120,8 +120,9 @@
     }
 }
 
-// the running cost annotation, pinned to the top right
-.reveal .nka.has-cost .eqs { padding-right: 560px; }
+// the cost annotation used to sit at the top right and needed the ledger kept
+// clear of it; it lives beside the matrix row now, so the ledger gets the
+// full width -- which the narrow-kernel block needs for its second row.
 
 // the mask slide: two columns
 .reveal .nka .two { display: flex; gap: 40px; align-items: flex-start; }

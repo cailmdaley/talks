@@ -150,7 +150,6 @@ And you invert it. But not mode by mode: the mask does not only smear modes, it 
 <div class="nka" data-step="4" data-frag-step="5" data-ledger-from="4">
 <div class="eqs"></div>
 <div class="cost"></div>
-<div class="saywhat"></div>
 <div class="pick"></div>
 <div class="mrow">
   <div class="mcell"><canvas style="width:400px;height:400px"></canvas>
