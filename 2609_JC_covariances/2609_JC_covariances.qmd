@@ -201,17 +201,17 @@ papers.
 ```{=html}
 <div class="nka" data-step="6" data-ledger-from="6" data-staged="1">
 <div class="eqs"></div>
-<svg class="pP" data-h="80" data-foot-at="2" viewBox="0 0 1730 238" width="1730" height="238"></svg>
+<svg class="pP" data-h="80" data-foot-at="0" viewBox="0 0 1730 238" width="1730" height="238"></svg>
 <div class="two lower">
   <div class="toycol fragment" data-fragment-index="0">
-    <svg class="pMps" data-h="345" data-foot-at="2" data-x0="132" data-w="352"
+    <svg class="pMps" data-h="345" data-foot-at="0" data-x0="132" data-w="352"
          viewBox="0 0 520 437" width="520" height="437"></svg>
     <div class="eqblock nwdef">
       <span class="nm">mask shot noise</span>
       <span class="eq">\( \tilde N_w=\tfrac{1}{4\pi}\sum_i w_i^2 \)</span>
     </div>
   </div>
-  <div class="figblock fragment" data-fragment-index="2">
+  <div class="figblock fragment" data-fragment-index="1">
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo power spectrum">
     <div class="figside">
       <span class="src">Wolz et al., arXiv:2607.14843 — Fig. 1</span>
@@ -219,7 +219,6 @@ papers.
     </div>
   </div>
 </div>
-<div class="fragment" data-fragment-index="1" style="height:0"></div>
 </div>
 ```
 
@@ -258,7 +257,7 @@ additive downstream — it becomes a convolutional problem for the data. That is
 band-limit the mask rather than to subtract its floor.
 :::
 
-## Band-limit the mask {.nka-slide}
+## Band-limiting the mask {.nka-slide}
 
 ```{=html}
 <div class="nka" data-step="6" data-ledger-from="6">
@@ -328,7 +327,7 @@ working: mask products are finite, the coupling kernels exist, the narrow-kernel
 has something to be narrow about.
 :::
 
-## Self-pairs are exactly white {.nka-slide}
+## Now the covariance: splitting the pairs {.nka-slide}
 
 ```{=html}
 <div class="nka" data-step="8" data-ledger-from="8" data-staged="1">

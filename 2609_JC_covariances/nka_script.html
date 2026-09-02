@@ -120,6 +120,18 @@ function boot(){
   var INK='#1B1611', MUT='#7A6F5C', ACC='#BC4538', COB='#3D5BA0',
       TEAL='#3F8278', RULE='#C5B89E', FAINT='#C5B89E', GRID='#E0D5BF';
 
+  //  grey -> blue by the local mask value, for the source dots on the
+  //  catalogue slides: a source at the apodised edge is half-observed and is
+  //  drawn half-way between the two colours.
+  function mixHex(a, b, t){
+    t = Math.max(0, Math.min(1, t));
+    function ch(h, i){ return parseInt(h.substr(1 + 2*i, 2), 16); }
+    var r = Math.round(ch(a,0) + t*(ch(b,0)-ch(a,0))),
+        g = Math.round(ch(a,1) + t*(ch(b,1)-ch(a,1))),
+        bl= Math.round(ch(a,2) + t*(ch(b,2)-ch(a,2)));
+    return 'rgb(' + r + ',' + g + ',' + bl + ')';
+  }
+
   // A pronounced bump gives two regimes: the smooth part, where the NKA holds,
   // and the bump, where it does not.
   function Cfun(k){ var a = Math.abs(k);
@@ -938,11 +950,23 @@ function boot(){
     for(var j=0;j<NX;j++) d += (j?'L':'M')+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(mid-field[j]*h*0.42).toFixed(1)+' ';
     el(s,'path',{d:d,fill:'none',stroke:FAINT,'stroke-width':2});
     txt(s, Math.max(PAD-82,2), mid+9, 'a(x)', {fill:MUT});
-    // the sources: sampled values of the field
-    for(var i=0;i<SRC.length;i++){
-      var xg = Math.min(NX-1, Math.floor(SRC[i]*NX)), v = field[xg];
-      var X = PAD + AW*SRC[i], Y = mid - v*h*0.42;
-      el(s,'circle',{cx:X,cy:Y,r:3.2+5*Math.abs(v),fill:INK,opacity:0.85});
+    if(opts.foot) txt(s, PAD+AW-440, y0+16,
+                      SRC.length + ' of ' + CAT.xs.length + ' sources observed', {fill:MUT});
+    //  Every source in the catalogue is drawn, coloured by how much of it the
+    //  survey actually sees: grey outside the footprint, the footprint's own
+    //  blue inside, and graded across the apodised edges. Nothing appears or
+    //  disappears -- the mask is a weight on a catalogue that was always there.
+    //  Always the footprint's blue, never the band-limited slide's red: the
+    //  a(x) row is identical on both catalogue slides, and only the comb below
+    //  it changes colour when the mask becomes w-bar.
+    var DOT = COB;
+    for(var i=0;i<CAT.xs.length;i++){
+      var xg = Math.min(NX-1, Math.floor(CAT.xs[i]*NX)), v = field[xg];
+      var X = PAD + AW*CAT.xs[i], Y = mid - v*h*0.42;
+      var wv = opts.foot ? footAt(CAT.xs[i]) : 1;
+      el(s,'circle',{cx:X,cy:Y,r:3.2+5*Math.abs(v),
+                     fill: opts.foot ? mixHex('#C5B89E', DOT, wv) : INK,
+                     opacity:0.9});
     }
     // the same sources, as the mask: a comb of deltas
     var by = y0 + h + 62;
@@ -986,7 +1010,8 @@ function boot(){
     }
     txt(s, Math.max(PAD-88,2), by+9, opts.cloud ? 'w̄(x)' : 'w(x)',
         {fill: opts.cloud ? ACC : COB});
-    txt(s, PAD+AW-360, y0+18, SRC.length + ' sources', {fill:MUT});
+
+
 
     //  The cloud scale: theta_c drawn as the MEAN interparticle spacing, 1/N,
     //  and the bar parked on the real gap closest to that length so it spans
