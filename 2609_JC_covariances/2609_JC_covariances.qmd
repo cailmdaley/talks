@@ -215,7 +215,7 @@ papers.
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo power spectrum">
     <div class="figside">
       <span class="src">Wolz et al., arXiv:2607.14843 — Fig. 1</span>
-      <p class="verbatim">Mask pseudo power spectrum for the <i>Quaia</i> survey mask, comparing catalogue- and mask-based estimators. At the catalogue level, the constant shot noise floor (\(\tilde{N}_w\)) is reached at scales far below the mean interparticle scale (\(\theta_{\rm c}\)).</p>
+      <p class="verbatim caption">Mask pseudo power spectrum for the <i>Quaia</i> survey mask, comparing catalogue- and mask-based estimators. At the catalogue level, the constant shot noise floor (\(\tilde{N}_w\)) is reached at scales far below the mean interparticle scale (\(\theta_{\rm c}\)).</p>
     </div>
   </div>
 </div>
@@ -274,6 +274,10 @@ band-limit the mask rather than to subtract its floor.
     <div class="eqblock">
       <span class="nm">band-limited mask</span>
       <span class="eq">\( \bar w(x)=\sum_i w_i\,G_{\theta_{\rm c}}(x-x_i) \)</span>
+    </div>
+    <div class="eqblock">
+      <span class="nm">cloud</span>
+      <span class="eq">\( G_{\theta_{\rm c}}(x)=\dfrac{e^{-x^{2}/2\theta_{\rm c}^{2}}}{\sqrt{2\pi}\,\theta_{\rm c}} \)</span>
     </div>
     <div class="ctl-slider inline cloud">
       <label>cloud size <input type="range" data-var="thc" min="0" max="140" value="0">
@@ -339,12 +343,14 @@ has something to be narrow about.
 </div>
 <div class="corr big">
   <div class="fragment" data-fragment-index="1">
-    <span class="nm">distinct-pair mask product</span>
-    <span class="eq">\( \mathcal{W}(x)\;\equiv\;\bar w^{2}(x)\;-\;\textstyle\sum_i w_i^{2}\,G^{2} \)</span>
+    <span class="nm">self-pair field</span>
+    <span class="eq">\( n(x)\;\equiv\;\textstyle\sum_i w_i^{2}\,\langle a_i^{2}\rangle\,G^{2}(x-x_i)\;=\;\langle a^{2}\rangle\,\textstyle\sum_i w_i^{2}\,G^{2}(x-x_i) \)</span>
+    <span class="eq">\( \langle a^{2}\rangle=\textstyle\sum_\ell C_\ell \)</span>
   </div>
   <div class="fragment" data-fragment-index="2">
-    <span class="nm">self-pair field</span>
-    <span class="eq">\( n(x)\;\equiv\;\textstyle\sum_i w_i^{2}\,a_i^{2}\,G^{2} \)</span>
+    <span class="nm">distinct-pair mask product</span>
+    <span class="eq">\( \mathcal{W}(x)\;\equiv\;\bar w^{2}(x)\;-\;\textstyle\sum_i w_i^{2}\,G^{2}(x-x_i) \)</span>
+    <span class="eq">\( \phantom{\mathcal{W}(x)}\;=\;\textstyle\sum_{i\neq j} w_iw_j\,G(x-x_i)\,G(x-x_j) \)</span>
   </div>
   <div class="fragment" data-fragment-index="3">
     <span class="nm">catalogue covariance</span>
@@ -373,19 +379,22 @@ left. The self-pairs all sit at zero separation, and their height is the varianc
 a point: the integral of the whole power spectrum. Now transform. A spike at zero lag is a flat
 line at every k. So the self-pair term behaves algebraically exactly like white noise.
 
-And white noise is the one thing this machinery already handles exactly. So: take the self-pairs
-out of the mask product — that is the first line, w-bar squared minus the self-pair sum, and if
-you leave them in they are counted twice. Note what that subtracted piece is: it is its own
-catalogue field, the transform of the *squared* cloud, not the square of the transform, because
-squaring a Gaussian halves its width.
+And white noise is the one thing this machinery already handles exactly.
 
-Then put them back, with the data in them. The second line is the same sum with a-i squared
-inside it — the local variance map. It is the data's shot-noise floor, the same object as
-N-w-tilde on the mask slide with the values put back.
+So, first line: name the self-pair piece. It is the same sum, with the data in it — the local
+variance map — and for a field of constant variance it factorises into the variance at a point
+times the self-pair half of the mask product. That variance at a point is the integral of the
+spectrum, which is the height of the spike you just saw. Same object.
 
-And then the covariance is three terms: signal against signal, signal against noise, noise
-against noise. Only the first carries the approximation. Everything with a self-pair in it is
-exact.
+Second line: take the self-pairs *out* of the mask product, or they are counted twice. What is
+left is exactly the distinct-pair sum. And note what the subtracted piece is: its own catalogue
+field, the transform of the *squared* cloud, not the square of the transform, because squaring a
+Gaussian halves its width.
+
+Third line, and this is the whole point: the narrow-kernel approximation from the first half of
+the talk, applied to the distinct-pair product and to nothing else. Three terms — signal against
+signal, signal against noise, noise against noise. Only the first carries the approximation.
+Everything with a self-pair in it is exact.
 
 Two things worth saying out loud. This term is there even for a perfectly noiseless field — it
 is the variance of the field at a point, and it is what penalises sparse samples with bigger
@@ -400,7 +409,7 @@ be removed — and why the *mask's* floor, which feeds the coupling machinery ra
 measurement, had to be band-limited away instead.
 :::
 
-## Noise-dominated: the exact term carries it {.nka-slide}
+## Cosmic shear validation {.nka-slide}
 
 ```{=html}
 <div class="nka" data-step="9" data-ledger-from="9">
@@ -433,7 +442,7 @@ back to real space: a small error spread across the off-diagonals in harmonic sp
 stay small when you sum over multipoles to get xi-plus and xi-minus. That is the second paper.
 :::
 
-## Signal-dominated: the approximation carries it {.nka-slide}
+## Galaxy clustering validation {.nka-slide}
 
 ```{=html}
 <div class="nka" data-step="9" data-ledger-from="9">
@@ -554,28 +563,40 @@ That linearity is what makes the next slide inevitable.
 ## The projection sums over every off-diagonal {.nka-slide}
 
 ```{=html}
-<div class="nka" data-frag-step="5">
+<div class="nka" data-step="10">
   <div class="corr big">
-    <div>
-      <span class="nm">a linear map in, so the covariance is a <i>double</i> sum</span>
-      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;\propto\;\sum_{\ell}\sum_{\ell'}\big[P_{\ell+1}-P_{\ell-1}\big]_i\,\big[P_{\ell'+1}-P_{\ell'-1}\big]_j\;{\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big) \)
-        <span class="tag">\( \mathcal{O}(\ell_{\rm max}^{6}) \)</span></span>
+    <div class="withpic">
+      <div class="txt">
+        <span class="nm">a linear map in, so the covariance is a <i>double</i> sum</span>
+        <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;\propto\;\sum_{\ell}\sum_{\ell'}\big[P_{\ell+1}-P_{\ell-1}\big]_i\,\big[P_{\ell'+1}-P_{\ell'-1}\big]_j\;{\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big) \)
+          <span class="tag">\( \mathcal{O}(\ell_{\rm max}^{6}) \)</span></span>
+      </div>
+      <svg class="pSand" data-h="196" viewBox="0 0 330 290" width="330" height="290"></svg>
     </div>
   </div>
   <div class="menu wide">
-    <div class="fragment">
-      <span class="nm">f<sub>sky</sub> (Knox)</span>
-      <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\delta^K_{\ell\ell'}\,\dfrac{2\,C_\ell^{2}}{(2\ell+1)\,f_{\rm sky}} \)</span>
-      <span class="note">pretend the mask deletes modes but never couples them: diagonal, divided by the sky fraction.</span>
+    <div class="fragment withpic">
+      <div class="txt">
+        <span class="nm">f<sub>sky</sub> (Knox)</span>
+        <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\delta^K_{\ell\ell'}\,\dfrac{2\,C_\ell^{2}}{(2\ell+1)\,f_{\rm sky}} \)</span>
+        <span class="note">pretend the mask deletes modes but never couples them: diagonal, divided by the sky fraction.</span>
+      </div>
+      <div class="pic"><canvas class="cFsky"></canvas><span>\( \ell,\ell' \)</span></div>
     </div>
-    <div class="fragment">
-      <span class="nm">iNKA</span>
-      <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\dfrac12\Big(\dfrac{\tilde C_\ell+\tilde C_{\ell'}}{\langle w^2\rangle}\Big)^{2}\Big|\textstyle\sum_x w^2(x)\,e^{-i(\ell-\ell')x}\Big|^{2} \)</span>
+    <div class="fragment withpic">
+      <div class="txt">
+        <span class="nm">iNKA</span>
+        <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\dfrac12\Big(\dfrac{\tilde C_\ell+\tilde C_{\ell'}}{\langle w^2\rangle}\Big)^{2}\Big|\textstyle\sum_x w^2(x)\,e^{-i(\ell-\ell')x}\Big|^{2} \)</span>
+      </div>
+      <div class="pic"><canvas class="cInka"></canvas><span>\( \ell,\ell' \)</span></div>
     </div>
-    <div class="fragment">
-      <span class="nm">quartic counts (Schneider; Shirasaki)</span>
-      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;=\;\dfrac{1}{N_{{\rm pair},i}N_{{\rm pair},j}}\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\,\dfrac{\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})}{2} \)</span>
-      <span class="note">no \(\ell\) anywhere: the window is <b>counted</b>, not modelled.</span>
+    <div class="fragment withpic">
+      <div class="txt">
+        <span class="nm">quartic counts (Schneider; Shirasaki)</span>
+        <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;=\;\dfrac{1}{N_{{\rm pair},i}N_{{\rm pair},j}}\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\,\dfrac{\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})}{2} \)</span>
+        <span class="note">no \(\ell\) anywhere: the window is <b>counted</b>, not modelled.</span>
+      </div>
+      <div class="pic"><canvas class="cQuar"></canvas><span>\( \theta_i,\theta_j \)</span></div>
     </div>
   </div>
 </div>

@@ -274,11 +274,7 @@
 .reveal .nka .figside {
     flex: 1 1 auto;
     min-width: 420px;
-    font-size: 29px;
-    line-height: 1.34;
     color: #7A6F5C;
-
-    p { margin: 0 0 14px 0; }
     b { color: #1B1611; font-weight: 600; }
     .figtitle {
         font-size: 28px;
@@ -316,17 +312,23 @@
     color: #C5B89E;
     margin-bottom: 6px;
 }
-.reveal .nka .papercap {
-    flex: 0 0 470px;
-    font-size: 23px;
-    line-height: 1.4;
-    color: #7A6F5C;
+// ONE caption size for the whole deck. Every verbatim quotation from a paper
+// -- the Quaia figure's, both simulation figures', the N3 pair -- inherits it,
+// so the size is set here and nowhere else. 28px: the readability floor for
+// body text on this stage is around 26, and a caption is read, not glanced at.
+.reveal .nka .caption,
+.reveal .nka .papercap,
+.reveal .nka .figside .verbatim {
+    font-size: 28px;
+    line-height: 1.34;
+    color: #1B1611;
     text-align: left;
+    max-width: 900px;
 
     i { font-style: italic; }
+    p { margin: 0 0 14px 0; }
 }
-// W1's caption column quotes the paper verbatim
-.reveal .nka .figside .verbatim { color: #1B1611; }
+.reveal .nka .papercap { flex: 0 0 470px; }
 
 .reveal .nka .mrow { display: flex; gap: 26px; align-items: flex-start; }
 
@@ -413,11 +415,32 @@
 // column per row gives every equation the slide's full width at ledger size.
 .reveal .nka .menu.wide {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
     > div { min-height: 0; padding: 6px 18px; }
     .nm { font-size: 26px; }
-    .eq { font-size: 34px; margin: 4px 0 2px 0; }
+    .eq { font-size: 31px; margin: 4px 0 2px 0; }
     .note { font-size: 27px; }
+}
+
+// Each method carries its own picture on the right, inside its own row, so the
+// illustration is aligned with its equation for free and arrives on the same
+// fragment. The matrices are drawn from the toy: f_sky is a bare diagonal,
+// iNKA is the banded matrix from the covariance slide, and quartic counts is
+// an ANGULAR matrix -- there is no harmonic one to draw, which is the point.
+.reveal .nka .menu.wide > div.withpic,
+.reveal .nka .corr.big > div.withpic {
+    //  the selector has to out-specify `.reveal .nka .menu > div`, which sets
+    //  flex-direction: column
+    display: flex; flex-direction: row; align-items: center; gap: 26px;
+
+    > .txt { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+    > .pic { flex: 0 0 132px; text-align: center; }
+    > svg  { flex: 0 0 330px; }
+    canvas {
+        width: 132px; height: 132px; display: block;
+        image-rendering: pixelated; border: 1px solid #C5B89E; box-shadow: none;
+    }
+    .pic > span { display: block; font-size: 23px; color: #7A6F5C; margin-top: 3px; }
 }
 
 // the cost, riding along with the equation it prices rather than on its own line

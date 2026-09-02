@@ -625,6 +625,105 @@ function boot(){
   }
   //  Shown as correlation matrices, Cov / sqrt(diag diag), so the band stays
   //  visible at every k instead of being swamped by C(k)^2.
+  //  N2 -- the projection slide's illustrations. One glance per method, in the
+  //  same divergent palette as the covariance slide's matrices.
+  //
+  //  heatN is heat() for a matrix of any size; heat() itself is hard-wired to
+  //  the NK x NK covariance and is left alone.
+  function heatN(cv, mat, n, scale){
+    cv.width = n; cv.height = n;
+    var ctx = cv.getContext('2d'), im = ctx.createImageData(n,n);
+    for(var i=0;i<n;i++) for(var j=0;j<n;j++){
+      var c = divergent(mat[i*n+j]/scale), o = 4*(i*n+j);
+      im.data[o]=c[0]; im.data[o+1]=c[1]; im.data[o+2]=c[2]; im.data[o+3]=255;
+    }
+    ctx.putImageData(im,0,0);
+  }
+
+  //  Cov(xi_i, xi_j) in angular bins, got the honest way: the EXACT harmonic
+  //  covariance sandwiched between two transform kernels, which is the paper's
+  //  eq. 12 with the 1D analogue of [P_{l+1}-P_{l-1}]. In one dimension
+  //  xi(theta) = sum_k 2 C_k cos(2 pi k theta), so the kernel is a cosine,
+  //  bin-averaged. This is what quartic counts compute -- the same number by a
+  //  configuration-space route -- so it stands in for them.
+  var NTH = 26, XICOV = null;
+  function projKernel(){
+    var T = new Float64Array(NTH*NK), i, ki;
+    for(i=0;i<NTH;i++){
+      var th = (i+0.5)/NTH*0.05;
+      for(ki=0;ki<NK;ki++) T[i*NK+ki] = 2*Math.cos(2*Math.PI*(KLO+ki)*th);
+    }
+    return T;
+  }
+  function covXi(){
+    if(XICOV) return XICOV;
+    var T = projKernel(), M = new Float64Array(NTH*NK), out = new Float64Array(NTH*NTH),
+        i, j, a, b;
+    for(i=0;i<NTH;i++) for(b=0;b<NK;b++){
+      var acc = 0;
+      for(a=0;a<NK;a++) acc += T[i*NK+a]*covE[a*NK+b];
+      M[i*NK+b] = acc;
+    }
+    var mx = 0;
+    for(i=0;i<NTH;i++) for(j=0;j<NTH;j++){
+      var v = 0;
+      for(b=0;b<NK;b++) v += M[i*NK+b]*T[j*NK+b];
+      out[i*NTH+j] = v;
+    }
+    //  correlation, not covariance: the diagonal spans orders of magnitude and
+    //  the point is the off-diagonal STRUCTURE
+    var d = new Float64Array(NTH);
+    for(i=0;i<NTH;i++) d[i] = Math.sqrt(Math.abs(out[i*NTH+i])) || 1;
+    for(i=0;i<NTH;i++) for(j=0;j<NTH;j++) out[i*NTH+j] /= d[i]*d[j];
+    XICOV = out; return out;
+  }
+
+  function drawProj(root){
+    var cf = root.querySelector('canvas.cFsky'),
+        ci = root.querySelector('canvas.cInka'),
+        cq = root.querySelector('canvas.cQuar');
+    if(!cf || !ci || !cq) return;
+    var d = new Float64Array(NK), i, j, q;
+    for(i=0;i<NK;i++) d[i] = Math.sqrt(covE[i*NK+i]);
+    //  f_sky: a diagonal and nothing else -- that IS the approximation
+    var F = new Float64Array(NK*NK);
+    for(i=0;i<NK;i++) F[i*NK+i] = 1;
+    heatN(cf, F, NK, 1);
+    //  iNKA: the banded matrix from the covariance slide, same normalisation
+    var N2 = new Float64Array(NK*NK);
+    for(i=0;i<NK;i++) for(j=0;j<NK;j++) N2[i*NK+j] = covN[i*NK+j]/(d[i]*d[j]);
+    heatN(ci, N2, NK, 1);
+    //  quartic counts: no harmonic matrix at all -- an angular one
+    heatN(cq, covXi(), NTH, 1);
+  }
+
+  //  The Legendre sandwich: the exact harmonic covariance with the oscillating
+  //  transform kernel drawn along its top and left edges, so that "the double
+  //  sum eats the off-diagonals" is a picture rather than a sentence. The
+  //  matrix is rendered to an offscreen canvas and embedded, because an svg is
+  //  the only place the two kernel curves can sit beside it.
+  function drawSandwich(s, opts){
+    clear(s);
+    var S = opts.h || 210, PADL = 62, PADT = 62;
+    var cv = document.createElement('canvas'), d = new Float64Array(NK), i, j;
+    for(i=0;i<NK;i++) d[i] = Math.sqrt(covE[i*NK+i]);
+    var E = new Float64Array(NK*NK);
+    for(i=0;i<NK;i++) for(j=0;j<NK;j++) E[i*NK+j] = covE[i*NK+j]/(d[i]*d[j]);
+    heatN(cv, E, NK, 1);
+    el(s,'image',{x:PADL,y:PADT,width:S,height:S,'image-rendering':'pixelated',
+                  href:cv.toDataURL('image/png')});
+    el(s,'rect',{x:PADL,y:PADT,width:S,height:S,fill:'none',stroke:RULE,'stroke-width':1.5});
+    //  the kernel: the same cosine that projects the matrix, one copy per axis
+    var dtop='', dlef='', n=160;
+    for(i=0;i<n;i++){
+      var t = i/(n-1), v = Math.cos(2*Math.PI*7*t)*Math.exp(-1.6*t);
+      dtop += (i?'L':'M')+(PADL+S*t).toFixed(1)+' '+(PADT-8-20*v).toFixed(1)+' ';
+      dlef += (i?'L':'M')+(PADL-8-20*v).toFixed(1)+' '+(PADT+S*t).toFixed(1)+' ';
+    }
+    el(s,'path',{d:dtop,fill:'none',stroke:ACC,'stroke-width':2.2});
+    el(s,'path',{d:dlef,fill:'none',stroke:ACC,'stroke-width':2.2});
+  }
+
   function drawMatrices(root){
     var cvs = root.querySelectorAll('canvas');
     if(cvs.length < 3) return;
@@ -1386,23 +1485,22 @@ function boot(){
     //  catalogue against itself that product carries every source paired with
     //  itself. Wolz eq. 2.24 -- distinct pairs go through the NKA, the self-pair
     //  sum is kept and treated exactly.
-    {tex:'\\bar w^{2}(x)=\\underbrace{\\textstyle\\sum_{i\\neq j} w_iw_j\\,G\\,G}_{\\rm distinct\\;pairs}+\\underbrace{\\textstyle\\sum_i w_i^{2}\\,G^{2}}_{\\rm self\\;pairs}',
-     step:8, name:'the mask product contains every source paired with itself', col:1, row:1, span:3, sub:0},
-    {tex:'\\langle a^2\\rangle=\\textstyle\\sum_\\ell C_\\ell', step:8, name:'self-pair variance', col:4, row:1, sub:1, hold:true},
+    {tex:'\\bar w^{2}(x)=\\underbrace{\\textstyle\\sum_{i\\neq j} w_iw_j\\,G(x-x_i)\\,G(x-x_j)}_{\\rm distinct\\;pairs}+\\underbrace{\\textstyle\\sum_i w_i^{2}\\,G^{2}(x-x_i)}_{\\rm self\\;pairs}',
+     step:8, name:'factor the mask product', col:1, row:1, span:4, sub:0},
 
     //  The Nagura act opens on the pair count itself. The two entries are the
     //  same object twice: the thing you measure, and the thing it equals in
     //  harmonic space -- a linear map of the WINDOWED spectrum, normalised by
     //  the pairs that actually exist (Nagura eq. 8, from Friedrich 2020 app. C).
     {tex:'\\hat\\xi(\\theta)=\\frac{\\sum_{ij\\in\\theta} w_iw_j\\,a_ia_j}{\\sum_{ij\\in\\theta} w_iw_j}',
-     step:10, name:'pair count', col:1, row:1, span:2},
+     step:10, name:'pair count', col:1, row:1},
     {tex:'\\xi_i=\\frac{n^2}{N_{{\\rm pair},i}}\\,2\\pi\\sum_\\ell\\big[P_{\\ell+1}-P_{\\ell-1}\\big]_i\\,\\tilde C_\\ell',
-     step:10, name:'its transform', col:3, row:1, span:2, sub:4},
+     step:10, name:'its transform', col:2, row:1, sub:4},
     //  Nagura eq. 10: the kernel is the Legendre polynomial P_l(cos theta),
     //  averaged over the angular bin via the recursion relation -- which is
     //  what the bracket with the two cos-theta limits means.
     {tex:'\\big[P_{\\ell+1}-P_{\\ell-1}\\big]_i\\equiv\\big[P_{\\ell+1}(x)-P_{\\ell-1}(x)\\big]_{\\cos\\theta_{i,+}}^{\\cos\\theta_{i,-}}',
-     step:10, name:'legendre kernel, averaged over bin i', col:1, row:2, span:2, sub:4}
+     step:10, name:'legendre kernel, averaged over bin i', col:3, row:1, sub:4}
   ];
   function ledger(host, step, from, stage){
     from = from || 0;
@@ -1529,6 +1627,8 @@ function boot(){
     each('.pP',    drawCatalogue);
     each('.pPair', drawPairs);
     each('.pXiC',  drawXiCat);
+    var sand = q('.pSand'); if(sand) drawSandwich(sand, {h: +sand.dataset.h || 210});
+    drawProj(root);
     each('.pMps',  drawMaskPS);
     each('.pKC',   drawCatKernel);
     each('.pProd', drawProducts);
@@ -1553,7 +1653,10 @@ function boot(){
         renderOne(root); typeset();
       };
     })(sl[si]);
-    if(q('canvas')) drawMatrices(root);
+    //  ONLY the covariance slide's three-matrix row. The projection slide also
+    //  has canvases, and drawMatrices was painting its f_sky / iNKA / quartic
+    //  panels with exact / NKA / error instead.
+    if(q('.mrow canvas')) drawMatrices(root);
   }
   // MathJax is loaded async from a CDN and may not have started when this runs,
   // so wait on its startup promise; retry until it exists.
