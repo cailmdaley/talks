@@ -238,7 +238,8 @@ directions, so they add *incoherently* — the sum is a random walk, and its squ
 of sources. That is the shot-noise floor, N-w-tilde, the sum of w-i squared over four pi, and it
 is reached almost immediately, well below pi over theta-c.
 
-Now drop a real footprint on it — edges, and a couple of holes. Sources inside the gaps simply do not
+The footprint is already on: of the hundred and forty sources in the catalogue, fifty-five fall
+inside it, and the grey ones are the rest. Edges, and a couple of holes. Sources inside the gaps simply do not
 exist; there is nothing else to remove. Watch the low k. Below the inverse footprint scale the
 deltas are no longer randomly placed: they are all sitting inside the same window, their phases
 line up, and they add *coherently*. The sum stops being a random walk and starts tracing the

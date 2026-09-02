@@ -950,8 +950,9 @@ function boot(){
     for(var j=0;j<NX;j++) d += (j?'L':'M')+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(mid-field[j]*h*0.42).toFixed(1)+' ';
     el(s,'path',{d:d,fill:'none',stroke:FAINT,'stroke-width':2});
     txt(s, Math.max(PAD-82,2), mid+9, 'a(x)', {fill:MUT});
-    if(opts.foot) txt(s, PAD+AW-440, y0+16,
-                      SRC.length + ' of ' + CAT.xs.length + ' sources observed', {fill:MUT});
+    //  No source count. The only clear space on this panel is inside the a(x)
+    //  trace or under the footprint label, and text over data is worse than the
+    //  number being spoken instead; it is in the notes.
     //  Every source in the catalogue is drawn, coloured by how much of it the
     //  survey actually sees: grey outside the footprint, the footprint's own
     //  blue inside, and graded across the apodised edges. Nothing appears or
