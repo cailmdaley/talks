@@ -945,7 +945,7 @@ function boot(){
       el(s,'circle',{cx:X,cy:Y,r:3.2+5*Math.abs(v),fill:INK,opacity:0.85});
     }
     // the same sources, as the mask: a comb of deltas
-    var by = y0 + h + 78;
+    var by = y0 + h + 62;
     if(opts.foot){
       //  the footprint itself, as a smooth band behind the comb — the shape the
       //  surviving deltas are tracing, and the reason they add coherently
@@ -958,7 +958,9 @@ function boot(){
       for(var jg=0; jg<=NF; jg++)
         df2 += (jg?'L':'M')+(PAD+AW*jg/NF).toFixed(1)+' '+(by - 64*footAt(jg/NF)).toFixed(1)+' ';
       el(s,'path',{d:df2,fill:'none',stroke:COB,'stroke-width':2.5,opacity:0.55});
-      txt(s, PAD+AW-320, by-74, 'survey footprint', {fill:COB,'font-size':26,opacity:0.8});
+      //  under the comb's axis, not between the rows: with the panel tightened
+      //  the old position sat on top of the a(x) trace
+      txt(s, PAD+AW-320, by+24, 'survey footprint', {fill:COB,'font-size':26,opacity:0.85});
     }
     el(s,'line',{x1:PAD,y1:by,x2:PAD+AW,y2:by,stroke:RULE,'stroke-width':2});
     if(opts.cloud && THC > 0){
@@ -1006,7 +1008,8 @@ function boot(){
     el(s,'line',{x1:xL,y1:yb2-9,x2:xL,y2:yb2+9,stroke:TEAL,'stroke-width':3});
     el(s,'line',{x1:xR,y1:yb2-9,x2:xR,y2:yb2+9,stroke:TEAL,'stroke-width':3});
     txtsub(s, xR+16, yb2+9, 'θ', 'c', '  ≈  source spacing', {fill:TEAL,'font-size':26});
-    txt(s, PAD, by+58, 'position  x', {fill:MUT});
+    //  the label's descenders have to clear the viewBox, not just its baseline
+    txt(s, PAD, by+52, 'position  x', {fill:MUT});
   }
 
   //  W1 — THE COUPLING KERNEL of the catalogue mask: |W_m|^2 against mode
@@ -1320,20 +1323,16 @@ function boot(){
     {tex:'{\\rm Cov}\\big(\\tilde C(k),\\tilde C(k\')\\big)\\propto\\Big|\\sum_{k\'\'} W_{k-k\'\'}\\,W^{*}_{k\'-k\'\'}\\,C(k\'\')\\Big|^{2}',
      step:4, name:'four-point', col:1, row:1, span:2,
      note:'one sum over k″ for every element of the k, k′ matrix'},
-    //  The paper's eq:nka_simple is
+    //  The NKA itself is NOT here. It is three stacked entries in the covariance
+    //  slide's own .eqcol, sitting between the NKA matrix and the error matrix,
+    //  because putting them in this grid added a second ledger row that shoved
+    //  the matrices down the moment a fragment fired.
+    //  For the record, the paper's eq:nka_simple is
     //      Cov(C~^ab_l, C~^cd_l') = C^ac_(l,l') C^bd_(l,l') Xi_ll'(w_a w_c, w_b w_d) + (c<->d)
     //  with C_(l,l') = (C_l + C_l')/2. This deck has ONE field and ONE mask, so
     //  a = b = c = d: both C factors are the same Cbar, both mask arguments are
     //  w^2, and the (c<->d) term doubles it. The a,b,c,d indices are said in the
-    //  notes, where the several-field case belongs -- carrying them on the slide
-    //  made the entry unreadable.
-    //  Xi is spelled out rather than glossed: in 1D the sum over l'' against the
-    //  3j symbol IS the mask-power convolution kernel, so Xi_kk'(w^2) is
-    //  slide 5's |W_{k-k'}|^2 with w^2 in place of w.
-    {tex:'{\\rm Cov}\\big(\\tilde C(k),\\tilde C(k\')\\big)\\simeq 2\\,\\bar C^{2}\\,\\Xi_{kk\'}(w^2)',
-     step:5, name:'narrow-kernel approximation', col:3, row:1, span:2},
-    {tex:'\\bar C=\\tfrac12\\big[C(k)+C(k\')\\big]', step:5, name:'C at the midpoint', col:3, row:2},
-    {tex:'\\Xi_{kk\'}(w^2)=\\big|(w^2)_{k-k\'}\\big|^{2}', step:5, name:'coupling kernel, from w² not w', col:4, row:2},
+    //  notes, where the several-field case belongs.
     {tex:'\\tilde a(x)=\\sum_i w_i\\,a_i\\,\\delta(x-x_i)', step:6, name:'catalogue field', col:1, row:1},
     {tex:'w(x)=\\sum_i w_i\\,\\delta(x-x_i)', step:6, name:'catalogue mask', col:2, row:1},
     //  the object-wise twin of a_k = sum_x a(x) e^{-ikx} on slide 3. The deck

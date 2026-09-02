@@ -127,12 +127,13 @@
 // the mask slide: two columns
 .reveal .nka .two { display: flex; gap: 40px; align-items: flex-start; }
 
-// pinned beside the matrix row rather than beside the ledger: with the NKA
-// entry now spelling out Cbar and Xi on a second ledger row, anything at the
-// old top-right position collides with it.
+// back at the top right: the ledger on the covariance slide is one entry wide
+// now (the NKA block moved into the matrix row), so there is nothing up there
+// to collide with, and the badge sits in one fixed place through every fragment
+// -- only its text changes.
 .reveal .nka .cost {
     position: absolute;
-    top: 470px;
+    top: 6px;
     right: 0;
     font-size: 34px;
     color: #BC4538;
@@ -209,7 +210,7 @@
 // the Wolz figure is the evidence on this slide, so it gets the height and the
 // caption column is squeezed to whatever is left
 .reveal .nka .two.lower > .figblock { gap: 22px; }
-.reveal .nka .two.lower .figblock img { height: 500px; }
+.reveal .nka .two.lower .figblock img { height: 512px; }
 .reveal .nka .two.lower .figside { min-width: 300px; }
 // theta_c control: on the band-limit slide it sits in the lower row beside the
 // toy, not pinned to the top right, so nothing above the a(x)/w(x) panels moves
@@ -236,6 +237,10 @@
     }
     .eq { font-size: 36px; line-height: 1.1; white-space: nowrap; }
 }
+// the Nw definition on the catalogue-mask slide is placed by one rule: its left
+// border sits on the toy's y-axis (x0 = 132 inside a 520-wide panel), and its
+// top edge on the bottom of the panel. Nothing about it floats.
+.reveal .nka .eqblock.nwdef { margin: 0 0 0 132px; }
 .reveal .nka .figblock {
     flex: 1;
     display: flex;
@@ -255,7 +260,7 @@
 .reveal .nka .figside {
     flex: 1 1 auto;
     min-width: 420px;
-    font-size: 25px;
+    font-size: 27px;
     line-height: 1.34;
     color: #7A6F5C;
 
@@ -287,6 +292,8 @@
 // paper, so paper imports are instantly distinguishable from our own toy
 // panels. Used inside .papercap (the two Wolz simulation slides) and inside
 // .figside (the Quaia figure), wherever an imported figure needs crediting.
+// Never wrapped: a citation broken across lines reads as two things.
+.reveal .nka .figside .src { white-space: nowrap; }
 .reveal .nka .src {
     display: block;
     font-size: 21px;
@@ -307,7 +314,32 @@
 // W1's caption column quotes the paper verbatim
 .reveal .nka .figside .verbatim { color: #1B1611; }
 
-.reveal .nka .mrow { display: flex; gap: 34px; align-items: flex-start; }
+.reveal .nka .mrow { display: flex; gap: 26px; align-items: flex-start; }
+
+// The covariance slide's equation column: the narrow-kernel approximation and
+// its two definitions, stacked between the NKA matrix and the error matrix.
+// It is a reveal fragment, and reveal keeps a hidden fragment's box, so the
+// column reserves its width from the base state and NOTHING in the row moves
+// when a fragment fires. Same red-highlight grammar as the ledger; the type is
+// a notch smaller than the ledger's 36px because it has to fit a 452px column
+// between two 380px canvases.
+.reveal .nka .eqcol {
+    flex: 0 0 474px;
+    display: flex; flex-direction: column; gap: 22px;
+    padding-top: 30px;
+
+    > div {
+        display: flex; flex-direction: column; gap: 1px;
+        padding: 3px 14px;
+        border-left: 6px solid #BC4538;
+        background: rgba(188, 69, 56, 0.10);
+    }
+    .nm {
+        font-size: 22px; line-height: 1.1; color: #7A6F5C;
+        font-variant: small-caps; letter-spacing: 0.04em;
+    }
+    .eq { font-size: 29px; line-height: 1.28; white-space: nowrap; }
+}
 .reveal .nka canvas {
     image-rendering: pixelated;
     border: 1px solid #C5B89E;

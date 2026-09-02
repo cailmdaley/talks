@@ -152,11 +152,26 @@ And you invert it. But not mode by mode: the mask does not only smear modes, it 
 <div class="cost"></div>
 <div class="pick"></div>
 <div class="mrow">
-  <div class="mcell"><canvas style="width:400px;height:400px"></canvas>
+  <div class="mcell"><canvas style="width:380px;height:380px"></canvas>
     <div class="mlab"><b>exact</b>direct sum over modes</div></div>
-  <div class="mcell fragment" data-fragment-index="0"><canvas style="width:400px;height:400px"></canvas>
+  <div class="mcell fragment" data-fragment-index="0"><canvas style="width:380px;height:380px"></canvas>
     <div class="mlab"><b>NKA</b>one mask-product kernel</div></div>
-  <div class="mcell fragment" data-fragment-index="1"><canvas style="width:400px;height:400px"></canvas>
+  <div class="eqcol fragment" data-fragment-index="0">
+    <div>
+      <span class="nm">narrow-kernel approximation</span>
+      <span class="eq">\( {\rm Cov}\big(\tilde C(k),\tilde C(k')\big)\;\simeq\;2\,\bar C_{kk'}^{\,2}\;\Xi_{kk'} \)</span>
+    </div>
+    <div>
+      <span class="nm">C at the midpoint</span>
+      <span class="eq">\( \bar C_{kk'}\;\equiv\;\tfrac12\big[C(k)+C(k')\big] \)</span>
+    </div>
+    <div>
+      <span class="nm">coupling kernel</span>
+      <span class="eq">\( \Xi_{kk'}\;=\;\big|W^{(2)}_{k-k'}\big|^{2} \)</span>
+      <span class="eq">\( W^{(2)}_{k}\;\equiv\;\textstyle\sum_x w^2(x)\,e^{-ikx} \)</span>
+    </div>
+  </div>
+  <div class="mcell fragment" data-fragment-index="1"><canvas style="width:380px;height:380px"></canvas>
     <div class="mlab"><b>NKA &minus; exact</b>error</div></div>
 </div>
 </div>
@@ -184,23 +199,29 @@ four of them: the covariance of C-tilde-ab with C-tilde-cd, and then the two C f
 C-ac and C-bd, and Xi takes two mask products, w-a w-c and w-b w-d, plus the term with c and d
 swapped. That is where the a, b, c, d you will see in the paper come from. Nothing else changes.
 
+One thing to be clear about, because it is easy to over-read the approximation. Nothing requires
+C to be constant. C-bar only has to be a good stand-in for C wherever Xi is not already zero —
+the kernel's support is a handful of modes wide, so the only thing that matters is whether C
+varies across that handful. Where it does not, this is essentially exact.
+
 And the difference. Where the spectrum is smooth it is nearly exact; where it has structure on
-the kernel's scale it is not, and the error lives in the off-diagonals, not on the diagonal.
+the kernel's scale — the bump — it is not, and the error lives in the off-diagonals, not on the
+diagonal.
 Switch to the holed mask and the whole band goes wrong. That is the subject of the first two
 papers.
 :::
 
-## A catalogue mask is a set of delta functions {.nka-slide}
+## Now, catalogues: what is your mask? {.nka-slide}
 
 ```{=html}
 <div class="nka" data-step="6" data-ledger-from="6" data-staged="1">
 <div class="eqs"></div>
-<svg class="pP" data-h="80" data-foot-at="2" viewBox="0 0 1730 252" width="1730" height="252"></svg>
+<svg class="pP" data-h="80" data-foot-at="2" viewBox="0 0 1730 238" width="1730" height="238"></svg>
 <div class="two lower">
   <div class="toycol fragment" data-fragment-index="0">
-    <svg class="pMps" data-h="300" data-foot-at="2" data-x0="132" data-w="352"
-         viewBox="0 0 520 392" width="520" height="392"></svg>
-    <div class="eqblock">
+    <svg class="pMps" data-h="342" data-foot-at="2" data-x0="132" data-w="352"
+         viewBox="0 0 520 434" width="520" height="434"></svg>
+    <div class="eqblock nwdef">
       <span class="nm">mask shot noise</span>
       <span class="eq">\( \tilde N_w=\tfrac{1}{4\pi}\sum_i w_i^2 \)</span>
     </div>
@@ -258,7 +279,7 @@ band-limit the mask rather than to subtract its floor.
 <div class="nka" data-step="6" data-ledger-from="6">
 <div class="eqs"></div>
 <svg class="pP" data-h="80" data-foot-at="0" data-cloud="1"
-     viewBox="0 0 1730 252" width="1730" height="252"></svg>
+     viewBox="0 0 1730 238" width="1730" height="238"></svg>
 <div class="two lower">
   <div class="toycol wide">
     <svg class="pMps" data-h="300" data-foot-at="0" data-cloud="1" data-pixel="1"
@@ -299,6 +320,16 @@ So drag until the red lies on the blue for as far in k as you can get it.
 Two scales, and they are not the same. The Gaussian is down to one over e at k equals one over
 theta-c; the marker I am drawing is at pi over theta-c, which is the scale the paper uses for
 the shot-noise subtraction. The roll-off starts a factor of three before the marker.
+
+And here is the way I would connect this to something you already know. Sample a field on a
+regular grid of spacing Delta and you get aliasing: the sampling comb transforms into another
+comb, so power above pi over Delta does not vanish, it folds back onto specific modes. Sample it
+at random positions instead and the sampling function's transform is not a comb — it is flat,
+because random phases add incoherently. So the same power still comes back, but smeared evenly
+across every mode instead of folded onto particular ones. Shot noise *is* aliasing, under random
+sampling. Which makes band-limiting at theta-c of about the mean spacing exactly the move you
+already make with pixels: you are choosing the resolution scale, and you are choosing it at
+Nyquist. The difference is that here you chose it, and you know what it is.
 
 Drag it and find the sweet spot: about the mean source spacing. Which is the honest statement of
 what has happened here. A pixel mask was always band-limited too — at the pixel scale, which is
