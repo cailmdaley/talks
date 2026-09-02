@@ -1772,6 +1772,100 @@ function boot(){
   }
 
   //  W3 — the correlation-function view: distinct pairs vs the self-pair spike
+  //  W2 — the mask product, coloured by pair type.
+  //  The covariance kernel wants wbar^2, and for a catalogue against itself that
+  //  square carries every source paired with ITSELF as well as every distinct
+  //  pair. Both bands here are computed from the drawn sources at the current
+  //  theta_c, on the same grid catGrid() uses, so the picture and the equations
+  //  below it are the same arithmetic:
+  //      self(x)     = sum_i w_i^2 G^2(x - x_i)         [cinnabar, the noise]
+  //      distinct(x) = wbar^2(x) - self(x)              [cobalt, the signal]
+  //  Cinnabar for self-pairs is not a new choice: it is what the two toys to the
+  //  right of this panel already use for the spike and the white floor.
+  //  Its OWN theta_c, about one interparticle spacing, and deliberately not the
+  //  global THC: that is slide 9's slider, it starts at zero, and at zero the
+  //  mask is bare deltas -- the product is a comb of spikes, the self band is
+  //  the whole thing and the picture says nothing. This slide comes AFTER the
+  //  mask has been band-limited, so it draws a band-limited mask.
+  var THC_SPLIT = 0.0075;
+  function splitBands(){
+    catBuild();
+    var xs = CAT.xs, n = xs.length, thc = THC_SPLIT, wbar = catGrid(xs, thc);
+    var self_ = new Float64Array(NX);
+    if(thc > 0){
+      var amp = NX/n, sg = thc*NX, norm = amp/(Math.sqrt(2*Math.PI)*sg);
+      var half = Math.ceil(4*sg);
+      for(var i=0;i<n;i++){
+        var c = xs[i]*NX;
+        for(var d=-half; d<=half; d++){
+          var j = Math.round(c+d); j = ((j % NX) + NX) % NX;
+          //  G^2, not (sum G)^2 -- squaring the Gaussian halves its width, which
+          //  is the whole reason the self-pair kernel is its own object
+          self_[j] += norm*norm*Math.exp(-d*d/(sg*sg));
+        }
+      }
+    }
+    var prod = new Float64Array(NX), dist = new Float64Array(NX), mx = 0;
+    for(var q=0;q<NX;q++){
+      prod[q] = wbar[q]*wbar[q];
+      dist[q] = Math.max(0, prod[q] - self_[q]);
+      if(prod[q] > mx) mx = prod[q];
+    }
+    return {wbar:wbar, self:self_, dist:dist, prod:prod, mx:mx};
+  }
+  function drawSplit(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, st = opts.stage == null ? 0 : opts.stage;
+    var y0 = opts.y0 || 24, h = opts.h || 300;
+    var B = splitBands(), xs = CAT.xs;
+    var wmx = 0; for(var q0=0;q0<NX;q0++) if(B.wbar[q0] > wmx) wmx = B.wbar[q0];
+    el(s,'line',{x1:PAD,y1:y0+h,x2:PAD+AW,y2:y0+h,stroke:RULE,'stroke-width':2});
+    txt(s, PAD, y0+h+42, 'position  x', {fill:MUT,'font-size':26});
+    //  the sources are on the axis from the base state: they are what both
+    //  curves are built out of, and they must not appear on a fragment
+    for(var k=0;k<xs.length;k+=1)
+      el(s,'circle',{cx:PAD+AW*xs[k],cy:y0+h,r:2.4,fill:INK,opacity:0.55});
+
+    function area(arr, base, scale, col, op){
+      var d = 'M'+PAD.toFixed(1)+' '+(y0+h).toFixed(1)+' ';
+      for(var j=0;j<NX;j++)
+        d += 'L'+(PAD+AW*j/(NX-1)).toFixed(1)+' '+(y0+h-h*0.92*(base[j]+arr[j])/scale).toFixed(1)+' ';
+      d += 'L'+(PAD+AW).toFixed(1)+' '+(y0+h).toFixed(1)+' Z';
+      el(s,'path',{d:d,fill:col,opacity:op});
+      return d;
+    }
+    var ZERO = new Float64Array(NX);
+
+    if(st === 1){
+      var dw='';
+      for(var j2=0;j2<NX;j2++)
+        dw += (j2?'L':'M')+(PAD+AW*j2/(NX-1)).toFixed(1)+' '+(y0+h-h*0.92*B.wbar[j2]/wmx).toFixed(1)+' ';
+      el(s,'path',{d:dw,fill:'none',stroke:COB,'stroke-width':3.5});
+      txt(s, PAD+AW-250, y0+26, 'mask  w̄(x)', {fill:COB,'font-size':28});
+    }
+    if(st >= 2){
+      //  stacked, self-pairs on the bottom: the noise floor is what sits under
+      //  everything, and the eye reads the stack as a decomposition of one curve
+      area(B.self, ZERO,   B.mx, ACC, 0.55);
+      area(B.dist, B.self, B.mx, COB, 0.30);
+      var dp='';
+      for(var j3=0;j3<NX;j3++)
+        dp += (j3?'L':'M')+(PAD+AW*j3/(NX-1)).toFixed(1)+' '+(y0+h-h*0.92*B.prod[j3]/B.mx).toFixed(1)+' ';
+      el(s,'path',{d:dp,fill:'none',stroke:INK,'stroke-width':3});
+      var ds='';
+      for(var j4=0;j4<NX;j4++)
+        ds += (j4?'L':'M')+(PAD+AW*j4/(NX-1)).toFixed(1)+' '+(y0+h-h*0.92*B.self[j4]/B.mx).toFixed(1)+' ';
+      el(s,'path',{d:ds,fill:'none',stroke:ACC,'stroke-width':2.5});
+      txt(s, PAD+AW-320, y0+26, 'mask product  w̄²(x)', {fill:INK,'font-size':28});
+      //  one legend, two entries, in the colours the equations below use. It
+      //  rides on the axis line rather than over the bands.
+      el(s,'rect',{x:PAD+AW-470,y:y0+h+24,width:26,height:16,fill:COB,opacity:0.45});
+      txt(s, PAD+AW-434, y0+h+38, 'distinct pairs', {fill:COB,'font-size':27});
+      el(s,'rect',{x:PAD+AW-244,y:y0+h+24,width:26,height:16,fill:ACC,opacity:0.65});
+      txt(s, PAD+AW-208, y0+h+38, 'self-pairs', {fill:ACC,'font-size':27});
+    }
+  }
+
   function drawXi(s, opts){
     clear(s); geom(opts);
     var PAD = _x0, AW = _w, y0 = 40, h = opts.h || 260, NT = 90;
@@ -1788,11 +1882,11 @@ function boot(){
     var d='';
     for(var t2=1;t2<NT;t2++) d += (t2>1?'L':'M')+(PAD+AW*t2/(NT-1)).toFixed(1)+' '+Y(xi[t2]).toFixed(1)+' ';
     el(s,'path',{d:d,fill:'none',stroke:INK,'stroke-width':3.5});
-    txt(s, PAD+AW*0.30, Y(xi[20])-30, 'distinct pairs  ξ(θ)', {fill:INK});
+    txt(s, PAD+AW*0.34, Y(xi[20])-30, 'distinct pairs  ξ(θ)', {fill:INK});
     // the self-pair spike at zero lag
     el(s,'line',{x1:PAD,y1:Y(0),x2:PAD,y2:Y(var0),stroke:ACC,'stroke-width':7,'stroke-linecap':'round'});
     el(s,'circle',{cx:PAD,cy:Y(var0),r:9,fill:ACC});
-    txt(s, PAD+22, Y(var0)+10, 'self-pairs at zero separation:  ⟨a²⟩', {fill:ACC});
+    txt(s, PAD+22, Y(var0)+10, 'self-pairs:  ⟨a²⟩ at θ = 0', {fill:ACC});
     txt(s, Math.max(PAD-82,2), Y(0)+9, 'ξ', {fill:MUT});
     txt(s, PAD, y0+h+44, 'separation  θ', {fill:MUT});
   }
@@ -1812,7 +1906,7 @@ function boot(){
     for(var k2=1;k2<KMAX;k2++) var0 += 2*Cfun(k2);
     var wl = var0/NSRC;
     el(s,'line',{x1:PAD,y1:Y(wl),x2:PAD+AW,y2:Y(wl),stroke:ACC,'stroke-width':3.5});
-    txt(s, XK(150,KMAX), Y(wl)-26, 'self-pairs: flat, at every ℓ', {fill:ACC});
+    txt(s, XK(30,KMAX), Y(wl)-26, 'self-pairs: flat in ℓ', {fill:ACC});
   }
 
   // ---------- the equation ledger ----------
@@ -1863,13 +1957,24 @@ function boot(){
     //  stops the ledger here on purpose: everything downstream of the modes is
     //  unchanged from slides 3-5, and what breaks is upstream, in the mask.
     {tex:'\\tilde a_\\ell=\\sum_i w_i\\,a_i\\,e^{-i\\ell x_i}', step:6, name:'catalogue modes', col:3, row:1},
-    //  Slide 11 opens on the PROBLEM, not on the answer: once the mask is
-    //  band-limited the covariance kernel wants the mask PRODUCT, and for a
-    //  catalogue against itself that product carries every source paired with
-    //  itself. Wolz eq. 2.24 -- distinct pairs go through the NKA, the self-pair
-    //  sum is kept and treated exactly.
-    {tex:'\\bar w^{2}(x)=\\underbrace{\\textstyle\\sum_{i\\neq j} w_iw_j\\,G(x-x_i)\\,G(x-x_j)}_{\\rm distinct\\;pairs}+\\underbrace{\\textstyle\\sum_i w_i^{2}\\,G^{2}(x-x_i)}_{\\rm self\\;pairs}',
-     step:8, name:'factor the mask product', col:1, row:1, span:4, sub:0},
+    //  This slide opens on the DERIVATION, not on its conclusion. Write the
+    //  two-point function of the catalogue modes from slide 8's a~_l and split
+    //  it by whether the two sources coincide: that split is Wolz eq. 3.10, and
+    //  every later line on the slide is forced by it. The old opener --
+    //  wbar^2 factored into distinct + self -- was the ANSWER stated first, and
+    //  read as an assertion; it now appears as the mask-product entry, where it
+    //  is the thing you have to do to avoid double counting.
+    {tex:'\\langle\\tilde a_\\ell\\,\\tilde a^{*}_{\\ell\'}\\rangle=' +
+         '\\underbrace{\\textstyle\\sum_{i\\neq j} w_iw_j\\,\\langle a_ia_j\\rangle\\,' +
+         'e^{-i\\ell x_i}e^{+i\\ell\' x_j}}_{\\text{distinct pairs: signal}}+' +
+         '\\underbrace{\\textstyle\\sum_i w_i^{2}\\,\\langle a_i^{2}\\rangle\\,' +
+         'e^{-i(\\ell-\\ell\')x_i}}_{\\text{self pairs: noise}}',
+     //  no `sub`: this is the ONLY ledger entry on the slide, so a sub would
+     //  make it live at the base state and grey for every fragment after --
+     //  the slide's foundation rendered as its faintest object. Without one it
+     //  stays live for the whole slide, which is what a single-entry ledger
+     //  should do.
+     step:8, name:'two-point function of the catalogue modes', col:1, row:1, span:4},
 
     //  The Nagura act opens on the pair count itself. The two entries are the
     //  same object twice: the thing you measure, and the thing it equals in
@@ -2019,6 +2124,7 @@ function boot(){
     each('.pCloud',drawCloud);
     each('.pXi',   drawXi);
     each('.pWhite',drawWhite);
+    each('.pSplit',drawSplit);
     //  the readout has to be right before anyone touches the slider
     var v0 = root.querySelector('.ctl-slider .val');
     if(v0) v0.innerHTML = THC <= 0

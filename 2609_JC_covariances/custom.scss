@@ -714,3 +714,20 @@
     .pv.hot { color: #BC4538; font-weight: 600; }
     .par { font-size: 30px; color: #7A6F5C; line-height: 0.9; }
 }
+
+// ── slide 10: the two-point split ───────────────────────────────────────────
+// Left, the mask product coloured by pair type; right, the two toys stacked so
+// they form a square block beside it. Both halves are one argument: the split
+// happens in position space on the left and in theta / ell on the right.
+.reveal .nka .two.split { gap: 34px; align-items: flex-start; margin-top: 2px; }
+.reveal .nka .two.split > .splitfig { flex: 1 1 auto; min-width: 0; }
+.reveal .nka .two.split > .toystack {
+    flex: 0 0 560px; display: flex; flex-direction: column; gap: 0;
+}
+.reveal .nka .two.split svg { display: block; }
+// the three entries under the graphic are one line each, so they can sit closer
+.reveal .nka .corr.big.tight { gap: 6px; margin-top: 4px;
+    .eq { font-size: 30px; }
+    .nm.noise  { color: #BC4538; }
+    .nm.signal { color: #3D5BA0; }
+}

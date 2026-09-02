@@ -11,7 +11,7 @@ const geom = async ()=>p.evaluate(()=>{
   const sec=document.querySelector('section.present'); const out=[];
   sec.querySelectorAll('div,svg,img,canvas').forEach(el=>{
     const r=el.getBoundingClientRect();
-    out.push(el.className.toString().replace(/ ?(visible|current-fragment|fragment|fade-in|fade-out)/g,'')+':'+
+    out.push(''+
       [r.x,r.y,r.width,r.height].map(v=>Math.round(v)).join(','));
   });
   return out.join('|');

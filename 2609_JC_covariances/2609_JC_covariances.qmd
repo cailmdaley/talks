@@ -338,22 +338,30 @@ has something to be narrow about.
 ```{=html}
 <div class="nka" data-step="8" data-ledger-from="8" data-staged="1">
 <div class="eqs stretch"></div>
-<div class="two fragment" data-fragment-index="0">
-  <div><svg class="pXi" data-h="215" data-x0="90" data-w="700" viewBox="0 0 840 306" width="840" height="306"></svg></div>
-  <div><svg class="pWhite" data-h="215" data-x0="90" data-w="700" viewBox="0 0 840 306" width="840" height="306"></svg></div>
-</div>
-<div class="corr big">
-  <div class="fragment" data-fragment-index="1">
-    <span class="nm">self-pair field</span>
-    <span class="eq">\( n(x)\;\equiv\;\textstyle\sum_i w_i^{2}\,\langle a_i^{2}\rangle\,G^{2}(x-x_i)\;=\;\langle a^{2}\rangle\,\textstyle\sum_i w_i^{2}\,G^{2}(x-x_i) \)</span>
-    <span class="eq">\( \langle a^{2}\rangle=\textstyle\sum_\ell C_\ell \)</span>
+<span class="fragment nka-step" data-fragment-index="0"></span>
+<span class="fragment nka-step" data-fragment-index="1"></span>
+
+<div class="two split">
+  <div class="splitfig">
+    <svg class="pSplit" data-h="270" data-x0="96" data-w="880"
+         viewBox="0 0 1000 366" width="1000" height="366"></svg>
   </div>
-  <div class="fragment" data-fragment-index="2">
-    <span class="nm">distinct-pair mask product</span>
-    <span class="eq">\( \mathcal{W}(x)\;\equiv\;\bar w^{2}(x)\;-\;\textstyle\sum_i w_i^{2}\,G^{2}(x-x_i) \)</span>
-    <span class="eq">\( \phantom{\mathcal{W}(x)}\;=\;\textstyle\sum_{i\neq j} w_iw_j\,G(x-x_i)\,G(x-x_j) \)</span>
+  <div class="toystack fragment" data-fragment-index="2">
+    <svg class="pXi" data-h="124" data-x0="76" data-w="452" viewBox="0 0 560 214" width="560" height="214"></svg>
+    <svg class="pWhite" data-h="124" data-x0="76" data-w="452" viewBox="0 0 560 214" width="560" height="214"></svg>
+  </div>
+</div>
+
+<div class="corr big tight">
+  <div class="fragment" data-fragment-index="3">
+    <span class="nm noise">self-pair field, and its transform</span>
+    <span class="eq">\( n(x)\;\equiv\;\langle a^{2}\rangle\,\textstyle\sum_i w_i^{2}\,G^{2}(x-x_i),\qquad \langle a^{2}\rangle=\textstyle\sum_\ell C_\ell,\qquad N_{\ell-\ell'}=\textstyle\sum_x n(x)\,e^{-i(\ell-\ell')x} \)</span>
   </div>
   <div class="fragment" data-fragment-index="3">
+    <span class="nm signal">distinct-pair mask product</span>
+    <span class="eq">\( \mathcal{W}(x)\;\equiv\;\bar w^{2}(x)\;-\;\textstyle\sum_i w_i^{2}\,G^{2}(x-x_i) \)</span>
+  </div>
+  <div class="fragment" data-fragment-index="4">
     <span class="nm">catalogue covariance</span>
     <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;2\Big[\;\underbrace{\bar C_{\ell\ell'}^{\,2}\,\big|\mathcal{W}_{\ell-\ell'}\big|^{2}}_{\rm sig\times sig}\;+\;\underbrace{2\,\bar C_{\ell\ell'}\,{\rm Re}\big(\mathcal{W}_{\ell-\ell'}\,N^{*}_{\ell-\ell'}\big)}_{\rm sig\times noise}\;+\;\underbrace{\big|N_{\ell-\ell'}\big|^{2}}_{\rm noise\times noise}\;\Big] \)</span>
   </div>
@@ -363,39 +371,50 @@ has something to be narrow about.
 ```
 
 ::: {.notes}
-So the mask is smooth now. What is the next problem?
+The mask is smooth now. So write down what the covariance actually needs, and let it tell us
+what the next problem is.
 
-This. The covariance kernel does not want the mask; it wants the mask *product*, w-bar times
-w-bar. Write that out for a catalogue against itself and it splits in two: a sum over distinct
-pairs, i not equal to j, which is a perfectly ordinary object; and a sum over every source paired
-with itself. That second sum does not go away when you smooth. It is the diagonal of the
-product, it is there in every catalogue auto-spectrum, and it is white noise sitting inside your
-mask — which would go straight through the narrow-kernel machinery and corrupt it.
+Start from the catalogue modes on the earlier slide — a-tilde-ell is a sum over sources, weight
+times value times a phase. Take the two-point function of that. You get a double sum over
+sources, and there is exactly one thing you can do with a double sum over a discrete set: split
+it by whether the two sources are the same source or not.
 
-But look at what kind of object it is, and this is the part that turns out to be free.
+That split is the whole slide, and every line under it is forced by it.
 
-Split every pair of sources by whether they are two different sources or the same source twice.
-The distinct pairs at finite separation are the signal — that is the correlation function on the
-left. The self-pairs all sit at zero separation, and their height is the variance of the field at
-a point: the integral of the whole power spectrum. Now transform. A spike at zero lag is a flat
-line at every k. So the self-pair term behaves algebraically exactly like white noise.
+Distinct pairs, i not equal to j, carry the correlation between two different points — that is
+the signal, and it is mask-coupled in the ordinary way. Self-pairs, i equal to i, carry the
+variance of the field at a single point. And look at the phase on that second term: it depends
+only on ell minus ell-prime. Not on ell and ell-prime separately. That is the algebraic signature
+of a statistically homogeneous noise field, and it does not go away when you smooth the mask.
 
-And white noise is the one thing this machinery already handles exactly.
+The two panels on the right are why "noise" is the right word rather than a metaphor. Split every
+pair of sources by separation. The distinct pairs sit at finite separation and trace the
+correlation function. The self-pairs all sit at zero separation, with height equal to the variance
+at a point, which is the integral of the whole power spectrum. Transform that. A spike at zero
+lag is a flat line at every multipole. So the self-pair term behaves exactly like white noise —
+and white noise is the one thing this machinery already handles exactly.
 
-So, first line: name the self-pair piece. It is the same sum, with the data in it — the local
-variance map — and for a field of constant variance it factorises into the variance at a point
-times the self-pair half of the mask product. That variance at a point is the integral of the
-spectrum, which is the height of the spike you just saw. Same object.
+Now the picture on the left, which is the same split in position space. Blue is the band-limited
+mask from the previous slide. Square it, because the covariance kernel wants the mask product,
+and the square separates into two stacked bands: the red floor is every source paired with
+itself, and the blue bulk above it is every distinct pair. The red band tracks the source density
+— it is largest where sources are sparse relative to the cloud size — and it is there for a
+perfectly noiseless field.
 
-Second line: take the self-pairs *out* of the mask product, or they are counted twice. What is
-left is exactly the distinct-pair sum. And note what the subtracted piece is: its own catalogue
-field, the transform of the *squared* cloud, not the square of the transform, because squaring a
-Gaussian halves its width.
+So, first line underneath. Name the self-pair piece: it is a local variance map, the variance at a
+point times the self-pair half of the mask product, and its transform is the N that appears in the
+covariance. That is the connection — the noise in the covariance is literally the harmonic
+transform of that red band.
 
-Third line, and this is the whole point: the narrow-kernel approximation from the first half of
-the talk, applied to the distinct-pair product and to nothing else. Three terms — signal against
-signal, signal against noise, noise against noise. Only the first carries the approximation.
-Everything with a self-pair in it is exact.
+Second line: take the self-pairs out of the mask product, or they get counted twice. What is left
+is exactly the distinct-pair sum. Note that the subtracted piece is its own catalogue field, built
+from the transform of the squared cloud, not the square of the transform — squaring a Gaussian
+halves its width.
+
+Third line, and this is the payoff: the narrow-kernel approximation from the first half of the
+talk, applied to the distinct-pair product and to nothing else. Signal against signal, signal
+against noise, noise against noise. Only the first carries the approximation. Everything with a
+self-pair in it is exact.
 
 Two things worth saying out loud. This term is there even for a perfectly noiseless field — it
 is the variance of the field at a point, and it is what penalises sparse samples with bigger
