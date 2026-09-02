@@ -674,8 +674,7 @@ people actually use.
     <div class="mrow2 apart fragment">
       <div class="mtxt"><div class="mbox">
         <span class="nm">quartic counts (Schneider; Shirasaki)</span>
-        <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\big(N_{{\rm pair},i}N_{{\rm pair},j}\big)^{-1}\textstyle\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd}) \)</span>
-        <span class="eq">\( \qquad\qquad\times\;\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)</span>
+        <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\displaystyle\sum_{ab\,\in\,i}\;\sum_{cd\,\in\,j}\;\frac{w_aw_bw_cw_d}{N_{{\rm pair},i}N_{{\rm pair},j}}\;\cdot\;\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)</span>
         </div>
       </div>
       <div class="mpix nohar"></div>
@@ -783,8 +782,7 @@ So I ran it. Next slide.
   <div class="corr big">
     <div>
       <span class="nm">quartic counts (Schneider; Shirasaki)</span>
-      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\big(N_{{\rm pair},i}N_{{\rm pair},j}\big)^{-1}\textstyle\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd}) \)</span>
-        <span class="eq">\( \qquad\qquad\times\;\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)<span class="tag">\( \mathcal{O}(N_{{\rm pair},i}N_{{\rm pair},j}) \) per element</span></span>
+      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\displaystyle\sum_{ab\,\in\,i}\;\sum_{cd\,\in\,j}\;\frac{w_aw_bw_cw_d}{N_{{\rm pair},i}N_{{\rm pair},j}}\;\cdot\;\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)<span class="tag">\( \mathcal{O}(N_{{\rm pair},i}N_{{\rm pair},j}) \) per element</span></span>
     </div>
   </div>
   <span class="fragment nka-step"></span>
@@ -822,9 +820,11 @@ boundaries and the weights are all encoded exactly by which quadruplets exist to
 window is not modelled. It is counted. That is the entire idea, and the matrix on the right is
 the one you saw in the last row of the previous slide.
 
-Cost, since the badge is on the slide. Naively this is the number of pairs in bin i times the
-number in bin j, for every element — order N to the fourth in the sources. Their contribution is
-a matrix rewrite that turns it into BLAS-3 products over pair-indexed vectors, plus coarse-graining
+Cost, since the badge is on the slide, and it is worth doing out loud. One element of this matrix
+is a sum over every pair in bin i against every pair in bin j — N-pair-i times N-pair-j terms. The
+number of pairs goes like the number of galaxies squared. So one element costs galaxies to the
+fourth. That is where the name comes from: quartic, in the sources. Their contribution is a matrix
+rewrite that turns it into BLAS-3 products over pair-indexed vectors, plus coarse-graining
 the galaxies onto an N-side of two fifty-six or five twelve depending on the angular bin. Worth
 saying out loud: they report no wall-clock time, no scaling law and no memory footprint anywhere,
 so the practical case for the method rests on a cost they never state. And the coarse-graining is

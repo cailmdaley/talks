@@ -1588,17 +1588,27 @@ function boot(){
     //  quadruplet contributes 1/2[ xi(0)^2 + xi(theta_i)^2 ]. That is a real
     //  term of the sum, not an illustration of one, and it is why the diagonal
     //  is large. Only then does a second, different pair arrive.
-    var selfPair = (st >= 2 && st < 3);
-    var fillDiag = (st >= 2), fillOff = (st >= 5);
-    var showPartner = (st >= 3), showCross = (st >= 4), showStrip = (st >= 5);
+    //  1 pair in bin i · 2 the pair with ITSELF, (i,i) fills · 3 a second pair
+    //  in bin j · 4 the four cross-links · 5 accumulate, (i,j) fills · 6 every
+    //  quadruplet, the whole matrix in the covariance map.
+    var selfPair = (st === 2);
+    var fillDiag = (st >= 2), fillOff = (st >= 5), fillAll = (st >= 6);
+    var showPartner = (st >= 3), showCross = (st >= 4), showAccum = (st >= 5);
 
     // ---- the matrix, its full grid present from the base so nothing moves ----
     var my0 = mid - MS/2;
     for(var i=0;i<QNB;i++) for(var j=0;j<QNB;j++){
       var onDiag = (i===QBI && j===QBI);
       var offDiag = (i===QBI && j===QBJ) || (i===QBJ && j===QBI);
-      var show = (st >= 7) || (fillDiag && onDiag) || (fillOff && offDiag);
-      var c = show ? covmap(Q.cor[i*QNB+j]) : null;
+      //  While the walkthrough runs, a lit cell is painted in the colour of the
+      //  pairs that made it -- red for two bin-i pairs, blue once one of them is
+      //  in bin j -- so the eye carries the pair colour into the matrix. Only at
+      //  the last fragment does the whole thing switch to the covariance map and
+      //  become a covariance rather than a pointer.
+      var c = null;
+      if(fillAll) c = covmap(Q.cor[i*QNB+j]);
+      else if(fillDiag && onDiag) c = [188,69,56];
+      else if(fillOff && offDiag) c = [61,91,160];
       el(s,'rect',{x:(MX+j*CELL).toFixed(1), y:(my0+i*CELL).toFixed(1),
                    width:(CELL+0.4).toFixed(1), height:(CELL+0.4).toFixed(1),
                    fill: c ? 'rgb('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+')' : 'none',
@@ -1619,7 +1629,8 @@ function boot(){
           {fill:cc,'font-size':30,'font-style':'italic'});
     }
     if(fillDiag){
-      var lab = fillOff ? 'diagonal, then off-diagonal'
+      var lab = fillAll ? 'every quadruplet'
+              : fillOff ? 'a red pair × a blue pair:  the off-diagonal'
                         : 'the pair with itself:  the diagonal';
       txt(s, MX, my0 + MS + 38, lab, {fill:MUT,'font-size':28});
     }
@@ -1675,24 +1686,31 @@ function boot(){
       }
     }
 
-    //  the accumulation, as a ruled strip: one row per bin in play
-    if(showStrip){
-      var rows = [[QBI, mid+206, ACC, 'i'], [QBJ, mid+250, COB, 'j']];
-      for(var rr=0; rr<rows.length; rr++){
-        var bnum = rows[rr][0], ry = rows[rr][1], rc = rows[rr][2], L = Q.bins[bnum];
-        el(s,'line',{x1:PAD+42,y1:ry,x2:PAD+CW,y2:ry,stroke:RULE,'stroke-width':1});
-        txt(s, PAD, ry+9, rows[rr][3], {fill:rc,'font-size':28,'font-style':'italic'});
-        for(var z=0; z<L.length; z+=2){
-          if(!inW(xs[L[z]]) || !inW(xs[L[z+1]])) continue;
-          if(Math.abs(xs[L[z+1]]-xs[L[z]]) > 0.5) continue;
-          //  a bin-j pair is ~175 px wide in this window and there are dozens of
-          //  them: at the width and opacity tuned for bin i they merged into one
-          //  solid bar. Thinner and fainter keeps the row reading as many pairs.
-          el(s,'line',{x1:PX(xs[L[z]]),y1:ry,x2:PX(xs[L[z+1]]),y2:ry,
-                       stroke:rc,'stroke-width':5,opacity:0.20,'stroke-linecap':'round'});
-        }
+    //  The accumulate step draws what the sum IS: other red pairs against other
+    //  blue pairs, each contributing its own four cross-links, at low alpha
+    //  behind the one being explained. The ruled strip this replaces showed
+    //  which pairs exist but never that they are COMBINED, which is the whole
+    //  content of the step.
+    if(showAccum){
+      var L1 = Q.bins[QBI], L2 = Q.bins[QBJ];
+      function drawable(L, k){
+        var u1 = xs[L[k]], u2 = xs[L[k+1]];
+        return Math.abs(u2-u1) <= 0.5 && inW(u1) && inW(u2);
       }
-      txt(s, PAD, mid + 292, 'every pair in each bin', {fill:MUT,'font-size':26});
+      var A = [], B = [], z;
+      for(z=0; z<L1.length; z+=2) if(drawable(L1,z)) A.push([xs[L1[z]], xs[L1[z+1]]]);
+      for(z=0; z<L2.length; z+=2) if(drawable(L2,z)) B.push([xs[L2[z]], xs[L2[z+1]]]);
+      var NQ = Math.min(9, A.length, B.length);
+      for(var q2=0; q2<NQ; q2++){
+        var P = A[Math.floor(q2*A.length/NQ)], R = B[Math.floor(((q2*7)%NQ)*B.length/NQ)];
+        var lifts = [150, 108, 210, 76];
+        link(P[0], R[0], TEAL, lifts[0], null, null, 0.5, 0.12);
+        link(P[1], R[1], TEAL, lifts[1], null, null, 0.5, 0.12);
+        link(P[0], R[1], INK,  lifts[2], '12 9', null, 0.5, 0.10);
+        link(P[1], R[0], INK,  lifts[3], '12 9', null, 0.5, 0.10);
+      }
+      txt(s, PAD, mid + 292, (A.length) + ' red pairs × ' + (B.length) + ' blue pairs',
+          {fill:MUT,'font-size':28});
     }
 
     if(st >= 1){
