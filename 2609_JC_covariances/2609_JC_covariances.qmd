@@ -126,7 +126,7 @@ entirely complexity. Everything downstream is a consequence of this number.
 ```{=html}
 <div class="nka" data-step="3" data-ledger-from="3">
 <div class="eqs"></div>
-<svg class="pC" data-h="440" data-tilde="1" data-bins="1" data-binned="1" data-decoupled="1" data-kernel="1" data-kh="150" viewBox="0 0 1730 560" width="1730" height="560"></svg>
+<svg class="pC" data-h="600" data-tilde="1" data-bins="1" data-binned="1" data-decoupled="1" data-kernel="1" data-kh="150" viewBox="0 0 1730 700" width="1730" height="700"></svg>
 <div class="pick"></div>
 </div>
 ```
