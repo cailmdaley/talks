@@ -404,7 +404,25 @@
     //  the deck jumping when you land on one
     min-height: 940px; justify-content: center;
     img {
-        max-height: 880px; max-width: 1560px; width: auto; height: auto;
+        //  1740 wide, not 1560: the Nagura card is a capture of the arXiv
+        //  abstract page rather than the PDF's first page, and the width is what
+        //  sets its body type. The paper is single-column JCAP -- its abstract
+        //  sits far down a tall page, and cropping title + abstract out of it
+        //  and stacking them puts the body text near 15px on the slide, half the
+        //  readability floor. The arXiv page reflows the same three things into
+        //  a short block, so at this width the abstract lands at about 28px,
+        //  matching the Wolz card.
+        //  1700, and not a pixel more: the figure-treatment helper multiplies a
+        //  white page against the PARENT's cream background, so an image wider
+        //  than .cardwrap blends against nothing along the overhang and leaves a
+        //  white bar down each edge. .cardwrap is the slide's content box, about
+        //  1711px, so the image has to stay inside it.
+        max-height: 880px; max-width: 1700px; width: auto; height: auto;
+        //  .no-treat in the HTML: the shared figure-treatment helper keys a
+        //  figure's background out so plots sit on the cream ground, which for a
+        //  page of text left white bars down the outer edges. A paper page is
+        //  meant to look like paper, so it keeps its white and gets a border
+        //  instead of a keyed background.
         box-shadow: 0 3px 22px rgba(27, 22, 17, 0.16);
         background: #fff;
     }

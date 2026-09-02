@@ -510,7 +510,7 @@ set to one. Worked notebooks are examples eleven and twelve in the docs.
 
 ```{=html}
 <div class="cardwrap">
-  <img src="images_local/nagura_firstpage.png" alt="Nagura et al. first page" >
+  <img src="images_local/nagura_firstpage.png" alt="Nagura et al. first page">
   <div class="src">Nagura, Terasawa, Terawaki &amp; Takada &mdash; arXiv:2605.16186</div>
 </div>
 ```
