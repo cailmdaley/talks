@@ -462,7 +462,7 @@
 }
 .reveal .nka .mrow2 { padding: 0; margin-bottom: 12px; }
 // the quartic-counts row never goes through l at all, so it is set apart
-.reveal .nka .mrow2.apart { margin-top: 26px; padding-top: 12px; border-top: 2px solid #C5B89E; }
+.reveal .nka .mrow2.apart { margin-top: 18px; padding-top: 8px; border-top: 2px solid #C5B89E; }
 // The ledger box wraps the name and equation ONLY, at its own width, exactly as
 // on slide 7. The matrices sit on plain cream to its right and line up in three
 // fixed columns under the headers -- a full-width tinted band behind them made
@@ -670,4 +670,47 @@
     b { font-weight: 600; color: #BC4538; }
     &.sub { font-size: 44px; margin-top: 26px; color: #7A6F5C;
             b { color: #1B1611; } }
+}
+
+// ── round 3 additions ───────────────────────────────────────────────────────
+// Paper cards now carry a title, so the h2 comes back and the image gets what
+// is left rather than the whole slide.
+// left-aligned like every other title, or the red rule under it (which is
+// anchored to the content box) sits under nothing.
+.reveal section.paper-card > h2 { display: block; text-align: left; }
+// The card used to own the whole slide, so .cardwrap reserved 940 px to stop the
+// deck jumping between the two cards of different heights. With a title above
+// it that reservation runs into the footer: both numbers come down together.
+.reveal section.paper-card .cardwrap { min-height: 770px; }
+.reveal section.paper-card .cardwrap img { max-height: 700px; width: auto; }
+
+// Slide 19 shows two full-slide figures one at a time in ONE reserved area, so
+// the fragment swap moves nothing. r-stack centres them on each other.
+.reveal .nka .figswap { width: 100%; }
+.reveal .nka .figone {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    img { max-width: 1700px; max-height: 700px; object-fit: contain; }
+    // .papercap carries `flex: 0 0 470px` for the side-by-side layouts, where
+    // that is a WIDTH. In this column it would be a 470 px height reservation
+    // and the figure runs off the slide.
+    .papercap { flex: none; max-width: 1560px; }
+}
+
+// Slide 20: the cost of the result, under the caption of the figure it comes
+// from. .papercap owns the 470 px right column on .figpair slides; here that
+// column holds the caption AND the number, so the width moves up to .figside.
+.reveal .nka .figpair > .figside {
+    flex: 0 0 470px; display: flex; flex-direction: column; gap: 26px;
+    .papercap { flex: none; }
+}
+.reveal .nka .punchbox {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+    padding: 8px 22px;
+    border-left: 6px solid #BC4538;
+    background: rgba(188, 69, 56, 0.10);
+    .nm { font-size: 26px; color: #7A6F5C;
+          font-variant: small-caps; letter-spacing: 0.04em; }
+    .pv { font-size: 34px; color: #1B1611; }
+    .pv.hot { color: #BC4538; font-weight: 600; }
+    .par { font-size: 30px; color: #7A6F5C; line-height: 0.9; }
 }

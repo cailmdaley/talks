@@ -611,10 +611,23 @@ function boot(){
         var kk2 = K0 - m; if(kk2 < 0.5 || kk2 > KMAX) continue;
         dk += (dk?'L':'M')+XK(kk2,KMAX).toFixed(1)+' '+(y0+h - (opts.kh||150)*kpow(m)/pk).toFixed(1)+' ';
       }
-      var hw = mixRadius(kpow, N/2-1);
-      var lo = Math.max(K0-hw,1), hi = Math.min(K0+hw,KMAX-1);
-      el(s,'rect',{x:XK(lo,KMAX),y:y0,width:Math.max(XK(hi,KMAX)-XK(lo,KMAX),3),height:h,
-                   fill:COB,opacity:0.10});
+      //  Two beats, not one. The BUMP is W_l -- the mask's own modes, which is
+      //  what the "mask modes" entry defines. The shaded strip and the marker
+      //  at l0 are what the "mode coupling" entry says: this one mode is a sum
+      //  over the neighbours inside that strip. Drawing both at once made the
+      //  second equation land on a picture the first had already used up.
+      if(opts.band){
+        var hw = mixRadius(kpow, N/2-1);
+        var lo = Math.max(K0-hw,1), hi = Math.min(K0+hw,KMAX-1);
+        el(s,'rect',{x:XK(lo,KMAX),y:y0,width:Math.max(XK(hi,KMAX)-XK(lo,KMAX),3),height:h,
+                     fill:COB,opacity:0.10});
+        el(s,'line',{x1:XK(K0,KMAX),y1:y0,x2:XK(K0,KMAX),y2:y0+h,stroke:COB,
+                     'stroke-width':2.5,'stroke-dasharray':'7 6'});
+        for(var nb=-2; nb<=2; nb++){
+          var kn = K0 + nb*hw/2.2; if(kn<1||kn>KMAX-1) continue;
+          el(s,'circle',{cx:XK(kn,KMAX),cy:y0+h,r:6,fill:COB,opacity:nb?0.5:0.95});
+        }
+      }
       el(s,'path',{d:dk,fill:'none',stroke:COB,'stroke-width':3.5});
       if(opts.err === true){
         var v = pullOutError(K0);
@@ -1425,6 +1438,207 @@ function boot(){
     txt(s, PAD, y0+h+112, 'position  x', {fill:MUT});
   }
 
+  // ═══ pairs of pairs: the quartic-counts estimator, drawn ══════════════════
+  //  Cov(xi_i, xi_j) = (N_i N_j)^-1 sum over (a,b) in bin i and (c,d) in bin j
+  //  of 1/2 [ xi(th_ac) xi(th_bd) + xi(th_ad) xi(th_bc) ].
+  //
+  //  This is computed HERE, on this slide's own catalogue and its own theta
+  //  binning -- not borrowed from the projection slide's 22-bin grid. Borrowing
+  //  would have put the pair I highlight in one binning and the matrix cell it
+  //  lands in in another, which is the kind of quiet mismatch nobody catches
+  //  from the back of the room and everybody catches in the paper.
+  //
+  //  xi at the CROSS separations is the field's own autocorrelation at any lag,
+  //  so it is tabulated over the whole box rather than over XIMAX.
+  var QUAD = null;
+  function xiFull(){
+    var t = new Float64Array(NX/2+1);
+    for(var lag=0; lag<=NX/2; lag++){
+      var a2 = 0;
+      for(var q=0;q<NX;q++) a2 += field[q]*field[(q+lag)%NX];
+      t[lag] = a2/NX;
+    }
+    return t;
+  }
+  function quadSet(){
+    if(QUAD && QUAD.n === CAT.xs.length) return QUAD;
+    catBuild(); xiBuild();
+    var xs = CAT.xs, n = xs.length, i, j, b;
+    var XT = xiFull();
+    function xi(d){                       // d in box units, periodic
+      if(d > 0.5) d = 1 - d;
+      var f = d*NX, k = Math.floor(f); if(k >= NX/2) return XT[NX/2];
+      var w = f - k; return XT[k]*(1-w) + XT[k+1]*w;
+    }
+    //  pairs, bucketed by separation bin
+    var bins = []; for(b=0;b<XINB;b++) bins.push([]);
+    for(i=0;i<n;i++) for(j=i+1;j<n;j++){
+      var d = xs[j]-xs[i]; if(d > 0.5) d = 1-d;
+      if(d >= XIMAX) continue;
+      bins[xibin(d)].push(i, j);
+    }
+    var cov = new Float64Array(XINB*XINB);
+    for(var bi=0; bi<XINB; bi++) for(var bj=bi; bj<XINB; bj++){
+      var A = bins[bi], B = bins[bj], acc = 0, cnt = 0;
+      for(var p1=0; p1<A.length; p1+=2){
+        var a = xs[A[p1]], b2 = xs[A[p1+1]];
+        for(var p2=0; p2<B.length; p2+=2){
+          var c = xs[B[p2]], dd = xs[B[p2+1]];
+          acc += 0.5*(xi(Math.abs(a-c))*xi(Math.abs(b2-dd)) +
+                      xi(Math.abs(a-dd))*xi(Math.abs(b2-c)));
+          cnt++;
+        }
+      }
+      var v = cnt ? acc/cnt : 0;
+      cov[bi*XINB+bj] = v; cov[bj*XINB+bi] = v;
+    }
+    var dg = diagOf(cov, XINB);
+    QUAD = {n:n, cov:cov, cor:normBy(cov, dg, XINB), bins:bins};
+    return QUAD;
+  }
+
+  //  which two bins the walkthrough uses, and where along the box to look for a
+  //  concrete pair in each -- far enough apart that the four cross-links are
+  //  four visibly different lengths
+  //  Which two bins the walkthrough uses, and roughly where along the box to
+  //  look for a concrete pair in each. The panel ZOOMS to a window rather than
+  //  showing the whole box: a separation bin is a few percent of the box, which
+  //  is about ten pixels at full width -- the two sources of a "pair" landed on
+  //  top of each other and the bracket was unreadable. In the window the same
+  //  pair is ~70 px and the four cross-links are four visibly different lengths.
+  var QBI = 8, QBJ = 17, QAX = 0.33, QCX = 0.53;
+  var QWLO = 0.245, QWHI = 0.625;
+  function pickPair(bin, near){
+    var Q = quadSet(), L = Q.bins[bin], xs = CAT.xs, best = -1, bd = 9;
+    for(var p=0;p<L.length;p+=2){
+      var m = 0.5*(xs[L[p]] + xs[L[p+1]]), e = Math.abs(m-near);
+      if(e < bd){ bd = e; best = p; }
+    }
+    return best < 0 ? null : [L[best], L[best+1]];
+  }
+  //  text with subscript runs: "xi(th_ac) xi(th_bd)" as real subscripts
+  function xiProd(p, x, y, s1, s2, col){
+    var e = el(p,'text',{x:x, y:y, 'font-size':32, fill:col});
+    function part(sub){
+      e.appendChild(document.createTextNode('ξ(θ'));
+      var t = document.createElementNS(NS,'tspan');
+      t.setAttribute('dy','8'); t.setAttribute('font-size','0.68em');
+      t.textContent = sub; e.appendChild(t);
+      var u = document.createElementNS(NS,'tspan');
+      u.setAttribute('dy','-8'); u.textContent = ')'; e.appendChild(u);
+    }
+    part(s1);
+    var m = document.createElementNS(NS,'tspan');
+    m.textContent = ' · '; e.appendChild(m);
+    part(s2);
+    return e;
+  }
+
+  function drawQuad(s, opts){
+    clear(s); geom(opts);
+    var PAD = _x0, AW = _w, st = opts.stage == null ? 0 : opts.stage;
+    var Q = quadSet(), X = xiBuild(), xs = CAT.xs;
+    var MS = 400, MX = PAD + AW - MS, CELL = MS/XINB;
+    var CW = MX - PAD - 90;
+    var mid = 300, h = 150;
+    function PX(u){ return PAD + CW*(u - QWLO)/(QWHI - QWLO); }
+    function PY(v){ return mid - v*h*0.42; }
+    function inW(u){ return u >= QWLO && u <= QWHI; }
+
+    // ---- the matrix, its full grid present from the base so nothing moves ----
+    var my0 = mid - MS/2;
+    for(var i=0;i<XINB;i++) for(var j=0;j<XINB;j++){
+      var hit = (i===QBI && j===QBJ) || (i===QBJ && j===QBI);
+      var show = (st >= 5) || (st === 4 && hit);
+      var c = show ? covmap(Q.cor[i*XINB+j]) : null;
+      el(s,'rect',{x:(MX+j*CELL).toFixed(1), y:(my0+i*CELL).toFixed(1),
+                   width:(CELL+0.4).toFixed(1), height:(CELL+0.4).toFixed(1),
+                   fill: c ? 'rgb('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+')' : 'none',
+                   stroke: GRID, 'stroke-width':0.8});
+    }
+    el(s,'rect',{x:MX,y:my0,width:MS,height:MS,fill:'none',stroke:RULE,'stroke-width':1.5});
+    txt(s, MX, my0 - 20, 'Cov(ξᵢ, ξⱼ)', {fill:MUT, 'font-size':28});
+    //  the two bins the walkthrough uses, marked on the axes from the start:
+    //  the cell that lights up at the accumulate step is their intersection
+    if(st >= 1) el(s,'rect',{x:MX-16,y:my0+QBI*CELL,width:10,height:CELL,fill:ACC});
+    if(st >= 1) txt(s, MX-52, my0+QBI*CELL+CELL, 'i', {fill:ACC,'font-size':28,'font-style':'italic'});
+    if(st >= 2) el(s,'rect',{x:MX+QBJ*CELL,y:my0-16,width:CELL,height:10,fill:COB});
+    if(st >= 2) txt(s, MX+QBJ*CELL+2, my0-26, 'j', {fill:COB,'font-size':28,'font-style':'italic'});
+
+    // ---- the catalogue, zoomed to the window ----
+    el(s,'line',{x1:PAD,y1:mid,x2:PAD+CW,y2:mid,stroke:RULE,'stroke-width':2});
+    var d='', started=false;
+    for(var q=0;q<NX;q++){
+      var u = q/(NX-1); if(!inW(u)) continue;
+      d += (started?'L':'M')+PX(u).toFixed(1)+' '+PY(field[q]).toFixed(1)+' '; started=true;
+    }
+    el(s,'path',{d:d,fill:'none',stroke:FAINT,'stroke-width':2});
+    for(var k=0;k<xs.length;k++){
+      if(!inW(xs[k])) continue;
+      el(s,'circle',{cx:PX(xs[k]),cy:PY(X.av[k]),r:3+5*Math.abs(X.av[k]),fill:INK,opacity:0.8});
+    }
+    txt(s, PAD, mid + 274, 'position  x', {fill:MUT, 'font-size':26});
+
+    var P1 = pickPair(QBI, QAX), P2 = pickPair(QBJ, QCX);
+    if(!P1 || !P2) return;
+    var a = xs[P1[0]], b = xs[P1[1]], c = xs[P2[0]], dd = xs[P2[1]];
+
+    function bracket(u1, u2, y, col, label){
+      var x1 = PX(u1), x2 = PX(u2);
+      el(s,'line',{x1:x1,y1:y,x2:x2,y2:y,stroke:col,'stroke-width':4});
+      el(s,'line',{x1:x1,y1:y-12,x2:x1,y2:y+12,stroke:col,'stroke-width':3.5});
+      el(s,'line',{x1:x2,y1:y-12,x2:x2,y2:y+12,stroke:col,'stroke-width':3.5});
+      txtsub(s, (x1+x2)/2 - 14, y + 44, 'θ', label, '',
+             {fill:col,'font-size':32,'font-style':'italic'});
+    }
+    //  dx pushes each label AWAY from its partner: the two sources of a pair are
+    //  only ~45 px apart at this zoom and centred labels collided
+    function ring(u, vi, col, tag, dx){
+      el(s,'circle',{cx:PX(u),cy:PY(X.av[vi]),r:13,fill:'none',stroke:col,'stroke-width':4});
+      txt(s, PX(u)-8+(dx||0), PY(X.av[vi])-32, tag, {fill:col,'font-size':32,
+              'font-style':'italic','font-weight':600});
+    }
+    function link(u1, u2, col, lift, dash){
+      var x1 = PX(u1), x2 = PX(u2), r = Math.abs(x2-x1)/2;
+      el(s,'path',{d:'M'+Math.min(x1,x2).toFixed(1)+' '+mid+' A '+r.toFixed(1)+' '+lift+
+                      ' 0 0 1 '+Math.max(x1,x2).toFixed(1)+' '+mid, fill:'none',stroke:col,
+                   'stroke-width':3.2, 'stroke-dasharray': dash || 'none'});
+    }
+
+    //  the accumulation sits BELOW the two walkthrough brackets, at its own two
+    //  depths, so the term being explained stays the readable one
+    if(st >= 4){
+      var L1 = Q.bins[QBI], L2 = Q.bins[QBJ], z;
+      for(z=0; z<L1.length; z+=2){
+        if(!inW(xs[L1[z]]) || !inW(xs[L1[z+1]])) continue;
+        el(s,'line',{x1:PX(xs[L1[z]]),y1:mid+150,x2:PX(xs[L1[z+1]]),y2:mid+150,
+                     stroke:ACC,'stroke-width':3,opacity:0.22});
+      }
+      for(z=0; z<L2.length; z+=2){
+        if(!inW(xs[L2[z]]) || !inW(xs[L2[z+1]])) continue;
+        el(s,'line',{x1:PX(xs[L2[z]]),y1:mid+182,x2:PX(xs[L2[z+1]]),y2:mid+182,
+                     stroke:COB,'stroke-width':3,opacity:0.22});
+      }
+      txt(s, PAD, mid + 236, (L1.length/2|0) + ' × ' + (L2.length/2|0) + ' quadruplets',
+          {fill:MUT,'font-size':28});
+    }
+
+    if(st >= 1){
+      ring(a, P1[0], ACC, 'a', -26); ring(b, P1[1], ACC, 'b', 26);
+      bracket(a, b, mid + 96, ACC, 'i');
+    }
+    if(st >= 2){
+      ring(c, P2[0], COB, 'c', -26); ring(dd, P2[1], COB, 'd', 26);
+      bracket(c, dd, mid + 96, COB, 'j');
+    }
+    if(st >= 3){
+      link(a, c, TEAL, 120); link(b, dd, TEAL, 78);
+      link(a, dd, INK, 190, '12 9'); link(b, c, INK, 40, '12 9');
+      xiProd(s, PAD, mid - 208, 'ac', 'bd', TEAL);
+      xiProd(s, PAD, mid - 166, 'ad', 'bc', INK);
+    }
+  }
+
   //  N1 lower panel: xi(theta) accumulating bin by bin as the fragments advance
   function drawXiCat(s, opts){
     clear(s); geom(opts);
@@ -1592,9 +1806,9 @@ function boot(){
     {tex:'\\tilde a(x)=w(x)\\,a(x)', step:2, name:'mask', col:1, row:2, sub:0},
     //  W is used three slides running -- here, in the four-point line, and in
     //  the narrow-kernel line -- so it gets defined the moment it appears.
-    {tex:'W_\\ell=\\sum_x w(x)\\,e^{-i\\ell x}', step:2, name:'mask modes', col:2, row:2, sub:0},
-    {tex:'\\tilde a_\\ell=\\sum_{\\ell\'} W_{\\ell-\\ell\'}\\,a_{\\ell\'}', step:2, name:'mode coupling', col:3, row:2, sub:1},
-    {tex:'\\langle \\tilde C_\\ell\\rangle=\\sum_{\\ell\'} |W_{\\ell-\\ell\'}|^2\\,C_{\\ell\'}', step:2, name:'pseudo-Cℓ', col:4, row:2, sub:2},
+    {tex:'W_\\ell=\\sum_x w(x)\\,e^{-i\\ell x}', step:2, name:'mask modes', col:2, row:2, sub:1},
+    {tex:'\\tilde a_\\ell=\\sum_{\\ell\'} W_{\\ell-\\ell\'}\\,a_{\\ell\'}', step:2, name:'mode coupling', col:3, row:2, sub:2},
+    {tex:'\\langle \\tilde C_\\ell\\rangle=\\sum_{\\ell\'} |W_{\\ell-\\ell\'}|^2\\,C_{\\ell\'}', step:2, name:'pseudo-Cℓ', col:4, row:2, sub:3},
 
     {tex:'\\tilde C_b=\\frac{1}{N_b}\\sum_{\\ell\\in b}\\tilde C_\\ell', step:3, name:'bandpower', col:1, row:3},
     {tex:'(|W|^2)_{bb\'}=\\frac{1}{N_b}\\sum_{\\ell\\in b}\\sum_{\\ell\'\\in b\'} |W_{\\ell-\\ell\'}|^2', step:3, name:'binned coupling', col:2, row:3},
@@ -1745,6 +1959,7 @@ function boot(){
       w:  +pC.dataset.w  || undefined,
       marks: pC.dataset.marks === '1',
       kernel: pC.dataset.kernel === '1' && stage >= (+pC.dataset.kernelAt || 0),
+      band:   pC.dataset.bandAt != null ? stage >= +pC.dataset.bandAt : true,
       kh: +pC.dataset.kh || 150,
       err: pC.dataset.err === '1',
       tilde: pC.dataset.tilde === '1' && stage >= (+pC.dataset.tildeAt || 0),
@@ -1770,6 +1985,7 @@ function boot(){
     each('.pP',    drawCatalogue);
     each('.pPair', drawPairs);
     each('.pXiC',  drawXiCat);
+    each('.pQuad', drawQuad);
     drawProj(root);
     each('.pMps',  drawMaskPS);
     each('.pKC',   drawCatKernel);

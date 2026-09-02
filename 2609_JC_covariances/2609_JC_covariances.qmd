@@ -45,7 +45,7 @@ include-in-header:
     - nka_data.html
 ---
 
-## {.paper-card}
+## Paper one {.paper-card}
 
 ```{=html}
 <div class="cardwrap">
@@ -104,9 +104,10 @@ of a Gaussian field. It is what we are trying to measure.
 <div class="pick"></div>
 <span class="fragment nka-step"></span>
 <span class="fragment nka-step"></span>
+<span class="fragment nka-step"></span>
 <svg class="pA" data-h="170" viewBox="0 0 1730 260" width="1730" height="260"></svg>
-<svg class="pC" data-h="230" data-kernel="1" data-kernel-at="1" data-kh="148"
-     data-tilde="1" data-tilde-at="2"
+<svg class="pC" data-h="230" data-kernel="1" data-kernel-at="1" data-band-at="2" data-kh="148"
+     data-tilde="1" data-tilde-at="3"
      viewBox="0 0 1730 336" width="1730" height="336"></svg>
 </div>
 ```
@@ -511,7 +512,7 @@ randoms or a completeness map, and catalogue-clustering, which is that with the 
 set to one. Worked notebooks are examples eleven and twelve in the docs.
 :::
 
-## {.paper-card}
+## Paper two {.paper-card}
 
 ```{=html}
 <div class="cardwrap">
@@ -626,7 +627,7 @@ people actually use.
       <div class="mpix dcol"><span>&minus; exact<i class="ekey"></i></span></div>
     </div>
 
-    <div class="mrow2 fragment">
+    <div class="mrow2">
       <div class="mtxt"><div class="mbox">
         <span class="nm">f<sub>sky</sub> (Knox)</span>
         <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\delta^K_{\ell\ell'}\,\dfrac{2\,C_\ell^{2}}{(2\ell+1)\,f_{\rm sky}} \)</span>
@@ -653,7 +654,7 @@ people actually use.
     <div class="mrow2 apart fragment">
       <div class="mtxt"><div class="mbox">
         <span class="nm">quartic counts (Schneider; Shirasaki)</span>
-        <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\dfrac{1}{N_{{\rm pair},i}N_{{\rm pair},j}}\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\,\dfrac{\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})}{2} \)</span>
+        <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\big(N_{{\rm pair},i}N_{{\rm pair},j}\big)^{-1}\textstyle\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\cdot\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)</span>
         </div>
       </div>
       <div class="mpix nohar"></div>
@@ -701,126 +702,63 @@ Hold on to the middle column. Slides seventeen to twenty are all about what thos
 to a real error bar.
 :::
 
-## The diagonal is innocent {.nka-slide}
+## Pairs of pairs {.nka-slide}
 
 ```{=html}
-<div class="anim" id="s4">
-<div style="display:flex; gap:44px; align-items:flex-start;">
-  <div>
-    <canvas id="s4m" width="96" height="96" style="width:730px;height:730px"></canvas>
-    <div style="margin-top:10px; font-size:28px; color:#7A6F5C;">
-      iNKA covariance &nbsp;·&nbsp; <span style="color:#1B1611;font-weight:600"
-      id="s4b">bands kept</span></div>
+<div class="nka" data-step="10" data-staged="1">
+  <div class="corr big">
+    <div>
+      <span class="nm">quartic counts (Schneider; Shirasaki)</span>
+      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\big(N_{{\rm pair},i}N_{{\rm pair},j}\big)^{-1}\textstyle\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\cdot\tfrac12\big[\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})\big] \)</span>
+    </div>
   </div>
-  <div style="flex:1;">
-    <svg id="s4c" viewBox="0 0 940 730" width="940" height="730"></svg>
-    <div style="font-size:28px; color:#7A6F5C; margin-left:90px;">
-      separation &nbsp;θ</div>
-  </div>
+  <span class="fragment nka-step"></span>
+  <span class="fragment nka-step"></span>
+  <span class="fragment nka-step"></span>
+  <span class="fragment nka-step"></span>
+  <span class="fragment nka-step"></span>
+  <svg class="pQuad" viewBox="0 0 1730 580" width="1730" height="580"></svg>
 </div>
-<div class="ctl"><button id="s4r">replay</button></div>
-</div>
-
-<script>
-(function(){
-  var D=window.NKA_DATA.slide4;
-  var NS='http://www.w3.org/2000/svg';
-  function el(p,t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);
-    p.appendChild(e);return e;}
-  function txt(p,x,y,s,a){var e=el(p,'text',Object.assign({x:x,y:y,'font-size':28,
-    fill:'#7A6F5C'},a||{}));e.textContent=s;return e;}
-
-  var KM=D.km, bin=atob(D.matrix), M=new Uint8Array(KM*KM);
-  for(var q=0;q<M.length;q++)M[q]=bin.charCodeAt(q);
-
-  var cv=document.getElementById('s4m'), ctx=cv.getContext('2d');
-  function drawMatrix(n){
-    var im=ctx.createImageData(KM,KM);
-    for(var i=0;i<KM;i++)for(var j=0;j<KM;j++){
-      var v=M[i*KM+j]/255, inb=Math.abs(i-j)<=n, o=4*(i*KM+j), u=Math.pow(v,0.55);
-      // in-band: ground -> cobalt.  outside (replaced by the exact answer): muted.
-      if(inb){ im.data[o]=247-186*u; im.data[o+1]=240-149*u; im.data[o+2]=225-65*u; }
-      else   { im.data[o]=247-55*u;  im.data[o+1]=240-58*u;  im.data[o+2]=225-64*u; }
-      im.data[o+3]=255;
-    }
-    ctx.putImageData(im,0,0);
-  }
-
-  var TH=D.theta, lo=Math.log10(TH[0]), hi=Math.log10(TH[TH.length-1]);
-  var X0=110, Y0=60, W=800, H=600, YLO=0.80, YHI=1.04;
-  function X(t){return X0+W*(Math.log10(t)-lo)/(hi-lo);}
-  function Y(r){return Y0+H*(1-(r-YLO)/(YHI-YLO));}
-  function drawCurve(n){
-    var s=document.getElementById('s4c');s.innerHTML='';
-    for(var g=0.85;g<1.041;g+=0.05){
-      el(s,'line',{x1:X0,y1:Y(g),x2:X0+W,y2:Y(g),stroke:'#E0D5BF','stroke-width':2});
-      txt(s,X0-78,Y(g)+10,g.toFixed(2));
-    }
-    el(s,'line',{x1:X0,y1:Y(1),x2:X0+W,y2:Y(1),stroke:'#1B1611','stroke-width':3});
-    txt(s,X0+W-150,Y(1)-16,'exact',{fill:'#1B1611'});
-    var r=D.ratios[n],d='';
-    for(var i=0;i<TH.length;i++)d+=(i?'L':'M')+X(TH[i]).toFixed(1)+' '+Y(r[i]).toFixed(1)+' ';
-    el(s,'path',{d:d,fill:'none',stroke:'#BC4538','stroke-width':4});
-    txt(s,X0+W-340,Y(0.815),'iNKA / exact   Cov(ξ,ξ)',{fill:'#BC4538'});
-    el(s,'circle',{cx:X(TH[0]),cy:Y(r[0]),r:9,fill:'#BC4538'});
-    txt(s,X(TH[0])+24,Y(r[0])-30,(100*(r[0]-1)).toFixed(1)+'%',
-        {fill:'#BC4538','font-size':46,'font-weight':600});
-  }
-
-  var i=0,timer=null;
-  function show(j){
-    var n=D.ns[j];
-    drawMatrix(n); drawCurve(j);
-    document.getElementById('s4b').textContent='|k − k′| ≤ '+n;
-
-  }
-  function play(){clearInterval(timer);i=0;show(0);
-    timer=setInterval(function(){i++;if(i>=D.ns.length){clearInterval(timer);return;}
-      show(i);},300);}
-  document.getElementById('s4r').onclick=play;
-  window.__jump=window.__jump||{};
-  window.__jump.s4=function(j){clearInterval(timer);show(j);};
-  show(0);
-  var sec=document.getElementById('s4').closest('section'), was=false;
-  setInterval(function(){var now=sec.classList.contains('present');
-    if(now&&!was)play(); if(!now&&was)clearInterval(timer); was=now;},250);
-})();
-</script>
 ```
 
 ::: {.notes}
-This is the experiment the paper doesn't do, and it settles the diagnosis.
+This is the estimator, drawn. Same catalogue as the pair-count slide, same field.
 
-Start on the left with iNKA's covariance matrix, and keep only the bands within some
-separation of the diagonal — everything outside, greyed, I've replaced with the exact
-answer. At the start only the diagonal is iNKA's, and the real-space covariance on the
-right sits on top of the truth: one percent low. So the diagonal is fine.
+A correlation function bin is a set of pairs. So a *covariance* between two bins is a sum over
+pairs of pairs: one pair from bin i, one pair from bin j.
 
-Now widen the band. As iNKA's own off-diagonals come back in, the curve peels away and
-settles at eighteen percent low. Most of that damage is done by the time the band reaches
-the coupling kernel, which is fifteen modes wide here — about eighty percent of the error
-is in by n of sixteen. The last couple of points accumulate slowly out to sixty, so the
-cutoff is soft rather than sharp.
+Here is a pair at theta-i — two sources, that separation, in red. And here is a pair at theta-j,
+in blue. Four objects, a b c d.
 
-So: iNKA is right exactly where it was fitted, the harmonic diagonal, and real space
-weights precisely the part the fit never reached. And the reverse test says the same —
-zero those off-diagonals instead of correcting them and you lose eighty percent of the
-covariance. That band isn't a correction to the real-space covariance. It is the
-real-space covariance.
+Now the Gaussian four-point function. It factorises into two cross-pairings, and these are the
+four cross-separations: a to c with b to d, or a to d with b to c. Each pairing contributes the
+product of the theory xi at those two separations. Notice which separations those are — not
+theta-i and theta-j, but the separations *between* the two pairs. That is where the geometry
+enters, and it enters as an actual distance between actual objects.
+
+Now do that for every pair in bin i against every pair in bin j — a few hundred times a few
+hundred here, and that is one cell of the matrix. Fill in every cell and you have the whole
+covariance.
+
+And here is the thing worth saying slowly: nowhere in that did a window function appear. No
+coupling matrix, no f-sky, no assumption about a kernel width. The footprint, the holes, the
+boundaries and the weights are all encoded exactly by which quadruplets exist to be counted. The
+window is not modelled. It is counted. That is the entire idea, and the matrix on the right is
+the one you saw in the last row of the previous slide.
 :::
 
-## The transform is innocent; the input is not {.nka-slide}
+## Off-diagonal errors are amplified by the Legendre transform {.nka-slide}
 
 ```{=html}
 <div class="nka">
-<div class="figrow">
-  <div class="figcell">
-    <img src="images/nagura_cov_xi.png" alt="Cov(xi,xi) diagonal: sims, projected sim harmonic covariance, projected iNKA">
-    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 — Fig. 3</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using Eq. 12 (solid lines).</div>
-  </div>
-  <div class="figcell">
+<div class="r-stack figswap">
+  <div class="figone fragment fade-out" data-fragment-index="0">
     <img src="images/nagura_matrix_r.png" alt="Correlation matrices of the harmonic covariance: iNKA, simulations, and their ratio">
-    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 — Fig. 4</span>Correlation matrices of \(\mathrm{Cov}(\tilde C_\ell,\tilde C_{\ell'})\) computed using the iNKA (left) and measured from Gaussian simulations (center). The right plot shows the fractional difference \(\mathrm{Cov}^{\rm iNKA}/\mathrm{Cov}^{\rm sim}-1\). The iNKA reproduces the diagonal structure accurately, while noticeable differences remain in the off-diagonal components.</div>
+    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 &mdash; Fig. 4</span>Correlation matrices of \(\mathrm{Cov}(\tilde C_\ell,\tilde C_{\ell'})\) computed using the iNKA (left) and measured from Gaussian simulations (center). The right plot shows the fractional difference \(\mathrm{Cov}^{\rm iNKA}/\mathrm{Cov}^{\rm sim}-1\).</div>
+  </div>
+  <div class="figone fragment fade-in" data-fragment-index="0">
+    <img src="images/nagura_cov_xi.png" alt="Cov(xi,xi) diagonal: sims, projected sim harmonic covariance, projected iNKA">
+    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 &mdash; Fig. 3</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using Eq. 12 (solid lines).</div>
   </div>
 </div>
 </div>
@@ -851,7 +789,7 @@ test — keep only the first N off-diagonal bands and project — is not in the 
 So I ran it. Next slide.
 :::
 
-## Count the geometry, don't model it {.nka-slide}
+## Accounting for geometry with counts {.nka-slide}
 
 ```{=html}
 <div class="nka">
@@ -859,7 +797,15 @@ So I ran it. Next slide.
   <div class="figmain">
     <img src="images/nagura_analytic_comp.png" alt="Cov(xi,xi) diagonal for the XMM field: simulations, iNKA, f_sky and quartic counts">
   </div>
+  <div class="figside">
   <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 — Fig. 5</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using analytical methods (solid lines). Note that we consider XMM field only for this figure.</div>
+    <div class="punchbox">
+      <span class="nm">what it costs you</span>
+      <span class="pv">10% in harmonic space</span>
+      <span class="par">&darr;</span>
+      <span class="pv hot">25&ndash;30% in \( \xi(\theta) \)</span>
+    </div>
+  </div>
 </div>
 </div>
 ```
@@ -885,18 +831,7 @@ unquantified non-Gaussian error. And shape noise is dropped from the comparison 
 while for real cosmic shear the noise and mixed terms dominate the small-theta covariance.
 So a fair question is whether a twenty-five percent error on the sample-variance term
 survives adding shape noise in quadrature at six arcminutes.
-:::
 
-## Harmonic diagonal accuracy buys you nothing in real space {.nka-slide}
-
-```{=html}
-<div class="nka">
-  <div class="punch">10% in harmonic space &nbsp;→&nbsp; <b>25–30%</b> in \(\xi(\theta)\).</div>
-  <div class="punch sub">And the fix is to <b>count</b> the geometry, not model it.</div>
-</div>
-```
-
-::: {.notes}
 Where that leaves us.
 
 The result is solid and the control experiment proves it: project the simulated harmonic
