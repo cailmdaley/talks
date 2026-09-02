@@ -66,6 +66,14 @@
 //   stage, and nesting `em` under the deck's root size drops it below the
 //   readability floor.
 
+//  Every panel is an inline svg by default, which reserves a descender's worth
+//  of line box under it -- about 37px at this type size, and it read as dead
+//  space between a panel and whatever sat beneath it.
+//  ... but MathJax renders inline math as an svg inside mjx-container, and
+//  making THOSE block breaks every equation onto its own line mid-sentence.
+.reveal .nka svg { display: block; }
+.reveal .nka mjx-container svg { display: inline; }
+
 .reveal .nka {
     position: relative;
     text-align: left;
@@ -210,7 +218,7 @@
 // the Wolz figure is the evidence on this slide, so it gets the height and the
 // caption column is squeezed to whatever is left
 .reveal .nka .two.lower > .figblock { gap: 22px; }
-.reveal .nka .two.lower .figblock img { height: 512px; }
+.reveal .nka .two.lower .figblock img { height: 534px; }
 .reveal .nka .two.lower .figside { min-width: 300px; }
 // theta_c control: on the band-limit slide it sits in the lower row beside the
 // toy, not pinned to the top right, so nothing above the a(x)/w(x) panels moves

@@ -219,8 +219,8 @@ papers.
 <svg class="pP" data-h="80" data-foot-at="2" viewBox="0 0 1730 238" width="1730" height="238"></svg>
 <div class="two lower">
   <div class="toycol fragment" data-fragment-index="0">
-    <svg class="pMps" data-h="342" data-foot-at="2" data-x0="132" data-w="352"
-         viewBox="0 0 520 434" width="520" height="434"></svg>
+    <svg class="pMps" data-h="345" data-foot-at="2" data-x0="132" data-w="352"
+         viewBox="0 0 520 437" width="520" height="437"></svg>
     <div class="eqblock nwdef">
       <span class="nm">mask shot noise</span>
       <span class="eq">\( \tilde N_w=\tfrac{1}{4\pi}\sum_i w_i^2 \)</span>
@@ -282,8 +282,8 @@ band-limit the mask rather than to subtract its floor.
      viewBox="0 0 1730 238" width="1730" height="238"></svg>
 <div class="two lower">
   <div class="toycol wide">
-    <svg class="pMps" data-h="300" data-foot-at="0" data-cloud="1" data-pixel="1"
-         data-x0="132" data-w="820" viewBox="0 0 990 392" width="990" height="392"></svg>
+    <svg class="pMps" data-h="420" data-foot-at="0" data-cloud="1" data-pixel="1"
+         data-x0="132" data-w="820" viewBox="0 0 990 512" width="990" height="512"></svg>
   </div>
   <div class="cloudcol">
     <div class="eqblock">
