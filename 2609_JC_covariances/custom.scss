@@ -774,3 +774,18 @@
     .nm.noise  { color: #BC4538; }
     .nm.signal { color: #3D5BA0; }
 }
+
+// ── the closing slide: two papers, two lines each ───────────────────────────
+.reveal .nka.takeaways { display: flex; flex-direction: column; gap: 56px; margin-top: 84px; }
+.reveal .nka .tk {
+    padding: 14px 26px 18px;
+    border-left: 6px solid #BC4538;
+    background: rgba(188, 69, 56, 0.10);
+    .nm { display: block; font-size: 30px; color: #7A6F5C;
+          font-variant: small-caps; letter-spacing: 0.04em; margin-bottom: 10px; }
+    ul { margin: 0; padding-left: 34px; }
+    li { font-size: 34px; line-height: 1.32; margin: 0 0 10px 0; }
+    li:last-child { margin-bottom: 0; }
+}
+// the geometry line under slide 19's numbers box
+.reveal .nka .boxnote { margin-top: 12px; max-width: 470px; color: #7A6F5C; }

@@ -216,7 +216,7 @@ papers.
     <img src="images/wolz_Nw_quaia.png" alt="Quaia catalogue mask pseudo power spectrum">
     <div class="figside">
       <span class="src">Wolz et al., arXiv:2607.14843 — Fig. 1</span>
-      <p class="verbatim caption">Mask pseudo power spectrum for the <i>Quaia</i> survey mask, comparing catalogue- and mask-based estimators. At the catalogue level, the constant shot noise floor (\(\tilde{N}_w\)) is reached at scales far below the mean interparticle scale (\(\theta_{\rm c}\)).</p>
+      <p class="verbatim caption">Mask pseudo power spectrum for the <i>Quaia</i> survey mask, comparing catalogue- and mask-based estimators. At the catalogue level, the constant shot noise floor (\(\tilde{N}_w\)) is reached at scales far below the mean interparticle scale (\(\theta_{\rm c}\)). For the catalogue estimates, we Poisson-sample \(10^5\) positions with number densities following the survey mask and compute the spherical harmonics at the catalogue level.</p>
     </div>
   </div>
 </div>
@@ -399,12 +399,13 @@ data squared, source by source, smeared by the squared cloud — and its transfo
 appears in the covariance. That is the connection: the noise in the covariance is the harmonic
 transform of that red band.
 
-A footnote I will not put on the slide. Strictly that map wants the expectation of a-i squared,
-and what you have is one realisation, so the paper substitutes a-i squared itself. That is
-unbiased in the mean but its pseudo-spectrum then involves fourth moments, and because the
-expectation of a product is not the product of expectations it overestimates the variance map's
-power at high ell. They correct it analytically by Wick — a self-pair correction to a self-pair
-term. Ask me if you want the details.
+A footnote I will not put on the slide. That map wants the *expected* square of the field at each
+source, and all you have is the one value you measured, so the paper simply uses it — a-i squared
+in place of its expectation. That is exact on average and noisy per source, which is fine until
+you take its power spectrum: squaring a squared quantity brings in fourth moments, and since the
+expectation of a product is not the product of expectations, the variance map's power comes out
+too high at large ell. They subtract that analytically with Wick — a self-pair correction to the
+self-pair term.
 
 Second line: take the self-pairs out of the mask product, or they get counted twice. What is left
 is exactly the distinct-pair sum. Note that the subtracted piece is its own catalogue field, built
@@ -490,7 +491,7 @@ sets which half of the machinery has to be right. Neither of these is a regime w
 break — for that, the next paper.
 :::
 
-## Implemented in NaMaster {.nka-slide}
+## Implemented in NaMaster v3 {.nka-slide}
 
 ```{=html}
 <div class="nka ship">
@@ -729,21 +730,22 @@ to a real error bar.
 <div class="r-stack figswap">
   <div class="figone fragment fade-out" data-fragment-index="0">
     <img src="images/nagura_matrix_r.png" alt="Correlation matrices of the harmonic covariance: iNKA, simulations, and their ratio">
-    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 &mdash; Fig. 4</span>Correlation matrices of \(\mathrm{Cov}(\tilde C_\ell,\tilde C_{\ell'})\) computed using the iNKA (left) and measured from Gaussian simulations (center). The right plot shows the fractional difference \(\mathrm{Cov}^{\rm iNKA}/\mathrm{Cov}^{\rm sim}-1\).</div>
+    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 &mdash; Fig. 5</span>Correlation matrices of \(\mathrm{Cov}(\tilde C_\ell,\tilde C_{\ell'})\) computed using the iNKA (left) and measured from Gaussian simulations (center). The colors corresponding to the map values are depicted on the left. The right plot shows the fractional difference \(\mathrm{Cov}(\tilde C_\ell,\tilde C_{\ell'})^{\rm iNKA}/\mathrm{Cov}(\tilde C_\ell,\tilde C_{\ell'})^{\rm sim}-1\) and color bar is shown on the right. The iNKA reproduces the diagonal structure accurately, while noticeable differences remain in the off-diagonal components.</div>
   </div>
   <div class="figone withbox fragment fade-in" data-fragment-index="0">
     <div class="figbox">
     <div class="punchbox">
       <span class="nm">\( {\rm Cov}^{\rm iNKA}/{\rm Cov}^{\rm sim}-1 \), HSC-Y3 mask</span>
       <span class="pq">on \( {\rm diag}\,{\rm Cov}(\tilde C_\ell,\tilde C_\ell) \)</span>
-      <span class="pv">within 10% &nbsp;<i class="pvs">Fig. 2</i></span>
+      <span class="pv">within 10% &nbsp;<i class="pvs">Fig. 3</i></span>
       <span class="par">&darr;</span>
       <span class="pq">on \( {\rm diag}\,{\rm Cov}(\xi,\xi) \), \( \theta\approx6' \)</span>
-      <span class="pv hot">&minus;25 to &minus;30% &nbsp;<i class="pvs">Fig. 3</i></span>
+      <span class="pv hot">&minus;25 to &minus;30% &nbsp;<i class="pvs">Fig. 4</i></span>
     </div>
+    <div class="caption boxnote">HSC-Y3: six disjoint patches &mdash; the hardest geometry for a narrow kernel.</div>
     </div>
     <img src="images/nagura_cov_xi.png" alt="Cov(xi,xi) diagonal: sims, projected sim harmonic covariance, projected iNKA">
-    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 &mdash; Fig. 3</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using Eq. 12 (solid lines).</div>
+    <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 &mdash; Fig. 4</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using Eq. 2.8 (solid lines).</div>
   </div>
 </div>
 </div>
@@ -838,7 +840,7 @@ arbitrariness.
   <div class="figmain">
     <img src="images/nagura_analytic_comp.png" alt="Cov(xi,xi) diagonal for the XMM field: simulations, iNKA, f_sky and quartic counts">
   </div>
-  <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 — Fig. 5</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using analytical methods (solid lines). Note that we consider XMM field only for this figure.</div>
+  <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 — Fig. 6</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using analytical methods (solid lines). Note that we consider XMM field only for this figure.</div>
 </div>
 </div>
 ```
@@ -904,6 +906,45 @@ which nobody would write a paper about, to minus eighteen point six. So my hones
 is that this headline is a statement about HSC's geometry at least as much as about iNKA,
 and for a contiguous Rubin-like footprint the problem largely goes away. That is exactly
 the question the paper cannot answer, because they have one mask.
+:::
+
+## Takeaways {.nka-slide}
+
+```{=html}
+<div class="nka takeaways">
+  <div class="tk">
+    <span class="nm">Wolz et al. &mdash; the catalogue is its own mask</span>
+    <ul>
+      <li>Band-limit it at the interparticle scale; treat self-pairs exactly. The NKA carries only the distinct pairs.</li>
+      <li>Exact where sparse, NKA where dense &mdash; in NaMaster v3.</li>
+    </ul>
+  </div>
+  <div class="tk">
+    <span class="nm">Nagura et al. &mdash; diagonal accuracy is not enough</span>
+    <ul>
+      <li>iNKA is right on the \( \ell \) diagonal (\( \lesssim 10\% \)) and wrong off it; the Legendre transform sums every off-diagonal \( \rightarrow \) &minus;25&ndash;30% on \( {\rm Cov}(\xi,\xi) \).</li>
+      <li>Count the pairs instead of transforming an approximated matrix.</li>
+    </ul>
+  </div>
+</div>
+```
+
+::: {.notes}
+Two papers, three months apart, arriving at the same instruction from opposite directions: stop
+modelling the window and count it.
+
+Wolz: the catalogue *is* the mask, so band-limit it at the interparticle scale and split the pairs
+— self-pairs exactly, distinct pairs through the narrow-kernel approximation. Exact summation
+where the sample is sparse, iNKA where it is dense, and it is in NaMaster today.
+
+Nagura: iNKA is good to ten per cent on the harmonic diagonal and that is not the question, because
+the Legendre transform is a double sum that reads every off-diagonal element. Twenty-five to thirty
+per cent low on the real-space diagonal at six arcminutes. The fix is to count quadruplets rather
+than transform an approximated matrix.
+
+And the thing I would leave you with: quartic counts and Wolz's exact summation are the same object
+in different spaces. Both are Wick's theorem evaluated on the actual sources rather than on a
+modelled window.
 :::
 
 <!-- ═══ parked ═══════════════════════════════════════════════════════════
