@@ -566,19 +566,64 @@ That linearity is what makes the next slide inevitable.
 <div class="nka" data-step="10">
   <div class="corr big">
     <div>
-      <span class="nm">a linear map in, so the covariance is a <i>double</i> sum</span>
-      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;\propto\;\sum_{\ell}\sum_{\ell'}\big[P_{\ell+1}-P_{\ell-1}\big]_i\,\big[P_{\ell'+1}-P_{\ell'-1}\big]_j\;{\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big) \)
-        <span class="tag">\( \mathcal{O}(\ell_{\rm max}^{6}) \)</span></span>
+      <span class="nm">projected covariance</span>
+      <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)\;\propto\;\sum_{\ell}\sum_{\ell'}\big[P_{\ell+1}-P_{\ell-1}\big]_i\,\big[P_{\ell'+1}-P_{\ell'-1}\big]_j\;{\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big) \)<span class="tag">\( \mathcal{O}(\ell_{\rm max}^{6}) \)</span></span>
     </div>
   </div>
 
+  <div class="anchorrow">
+    <div class="acol">
+      <div class="agrid">
+        <div class="acorner"></div>
+        <div class="astrip"><svg class="akTop" data-len="520" data-amp="58"></svg></div>
+        <div class="astrip"><svg class="akLeft" data-len="520" data-amp="58"></svg></div>
+        <div class="amat"><canvas class="hExact"></canvas></div>
+      </div>
+      <span class="acap">exact \( {\rm Cov}(\tilde C_\ell,\tilde C_{\ell'}) \)</span>
+      <span class="akey">edges: \( \big[P_{\ell+1}-P_{\ell-1}\big] \) &mdash; 1D toy</span>
+    </div>
+    <div class="aarrow">&rarr;</div>
+    <div class="acol">
+      <div class="amat pad"><canvas class="cExact"></canvas></div>
+      <span class="acap">\( {\rm Cov}(\xi_i,\xi_j) \)</span>
+    </div>
+  </div>
+</div>
+```
+
+::: {.notes}
+So: xi is a linear transform of C-tilde. Linear in, so the covariance propagates by sandwiching —
+and that is a *double* sum, over ell and ell-prime.
+
+Look at the picture. The matrix in the middle is the exact harmonic covariance on a holed mask —
+band-diagonal, but a band with real width, because the window couples neighbouring multipoles.
+Along the top edge and the left edge I have drawn the projection kernel, at two different angular
+bins. In this one-dimensional toy xi is a cosine transform, so the kernel is a cosine; in the real
+thing it is that Legendre difference. Either way it oscillates.
+
+Now read equation and picture together. To get one number, Cov of xi-i with xi-j, you lay the top
+kernel across the matrix, lay the left kernel down it, multiply, and add up every single element.
+Not the diagonal — every element. Two oscillating weights sweeping the whole plane. So there is no
+way to get the real-space covariance right while getting the harmonic off-diagonals wrong. An error
+anywhere in that band, times an oscillating kernel, integrates into your error bar.
+
+And the cost, in red: the exact harmonic covariance is order ell-max to the sixth, which the paper
+calls flatly intractable at ell-max of six thousand. You cannot compute the thing in the middle of
+that picture. So you are forced to approximate — and the next slide is the three approximations
+people actually use.
+:::
+
+## Three approximations, three different errors {.nka-slide}
+
+```{=html}
+<div class="nka" data-step="10">
   <div class="methods">
     <div class="mhead">
       <div class="mtxt"></div>
       <div class="mpix"><span>\( {\rm Cov}(\tilde C_\ell,\tilde C_{\ell'}) \)</span></div>
       <div class="marrow"></div>
       <div class="mpix"><span>\( {\rm Cov}(\xi_i,\xi_j) \)</span></div>
-      <div class="mpix"><span>&minus; exact</span></div>
+      <div class="mpix dcol"><span>&minus; exact</span></div>
     </div>
 
     <div class="mrow2 fragment">
@@ -587,9 +632,9 @@ That linearity is what makes the next slide inevitable.
         <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\delta^K_{\ell\ell'}\,\dfrac{2\,C_\ell^{2}}{(2\ell+1)\,f_{\rm sky}} \)</span>
       </div>
       <div class="mpix"><canvas class="hFsky"></canvas></div>
-      <div class="marrow">→</div>
+      <div class="marrow">&rarr;</div>
       <div class="mpix"><canvas class="cFsky"></canvas></div>
-      <div class="mpix"><canvas class="dFsky"></canvas></div>
+      <div class="mpix dcol"><canvas class="dFsky"></canvas><span class="dpk"></span></div>
     </div>
 
     <div class="mrow2 fragment">
@@ -598,9 +643,9 @@ That linearity is what makes the next slide inevitable.
         <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\dfrac12\Big(\dfrac{\tilde C_\ell+\tilde C_{\ell'}}{\langle w^2\rangle}\Big)^{2}\Big|\textstyle\sum_x w^2(x)\,e^{-i(\ell-\ell')x}\Big|^{2} \)</span>
       </div>
       <div class="mpix"><canvas class="hInka"></canvas></div>
-      <div class="marrow">→</div>
+      <div class="marrow">&rarr;</div>
       <div class="mpix"><canvas class="cInka"></canvas></div>
-      <div class="mpix"><canvas class="dInka"></canvas></div>
+      <div class="mpix dcol"><canvas class="dInka"></canvas><span class="dpk"></span></div>
     </div>
 
     <div class="mrow2 apart fragment">
@@ -608,34 +653,49 @@ That linearity is what makes the next slide inevitable.
         <span class="nm">quartic counts (Schneider; Shirasaki)</span>
         <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\dfrac{1}{N_{{\rm pair},i}N_{{\rm pair},j}}\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\,\dfrac{\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})}{2} \)</span>
       </div>
-      <div class="mpix"></div>
+      <div class="mpix nohar"></div>
       <div class="marrow"></div>
       <div class="mpix"><canvas class="cQuar"></canvas></div>
-      <div class="mpix"><canvas class="dQuar"></canvas></div>
+      <div class="mpix dcol"><div class="dzero">\( \equiv 0 \)</div><span class="dpk"></span></div>
     </div>
   </div>
 </div>
 ```
 
 ::: {.notes}
-So: xi is a linear transform of C-tilde. Linear transform in means the covariance propagates by
-sandwiching — and that is a *double* sum, over ell and ell-prime. Every off-diagonal element of
-the harmonic covariance contributes, weighted by two oscillating Legendre kernels. There is no
-way to get the real-space covariance right while getting the harmonic off-diagonals wrong.
+Why does anybody take the harmonic route at all? Because it is cheap and because it is what the
+codes do. A pseudo-C-ell covariance is order ell-max cubed, not sixth, and NaMaster hands it to you
+for free — that is the machinery we spent the first half of this talk building. And crucially, if
+you compute xi from a theory spectrum on a masked sky, you have already made this choice whether
+you meant to or not: your real-space covariance is a projection of somebody's harmonic
+approximation.
 
-And the exact harmonic covariance is order ell-max to the sixth, which the paper calls
-intractable at six thousand. So you are forced to approximate, and that is where the trouble
-enters.
+Everything on this slide is the same one-dimensional toy, on the six-patch holed mask, so the three
+rows are genuinely comparable. Left column: what each method claims the harmonic covariance is.
+Middle: that harmonic matrix pushed through the identical cosine sandwich, which is the projection
+from the previous slide. Right: the difference from the exact projection, diagonal zeroed, red and
+blue, because the diagonal is not where the disagreement lives.
 
-Three things people actually use. F-sky, the Knox formula: strictly diagonal, inflated by one
-over f-sky, pretending the mask deletes modes without coupling them. iNKA, which we spent the
-first half of the talk on. And the one that is going to win: weighted quartic counts, from
-Schneider and from Shirasaki. Take every pair in bin i and every pair in bin j, and the Gaussian
-four-point function factorises into two cross-pairings, each the theory xi at the actual
-separations. Notice what is absent: there is no window function anywhere. No coupling matrix, no
-f-sky, no assumption about the kernel — because the sum runs over real positions, so the
-footprint, the holes, the boundaries and the weights are all encoded exactly by which
-quadruplets exist. The window is not modelled. It is counted.
+Row one, f-sky, the Knox formula. Strictly diagonal — you can see there is nothing off it —
+inflated by one over f-sky, pretending the mask deletes modes without coupling them. Project it and
+the error is enormous and structured.
+
+Row two, iNKA. The harmonic matrix is now genuinely banded, the width set by the squared mask
+kernel, and that is a real improvement. But look at the difference panel: the residual has not gone
+away, it has moved. On a smooth single patch it would be nearly invisible; on this holed mask it is
+not, and holes are what real surveys have.
+
+Row three is set apart on purpose, because it never goes through ell at all — the harmonic slot is
+empty by construction. Weighted quartic counts, from Schneider and from Shirasaki. Every pair in
+bin i against every pair in bin j; the Gaussian four-point function factorises into two
+cross-pairings, each the theory xi at the actual separations of real objects. Notice what is
+absent: no window function, no coupling matrix, no f-sky, no assumption about a kernel — because
+the sum runs over real positions, so the footprint, the holes, the boundaries and the weights are
+encoded exactly by which quadruplets exist. Its difference panel is blank because it is zero: this
+is the exact answer, not an approximation to it. The window is not modelled. It is counted.
+
+Hold on to the middle column. Slides seventeen to twenty are all about what those differences do
+to a real error bar.
 :::
 
 ## The diagonal is innocent {.nka-slide}

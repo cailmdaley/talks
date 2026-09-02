@@ -630,6 +630,15 @@ function boot(){
     if(t >= 0){ var u = Math.pow(t,0.55); return [247-186*u, 240-149*u, 225-65*u]; }
     var u2 = Math.pow(-t,0.55); return [247-59*u2, 240-171*u2, 225-169*u2];
   }
+  //  Sequential ground -> cobalt: the positive branch of divergent(), on its
+  //  own. Anything that IS a covariance is drawn with this, so a red pixel
+  //  anywhere on the projection slides means ERROR and nothing else. Negative
+  //  correlation clamps to the ground -- see SEQFLOOR below for why that is
+  //  honest here rather than a lie.
+  function sequential(v){
+    var t = Math.max(0, Math.min(1, v)), u = Math.pow(t, 0.55);
+    return [247-186*u, 240-149*u, 225-65*u];
+  }
   function heat(cv, mat, scale){
     cv.width = NK; cv.height = NK;
     var ctx = cv.getContext('2d'), im = ctx.createImageData(NK,NK);
@@ -646,11 +655,12 @@ function boot(){
   //
   //  heatN is heat() for a matrix of any size; heat() itself is hard-wired to
   //  the NK x NK covariance and is left alone.
-  function heatN(cv, mat, n, scale){
+  function heatN(cv, mat, n, scale, mode){
     cv.width = n; cv.height = n;
+    var map = (mode === 'div') ? divergent : sequential;
     var ctx = cv.getContext('2d'), im = ctx.createImageData(n,n);
     for(var i=0;i<n;i++) for(var j=0;j<n;j++){
-      var c = divergent(mat[i*n+j]/scale), o = 4*(i*n+j);
+      var c = map(mat[i*n+j]/scale), o = 4*(i*n+j);
       im.data[o]=c[0]; im.data[o+1]=c[1]; im.data[o+2]=c[2]; im.data[o+3]=255;
     }
     ctx.putImageData(im,0,0);
@@ -710,8 +720,22 @@ function boot(){
   }
 
   var PROJ = null;
+  //  The projection slides are ALWAYS drawn on the holed mask (MASKS[2]), the
+  //  six-patch HSC case the paper is about, whatever the mask picker on the
+  //  covariance slide is showing. On a single smooth patch iNKA's residual is
+  //  invisible; the whole point of Nagura is that it is not invisible on a
+  //  complicated window. So this pins pick=2, computes, and restores.
+  var PROJPICK = 2;
   function projSet(){
     if(PROJ) return PROJ;
+    var save = pick;
+    if(pick !== PROJPICK){ pick = PROJPICK; buildAll(); }
+    var P = projBuild();
+    if(save !== PROJPICK){ pick = save; buildAll(); }
+    PROJ = P;
+    return PROJ;
+  }
+  function projBuild(){
     var i, j;
     var dH = diagOf(covE, NK);
     var Fh = new Float64Array(NK*NK);            // f_sky: the diagonal, nothing else
@@ -719,21 +743,92 @@ function boot(){
     var pE = project(covE), pF = project(Fh), pI = project(covI);
     var dC = diagOf(pE, NTH);
     var nE = normBy(pE, dC, NTH), nF = normBy(pF, dC, NTH), nI = normBy(pI, dC, NTH);
-    PROJ = {
+    return {
       hE: normBy(covE, dH, NK), hF: normBy(Fh, dH, NK), hI: normBy(covI, dH, NK),
       cE: nE, cF: nF, cI: nI,
       dF: diffNoDiag(nF, nE, NTH), dI: diffNoDiag(nI, nE, NTH),
       dQ: new Float64Array(NTH*NTH)              // quartic counts ARE the exact answer
     };
-    return PROJ;
   }
+  //  min/max of every panel, so a colour-map choice can be checked against the
+  //  numbers instead of guessed at. Read from the console in QA.
+  function projStats(){
+    var P = projSet(), o = {};
+    ['hE','hF','hI','cE','cF','cI','dF','dI'].forEach(function(k){
+      var m = P[k], lo = Infinity, hi = -Infinity;
+      for(var i=0;i<m.length;i++){ if(m[i]<lo) lo=m[i]; if(m[i]>hi) hi=m[i]; }
+      o[k] = [+lo.toFixed(3), +hi.toFixed(3)];
+    });
+    return o;
+  }
+  window.projStats = projStats;
 
   function drawProj(root){
     var P = projSet(), q = function(c){ return root.querySelector('canvas.'+c); };
-    function put(c, m, n, sc){ var cv = q(c); if(cv) heatN(cv, m, n, sc); }
-    put('hFsky', P.hF, NK, 1);   put('cFsky', P.cF, NTH, 1);   put('dFsky', P.dF, NTH, 0.5);
-    put('hInka', P.hI, NK, 1);   put('cInka', P.cI, NTH, 1);   put('dInka', P.dI, NTH, 0.5);
-                                 put('cQuar', P.cE, NTH, 1);   put('dQuar', P.dQ, NTH, 0.5);
+    function put(c, m, n, sc, md){ var cv = q(c); if(cv) heatN(cv, m, n, sc, md); }
+    //  covariances sequential, differences divergent -- red means error
+    //  HSC = 0.30: the harmonic correlation matrix is 1 on the diagonal and a
+    //  few tenths in the coupling band, so at unit scale the band that IS the
+    //  whole point washes out. Saturating the diagonal costs nothing -- nobody
+    //  needs to read "1" off a diagonal -- and buys the band.
+    var HSC = 0.18;
+    put('hExact',P.hE, NK, HSC); put('cExact',P.cE, NTH, 1);
+    put('hFsky', P.hF, NK, HSC); put('cFsky', P.cF, NTH, 1);
+    put('hInka', P.hI, NK, HSC); put('cInka', P.cI, NTH, 1);
+                                 put('cQuar', P.cE, NTH, 1);
+    //  The two difference panels differ by an order of magnitude -- f_sky peaks
+    //  near 0.5, iNKA near 0.04. On one shared scale iNKA reads as identically
+    //  zero, which is the wrong claim: its residual is small, not absent. So
+    //  each panel is scaled to its own peak and the peak is PRINTED under it.
+    //  The comparison then lives in the numbers, where it is exact, instead of
+    //  in a colour ramp that has to lie about one of the two.
+    dput(root, 'dFsky', P.dF);
+    dput(root, 'dInka', P.dI);
+    dput(root, 'dQuar', P.dQ);
+    drawAnchorKernels(root);
+  }
+  function dput(root, cls, m){
+    var cv = root.querySelector('canvas.'+cls); if(!cv) return;
+    var pk = 0; for(var i=0;i<m.length;i++){ var a = Math.abs(m[i]); if(a>pk) pk=a; }
+    heatN(cv, m, NTH, pk || 1, 'div');
+    var lab = cv.parentNode.querySelector('.dpk');
+    if(lab) lab.textContent = pk < 1e-9 ? 'exact' : '±' + pk.toFixed(2);
+  }
+
+  //  ── the anchor picture ────────────────────────────────────────────────────
+  //  Cov(C~_l, C~_l') with the projection kernel drawn along its top and left
+  //  edges. In this 1D toy xi(theta) = sum_l 2 C_l cos(2 pi l theta), so the
+  //  kernel is T[i][l] = 2 cos(2 pi l theta_i) -- the analogue of the
+  //  [P_{l+1} - P_{l-1}] pair in Nagura eq. 12, and labelled as such on the
+  //  slide. Two DIFFERENT theta bins are drawn, one per edge, because the point
+  //  is that Cov(xi_i, xi_j) reads the whole matrix through two different
+  //  oscillating weights -- so every off-diagonal element is picked up.
+  var ANCH_I = 3, ANCH_J = 8;                 // which two theta bins the edges show
+  function kernelPath(bin, len, amp, vertical){
+    var d = '', th = (bin+0.5)/NTH*THMAX;
+    for(var s=0; s<=len; s++){
+      var l = KLO + (s/len)*(NK-1), v = Math.cos(2*Math.PI*l*th);
+      var a = s, b = amp*0.5 - v*amp*0.46;
+      d += (s ? 'L' : 'M') + (vertical ? b.toFixed(1)+' '+a : a+' '+b.toFixed(1)) + ' ';
+    }
+    return d;
+  }
+  function drawAnchorKernels(root){
+    var top = root.querySelector('svg.akTop'), lef = root.querySelector('svg.akLeft');
+    if(top){
+      var W = +top.dataset.len, H = +top.dataset.amp;
+      top.setAttribute('viewBox', '0 0 '+W+' '+H);
+      top.innerHTML = '';
+      el(top,'line',{x1:0,y1:H/2,x2:W,y2:H/2,stroke:RULE,'stroke-width':1.5});
+      el(top,'path',{d:kernelPath(ANCH_I,W,H,false),fill:'none',stroke:ACC,'stroke-width':3});
+    }
+    if(lef){
+      var W2 = +lef.dataset.amp, H2 = +lef.dataset.len;
+      lef.setAttribute('viewBox', '0 0 '+W2+' '+H2);
+      lef.innerHTML = '';
+      el(lef,'line',{x1:W2/2,y1:0,x2:W2/2,y2:H2,stroke:RULE,'stroke-width':1.5});
+      el(lef,'path',{d:kernelPath(ANCH_J,H2,W2,true),fill:'none',stroke:ACC,'stroke-width':3});
+    }
   }
 
   function drawMatrices(root){

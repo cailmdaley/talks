@@ -410,38 +410,95 @@
 .reveal .nka .menu .nm { font-size: 24px; }
 .reveal .nka .menu .note { font-size: 25px; line-height: 1.3; }
 
-// The projection slide: three methods, each with its equation on the left and
-// its matrices on the right, all drawn from the 1D toy. Every configuration
-// matrix is the SAME cosine sandwich applied to a different harmonic matrix, so
-// the comparison is through one pipeline; the last column is the difference
-// from the exact projection with the diagonal zeroed.
-.reveal .nka .methods { margin-top: 10px; }
+// ── the anchor picture, "The projection sums over every off-diagonal" ───────
+// A 2x2 grid: the exact harmonic covariance with the projection kernel drawn
+// along its top and left edges, so the double sum is a thing you can point at.
+// the cost badge rides at the end of the equation line -- inside .eq, because
+// that is the span MathJax typesets; a sibling div renders as an empty box.
+.reveal .nka .corr.big .eq .tag {
+    display: inline-block; margin-left: 44px;
+    color: #BC4538; white-space: nowrap;
+    border: 2px solid #BC4538; border-radius: 4px; padding: 0 16px;
+}
+.reveal .nka .anchorrow {
+    display: flex; flex-direction: row; align-items: flex-start;
+    justify-content: center; gap: 52px; margin-top: 22px;
+}
+.reveal .nka .acol { display: flex; flex-direction: column; align-items: center; }
+.reveal .nka .agrid {
+    display: grid; grid-template-columns: 58px 520px; grid-template-rows: 58px 520px;
+}
+.reveal .nka .astrip svg { display: block; width: 100%; height: 100%; }
+.reveal .nka .amat canvas {
+    width: 520px; height: 520px; display: block;
+    image-rendering: pixelated; border: 1px solid #C5B89E; box-shadow: none;
+}
+.reveal .nka .amat.pad { margin: 58px 0 0 58px; }
+// The 150x150 harmonic matrices are upscaled ~3.5x. Nearest-neighbour gives
+// them a moire that is an artefact of the toy's resolution, not of the physics,
+// so they interpolate. The f_sky panel does NOT: it is a one-pixel diagonal
+// line, and smoothing would fade it to nothing.
+.reveal .nka canvas.hExact, .reveal .nka canvas.hInka { image-rendering: auto; }
+.reveal .nka .acap { display: block; font-size: 28px; color: #7A6F5C; margin-top: 8px; }
+.reveal .nka .akey { display: block; font-size: 28px; color: #BC4538; margin-top: 1px; }
+.reveal .nka .aarrow { font-size: 46px; color: #7A6F5C; margin-top: 310px; }
+
+// ── the comparison slide: three methods, equal rows ─────────────────────────
+// Each row is [name + equation] [harmonic] -> [configuration] [difference], all
+// from the same 1D toy on the holed mask, so the comparison runs through one
+// identical pipeline. The last column is the difference from the exact
+// projection with the diagonal zeroed. Row height is set by the matrices; the
+// vertical budget (164 -> ~1000 px of slide) is what caps them at 250 px.
+.reveal .nka .methods { margin-top: 2px; }
 .reveal .nka .mhead,
 .reveal .nka .mrow2 {
     display: flex; flex-direction: row; align-items: center; gap: 14px;
 }
 .reveal .nka .mrow2 {
-    padding: 5px 16px; margin-bottom: 10px;
+    padding: 0 16px; margin-bottom: 6px;
     border-left: 6px solid #BC4538;
     background: rgba(188, 69, 56, 0.10);
 }
 // the quartic-counts row never goes through l at all, so it is set apart
-.reveal .nka .mrow2.apart { margin-top: 26px; border-top: 2px solid #C5B89E; padding-top: 10px; }
+.reveal .nka .mrow2.apart { margin-top: 16px; border-top: 2px solid #C5B89E; }
 .reveal .nka .mtxt {
     flex: 1 1 auto; min-width: 0;
     display: flex; flex-direction: column; gap: 1px;
-    .nm { font-size: 25px; line-height: 1.1; color: #7A6F5C;
+    .nm { font-size: 28px; line-height: 1.1; color: #7A6F5C;
           font-variant: small-caps; letter-spacing: 0.04em; }
     .eq { font-size: 30px; line-height: 1.2; }
 }
 .reveal .nka .mpix {
-    flex: 0 0 208px; text-align: center;
+    flex: 0 0 250px; text-align: center;
     canvas {
-        width: 208px; height: 208px; display: block;
+        width: 250px; height: 250px; display: block;
         image-rendering: pixelated; border: 1px solid #C5B89E; box-shadow: none;
     }
-    > span { display: block; font-size: 25px; color: #7A6F5C; }
+    > span { display: block; font-size: 28px; color: #7A6F5C; }
 }
+// The difference column is scaled to its own peak and prints it. The number
+// sits BESIDE the panel, not under it: the slide is height-bound, not
+// width-bound, so a caption line here would cost 26 px of matrix on every row.
+.reveal .nka .mpix.dcol {
+    flex: 0 0 344px;
+    display: flex; flex-direction: row; align-items: center; gap: 12px;
+    canvas { flex: 0 0 250px; }
+    > span { flex: 1 1 auto; text-align: left; }
+    > span.dpk { font-size: 28px; color: #BC4538; }
+    // quartic counts have no residual to draw: the slot is held at full size
+    // and says so, rather than showing an empty bordered box that reads as a
+    // missing figure.
+    .dzero {
+        flex: 0 0 250px; height: 250px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 46px; color: #BC4538;
+    }
+}
+// the header label belongs over the PANEL, not over the panel-plus-number
+.reveal .nka .mhead .mpix.dcol > span { flex: 0 0 250px; text-align: center; }
+// the quartic row has no harmonic matrix by construction: hold the slot open
+// and draw nothing in it, so the two columns to its right stay aligned.
+.reveal .nka .mpix.nohar { height: 250px; }
 .reveal .nka .marrow { flex: 0 0 34px; text-align: center; font-size: 34px; color: #7A6F5C; }
 .reveal .nka .mhead { padding: 0 16px 2px 22px; }
 
