@@ -440,7 +440,7 @@
 // line, and smoothing would fade it to nothing.
 .reveal .nka canvas.hExact, .reveal .nka canvas.hInka { image-rendering: auto; }
 .reveal .nka .acap { display: block; font-size: 28px; color: #7A6F5C; margin-top: 8px; }
-.reveal .nka .akey { display: block; font-size: 28px; color: #BC4538; margin-top: 1px; }
+.reveal .nka .akey { display: block; font-size: 26px; color: #7A6F5C; margin-top: 1px; }
 .reveal .nka .aarrow { font-size: 46px; color: #7A6F5C; margin-top: 310px; }
 
 // ── the comparison slide: three methods, equal rows ─────────────────────────
@@ -454,16 +454,27 @@
 .reveal .nka .mrow2 {
     display: flex; flex-direction: row; align-items: center; gap: 14px;
 }
-.reveal .nka .mrow2 {
-    padding: 0 16px; margin-bottom: 6px;
+.reveal .nka .mrow2 { padding: 0; margin-bottom: 12px; }
+// the quartic-counts row never goes through l at all, so it is set apart
+.reveal .nka .mrow2.apart { margin-top: 26px; padding-top: 12px; border-top: 2px solid #C5B89E; }
+// The ledger box wraps the name and equation ONLY, at its own width, exactly as
+// on slide 7. The matrices sit on plain cream to its right and line up in three
+// fixed columns under the headers -- a full-width tinted band behind them made
+// the slide read as a table of boxes rather than a comparison of pictures.
+// flex-basis 0, NOT auto: the quartic equation is wider than its share, and on
+// an auto basis it pushed that row's three matrix columns out of line with the
+// two rows above. With basis 0 the text column takes exactly the free space and
+// a long equation overflows into the empty harmonic slot beside it, which is
+// the one place on the slide with room for it.
+.reveal .nka .mtxt {
+    flex: 1 1 0; min-width: 0; display: flex; align-items: center;
+    .mbox { min-width: 0; }
+}
+.reveal .nka .mbox {
+    display: flex; flex-direction: column; gap: 1px;
+    padding: 6px 18px 8px 14px;
     border-left: 6px solid #BC4538;
     background: rgba(188, 69, 56, 0.10);
-}
-// the quartic-counts row never goes through l at all, so it is set apart
-.reveal .nka .mrow2.apart { margin-top: 16px; border-top: 2px solid #C5B89E; }
-.reveal .nka .mtxt {
-    flex: 1 1 auto; min-width: 0;
-    display: flex; flex-direction: column; gap: 1px;
     .nm { font-size: 28px; line-height: 1.1; color: #7A6F5C;
           font-variant: small-caps; letter-spacing: 0.04em; }
     .eq { font-size: 30px; line-height: 1.2; }
@@ -500,15 +511,17 @@
 // an error can never be mistaken for a covariance. Stated once, here.
 .reveal .nka .mhead .mpix.dcol > span { flex: 0 0 250px; text-align: center; }
 .reveal .nka .ekey {
-    display: inline-block; width: 92px; height: 15px; vertical-align: middle;
-    margin-left: 10px; border: 1px solid #C5B89E;
-    background: linear-gradient(90deg, #3F8278 0%, #F7F0E1 50%, #BC4538 100%);
+    display: block; width: 130px; height: 14px; margin: 4px auto 0;
+    border: 1px solid #C5B89E;
+    background: linear-gradient(90deg, #1B1611 0%, #F7F0E1 50%, #BC4538 100%);
 }
 // the quartic row has no harmonic matrix by construction: hold the slot open
 // and draw nothing in it, so the two columns to its right stay aligned.
 .reveal .nka .mpix.nohar { height: 250px; }
 .reveal .nka .marrow { flex: 0 0 34px; text-align: center; font-size: 34px; color: #7A6F5C; }
-.reveal .nka .mhead { padding: 0 16px 2px 22px; }
+// the header sits on the SAME box model as the rows, or its labels drift
+// off the columns they name
+.reveal .nka .mhead { padding: 0 0 4px 0; }
 
 // paper cards: a cropped first page, as large as fits, and one source line.
 // Nothing else on the slide -- these are punctuation between the acts.

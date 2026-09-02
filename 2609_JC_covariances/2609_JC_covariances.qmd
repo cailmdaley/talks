@@ -623,13 +623,14 @@ people actually use.
       <div class="mpix"><span>\( {\rm Cov}(\tilde C_\ell,\tilde C_{\ell'}) \)</span></div>
       <div class="marrow"></div>
       <div class="mpix"><span>\( {\rm Cov}(\xi_i,\xi_j) \)</span></div>
-      <div class="mpix dcol"><span>&minus; exact <i class="ekey"></i></span></div>
+      <div class="mpix dcol"><span>&minus; exact<i class="ekey"></i></span></div>
     </div>
 
     <div class="mrow2 fragment">
-      <div class="mtxt">
+      <div class="mtxt"><div class="mbox">
         <span class="nm">f<sub>sky</sub> (Knox)</span>
         <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\delta^K_{\ell\ell'}\,\dfrac{2\,C_\ell^{2}}{(2\ell+1)\,f_{\rm sky}} \)</span>
+        </div>
       </div>
       <div class="mpix"><canvas class="hFsky"></canvas></div>
       <div class="marrow">&rarr;</div>
@@ -638,9 +639,10 @@ people actually use.
     </div>
 
     <div class="mrow2 fragment">
-      <div class="mtxt">
+      <div class="mtxt"><div class="mbox">
         <span class="nm">iNKA</span>
         <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;\dfrac12\Big(\dfrac{\tilde C_\ell+\tilde C_{\ell'}}{\langle w^2\rangle}\Big)^{2}\Big|\textstyle\sum_x w^2(x)\,e^{-i(\ell-\ell')x}\Big|^{2} \)</span>
+        </div>
       </div>
       <div class="mpix"><canvas class="hInka"></canvas></div>
       <div class="marrow">&rarr;</div>
@@ -649,9 +651,10 @@ people actually use.
     </div>
 
     <div class="mrow2 apart fragment">
-      <div class="mtxt">
+      <div class="mtxt"><div class="mbox">
         <span class="nm">quartic counts (Schneider; Shirasaki)</span>
         <span class="eq">\( {\rm Cov}(\xi_i,\xi_j)=\dfrac{1}{N_{{\rm pair},i}N_{{\rm pair},j}}\sum_{abcd} w_aw_bw_cw_d\,\Delta_i(\theta_{ab})\,\Delta_j(\theta_{cd})\,\dfrac{\xi(\theta_{ac})\xi(\theta_{bd})+\xi(\theta_{ad})\xi(\theta_{bc})}{2} \)</span>
+        </div>
       </div>
       <div class="mpix nohar"></div>
       <div class="marrow"></div>
