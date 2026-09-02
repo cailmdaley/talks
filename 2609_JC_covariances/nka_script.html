@@ -1357,16 +1357,19 @@ function boot(){
   //  about 0.009 -- a xi plotted out to 0.15 is a spike against the axis
   //  followed by nothing. At 0.04 the decay takes a quarter of the panel and
   //  the bump's ringing (period 1/78) is a few bins wide.
-  //  0.5 of the box, which is the largest separation that exists in a periodic
-  //  box and therefore half the x extent of the field panel above it. It was
-  //  0.04 -- a twelfth of the panel -- so the correlation function on screen
-  //  covered a sliver of the separations the picture above it was showing.
-  //  40 bins keeps the curve readable over the wider range.
-  var XIMAX = 0.5, XINB = 40;
+  //  0.12 of the box -- about a fifth of the field panel above it, not the
+  //  twelfth it used to be and not the half it briefly was. Half is the largest
+  //  separation a periodic box has, but this field decorrelates within about two
+  //  per cent of the box, so at half the curve was 140-source scatter about zero
+  //  for nine tenths of its axis and taught nothing. A fifth keeps the decay and
+  //  its first ringing on screen while still looking proportionate to the panel.
+  //  40 bins over that range are 1.5x wider than the original 20 over 0.04, so
+  //  each holds more pairs and is quieter, not noisier.
+  var XIMAX = 0.12, XINB = 40;
   //  the three separations the fragments stop at, in bins
   //  small, medium and large, spread across the new range rather than bunched
   //  in its first tenth
-  var XISTOP = [2, 13, 30];
+  var XISTOP = [2, 12, 30];
   function xibin(th){ return Math.floor(th/XIMAX*XINB); }
   var XIC = null;
   function xiBuild(){
