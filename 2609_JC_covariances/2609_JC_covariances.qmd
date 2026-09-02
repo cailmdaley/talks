@@ -717,7 +717,7 @@ to a real error bar.
   <span class="fragment nka-step"></span>
   <span class="fragment nka-step"></span>
   <span class="fragment nka-step"></span>
-  <svg class="pQuad" viewBox="0 0 1730 580" width="1730" height="580"></svg>
+  <svg class="pQuad" viewBox="0 0 1730 700" width="1730" height="700"></svg>
 </div>
 ```
 
@@ -800,7 +800,7 @@ So I ran it. Next slide.
   <div class="figside">
   <div class="papercap"><span class="src">Nagura et al., arXiv:2605.16186 — Fig. 5</span>Diagonal components of \(\mathrm{Cov}(\xi[\theta_-,\theta_+],\xi[\theta'_-,\theta'_+])\), measured from Gaussian realizations (dashed line) and calculated using analytical methods (solid lines). Note that we consider XMM field only for this figure.</div>
     <div class="punchbox">
-      <span class="nm">what it costs you</span>
+      <span class="nm">iNKA vs simulations</span>
       <span class="pv">10% in harmonic space</span>
       <span class="par">&darr;</span>
       <span class="pv hot">25&ndash;30% in \( \xi(\theta) \)</span>

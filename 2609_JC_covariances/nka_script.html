@@ -1538,9 +1538,9 @@ function boot(){
     clear(s); geom(opts);
     var PAD = _x0, AW = _w, st = opts.stage == null ? 0 : opts.stage;
     var Q = quadSet(), X = xiBuild(), xs = CAT.xs;
-    var MS = 400, MX = PAD + AW - MS, CELL = MS/XINB;
-    var CW = MX - PAD - 90;
-    var mid = 300, h = 150;
+    var MS = 440, MX = PAD + AW - MS, CELL = MS/XINB;
+    var CW = MX - PAD - 100;
+    var mid = 320, h = 150;
     function PX(u){ return PAD + CW*(u - QWLO)/(QWHI - QWLO); }
     function PY(v){ return mid - v*h*0.42; }
     function inW(u){ return u >= QWLO && u <= QWHI; }
@@ -1557,13 +1557,21 @@ function boot(){
                    stroke: GRID, 'stroke-width':0.8});
     }
     el(s,'rect',{x:MX,y:my0,width:MS,height:MS,fill:'none',stroke:RULE,'stroke-width':1.5});
-    txt(s, MX, my0 - 20, 'Cov(ξᵢ, ξⱼ)', {fill:MUT, 'font-size':28});
-    //  the two bins the walkthrough uses, marked on the axes from the start:
-    //  the cell that lights up at the accumulate step is their intersection
-    if(st >= 1) el(s,'rect',{x:MX-16,y:my0+QBI*CELL,width:10,height:CELL,fill:ACC});
-    if(st >= 1) txt(s, MX-52, my0+QBI*CELL+CELL, 'i', {fill:ACC,'font-size':28,'font-style':'italic'});
-    if(st >= 2) el(s,'rect',{x:MX+QBJ*CELL,y:my0-16,width:CELL,height:10,fill:COB});
-    if(st >= 2) txt(s, MX+QBJ*CELL+2, my0-26, 'j', {fill:COB,'font-size':28,'font-style':'italic'});
+    txt(s, MX, my0 - 22, 'Cov(ξᵢ, ξⱼ)', {fill:MUT, 'font-size':28});
+    //  the two bins are marked on the axes from the first fragment: the cell
+    //  that lights up at the accumulate step is visibly their intersection
+    if(st >= 1){
+      el(s,'rect',{x:MX-18,y:my0+QBI*CELL,width:11,height:CELL,fill:ACC});
+      txt(s, MX-56, my0+QBI*CELL+CELL, 'i', {fill:ACC,'font-size':30,'font-style':'italic'});
+    }
+    if(st >= 2){
+      el(s,'rect',{x:MX+QBJ*CELL,y:my0-18,width:CELL,height:11,fill:COB});
+      txt(s, MX+QBJ*CELL+1, my0-30, 'j', {fill:COB,'font-size':30,'font-style':'italic'});
+    }
+    //  the count belongs to the cell it fills, not to the field panel
+    if(st >= 4)
+      txt(s, MX, my0 + MS + 38, (Q.bins[QBI].length/2|0) + ' × ' + (Q.bins[QBJ].length/2|0) +
+          ' quadruplets', {fill:MUT,'font-size':28});
 
     // ---- the catalogue, zoomed to the window ----
     el(s,'line',{x1:PAD,y1:mid,x2:PAD+CW,y2:mid,stroke:RULE,'stroke-width':2});
@@ -1577,7 +1585,9 @@ function boot(){
       if(!inW(xs[k])) continue;
       el(s,'circle',{cx:PX(xs[k]),cy:PY(X.av[k]),r:3+5*Math.abs(X.av[k]),fill:INK,opacity:0.8});
     }
-    txt(s, PAD, mid + 274, 'position  x', {fill:MUT, 'font-size':26});
+    //  parked at the far right of its own axis: the accumulation strip's label
+    //  lives under the left end and the two were stacking on each other
+    txt(s, PAD + CW - 190, mid + 292, 'position  x', {fill:MUT, 'font-size':26});
 
     var P1 = pickPair(QBI, QAX), P2 = pickPair(QBJ, QCX);
     if(!P1 || !P2) return;
@@ -1598,44 +1608,60 @@ function boot(){
       txt(s, PX(u)-8+(dx||0), PY(X.av[vi])-32, tag, {fill:col,'font-size':32,
               'font-style':'italic','font-weight':600});
     }
-    function link(u1, u2, col, lift, dash){
+    //  Cross-links arc ABOVE the axis, and never with a lift under 70: the field
+    //  trace swings +-63 px about the axis, and a flatter arc reads as part of
+    //  it. Each carries its own two-index tag at the apex, in the colour of the
+    //  pairing it belongs to, so the legend and the arcs say the same thing.
+    //  tpos slides a tag along its own arc. The b-c and b-d arcs share a left
+    //  endpoint and similar lifts, so their apex tags landed on each other.
+    function link(u1, u2, col, lift, dash, tag, tpos){
       var x1 = PX(u1), x2 = PX(u2), r = Math.abs(x2-x1)/2;
       el(s,'path',{d:'M'+Math.min(x1,x2).toFixed(1)+' '+mid+' A '+r.toFixed(1)+' '+lift+
                       ' 0 0 1 '+Math.max(x1,x2).toFixed(1)+' '+mid, fill:'none',stroke:col,
                    'stroke-width':3.2, 'stroke-dasharray': dash || 'none'});
+      if(tag){
+        var f = tpos == null ? 0.5 : tpos, lo = Math.min(x1,x2), hi = Math.max(x1,x2);
+        var tx = lo + (hi-lo)*f;
+        //  height of the ellipse at fraction f of its span
+        var ty = mid - lift*Math.sqrt(Math.max(0, 1 - Math.pow(2*f-1, 2)));
+        txt(s, tx - 20, ty + 26, tag, {fill:col,'font-size':26,'font-style':'italic'});
+      }
     }
 
-    //  the accumulation sits BELOW the two walkthrough brackets, at its own two
-    //  depths, so the term being explained stays the readable one
+    //  The accumulation is a deliberate STRIP, not a scatter: two ruled rows,
+    //  one per bin, each carrying every pair in that bin as a segment at its own
+    //  separation, labelled at the left with the same i and j that mark the
+    //  matrix axes. Loose segments under the field read as leftover debris.
     if(st >= 4){
-      var L1 = Q.bins[QBI], L2 = Q.bins[QBJ], z;
-      for(z=0; z<L1.length; z+=2){
-        if(!inW(xs[L1[z]]) || !inW(xs[L1[z+1]])) continue;
-        el(s,'line',{x1:PX(xs[L1[z]]),y1:mid+150,x2:PX(xs[L1[z+1]]),y2:mid+150,
-                     stroke:ACC,'stroke-width':3,opacity:0.22});
+      var rows = [[QBI, mid+206, ACC, 'i'], [QBJ, mid+250, COB, 'j']];
+      for(var rr=0; rr<rows.length; rr++){
+        var bnum = rows[rr][0], ry = rows[rr][1], rc = rows[rr][2], L = Q.bins[bnum];
+        el(s,'line',{x1:PAD+34,y1:ry,x2:PAD+CW,y2:ry,stroke:RULE,'stroke-width':1});
+        txt(s, PAD, ry+9, rows[rr][3], {fill:rc,'font-size':28,'font-style':'italic'});
+        for(var z=0; z<L.length; z+=2){
+          if(!inW(xs[L[z]]) || !inW(xs[L[z+1]])) continue;
+          el(s,'line',{x1:PX(xs[L[z]]),y1:ry,x2:PX(xs[L[z+1]]),y2:ry,
+                       stroke:rc,'stroke-width':7,opacity:0.34,'stroke-linecap':'round'});
+        }
       }
-      for(z=0; z<L2.length; z+=2){
-        if(!inW(xs[L2[z]]) || !inW(xs[L2[z+1]])) continue;
-        el(s,'line',{x1:PX(xs[L2[z]]),y1:mid+182,x2:PX(xs[L2[z+1]]),y2:mid+182,
-                     stroke:COB,'stroke-width':3,opacity:0.22});
-      }
-      txt(s, PAD, mid + 236, (L1.length/2|0) + ' × ' + (L2.length/2|0) + ' quadruplets',
-          {fill:MUT,'font-size':28});
+      txt(s, PAD, mid + 292, 'every pair in each bin', {fill:MUT,'font-size':26});
     }
 
     if(st >= 1){
       ring(a, P1[0], ACC, 'a', -26); ring(b, P1[1], ACC, 'b', 26);
-      bracket(a, b, mid + 96, ACC, 'i');
+      bracket(a, b, mid + 112, ACC, 'i');
     }
     if(st >= 2){
       ring(c, P2[0], COB, 'c', -26); ring(dd, P2[1], COB, 'd', 26);
-      bracket(c, dd, mid + 96, COB, 'j');
+      bracket(c, dd, mid + 112, COB, 'j');
     }
     if(st >= 3){
-      link(a, c, TEAL, 120); link(b, dd, TEAL, 78);
-      link(a, dd, INK, 190, '12 9'); link(b, c, INK, 40, '12 9');
-      xiProd(s, PAD, mid - 208, 'ac', 'bd', TEAL);
-      xiProd(s, PAD, mid - 166, 'ad', 'bc', INK);
+      link(a, c,  TEAL, 134, null,   'ac', 0.50);
+      link(b, dd, TEAL,  92, null,   'bd', 0.74);
+      link(a, dd, INK,  200, '12 9', 'ad', 0.50);
+      link(b, c,  INK,   70, '12 9', 'bc', 0.28);
+      xiProd(s, PAD, mid - 250, 'ac', 'bd', TEAL);
+      xiProd(s, PAD, mid - 210, 'ad', 'bc', INK);
     }
   }
 
