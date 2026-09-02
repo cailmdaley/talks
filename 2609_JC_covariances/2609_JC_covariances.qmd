@@ -348,7 +348,7 @@ has something to be narrow about.
   </div>
   <div class="fragment" data-fragment-index="3">
     <span class="nm">catalogue covariance</span>
-    <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;2\Big[\;\underbrace{\bar C_{\ell\ell'}^{\,2}\,\big|\mathcal{W}_{\ell-\ell'}\big|^{2}}_{\rm sig\times sig}\;+\;\underbrace{2\,\bar C_{\ell\ell'}\,{\rm Re}\big(\mathcal{W}_{\ell-\ell'}\,n^{*}_{\ell-\ell'}\big)}_{\rm sig\times noise}\;+\;\underbrace{\big|n_{\ell-\ell'}\big|^{2}}_{\rm noise\times noise}\;\Big] \)</span>
+    <span class="eq">\( {\rm Cov}\big(\tilde C_\ell,\tilde C_{\ell'}\big)\;\simeq\;2\Big[\;\underbrace{\bar C_{\ell\ell'}^{\,2}\,\big|\mathcal{W}_{\ell-\ell'}\big|^{2}}_{\rm sig\times sig}\;+\;\underbrace{2\,\bar C_{\ell\ell'}\,{\rm Re}\big(\mathcal{W}_{\ell-\ell'}\,N^{*}_{\ell-\ell'}\big)}_{\rm sig\times noise}\;+\;\underbrace{\big|N_{\ell-\ell'}\big|^{2}}_{\rm noise\times noise}\;\Big] \)</span>
   </div>
 </div>
 
