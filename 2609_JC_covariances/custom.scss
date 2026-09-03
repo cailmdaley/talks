@@ -494,11 +494,9 @@
     .mbox { min-width: 0; }
 }
 .reveal .nka .mbox {
-    // max-content, not the flex track's width: MathJax lays an equation out at
-    // its natural size and never reflows, so a box sized to the track was
-    // painted narrower than the equation sitting in it -- the overflow Cail saw.
-    // On the quartic row what it overflows into is the empty harmonic slot, the
-    // one place on the slide with room for it.
+    // A starting width only: fitBoxes() in nka_script.html measures the typeset
+    // equation and writes an explicit width here, because engines disagree about
+    // what a MathJax SVG contributes to an intrinsic max-content size.
     width: max-content; max-width: 1560px;
     display: flex; flex-direction: column; gap: 1px;
     padding: 6px 18px 8px 14px;

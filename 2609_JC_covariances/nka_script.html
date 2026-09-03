@@ -1607,7 +1607,11 @@ function boot(){
       //  become a covariance rather than a pointer.
       var c = null;
       if(fillAll) c = covmap(Q.cor[i*QNB+j]);
-      else if(fillDiag && onDiag) c = [188,69,56];
+      //  the lit cell wears the colour of the pairs that made it, and the pairs
+      //  wear the covariance map's own two ends -- teal for bin i, cobalt for
+      //  bin j -- so a cell reads as "this bin against that bin" before it
+      //  reads as a number
+      else if(fillDiag && onDiag) c = [63,130,120];
       else if(fillOff && offDiag) c = [61,91,160];
       el(s,'rect',{x:(MX+j*CELL).toFixed(1), y:(my0+i*CELL).toFixed(1),
                    width:(CELL+0.4).toFixed(1), height:(CELL+0.4).toFixed(1),
@@ -1617,20 +1621,20 @@ function boot(){
     el(s,'rect',{x:MX,y:my0,width:MS,height:MS,fill:'none',stroke:RULE,'stroke-width':1.5});
     txt(s, MX, my0 - 22, 'Cov(ξᵢ, ξⱼ)', {fill:MUT, 'font-size':28});
     if(st >= 1){
-      el(s,'rect',{x:MX-18,y:my0+QBI*CELL,width:11,height:CELL,fill:ACC});
-      txt(s, MX-56, my0+QBI*CELL+CELL, 'i', {fill:ACC,'font-size':30,'font-style':'italic'});
+      el(s,'rect',{x:MX-18,y:my0+QBI*CELL,width:11,height:CELL,fill:TEAL});
+      txt(s, MX-56, my0+QBI*CELL+CELL, 'i', {fill:TEAL,'font-size':30,'font-style':'italic'});
     }
     //  the column mark follows the second pair: over i while the pair is in bin
     //  i, over j once it moves
     if(st >= 1){
-      var cb = showPartner ? QBJ : QBI, cc = showPartner ? COB : ACC;
+      var cb = showPartner ? QBJ : QBI, cc = showPartner ? COB : TEAL;
       el(s,'rect',{x:MX+cb*CELL,y:my0-18,width:CELL,height:11,fill:cc});
       txt(s, MX+cb*CELL+1, my0-30, showPartner?'j':'i',
           {fill:cc,'font-size':30,'font-style':'italic'});
     }
     if(fillDiag){
       var lab = fillAll ? 'every quadruplet'
-              : fillOff ? 'a red pair × a blue pair:  the off-diagonal'
+              : fillOff ? 'a green pair × a blue pair:  the off-diagonal'
                         : 'the pair with itself:  the diagonal';
       txt(s, MX, my0 + MS + 38, lab, {fill:MUT,'font-size':28});
     }
@@ -1704,31 +1708,31 @@ function boot(){
       for(var q2=0; q2<NQ; q2++){
         var P = A[Math.floor(q2*A.length/NQ)], R = B[Math.floor(((q2*7)%NQ)*B.length/NQ)];
         var lifts = [150, 108, 210, 76];
-        link(P[0], R[0], TEAL, lifts[0], null, null, 0.5, 0.12);
-        link(P[1], R[1], TEAL, lifts[1], null, null, 0.5, 0.12);
+        link(P[0], R[0], ACC, lifts[0], null, null, 0.5, 0.12);
+        link(P[1], R[1], ACC, lifts[1], null, null, 0.5, 0.12);
         link(P[0], R[1], INK,  lifts[2], '12 9', null, 0.5, 0.10);
         link(P[1], R[0], INK,  lifts[3], '12 9', null, 0.5, 0.10);
       }
-      txt(s, PAD, mid + 292, (A.length) + ' red pairs × ' + (B.length) + ' blue pairs',
+      txt(s, PAD, mid + 292, (A.length) + ' green pairs × ' + (B.length) + ' blue pairs',
           {fill:MUT,'font-size':28});
     }
 
     if(st >= 1){
       var tagA = selfPair ? 'a = c' : 'a', tagB = selfPair ? 'b = d' : 'b';
-      ring(a, P1[0], ACC, tagA, selfPair ? -18 : -26, selfPair);
-      ring(b, P1[1], ACC, tagB, selfPair ?  18 :  26, selfPair);
-      bracket(a, b, mid + 112, ACC, 'i');
+      ring(a, P1[0], TEAL, tagA, selfPair ? -18 : -26, selfPair);
+      ring(b, P1[1], TEAL, tagB, selfPair ?  18 :  26, selfPair);
+      bracket(a, b, mid + 112, TEAL, 'i');
     }
     //  the degenerate beat: the same two sources standing in for c and d
     if(selfPair){
       //  a with a and b with b: zero separation, drawn as a loop on the source
-      el(s,'circle',{cx:PX(a),cy:mid-56,r:20,fill:'none',stroke:TEAL,'stroke-width':3.2});
-      el(s,'circle',{cx:PX(b),cy:mid-56,r:20,fill:'none',stroke:TEAL,'stroke-width':3.2});
+      el(s,'circle',{cx:PX(a),cy:mid-56,r:20,fill:'none',stroke:ACC,'stroke-width':3.2});
+      el(s,'circle',{cx:PX(b),cy:mid-56,r:20,fill:'none',stroke:ACC,'stroke-width':3.2});
       //  a with b, twice
       link(a, b, INK, 104, '12 9', null, 0.5, 1);
       link(a, b, INK, 132, '12 9', null, 0.5, 1);
       //  zero separation is xi(0), not xi(theta_0) -- write it literally
-      txt(s, PAD, mid - 250, 'ξ(0) · ξ(0)', {fill:TEAL,'font-size':32});
+      txt(s, PAD, mid - 250, 'ξ(0) · ξ(0)', {fill:ACC,'font-size':32});
       xiProd(s, PAD, mid - 210, 'i', 'i', INK, 1);
     }
     if(showPartner){
@@ -1750,11 +1754,11 @@ function boot(){
       //  but a pairing rendered invisible stops reading as one of the two terms
       //  in Wick's theorem, which is the other thing this picture has to say.
       var oT = 0.38 + 0.62*vT/vmx, oI = 0.38 + 0.62*vI/vmx;
-      link(a, c,  TEAL, 134, null,   'ac', 0.50, oT);
-      link(b, dd, TEAL,  92, null,   'bd', 0.74, oT);
+      link(a, c,  ACC, 134, null,   'ac', 0.50, oT);
+      link(b, dd, ACC,  92, null,   'bd', 0.74, oT);
       link(a, dd, INK,  200, '12 9', 'ad', 0.50, oI);
       link(b, c,  INK,   70, '12 9', 'bc', 0.28, oI);
-      xiProd(s, PAD, mid - 250, 'ac', 'bd', TEAL, oT);
+      xiProd(s, PAD, mid - 250, 'ac', 'bd', ACC, oT);
       xiProd(s, PAD, mid - 210, 'ad', 'bc', INK,  oI);
     }
   }
@@ -2255,9 +2259,41 @@ function boot(){
   function typeset(){
     if(window.MathJax && MathJax.startup && MathJax.startup.promise)
       MathJax.startup.promise.then(function(){ return MathJax.typesetPromise(); })
-                             .catch(function(){});
-    else if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise();
+                             .then(fitBoxes).catch(function(){});
+    else if(window.MathJax && MathJax.typesetPromise)
+      MathJax.typesetPromise().then(fitBoxes).catch(function(){});
     else setTimeout(typeset, 150);
+  }
+
+  //  Ledger boxes are sized from the MEASURED equation, not from CSS.
+  //  `width: max-content` asks the engine to intrinsic-size a box around a
+  //  MathJax SVG, and engines do not agree on what a replaced element inside an
+  //  inline-block contributes to that -- which is how a box that hugs its
+  //  equation in one browser can be cut short or left slack in another. The
+  //  equation's own bounding box is a fact both engines agree on, so measure it
+  //  once after typesetting and write the width down. Re-run on every typeset,
+  //  because a re-render can change which equation is in the box.
+  function fitBoxes(){
+    var boxes = document.querySelectorAll('.reveal .nka .mbox');
+    for(var i=0;i<boxes.length;i++){
+      var box = boxes[i], eqs = box.querySelectorAll('.eq'), w = 0;
+      if(!eqs.length) continue;
+      box.style.width = 'auto';
+      var left = box.getBoundingClientRect().left;
+      var cs = getComputedStyle(box);
+      var padL = parseFloat(cs.paddingLeft) || 0, padR = parseFloat(cs.paddingRight) || 0;
+      var bl = parseFloat(cs.borderLeftWidth) || 0;
+      for(var j=0;j<eqs.length;j++){
+        var r = eqs[j].getBoundingClientRect();
+        if(r.width) w = Math.max(w, r.right - left);
+      }
+      if(!w) continue;
+      //  getBoundingClientRect is in VIEWPORT units and reveal scales the stage,
+      //  so undo the scale before writing a slide-coordinate width back.
+      var sc = 1, st = document.querySelector('.reveal .slides');
+      if(st){ var m = /scale\(([0-9.]+)\)/.exec(st.style.transform || ''); if(m) sc = +m[1]; }
+      box.style.width = Math.ceil((w - bl)/sc + padR) + 'px';
+    }
   }
   function renderAll(){
     for(var i=0;i<ROOTS.length;i++) renderOne(ROOTS[i]);
