@@ -911,22 +911,18 @@ the question the paper cannot answer, because they have one mask.
 ## Morsels {.nka-slide}
 
 ```{=html}
-<div class="nka takeaways">
-  <div class="tk">
-    <span class="nm">Wolz et al. &mdash; the catalogue is its own mask</span>
-    <ul>
-      <li>Shot noise is what aliasing becomes under random sampling; band-limiting at the interparticle scale is choosing the pixel scale at Nyquist &mdash; \( \theta_{\rm c} \) is a choice, defended by a plateau.</li>
-      <li>The NKA works best where you would expect it to fail: sparse catalogues are self-pair dominated, and self-pairs are exact &mdash; the approximation is load-bearing in the dense regime.</li>
-      <li>The pixel did not vanish; it moved from the estimator into the covariance, as a Gaussian cloud rather than a grid. Catalogue estimators are fast, and in NaMaster v3.</li>
-    </ul>
+<div class="nka morsels">
+  <div class="mcol">
+    <span class="who">Wolz et al.</span>
+    <blockquote>&ldquo;Eq. 24 is strongly reminiscent of the expression for the two-point correlator of a field with white noise, &hellip; with the self-pairs contribution playing the role of noise, and the sum over distinct pairs that of the signal.&rdquo;<span class="cite">&sect; Auto-correlations</span></blockquote>
+    <blockquote>&ldquo;the noise-like contribution from self-pairs is an intrinsic aspect of fields sampled at discrete points that penalises sparser samples with larger statistical uncertainties.&rdquo;<span class="cite">&sect; Auto-correlations</span></blockquote>
+    <blockquote>&ldquo;Choosing a finite value for \( \ell_{\rm max} \) &hellip; is equivalent to band-limiting the harmonic transform of the mask or, in other words, treating each source not as a point but as a &lsquo;cloud&rsquo; of finite size \( \theta_{\rm c} \).&rdquo;<span class="cite">&sect; Disjoint catalogues and cross-correlations, Eq. 27</span></blockquote>
   </div>
-  <div class="tk">
-    <span class="nm">Nagura et al. &mdash; diagonal accuracy is not enough</span>
-    <ul>
-      <li>iNKA is ~10% on the \( \ell \) diagonal and unconstrained off it; the Legendre transform sums every off-diagonal \( \rightarrow \) &minus;25&ndash;30% on \( {\rm Cov}(\xi,\xi) \) at 6&prime; &mdash; HSC-Y3, Gaussian sims, no shape noise.</li>
-      <li>The control experiment carries the result: project the simulated harmonic covariance and the truth comes back &mdash; transform fine, input wrong. The off-diagonal diagnosis itself is by elimination; the ratio panel is simulation noise.</li>
-      <li>Quartic counts track the sims &mdash; but merged onto \( N_{\rm side} \) 256&ndash;512, one field, 10 bins, no cost reported; and HSC's six patches are the hardest case for a narrow kernel.</li>
-    </ul>
+  <div class="mcol">
+    <span class="who">Nagura et al.</span>
+    <blockquote>&ldquo;Computing \( {\rm Cov}(\xi_i,\xi_j) \) directly requires \( O(\ell_{\rm max}^{6}) \) operations and is therefore computationally intractable, since we are interested in angular scales up to \( \ell_{\rm max}\sim \) a few \( \times\,O(10^3) \) (or even \( O(10^4) \)).&rdquo;<span class="cite">&sect; 2.2, below Eq. 2.8</span></blockquote>
+    <blockquote>&ldquo;the iNKA relies on the mode-coupling kernel being sharply localized around \( \ell \simeq \ell' \). It is therefore effective for diagonal-dominated quantities, but its errors can be amplified in situations where off-diagonal information is required with high precision.&rdquo;<span class="cite">&sect; 4.2, on Fig. 5</span></blockquote>
+    <blockquote>&ldquo;We further merge galaxies into coarse grid (\( N_{\rm side}=256 \) or \( 512 \) depending on \( \theta_i \)) to reduce the size of the matrices.&rdquo;<span class="cite">&sect; 4.3 &mdash; one field, ten bins, no timings reported</span></blockquote>
   </div>
 </div>
 ```
