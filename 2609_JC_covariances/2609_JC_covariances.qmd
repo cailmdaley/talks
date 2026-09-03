@@ -12,7 +12,6 @@ description: Three recent papers on pseudo-Cl covariance estimation
 draft: true
 author:
     name: Cail Daley
-    affiliation: "Département d'Astrophysique / UMR AIM · CEA Paris-Saclay"
 date: September 3, 2026
 date-format: long
 
