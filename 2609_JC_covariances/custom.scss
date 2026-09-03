@@ -494,11 +494,15 @@
     .mbox { min-width: 0; }
 }
 .reveal .nka .mbox {
-    // A starting width only: fitBoxes() in nka_script.html measures the typeset
-    // equation and writes an explicit width here, because engines disagree about
-    // what a MathJax SVG contributes to an intrinsic max-content size.
-    width: max-content; max-width: 1560px;
-    display: flex; flex-direction: column; gap: 1px;
+    // NO width, and no measurement. `width: max-content` asks the engine to
+    // intrinsic-size a box around a MathJax SVG and engines disagree about what
+    // a replaced element contributes to that -- which is how a box can hug its
+    // equation in Chrome and be cut short of it in WebKit. As a non-shrinking
+    // flex item the box is sized by the flex algorithm from what is actually in
+    // it, so whatever MathJax paints is inside the background by construction.
+    // The row keeps its alignment because .mtxt, not this, is the flex track.
+    flex: 0 0 auto;
+    display: inline-flex; flex-direction: column; gap: 1px;
     padding: 6px 18px 8px 14px;
     border-left: 6px solid #BC4538;
     background: rgba(188, 69, 56, 0.10);

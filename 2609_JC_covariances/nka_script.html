@@ -2259,42 +2259,11 @@ function boot(){
   function typeset(){
     if(window.MathJax && MathJax.startup && MathJax.startup.promise)
       MathJax.startup.promise.then(function(){ return MathJax.typesetPromise(); })
-                             .then(fitBoxes).catch(function(){});
-    else if(window.MathJax && MathJax.typesetPromise)
-      MathJax.typesetPromise().then(fitBoxes).catch(function(){});
+                             .catch(function(){});
+    else if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise();
     else setTimeout(typeset, 150);
   }
 
-  //  Ledger boxes are sized from the MEASURED equation, not from CSS.
-  //  `width: max-content` asks the engine to intrinsic-size a box around a
-  //  MathJax SVG, and engines do not agree on what a replaced element inside an
-  //  inline-block contributes to that -- which is how a box that hugs its
-  //  equation in one browser can be cut short or left slack in another. The
-  //  equation's own bounding box is a fact both engines agree on, so measure it
-  //  once after typesetting and write the width down. Re-run on every typeset,
-  //  because a re-render can change which equation is in the box.
-  function fitBoxes(){
-    var boxes = document.querySelectorAll('.reveal .nka .mbox');
-    for(var i=0;i<boxes.length;i++){
-      var box = boxes[i], eqs = box.querySelectorAll('.eq'), w = 0;
-      if(!eqs.length) continue;
-      box.style.width = 'auto';
-      var left = box.getBoundingClientRect().left;
-      var cs = getComputedStyle(box);
-      var padL = parseFloat(cs.paddingLeft) || 0, padR = parseFloat(cs.paddingRight) || 0;
-      var bl = parseFloat(cs.borderLeftWidth) || 0;
-      for(var j=0;j<eqs.length;j++){
-        var r = eqs[j].getBoundingClientRect();
-        if(r.width) w = Math.max(w, r.right - left);
-      }
-      if(!w) continue;
-      //  getBoundingClientRect is in VIEWPORT units and reveal scales the stage,
-      //  so undo the scale before writing a slide-coordinate width back.
-      var sc = 1, st = document.querySelector('.reveal .slides');
-      if(st){ var m = /scale\(([0-9.]+)\)/.exec(st.style.transform || ''); if(m) sc = +m[1]; }
-      box.style.width = Math.ceil((w - bl)/sc + padR) + 'px';
-    }
-  }
   function renderAll(){
     for(var i=0;i<ROOTS.length;i++) renderOne(ROOTS[i]);
     typeset();
