@@ -83,11 +83,11 @@ Start as simply as possible. A Gaussian random field on a line — one realisati
 ```
 
 ::: {.notes}
-Same field. Each wave below is one Fourier mode of it — one wavenumber, one amplitude, one
-phase. Click through them, low k first.
+Same field. Each wave below is one Fourier mode of it — one multipole, one amplitude, one
+phase. Click through them, low ell first.
 
 Each one also puts a point on the spectrum underneath: the expected squared amplitude at that
-wavenumber, sitting right on the true curve. Watch the fourth one land above the third — that's
+multipole, sitting right on the true curve. Watch the fourth one land above the third — that's
 the bump you can see in the curve. Keep it in mind, because everything that goes wrong later
 goes wrong there. There are more modes than these five; they'd fill out the rest of the curve
 the same way.
@@ -173,20 +173,20 @@ you cannot afford — the exact covariance of the pseudo-spectrum, banded becaus
 couples neighbours.
 
 So: the narrow-kernel approximation. If C barely changes across the width of the kernel,
-evaluate it once at the midpoint of the two modes — C-bar, the average of C at k and at k-prime
-— and pull it outside the sum. What is left collapses into a single kernel, Xi, and the cost
-drops to the same order as the estimator itself. And notice what Xi is: it is exactly the
-coupling kernel from three slides ago, the mask's own power at mode separation ell minus ell-prime
+evaluate it once at the midpoint of the two modes — C-bar, the average of C at ell and at ell-prime
+— and pull it outside the sum. What is left collapses into a single kernel, and the cost
+drops to the same order as the estimator itself. And notice what that kernel is: it is exactly the
+coupling kernel from two slides ago, the mask's own power at mode separation ell minus ell-prime
 — except built from w squared instead of w, because a covariance is a four-point object and the
 masks come in pairs.
 
 I have written this for one field and one mask, which is all this toy has. In general there are
 four of them: the covariance of C-tilde-ab with C-tilde-cd, and then the two C factors are
-C-ac and C-bd, and Xi takes two mask products, w-a w-c and w-b w-d, plus the term with c and d
+C-ac and C-bd, and the kernel takes two mask products, w-a w-c and w-b w-d, plus the term with c and d
 swapped. That is where the a, b, c, d you will see in the paper come from. Nothing else changes.
 
 One thing to be clear about, because it is easy to over-read the approximation. Nothing requires
-C to be constant. C-bar only has to be a good stand-in for C wherever Xi is not already zero —
+C to be constant. C-bar only has to be a good stand-in for C wherever the kernel is not already zero —
 the kernel's support is a handful of modes wide, so the only thing that matters is whether C
 varies across that handful. Where it does not, this is essentially exact.
 
@@ -233,18 +233,18 @@ purpose — everything downstream of the modes is exactly the machinery from the
 slides. What breaks is upstream.
 
 So ask the simplest question you can ask about a mask: what is its own power spectrum? Bottom
-left. Uniform random positions, and I am just summing e-to-the-minus-i-k-x over the sources I
-drew. It is flat. At every k the phases of a hundred and forty deltas point in random
+left. Uniform random positions, and I am just summing e-to-the-minus-i-ell-x over the sources I
+drew. It is flat. At every ell the phases of a hundred and forty deltas point in random
 directions, so they add *incoherently* — the sum is a random walk, and its square is the number
 of sources. That is the shot-noise floor, N-w-tilde, the sum of w-i squared over four pi, and it
 is reached almost immediately, well below pi over theta-c.
 
 The footprint is already on: of the hundred and forty sources in the catalogue, fifty-five fall
 inside it, and the grey ones are the rest. Edges, and a couple of holes. Sources inside the gaps simply do not
-exist; there is nothing else to remove. Watch the low k. Below the inverse footprint scale the
+exist; there is nothing else to remove. Watch the low ell. Below the inverse footprint scale the
 deltas are no longer randomly placed: they are all sitting inside the same window, their phases
 line up, and they add *coherently*. The sum stops being a random walk and starts tracing the
-footprint, so the spectrum lifts off the floor — and by k of about fifteen it has fallen back onto the floor
+footprint, so the spectrum lifts off the floor — and by ell of about fifteen it has fallen back onto the floor
 again, well below pi over theta-c. Red rise, white floor. That is the shape on the right, in
 Quaia, from the paper. Ours is a decade; theirs is six, and the only difference is the number of
 sources — the rise cannot exceed N, and Quaia has millions.
@@ -295,19 +295,19 @@ measurement — it is the machinery that the measurement is deconvolved with, an
 floor in the machinery is a convolutional problem in the data. What you can do is get rid of it.
 
 Where does the floor come from? From pretending you know where a source is to infinite
-precision. A delta function has power at every k, all the way up, forever. So stop pretending:
+precision. A delta function has power at every ell, all the way up, forever. So stop pretending:
 give each source a Gaussian cloud of size theta-c. In real space the comb blooms; overlapping
 clouds merge, and the mask becomes an ordinary continuous window again. In harmonic space that
-is a multiplication by the cloud's transform, e to the minus k squared theta-c squared — and
-watch what it does. The coherent part at low k, which is the actual footprint, is untouched. The
+is a multiplication by the cloud's transform, e to the minus ell squared theta-c squared — and
+watch what it does. The coherent part at low ell, which is the actual footprint, is untouched. The
 white floor is cut off. The thing you wanted gone is gone and the thing you wanted kept is kept.
 
 The blue curve is what you are aiming at: the power spectrum of the smooth footprint on its own,
 with no sources in it — the thing a pixelised map of the same window would measure. Red is the
 catalogue. Red is blue plus a flat N-w, which is the entire content of the paper's figure one.
-So drag until the red lies on the blue for as far in k as you can get it.
+So drag until the red lies on the blue for as far in ell as you can get it.
 
-Two scales, and they are not the same. The Gaussian is down to one over e at k equals one over
+Two scales, and they are not the same. The Gaussian is down to one over e at ell equals one over
 theta-c; the marker I am drawing is at pi over theta-c, which is the scale the paper uses for
 the shot-noise subtraction. The roll-off starts a factor of three before the marker.
 
@@ -522,7 +522,7 @@ weights and values, and there is no mask argument, because the positions are the
 the whole first half of this talk in one constructor. Then the spectrum, which is the ordinary
 workspace flow you already know: nothing about decoupling changed. Then the covariance, and the
 only unfamiliar name is get-i-N-K-A-cell, which builds the effective spectra the approximation
-needs — the C-bars from the corrections slide.
+needs — the C-bars from the covariance slide.
 
 Two things to flag if anyone asks. Version three moved the workspaces to from-fields
 constructors, so the covariance coupling coefficients are computed when you build the object
@@ -718,7 +718,7 @@ the sum runs over real positions, so the footprint, the holes, the boundaries an
 encoded exactly by which quadruplets exist. Its difference panel is blank because it is zero: this
 is the exact answer, not an approximation to it. The window is not modelled. It is counted.
 
-Hold on to the middle column. Slides seventeen to twenty are all about what those differences do
+Hold on to the middle column. The next three slides are all about what those differences do
 to a real error bar.
 :::
 
@@ -751,15 +751,9 @@ to a real error bar.
 ```
 
 ::: {.notes}
-Left is the controlled experiment, and it is the cleanest thing in the paper. Black dashed
-is the covariance of xi measured directly from a thousand simulations. Blue is the
-*simulated harmonic* covariance pushed through that double Legendre sum. Blue lands on
-black — so the transform, the pair-count normalisation, and the ell-max of six thousand
-are all fine. Red is iNKA through the same machinery, and it sits visibly low: twenty-five
-to thirty percent at six arcminutes, shrinking to nothing by a couple of hundred. The
-failure is isolated to the covariance model. Nothing else in the chain is at fault.
+Two figures on this slide, in the paper's order: first their diagnosis, then the result.
 
-Right is their diagnosis. iNKA's correlation matrix on the left, the simulated one in the
+The diagnosis. iNKA's correlation matrix on the left, the simulated one in the
 middle, ratio on the right: sharp diagonal reproduced, off-diagonal not.
 
 Now, a caveat I want to say out loud, because I think it is the weakest link. That ratio
@@ -768,11 +762,19 @@ multipoles. Off the diagonal, the sampling scatter on a correlation coefficient 
 one over root-N, three percent, around a true value that is itself tiny — the middle panel
 is visibly pure speckle. So dividing a smooth iNKA prediction by a noisy near-zero
 denominator gives you a ratio that is not a pointwise error map, and the uniform blue is
-what you would get from signal much smaller than noise with random sign. The *result* on
-the left I believe completely. The *diagnosis* is argued by elimination. The obvious clean
-test — keep only the first N off-diagonal bands and project — is not in the paper.
+what you would get from signal much smaller than noise with random sign. The diagnosis is
+argued by elimination. The obvious clean test — keep only the first N off-diagonal bands
+and project — is not in the paper. I ran it in the toy; it comes back at the end.
 
-So I ran it. Next slide.
+Click. The result, which I believe completely: the controlled experiment, and it is the
+cleanest thing in the paper. Black dashed is the covariance of xi measured directly from a
+thousand simulations. Blue is the *simulated harmonic* covariance pushed through that
+double Legendre sum. Blue lands on black — so the transform, the pair-count normalisation,
+and the ell-max of six thousand are all fine. Red is iNKA through the same machinery, and
+it sits visibly low: twenty-five to thirty percent at six arcminutes, shrinking to nothing
+by a couple of hundred. The failure is isolated to the covariance model. Nothing else in
+the chain is at fault. The box is the paper in two numbers: within ten percent on the
+harmonic diagonal, thirty percent low in real space.
 :::
 
 ## Pairs of pairs {.nka-slide}
@@ -810,8 +812,8 @@ product of the theory xi at those two separations. Notice which separations thos
 theta-i and theta-j, but the separations *between* the two pairs. That is where the geometry
 enters, and it enters as an actual distance between actual objects.
 
-Now do that for every pair in bin i against every pair in bin j — a few hundred times a few
-hundred here, and that is one cell of the matrix. Fill in every cell and you have the whole
+Now do that for every pair in bin i against every pair in bin j — a couple of dozen against a couple of
+dozen here, the label counts them, and that is one cell of the matrix. Fill in every cell and you have the whole
 covariance.
 
 And here is the thing worth saying slowly: nowhere in that did a window function appear. No
