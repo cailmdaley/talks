@@ -546,6 +546,16 @@
     border: 1px solid #C5B89E;
     background: linear-gradient(90deg, #7A6F5C 0%, #F7F0E1 50%, #BC4538 100%);
 }
+// the numbers beside the difference panels are peaks of a correlation
+// difference, so they are in units of the exact diagonal. Said once, here,
+// rather than appended to each of the two numbers.
+// The header row's text cell is empty and full width, so the unit note lives
+// there and costs the slide no height at all -- under the key it pushed every
+// row down 43 px.
+.reveal .nka .mhead .eunit {
+    font-size: 26px; color: #7A6F5C; font-style: normal;
+    font-variant: small-caps; letter-spacing: 0.03em;
+}
 // the quartic row has no harmonic matrix by construction: hold the slot open
 // and draw nothing in it, so the two columns to its right stay aligned.
 .reveal .nka .mpix.nohar { height: 250px; }

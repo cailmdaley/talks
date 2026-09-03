@@ -349,11 +349,11 @@ has something to be narrow about.
 <div class="corr big tight">
   <div class="fragment" data-fragment-index="2">
     <span class="nm noise">self-pair field</span>
-    <span class="eq">\( n(x)\;\equiv\;\textstyle\sum_i w_i^{2}\,a_i^{2}\,G^{2}(x-x_i),\qquad N_{\ell-\ell'}=\textstyle\sum_x n(x)\,e^{-i(\ell-\ell')x} \)</span>
+    <span class="eq">\( n(x)\;\equiv\;\textstyle\sum_i w_i^{2}\,a_i^{2}\,G^{2}_{\theta_{\rm c}}(x-x_i),\qquad N_{\ell-\ell'}=\textstyle\sum_x n(x)\,e^{-i(\ell-\ell')x} \)</span>
   </div>
   <div class="fragment" data-fragment-index="2">
     <span class="nm signal">distinct-pair mask product</span>
-    <span class="eq">\( \mathcal{W}(x)\;\equiv\;\bar w^{2}(x)\;-\;\textstyle\sum_i w_i^{2}\,G^{2}(x-x_i) \)</span>
+    <span class="eq">\( \mathcal{W}(x)\;\equiv\;\bar w^{2}(x)\;-\;\textstyle\sum_i w_i^{2}\,G^{2}_{\theta_{\rm c}}(x-x_i) \)</span>
   </div>
   <div class="fragment" data-fragment-index="3">
     <span class="nm">catalogue covariance</span>
@@ -640,7 +640,7 @@ people actually use.
 <div class="nka" data-step="10">
   <div class="methods">
     <div class="mhead">
-      <div class="mtxt"></div>
+      <div class="mtxt"><span class="eunit">numbers beside \( \Delta \): peak &plusmn;, in units of the exact diagonal</span></div>
       <div class="mpix"><span>\( {\rm Cov}(\tilde C_\ell,\tilde C_{\ell'}) \)</span></div>
       <div class="marrow"></div>
       <div class="mpix"><span>\( {\rm Cov}(\xi_i,\xi_j) \)</span></div>
