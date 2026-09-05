@@ -75,3 +75,16 @@ cd ~/Documents/projects/talks
 quarto render 2609_FORTH_Crete/2609_FORTH_Crete.qmd --to revealjs
 node ~/.claude/skills/slides/scripts/slide-to-text.mjs _site/2609_FORTH_Crete/2609_FORTH_Crete.html
 ```
+
+### Fiber embed (self-contained copy)
+
+The fiber `2609-forth-crete` embeds `deck.html` from its own directory, not `_site/` — the site
+render links `../site_libs/` relatively, which the felt viewer can't resolve (blank/unstyled iframe).
+A project render ignores `embed-resources`, so build the copy outside the project:
+
+```bash
+S=$(mktemp -d); T=~/Documents/projects/talks
+ln -s $T/assets $S/assets; ln -s $T/images $S/images; cp -R $T/2609_FORTH_Crete $S/
+(cd $S/2609_FORTH_Crete && quarto render 2609_FORTH_Crete.qmd -M embed-resources:true -o deck.html)
+cp $S/2609_FORTH_Crete/deck.html ~/loom/.felt/work/talks/2609-forth-crete/deck.html
+```
