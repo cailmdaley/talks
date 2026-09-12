@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-Slide decks live in date-prefixed directories such as `25_ESLAB_Leiden/`, each containing a primary `.qmd` file, supporting `images/`, and optional `assets/` overrides. Shared resources sit at the top level: `assets/` for HTML partials, `images/` for cross-talk figures, and `styles.css` for global Reveal.js tweaks. `_quarto.yml` configures the umbrella Quarto site, while `_site/` holds rendered output—never edit files there. `_template_quarto/` stores starter material when creating a new talk. `index.qmd` uses Quarto's native `listing:` to auto-generate the talks index at render time. `collect_unused_assets.py` handles image housekeeping.
+Slide decks live in date-prefixed directories such as `2609_FORTH_Crete/`, each containing a primary `.qmd` file and symlinks to the shared `images/` and `assets/` directories. Shared resources sit at the top level: `assets/` for HTML partials, `images/` for all talk figures, and `styles.css` for global Reveal.js tweaks. `_quarto.yml` configures the umbrella Quarto site, while `_site/` holds rendered output—never edit files there. `_template_quarto/` stores starter material when creating a new talk. `index.qmd` uses Quarto's native `listing:` to auto-generate the talks index at render time. `collect_unused_assets.py` handles image housekeeping.
 
 ## Build, Test, and Development Commands
 - `quarto check`: confirm the Quarto CLI and required engines are available.
@@ -10,14 +10,12 @@ Slide decks live in date-prefixed directories such as `25_ESLAB_Leiden/`, each c
 - `quarto render`: rebuild the entire site after sweeping content changes (auto-runs on push to main via `.github/workflows/publish.yml`).
 
 ## Coding Style & Naming Conventions
-YAML front matter uses two-space indentation and kebab-case keys; keep metadata blocks compact and alphabetical when practical. Write Markdown with hard wraps at ~100 characters and favor fenced code blocks for math or code chunks. New talk directories should follow the `YY_EventName` pattern and keep file names lowercase with underscores, e.g., `assets/no_footer_on_titleslide.html`. Python utilities follow PEP 8 (4-space indentation, snake_case identifiers) and should include `if __name__ == "__main__":` guards.
-
-## Testing and Git
-Testing and commit workflows are handled directly by the repository maintainer.
+YAML front matter uses two-space indentation and kebab-case keys; keep metadata blocks compact and alphabetical when practical. New talk directories should follow the `YYMM_EventName` pattern and keep file names lowercase with underscores, e.g., `assets/no_footer_on_titleslide.html`. Python utilities follow PEP 8 (4-space indentation, snake_case identifiers) and should include `if __name__ == "__main__":` guards.
 
 ## Asset Management
-Each talk inherits `images/` and `assets/` as symlinks to the shared pools; keep them if you want
-centralized reuse, or replace the symlink with a real folder when slides demand bespoke art.
+Every talk uses `images/` and `assets/` symlinks pointing to the repository's shared directories.
+Keep these symlinks; add all figures and supporting assets to the shared pools, including those made for a single talk.
+Use descriptive filenames to avoid collisions.
 
 ### What NOT to commit
 - **PDFs / pptx** — presentation exports. Gitignored. Re-export from `.qmd` source as needed
@@ -31,9 +29,7 @@ reasoning, felt fiber names) is fine to commit and push, subject to two bars: **
 **blinded results**. No unblinded number from a blinded analysis — no amplitude value, no
 sub-/super-unity statement, no figure showing measured amplitudes against theory — may be committed
 *anywhere* in the repo (speaker notes, per-talk CLAUDE.md, retired figures, planning docs). Blinded
-background belongs in the private felt store; the repo carries a pointer at most. (This bar exists
-because it was burned once: the 2606 deck's CLAUDE.md and four retired figures carried the blinded
-κ-cross amplitude verbatim and had to be scrubbed from history.)
+background belongs in the private felt store; the repo carries a pointer at most.
 
 ### Image hygiene
 - **Resolution over file size**: use figures at full resolution — scientific figures need to stay
