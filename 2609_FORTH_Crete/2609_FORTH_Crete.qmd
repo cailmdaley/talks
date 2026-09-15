@@ -2,7 +2,7 @@
 # ════════════════════════════════════════════════════════════════════════════════════════
 # Closing keynote, FORTH Workshop on Physics-Informed Machine Learning, Heraklion.
 # Fri 18 Sep 2026, 11:30–12:30: 30 min talk + 15 min live demo + 15 min discussion.
-# Arc: history (chatbot→harness) → singularity landing → ASTRA tutorial → implications.
+# Arc: capabilities → history (chatbot→harness) → landing → ASTRA tutorial → implications.
 # Strategy in ./CLAUDE.md; felt fiber 2609-forth-crete.
 # Export: decktape reveal "file://$(pwd)/_site/2609_FORTH_Crete/2609_FORTH_Crete.html" out.pdf --size 1920x1080
 # ════════════════════════════════════════════════════════════════════════════════════════
@@ -17,6 +17,8 @@ date: September 18, 2026
 date-format: long
 
 resources:
+    - assets/crete-capabilities/chart.html
+    - assets/crete-capabilities/swarm.html
     - images/earendil-harness.mp4
 
 format:
@@ -32,7 +34,9 @@ format:
         include-after-body:
             - assets/no_footer_on_titleslide.html
             - assets/figure-treatment.html
+            - assets/crete-capabilities/deck-bridge.html
             - live-demo.html
+            - assets/sources-notes.html
         footer: "Cail Daley | FORTH PIML Workshop | September 18, 2026"
         history: false
         hash: true
@@ -48,7 +52,138 @@ html-math-method:
 include-in-header: assets/mathjax.html
 ---
 
-## Two years ago, the intelligence left through the clipboard {#oracle-era}
+## Three questions {#overview}
+
+::: {style="margin-top:110px;font-size:52px;line-height:1.4"}
+- What can **we** do with agentic science **now**?
+- How do we **engineer** this way of working?
+- What do we want our own **practice** to become?
+:::
+
+::: notes
+The arc moves from shared capabilities to engineering practice and then the personal choice
+of what scientific practice should become. Leave the tension about agency implicit.
+The tutorial offers a window into practical experience so people can make their own choices.
+Cail usually finds this work very fun and enjoyable; it involves a different framing of work.
+:::
+
+## What can we do with agentic science now? {#metr .metr-slide}
+
+<div class="capabilities-layout">
+<iframe id="capabilities-chart" class="capabilities-embed" src="assets/crete-capabilities/chart.html" title="Human expert task duration at 50% agent success"></iframe>
+<div class="capabilities-facts">
+<div style="font-size:27px;color:#7A6F5C;margin-bottom:26px">Back of the envelope</div>
+<div style="display:grid">
+<div class="fragment fade-out" data-fragment-index="0" style="grid-area:1/1;font-size:44px;line-height:1.3">Human expert time to solve a Millennium Prize Problem?</div>
+<div style="grid-area:1/1">
+<div id="capabilities-cases" class="fragment" data-fragment-index="0">
+<div class="case-name">Navier–Stokes</div>
+<div>~10,000 concurrent agents</div>
+<div style="font-weight:bold;font-size:42px;margin-top:24px">≈880,000 agent-hours</div>
+</div>
+<div id="capabilities-hf" class="fragment" data-fragment-index="0">
+<div class="case-name" style="margin-top:28px">Hugging Face</div>
+<div style="font-size:30px;margin-bottom:18px">Felony-level cyberattack on a major ML platform</div>
+<div>~700 attack participants</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+::: notes
+Scratch space: first explain that the axis is how long a human expert takes on tasks an agent
+can complete with 50% reliability. It is not the agent's runtime. Mythos is near the suite's
+measurement ceiling. The axes stay fixed. The sidebar first asks about human expert time for
+a Millennium Prize Problem; advance once to replace the question with both case studies.
+Cail's question: how long would a human need for a 50% chance of solving Navier–Stokes in 2026?
+There is no measured human baseline. This motivates asking whether the individual-task framing
+still captures what coordinated systems accomplish, rather than treating the case studies as
+new METR measurements. The upper-right agent wall-time axis explicitly distinguishes these
+case durations from the human-expert-time metric on the left.
+88 × 10,000 = 880,000 is a constant-concurrency illustration, not measured agent-hours or human
+work. The $6.5M is output-only pricing arithmetic, not actual disclosed internal cost.
+Cail's possible HF joke: “they committed at least one felony.” This is a rhetorical joke, not
+an established legal finding. The substantive point is the chain from a restricted environment
+through multiple exploits into major machine-learning dataset infrastructure.
+:::
+
+## October 2025: the future of enterprise agents {#dag-era}
+
+<div style="font-size:34px;color:#7A6F5C;margin-top:10px;margin-bottom:20px">OpenAI Agent Builder · less than a year ago</div>
+
+![](images/openai-agent-builder-october-2025.jpeg){style="display:block;width:100%;max-height:830px;object-fit:contain"}
+
+::: notes
+OpenAI introduced AgentKit, including Agent Builder, on October 6, 2025.
+Source: https://openai.com/index/introducing-agentkit/
+The slide's future-of-enterprise-agents framing is editorial, inspired by Ethan Mollick,
+not a direct quotation from the announcement. The June 3, 2026 update announces a wind-down.
+The contrast is human-authored workflow graphs versus the coordinated exploration shown next.
+:::
+
+## The hardest problems are being solved by swarms {#swarms}
+
+<iframe id="swarm-chart" src="assets/crete-capabilities/swarm.html" title="Hugging Face agent activity from METR Figure 8" style="width:100%;height:810px;border:0"></iframe>
+<div id="swarm-comparison" class="fragment" data-fragment-index="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"></div>
+
+::: notes
+Hugging Face is the focus here: how agents encountered each other and coordinated through the
+message board. The timeline redraws METR Figure 8 using its published agent timing records.
+The 1,206 plotted board participants are not all necessarily attack participants. The June 26
+start is the investigation scope, not the attack duration. This follows the individual-task
+measurement question with concrete evidence of a swarm, before asking how we got here.
+:::
+
+## Yesterday’s frontier becomes cheap {#costs}
+
+<div style="margin-top:45px">
+<div style="font-size:42px;margin-bottom:40px">Navier–Stokes: 130B output tokens ≈ <strong>$6.5M</strong> at retail</div>
+<div style="font-size:30px;color:#7A6F5C">ARC-AGI-1 · semi-private evaluation</div>
+<div style="display:grid;grid-template-columns:1fr 130px 1fr;align-items:center;margin-top:40px">
+<div><div style="font-size:38px">o3-preview · December 2024</div><div style="font-size:110px;color:#BC4538">$4,560</div><div style="font-size:36px">per task · 87.5%</div></div>
+<div style="font-size:70px">→</div>
+<div><div style="font-size:38px">DeepSeek-V4-Flash · July 2026</div><div style="font-size:110px;color:#3F8278">$0.021</div><div style="font-size:36px">per task · 87.0%</div></div>
+</div>
+
+<div style="border-top:1px solid #C5B89E;margin-top:40px;padding-top:25px;font-size:38px"><span style="color:#BC4538">Takeaway</span><br>Frontier moonshots may stay expensive.<br>Today’s hard problems can become cheap.</div>
+<details style="font-size:28px;color:#7A6F5C;margin-top:24px;max-height:170px;overflow:auto"><summary style="cursor:pointer">Sources &amp; accounting notes</summary>
+<p><a href="https://arcprize.org/blog/oai-o3-pub-breakthrough">ARC Prize: o3 score &amp; retrospective cost</a> · <a href="https://arcprize.org/results/deepseek-v4-flash-0731">ARC Prize: DeepSeek score &amp; cost</a> · <a href="https://openai.com/index/navier-stokes-solution/">OpenAI: Navier–Stokes token count</a> · <a href="https://x.com/deredleritt3r/status/2098527713002672152">Prompted by prinz</a></p>
+<p>ARC-AGI-1 semi-private evaluation; different systems and inference budgets. o3’s $4,560 is a retrospective estimate using o3-pro pricing. DeepSeek High: 87.0% at $0.021402901/task.</p>
+<p><a href="https://developers.openai.com/api/docs/models/gpt-6-astra">Astra retail output price: $50/M</a>. Navier–Stokes: 130B output tokens × $50/M = $6.5M, output-only retail equivalent, not disclosed internal spend. The benchmark comparison does not predict future Navier–Stokes cost.</p>
+</details>
+</div>
+
+::: notes
+The comparison is near-equal performance on the same ARC-AGI-1 semi-private benchmark category,
+with different models and inference budgets. ARC retrospectively estimated the o3 high-compute
+cost using o3-pro pricing in December 2025; this is not an actual December 2024 bill.
+DeepSeek's High configuration scored 87.0% at $0.021402901/task. The cost ratio is about 213,000.
+This motivates distinguishing the cost of demonstrating a capability from its later deployment
+cost. It does not establish when an open model could solve Navier–Stokes, in how much time, or
+at what cost. The tweet's 2028 prediction remains its author's speculation.
+Navier pricing is a separate illustration, not a forecast or disclosed internal spend.
+:::
+
+## Computing changed how we do science {#soon}
+
+```{=html}
+<svg viewBox="0 0 1600 650" style="width:100%;margin-top:40px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif"><path d="M110 490 H1470" stroke="#C5B89E" stroke-width="3"/><g stroke="#1B1611" stroke-width="5" fill="none"><path d="M120 235 l245 -110 30 65 -245 110 Z M240 270 L175 415 M240 270 L330 415 M240 270 V415"/><circle cx="110" cy="130" r="5"/><path d="M370 80 v30 M355 95 h30"/></g><g fill="none" stroke="#3F8278" stroke-width="3"><rect x="620" y="115" width="320" height="270" rx="10"/><path d="M645 345 H915 M655 140 V350"/><path d="M655 330 Q735 100 790 260 T920 165" stroke-width="5"/></g><text x="655" y="410" font-size="29" fill="#7A6F5C">model → prediction</text><rect x="1190" y="145" width="90" height="70" rx="8" fill="#E0EAE3" stroke="#3F8278" stroke-width="3"/><rect x="1400" y="145" width="90" height="70" rx="8" fill="#E0EAE3" stroke="#3F8278" stroke-width="3"/><rect x="1190" y="330" width="90" height="70" rx="8" fill="#E0EAE3" stroke="#3F8278" stroke-width="3"/><rect x="1400" y="330" width="90" height="70" rx="8" fill="#E0EAE3" stroke="#3F8278" stroke-width="3"/><path d="M1280 180 H1400 M1235 215 V330 M1445 215 V330 M1280 365 H1400" fill="none" stroke="#C5B89E" stroke-width="4"/><text x="90" y="550" font-size="47" fill="#1B1611">Observe</text><text x="90" y="605" font-size="32" fill="#7A6F5C">Instruments · experiments</text><text x="620" y="550" font-size="47" fill="#1B1611">Compute</text><text x="620" y="605" font-size="32" fill="#7A6F5C">Models · simulations</text><text x="1160" y="550" font-size="47" fill="#1B1611">Engineer</text><text x="1160" y="605" font-size="32" fill="#7A6F5C">Pipelines · collaboration</text></svg>
+```
+
+## Every capability brings engineering constraints {#engineering-constraints}
+
+```{=html}
+<svg viewBox="0 0 1600 650" style="width:100%;margin-top:55px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif"><line x1="80" y1="175" x2="1520" y2="175" stroke="#C5B89E"/><text x="90" y="100" font-size="42" fill="#7A6F5C">Finite memory</text><text x="700" y="100" font-size="42" fill="#1B1611">Data structures · lazy loading</text><line x1="80" y1="310" x2="1520" y2="310" stroke="#C5B89E"/><text x="90" y="235" font-size="42" fill="#7A6F5C">Expensive execution</text><text x="700" y="235" font-size="42" fill="#1B1611">Algorithms · caching · parallelism</text><line x1="80" y1="445" x2="1520" y2="445" stroke="#C5B89E"/><text x="90" y="370" font-size="42" fill="#7A6F5C">Complex collaborations</text><text x="700" y="370" font-size="42" fill="#1B1611">Interfaces · tests · version control</text><text x="800" y="565" text-anchor="middle" font-size="36" fill="#3F8278">Editors · IDEs · notebooks — interfaces for human execution</text></svg>
+```
+
+## Agentic work changes what we must engineer {#agentic-engineering}
+
+```{=html}
+<svg viewBox="0 0 1600 650" style="width:100%;margin-top:40px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif"><text x="80" y="420" font-size="50" fill="#1B1611">Delegate</text><text x="80" y="470" font-size="34" fill="#7A6F5C">Tools · permissions</text><text x="600" y="420" font-size="50" fill="#1B1611">Coordinate</text><text x="600" y="470" font-size="34" fill="#7A6F5C">Context · workers</text><text x="1120" y="420" font-size="50" fill="#1B1611">Verify</text><text x="1120" y="470" font-size="34" fill="#7A6F5C">Evidence · feedback</text><g fill="none" stroke="#BC4538" stroke-width="4"><circle cx="160" cy="165" r="38"/><path d="M205 165 H350 M325 150 L350 165 L325 180"/><rect x="365" y="120" width="100" height="90" rx="10"/><path d="M385 245 h60 M415 210 v35"/></g><g fill="none" stroke="#3F8278" stroke-width="4"><circle cx="800" cy="150" r="35"/><circle cx="665" cy="280" r="25"/><circle cx="935" cy="280" r="25"/><path d="M775 175 L685 260 M825 175 L915 260 M690 280 H910"/></g><g fill="none" stroke="#3D5BA0" stroke-width="4"><rect x="1200" y="105" width="210" height="205" rx="12"/><path d="M1230 145 l12 12 25 -30 M1285 145 h85 M1230 210 l12 12 25 -30 M1285 210 h85 M1230 270 h35 M1285 270 h85"/></g><text x="800" y="590" text-anchor="middle" font-size="40" fill="#1B1611">Judgment → work agents can carry out and we can check</text></svg>
+```
+
+## From answers in a chat to work in the world {#oracle-era}
 
 ::: {style="display:flex;justify-content:center;margin-top:100px"}
 ```{=html}
@@ -65,7 +200,7 @@ include-in-header: assets/mathjax.html
     <rect x="80" y="230" width="400" height="220" rx="18" fill="#F4ECDC" stroke="#C5B89E" stroke-width="1.5"/>
     <text x="110" y="280" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">def log_like(theta, d):</text>
     <text x="110" y="320" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">    r = d - model(theta)</text>
-    <text x="110" y="360" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">    return -0.5 * r @ C @ r</text>
+    <text x="110" y="360" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">    return -0.5 * r @ Cinv @ r</text>
     <text x="110" y="420" font-family="EB Garamond, serif" font-size="26" fill="#7A6F5C">Here is a simple likelihood…</text>
   </g>
   <!-- clipboard arrow -->
@@ -107,537 +242,162 @@ story of that division dissolving.
 :::
 
 
-## The first "agents" were hand-wired DAGs {#dag-era}
+## A harness closes the execution loop {#harness}
 
-::: {style="display:flex;justify-content:center;align-items:center;gap:60px;margin-top:60px"}
-![](images/openai-agent-builder-dag.jpeg){style="width:1150px;border:2px solid #C5B89E;border-radius:10px"}
-:::
-
-::: {style="text-align:center;margin-top:26px"}
-[intelligence in the boxes · plumbing between]{style="color:#7A6F5C;font-size:0.85em"}
-:::
-
-::: notes
-Then came the first things called agents — and they looked like this. This is OpenAI's Agent
-Builder, from about a year and a half ago. Look at it: it's a DAG. A query-rewrite node, a
-classifier node, an if/else, two specialist LLM nodes, an end state. This should feel like home —
-it's a pipeline, and pipelines are this room's native language. And that's exactly why I show it:
-the human encodes the control flow, and the LLM calls sit inside the boxes. Intelligence in the
-boxes, plumbing between. When people in 2024 said "agents are brittle," this is the architecture
-they were describing — and if your intuitions about agents were formed here, they are due for an
-update, because this picture is already obsolete.
-:::
-
-
-## A harness inverts the picture: control flow lives in the model {#harness}
-
-::: {style="display:flex;justify-content:center;margin-top:30px"}
 ```{=html}
-<video data-autoplay loop muted playsinline src="images/earendil-harness.mp4" style="width:1180px;border-radius:10px"></video>
+<svg viewBox="0 0 1600 650" style="width:100%;max-height:730px;margin-top:45px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond, Georgia, serif"><defs><marker id="middle-arrow-3" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#7A6F5C" stroke-width="1.5"/></marker></defs><text x="800" y="45" text-anchor="middle" font-size="42" fill="#1B1611">“Write me a likelihood”</text><rect x="120" y="220" width="320" height="120" rx="12" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="280.0" y="293.0" text-anchor="middle" font-size="38" fill="#BC4538">Model</text><path d="M440,280 L620,280" fill="none" stroke="#BC4538" stroke-width="4" marker-end="url(#middle-arrow-3)"/><rect x="620" y="220" width="360" height="120" rx="12" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="800.0" y="293.0" text-anchor="middle" font-size="38" fill="#3D5BA0">Write likelihood.py</text><g class="fragment" data-fragment-index="0"><path d="M980,280 L1150,280" fill="none" stroke="#BC4538" stroke-width="4" marker-end="url(#middle-arrow-3)"/><rect x="1150" y="220" width="360" height="120" rx="12" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="1330.0" y="293.0" text-anchor="middle" font-size="38" fill="#3F8278">Run via shell</text><text x="1330" y="400" text-anchor="middle" font-size="30" fill="#3F8278">python check_likelihood.py</text></g><g class="fragment" data-fragment-index="1"><path d="M1330 430 L1330 530 L280 530 L280 340" fill="none" stroke="#3F8278" stroke-width="4" marker-end="url(#middle-arrow-3)"/><text x="800" y="510" text-anchor="middle" font-size="38" fill="#3F8278">Output · errors · diagnostics</text></g><text x="800" y="625" text-anchor="middle" font-size="32" fill="#7A6F5C">Tool request → harness execution → model observation</text></svg>
 ```
-:::
 
-::: {style="text-align:center;margin-top:24px"}
-[system prompt · tools · agentic loop · translation layer — [earendil.com/posts/what-is-a-harness](https://earendil.com/posts/what-is-a-harness/)]{style="color:#7A6F5C;font-size:0.8em"}
-:::
+<details style="font-size:26px;color:#7A6F5C;margin-top:10px"><summary>Sources &amp; notes</summary><a href="https://earendil.com/posts/what-is-a-harness/">Pi / Earendil · What is a Harness?</a> · <a href="https://www.anthropic.com/news/claude-3-7-sonnet">Claude Code · February 2025</a> · <a href="https://claude.com/blog/building-agents-with-the-claude-agent-sdk">Tool-loop mechanics</a></details>
 
 ::: notes
-The modern form is called a harness, and it deletes the DAG. Four components — watch them build: a
-system prompt that says who the agent is; tools — read a file, run a command, search — described to
-the model; an agentic loop; and a translation layer to the model's API. That's the whole
-architecture. The model chooses tools and loops until the task is done. Nobody draws the graph — the
-model decides, at every step, what happens next. The control flow moved out of the boxes-and-arrows
-and into the model itself. This is what the word "agentic" actually means, and it's why the
-brittleness went away: there is no pipeline to break. Claude Code, Codex, and every serious coding
-agent today is this — a few hundred lines of harness around a very capable model.
+Build on advance: writing code; then issuing a tool request that the harness executes; then returning output to the model for another step. The model emits a structured request, not an executable act by itself. Shell is one tool alongside file reads, edits, and search. Permissions and tool availability constrain execution. Claude Code made this pattern accessible in a terminal; tool use predates Claude Code. Introduce the loop before orchestration or subagents.
 :::
 
+## Context is working memory {#context-window}
 
-## You stopped drawing the graph — the model draws it on the fly {#inversion}
-
-::: {style="display:flex;justify-content:center;margin-top:150px"}
 ```{=html}
-<svg viewBox="0 0 1560 580" style="width:1650px" xmlns="http://www.w3.org/2000/svg">
-  <!-- LEFT: human-drawn DAG -->
-  <g>
-    <text x="330" y="50" font-family="EB Garamond, serif" font-size="40" fill="#1B1611" text-anchor="middle" font-weight="600">2024 — you draw the graph</text>
-    <g stroke="#7A6F5C" stroke-width="3" fill="none">
-      <path d="M 150 160 L 270 160"/><path d="M 390 160 L 480 120"/><path d="M 390 160 L 480 220"/>
-      <path d="M 590 120 L 590 120"/><path d="M 600 120 L 660 160"/><path d="M 600 220 L 660 180"/>
-    </g>
-    <g font-family="IBM Plex Mono, monospace" font-size="22" fill="#1B1611">
-      <rect x="60" y="130" width="90" height="60" rx="8" fill="#F4ECDC" stroke="#C5B89E" stroke-width="2"/>
-      <text x="105" y="167" text-anchor="middle">start</text>
-      <rect x="270" y="130" width="120" height="60" rx="8" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="2"/>
-      <text x="330" y="167" text-anchor="middle" fill="#3D5BA0">LLM</text>
-      <rect x="480" y="90" width="120" height="60" rx="8" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="2"/>
-      <text x="540" y="127" text-anchor="middle" fill="#3D5BA0">LLM</text>
-      <rect x="480" y="190" width="120" height="60" rx="8" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="2"/>
-      <text x="540" y="227" text-anchor="middle" fill="#3D5BA0">LLM</text>
-      <rect x="660" y="140" width="90" height="60" rx="8" fill="#F4ECDC" stroke="#C5B89E" stroke-width="2"/>
-      <text x="705" y="177" text-anchor="middle">end</text>
-    </g>
-    <text x="400" y="330" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">control flow: yours</text>
-    <text x="400" y="375" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">intelligence: in the boxes</text>
-  </g>
-  <!-- divider -->
-  <line x1="800" y1="60" x2="800" y2="500" stroke="#C5B89E" stroke-width="2" stroke-dasharray="8 10"/>
-  <!-- RIGHT: model in a loop -->
-  <g>
-    <text x="1190" y="50" font-family="EB Garamond, serif" font-size="40" fill="#1B1611" text-anchor="middle" font-weight="600">2026 — the model generates the graph</text>
-    <circle cx="1190" cy="210" r="86" fill="#FBF6E9" stroke="#BC4538" stroke-width="4"/>
-    <text x="1190" y="202" font-family="EB Garamond, serif" font-size="34" fill="#BC4538" text-anchor="middle" font-weight="600">model</text>
-    <text x="1190" y="240" font-family="EB Garamond, serif" font-size="24" fill="#7A6F5C" text-anchor="middle">decides</text>
-    <!-- loop arrow -->
-    <path d="M 1190 96 A 118 118 0 1 1 1074 232" fill="none" stroke="#BC4538" stroke-width="5" marker-end="url(#arr2)"/>
-    <!-- tools around -->
-    <g font-family="IBM Plex Mono, monospace" font-size="24" fill="#1B1611">
-      <rect x="920" y="120" width="150" height="52" rx="26" fill="#F4ECDC" stroke="#3F8278" stroke-width="2.5"/>
-      <text x="995" y="154" text-anchor="middle" fill="#3F8278">read</text>
-      <rect x="1310" y="120" width="150" height="52" rx="26" fill="#F4ECDC" stroke="#3F8278" stroke-width="2.5"/>
-      <text x="1385" y="154" text-anchor="middle" fill="#3F8278">run</text>
-      <rect x="920" y="290" width="150" height="52" rx="26" fill="#F4ECDC" stroke="#3F8278" stroke-width="2.5"/>
-      <text x="995" y="324" text-anchor="middle" fill="#3F8278">write</text>
-      <rect x="1310" y="290" width="150" height="52" rx="26" fill="#F4ECDC" stroke="#3F8278" stroke-width="2.5"/>
-      <text x="1385" y="324" text-anchor="middle" fill="#3F8278">search</text>
-    </g>
-    <!-- emergent graph, drawn by the model for this task -->
-    <g stroke="#BC4538" stroke-width="2.5" stroke-dasharray="7 6" fill="none" opacity="0.8">
-      <path d="M 1230 296 L 1290 390"/><path d="M 1150 296 L 1090 390"/><path d="M 1190 296 L 1190 400"/>
-      <path d="M 1290 390 L 1330 470"/><path d="M 1290 390 L 1250 470"/>
-    </g>
-    <g font-family="IBM Plex Mono, monospace" font-size="20" fill="#BC4538">
-      <rect x="1040" y="390" width="100" height="40" rx="8" fill="#FBF6E9" stroke="#BC4538" stroke-width="2" stroke-dasharray="5 4"/><text x="1090" y="416" text-anchor="middle">agent</text>
-      <rect x="1140" y="400" width="100" height="40" rx="8" fill="#FBF6E9" stroke="#BC4538" stroke-width="2" stroke-dasharray="5 4"/><text x="1190" y="426" text-anchor="middle">agent</text>
-      <rect x="1240" y="390" width="100" height="40" rx="8" fill="#FBF6E9" stroke="#BC4538" stroke-width="2" stroke-dasharray="5 4"/><text x="1290" y="416" text-anchor="middle">agent</text>
-      <rect x="1200" y="470" width="100" height="40" rx="8" fill="#FBF6E9" stroke="#BC4538" stroke-width="2" stroke-dasharray="5 4"/><text x="1250" y="496" text-anchor="middle">verify</text>
-      <rect x="1300" y="470" width="100" height="40" rx="8" fill="#FBF6E9" stroke="#BC4538" stroke-width="2" stroke-dasharray="5 4"/><text x="1350" y="496" text-anchor="middle">verify</text>
-    </g>
-    <text x="1190" y="548" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">a graph per task — drawn, run, discarded</text>
-  </g>
-  <defs>
-    <marker id="arr2" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#BC4538"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="Finite context as an allocation of token slots, with a reserved region for the answer" font-family="EB Garamond, Georgia, serif"><text x="85" y="90" font-size="44" fill="#1B1611" text-anchor="start">One model call</text><text x="1510" y="90" font-size="38" fill="#BC4538" text-anchor="end">Finite capacity</text><rect x="85" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="109" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="133" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="157" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="181" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="205" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="229" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="253" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="277" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="301" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><text x="85" y="410" font-size="38" fill="#3F8278" text-anchor="start">Instructions</text><rect x="330" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="354" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="378" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="402" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="426" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="450" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="474" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="498" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="522" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="546" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="570" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="594" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="618" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="642" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="666" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="690" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><text x="330" y="410" font-size="38" fill="#3D5BA0" text-anchor="start">Conversation</text><rect x="740" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="764" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="788" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="812" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="836" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="860" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="884" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="908" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="932" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="956" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="980" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1004" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1028" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1052" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1076" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1100" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1124" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1148" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><text x="740" y="410" font-size="38" fill="#7A6F5C" text-anchor="start">Tool results</text><rect x="1190" y="205" width="320" height="155" fill="#FBF6E9" stroke="#3F8278" stroke-width="3" stroke-dasharray="9 8"/><text x="1350" y="270" font-size="36" fill="#3F8278" text-anchor="middle">Room for</text><text x="1350" y="318" font-size="36" fill="#3F8278" text-anchor="middle">the answer</text><path d="M85 165 V140 H1510 V165" fill="none" stroke="#1B1611" stroke-width="2" /><path d="M85 470 H1175" fill="none" stroke="#C5B89E" stroke-width="2" /><text x="85" y="545" font-size="42" fill="#3F8278" text-anchor="start">Select</text><text x="475" y="545" font-size="42" fill="#3D5BA0" text-anchor="start">Summarize</text><text x="975" y="545" font-size="42" fill="#7A6F5C" text-anchor="start">Discard noise</text></svg>
+```
+
+::: notes
+Context management concerns what is available to the next inference. Input and output share a finite budget, with model-specific limits. Tool access to a file does not put that file in context until it is read. Selection and summaries are lossy; preserve important decisions and evidence outside the conversation.
+:::
+
+## Cache the unchanged part of working memory {#prompt-caching}
+
+```{=html}
+<svg viewBox="0 0 1600 650" style="width:100%;max-height:730px;margin-top:45px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond, Georgia, serif"><defs><marker id="middle-arrow-4" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#7A6F5C" stroke-width="1.5"/></marker></defs><text x="95" y="140" text-anchor="middle" font-size="32" fill="#7A6F5C">Step 1</text><rect x="190" y="90" width="500" height="75" fill="#3D5BA0" fill-opacity=".18" stroke="#3D5BA0"/><text x="440.0" y="140" text-anchor="middle" font-size="34" fill="#3D5BA0">Reusable prefix</text><rect x="705" y="90" width="210" height="75" fill="#BC4538" fill-opacity=".15" stroke="#BC4538"/><text x="810" y="140" text-anchor="middle" font-size="32" fill="#BC4538">New context</text><text x="95" y="265" text-anchor="middle" font-size="32" fill="#7A6F5C">Step 2</text><rect x="190" y="215" width="710" height="75" fill="#3D5BA0" fill-opacity=".18" stroke="#3D5BA0"/><text x="545.0" y="265" text-anchor="middle" font-size="34" fill="#3D5BA0">Reusable prefix</text><rect x="915" y="215" width="210" height="75" fill="#BC4538" fill-opacity=".15" stroke="#BC4538"/><text x="1020" y="265" text-anchor="middle" font-size="32" fill="#BC4538">New context</text><text x="95" y="390" text-anchor="middle" font-size="32" fill="#7A6F5C">Step 3</text><rect x="190" y="340" width="920" height="75" fill="#3D5BA0" fill-opacity=".18" stroke="#3D5BA0"/><text x="650.0" y="390" text-anchor="middle" font-size="34" fill="#3D5BA0">Reusable prefix</text><rect x="1125" y="340" width="210" height="75" fill="#BC4538" fill-opacity=".15" stroke="#BC4538"/><text x="1230" y="390" text-anchor="middle" font-size="32" fill="#BC4538">New context</text><text x="800" y="535" text-anchor="middle" font-size="40" fill="#1B1611">Same prefix · reused computation · new suffix</text><text x="800" y="610" text-anchor="middle" font-size="34" fill="#7A6F5C">Input processing saved · context capacity unchanged</text></svg>
+```
+
+<details style="font-size:26px;color:#7A6F5C;margin-top:10px"><summary>Sources &amp; notes</summary><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching">Prompt caching mechanics</a></details>
+
+::: notes
+Build directly on the previous context-as-working-memory slide. The working set is still supplied to the model; caching reuses internal computation for an eligible unchanged prefix. This is not external memory, a smaller context, or a cache of finished answers. Schematic of repeated model requests. Cache hits require matching eligible prefixes and depend on provider retention and minimum lengths. They can reduce input cost and latency; they do not remove context limits or make generated output free. No universal cost multiplier or claim of zero prefill latency. Compaction trades prefix reuse against relevance and capacity; never-edit-history is not an absolute rule.
+:::
+
+## Load durable memory when the task needs it {#external-memory}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="A compact index selects one experiment from durable records into working context; decisions are saved back" font-family="EB Garamond, Georgia, serif"><text x="100" y="80" font-size="44" fill="#7A6F5C" text-anchor="start">Persistent storage</text><text x="1100" y="80" font-size="44" fill="#3F8278" text-anchor="start">Working set</text><rect x="170" y="170" width="490" height="405" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><rect x="140" y="145" width="490" height="405" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><rect x="110" y="120" width="490" height="405" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="145" y="180" font-size="40" fill="#3D5BA0" text-anchor="start">index.md</text><circle cx="160" cy="250" r="5" fill="#C5B89E" /><text x="190" y="260" font-size="38" fill="#1B1611" text-anchor="start">Decisions</text><path d="M420 250 H550" fill="none" stroke="#C5B89E" stroke-width="2" /><circle cx="160" cy="330" r="5" fill="#C5B89E" /><text x="190" y="340" font-size="38" fill="#1B1611" text-anchor="start">Experiments</text><path d="M420 330 H550" fill="none" stroke="#C5B89E" stroke-width="2" /><circle cx="160" cy="410" r="5" fill="#C5B89E" /><text x="190" y="420" font-size="38" fill="#1B1611" text-anchor="start">Evidence</text><path d="M420 410 H550" fill="none" stroke="#C5B89E" stroke-width="2" /><rect x="135" y="288" width="450" height="72" fill="#3F8278" opacity="0.10"/><path d="M600 322 C760 322 790 210 980 210" fill="none" stroke="#3F8278" stroke-width="4" /><path d="M964 198 L982 210 L964 222" fill="none" stroke="#3F8278" stroke-width="3" /><text x="735" y="265" font-size="36" fill="#3F8278" text-anchor="start">Read</text><rect x="995" y="135" width="485" height="260" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="1035" y="200" font-size="38" fill="#3F8278" text-anchor="start">Current experiment</text><text x="1035" y="267" font-size="36" fill="#1B1611" text-anchor="start">Assumptions</text><text x="1035" y="330" font-size="36" fill="#1B1611" text-anchor="start">Relevant evidence</text><path d="M1080 430 C1080 560 700 565 620 490" fill="none" stroke="#3D5BA0" stroke-width="3" /><path d="M625 510 L620 490 L641 492" fill="none" stroke="#3D5BA0" stroke-width="3" /><text x="890" y="580" font-size="38" fill="#3D5BA0" text-anchor="middle">Save the decision</text></svg>
+```
+
+::: notes
+Analogy: context is working memory, files are persistent storage. An index helps find the relevant notes without loading everything. This is deliberate external memory management, not a guarantee of automatic recall. Save decisions with their assumptions and links to evidence. Results should be traceable to their inputs and configuration.
+:::
+
+## Skills make procedures reusable {#skills}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="An annotated skill document containing a trigger, scientific conventions, validation checks, and supporting scripts" font-family="EB Garamond, Georgia, serif"><text x="90" y="85" font-size="44" fill="#3F8278" text-anchor="start">Procedure, on demand</text><path d="M210 150 H760 L825 215 V560 H210 Z" fill="none" stroke="#C5B89E" stroke-width="3" /><path d="M760 150 V215 H825" fill="none" stroke="#C5B89E" stroke-width="3" /><text x="255" y="215" font-size="36" fill="#7A6F5C" text-anchor="start">SKILL.md</text><text x="255" y="295" font-size="48" fill="#3F8278" text-anchor="start">Fit a likelihood</text><path d="M255 342 H665" fill="none" stroke="#C5B89E" stroke-width="5" /><path d="M255 364 H595" fill="none" stroke="#C5B89E" stroke-width="5" /><path d="M255 452 H690" fill="none" stroke="#C5B89E" stroke-width="5" /><path d="M255 474 H615" fill="none" stroke="#C5B89E" stroke-width="5" /><path d="M255 496 H655" fill="none" stroke="#C5B89E" stroke-width="5" /><rect x="250" y="390" width="525" height="35" fill="#3F8278" opacity="0.12"/><path d="M850 215 H955" fill="none" stroke="#7A6F5C" stroke-width="2" /><text x="990" y="227" font-size="40" fill="#7A6F5C" text-anchor="start">When to use it</text><path d="M850 315 H955" fill="none" stroke="#3F8278" stroke-width="2" /><text x="990" y="327" font-size="40" fill="#3F8278" text-anchor="start">Scientific conventions</text><path d="M850 410 H955" fill="none" stroke="#3F8278" stroke-width="2" /><text x="990" y="422" font-size="40" fill="#3F8278" text-anchor="start">Known-case checks</text><path d="M850 510 H955" fill="none" stroke="#3D5BA0" stroke-width="2" /><text x="990" y="522" font-size="40" fill="#3D5BA0" text-anchor="start">Scripts + references</text><text x="255" y="610" font-size="38" fill="#7A6F5C" text-anchor="start">Versioned · inspectable · reusable</text></svg>
+```
+
+::: notes
+Skills package procedural guidance, often with references and helper scripts. They are instructions supplied to the model, not a guarantee that each step will execute. The selected scientific example is illustrative. Put checks in executable tools or hooks where reliable execution matters.
+:::
+
+## Plugins package a working environment {#plugins}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="An open research kit containing different components: procedural skills, callable tools, and event hooks" font-family="EB Garamond, Georgia, serif"><text x="80" y="85" font-size="46" fill="#3F8278" text-anchor="start">One installable research kit</text><path d="M170 275 L270 195 H610 L665 245 H1410 L1290 565 H170 Z" fill="none" stroke="#C5B89E" stroke-width="3" /><rect x="260" y="180" width="300" height="300" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="288" y="245" font-size="44" fill="#3F8278" text-anchor="start">Skills</text><text x="288" y="300" font-size="34" fill="#7A6F5C" text-anchor="start">Procedures</text><path d="M290 345 H505" fill="none" stroke="#3F8278" stroke-width="3" /><path d="M290 373 H485" fill="none" stroke="#3F8278" stroke-width="3" /><path d="M290 401 H465" fill="none" stroke="#3F8278" stroke-width="3" /><rect x="655" y="140" width="300" height="300" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="683" y="205" font-size="44" fill="#3D5BA0" text-anchor="start">Tools</text><text x="683" y="260" font-size="34" fill="#7A6F5C" text-anchor="start">Data + compute</text><text x="685" y="350" font-size="56" fill="#3D5BA0" text-anchor="start">&gt;_ </text><path d="M775 330 H890" fill="none" stroke="#3D5BA0" stroke-width="4" /><rect x="1050" y="100" width="300" height="300" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="1078" y="165" font-size="44" fill="#BC4538" text-anchor="start">Hooks</text><text x="1078" y="220" font-size="34" fill="#7A6F5C" text-anchor="start">Event checks</text><path d="M1085 320 H1315" fill="none" stroke="#BC4538" stroke-width="3" /><circle cx="1145" cy="320" r="11" fill="#BC4538" /><path d="M1145 310 V275 H1255" fill="none" stroke="#BC4538" stroke-width="3" /><path d="M170 400 H1290 V565 H170 Z" fill="none" stroke="#3F8278" stroke-width="3" /><rect x="173" y="403" width="1114" height="159" fill="#FBF6E9" /><text x="220" y="495" font-size="48" fill="#3F8278" text-anchor="start">Research environment</text><text x="1430" y="605" font-size="34" fill="#7A6F5C" text-anchor="end">Contents vary by harness</text></svg>
+```
+
+::: notes
+Plugin is a packaging concept; exact contents and discovery vary across harnesses. A plugin can bundle tools, skills, and configuration. It does not add autonomous judgment by itself. Scientific example: analysis guidance alongside connectors or command wrappers that expose the relevant data and compute.
+:::
+
+## Hooks make checks event-driven {#hooks}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="A file edit interrupts the normal timeline with configured checks; failure returns actionable diagnostics for repair" font-family="EB Garamond, Georgia, serif"><text x="80" y="90" font-size="42" fill="#7A6F5C" text-anchor="start">Inside the harness</text><path d="M90 290 H1510" fill="none" stroke="#C5B89E" stroke-width="5" /><circle cx="150" cy="290" r="12" fill="#3D5BA0" /><text x="150" y="355" font-size="40" fill="#3D5BA0" text-anchor="middle">Read</text><circle cx="490" cy="290" r="12" fill="#3D5BA0" /><text x="490" y="355" font-size="40" fill="#3D5BA0" text-anchor="middle">Edit</text><circle cx="1390" cy="290" r="12" fill="#3D5BA0" /><text x="1390" y="355" font-size="40" fill="#3D5BA0" text-anchor="middle">Continue</text><path d="M620 290 V155 H1120 V290" fill="none" stroke="#3F8278" stroke-width="5" /><text x="870" y="115" font-size="44" fill="#3F8278" text-anchor="middle">Configured hook</text><circle cx="680" cy="155" r="10" fill="#3F8278" /><circle cx="1050" cy="155" r="10" fill="#3F8278" /><text x="865" y="218" font-size="38" fill="#3F8278" text-anchor="middle">Units · known cases</text><path d="M1120 290 V485 H490 V390" fill="none" stroke="#BC4538" stroke-width="4" /><path d="M477 410 L490 390 L503 410" fill="none" stroke="#BC4538" stroke-width="3" /><text x="830" y="535" font-size="38" fill="#BC4538" text-anchor="middle">Failure → diagnostic → repair</text><text x="1480" y="610" font-size="36" fill="#7A6F5C" text-anchor="end">Event-triggered execution</text></svg>
+```
+
+::: notes
+A configured hook runs on a defined harness event. Unlike a skill asking the model to remember a check, the trigger lives in the surrounding software. Whether a hook can block a tool or completion depends on the harness and event. Example is deliberately generic; a check still needs a scientifically meaningful assertion.
+:::
+
+## Delegate a piece of work without losing the thread {#delegation}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:40px" font-family="EB Garamond,Georgia,serif"><path d="M220 300 H550 M710 300 H980" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><circle cx="140" cy="300" r="80" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="140" y="312" text-anchor="middle" font-size="36" fill="#BC4538">You</text><circle cx="630" cy="300" r="80" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="630" y="312" text-anchor="middle" font-size="36" fill="#3F8278">Agent</text><text x="1090" y="245" text-anchor="middle" font-size="40" fill="#1B1611">Read · write · run</text><text x="1090" y="325" text-anchor="middle" font-size="34" fill="#1B1611">Code · tools · results</text><g class="fragment"><path d="M630 385 Q630 520 910 520" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><circle cx="1000" cy="520" r="80" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1000" y="532" text-anchor="middle" font-size="36" fill="#3D5BA0">Worker</text><text x="1280" y="450" text-anchor="middle" font-size="36" fill="#1B1611">A bounded question</text><text x="1280" y="525" text-anchor="middle" font-size="32" fill="#1B1611">Literature · code search</text><text x="1280" y="570" text-anchor="middle" font-size="32" fill="#1B1611">Implementation · review</text></g></svg>
+```
+
+::: notes
+Start with user → main agent → tools. Advance adds a bounded worker with its own context. Examples include literature search, code investigation, review, and implementation. The main session carries the relationship with the user and integrates the result. Delegation is not necessarily parallel, and a returned summary is not proof of correctness.
+:::
+
+## Teams coordinate while the work is happening {#agent-teams}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:40px" font-family="EB Garamond,Georgia,serif"><circle cx="160" cy="310" r="75" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="160" y="322" text-anchor="middle" font-size="36" fill="#BC4538">You</text><circle cx="620" cy="310" r="85" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="620" y="322" text-anchor="middle" font-size="36" fill="#3F8278">Lead</text><path d="M235 310 H535" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><path d="M705 310 Q900 310 1075 130" fill="none" stroke="#3F8278" stroke-width="3" stroke-dasharray=""/><circle cx="1150" cy="130" r="75" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1150" y="142" text-anchor="middle" font-size="36" fill="#3D5BA0">Search</text><circle r="7" fill="#BC4538"><animateMotion dur="3s" repeatCount="indefinite" path="M705 310 Q900 310 1075 130"/></circle><circle r="6" fill="#3F8278"><animateMotion dur="4s" repeatCount="indefinite" path="M1075 130 Q900 310 705 310"/></circle><path d="M705 310 Q900 310 1255 330" fill="none" stroke="#3F8278" stroke-width="3" stroke-dasharray=""/><circle cx="1330" cy="330" r="75" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1330" y="342" text-anchor="middle" font-size="36" fill="#3D5BA0">Build</text><circle r="7" fill="#BC4538"><animateMotion dur="3s" repeatCount="indefinite" path="M705 310 Q900 310 1255 330"/></circle><circle r="6" fill="#3F8278"><animateMotion dur="4s" repeatCount="indefinite" path="M1255 330 Q900 310 705 310"/></circle><path d="M705 310 Q900 310 1025 525" fill="none" stroke="#3F8278" stroke-width="3" stroke-dasharray=""/><circle cx="1100" cy="525" r="75" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1100" y="537" text-anchor="middle" font-size="36" fill="#3D5BA0">Review</text><circle r="7" fill="#BC4538"><animateMotion dur="3s" repeatCount="indefinite" path="M705 310 Q900 310 1025 525"/></circle><circle r="6" fill="#3F8278"><animateMotion dur="4s" repeatCount="indefinite" path="M1025 525 Q900 310 705 310"/></circle><path d="M1195 190 Q1280 210 1305 250 M1280 390 Q1210 465 1165 490" fill="none" stroke="#7A6F5C" stroke-width="3" stroke-dasharray="7 8"/><text x="550" y="95" text-anchor="middle" font-size="40" fill="#1B1611">Direction · questions · evidence</text><text x="560" y="620" text-anchor="middle" font-size="38" fill="#1B1611">Steer while work is in flight</text><text x="620" y="438" text-anchor="middle" font-size="31" fill="#3F8278">Frontier judgment</text><text x="620" y="480" text-anchor="middle" font-size="31" fill="#7A6F5C">Design · decomposition</text><text x="1370" y="535" text-anchor="middle" font-size="31" fill="#3D5BA0">Scoped tasks</text><text x="1370" y="576" text-anchor="middle" font-size="31" fill="#7A6F5C">Lower-cost models</text></svg>
+```
+
+::: notes
+Message motion illustrates ongoing communication, not real telemetry. The lead can clarify scope, interrupt, redirect, and integrate emerging results; some systems also support peer messaging. This differs from fire-and-forget delegation. Shared goals, ownership, and communication discipline are necessary: more messages do not automatically mean better coordination. Preserve the user’s ability to steer. A strong, expensive lead can concentrate judgment in design and decomposition, giving lower-cost workers sufficiently clear task parameters. Model choice should follow task difficulty: review and ambiguous research can still need frontier intelligence. This is a useful allocation pattern, not a guarantee of lower total cost.
+:::
+
+## Parallel workers shorten independent work {#parallel-work}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:40px" font-family="EB Garamond,Georgia,serif"><text x="800" y="60" text-anchor="middle" font-size="42" fill="#1B1611">Independent work, overlapping time</text><text x="180" y="145" text-anchor="middle" font-size="36" fill="#7A6F5C">Serial</text><text x="180" y="355" text-anchor="middle" font-size="36" fill="#3F8278">Parallel</text><rect x="350" y="110" width="320" height="80" fill="#3D5BA0" fill-opacity=".15" stroke="#3D5BA0"/><text x="510" y="160" text-anchor="middle" font-size="34" fill="#3D5BA0">Literature</text><rect x="350" y="290" width="470" height="70" fill="#3D5BA0" fill-opacity=".15" stroke="#3D5BA0"/><text x="530" y="335" text-anchor="middle" font-size="34" fill="#3D5BA0">Literature</text><rect x="700" y="110" width="320" height="80" fill="#3F8278" fill-opacity=".15" stroke="#3F8278"/><text x="860" y="160" text-anchor="middle" font-size="34" fill="#3F8278">Code search</text><rect x="350" y="385" width="580" height="70" fill="#3F8278" fill-opacity=".15" stroke="#3F8278"/><text x="530" y="430" text-anchor="middle" font-size="34" fill="#3F8278">Code search</text><rect x="1050" y="110" width="320" height="80" fill="#BC4538" fill-opacity=".15" stroke="#BC4538"/><text x="1210" y="160" text-anchor="middle" font-size="34" fill="#BC4538">Review</text><rect x="350" y="480" width="390" height="70" fill="#BC4538" fill-opacity=".15" stroke="#BC4538"/><text x="530" y="525" text-anchor="middle" font-size="34" fill="#BC4538">Review</text><path d="M350 605 H1460" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><text x="1360" y="645" text-anchor="middle" font-size="32" fill="#1B1611">Time →</text><path d="M970 280 V565" fill="none" stroke="#7A6F5C" stroke-width="3" stroke-dasharray="6 8"/><text x="1180" y="430" text-anchor="middle" font-size="40" fill="#1B1611">Integrate the results</text><text x="1180" y="490" text-anchor="middle" font-size="32" fill="#7A6F5C">Dependencies · contention · cost</text></svg>
+```
+
+::: notes
+Parallelization overlaps independent work. Schematic durations, not measured speedups. Join only when needed; the slowest required branch and integration cost limit the benefit. Avoid simultaneous conflicting writes; divide ownership or isolate workspaces. Extra workers spend extra resources. Independence and a plan for integrating evidence matter more than worker count.
+:::
+
+## Generate the workflow, then execute its rules {#generated-workflow}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:40px" font-family="EB Garamond,Georgia,serif"><text x="800" y="55" text-anchor="middle" font-size="40" fill="#1B1611">Task → generated orchestration code → execution</text><rect x="30" y="275" width="230" height="75" rx="6" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="145.0" y="323" text-anchor="middle" font-size="32" fill="#BC4538">Task + criteria</text><path d="M260 312 L350 168" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><rect x="350" y="130" width="250" height="75" rx="6" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="475.0" y="178" text-anchor="middle" font-size="32" fill="#3D5BA0">Candidate A</text><path d="M600 168 L710 312" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><path d="M260 312 L350 313" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><rect x="350" y="275" width="250" height="75" rx="6" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="475.0" y="323" text-anchor="middle" font-size="32" fill="#3D5BA0">Candidate B</text><path d="M600 313 L710 312" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><path d="M260 312 L350 458" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><rect x="350" y="420" width="250" height="75" rx="6" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="475.0" y="468" text-anchor="middle" font-size="32" fill="#3D5BA0">Candidate C</text><path d="M600 458 L710 312" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><rect x="710" y="275" width="200" height="75" rx="6" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="810.0" y="323" text-anchor="middle" font-size="32" fill="#3F8278">Gather</text><path d="M910 312 L1010 200 M910 312 L1010 430" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><rect x="1010" y="160" width="240" height="75" rx="6" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="1130.0" y="208" text-anchor="middle" font-size="32" fill="#BC4538">Challenge</text><rect x="1010" y="390" width="240" height="75" rx="6" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="1130.0" y="438" text-anchor="middle" font-size="32" fill="#3F8278">Verify</text><path d="M1250 200 L1350 310 M1250 430 L1350 310" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><path d="M1410 235 L1490 310 L1410 385 L1330 310 Z" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="1410" y="320" text-anchor="middle" font-size="32" fill="#1B1611">Pass?</text><path d="M1490 310 H1560" fill="none" stroke="#3F8278" stroke-width="3" stroke-dasharray=""/><text x="1510" y="375" text-anchor="middle" font-size="32" fill="#1B1611">Accept</text><path d="M1410 235 V100 H300 V312" fill="none" stroke="#BC4538" stroke-width="3" stroke-dasharray=""/><text x="945" y="90" text-anchor="middle" font-size="32" fill="#BC4538">Revise · retry within budget</text><text x="800" y="590" text-anchor="middle" font-size="38" fill="#1B1611">Explicit dependencies · executable rules · inspectable control</text></svg>
+```
+
+::: notes
+A task-specific program can define scatter/gather, adversarial review, checks, conditional retry, and acceptance. The forward dependency graph is DAG-like; the retry edge makes the overall program a loop, not literally a DAG. The orchestration is explicit code, while individual model calls remain stochastic. A failure can trigger bounded revision or human escalation. Link to the October 2025 Agent Builder image: graphs remain useful; code generation makes it practical to construct one for this task. People can inspect, modify, and approve its rules. This is one route toward coordinated swarms, not an inevitable evolution or a promise that model-generated orchestration is correct.
+:::
+
+## With great output comes great chaos {#experiment-record}
+
+```{=html}
+<svg viewBox="0 0 1600 650" style="width:100%;max-height:730px;margin-top:45px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif" role="img" aria-label="A slop cannon scatters notebooks, scripts, plots and incompatible results. An analysis record reconnects inputs, choices and outputs.">
+<defs><g id="slop-page"><path d="M0 0 H125 L155 30 V140 H0 Z M125 0 V30 H155" fill="#FBF6E9" stroke="currentColor" stroke-width="2.5"/></g></defs>
+<path d="M100 560 H780" stroke="#C5B89E" stroke-width="2"/>
+<g transform="translate(140 365) rotate(-19)"><path d="M0 0 Q-45 65 0 125 L300 125 V0 Z" fill="#C5B89E" stroke="#1B1611" stroke-width="4"/><ellipse cx="300" cy="62" rx="24" ry="64" fill="#1B1611"/><ellipse cx="300" cy="62" rx="12" ry="47" fill="#7A6F5C"/><path d="M25 15 H265 M25 108 H265" stroke="#7A6F5C" stroke-width="3"/><text x="136" y="78" font-size="36" text-anchor="middle" fill="#1B1611">SLOP</text></g>
+<path d="M195 450 L145 540 H365 L300 430" fill="#7A6F5C" stroke="#1B1611" stroke-width="3"/><circle cx="250" cy="514" r="48" fill="#FBF6E9" stroke="#1B1611" stroke-width="5"/><circle cx="250" cy="514" r="9" fill="#1B1611"/><path d="M250 466 V562 M202 514 H298 M216 480 L284 548 M216 548 L284 480" stroke="#1B1611" stroke-width="2"/>
+<path d="M443 308 l40 -32 m-14 65 l42 -6 m-79 -64 l5 -40" stroke="#BC4538" stroke-width="5" stroke-linecap="round"/>
+<g transform="translate(530 95) rotate(-16)" color="#3D5BA0"><use href="#slop-page"/><text x="15" y="65" font-size="28" fill="currentColor">fit_v7.py</text><path d="M18 87 H100 M18 102 H125 M18 117 H80" stroke="currentColor" stroke-width="3"/></g>
+<g transform="translate(740 210) rotate(17)" color="#BC4538"><use href="#slop-page"/><path d="M22 112 V48 M22 112 H129 M30 97 L49 87 L65 96 L87 57 L105 69 L122 40" fill="none" stroke="currentColor" stroke-width="3"/></g>
+<g transform="translate(495 392) rotate(13)" color="#7A6F5C"><use href="#slop-page"/><text x="13" y="62" font-size="28" fill="currentColor">final_final</text><text x="13" y="99" font-size="28" fill="currentColor">.ipynb</text></g>
+<g transform="translate(780 435) rotate(-11)" color="#3F8278"><use href="#slop-page"/><text x="15" y="65" font-size="28" fill="currentColor">chain.npy</text><path d="M16 91 H129 M16 108 H129" stroke="currentColor" stroke-width="2"/></g>
+<text x="545" y="620" font-size="36" fill="#BC4538" text-anchor="middle">100 files · 20 experiments</text>
+<path d="M990 55 V590" stroke="#C5B89E" stroke-width="2"/>
+<text x="1300" y="105" text-anchor="middle" font-size="40" fill="#1B1611">What belongs together?</text>
+<g font-size="37"><text x="1080" y="240" fill="#3D5BA0">Inputs</text><text x="1080" y="338" fill="#BC4538">Decisions</text><text x="1080" y="436" fill="#3F8278">Recipe → outputs</text></g>
+<path d="M1050 207 H1032 V448 H1050" fill="none" stroke="#7A6F5C" stroke-width="3"/>
+<text x="1300" y="560" text-anchor="middle" font-size="35" fill="#3F8278">Identity · lineage · evidence</text>
 </svg>
 ```
-:::
 
 ::: notes
-So here is the inversion, side by side, and it's the one mental move I need from you this morning.
-On the left, the world your pipeline intuitions were built for: you draw the graph, the
-intelligence sits in the boxes. On the right, today: the model sits in a loop with tools — and the
-graph didn't vanish, it moved. The model draws it, for this task, on the fly: it decides to fan
-out three sub-agents, to put a verifier behind two of them, to run a pipeline — and when the task
-is done that graph is thrown away. Nobody could have drawn it in advance because it depends on
-what the model finds as it goes. If you internalize just this one picture, the rest
-of the talk — and honestly, the rest of the next few years — will make much more sense. Everything
-I'll show you in the tutorial is this right-hand picture, pointed at a cosmology problem.
+The slop cannon is a joke about unorganized throughput, not a claim that every generated artifact is worthless. Growing work can mix incompatible inputs, configurations, and outputs. Naming files is useful but insufficient: record which inputs, decisions, recipes, and outputs belong to each analysis. This motivates ASTRA without claiming a schema eliminates every provenance error. Distinguish remembering why a decision was made from validating that the current run used it.
 :::
 
+## Lightcone Research {#lightcone}
 
-## The graph is generated per task: subagents and workflows {#generated-graph}
-
-::: {style="display:flex;justify-content:center;margin-top:50px"}
-```{=html}
-<svg viewBox="0 0 1560 620" style="width:1500px" xmlns="http://www.w3.org/2000/svg">
-  <defs><marker id="ga" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#BC4538"/></marker>
-  <marker id="gb" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3F8278"/></marker></defs>
-  <!-- orchestrator -->
-  <rect x="60" y="230" width="300" height="150" rx="14" fill="#FBF6E9" stroke="#BC4538" stroke-width="4"/>
-  <text x="210" y="290" font-family="EB Garamond, serif" font-size="34" fill="#BC4538" text-anchor="middle" font-weight="600">orchestrator</text>
-  <text x="210" y="330" font-family="EB Garamond, serif" font-size="24" fill="#7A6F5C" text-anchor="middle">holds the plan &amp; the judgement</text>
-  <!-- its context bar -->
-  <rect x="60" y="400" width="300" height="18" rx="4" fill="#3D5BA0" fill-opacity="0.25" stroke="#3D5BA0"/>
-  <text x="60" y="446" font-family="IBM Plex Mono, monospace" font-size="20" fill="#7A6F5C">context: management view only</text>
-  <!-- spawn arrows -->
-  <g stroke="#BC4538" stroke-width="3" fill="none" marker-end="url(#ga)">
-    <path d="M 360 270 C 460 270, 460 110, 560 110"/>
-    <path d="M 360 305 L 560 305"/>
-    <path d="M 360 340 C 460 340, 460 500, 560 500"/>
-  </g>
-  <text x="440" y="90" font-family="EB Garamond, serif" font-size="24" fill="#BC4538" text-anchor="middle">spawn</text>
-  <!-- subagent 1: bulk read -->
-  <g>
-    <rect x="560" y="60" width="330" height="100" rx="12" fill="#FBF6E9" stroke="#1B1611" stroke-width="2.5"/>
-    <text x="725" y="102" font-family="EB Garamond, serif" font-size="28" fill="#1B1611" text-anchor="middle" font-weight="600">subagent · read 2000 lines</text>
-    <rect x="560" y="132" width="330" height="14" rx="4" fill="#3D5BA0" fill-opacity="0.25" stroke="#3D5BA0"/>
-  </g>
-  <!-- subagent 2: implement -->
-  <g>
-    <rect x="560" y="255" width="330" height="100" rx="12" fill="#FBF6E9" stroke="#1B1611" stroke-width="2.5"/>
-    <text x="725" y="297" font-family="EB Garamond, serif" font-size="28" fill="#1B1611" text-anchor="middle" font-weight="600">subagent · implement</text>
-    <rect x="560" y="327" width="330" height="14" rx="4" fill="#3D5BA0" fill-opacity="0.25" stroke="#3D5BA0"/>
-  </g>
-  <!-- workflow: pipeline the model wrote -->
-  <g>
-    <rect x="560" y="440" width="930" height="130" rx="12" fill="none" stroke="#3F8278" stroke-width="2.5" stroke-dasharray="8 7"/>
-    <text x="580" y="428" font-family="IBM Plex Mono, monospace" font-size="20" fill="#3F8278">workflow — a pipeline written for this task</text>
-    <g font-family="EB Garamond, serif" font-size="24" fill="#1B1611" text-anchor="middle">
-      <rect x="590" y="475" width="180" height="60" rx="10" fill="#FBF6E9" stroke="#3F8278" stroke-width="2.5"/><text x="680" y="512">review: bugs</text>
-      <rect x="590" y="475" width="0" height="0"/>
-      <rect x="840" y="445" width="180" height="50" rx="10" fill="#FBF6E9" stroke="#3F8278" stroke-width="2.5"/><text x="930" y="478">verify #1</text>
-      <rect x="840" y="510" width="180" height="50" rx="10" fill="#FBF6E9" stroke="#3F8278" stroke-width="2.5"/><text x="930" y="543">verify #2</text>
-      <rect x="1100" y="475" width="180" height="60" rx="10" fill="#FBF6E9" stroke="#3F8278" stroke-width="2.5"/><text x="1190" y="512">confirmed</text>
-    </g>
-    <g stroke="#3F8278" stroke-width="2.5" fill="none" marker-end="url(#gb)">
-      <path d="M 770 495 C 800 495, 800 470, 840 470"/><path d="M 770 515 C 800 515, 800 535, 840 535"/>
-      <path d="M 1020 470 C 1060 470, 1060 500, 1100 500"/><path d="M 1020 535 C 1060 535, 1060 510, 1100 510"/>
-    </g>
-  </g>
-  <!-- results flow back -->
-  <g stroke="#7A6F5C" stroke-width="2.5" fill="none" stroke-dasharray="6 6">
-    <path d="M 890 110 C 1000 110, 1000 200, 1100 200 L 1400 200"/>
-    <path d="M 890 305 L 1400 305"/>
-  </g>
-  <rect x="1400" y="160" width="130" height="190" rx="12" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2.5"/>
-  <text x="1465" y="245" font-family="EB Garamond, serif" font-size="24" fill="#7A6F5C" text-anchor="middle">summary</text>
-  <text x="1465" y="275" font-family="EB Garamond, serif" font-size="24" fill="#7A6F5C" text-anchor="middle">back</text>
-  <path d="M 1465 350 C 1465 600, 210 620, 210 470" fill="none" stroke="#7A6F5C" stroke-width="2.5" stroke-dasharray="6 6" marker-end="url(#ga)"/>
-  <!-- legend -->
-  <rect x="1100" y="60" width="30" height="14" rx="4" fill="#3D5BA0" fill-opacity="0.25" stroke="#3D5BA0"/>
-  <text x="1140" y="74" font-family="EB Garamond, serif" font-size="24" fill="#1B1611">a fresh context window, each</text>
-</svg>
-```
-:::
+<div style="display:flex;align-items:center;gap:55px;margin-top:40px">
+<img src="images/lightcone_mark_blue.svg" style="width:150px;height:150px;border:0;box-shadow:none" alt="Lightcone logo">
+<div style="font-size:48px;line-height:1.3">An open ecosystem for science<br><a href="https://www.lightconeresearch.org/" style="font-size:34px">lightconeresearch.org</a></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:75px;margin-top:50px">
+<div style="border-top:4px solid #3F8278;padding-top:24px"><div style="font-size:49px;color:#3F8278">ASTRA</div><div style="font-size:35px;margin-top:12px">Specification + validator</div><div style="font-size:32px;margin-top:25px;color:#7A6F5C">Inputs · outputs · decisions · evidence</div><div style="font-size:34px;margin-top:22px">Reproducible · verifiable</div></div>
+<div style="border-top:4px solid #3D5BA0;padding-top:24px"><div style="font-size:49px;color:#3D5BA0">Lightcone tools</div><div style="font-size:35px;margin-top:12px">Agentic execution on that foundation</div><div style="font-size:32px;margin-top:25px;color:#7A6F5C">Skills · agents · hooks · workflows</div><div style="font-size:34px;margin-top:22px">Plan · execute · inspect</div></div>
+</div>
+<div style="display:flex;align-items:center;gap:28px;font-size:29px;color:#7A6F5C;margin-top:48px"><img src="images/cnrs_logo.svg" style="height:62px;border:0;box-shadow:none" alt="CNRS"><div>François Lanusse · Liam Parker<br>CNRS AISSAI · BIDS / UC Berkeley</div></div>
+<details style="font-size:26px;color:#7A6F5C;margin-top:20px"><summary>Sources &amp; notes</summary><a href="https://www.lightconeresearch.org/about">Team &amp; institutions</a> · <a href="https://www.lightconeresearch.org/projects">Projects &amp; architecture</a> · <a href="https://astra-spec.org/">ASTRA specification</a></details>
 
 ::: notes
-~1.5 min. [DRAFT — refine to your voice.] Here's what "the model draws the graph" looks like in
-practice, because it's very concrete. An orchestrating agent holds the plan and the judgement.
-When it hits a sub-goal that would flood its own context — read two thousand lines of a paper,
-implement a module, sweep a directory — it *spawns a subagent*: a fresh model instance, its own
-clean context window, given one job, returning a summary. Each blue bar is a separate context.
-The orchestrator's own window stays lean — just the management view — which is what lets one
-session carry an arc that used to take five. And when the model wants structure it can write a
-*workflow*: a small pipeline — review for bugs, fan out two independent verifiers, keep only the
-confirmed findings — composed for this task and discarded after. That's a DAG. It just wasn't
-drawn by you. Two things I want you to notice, because they'll come back in the tutorial. First,
-this is context architecture before it's parallelism: the reason to split is that each piece
-wants a clean window. Second, look where verification appears — as nodes the model added on its
-own. When we get to the practice at scale, "design the checks into the work" is exactly this
-picture, made deliberate.
+Use the CNRS deck's ecosystem framing and shared branding. Co-led by François Lanusse and Liam Parker; based at CNRS AISSAI and BIDS / UC Berkeley. Two layers: ASTRA is the specification and validator for the scientific record; Lightcone tools provide agentic execution using that record. The official projects page describes lightcone-cli as the execution layer, with skills, agents, hooks, workflow support and execution manifests. A schema helps keep agents on track by making dependencies, decisions and evidence inspectable; it is not a guarantee of scientific correctness. No personal-membership line on the slide.
 :::
-
-
-## The loop is affordable because the prefix is cached {#prompt-caching}
-
-::: {style="display:flex;justify-content:center;margin-top:60px"}
-```{=html}
-<svg viewBox="0 0 1560 620" style="width:1500px" xmlns="http://www.w3.org/2000/svg">
-<defs><pattern id="hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#3D5BA0" stroke-width="5" opacity="0.55"/></pattern></defs>
-<text x="120" y="40" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C">context sent to the model, step by step →</text>
-<text x="100" y="120" font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C" text-anchor="end">step 1</text>
-<rect x="120" y="80" width="200" height="56" rx="8" fill="#3D5BA0" fill-opacity="0.18" stroke="#3D5BA0" stroke-width="2"/>
-<text x="220" y="117" font-family="IBM Plex Mono, monospace" font-size="24" fill="#1B1611" text-anchor="middle">sys</text>
-<rect x="326" y="80" width="160" height="56" rx="8" fill="#3D5BA0" fill-opacity="0.18" stroke="#3D5BA0" stroke-width="2"/>
-<text x="406" y="117" font-family="IBM Plex Mono, monospace" font-size="24" fill="#1B1611" text-anchor="middle">tools</text>
-<rect x="492" y="80" width="120" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
-<text x="552" y="117" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">you</text>
-<text x="100" y="240" font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C" text-anchor="end">step 2</text>
-<rect x="120" y="200" width="480" height="56" rx="8" fill="url(#hatch)" stroke="#3D5BA0" stroke-width="2"/>
-<text x="360" y="237" font-family="EB Garamond, serif" font-size="28" fill="#3D5BA0" text-anchor="middle" font-weight="600">cached prefix — identical to last step</text>
-<rect x="606" y="200" width="220" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
-<text x="716" y="237" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">tool result</text>
-<rect x="832" y="200" width="90" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
-<text x="877" y="237" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">model</text>
-<text x="100" y="360" font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C" text-anchor="end">step 3</text>
-<rect x="120" y="320" width="790" height="56" rx="8" fill="url(#hatch)" stroke="#3D5BA0" stroke-width="2"/>
-<text x="515" y="357" font-family="EB Garamond, serif" font-size="28" fill="#3D5BA0" text-anchor="middle" font-weight="600">cached prefix — identical to last step</text>
-<rect x="916" y="320" width="260" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
-<text x="1046" y="357" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">tool result</text>
-<rect x="1182" y="320" width="90" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
-<text x="1227" y="357" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">model</text>
-<text x="100" y="480" font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C" text-anchor="end">step 4</text>
-<rect x="120" y="440" width="1080" height="56" rx="8" fill="url(#hatch)" stroke="#3D5BA0" stroke-width="2"/>
-<text x="690" y="477" font-family="EB Garamond, serif" font-size="28" fill="#3D5BA0" text-anchor="middle" font-weight="600">cached prefix — identical to last step</text>
-<rect x="1206" y="440" width="180" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
-<text x="1296" y="477" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">tool result</text>
-<rect x="1392" y="440" width="60" height="56" rx="8" fill="#BC4538" fill-opacity="0.9" stroke="#BC4538" stroke-width="2"/>
-<text x="1422" y="477" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1" text-anchor="middle">model</text>
-<g font-family="EB Garamond, serif" font-size="30">
-<rect x="120" y="560" width="40" height="26" rx="5" fill="url(#hatch)" stroke="#3D5BA0" stroke-width="2"/><text x="175" y="582" fill="#1B1611">read from cache · 10–40× cheaper · no prefill latency</text>
-<rect x="900" y="560" width="40" height="26" rx="5" fill="#BC4538" fill-opacity="0.9"/><text x="955" y="582" fill="#1B1611">new tokens · computed this step</text>
-</g></svg>
-```
-:::
-
-::: {style="text-align:center;margin-top:26px;color:#7A6F5C;font-size:0.8em"}
-[design rule: stable system prompt first · append-only history · never edit the middle]{style="font-family:'IBM Plex Mono',monospace;font-size:0.85em"}
-
-[Sep 2026 pricing: cache reads $0.25/MTok · fresh input $10 · output $50. **Look at the rows — where does that land? What does it tell you about how to shape your own work?**]{style="font-size:0.95em"}
-:::
-
-::: notes
-~1.5 min. One piece of mechanics before we move on, because it's the thing that makes the loop on
-the previous slide economically possible — and it's the single most important thing to understand
-about how these systems are priced and engineered. The model is stateless. Every step of the loop,
-the harness sends the *entire* context again: system prompt, tool definitions, the whole
-conversation so far, plus the new tool result. Naively that's quadratic — a hundred-step task
-re-reads a hundred-thousand-token context a hundred times. What saves it is prompt caching: the
-provider keeps the model's internal state for a prefix it has already processed, so if this step's
-context begins with exactly the same tokens as the last one — and in a loop it does — the whole
-prefix is served from cache. Cached tokens cost about a tenth as much and skip the prefill
-latency; only the tail — the newest tool result and the model's new output — is actually computed.
-[Point at the rows: the hatched region grows, the red stays small.] Two consequences. For cost:
-a long agentic session is dominated by cache reads, which is why it's affordable at all. For
-design: everything in the harness is organised to keep the prefix stable — the system prompt
-goes first and never changes, history is append-only, you never edit the middle of the context.
-That's the design rule at the bottom, and once you know it you'll recognise it everywhere in how
-these tools behave — why they compact context rather than reorder it, why long stable instructions
-are cheap and mid-conversation changes aren't. Hold onto it; it's what makes the tutorial's
-twenty-minute session cost cents.
-[DRAFT — new, Sep 2026.] One more thing, and I want you to do the reasoning rather than
-me. This month's frontier release priced cache reads at twenty-five cents per million tokens,
-against ten dollars for fresh input and fifty for output. Look at the rows. [Pause.] Where does
-a price cut on the hatched region land — on step one, or on step four? So as the number of
-model steps per human step goes up, what happens to the cost of a token? [Let them get there:
-it *falls*. The press release said 15% cheaper for chat, 35% for agentic use — that asymmetry
-is this diagram.] Now the question that matters for you: given that, how would you shape your
-own work — many short sessions, or fewer long ones? What does a cold start cost, and what does
-one more step inside a running loop cost? I'll leave it there; you'll have a view by the end of
-the tutorial, and it'll be your own.
-:::
-
-
-<!-- ═══════════════ BEAT 2 · THE LANDING: beginning of the singularity ═══════════════ -->
-
-## The math predicts a singularity {#timeline}
-
-::: {style="display:flex;justify-content:center;margin-top:110px"}
-```{=html}
-<svg viewBox="0 0 1560 500" style="width:1480px" xmlns="http://www.w3.org/2000/svg">
-  <!-- log axis: time before present -->
-  <line x1="80" y1="330" x2="1480" y2="330" stroke="#1B1611" stroke-width="3"/>
-  <text x="1370" y="400" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="end">time before present (log)</text>
-  <!-- events: log10(years ago): earth 9.65, sapiens 5.48, agriculture 4.0, industry 2.48, computers 1.9, LLMs 0.9 -->
-  <!-- map: x = 80 + (9.65 - v) * 1360/9.65  → earth 80, sapiens 667, agri 876, industry 1090, computers 1172, llm 1313, now 1440 -->
-  <g>
-    <circle cx="80"  cy="330" r="13" fill="#3D5BA0"/>
-    <text x="80"  y="270" font-family="EB Garamond, serif" font-size="32" fill="#1B1611" text-anchor="middle">Earth</text>
-    <text x="80"  y="306" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C" text-anchor="middle">4.5 Gyr</text>
-    <circle cx="667" cy="330" r="13" fill="#3D5BA0"/>
-    <text x="667" y="270" font-family="EB Garamond, serif" font-size="32" fill="#1B1611" text-anchor="middle">Homo sapiens</text>
-    <text x="667" y="306" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C" text-anchor="middle">300 kyr</text>
-    <circle cx="876" cy="330" r="13" fill="#3D5BA0"/>
-    <text x="876" y="200" font-family="EB Garamond, serif" font-size="32" fill="#1B1611" text-anchor="middle">agriculture</text>
-    <text x="876" y="236" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C" text-anchor="middle">10 kyr</text>
-    <line x1="876" y1="250" x2="876" y2="315" stroke="#C5B89E" stroke-width="2"/>
-    <circle cx="1090" cy="330" r="13" fill="#3D5BA0"/>
-    <text x="1090" y="270" font-family="EB Garamond, serif" font-size="32" fill="#1B1611" text-anchor="middle">industry</text>
-    <text x="1090" y="306" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C" text-anchor="middle">300 yr</text>
-    <circle cx="1172" cy="330" r="13" fill="#3D5BA0"/>
-    <text x="1172" y="200" font-family="EB Garamond, serif" font-size="32" fill="#1B1611" text-anchor="middle">computers</text>
-    <text x="1172" y="236" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C" text-anchor="middle">80 yr</text>
-    <line x1="1172" y1="250" x2="1172" y2="315" stroke="#C5B89E" stroke-width="2"/>
-    <circle cx="1313" cy="330" r="13" fill="#BC4538"/>
-    <text x="1313" y="270" font-family="EB Garamond, serif" font-size="32" fill="#BC4538" text-anchor="middle" font-weight="600">LLMs</text>
-    <text x="1313" y="306" font-family="IBM Plex Mono, monospace" font-size="24" fill="#BC4538" text-anchor="middle">8 yr</text>
-    <!-- now marker -->
-    <line x1="1440" y1="120" x2="1440" y2="380" stroke="#BC4538" stroke-width="4" stroke-dasharray="10 8"/>
-    <text x="1440" y="440" font-family="EB Garamond, serif" font-size="34" fill="#BC4538" text-anchor="middle" font-weight="600">now</text>
-  </g>
-</svg>
-```
-:::
-
-::: notes
-Now let me place us in time — and this is a plot a cosmologist can't resist. Take the big
-transitions in the history of complexity and plot them on a log axis of time before present: Earth,
-four and a half billion years; anatomically modern humans, three hundred thousand; agriculture, ten
-thousand; industry, three hundred; computers, eighty; large language models, eight. Roughly evenly
-spaced — in log time. Each transition arrives an order of magnitude faster than the last. Extrapolate
-the series and the spacing goes to zero in finite time: the math predicts a singularity. Now,
-extrapolation is exactly the kind of move this audience is trained to distrust, and rightly so. So
-let me give you something much more concrete than a log plot.
-:::
-
-
-## Agentic capabilities are increasing exponentially {#metr .metr-slide}
-
-::: {.metr-stage}
-
-::: {.metr-chart-wrap}
-
-::: {.metr-chart-title}
-How long a task takes a human expert
-:::
-
-::: {.metr-cropbox}
-<iframe class="metr-embed" src="https://metr.org/horizon-chart-embed" title="METR — task-completion time horizon (live, interactive)" loading="lazy"></iframe>
-:::
-
-:::
-
-::: {.metr-axes-col}
-
-::: {.metr-axes-head}
-Driven by
-:::
-
-- Scaling laws [[Kaplan ’20](https://arxiv.org/abs/2001.08361) · [Hoffmann ’22](https://arxiv.org/abs/2203.15556)]{.metr-cite}
-- Test-time compute [[Snell ’24](https://arxiv.org/abs/2408.03314) · [DeepSeek ’25](https://arxiv.org/abs/2501.12948)]{.metr-cite}
-- Synthetic data [[Gunasekar ’23](https://arxiv.org/abs/2306.11644) · [Langlais ’26](https://arxiv.org/abs/2604.18226) (Pleias)]{.metr-cite}
-
-:::
-
-:::
-
-::: notes
-~1 min. [Lifted from CNRS — Cail's rehearsed script, retargeted.] So here is something concrete
-instead of a log plot. This audience probably knows this chart — I'll keep it plain anyway. Each
-point is a task, measured by how long it takes a human expert. The frontier is the longest task an
-AI agent can now finish on its own, and it has been doubling every few months — roughly a
-two-and-a-half-thousand-fold increase over four years if it holds. The right column is why the
-people who build these systems expect it to continue: scaling laws, test-time compute, and
-synthetic data — three levers, none exhausted. The tutorial you'll see in a minute sits somewhere
-around the one-hour mark on this axis. Now — the log plot said "singularity" as a curiosity. Here's
-what it looks like when a serious institution says it as an operating assumption.
-:::
-
-
-## "January 1st marked the beginning of the singularity" {#stripe}
-
-::: {style="display:flex;justify-content:center;margin-top:90px"}
-::: {.quote-card style="max-width:1350px"}
-"It's a fuzzy and perhaps already overworked term, but we decided that **January 1st marked the
-beginning of the singularity**, and we have since been operating on that basis. … we simply saw a
-large inflection in long-run trends — for example, a huge increase in the rate of new firm creation
-— and we decided that we ought to take the phase change seriously."
-
-::: {.quote-attrib}
-Stripe, letter to investors — August 2026
-:::
-:::
-:::
-
-::: {style="display:flex;justify-content:center;gap:110px;margin-top:70px;text-align:center"}
-::: {}
-[+41%]{.stat-big}<br>[H1 revenue, YoY]{.stat-label}
-:::
-::: {}
-[88%]{.stat-big}<br>[of the Forbes AI 50 build on Stripe]{.stat-label}
-:::
-::: {}
-[>$8B]{.stat-big}<br>[paid for OpenRouter]{.stat-label}
-:::
-:::
-
-::: notes
-This is Stripe — the payments company, one of the most sober, numbers-driven institutions in the
-economy — writing to its investors two weeks ago. They declared that January 1st, 2026 marked the
-beginning of the singularity, and that they have been operating on that basis since. Not as
-futurism — as an operational reading of their own data: an inflection in new-firm creation, revenue
-up forty-one percent year over year, nearly the entire Forbes AI 50 running on their rails. The
-word "singularity" is migrating from speculation to descriptive vocabulary — serious people now use
-it to describe the present. I can't tell you what it means from the inside — that's rather the
-point of the word — but I can tell you what it means for us: these are the very last years of the
-old way of doing science, and the very first years of the new. That's the frame for everything
-that follows: what does the new way actually look like, at a keyboard, on a real problem?
-:::
-
-
-<!-- ═══════════════ BEAT 3 · THE TUTORIAL: measure dark energy ═══════════════ -->
-
-## Measure dark energy in twenty minutes {.section-divider #tutorial-open}
-
-::: {style="text-align:center;margin-top:60px"}
-[580 supernovae · one parameter · one agent]{style="color:#7A6F5C;font-size:0.9em"}
-:::
-
-::: {style="text-align:center;margin-top:40px"}
-[lightconeresearch.github.io/agent-skills → ASTRA]{style="font-family:'IBM Plex Mono',monospace;font-size:0.6em;color:#7A6F5C"}
-:::
-
-::: notes
-So here's the tutorial — and everything I'm about to show you is public, linked at the bottom, and
-designed so you can run it yourself this afternoon. The problem is a classic: use the relation
-between the brightness and redshift of Type Ia supernovae to measure the dark energy content of the
-universe — the same measurement that won the 2011 Nobel Prize. Five hundred and eighty supernovae,
-one free parameter, one agent. Mechanically it's a least-squares fit; that's deliberate — the
-physics is simple enough that you can watch the *practice* instead. And the practice is the point:
-you'll see the agent do the work, and you'll see the thing I actually care about, which is how the
-record of that work gets kept honest.
-:::
-
-
-## A skill is expertise the agent loads on demand {#skills}
-
-::: {style="display:flex;justify-content:center;align-items:flex-start;gap:50px;margin-top:20px"}
-::: {style="width:46%"}
-```yaml
-# astra/skills/astra/SKILL.md
----
-name: astra
-description: >
-  ASTRA (astra.yaml) support: what the format
-  is, and how to drive the `astra` CLI. Invoke
-  whenever reading, writing, validating, or
-  restructuring an astra.yaml spec …
----
-# ASTRA
-## What ASTRA is
-## Orient before authoring
-## Citations, quotes, and supporting evidence
-## CLI reference          … 108 lines
-```
-```text
-astra/
-├── skills/astra/SKILL.md     the expertise
-├── hooks/hooks.json          validate on save
-└── scripts/                  the checks
-```
-:::
-::: {style="width:50%"}
-```{=html}
-<svg viewBox="0 0 800 560" style="width:100%" xmlns="http://www.w3.org/2000/svg">
-  <defs><marker id="sk" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#BC4538"/></marker></defs>
-  <text x="400" y="34" font-family="EB Garamond, serif" font-size="28" fill="#7A6F5C" text-anchor="middle">the agent's context window</text>
-  <!-- always-loaded index -->
-  <rect x="60" y="60" width="680" height="120" rx="12" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2.5"/>
-  <text x="90" y="100" font-family="EB Garamond, serif" font-size="26" fill="#1B1611" font-weight="600">always loaded — the index</text>
-  <g font-family="IBM Plex Mono, monospace" font-size="20" fill="#7A6F5C">
-    <text x="90" y="136">astra · felt · slides · shuttle · …</text>
-    <text x="90" y="164">one line each: name + when to use</text>
-  </g>
-  <!-- trigger -->
-  <path d="M 400 180 L 400 250" stroke="#BC4538" stroke-width="4" fill="none" marker-end="url(#sk)"/>
-  <text x="420" y="222" font-family="EB Garamond, serif" font-size="26" fill="#BC4538" font-style="italic">"set up an astra.yaml…"</text>
-  <!-- loaded body -->
-  <rect x="60" y="260" width="680" height="150" rx="12" fill="#FBF6E9" stroke="#BC4538" stroke-width="3.5"/>
-  <text x="90" y="300" font-family="EB Garamond, serif" font-size="26" fill="#BC4538" font-weight="600">loaded on demand — the whole SKILL.md</text>
-  <g font-family="IBM Plex Mono, monospace" font-size="20" fill="#1B1611">
-    <text x="90" y="338">what counts as a decision · how to parameterise</text>
-    <text x="90" y="366">when to split an analysis · how to cite evidence</text>
-    <text x="90" y="394">→ behaves like someone who read the docs</text>
-  </g>
-  <!-- hooks -->
-  <rect x="60" y="440" width="680" height="90" rx="12" fill="#F4ECDC" stroke="#3F8278" stroke-width="2.5" stroke-dasharray="8 6"/>
-  <text x="90" y="476" font-family="EB Garamond, serif" font-size="26" fill="#3F8278" font-weight="600">hooks — deterministic, outside the model</text>
-  <text x="90" y="510" font-family="IBM Plex Mono, monospace" font-size="20" fill="#1B1611">on save astra.yaml → astra validate · not skippable</text>
-</svg>
-```
-:::
-:::
-
-::: notes
-~1.5 min. [DRAFT — refine to your voice.] One last piece of the harness before the tutorial,
-because the tutorial's first move is "install a plugin" and I want that to mean something. A
-skill is a markdown file. That's it — a `SKILL.md` with a name, a one-paragraph description of
-*when* it applies, and a body that is the expertise: for ASTRA, what counts as a decision, how to
-parameterise a choice, when to split an analysis, how to cite evidence so it can be verified. The
-mechanism is progressive disclosure. The agent's context always carries the *index* — one line per
-skill, name plus trigger — and nothing more; that's cheap, and it's in the cached prefix. When
-your request matches — "set up an astra.yaml" — the whole body is loaded, and from that moment
-the agent behaves like someone who has read the documentation. This is how a general model becomes
-a domain expert without retraining: the expertise lives in a file you can read, diff, and version.
-And a plugin is a skill plus hooks — small deterministic scripts that fire on events, outside the
-model. The astra plugin has one that runs `astra validate` every time the spec is saved. The model
-can't forget to do it, because the model isn't the one doing it. Hold that pattern: expertise in a
-file the model reads on demand, checks in a script the model can't skip. Everything in the
-tutorial is those two things pointed at a supernova catalogue.
-:::
-
 
 ## ASTRA records the analysis; the agent does the work {#astra-intro}
 
@@ -662,6 +422,8 @@ claude plugin install \
 :::
 :::
 
+<details style="font-size:26px;color:#7A6F5C;margin-top:10px"><summary>Sources &amp; notes</summary><a href="https://astra-spec.org/">ASTRA specification</a></details>
+
 ::: notes
 Two pieces of infrastructure, both installable in one line. ASTRA is a format — a YAML file that
 is a machine-readable record of an analysis: its inputs, its outputs, the recipes that connect
@@ -674,96 +436,112 @@ here on is prompts.
 :::
 
 
-## 1 · The data — you ask; the agent fetches and reads {#step-data}
+## Bring your agent; add Lightcone {#installation}
 
-::: {.live-pair}
-::: {.live-left}
-::: {.prompt-card}
-Download the Union2.1 supernova compilation from the Supernova Cosmology Project into a `data/`
-directory:
+<div style="font-size:28px;color:#7A6F5C;margin:22px 0">Prerequisites: uv · Git · Claude Code or Codex installed and signed in</div>
 
-`https://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt`
+::: {.columns}
+::: {.column width="56%"}
+**Terminal setup · choose your agent**
 
-Then show me the first few rows and tell me what's in the file.
+```{.bash code-line-numbers="false"}
+uv tool install lightcone-cli==0.5.0rc2
+```
+
+**Claude Code**
+
+```{.bash code-line-numbers="false"}
+claude plugin marketplace add LightconeResearch/agent-skills
+claude plugin install lightcone@lightcone-research
+```
+
+
+**Codex**
+
+```{.bash code-line-numbers="false"}
+codex plugin marketplace add LightconeResearch/agent-skills
+codex plugin add lightcone@lightcone-research
+```
+
+
+
+:::
+::: {.column width="44%"}
+**Optional · JupyterLab + chat**
+
+```{.bash code-line-numbers="false"}
+uv venv ~/.lightcone-lab
+source ~/.lightcone-lab/bin/activate
+uv pip install jupyterlab nodejs-wheel \
+  'jupyterlab-lightcone[ai]==0.0.6'
+npm install --prefix "$VIRTUAL_ENV" \
+  @agentclientprotocol/claude-agent-acp \
+  @agentclientprotocol/codex-acp
+export PATH="$VIRTUAL_ENV/node_modules/.bin:$PATH"
+jupyter lab
+```
+
+<div style="font-size:25px">Includes Node + npm · macOS / Linux shell</div>
 :::
 :::
-::: {.live-right}
-::: {.watch-head}
-while it runs — what to look for
-:::
-::: {.watch-row}
-[supernovae]{.k} [580 SNe Ia]{.v}
-:::
-::: {.watch-row}
-[redshift range]{.k} [z = 0.015 – 1.414]{.v}
-:::
-::: {.watch-row}
-[columns]{.k} [name · z · μ · σ~μ~ · P(low-mass host)]{.v}
-:::
-::: {.watch-row}
-[header]{.k} [M(h=0.7) — calibration lives here]{.v}
-:::
-::: {.watch-row}
-[the tell]{.k} [does the agent *read the header*?]{.v}
-:::
-:::
-:::
+
+<details style="font-size:25px;margin-top:20px"><summary>Sources &amp; notes</summary>
+
+[Lightcone plugins](https://github.com/LightconeResearch/agent-skills) · [Jupyter AI setup](https://jupyter-ai.readthedocs.io/en/latest/getting-started.html)
+
+The CLI includes astra-tools; the Lightcone plugin bundles ASTRA guidance and hooks. Start a fresh agent session after installation. Node/npm are supplied by the community-maintained [nodejs-wheel](https://pypi.org/project/nodejs-wheel/) package in an isolated environment.
+
+</details>
+
+## Measure dark energy in fifteen minutes {.section-divider #tutorial-open}
+
+<div style="text-align:center;margin-top:90px;font-size:48px">580 supernovae · one parameter · an inspectable analysis</div>
+<div style="text-align:center;margin-top:75px;font-size:32px"><a href="https://lightconeresearch.github.io/agent-skills/latest/astra/">ASTRA tutorial</a></div>
 
 ::: notes
-Step one. This block is a prompt — you paste it into the agent, not the shell. Everything in this
-tutorial in this style is words addressed to the agent, and that's the first thing to notice about
-the practice: the interface is intent. The agent downloads the Union2.1 compilation — the 2012
-supernova sample — reads the header, and tells you what's there: five hundred eighty supernovae,
-redshifts from 0.015 to 1.4, distance moduli carrying an h equals 0.7 calibration from the header.
-Note that it read the header and told us about the calibration — hold that thought, because the
-header is going to matter again at the end.
+A deliberately simple problem lets the audience watch execution, provenance, verification,
+and methodological choices. Fifteen-minute live tutorial budget; the full exercise can take longer.
 :::
 
-
-## 2 · The spec — say what the analysis is {#step-spec}
+## 1 · Kick off an analysis with Lightcone {#step-spec}
 
 ::: {.live-pair}
 ::: {.live-left}
 ::: {.prompt-card}
-Use the astra skill to set up an `astra.yaml` for this. I want to fit a flat LCDM model to this
-data to recover Omega_Lambda, varying only Omega_Lambda and using the metadata in the file's
-header.
+I'd like to use Lightcone tools to analyze the Union2.1 supernova compilation from the Supernova Cosmology Project. Let's write an ASTRA analysis that fits a flat LCDM model to this data and recovers Omega_Lambda.
 
-Two outputs: the best fit, and a downstream best-fit Hubble diagram figure with an absolute panel
-and a residuals panel. Put outputs under `results/`, e.g. `results/hubble_diagram.png`.
+Please produce two outputs: the best fit Omega_Lambda with uncertainties, and a downstream Hubble diagram figure with an absolute panel and a residuals panel. As you go, briefly walk me through each ASTRA element that you add; this is a live tutorial! Don't add any decisions yet.
 
-In this first pass, let's only use inputs, outputs, and recipes. Please walk me through each
-element that you add.
+<a class="prompt-source" data-copy-url href="https://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt">Union2.1 data · SCPUnion2.1_mu_vs_z.txt ↗</a>
 :::
 :::
 ::: {.live-right}
 ::: {.watch-head}
-while it runs — the shape the hook will validate
+while it runs — an illustrative spec
 :::
 ```yaml
 inputs:
   - id: union21
     type: data
-    source: data/SCPUnion2.1_mu_vs_z.txt
+    source: data/union21.txt
 
 outputs:
   - id: best_fit
     type: metric
     inputs: [union21]
     recipe:
-      command: python src/fit.py
-        --data {inputs.union21} --out {output}
+      command: python fit.py …
   - id: hubble_diagram
     type: figure
     inputs: [union21, best_fit]
     recipe:
-      command: python src/plot_hubble.py …
+      command: python plot.py …
 ```
 :::
 :::
 
 ::: notes
-Step two: say what the analysis is, in words, and the agent writes the spec. Inputs: the data file.
+Step one: say what the analysis is, in words, and the agent writes the spec. Inputs: the data file.
 Outputs: a best-fit — Omega Lambda with uncertainty, chi-squared — and a Hubble-diagram figure
 downstream of it. Each output carries a recipe: the exact command that produces it, with the
 dependencies explicit. Notice what this is: it's a DAG again! — but look who drew it. You said four
@@ -773,50 +551,12 @@ being the thing you hand-wire to being an artifact the agent maintains.
 :::
 
 
-## 3 · Run it — the agent implements, executes, and reports {#step-run}
+## 2 · Did we reproduce the published result? {#step-verify}
 
 ::: {.live-pair}
 ::: {.live-left}
 ::: {.prompt-card}
-Use uv to set up a virtual environment and install any needed packages.
-
-Then implement the analysis. Write the scripts the recipes call, run them, and show me the Hubble
-diagram. Save the figure to `results/hubble_diagram.png`.
-:::
-
-::: {style="margin-top:40px;text-align:center"}
-[expect one number]{style="color:#7A6F5C;font-size:0.7em"}<br>
-[Ω~Λ~ ≈ 0.72]{.stat-hero style="font-size:1.4em"}
-:::
-:::
-::: {.live-right}
-::: {.watch-head}
-live — fills in when the agent writes the file
-:::
-::: {.live-figure data-src="results/hubble_diagram.png"}
-:::
-:::
-:::
-
-::: notes
-Step three: run it. One prompt: set up the environment, write the scripts the recipes call, run
-them, show me the figure. The agent writes the fitter, writes the plotting script, runs both, and
-one number comes back: Omega Lambda equals 0.722 plus or minus 0.013. Seventy-two percent of the
-universe is dark energy — measured, from a standing start, in about five minutes of wall-clock
-time. If we stopped here, this would be a cute demo: agent fits line, film at eleven. But this is
-where the scientific part actually starts — because how do you know that number is right?
-:::
-
-
-## 4 · Check it — the quote is verified against the paper itself {#step-verify}
-
-::: {.live-pair}
-::: {.live-left}
-::: {.prompt-card}
-The paper that published this catalogue is Suzuki et al. 2012, arXiv 1105.3470. Cache the paper,
-verify their own Omega_Lambda from these supernovae, and show me the output. Then record it in
-`astra.yaml` as a prior insight with the quote as evidence, and tell me how our constraint compares
-to theirs.
+The paper that published this catalogue is Suzuki et al. 2012, arXiv 1105.3470. Can we compare our Omega_Lambda to their supernova-only constraint?
 :::
 :::
 ::: {.live-right}
@@ -827,22 +567,19 @@ while it runs — what a verified claim looks like
 prior_insights:
   suzuki_2012_result:
     claim: >
-      Omega_Lambda = 0.705 (+0.040, -0.043)
-      including systematic errors.
+      [constraint from the paper]
+      [assumptions + errors]
     evidence:
-      - doi: "10.48550/arXiv.1105.3470"
+      - doi: >-
+          10.48550/arXiv.1105.3470
         quote:
-          exact: "… ΩΛ = 0.705+0.040−0.043
-          including systematics"
-        location: { value: "page=17" }
+          exact: >
+            [exact quote]
+        location:
+          value: "page=17"
 ```
-```text
-$ astra validate astra.yaml --verify-evidence
-✓ Quote verified on page(s) [17]
-```
-::: {style="margin-top:14px;text-align:center;font-size:0.75em;color:#7A6F5C"}
-theirs ± 0.04 · ours ± 0.013 — same 580 supernovae. *Too* confident.
-:::
+
+
 :::
 :::
 
@@ -860,52 +597,34 @@ that should scare you: we're *too* confident.
 :::
 
 
-## 5 · One decision doubles the error bar {#step-decision}
+## 3 · What changes when we include systematics? {#step-decision}
 
 ::: {.live-pair}
 ::: {.live-left}
 ::: {.prompt-card}
-Let's understand why our error bars are so much tighter than theirs. Download the two Union2.1
-covariance files:
-
-`https://supernova.lbl.gov/Union/figures/SCPUnion2.1_covmat_nosys.txt`<br>
-`https://supernova.lbl.gov/Union/figures/SCPUnion2.1_covmat_sys.txt`
-
-Work out which one the main data file's error column is using, then add a decision to `astra.yaml`
-to switch to the other, and see what impact it has on our constraint.
+Let's improve our systematics treatment to reproduce their published result. Track all changes as ASTRA decisions.
 :::
 :::
 ::: {.live-right}
 ::: {.watch-head}
-while it runs — where the three numbers land
+add a decision · covariance treatment
 :::
-```{=html}
-<svg viewBox="0 0 900 640" style="width:100%" xmlns="http://www.w3.org/2000/svg">
-  <text x="450" y="44" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle" font-style="italic">the value barely moves — the honesty is in the width</text>
-  <g>
-    <line x1="396" y1="150" x2="523" y2="150" stroke="#BC4538" stroke-width="9" stroke-linecap="round"/>
-    <circle cx="460" cy="150" r="16" fill="#BC4538"/>
-    <text x="460" y="112" font-family="EB Garamond, serif" font-size="34" fill="#1B1611" text-anchor="middle">ours — statistical only · 0.722 ± 0.013</text>
-  </g>
-  <g>
-    <line x1="275" y1="300" x2="567" y2="300" stroke="#3F8278" stroke-width="9" stroke-linecap="round"/>
-    <circle cx="421" cy="300" r="16" fill="#3F8278"/>
-    <text x="421" y="262" font-family="EB Garamond, serif" font-size="34" fill="#1B1611" text-anchor="middle">ours — with systematics · 0.714 ± 0.030</text>
-  </g>
-  <g>
-    <line x1="167" y1="450" x2="572" y2="450" stroke="#3D5BA0" stroke-width="9" stroke-linecap="round"/>
-    <circle cx="377" cy="450" r="16" fill="#3D5BA0"/>
-    <text x="377" y="412" font-family="EB Garamond, serif" font-size="34" fill="#1B1611" text-anchor="middle">Suzuki et al. 2012 · 0.705 +0.040 −0.043</text>
-  </g>
-  <line x1="60" y1="540" x2="840" y2="540" stroke="#1B1611" stroke-width="3"/>
-  <g font-family="IBM Plex Mono, monospace" font-size="26" fill="#7A6F5C" text-anchor="middle">
-    <line x1="109" y1="540" x2="109" y2="552" stroke="#1B1611" stroke-width="2"/><text x="109" y="590">0.65</text>
-    <line x1="352" y1="540" x2="352" y2="552" stroke="#1B1611" stroke-width="2"/><text x="352" y="590">0.70</text>
-    <line x1="596" y1="540" x2="596" y2="552" stroke="#1B1611" stroke-width="2"/><text x="596" y="590">0.75</text>
-    <line x1="840" y1="540" x2="840" y2="552" stroke="#1B1611" stroke-width="2"/><text x="840" y="590">0.80</text>
-  </g>
-  <text x="450" y="630" font-family="EB Garamond, serif" font-size="30" fill="#1B1611" text-anchor="middle">Ω<tspan font-size="22" dy="6">Λ</tspan></text>
-</svg>
+```yaml
+decisions:
+  covariance:
+    label: Covariance treatment
+    rationale: Account for systematics
+    default: full
+    options:
+      stat_only:
+        label: Statistical only
+      full:
+        label: Statistical + systematic
+
+outputs:
+  best_fit:
+    decisions: [covariance]
+    # recipe uses the selected option
 ```
 :::
 :::
@@ -927,35 +646,337 @@ of them written down. ASTRA writes them down.
 :::
 
 
-## Three more decisions are still sitting in this analysis {#going-further}
 
-::: {style="display:flex;justify-content:center;gap:70px;margin-top:130px;text-align:center"}
-::: {.decision-chip}
-optimiser<br>[likely a null result — worth recording as one]{.chip-sub}
+## Give the agent a task, not just a question {#longhorizon-tasks}
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:100px;margin-top:110px">
+<div style="border-top:4px solid #C5B89E;padding-top:35px"><div style="font-size:36px;color:#7A6F5C">An answer</div><div style="font-size:52px;margin-top:35px">How would I fit this?</div></div>
+<div style="border-top:4px solid #3F8278;padding-top:35px"><div style="font-size:36px;color:#3F8278">A piece of work</div><div style="font-size:52px;margin-top:35px">Fit · check · report</div><div style="font-size:36px;margin-top:45px">Inputs · authority · acceptance criteria</div></div>
+</div>
+
+::: notes
+Return to the hurdle introduced by the clipboard: chatting with Claude is not yet delegating
+execution. Asking questions remains useful for learning and reflection; the limitation is having
+to carry every action between the answer and the world. A task gives the system permission,
+tools, and a way to tell whether the work is acceptable. Long-horizon work needs checkpoints,
+budgets, and escalation rather than unlimited unattended action. No Shuttle demonstration needed.
 :::
-::: {.decision-chip}
-redshift range<br>[longest lever arm, worst systematics]{.chip-sub}
+
+## Turn repeated work into a reusable practice {#reusable-practice}
+
+```{=html}
+<svg viewBox="0 0 1600 650" style="width:100%;margin-top:60px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif">
+<g fill="none" stroke="#C5B89E" stroke-width="3"><path d="M100 200 Q230 90 360 200 T620 200"/><path d="M100 320 Q230 210 360 320 T620 320"/><path d="M100 440 Q230 330 360 440 T620 440"/></g>
+<g font-size="38" fill="#7A6F5C" text-anchor="middle"><text x="350" y="90">Repeated manual effort</text><text x="350" y="560">Same task · another session</text></g>
+<path d="M750 100 L750 580" stroke="#C5B89E" stroke-width="2"/>
+<path d="M950 145 H1330 L1410 225 V540 H950 Z M1330 145 V225 H1410" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/>
+<g font-size="40" fill="#3F8278"><text x="990" y="270">Procedure</text><text x="990" y="365">Executable checks</text><text x="990" y="460">Evidence + examples</text></g>
+<text x="1180" y="90" font-size="38" fill="#1B1611" text-anchor="middle">Capture the generalizable part</text>
+<text x="1180" y="610" font-size="34" fill="#7A6F5C" text-anchor="middle">Version · reuse · improve</text>
+</svg>
+```
+
+::: notes
+Cail's practical aspiration: when a task repeats, stop doing the same handwork and teach the
+system the reusable procedure. A skill or script captures instructions; tests and reference
+cases capture what success means. Not every first attempt deserves automation: stabilize the
+scientific intent before generalizing. Reliability comes from the surrounding engineering,
+not from pretending stochastic model output is deterministic. Keep human review for choices
+that cannot be adequately checked automatically.
 :::
-::: {.decision-chip}
-dark-energy model<br>[hold w = −1, or fit it]{.chip-sub}
+
+## Search, inspect, follow the thread {#search-as-action}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:50px" font-family="EB Garamond,Georgia,serif"><text x="90" y="80" font-size="48" fill="#1B1611">“Why did we change the covariance?”</text><path d="M120 150 V540 H1450" fill="none" stroke="#C5B89E" stroke-width="3"/><circle cx="180" cy="540" r="9" fill="#3F8278"/><text x="150" y="605" font-size="34" fill="#1B1611">Search</text><circle cx="650" cy="540" r="9" fill="#3F8278"/><text x="620" y="605" font-size="34" fill="#1B1611">Inspect</text><circle cx="1190" cy="540" r="9" fill="#3F8278"/><text x="1160" y="605" font-size="34" fill="#1B1611">Follow</text><text x="155" y="245" font-size="36" fill="#3F8278">grep · filenames · indexes</text><text x="155" y="305" font-size="34" fill="#1B1611">covariance / systematics</text><g class="fragment"><path d="M570 190 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="590" y="290" font-size="34" fill="#1B1611">Meeting notes</text><text x="585" y="425" font-size="34" fill="#3F8278">Decision → experiment 12</text></g><g class="fragment"><path d="M1080 190 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="1100" y="290" font-size="34" fill="#1B1611">Experiment 12</text><text x="1080" y="425" font-size="34" fill="#3F8278">Inputs · result · rationale</text><path d="M900 285 Q970 180 1080 285" fill="none" stroke="#3F8278" stroke-width="3"/></g></svg>
+```
+
+::: notes
+An illustrative retrieval episode, not a claim about a specific meeting. An agent can search, read, refine the query, and follow links. grep is a useful primitive; semantic retrieval and vector stores can still help. The point is iterative retrieval under the model’s control, not that one search technology makes all others obsolete. No historical popularity claim is needed.
+:::
+
+## A wiki gives knowledge an address {#wiki-primitive}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:50px" font-family="EB Garamond,Georgia,serif"><path d="M610 215 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="630" y="315" font-size="34" fill="#1B1611">Covariance choices</text><path d="M80 65 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="100" y="165" font-size="34" fill="#1B1611">Meeting notes</text><path d="M80 395 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="100" y="495" font-size="34" fill="#1B1611">Paper + quotation</text><path d="M1160 65 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="1180" y="165" font-size="34" fill="#1B1611">Experiment record</text><path d="M1160 395 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="1180" y="495" font-size="34" fill="#1B1611">Project index</text><g stroke="#3F8278" stroke-width="3" fill="none"><path d="M420 165 Q540 165 610 290"/><path d="M420 495 Q540 495 610 350"/><path d="M950 290 Q1050 165 1160 165"/><path d="M950 350 Q1050 495 1160 495"/></g><text x="620" y="180" font-size="36" fill="#3F8278">A named, linked page</text><text x="585" y="585" font-size="36" fill="#1B1611">Index · links · sources · upkeep</text></svg>
+```
+
+::: notes
+A wiki is an organizing primitive in the toolbox, not a complete external brain or a guarantee of recall. Named pages and indexes make knowledge findable; links preserve relationships; sources let claims be checked. Markdown files can serve this purpose without a dedicated wiki application. Keep raw records and provenance accessible, and update or mark stale summaries. This builds on the earlier working-memory versus persistent-storage distinction.
+:::
+
+## Past work becomes material for new work {#knowledge-compounds}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:50px" font-family="EB Garamond,Georgia,serif"><text x="80" y="75" font-size="42" fill="#7A6F5C">Accumulated work</text><path d="M80 130 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="100" y="230" font-size="34" fill="#1B1611">Project A · a method</text><path d="M80 390 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="100" y="490" font-size="34" fill="#1B1611">Project B · a caveat</text><path d="M440 225 Q740 225 880 335 M440 485 Q740 485 880 335" stroke="#C5B89E" stroke-width="3" fill="none"/><circle cx="900" cy="335" r="13" fill="#BC4538"/><text x="670" y="120" font-size="44" fill="#1B1611">A new question</text><g class="fragment"><path d="M920 335 H1120" stroke="#3F8278" stroke-width="4"/><path d="M1120 235 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="1140" y="335" font-size="34" fill="#1B1611">Candidate connection</text><text x="1120" y="520" font-size="34" fill="#3F8278">Trace back · test · retain</text></g><text x="545" y="605" font-size="42" fill="#1B1611">Searchable records × new questions</text></svg>
+```
+
+::: notes
+The compounding value is reusable knowledge: previous work can inform a question in another project. Cail describes using LLMs as a filesystem: remembering meaning approximately and asking the agent to recover the source. Cross-project synthesis is a possibility to investigate, not evidence that a proposed connection is correct. Keep the distinction between discovering a candidate and validating its applicability. No unverified mathematical breakthrough example is asserted.
+:::
+
+## Iteration needs a target and a stopping rule {#iteration}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="Illustrative parameter-recovery error oscillates toward a target band across attempts and stops when tolerance is met" font-family="EB Garamond, Georgia, serif"><text x="90" y="75" font-size="44" fill="#1B1611" text-anchor="start">Parameter recovery</text><text x="1480" y="75" font-size="34" fill="#7A6F5C" text-anchor="end">Schematic</text><rect x="180" y="310" width="1130" height="80" fill="#3F8278" opacity="0.12"/><path d="M180 350 H1350" fill="none" stroke="#3F8278" stroke-width="2" stroke-dasharray="9 7"/><text x="1380" y="363" font-size="36" fill="#3F8278" text-anchor="start">Target</text><path d="M180 140 V530 H1500" fill="none" stroke="#C5B89E" stroke-width="3" /><text x="125" y="290" font-size="36" fill="#7A6F5C" text-anchor="middle">Error</text><text x="1490" y="585" font-size="38" fill="#7A6F5C" text-anchor="end">Attempts</text><path d="M215 185 L390 455 L565 260 L740 410 L915 320 L1090 357" fill="none" stroke="#3D5BA0" stroke-width="4" /><circle cx="215" cy="185" r="10" fill="#3D5BA0" /><text x="215" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">1</text><circle cx="390" cy="455" r="10" fill="#3D5BA0" /><text x="390" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">2</text><circle cx="565" cy="260" r="10" fill="#3D5BA0" /><text x="565" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">3</text><circle cx="740" cy="410" r="10" fill="#3D5BA0" /><text x="740" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">4</text><circle cx="915" cy="320" r="10" fill="#3D5BA0" /><text x="915" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">5</text><circle cx="1090" cy="357" r="10" fill="#3D5BA0" /><text x="1090" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">6</text><path d="M1090 150 V475" fill="none" stroke="#BC4538" stroke-width="2" stroke-dasharray="7 8"/><text x="1115" y="185" font-size="42" fill="#BC4538" text-anchor="start">Stop</text><text x="1115" y="240" font-size="36" fill="#BC4538" text-anchor="start">Tolerance met</text><text x="185" y="620" font-size="38" fill="#7A6F5C" text-anchor="start">Tolerance · budget · escalation</text></svg>
+```
+
+::: notes
+A loop is a way to spend more effort, not a guarantee of improvement. Define the goal, observable evaluation, stopping rule, and when to return to the human. Example: parameter recovery on synthetic data with a stated tolerance. Independent checks matter because repeating the same blind spot can reinforce it.
+:::
+
+## Verification lets attention move higher {#backpressure}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="Candidate work passes through units, limiting cases, and parameter-recovery checks; failures return for repair and surviving results reach review" font-family="EB Garamond, Georgia, serif"><text x="90" y="75" font-size="42" fill="#3D5BA0" text-anchor="start">Scalable effort</text><text x="1450" y="75" font-size="42" fill="#BC4538" text-anchor="end">Scientific judgment</text><path d="M100 190 C280 155 350 215 580 190" fill="none" stroke="#3D5BA0" stroke-width="3" /><circle cx="105" cy="190" r="6" fill="#3D5BA0" /><path d="M100 260 C280 225 350 285 580 260" fill="none" stroke="#3D5BA0" stroke-width="3" /><circle cx="105" cy="260" r="6" fill="#3D5BA0" /><path d="M100 330 C280 295 350 355 580 330" fill="none" stroke="#3D5BA0" stroke-width="3" /><circle cx="105" cy="330" r="6" fill="#3D5BA0" /><path d="M100 400 C280 365 350 425 580 400" fill="none" stroke="#3D5BA0" stroke-width="3" /><circle cx="105" cy="400" r="6" fill="#3D5BA0" /><path d="M100 470 C280 435 350 495 580 470" fill="none" stroke="#3D5BA0" stroke-width="3" /><circle cx="105" cy="470" r="6" fill="#3D5BA0" /><path d="M600 135 V505" fill="none" stroke="#3F8278" stroke-width="7" /><text x="600" y="565" font-size="38" fill="#3F8278" text-anchor="middle">Units</text><path d="M850 135 V505" fill="none" stroke="#3F8278" stroke-width="7" /><text x="850" y="565" font-size="38" fill="#3F8278" text-anchor="middle">Limits</text><path d="M1100 135 V505" fill="none" stroke="#3F8278" stroke-width="7" /><text x="1100" y="565" font-size="38" fill="#3F8278" text-anchor="middle">Recovery</text><path d="M600 190 H1420 M600 400 H1420" fill="none" stroke="#3F8278" stroke-width="4" /><circle cx="1440" cy="190" r="14" fill="#3F8278" /><circle cx="1440" cy="400" r="14" fill="#3F8278" /><path d="M600 260 H850 M600 470 H850" fill="none" stroke="#3D5BA0" stroke-width="3" /><path d="M588 318 L612 342 M588 342 L612 318" fill="none" stroke="#BC4538" stroke-width="4" /><path d="M838 248 L862 272 M838 272 L862 248" fill="none" stroke="#BC4538" stroke-width="4" /><path d="M838 458 L862 482 M838 482 L862 458" fill="none" stroke="#BC4538" stroke-width="4" /><path d="M850 470 C850 635 250 640 130 530" fill="none" stroke="#BC4538" stroke-width="3" /><text x="320" y="610" font-size="38" fill="#BC4538" text-anchor="start">Repair</text><text x="1440" y="315" font-size="40" fill="#3F8278" text-anchor="middle">Review</text><text x="1000" y="625" font-size="38" fill="#7A6F5C" text-anchor="start">Checks encode decisions</text></svg>
+```
+
+::: notes
+Backpressure means actionable resistance to invalid progress: failed validation, withheld acceptance, or escalation. Engineering checks carries human decisions into repeated work, letting attention move to higher-level choices. Passing a test suite is not proof of scientific truth. Include model misspecification, held-out cases, provenance, and independent scientific review; do not optimize solely against an easy proxy.
+:::
+
+## Do you still need to read code? {#read-code}
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;margin-top:65px">
+<div style="font-size:42px;line-height:1.5"><div style="color:#3F8278;margin-bottom:40px">Understand the implementation</div><div>Ask for a walkthrough</div><div style="font-size:32px;color:#7A6F5C">Assumptions · data flow · examples</div><div style="margin-top:35px">Read the critical core</div><div style="font-size:32px;color:#7A6F5C">Likelihood · units · interfaces</div></div>
+<svg viewBox="0 0 720 530" xmlns="http://www.w3.org/2000/svg" style="width:100%"><rect x="20" y="20" width="680" height="480" rx="14" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="55" y="75" fill="#7A6F5C" font-size="28" font-family="monospace">likelihood.py</text><g stroke="#C5B89E" stroke-width="9" stroke-linecap="round"><path d="M60 120 H310 M85 160 H490 M85 200 H380 M85 365 H460 M60 410 H295 M85 450 H370"/></g><rect x="40" y="233" width="640" height="98" fill="#E0EAE3" rx="5"/><text x="65" y="272" fill="#3F8278" font-size="26" font-family="monospace">r = data - model</text><text x="65" y="310" fill="#3F8278" font-size="26" font-family="monospace">chi2 = r.T @ solve(cov, r)</text></svg>
+</div>
+
+::: notes
+Understanding is the obligation; line-by-line reading is one means. An agent walkthrough can
+be an effective entry point, but an explanation can be wrong too. Check explanations against
+actual source and behavior. Direct inspection is especially worthwhile where a small mistake
+propagates through the analysis: scientific assumptions, core interfaces, and shared primitives.
+:::
+
+## Ask for a report you can inspect {#review-reports}
+
+<div style="display:grid;grid-template-columns:38% 58%;gap:4%;align-items:center;margin-top:45px">
+<div style="font-size:38px;line-height:1.7">HTML report<br><span style="color:#7A6F5C">Plots · comparisons<br>Checks · caveats<br>Links to artifacts</span></div>
+<div style="border:2px solid #C5B89E;border-radius:12px;background:#FBF6E9;padding:32px;box-shadow:0 8px 24px #1b161110">
+<div style="font-size:34px;border-bottom:1px solid #C5B89E;padding-bottom:18px">Analysis review <span style="float:right;font-size:23px;color:#7A6F5C">schematic</span></div>
+<svg viewBox="0 0 750 280" style="width:100%" xmlns="http://www.w3.org/2000/svg"><path d="M55 25 V230 H715" stroke="#C5B89E" fill="none" stroke-width="3"/><path d="M60 210 Q190 80 330 100 T710 40" fill="none" stroke="#3F8278" stroke-width="5"/><path d="M60 195 Q190 110 330 120 T710 65" fill="none" stroke="#BC4538" stroke-width="4" stroke-dasharray="10 8"/><text x="430" y="255" font-size="24" font-family="Georgia" fill="#7A6F5C">baseline / revised analysis</text></svg>
+<div style="display:flex;justify-content:space-between;font-size:28px;color:#7A6F5C;border-top:1px solid #C5B89E;padding-top:20px">Evidence <span>Open questions</span><span>Inspect files ↗</span></div>
+</div>
+</div>
+
+::: notes
+Programmatic checks do not replace looking at the results. Ask the agent to prepare a concise
+HTML report with real plots, comparisons, validation results, caveats, and links to the exact
+artifacts and code. Review those results yourself. A polished report is a review surface, not
+proof of correctness. The figure on this slide is explicitly schematic, not a scientific result.
+:::
+
+## Track the work, not the chat windows {#project-management}
+
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:25px;margin-top:80px;font-size:32px">
+<div style="border-top:4px solid #C5B89E;padding-top:20px">Ready<div class="work-card">Literature check<br><small>Scope · acceptance criteria</small></div></div>
+<div style="border-top:4px solid #3D5BA0;padding-top:20px">Running<div class="work-card">Covariance sweep<br><small>Progress · last checkpoint</small><div aria-hidden="true" style="height:8px;background:#DAD4C6;margin-top:22px"><div style="width:65%;height:100%;background:#3D5BA0"></div></div></div></div>
+<div style="border-top:4px solid #BC4538;padding-top:20px">Needs you<div class="work-card">Model comparison<br><small style="color:#BC4538">Which covariance?</small></div></div>
+<div style="border-top:4px solid #3F8278;padding-top:20px">Review<div class="work-card">Reproduction<br><small style="color:#3F8278">✓ Checks passed · report ready</small></div></div>
+</div>
+<div style="text-align:center;font-size:34px;margin-top:65px;color:#7A6F5C">One place to resume, inspect, and steer</div>
+
+<details><summary>Sources &amp; notes</summary><a href="https://openai.com/index/open-source-codex-orchestration-symphony/">OpenAI · Symphony</a> · <a href="https://github.com/openai/symphony">GitHub</a>. Symphony connects a project board such as Linear to isolated agent runs and returns evidence for review. The board above is a schematic research workflow, not a Symphony screenshot.</details>
+
+::: notes
+Long-running work makes concurrent tasks natural. Track objective, status, blockers, checkpoints,
+and the evidence needed for acceptance independently of individual chat windows. Symphony is
+an example of board-driven orchestration, not a required tool. Keep the personal tooling aside
+oral; no custom-system demonstration is needed here.
+:::
+
+## The meta-skill: knowing what is computationally tractable {#ball-2}
+
+::: {style="display:flex;justify-content:center;margin-top:110px"}
+::: {.quote-card style="max-width:1400px"}
+"if you can master the meta-skill of figuring out what problems in arbitrary domains are
+computationally tractable … you'll have refined heuristics for the right questions to ask about
+everything. … **this is probably the skill to have optimized for** … though I readily admit I don't
+know how long it will remain a human advantage. **it is for now though.**"
+
+::: {.quote-attrib}
+Dean W. Ball — August 8, 2026
+:::
 :::
 :::
 
 ::: notes
-And the tutorial ends by pointing at what it didn't do: three more decisions sitting in this little
-analysis, unimplemented. The optimiser — likely a null result, and a null result is worth recording
-as one. The redshift range — the high-z supernovae carry the longest lever arm and the worst
-systematics. And the dark-energy model itself: hold w at minus one, or fit it and buy a degeneracy.
-Each is one more option, one more recipe argument, one more reason written down. That's a toy
-analysis. Now scale the picture up: a real weak-lensing analysis has hundreds of these decisions
-and takes a collaboration five years. What does this practice look like there? That's the last
-part of the tutorial — how this works day to day, on real science.
+Second claim, and this one is about you. The scarce skill in this regime is not coding and it's
+not prompting — it's the meta-skill of looking at an arbitrary domain and knowing which of its
+problems are computationally tractable, and what question to ask to make progress along the
+margin. Master that and you get to be, in his phrase, a kind of meta-genius — for at least a year
+or two, maybe longer. Everyone in this room is unusually well positioned for this: physics-informed
+ML is *already* the discipline of knowing what physics can be pushed through computation. But
+notice the honesty of the last clause: he doesn't know how long it remains a human advantage. It is
+for now. The meta-skill is temporary — and that's not a reason for despair, it's a reason for
+urgency and, honestly, for joy: this is the window in which knowing how to do this makes you
+extraordinary.
 :::
 
 
-<!-- ═══════════════ BEAT 3b · THE PRACTICE AT SCALE (lifted from CNRS deck) ═══════════════ -->
+## The stake in the ground {#stake}
 
-## &nbsp; {#practice-at-scale .intermission data-menu-title="The practice at scale" background-color="#E8D9BF"}
+::: {style="display:flex;justify-content:center;align-items:center;margin-top:160px"}
+::: {style="max-width:1400px;text-align:center;font-size:1.35em;line-height:1.45"}
+In five years, I expect frontier AI to be **better at astrophysics and cosmology than the vast
+majority of currently employed astrophysicists and cosmologists** — to the extent that the
+economics of our field are drastically changed.
+:::
+:::
+
+::: notes
+So let me put a stake in the ground — a concrete, falsifiable position you can hold me to. In five
+years, I expect frontier AI to be better at astrophysics and cosmology than the vast majority of
+currently employed astrophysicists and cosmologists — to the point that the economics of our field
+are drastically changed. I might be wrong! It's a prediction, and predictions about exponentials
+are hard in both directions. But notice that everything you saw today — the harness, the tutorial,
+the verified analysis — is the current state, distinct from this forecast. If you think I'm wrong,
+I'd genuinely love to argue about it in the discussion. If I'm right, then the interesting question
+isn't whether — it's what you personally do about it.
+:::
+
+
+## Pharmakon: we get to choose what science becomes {#pharmakon .vcenter}
+
+:::::::::::::: {.columns style="margin-top:0.85em;align-items:stretch"}
+::: {.column style="width:50%"}
+
+::: {style="height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:0.2em 1em;border-left:5px solid #7a6f5c"}
+[**AI science factories**]{style="font-size:1.08em"}
+
+::: {style="text-align:center"}
+![](images/competing_ai_scientists.png){.no-treat style="width:94%;border-radius:5px;box-shadow:0 8px 20px rgba(27,22,17,0.18)"}
+
+![](images/parallel_arxiv.png){.no-treat style="width:94%;border-radius:5px;box-shadow:0 8px 20px rgba(27,22,17,0.18);margin-top:0.22em"}
+:::
+
+::: {style="line-height:1.35"}
+[alienation from scientific labor]{style="color:#bc4538;font-size:1.0em"}<br>
+[discovery scales with capital, not expertise]{style="color:#bc4538;font-size:0.9em"}
+:::
+:::
+
+:::
+::: {.column style="width:50%"}
+
+::: {style="height:100%;display:flex;flex-direction:column;padding:0.2em 1.1em;border-left:5px solid #3F8278"}
+[**An economy of contribution**]{style="font-size:1.08em;color:#3F8278"}
+
+::: {style="flex:1;display:flex;flex-direction:column;justify-content:center;color:#1B1611;padding-bottom:2.5em"}
+[« …l'augmentation du savoir des travailleurs à travers un nouvel agencement entre la machine et le travailleur »]{style="display:block;text-align:center;font-size:0.98em;line-height:1.5;padding:0 0.2em"}
+
+[— Bernard Stiegler]{style="display:block;text-align:right;color:#3F8278;font-size:0.9em;letter-spacing:0.02em;margin-top:0.55em"}
+:::
+:::
+
+:::
+::::::::::::::
+
+::: notes
+~1.5 min. [Lifted from CNRS `#the-choice` — the frame is a DRAFT for you to make your own; the
+first-person passage at the end is yours, keep verbatim.] Before I put the choice to you personally,
+the collective version — and I get to use a Greek word in Crete. *Pharmakon*: the remedy that is
+also the poison, one dose, both faces at once. Which face science gets is not decided by the
+technology; it's decided by the practice we build around it.
+
+The poison — "AI science factories." Not hypothetical: papers already framed as *Competing with AI
+Scientists*, the John Henry race humans are built to lose; a *Parallel ArXiv* where agents write the
+papers and agents review them — a literature with no one in it. What's lost isn't jobs, it's the
+*doing* of science. And a structural loss underneath: once people are out of the loop, output is a
+function of capital — the labs have every incentive to stop selling the tools and do the science
+in-house. Discovery scales with capital, not expertise.
+
+The cure — same tools, different practice. The grunt work goes to the agents; the human is freed for
+the science that matters — you talk to the model, it hands you a plot, you argue about it with a
+colleague on a walk, and the argument becomes the next set of actions. Not agent fleets replacing
+people, not the lone genius — networks of humans amplified by agents. Stiegler called it an
+*économie de la contribution*: the machine augments the worker's knowledge rather than displacing it.
+
+[Cail's, verbatim:] This is not only about jobs. It is about keeping the part of the work we
+actually love — discovery. I would far rather spend this era in wonderful, beautiful discovery,
+amplified, than watch the work get slowly ripped from our hands by agent "competitors." If a day
+comes when there is nothing left for us to add, so be it — but I would rather enjoy the good times
+while they last, and shape the practice so people stay *in* it.
+:::
+
+
+## Choosing how to change {#revolutionizing-oneself}
+
+<blockquote style="font-size:54px;line-height:1.4;max-width:1350px;margin:100px auto 45px;border:0;box-shadow:none;background:none;text-align:left">“Of course I would rather not be swept away by the revolution. … I would rather be the one who revolutionizes myself.”</blockquote>
+
+<div style="text-align:center;font-size:30px;color:#7A6F5C">A DeepSeek kernel engineer · excerpt from the English translation</div>
+
+<details><summary>Sources &amp; notes</summary><a href="https://x.com/teortaxesTex/status/2099575222512836893">English translation posted by Teortaxes</a>. Translation credited in the post to Astra-xhigh. Ellipsis marks an omission. The author describes retaining a livelihood while potentially losing a beloved form of work; this is an ambivalent response, not an instruction to the audience. Original author identity has not been independently verified.</details>
+
+## Different practices, different sources of meaning {#choice}
+
+::: {style="display:flex;justify-content:center;margin-top:150px"}
+```{=html}
+<svg viewBox="0 0 1560 580" style="width:1650px" xmlns="http://www.w3.org/2000/svg">
+  <!-- left: eddy -->
+  <g>
+    <path d="M 390 260 a 120 120 0 1 1 -6 -62" fill="none" stroke="#3D5BA0" stroke-width="6"/>
+    <path d="M 390 245 a 82 82 0 1 1 -8 -44" fill="none" stroke="#3D5BA0" stroke-width="5" opacity="0.7"/>
+    <path d="M 383 235 a 48 48 0 1 1 -10 -28" fill="none" stroke="#3D5BA0" stroke-width="4" opacity="0.45"/>
+    <text x="300" y="470" font-family="EB Garamond, serif" font-size="38" fill="#1B1611" text-anchor="middle" font-weight="600">find a protected eddy</text>
+    <text x="300" y="520" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">direct practice · craft · relationships</text>
+  </g>
+  <!-- right: wave -->
+  <g>
+    <path d="M 820 380 C 950 380, 1050 340, 1130 260 C 1190 200, 1230 150, 1260 120 C 1290 160, 1350 220, 1460 260"
+          fill="none" stroke="#3F8278" stroke-width="7"/>
+    <path d="M 820 420 C 970 420, 1090 390, 1190 330 C 1270 282, 1330 240, 1400 220"
+          fill="none" stroke="#3F8278" stroke-width="5" opacity="0.55"/>
+    <circle cx="1252" cy="128" r="12" fill="#BC4538"/>
+    <text x="1140" y="470" font-family="EB Garamond, serif" font-size="38" fill="#1B1611" text-anchor="middle" font-weight="600">ride the wave</text>
+    <text x="1140" y="520" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">delegation · verification · orchestration</text>
+  </g>
+</svg>
+```
+:::
+
+::: notes
+And here is the honest framing of that choice, because I want to be careful: neither path is bad —
+it depends on what you want. One real option: find a niche where things don't scale — where data is
+scarce, where the loop runs through hardware, through a wet lab, through people — and hold on a
+while longer. Those eddies exist and they are legitimate places to do beautiful science. The other:
+use exactly this window to become an expert in scaling — in the meta-skill — and move with the wave
+to see what comes next. What I'd argue against is only the default: drifting into one of these by
+not choosing. Think about the futures you'd actually want to live in — including the uncomfortable
+ones — so that you can genuinely advocate for what you want in the world.
+:::
+
+
+## Might as well enjoy it while the going's good {#close}
+
+::: {style="text-align:center;margin-top:180px"}
+[discovery · understanding · collaboration]{style="font-size:1.1em"}
+:::
+
+::: {style="text-align:center;margin-top:120px;color:#7A6F5C;font-size:0.8em"}
+[cailmdaley.github.io/talks · lightconeresearch.github.io/agent-skills]{style="font-family:'IBM Plex Mono',monospace"}
+:::
+
+::: notes
+Return to the opening choice about scientific practice. Cail finds this work enjoyable and
+wants others to have a concrete basis for choosing. Future capabilities remain an open question;
+do not frame the extinction of existing practices as settled or adoption as compulsory.
+:::
+
+
+<!-- ═══════════════ BACKUP ═══════════════ -->
+
+## &nbsp; {#backup-divider .intermission background-color="#E8D9BF" data-menu-title="Backup slides" data-visibility="uncounted"}
+
+::: {style="height:80vh;display:flex;align-items:center;justify-content:center;text-align:center"}
+::: {style="font-family:'EB Garamond',Georgia,serif;font-variant-caps:small-caps;font-feature-settings:'smcp' 1;letter-spacing:0.18em;color:#7A6F5C;font-size:2.4em;font-weight:500"}
+backup
+:::
+:::
+
+
+## &nbsp; {#practice-at-scale .intermission data-menu-title="The practice at scale" background-color="#E8D9BF" data-visibility="uncounted"}
 
 ::: {style="height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center"}
 
@@ -982,7 +1003,7 @@ shift land before starting.
 :::
 
 
-## Stable principles are emerging for agentic science {#principles}
+## Stable principles are emerging for agentic science {#principles data-visibility="uncounted"}
 
 :::::::::::::: {.columns style="margin-top:2.6em;width:calc(100% + 208px);margin-left:-104px"}
 
@@ -1066,24 +1087,7 @@ If you remember three things: verification, looping, accumulation.
 :::
 
 
-## Moving from chats to long-horizon tasks {#longhorizon-tasks}
-
-<div class="r-stack" style="margin-top:0.3em;width:calc(100% + 208px);margin-left:-104px"><img src="images/agentic_task_board.png" class="no-treat fragment fade-out" data-fragment-index="1" style="width:100%;max-width:none;border-radius:6px;box-shadow:0 12px 34px rgba(27,22,17,0.22)"><img src="images/agentic_task_report.png" class="no-treat fragment" data-fragment-index="1" style="max-width:100%;max-height:840px;border-radius:6px;box-shadow:0 12px 34px rgba(27,22,17,0.22)"></div>
-
-::: notes
-~1 min. [Lifted from CNRS; retargeted — DRAFT, refine to your voice.] Here's what the looping
-principle looks like in my actual working day. Early on I worked the way everyone does — one prompt
-at a time, steering each step myself. Now I mostly hand agents long-horizon tasks and let them run.
-This is my real task board: each card is an agent working a piece of the analysis on its own — some
-drafting, some in flight, some waiting on my review. And when one finishes — [advance] — it hands
-back a full write-up of a real result: here a shear-catalog cross-check, figures and numbers ready
-for me to check. My job moved up a level: from doing each step to designing the tasks and verifying
-what comes back. The constitutions those agents run on are exactly the astra.yaml idea grown up:
-specs that describe the desired state of a piece of science.
-:::
-
-
-## Agentic labor allowed more rigorous cross-checks {#disagreement}
+## Agentic labor allowed more rigorous cross-checks {#disagreement data-visibility="uncounted"}
 
 ::: {style="text-align:center;margin-top:10px"}
 ```{=html}
@@ -1140,7 +1144,7 @@ finer level than any human team could afford.
 :::
 
 
-## Using agentic tools well requires a new way of working {#work-timeline}
+## Using agentic tools well requires a new way of working {#work-timeline data-visibility="uncounted"}
 
 ::: {style="text-align:center;margin-top:0.2em"}
 ```{=html}
@@ -1224,7 +1228,7 @@ where tools like ASTRA live. This chart is the talk's title made concrete: the l
 :::
 
 
-## A small amount of judgment steers a vast amount of labor {#flywheel}
+## A small amount of judgment steers a vast amount of labor {#flywheel data-visibility="uncounted"}
 
 ::: {style="margin-top:1.4em;text-align:center"}
 ```{=html}
@@ -1292,7 +1296,7 @@ us to what this means for all of us.
 
 <!-- ═══════════════ BEAT 4 · IMPLICATIONS ═══════════════ -->
 
-## Astrophysics has become an information science {#ball-1}
+## Astrophysics has become an information science {#ball-1 data-visibility="uncounted"}
 
 ::: {style="display:flex;justify-content:center;margin-top:110px"}
 ::: {.quote-card style="max-width:1400px"}
@@ -1319,36 +1323,7 @@ about us. This is coming right for our field, and I think both of his claims are
 :::
 
 
-## The meta-skill: knowing what is computationally tractable {#ball-2}
-
-::: {style="display:flex;justify-content:center;margin-top:110px"}
-::: {.quote-card style="max-width:1400px"}
-"if you can master the meta-skill of figuring out what problems in arbitrary domains are
-computationally tractable … you'll have refined heuristics for the right questions to ask about
-everything. … **this is probably the skill to have optimized for** … though I readily admit I don't
-know how long it will remain a human advantage. **it is for now though.**"
-
-::: {.quote-attrib}
-Dean W. Ball — August 8, 2026
-:::
-:::
-:::
-
-::: notes
-Second claim, and this one is about you. The scarce skill in this regime is not coding and it's
-not prompting — it's the meta-skill of looking at an arbitrary domain and knowing which of its
-problems are computationally tractable, and what question to ask to make progress along the
-margin. Master that and you get to be, in his phrase, a kind of meta-genius — for at least a year
-or two, maybe longer. Everyone in this room is unusually well positioned for this: physics-informed
-ML is *already* the discipline of knowing what physics can be pushed through computation. But
-notice the honesty of the last clause: he doesn't know how long it remains a human advantage. It is
-for now. The meta-skill is temporary — and that's not a reason for despair, it's a reason for
-urgency and, honestly, for joy: this is the window in which knowing how to do this makes you
-extraordinary.
-:::
-
-
-## Your simulations are tomorrow's RL environments {#sim-envs}
+## Your simulations are tomorrow's RL environments {#sim-envs data-visibility="uncounted"}
 
 ::: {style="text-align:center;margin-top:0.2em"}
 ```{=html}
@@ -1417,160 +1392,20 @@ honest. Physics-informed ML is not a consumer of this transition. It is the supp
 :::
 
 
-## The stake in the ground {#stake}
+## Moving from chats to long-horizon tasks {#task-board-backup data-visibility="uncounted"}
 
-::: {style="display:flex;justify-content:center;align-items:center;margin-top:160px"}
-::: {style="max-width:1400px;text-align:center;font-size:1.35em;line-height:1.45"}
-In five years, I expect frontier AI to be **better at astrophysics and cosmology than the vast
-majority of currently employed astrophysicists and cosmologists** — to the extent that the
-economics of our field are drastically changed.
-:::
-:::
+<div class="r-stack" style="margin-top:0.3em;width:calc(100% + 208px);margin-left:-104px"><img src="images/agentic_task_board.png" class="no-treat fragment fade-out" data-fragment-index="1" style="width:100%;max-width:none;border-radius:6px;box-shadow:0 12px 34px rgba(27,22,17,0.22)"><img src="images/agentic_task_report.png" class="no-treat fragment" data-fragment-index="1" style="max-width:100%;max-height:840px;border-radius:6px;box-shadow:0 12px 34px rgba(27,22,17,0.22)"></div>
 
 ::: notes
-So let me put a stake in the ground — a concrete, falsifiable position you can hold me to. In five
-years, I expect frontier AI to be better at astrophysics and cosmology than the vast majority of
-currently employed astrophysicists and cosmologists — to the point that the economics of our field
-are drastically changed. I might be wrong! It's a prediction, and predictions about exponentials
-are hard in both directions. But notice that everything you saw today — the harness, the tutorial,
-the verified analysis — is the *current* state, the worst it will ever be. If you think I'm wrong,
-I'd genuinely love to argue about it in the discussion. If I'm right, then the interesting question
-isn't whether — it's what you personally do about it.
-:::
-
-
-## Pharmakon: we get to choose what science becomes {#pharmakon .vcenter}
-
-:::::::::::::: {.columns style="margin-top:0.85em;align-items:stretch"}
-::: {.column style="width:50%"}
-
-::: {style="height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:0.2em 1em;border-left:5px solid #7a6f5c"}
-[**AI science factories**]{style="font-size:1.08em"}
-
-::: {style="text-align:center"}
-![](images/competing_ai_scientists.png){.no-treat style="width:94%;border-radius:5px;box-shadow:0 8px 20px rgba(27,22,17,0.18)"}
-
-![](images/parallel_arxiv.png){.no-treat style="width:94%;border-radius:5px;box-shadow:0 8px 20px rgba(27,22,17,0.18);margin-top:0.22em"}
-:::
-
-::: {style="line-height:1.35"}
-[alienation from scientific labor]{style="color:#bc4538;font-size:1.0em"}<br>
-[discovery scales with capital, not expertise]{style="color:#bc4538;font-size:0.9em"}
-:::
-:::
-
-:::
-::: {.column style="width:50%"}
-
-::: {style="height:100%;display:flex;flex-direction:column;padding:0.2em 1.1em;border-left:5px solid #3F8278"}
-[**An economy of contribution**]{style="font-size:1.08em;color:#3F8278"}
-
-::: {style="flex:1;display:flex;flex-direction:column;justify-content:center;color:#1B1611;padding-bottom:2.5em"}
-[« …l'augmentation du savoir des travailleurs à travers un nouvel agencement entre la machine et le travailleur »]{style="display:block;text-align:center;font-size:0.98em;line-height:1.5;padding:0 0.2em"}
-
-[— Bernard Stiegler]{style="display:block;text-align:right;color:#3F8278;font-size:0.9em;letter-spacing:0.02em;margin-top:0.55em"}
-:::
-:::
-
-:::
-::::::::::::::
-
-::: notes
-~1.5 min. [Lifted from CNRS `#the-choice` — the frame is a DRAFT for you to make your own; the
-first-person passage at the end is yours, keep verbatim.] Before I put the choice to you personally,
-the collective version — and I get to use a Greek word in Crete. *Pharmakon*: the remedy that is
-also the poison, one dose, both faces at once. Which face science gets is not decided by the
-technology; it's decided by the practice we build around it.
-
-The poison — "AI science factories." Not hypothetical: papers already framed as *Competing with AI
-Scientists*, the John Henry race humans are built to lose; a *Parallel ArXiv* where agents write the
-papers and agents review them — a literature with no one in it. What's lost isn't jobs, it's the
-*doing* of science. And a structural loss underneath: once people are out of the loop, output is a
-function of capital — the labs have every incentive to stop selling the tools and do the science
-in-house. Discovery scales with capital, not expertise.
-
-The cure — same tools, different practice. The grunt work goes to the agents; the human is freed for
-the science that matters — you talk to the model, it hands you a plot, you argue about it with a
-colleague on a walk, and the argument becomes the next set of actions. Not agent fleets replacing
-people, not the lone genius — networks of humans amplified by agents. Stiegler called it an
-*économie de la contribution*: the machine augments the worker's knowledge rather than displacing it.
-
-[Cail's, verbatim:] This is not only about jobs. It is about keeping the part of the work we
-actually love — discovery. I would far rather spend this era in wonderful, beautiful discovery,
-amplified, than watch the work get slowly ripped from our hands by agent "competitors." If a day
-comes when there is nothing left for us to add, so be it — but I would rather enjoy the good times
-while they last, and shape the practice so people stay *in* it.
-:::
-
-
-## The choice is genuinely open — and neither path is bad {#choice}
-
-::: {style="display:flex;justify-content:center;margin-top:150px"}
-```{=html}
-<svg viewBox="0 0 1560 580" style="width:1650px" xmlns="http://www.w3.org/2000/svg">
-  <!-- left: eddy -->
-  <g>
-    <path d="M 390 260 a 120 120 0 1 1 -6 -62" fill="none" stroke="#3D5BA0" stroke-width="6"/>
-    <path d="M 390 245 a 82 82 0 1 1 -8 -44" fill="none" stroke="#3D5BA0" stroke-width="5" opacity="0.7"/>
-    <path d="M 383 235 a 48 48 0 1 1 -10 -28" fill="none" stroke="#3D5BA0" stroke-width="4" opacity="0.45"/>
-    <text x="300" y="470" font-family="EB Garamond, serif" font-size="38" fill="#1B1611" text-anchor="middle" font-weight="600">find a protected eddy</text>
-    <text x="300" y="520" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">a niche that doesn't scale — hold on a while longer</text>
-  </g>
-  <!-- right: wave -->
-  <g>
-    <path d="M 820 380 C 950 380, 1050 340, 1130 260 C 1190 200, 1230 150, 1260 120 C 1290 160, 1350 220, 1460 260"
-          fill="none" stroke="#3F8278" stroke-width="7"/>
-    <path d="M 820 420 C 970 420, 1090 390, 1190 330 C 1270 282, 1330 240, 1400 220"
-          fill="none" stroke="#3F8278" stroke-width="5" opacity="0.55"/>
-    <circle cx="1252" cy="128" r="12" fill="#BC4538"/>
-    <text x="1140" y="470" font-family="EB Garamond, serif" font-size="38" fill="#1B1611" text-anchor="middle" font-weight="600">ride the wave</text>
-    <text x="1140" y="520" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">become expert in scaling — and see what comes next</text>
-  </g>
-</svg>
-```
-:::
-
-::: notes
-And here is the honest framing of that choice, because I want to be careful: neither path is bad —
-it depends on what you want. One real option: find a niche where things don't scale — where data is
-scarce, where the loop runs through hardware, through a wet lab, through people — and hold on a
-while longer. Those eddies exist and they are legitimate places to do beautiful science. The other:
-use exactly this window to become an expert in scaling — in the meta-skill — and move with the wave
-to see what comes next. What I'd argue against is only the default: drifting into one of these by
-not choosing. Think about the futures you'd actually want to live in — including the uncomfortable
-ones — so that you can genuinely advocate for what you want in the world.
-:::
-
-
-## Might as well enjoy it while the going's good {#close}
-
-::: {style="text-align:center;margin-top:180px"}
-[the last years of the old way · the first years of the new]{style="font-size:1.1em"}
-:::
-
-::: {style="text-align:center;margin-top:120px;color:#7A6F5C;font-size:0.8em"}
-[cailmdaley.github.io/talks · lightconeresearch.github.io/agent-skills]{style="font-family:'IBM Plex Mono',monospace"}
-:::
-
-::: notes
-I'll close where I started. We are living in the very last years of the old way of doing science
-and the very first years of the new — and whatever else that is, it is not boring. The meta-skill
-is temporary; the window is open now; and this combination — agentic modes of work pointed at real
-physics by people with real taste — is going to produce some of the most fun and dramatic advances
-astrophysics and ML have ever seen. So might as well enjoy it while the going's good. The tutorial
-is at the link — run it this afternoon; it genuinely takes twenty minutes. And in a moment I'll
-show you a live demo. Thank you.
-:::
-
-
-<!-- ═══════════════ BACKUP ═══════════════ -->
-
-## &nbsp; {#backup-divider .intermission background-color="#E8D9BF" data-menu-title="Backup slides" data-visibility="uncounted"}
-
-::: {style="height:80vh;display:flex;align-items:center;justify-content:center;text-align:center"}
-::: {style="font-family:'EB Garamond',Georgia,serif;font-variant-caps:small-caps;font-feature-settings:'smcp' 1;letter-spacing:0.18em;color:#7A6F5C;font-size:2.4em;font-weight:500"}
-backup
-:::
+~1 min. [Lifted from CNRS; retargeted — DRAFT, refine to your voice.] Here's what the looping
+principle looks like in my actual working day. Early on I worked the way everyone does — one prompt
+at a time, steering each step myself. Now I mostly hand agents long-horizon tasks and let them run.
+This is my real task board: each card is an agent working a piece of the analysis on its own — some
+drafting, some in flight, some waiting on my review. And when one finishes — [advance] — it hands
+back a full write-up of a real result: here a shear-catalog cross-check, figures and numbers ready
+for me to check. My job moved up a level: from doing each step to designing the tasks and verifying
+what comes back. The constitutions those agents run on are exactly the astra.yaml idea grown up:
+specs that describe the desired state of a piece of science.
 :::
 
 

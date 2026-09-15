@@ -3,9 +3,9 @@
 // 1. Copy buttons on every .prompt-card (click → clipboard).
 // 2. .live-figure panels poll the demo directory for a PNG and swap it in
 //    the moment it appears. Demo dir: window.FORTH_DEMO_DIR, overridable with
-//    ?demo=file:///abs/path in the deck URL.
+//    ?demo=http://127.0.0.1:4203 in the deck URL.
 (function () {
-  var DEFAULT_DEMO = "file:///Users/cd280747/forth-demo";
+  var DEFAULT_DEMO = "http://127.0.0.1:4203";
   var q = new URLSearchParams(location.search);
   var DEMO = (q.get("demo") || window.FORTH_DEMO_DIR || DEFAULT_DEMO).replace(/\/$/, "");
 
@@ -21,8 +21,13 @@
       var b = document.createElement("button"); b.className = "copy-btn"; b.textContent = "copy";
       b.addEventListener("click", function (e) {
         e.stopPropagation();
-        var text = card.innerText.replace(/^\s*copy\s*/, "").trim();
-        copyText(text).then(function () { b.textContent = "copied ✓"; setTimeout(function () { b.textContent = "copy"; }, 1600); });
+        var content = card.cloneNode(true);
+        content.querySelectorAll('button').forEach(function (node) { node.remove(); });
+        content.querySelectorAll('a[data-copy-url]').forEach(function (node) { node.replaceWith(node.getAttribute('href')); });
+        content.querySelectorAll('br').forEach(function (node) { node.replaceWith('\n'); });
+        content.querySelectorAll('p').forEach(function (node) { node.append('\n\n'); });
+        var text = content.textContent.trim();
+        copyText(text).then(function () { b.textContent = "copied ✓"; setTimeout(function () { b.textContent = "copy"; }, 1600); }).catch(function () { b.textContent = "copy failed"; });
       });
       card.appendChild(b);
     });
@@ -54,7 +59,7 @@
         (cur && cur.contains(p)) ? p._liveStart() : p._liveStop();
       });
     }
-    Reveal.on("slidechanged", sync); Reveal.on("ready", sync);
+    Reveal.on("slidechanged", sync); Reveal.on("ready", sync); sync();
   }
 
   if (window.Reveal && Reveal.isReady && Reveal.isReady()) { initCopy(); initLive(); }

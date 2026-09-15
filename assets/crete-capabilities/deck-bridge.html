@@ -1,0 +1,48 @@
+<script>
+window.addEventListener('load', () => {
+  const chart = document.getElementById('capabilities-chart');
+  const marker = document.getElementById('capabilities-cases');
+  const hfMarker = document.getElementById('capabilities-hf');
+  const swarm = document.getElementById('swarm-chart');
+  const playSwarm = () => {
+    if (Reveal.getCurrentSlide()?.id === 'swarms') {
+      Reveal.navigateFragment(-1);
+      swarm?.contentWindow.postMessage({type:'swarm-comparison', visible:false}, location.origin);
+      swarm?.contentWindow.postMessage({type:'swarm-play'}, location.origin);
+    }
+  };
+  const sync = () => {
+    swarm?.contentWindow.postMessage({type:'swarm-comparison', visible:document.getElementById('swarm-comparison')?.classList.contains('visible') || false}, location.origin);
+    chart?.contentWindow.postMessage({
+    type: 'capabilities-stage', stage: hfMarker?.classList.contains('visible') ? 2 : marker?.classList.contains('visible') ? 1 : 0
+  }, location.origin);
+  };
+  const navigate = key => {
+    if (key === 'ArrowRight' || key === 'ArrowDown' || key === ' ') Reveal.next();
+    if (key === 'ArrowLeft' || key === 'ArrowUp') Reveal.prev();
+  };
+  window.addEventListener('message', event => {
+    if (event.origin !== location.origin || event.source !== chart?.contentWindow) return;
+    if (event.data?.type === 'capabilities-ready') sync();
+    if (event.data?.type === 'slide-navigation') navigate(event.data.key);
+  });
+  const wireSwarm = () => {
+    swarm?.contentDocument.querySelector('canvas')?.addEventListener('click', () => Reveal.next());
+    swarm?.contentDocument.addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' '].includes(event.key)) return;
+    event.preventDefault(); navigate(event.key);
+  });
+  };
+  swarm?.addEventListener('load', wireSwarm);
+  swarm?.addEventListener('load', playSwarm);
+  swarm?.addEventListener('load', sync);
+  wireSwarm();
+  chart?.addEventListener('load', sync);
+  Reveal.on('fragmentshown', sync);
+  Reveal.on('fragmenthidden', sync);
+  Reveal.on('slidechanged', sync);
+  Reveal.on('slidechanged', playSwarm);
+  playSwarm();
+  sync();
+});
+</script>

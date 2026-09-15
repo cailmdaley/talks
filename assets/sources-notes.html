@@ -1,0 +1,26 @@
+<style>
+.sources-notes-trigger{position:fixed;left:18px;bottom:12px;z-index:100;font:16px Georgia,serif;color:#7A6F5C;background:#F7F0E1;border:1px solid #C5B89E;border-radius:6px;padding:7px 12px;cursor:pointer}
+.sources-notes-panel{position:fixed;left:18px;bottom:58px;z-index:101;box-sizing:border-box;width:max-content;max-width:640px;width:calc(100vw - 36px);max-height:65vh;overflow:auto;padding:24px;background:#FBF6E9;color:#1B1611;border:1px solid #C5B89E;border-radius:10px;box-shadow:0 8px 32px #1b161126;font:18px/1.5 Georgia,serif;text-align:left}
+.sources-notes-panel a{color:#3F8278;overflow-wrap:anywhere}.sources-notes-panel p{margin:0 0 12px}.sources-notes-panel [style]{font-size:inherit!important;max-height:none!important}.sources-notes-close{float:right;margin:0 0 10px 20px;border:0;background:none;font:24px Georgia;cursor:pointer}.sources-notes-original{display:none!important}
+@media print{.sources-notes-trigger,.sources-notes-panel{display:none!important}}
+</style>
+<script>
+(()=>{
+function init(){
+ if(!window.Reveal)return;
+ const button=document.createElement('button'),panel=document.createElement('div');
+ button.className='sources-notes-trigger';button.textContent='Sources & notes';button.hidden=true;button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','sources-notes-panel');
+ panel.id='sources-notes-panel';panel.className='sources-notes-panel';panel.hidden=true;panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Sources and notes');document.body.append(button,panel);
+ const close=()=>{panel.hidden=true;button.setAttribute('aria-expanded','false')};
+ function collect(root){return [...root.querySelectorAll('details')].filter(d=>/sources|measurement notes/i.test(d.querySelector('summary')?.textContent||''))}
+ function update(){close();const slide=Reveal.getCurrentSlide();if(!slide)return;let notes=collect(slide);for(const frame of slide.querySelectorAll('iframe')){try{if(frame.contentDocument)notes.push(...collect(frame.contentDocument))}catch{}}
+ panel.replaceChildren();const x=document.createElement('button');x.className='sources-notes-close';x.textContent='×';x.setAttribute('aria-label','Close sources and notes');x.onclick=()=>{close();button.focus()};panel.append(x);
+ for(const note of notes){note.classList.add('sources-notes-original');if(note.ownerDocument!==document)note.style.display='none';const copy=note.cloneNode(true);copy.querySelector('summary')?.remove();const body=document.createElement('div');body.append(...copy.childNodes);panel.append(body)}button.hidden=!notes.length;
+ }
+ button.onclick=()=>{panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)panel.querySelector('button').focus()};
+ document.addEventListener('pointerdown',e=>{if(!panel.contains(e.target)&&e.target!==button)close()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){e.preventDefault();e.stopImmediatePropagation();close();button.focus()}},true);
+ Reveal.on('slidechanged',update);document.querySelectorAll('iframe').forEach(f=>f.addEventListener('load',update));update();
+}
+if(window.Reveal?.isReady())init();else if(window.Reveal)Reveal.on('ready',init);else window.addEventListener('load',init);
+})();
+</script>
