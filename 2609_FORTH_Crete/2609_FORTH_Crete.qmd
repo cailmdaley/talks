@@ -4,12 +4,13 @@
 # Fri 18 Sep 2026, 11:30–12:30: 30 min talk + 15 min live demo + 15 min discussion.
 # Arc: capabilities → history (chatbot→harness) → landing → ASTRA tutorial → implications.
 # Strategy in ./CLAUDE.md; felt fiber 2609-forth-crete.
-# Export: decktape reveal "file://$(pwd)/_site/2609_FORTH_Crete/2609_FORTH_Crete.html" out.pdf --size 1920x1080
+# Export: decktape reveal "file://$(pwd)/_site/2609_FORTH_Crete/index.html" out.pdf --size 1920x1080
 # ════════════════════════════════════════════════════════════════════════════════════════
 title: "Scaling Scientific Labor<br>with Agentic Engineering"
 occasion: FORTH Workshop on Physics-Informed Machine Learning
 description: "Closing keynote: a tutorial-style introduction to agentic AI for scientific workflows"
 draft: true
+output-file: index.html
 author:
     name: Cail Daley
     affiliation: "Département d'Astrophysique / UMR AIM · CEA Paris-Saclay"

@@ -263,3 +263,6 @@ agent walkthroughs and inspect critical source; request HTML reports with plots 
 links for human review; track concurrent work in a board with status, blockers and evidence.
 Symphony is a linked example. Personal custom tooling stays an oral aside. Reports and model
 explanations are aids to scrutiny, not substitutes for checking actual behavior and evidence.
+
+Published URL: `https://cailmdaley.github.io/talks/2609_FORTH_Crete/`. The deck uses
+`output-file: index.html`; keep the source filename unchanged.
