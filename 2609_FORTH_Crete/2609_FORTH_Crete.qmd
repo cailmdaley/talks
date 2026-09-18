@@ -69,7 +69,7 @@ The tutorial offers a window into practical experience so people can make their 
 Cail usually finds this work very fun and enjoyable; it involves a different framing of work.
 :::
 
-## What can we do with agentic science now? {#metr .metr-slide}
+## What can agentic systems accomplish now? {#metr .metr-slide}
 
 <div class="capabilities-layout">
 <iframe id="capabilities-chart" class="capabilities-embed" src="assets/crete-capabilities/chart.html" title="Human expert task duration at 50% agent success"></iframe>
@@ -343,8 +343,7 @@ The manual clipboard loop stays visible above; on advance, the harness takes ove
 </div>
 ```
 
-<ul class="harness-summary"><li>Minimal and extensible versus integrated</li></ul>
-<div class="harness-feature-line">SSH / remote work, automatic port forwarding,<br>built-in browsers (and browser use)</div>
+<div class="harness-feature-line">Remote sessions, port forwarding, browser use — built in</div>
 <details><summary>Sources &amp; notes</summary><a href="https://claude.com/">Claude</a>, <a href="https://openai.com/codex/">Codex</a>, <a href="https://pi.dev/">Pi</a>, <a href="https://opencode.ai/">OpenCode</a></details>
 
 ::: notes
@@ -794,7 +793,7 @@ of them written down. ASTRA writes them down.
 
 
 
-## Just talk to the model {#reusable-practice}
+## Just talk to the model! {#reusable-practice}
 
 <div style="display:grid;grid-template-columns:40% 57%;gap:3%;align-items:center;margin-top:65px">
 <div style="font-size:43px;line-height:1.4">
@@ -827,13 +826,12 @@ that can be lost when compressing a request into a short command.
 ```{=html}
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 760" style="width:100%;margin-top:20px" font-family="EB Garamond,Georgia,serif" role="img" aria-label="Linked notes carry a low-ell binning fix from multi-probe cosmology to cosmic shear systematics">
 <defs><marker id="wiki-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto-start-reverse"><path d="M1 1 L7 4 L1 7" fill="none" stroke="#3F8278" stroke-width="1.3"/></marker></defs>
-<text x="800" y="55" text-anchor="middle" font-size="44">Searchable LLM wikis</text>
+<text x="800" y="55" text-anchor="middle" font-size="44">Searchable markdown wikis</text>
 <text x="90" y="125" font-size="35" fill="#3F8278">Multi-probe cosmology</text>
 
 <g fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"><rect x="80" y="245" width="650" height="145" rx="8"/><rect x="80" y="455" width="650" height="145" rx="8"/></g>
 <g font-size="32" fill="#1B1611"><text x="105" y="285" fill="#3F8278">[[Spectrum bias]]</text><text x="105" y="330">“…missing low-ℓ mode coupling…”</text><text x="105" y="370" fill="#3F8278">→ [[Low-ℓ binning fix]]</text><text x="105" y="495" fill="#3F8278">[[Low-ℓ binning fix]]</text><text x="105" y="540">“…extend bins to low ℓ to avoid bias…”</text><text x="105" y="580" fill="#3F8278">← [[Spectrum bias]]</text></g>
 <path d="M405 396 V448" stroke="#3F8278" stroke-width="2" marker-start="url(#wiki-arrow)" marker-end="url(#wiki-arrow)"/>
-<text x="100" y="655" font-size="30" fill="#7A6F5C">Experiments, prompts → linked records</text>
 <g class="fragment" data-fragment-index="0">
 <text x="875" y="125" font-size="35" fill="#3D5BA0">Cosmic shear systematics</text>
 <g fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"><rect x="870" y="245" width="650" height="145" rx="8"/><rect x="870" y="455" width="650" height="145" rx="8"/></g>
@@ -855,11 +853,23 @@ project, then the request to retrieve and apply the earlier fix. No blinded nume
 
 ## Iterate on long-horizon work {#iteration}
 
-<div style="margin-top:120px;font-size:48px;line-height:1.4">
-<div style="display:flex;align-items:center;gap:50px"><span>“Check your work”</span><span style="color:#3F8278">→</span><span>Task / environment engineering</span></div>
-<p style="margin-top:60px">Define testable requirements<br>so you can focus on higher-level questions.</p>
-<p style="margin-top:50px">Workflows allow iteration with separate contexts<br>(independent review).</p>
-</div>
+```{=html}
+<svg viewBox="0 0 1600 730" style="width:100%;margin-top:35px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif" role="img" aria-label="Implementation and independent review iterate in separate contexts. Testable requirements accumulate to guide the loop, freeing attention for higher-level questions.">
+<defs><marker id="iteration-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto-start-reverse"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#7A6F5C" stroke-width="1.5"/></marker></defs>
+<text x="800" y="55" text-anchor="middle" font-size="44">“Check your work” → checks built into the environment</text>
+<g fill="none" stroke="#7A6F5C" stroke-width="3" marker-end="url(#iteration-arrow)"><path d="M560 220 C700 120 900 120 1040 220"/><path d="M1040 340 C900 440 700 440 560 340"/></g>
+<ellipse cx="430" cy="280" rx="215" ry="110" fill="#3D5BA0" fill-opacity="0.05" stroke="#3D5BA0" stroke-width="2.5"/>
+<ellipse cx="1170" cy="280" rx="215" ry="110" fill="#3F8278" fill-opacity="0.05" stroke="#3F8278" stroke-width="2.5"/>
+<text x="430" y="294" text-anchor="middle" font-size="44" fill="#3D5BA0">Implementation</text>
+<text x="1170" y="270" text-anchor="middle" font-size="44" fill="#3F8278">Independent</text>
+<text x="1170" y="320" text-anchor="middle" font-size="44" fill="#3F8278">review</text>
+<text x="800" y="290" text-anchor="middle" font-size="34" fill="#7A6F5C">Separate contexts</text>
+<path d="M800 535 V415" fill="none" stroke="#7A6F5C" stroke-width="2.5" marker-end="url(#iteration-arrow)"/>
+<g fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"><rect x="442" y="573" width="716" height="66" rx="6"/><rect x="432" y="562" width="736" height="66" rx="6"/><rect x="422" y="551" width="756" height="66" rx="6"/></g>
+<text x="800" y="594" text-anchor="middle" font-size="40">Accumulate testable requirements</text>
+<text x="800" y="705" text-anchor="middle" font-size="40">Focus on higher-level questions.</text>
+</svg>
+```
 
 ::: notes
 “Check your work” becomes useful when the task and environment provide ways to evaluate it.
@@ -915,7 +925,21 @@ Read core code directly, especially fundamental architecture, scientific assumpt
 primitives. Model explanations remain something to check against the source and behavior.
 :::
 
-## Choosing what to work on {#choice}
+## Becoming a project manager {#project-manager}
+
+```{=html}
+<div class="r-stack" style="margin-top:35px;width:100%;height:760px">
+<ul class="fragment fade-out" data-fragment-index="0" style="justify-self:start;align-self:center;margin:0;font-size:48px;line-height:1.5;padding-left:50px">
+<li style="margin-bottom:40px">Agents are like brilliant but amnesiac interns</li>
+<li style="margin-bottom:40px">Agentic work pushes you towards doing many things at once</li>
+<li>You can only keep so many chats in your head at once...</li>
+</ul>
+<div class="fragment" data-fragment-index="0" style="width:1350px;height:759px;max-width:100%"><iframe data-src="https://player.vimeo.com/video/1186371009?h=5626e4b899&amp;autoplay=1&amp;muted=1&amp;autopause=1" data-autoplay title="OpenAI Symphony demo" style="width:100%;height:100%;max-width:none;max-height:none;border:0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+</div>
+<details class="sources-notes"><summary>Sources &amp; notes</summary><p><a href="https://openai.com/index/open-source-codex-orchestration-symphony/">OpenAI: An open-source spec for Codex orchestration: Symphony</a>. Video embedded from OpenAI’s Vimeo player; requires an internet connection.</p></details>
+```
+
+## Which kinds of scientific labor scale under these constraints? {#choice}
 
 <div style="text-align:center;font-size:46px;margin-top:45px">Not all problems are equally scalable.</div>
 
@@ -935,7 +959,7 @@ primitives. Model explanations remain something to check against the source and 
 <g stroke="#7A6F5C" stroke-width="2" fill="none"><path d="M365 405 V530"/><path d="M1215 300 V530"/></g>
 <g fill="#1B1611" font-size="39" text-anchor="middle">
 <text x="365" y="585">Work limited by data,</text><text x="365" y="632">instruments, or people</text>
-<text x="1215" y="585">Work that benefits from</text><text x="1215" y="632">more computation</text>
+<text x="1215" y="585">Verifiable work that benefits</text><text x="1215" y="632">from more computation</text>
 </g>
 </svg>
 ```
@@ -952,8 +976,8 @@ provides one person's response to changing work, rather than a universal answer.
 ## Closing thoughts {#revolutionizing-oneself}
 
 <div style="font-size:46px;line-height:1.4;margin-top:65px">
-<p>The practice of doing research is being revolutionized.</p>
-<p style="margin-top:40px">Changing the way we work may allow us to raise our standards<br>and tackle more ambitious problems.</p>
+<p>The practice of research is being revolutionized.</p>
+<p style="margin-top:40px">If we change how we work, we can hold higher standards<br>and take on more ambitious problems.</p>
 </div>
 
 <div class="fragment">
@@ -973,494 +997,3 @@ to adopt these tools. Keep the audience's choice central.
 :::
 
 <!-- ═══════════════ BACKUP ═══════════════ -->
-
-## &nbsp; {#backup-divider .intermission background-color="#E8D9BF" data-menu-title="Backup slides" data-visibility="uncounted"}
-
-::: {style="height:80vh;display:flex;align-items:center;justify-content:center;text-align:center"}
-::: {style="font-family:'EB Garamond',Georgia,serif;font-variant-caps:small-caps;font-feature-settings:'smcp' 1;letter-spacing:0.18em;color:#7A6F5C;font-size:2.4em;font-weight:500"}
-backup
-:::
-:::
-
-
-## &nbsp; {#practice-at-scale .intermission data-menu-title="The practice at scale" background-color="#E8D9BF" data-visibility="uncounted"}
-
-::: {style="height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center"}
-
-::: {style="font-variant-caps:small-caps;letter-spacing:0.24em;color:#7a6f5c;font-size:0.8em"}
-The Practice at Scale
-:::
-
-::: {style="margin-top:0.5em;font-size:1.85em;font-weight:600;line-height:1.12"}
-Agentic Science in Practice
-:::
-
-::: {style="margin-top:0.95em;font-size:1.02em;color:#3a342b;max-width:62%;line-height:1.45"}
-lessons from a fundamental cosmology analysis done primarily with agentic AI
-:::
-
-:::
-
-::: notes
-~20 sec. Gear change. The tutorial was a toy on purpose — one parameter, one afternoon. For the
-next few minutes I want to show you what the same practice looks like on the real thing: a
-weak-gravitational-lensing analysis I lead within the UNIONS collaboration — hundreds of decisions,
-terabytes of imaging, a result we published this year — done primarily with agentic AI. Let the
-shift land before starting.
-:::
-
-
-## Stable principles are emerging for agentic science {#principles data-visibility="uncounted"}
-
-:::::::::::::: {.columns style="margin-top:2.6em;width:calc(100% + 208px);margin-left:-104px"}
-
-::: {.column style="width:27%;text-align:center;padding:0 1em"}
-::: {style="font-size:1.3em;font-weight:600;color:#bc4538"}
-Verification
-:::
-::: {style="margin-top:0.35em;font-size:0.86em;color:#3a342b;line-height:1.42;text-wrap:balance"}
-design checks into the work
-:::
-:::
-
-::: {.column style="width:46%;text-align:center;padding:0 0.8em;border-left:1px solid #d9cdb4"}
-::: {style="font-size:1.3em;font-weight:600;color:#bc4538"}
-Looping
-:::
-::: {style="margin-top:0.35em;font-size:0.86em;color:#3a342b;line-height:1.42"}
-towards a desired state<br>a constitution rather than a plan
-:::
-:::
-
-::: {.column style="width:27%;text-align:center;padding:0 1em;border-left:1px solid #d9cdb4"}
-::: {style="font-size:1.3em;font-weight:600;color:#bc4538"}
-Accumulation
-:::
-::: {style="margin-top:0.35em;font-size:0.86em;color:#3a342b;line-height:1.42;text-wrap:balance"}
-searchable traces of previous work
-:::
-:::
-
-::::::::::::::
-
-::: {style="text-align:center;margin-top:2.4em"}
-```{=html}
-<div class="r-stack" style="justify-items:center">
-<pre class="fragment fade-out" data-fragment-index="1" style="display:inline-block;justify-self:center;text-align:left;background:#FBF6E9;border:1px solid #C5B89E;border-radius:14px;padding:0.8em 1.5em;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:0.72em;line-height:1.6;color:#3a342b;box-shadow:0 1px 5px rgba(0,0,0,0.05);width:fit-content;margin:0 auto"><span style="color:#7a6f5c"># an agent is an LLM in a loop</span>
-<span style="color:#3F8278">context</span> = startup_context + user_prompt
-<span style="color:#bc4538">while</span> <span style="color:#bc4538">not</span> done:
-    response = llm(<span style="color:#3F8278">context</span>)
-    <span style="color:#3F8278">context</span> += execute(response.tool_calls)</pre>
-<pre class="fragment" data-fragment-index="1" style="display:inline-block;justify-self:center;text-align:left;background:#FBF6E9;border:1px solid #C5B89E;border-radius:14px;padding:0.8em 1.5em;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:0.72em;line-height:1.6;color:#3a342b;box-shadow:0 1px 5px rgba(0,0,0,0.05);width:fit-content;margin:0 auto"><span style="color:#7a6f5c"># the same loop, around whole sessions</span>
-<span style="color:#3F8278">constitution</span> = user_intent
-<span style="color:#bc4538">while</span> <span style="color:#bc4538">not</span> done:
-    state = get_state(environment, <span style="color:#3F8278">constitution</span>)  <span style="color:#7a6f5c"># unbiased assessment of state</span>
-    implement(state, <span style="color:#3F8278">constitution</span>)
-    amend(<span style="color:#3F8278">constitution</span>)  <span style="color:#7a6f5c"># open-ended research</span></pre>
-</div>
-```
-:::
-
-::: notes
-~2 min. [Lifted from the CNRS deck — Cail's rehearsed script, lightly retargeted.] The specific
-techniques change every month as the models get better — what I did last July looks nothing like
-what I do now. But underneath that churn, three principles have stayed stable. These are what I'd
-teach.
-
-**Verify.** The moment agents can do a lot, verification becomes the bottleneck — you can generate
-far more than you can check. So you organize the work around making the checks cheap and
-high-signal, and more fundamentally you design the work so the checks are built in. Tests are the
-obvious case — but real science has no ground truth to test against; the data is real, the answer
-is unknown, and a "check" can be a subtle, nuanced judgment. You saw a small version in the
-tutorial: the verified quote, the recorded decision. At scale it becomes a design problem: name the
-things that must be true if the work is right, and check them as you go.
-
-**Loop toward a desired state.** The central object is the loop. An agent just is an LLM in a
-loop — act, observe, update, repeat. The next level of abstraction is to put a loop around whole
-sessions: each one starts from a fresh context. And what you hand each session matters: for
-open-ended research, a rigid plan is often counterproductive — it forces you to foresee everything
-and can't adapt to what the results tell you. Instead you write a constitution: it describes the
-desired state; the current state is discoverable from the environment. A goal to reach, not a plan
-to follow. Notice this is the same inversion as the harness slide — you stop drawing the graph at
-the session level too.
-
-**Accumulate context.** You quickly start doing more than you can possibly remember — what you've
-already checked, what's true, what failed. You have to take notes, and you can't do it by hand. So
-you need a memory system: as much context as possible in a form that's searchable, with progressive
-disclosure — summaries that open into detail. This is what keeps the work honest: it's how you
-avoid hallucinating, and how you know what ground you've already covered.
-
-If you remember three things: verification, looping, accumulation.
-:::
-
-
-## Agentic labor allowed more rigorous cross-checks {#disagreement data-visibility="uncounted"}
-
-::: {style="text-align:center;margin-top:10px"}
-```{=html}
-<svg viewBox="0 0 1100 262" style="width:88%;max-width:1500px;height:auto;display:block;margin:0 auto;font-family:'EB Garamond',Georgia,serif" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <marker id="g-cinn" markerWidth="10" markerHeight="10" refX="6.6" refY="3.4" orient="auto"><path d="M0,0 L7.6,3.4 L0,6.8 Z" fill="#BC4538"/></marker>
-    <marker id="g-mut" markerWidth="9" markerHeight="9" refX="5.6" refY="3" orient="auto-start-reverse"><path d="M0,0 L6.4,3 L0,6 Z" fill="#9a8e76"/></marker>
-  </defs>
-  <path d="M250,62 Q550,10 850,62" fill="none" stroke="#9a8e76" stroke-width="1.6" stroke-dasharray="5 4" marker-start="url(#g-mut)" marker-end="url(#g-mut)"/>
-  <text x="550" y="30" text-anchor="middle" font-size="16" font-style="italic" fill="#7a6f5c">Hankel transform</text>
-  <path d="M205,150 Q335,180 470,192" fill="none" stroke="#BC4538" stroke-width="2.2" marker-end="url(#g-cinn)"/>
-  <path d="M895,150 Q765,180 630,192" fill="none" stroke="#BC4538" stroke-width="2.2" marker-end="url(#g-cinn)"/>
-  <ellipse cx="158" cy="80" rx="16" ry="8" transform="rotate(-25 158 80)" fill="none" stroke="#C49333" stroke-width="2.6"/>
-  <ellipse cx="232" cy="80" rx="16" ry="8" transform="rotate(28 232 80)" fill="none" stroke="#C49333" stroke-width="2.6"/>
-  <line x1="178" y1="80" x2="212" y2="80" stroke="#7a6f5c" stroke-width="1.4" stroke-dasharray="3 3"/>
-  <text x="195" y="68" text-anchor="middle" font-size="15" font-style="italic" fill="#7a6f5c">&#952;</text>
-  <text x="195" y="134" text-anchor="middle" font-size="19" font-style="italic" fill="#3a342b">configuration space</text>
-  <path d="M848,80 C860,54 878,54 890,80 C902,106 920,106 932,80 C944,54 962,54 974,80" fill="none" stroke="#3F8278" stroke-width="2.8"/>
-  <text x="910" y="134" text-anchor="middle" font-size="19" font-style="italic" fill="#3a342b">harmonic space</text>
-  <line x1="498" y1="208" x2="602" y2="208" stroke="#c5b89e" stroke-width="1.4"/>
-  <rect x="504" y="176" width="12" height="32" rx="1.5" fill="#BC4538"/>
-  <rect x="524" y="188" width="12" height="20" rx="1.5" fill="#BC4538"/>
-  <rect x="544" y="181" width="12" height="27" rx="1.5" fill="#BC4538"/>
-  <rect x="564" y="193" width="12" height="15" rx="1.5" fill="#BC4538"/>
-  <rect x="584" y="189" width="12" height="19" rx="1.5" fill="#BC4538"/>
-  <text x="550" y="234" text-anchor="middle" font-size="21" font-weight="600" fill="#BC4538">COSEBIs</text>
-  <text x="550" y="256" text-anchor="middle" font-size="15" font-style="italic" fill="#7a6f5c">clean, discrete E/B modes</text>
-</svg>
-```
-:::
-
-![](images/cosebis_bsigma_talk.png){.blend-figure width=92% fig-align="center"}
-
-::: notes
-~2 min. [Lifted from CNRS — Cail's rehearsed script, with a two-sentence setup added for a room that
-hasn't seen the UNIONS science; DRAFT the setup in your own words.] Here's what verification looks
-like on the real thing. Setup, in two sentences: gravitational lensing distorts galaxy shapes in a
-pattern that has no curl — physics forbids the swirling "B-mode" — so any B-mode we measure has to be
-contamination, and hunting it is the daily craft of the field. We measure it three independent ways
-— correlation functions in configuration space, power spectra in harmonic space, and COSEBIs, the
-sharp discrete modes both of those compress into — and with agents doing the labor, we could afford
-to run all three, with full covariances, on every version of the catalogue.
-
-Now the plot. Don't read the axes; read the shape. On the left, points that should sit on the flat
-line instead climb away from it: a swirl that physics forbids, so it *must* be contamination. Two of
-our three measures had passed; this third, sharper one caught it, because it concentrates a small
-fingerprint the others dilute below notice. We could even pin down its size — it repeats at the
-spacing of the camera's individual sensors, a man-made scale where the instrument would imprint
-itself. Right panel: after we cut the affected range, it sits back on the line. The move to land:
-the disagreement isn't a failure of the analysis, it's the analysis *working* — the measurement
-telling us where the instrument was lying. And this is the honest version of "agents help": not
-doing the same analysis faster, but doing a *more rigorous* one, because you can now check at a
-finer level than any human team could afford.
-:::
-
-
-## Using agentic tools well requires a new way of working {#work-timeline data-visibility="uncounted"}
-
-::: {style="text-align:center;margin-top:0.2em"}
-```{=html}
-<svg viewBox="0 0 1280 640" style="width:100%;max-width:1880px;height:auto;font-family:'EB Garamond',Georgia,serif" xmlns="http://www.w3.org/2000/svg">
-<rect x="510.0" y="80.0" width="700.0" height="556.0" fill="#BC4538" fill-opacity="0.05"/>
-<line x1="510.0" y1="84.0" x2="510.0" y2="426" stroke="#BC4538" stroke-width="1.6" stroke-dasharray="6 5" opacity="0.7"/>
-<text x="522.0" y="78.0" font-size="21" fill="#BC4538">I start working with agents &#183; Jul 2025</text>
-<line x1="160" y1="282.2" x2="1210" y2="282.2" stroke="#d9cdb4" stroke-width="1"/>
-<text x="146" y="288.2" text-anchor="end" font-size="18" fill="#7A6F5C">10k</text>
-<line x1="160" y1="144.4" x2="1210" y2="144.4" stroke="#d9cdb4" stroke-width="1"/>
-<text x="146" y="150.4" text-anchor="end" font-size="18" fill="#7A6F5C">20k</text>
-<rect x="198.5" y="372.7" width="46.0" height="47.3" fill="#BC4538" fill-opacity="1.0"/>
-<rect x="250.5" y="276.4" width="46.0" height="143.6" fill="#C9BBA0" fill-opacity="1.0"/>
-<text x="221.5" y="363.7" text-anchor="middle" font-size="23" font-weight="700" fill="#BC4538">3k</text>
-<rect x="373.5" y="324.9" width="46.0" height="95.1" fill="#BC4538" fill-opacity="1.0"/>
-<rect x="425.5" y="314.4" width="46.0" height="105.6" fill="#C9BBA0" fill-opacity="1.0"/>
-<text x="396.5" y="315.9" text-anchor="middle" font-size="23" font-weight="700" fill="#BC4538">7k</text>
-<rect x="548.5" y="324.7" width="46.0" height="95.3" fill="#BC4538" fill-opacity="1.0"/>
-<rect x="600.5" y="364.7" width="46.0" height="55.3" fill="#C9BBA0" fill-opacity="1.0"/>
-<text x="571.5" y="315.7" text-anchor="middle" font-size="23" font-weight="700" fill="#BC4538">7k</text>
-<rect x="723.5" y="254.2" width="46.0" height="165.8" fill="#BC4538" fill-opacity="1.0"/>
-<rect x="775.5" y="339.4" width="46.0" height="80.6" fill="#C9BBA0" fill-opacity="1.0"/>
-<text x="746.5" y="245.2" text-anchor="middle" font-size="23" font-weight="700" fill="#BC4538">12k</text>
-<rect x="898.5" y="116.2" width="46.0" height="303.8" fill="#BC4538" fill-opacity="1.0"/>
-<rect x="950.5" y="207.1" width="46.0" height="212.9" fill="#C9BBA0" fill-opacity="1.0"/>
-<text x="921.5" y="107.2" text-anchor="middle" font-size="23" font-weight="700" fill="#BC4538">22k</text>
-<rect x="1073.5" y="188.2" width="46.0" height="231.8" fill="#BC4538" fill-opacity="1.0"/>
-<rect x="1125.5" y="381.2" width="46.0" height="38.8" fill="#C9BBA0" fill-opacity="1.0"/>
-<text x="1096.5" y="179.2" text-anchor="middle" font-size="23" font-weight="700" fill="#BC4538">17k</text>
-<line x1="160" y1="420" x2="1210" y2="420" stroke="#7A6F5C" stroke-width="1.8"/>
-<text x="160" y="104" text-anchor="start" font-size="23" fill="#7A6F5C">lines touched (&#177;)</text>
-<text x="247.5" y="446" text-anchor="middle" font-size="20" fill="#1B1611">2025</text>
-<text x="247.5" y="468" text-anchor="middle" font-size="17" fill="#7A6F5C">Q1</text>
-<text x="422.5" y="446" text-anchor="middle" font-size="20" fill="#1B1611">2025</text>
-<text x="422.5" y="468" text-anchor="middle" font-size="17" fill="#7A6F5C">Q2</text>
-<text x="597.5" y="446" text-anchor="middle" font-size="20" fill="#1B1611">2025</text>
-<text x="597.5" y="468" text-anchor="middle" font-size="17" fill="#7A6F5C">Q3</text>
-<text x="772.5" y="446" text-anchor="middle" font-size="20" fill="#1B1611">2025</text>
-<text x="772.5" y="468" text-anchor="middle" font-size="17" fill="#7A6F5C">Q4</text>
-<text x="947.5" y="446" text-anchor="middle" font-size="20" fill="#1B1611">2026</text>
-<text x="947.5" y="468" text-anchor="middle" font-size="17" fill="#7A6F5C">Q1</text>
-<text x="1122.5" y="446" text-anchor="middle" font-size="20" fill="#1B1611">2026</text>
-<text x="1122.5" y="468" text-anchor="middle" font-size="17" fill="#7A6F5C">Q2</text>
-<rect x="190.0" y="150.0" width="28.0" height="15.0" fill="#BC4538" fill-opacity="1.0"/>
-<text x="226" y="163" font-size="21" fill="#1B1611">myself</text>
-<rect x="190.0" y="176.0" width="28.0" height="15.0" fill="#C9BBA0" fill-opacity="1.0"/>
-<text x="226" y="189" font-size="21" fill="#1B1611">3 collaborators</text>
-<line x1="160" y1="560" x2="1210" y2="560" stroke="#d9cdb4" stroke-width="1.4"/>
-<text x="160" y="546" font-size="23" fill="#7A6F5C">the practice I built &#8594;</text>
-<circle cx="829" cy="560" r="7" fill="#BC4538"/>
-<line x1="829" y1="553" x2="829" y2="540" stroke="#7A6F5C" stroke-width="1"/>
-<text x="829" y="530" text-anchor="middle" font-size="22" fill="#1B1611">loops</text>
-<circle cx="887" cy="560" r="7" fill="#BC4538"/>
-<line x1="887" y1="567" x2="887" y2="580" stroke="#7A6F5C" stroke-width="1"/>
-<text x="887" y="604" text-anchor="middle" font-size="22" fill="#1B1611">memory systems</text>
-<circle cx="945" cy="560" r="7" fill="#BC4538"/>
-<line x1="945" y1="553" x2="945" y2="540" stroke="#7A6F5C" stroke-width="1"/>
-<text x="945" y="530" text-anchor="middle" font-size="22" fill="#1B1611">constitutions</text>
-<circle cx="1105" cy="560" r="7" fill="#BC4538"/>
-<line x1="1105" y1="567" x2="1105" y2="580" stroke="#7A6F5C" stroke-width="1"/>
-<text x="1105" y="604" text-anchor="middle" font-size="22" fill="#1B1611">chats &#8594;</text>
-<text x="1105" y="626" text-anchor="middle" font-size="22" fill="#1B1611">autonomous tasks</text>
-<circle cx="1175" cy="560" r="7" fill="#BC4538"/>
-<line x1="1175" y1="553" x2="1175" y2="540" stroke="#7A6F5C" stroke-width="1"/>
-<text x="1175" y="530" text-anchor="middle" font-size="22" fill="#1B1611">Lightcone</text>
-</svg>
-```
-:::
-
-::: notes
-~1.5 min. [Lifted from CNRS — Cail's rehearsed script, near-verbatim.] The agentic explosion,
-measured honestly, plus the practice that drove it. I started doing this work with agents in July
-2025 — the shaded era. The honest measure of work isn't net lines (they cancel) or commit counts
-(gameable); it's everything I touched, written plus deleted. By that measure 2026 Q1 is
-twenty-two thousand lines even though it nets to almost zero, because agentic work is relentless
-iteration and refactoring. My output grew roughly six-fold and came to match my three closest
-collaborators combined — one person doing the work of a small team. And the row below is the
-practice I built as I went, on the same timeline: loops, then a memory system, then constitutions,
-then the move from chat sessions to autonomous tasks, and finally Lightcone — the open ecosystem
-where tools like ASTRA live. This chart is the talk's title made concrete: the labor scales.
-:::
-
-
-## A small amount of judgment steers a vast amount of labor {#flywheel data-visibility="uncounted"}
-
-::: {style="margin-top:1.4em;text-align:center"}
-```{=html}
-<svg viewBox="0 0 1280 660" style="width:100%;max-width:1900px;height:auto;font-family:'EB Garamond',Georgia,serif" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <marker id="cl-cin" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="16" refX="13" refY="7" orient="auto"><path d="M0,0 L15,7 L0,14 Z" fill="#BC4538"/></marker>
-  </defs>
-
-  <!-- collaborative human expertise -->
-  <circle cx="125" cy="330" r="92" fill="#BC4538" fill-opacity="0.07" stroke="#BC4538" stroke-width="2.5"/>
-  <text x="125" y="312" text-anchor="middle" font-size="23" font-weight="600" fill="#1B1611">collaborative</text>
-  <text x="125" y="340" text-anchor="middle" font-size="23" font-weight="600" fill="#1B1611">human</text>
-  <text x="125" y="368" text-anchor="middle" font-size="23" font-weight="600" fill="#1B1611">expertise</text>
-
-  <!-- input arrow + labels -->
-  <path d="M218,330 L444,330" fill="none" stroke="#BC4538" stroke-width="3" marker-end="url(#cl-cin)"/>
-  <text x="333" y="305" text-anchor="middle" font-size="23" fill="#7A6F5C">meeting transcripts</text>
-  <text x="333" y="364" text-anchor="middle" font-size="23" fill="#7A6F5C">vetted wikis</text>
-
-  <!-- funnel walls -->
-  <line x1="450" y1="200" x2="884" y2="300" stroke="#3A342B" stroke-width="5" stroke-linecap="round"/>
-  <line x1="450" y1="460" x2="884" y2="360" stroke="#3A342B" stroke-width="5" stroke-linecap="round"/>
-  <text x="657" y="234" text-anchor="middle" font-size="20" font-weight="600" fill="#3A342B" transform="rotate(12.42 657 250)">immediate &amp; long-term objectives</text>
-  <text x="657" y="438" text-anchor="middle" font-size="20" font-weight="600" fill="#3A342B" transform="rotate(-12.42 657 410)">accumulating verification pressure</text>
-
-  <!-- long-horizon agent loops, inside the funnel -->
-  <path d="M575,275 A55,55 0 0 1 575,385" fill="none" stroke="#BC4538" stroke-width="4" marker-end="url(#cl-cin)"/>
-  <path d="M575,385 A55,55 0 0 1 575,275" fill="none" stroke="#BC4538" stroke-width="4" marker-end="url(#cl-cin)"/>
-  <text x="575" y="324" text-anchor="middle" font-size="18" font-weight="600" fill="#1B1611">long-horizon</text>
-  <text x="575" y="348" text-anchor="middle" font-size="18" font-weight="600" fill="#1B1611">agent loops</text>
-
-  <!-- funnel exit arrow -->
-  <path d="M888,330 L936,330" fill="none" stroke="#BC4538" stroke-width="3" marker-end="url(#cl-cin)"/>
-
-  <!-- live reports page glyph -->
-  <rect x="942" y="280" width="108" height="114" rx="9" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2.5"/>
-  <line x1="958" y1="304" x2="1034" y2="304" stroke="#c5b89e" stroke-width="2.5"/>
-  <line x1="958" y1="319" x2="1034" y2="319" stroke="#c5b89e" stroke-width="2.5"/>
-  <line x1="958" y1="334" x2="1012" y2="334" stroke="#c5b89e" stroke-width="2.5"/>
-  <rect x="960" y="356" width="11" height="22" fill="#BC4538"/>
-  <rect x="976" y="364" width="11" height="14" fill="#BC4538"/>
-  <rect x="992" y="350" width="11" height="28" fill="#BC4538"/>
-  <rect x="1008" y="360" width="11" height="18" fill="#BC4538"/>
-  <text x="996" y="420" text-anchor="middle" font-size="20" font-weight="600" fill="#1B1611">live reports</text>
-
-  <!-- flywheel: reports reviewed, the best flows back -->
-  <path d="M996,278 C905,58 350,52 150,242" fill="none" stroke="#BC4538" stroke-width="3.5" marker-end="url(#cl-cin)"/>
-</svg>
-```
-:::
-
-::: notes
-~1.5 min. [Lifted from CNRS close — Cail's rehearsed script, retargeted from "the program" to "the
-practice".] This is how it all composes, as a flywheel. I pour in what a cosmologist knows — but
-collaboratively: meeting transcripts, the team's vetted wikis, shared judgment. That becomes the
-objectives and the verification pressure that shape a funnel; inside it, long-horizon agent loops
-do an enormous amount of labor without drifting. Out come live reports I can actually read and
-check — and the best of what I learn flows back into the expertise that steers the next turn. A
-small amount of human judgment, encoded and refined each cycle, steers a vast amount of machine
-labor toward results I can stand behind. That's what made a small team's analysis tractable this
-year — and it's the shape I think scientific collaborations drift toward generally. Which brings
-us to what this means for all of us.
-:::
-
-
-<!-- ═══════════════ BEAT 4 · IMPLICATIONS ═══════════════ -->
-
-## Astrophysics has become an information science {#ball-1 data-visibility="uncounted"}
-
-::: {style="display:flex;justify-content:center;margin-top:110px"}
-::: {.quote-card style="max-width:1400px"}
-"…if every current prosumer-tier subscriber to codex and claude code donated a tiny share of their
-monthly compute, **we will soon be able to automate more astrophysics than is currently done by
-human astrophysicists** — the ones who operate in the 'astrophysics as data science' regime at
-least."
-
-::: {.quote-attrib}
-Dean W. Ball — August 8, 2026
-:::
-:::
-:::
-
-::: notes
-So what does it mean? Let me borrow two claims from Dean Ball — a policy researcher, not an AI
-booster — writing three weeks ago. First claim: some sciences, astrophysics chief among them, have
-in practice become information sciences — high-capex shared instruments producing data, plus labor
-that is almost entirely computation on that data. And in that regime, the arithmetic is brutal: the
-idle compute of the world's coding-agent subscribers is soon enough to automate more astrophysics
-than human astrophysicists currently do. You just watched the existence proof: a dark-energy
-measurement, spec'd, run, verified against the literature, by an agent, in minutes. He's talking
-about us. This is coming right for our field, and I think both of his claims are true.
-:::
-
-
-## Your simulations are tomorrow's RL environments {#sim-envs data-visibility="uncounted"}
-
-::: {style="text-align:center;margin-top:0.2em"}
-```{=html}
-<svg viewBox="0 0 1920 900" style="width:96%;height:auto" font-family="'EB Garamond', Georgia, serif" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <marker id="sfa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9A8E76"/></marker>
-    <marker id="sfr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#BC4538"/></marker>
-    <marker id="sfb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3D5BA0"/></marker>
-  </defs>
-  <text x="960" y="52" text-anchor="middle" fill="#1B1611" font-size="38">Physics already has a mature, diverse simulation ecosystem</text>
-  <path d="M 430,238 Q 960,116 1556,246" fill="none" stroke="#9A8E76" stroke-width="3" stroke-opacity="0.55" marker-end="url(#sfa)"/>
-  <g stroke="#BC4538" stroke-width="2.6" stroke-opacity="0.42"><line x1="248" y1="250" x2="338" y2="212"/><line x1="338" y1="212" x2="430" y2="256"/><line x1="248" y1="250" x2="352" y2="330"/><line x1="338" y1="212" x2="352" y2="330"/><line x1="430" y1="256" x2="412" y2="312"/><line x1="352" y1="330" x2="412" y2="312"/><line x1="352" y1="330" x2="250" y2="356"/><line x1="250" y1="356" x2="306" y2="422"/><line x1="306" y1="422" x2="446" y2="378"/><line x1="412" y1="312" x2="446" y2="378"/><line x1="352" y1="330" x2="446" y2="378"/><line x1="352" y1="330" x2="306" y2="422"/></g>
-  <g fill="#BC4538"><circle cx="248" cy="250" r="9"/><circle cx="338" cy="212" r="7"/><circle cx="430" cy="256" r="9"/><circle cx="250" cy="356" r="8"/><circle cx="352" cy="330" r="12"/><circle cx="446" cy="378" r="8"/><circle cx="306" cy="422" r="6"/><circle cx="412" cy="312" r="7"/></g>
-  <g fill="#BC4538" fill-opacity="0.55"><circle cx="290" cy="240" r="3"/><circle cx="400" cy="222" r="3"/><circle cx="472" cy="322" r="3"/><circle cx="330" cy="402" r="3"/><circle cx="232" cy="312" r="3"/><circle cx="424" cy="424" r="3"/></g>
-  <g fill="#BC4538"><circle cx="915" cy="300" r="74" fill-opacity="0.13"/><circle cx="1006" cy="350" r="64" fill-opacity="0.13"/><circle cx="958" cy="312" r="86" fill-opacity="0.09"/></g>
-  <g fill="#BC4538" fill-opacity="0.5"><circle cx="918" cy="302" r="13"/><circle cx="1002" cy="350" r="13"/><circle cx="966" cy="300" r="10"/></g>
-  <g stroke="#BC4538" stroke-width="2.4" stroke-opacity="0.3"><line x1="918" y1="302" x2="1002" y2="350"/><line x1="966" y1="300" x2="1002" y2="350"/></g>
-  <g transform="rotate(-22 1580 330)"><ellipse cx="1580" cy="330" rx="108" ry="74" fill="#BC4538" fill-opacity="0.05" stroke="#BC4538" stroke-opacity="0.5" stroke-width="2"/><ellipse cx="1580" cy="330" rx="74" ry="50" fill="#BC4538" fill-opacity="0.10" stroke="#BC4538" stroke-opacity="0.65" stroke-width="2"/><ellipse cx="1580" cy="330" rx="42" ry="28" fill="#BC4538" fill-opacity="0.20" stroke="#BC4538" stroke-opacity="0.85" stroke-width="2"/></g>
-  <circle cx="1580" cy="330" r="5" fill="#BC4538"/>
-  <g fill="none" stroke="#9A8E76" stroke-width="3" marker-end="url(#sfa)" opacity="0.9"><line x1="508" y1="332" x2="822" y2="332"/><line x1="1092" y1="332" x2="1430" y2="332"/></g>
-  <text x="340" y="500" text-anchor="middle" fill="#1B1611" font-size="40" font-weight="600">Full-physics simulations</text>
-  <text x="960" y="500" text-anchor="middle" fill="#1B1611" font-size="40" font-weight="600">Fast surrogates</text>
-  <text x="1580" y="500" text-anchor="middle" fill="#1B1611" font-size="40" font-weight="600">Simulation-based inference</text>
-  <g class="fragment" data-fragment-index="1">
-  <circle cx="332" cy="600" r="25" fill="#BC4538" fill-opacity="0.10" stroke="#BC4538" stroke-width="3"/>
-  <path d="M 304 656 C 308 632, 356 632, 360 656" fill="none" stroke="#BC4538" stroke-width="3"/>
-  <circle cx="332" cy="601" r="4.5" fill="#BC4538"/>
-  <g fill="none" stroke="#BC4538" stroke-width="2.4" stroke-opacity="0.7"><path d="M 366 591 a 12 12 0 0 1 0 18"/><path d="M 378 584 a 21 21 0 0 1 0 32"/></g>
-  <path d="M 904 642 A 57 57 0 0 1 1016 642" fill="none" stroke="#3D5BA0" stroke-width="3" stroke-opacity="0.55"/>
-  <g fill="#3D5BA0" fill-opacity="0.75"><circle cx="904" cy="642" r="4.5"/><circle cx="922" cy="606" r="4.5"/><circle cx="960" cy="592" r="4.5"/><circle cx="998" cy="606" r="4.5"/><circle cx="1016" cy="642" r="4.5"/></g>
-  <line x1="960" y1="642" x2="996" y2="606" stroke="#3D5BA0" stroke-width="3.5"/>
-  <circle cx="960" cy="642" r="7" fill="#3D5BA0"/>
-  <g stroke="#3D5BA0" stroke-width="1.8" stroke-opacity="0.4"><line x1="1580" y1="614" x2="1558" y2="598"/><line x1="1580" y1="614" x2="1602" y2="598"/><line x1="1580" y1="614" x2="1562" y2="632"/><line x1="1580" y1="614" x2="1600" y2="632"/></g>
-  <g fill="#3D5BA0" fill-opacity="0.5"><circle cx="1558" cy="598" r="5"/><circle cx="1602" cy="598" r="5"/><circle cx="1562" cy="632" r="5"/><circle cx="1600" cy="632" r="5"/></g>
-  <circle cx="1580" cy="614" r="7.5" fill="#3D5BA0"/>
-  <path d="M 1580 576 A 38 38 0 1 1 1542 614" fill="none" stroke="#3D5BA0" stroke-width="2.8" marker-end="url(#sfb)"/>
-  <line x1="408" y1="620" x2="884" y2="620" fill="none" stroke="#9A8E76" stroke-width="3.5" marker-end="url(#sfa)"/>
-  <line x1="1036" y1="620" x2="1524" y2="620" fill="none" stroke="#9A8E76" stroke-width="3.5" marker-end="url(#sfa)"/>
-  <text x="340" y="704" text-anchor="middle" fill="#1B1611" font-size="36" font-weight="600">Scientists' expertise</text>
-  <text x="960" y="704" text-anchor="middle" fill="#3D5BA0" font-size="36" font-weight="600">Benchmarks</text>
-  <text x="1580" y="704" text-anchor="middle" fill="#3D5BA0" font-size="36" font-weight="600">Synthetic RL environments</text>
-  <path d="M 1626 620 C 1894 656, 1832 808, 1380 814 C 1110 818, 810 818, 540 814 C 90 808, 30 656, 254 620" fill="none" stroke="#BC4538" stroke-width="3" stroke-opacity="0.85" marker-end="url(#sfr)"/>
-  <text x="960" y="776" text-anchor="middle" fill="#BC4538" font-size="30" font-weight="600">verifiable provenance of synthetic data</text>
-  </g>
-</svg>
-```
-:::
-
-::: notes
-~1.5 min. [Lifted from CNRS `#sim-bench-rl` — retargeted from "my program" to "what this room can
-do"; DRAFT, refine to your voice.] And here is where the meta-skill lands on *this* room
-specifically. The first places AI got genuinely productive were the verifiable ones — code, math —
-because you can check the answer and train on it at scale. Physics has no answer key: one universe,
-no re-runs. But look at what you already build. Top row: full-physics simulations, fast surrogates,
-simulation-based inference — a mature ecosystem whose whole purpose is to run the analysis on a
-universe whose answer we *do* know. [advance] That is exactly the substrate agents are missing.
-Your expertise and your simulations become benchmarks that characterise real scientific work;
-instantiated in simulation, where the truth is known, they become RL environments — a reward to
-train agents on. And it flows back: every environment is traceable to the people it came from, so
-the value returns to its source rather than to whoever has the most compute. Two things to say out
-loud for an ML audience. First, the reward is sparse and *noisy* — you can do everything right and
-still land two sigma off by chance; learning efficiently from a reward that noisy is a real, open
-AI problem, and physics is the place to crack it. Second, everything is hackable, this included —
-the fix isn't an unhackable reward, it's closing the sim-to-real gap so the local hacking stays
-honest. Physics-informed ML is not a consumer of this transition. It is the supply chain.
-:::
-
-
-## Moving from chats to long-horizon tasks {#task-board-backup data-visibility="uncounted"}
-
-<div class="r-stack" style="margin-top:0.3em;width:calc(100% + 208px);margin-left:-104px"><img src="images/agentic_task_board.png" class="no-treat fragment fade-out" data-fragment-index="1" style="width:100%;max-width:none;border-radius:6px;box-shadow:0 12px 34px rgba(27,22,17,0.22)"><img src="images/agentic_task_report.png" class="no-treat fragment" data-fragment-index="1" style="max-width:100%;max-height:840px;border-radius:6px;box-shadow:0 12px 34px rgba(27,22,17,0.22)"></div>
-
-::: notes
-~1 min. [Lifted from CNRS; retargeted — DRAFT, refine to your voice.] Here's what the looping
-principle looks like in my actual working day. Early on I worked the way everyone does — one prompt
-at a time, steering each step myself. Now I mostly hand agents long-horizon tasks and let them run.
-This is my real task board: each card is an agent working a piece of the analysis on its own — some
-drafting, some in flight, some waiting on my review. And when one finishes — [advance] — it hands
-back a full write-up of a real result: here a shear-catalog cross-check, figures and numbers ready
-for me to check. My job moved up a level: from doing each step to designing the tasks and verifying
-what comes back. The constitutions those agents run on are exactly the astra.yaml idea grown up:
-specs that describe the desired state of a piece of science.
-:::
-
-
-## Blinding: holding out a test set on the universe {#blinding .vcenter data-visibility="uncounted"}
-
-::: {style="margin-top:0.3em;text-align:center"}
-```{=html}
-<svg viewBox="0 0 1060 440" style="width:100%;max-width:1040px;height:auto;font-family:'EB Garamond',Georgia,serif" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <marker id="bl-cinnabar" markerWidth="9" markerHeight="9" refX="6.5" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="#BC4538"/></marker>
-    <marker id="bl-muted" markerWidth="9" markerHeight="9" refX="6.5" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="#7A6F5C"/></marker>
-    <marker id="bl-muted-start" markerWidth="9" markerHeight="9" refX="0.5" refY="3.2" orient="auto"><path d="M7,0 L0,3.2 L7,6.4 Z" fill="#7A6F5C"/></marker>
-  </defs>
-  <text x="265" y="34" text-anchor="middle" font-size="22" font-weight="600" letter-spacing="0.5" fill="#7A6F5C">Without blinding</text>
-  <rect x="30" y="58" width="470" height="344" rx="16" fill="none" stroke="#C5B89E" stroke-width="1.5"/>
-  <g stroke="#C5B89E" stroke-width="1.4" opacity="0.7" fill="none"><path d="M54,384 L126,384" marker-end="url(#bl-muted)"/><path d="M54,384 L54,314" marker-end="url(#bl-muted)"/></g>
-  <ellipse cx="350" cy="300" rx="66" ry="50" fill="#7A6F5C" opacity="0.10"/>
-  <g fill="#7A6F5C"><circle cx="332" cy="286" r="6"/><circle cx="368" cy="292" r="6"/><circle cx="348" cy="306" r="6"/><circle cx="376" cy="312" r="6"/><circle cx="330" cy="316" r="6"/><circle cx="358" cy="324" r="6"/></g>
-  <text x="350" y="380" text-anchor="middle" font-size="18" fill="#7A6F5C">the rest of the field</text>
-  <g stroke="#C49333" stroke-width="2.2" fill="none"><circle cx="436" cy="296" r="10"/><path d="M436,282 L436,310 M422,296 L450,296"/></g>
-  <text x="436" y="272" text-anchor="middle" font-size="17" font-style="italic" fill="#C49333">the truth</text>
-  <circle cx="150" cy="142" r="9" fill="#BC4538"/>
-  <text x="150" y="120" text-anchor="middle" font-size="18" font-weight="600" fill="#BC4538">your result</text>
-  <path d="M165,154 Q250,182 304,290" fill="none" stroke="#BC4538" stroke-width="2.6" stroke-dasharray="7 6" marker-end="url(#bl-cinnabar)"/>
-  <text x="214" y="174" text-anchor="middle" font-size="17" font-style="italic" fill="#BC4538">confirmation bias</text>
-  <text x="795" y="34" text-anchor="middle" font-size="22" font-weight="600" letter-spacing="0.5" fill="#7A6F5C">With blinding</text>
-  <rect x="560" y="58" width="470" height="344" rx="16" fill="none" stroke="#C5B89E" stroke-width="1.5"/>
-  <g stroke="#C5B89E" stroke-width="1.4" opacity="0.7" fill="none"><path d="M584,384 L656,384" marker-end="url(#bl-muted)"/><path d="M584,384 L584,314" marker-end="url(#bl-muted)"/></g>
-  <ellipse cx="875" cy="292" rx="68" ry="52" fill="#7A6F5C" opacity="0.05"/>
-  <g fill="#7A6F5C" opacity="0.18"><circle cx="855" cy="276" r="6"/><circle cx="892" cy="283" r="6"/><circle cx="870" cy="300" r="6"/><circle cx="900" cy="306" r="6"/><circle cx="852" cy="310" r="6"/><circle cx="882" cy="318" r="6"/></g>
-  <circle cx="875" cy="292" r="30" fill="#F7F0E1" opacity="0.92" stroke="#C5B89E" stroke-width="1.5"/>
-  <text x="875" y="304" text-anchor="middle" font-size="36" fill="#7A6F5C">?</text>
-  <text x="875" y="378" text-anchor="middle" font-size="18" fill="#7A6F5C">hidden while we choose</text>
-  <circle cx="680" cy="142" r="9" fill="#BC4538"/>
-  <text x="680" y="120" text-anchor="middle" font-size="18" font-weight="600" fill="#BC4538">your result</text>
-  <path d="M696,154 L840,278" fill="none" stroke="#7A6F5C" stroke-width="2" stroke-dasharray="7 6" marker-start="url(#bl-muted-start)" marker-end="url(#bl-muted)"/>
-  <text x="730" y="200" text-anchor="middle" font-size="17" font-style="italic" fill="#7A6F5C">distance unknown</text>
-</svg>
-```
-:::
-
-::: notes
-Backup, for the verification discussion. [CNRS `#blinding`, Cail's script.] The discipline that
-replaces a ground truth. Left: there's a truth, and the rest of the field clustered near it — and a
-real pull to land your own result next to everyone else's. That pull is confirmation bias. Right: so
-we blind ourselves — shift our number by a secret amount and hide where the field sits, so while we
-make every analysis choice we genuinely can't tell how far we are from anyone. Only once every choice
-is frozen do we unblind. For this room: it is exactly holding out a test set — you cannot tune toward
-a number you cannot see. And note it composes with agents perfectly: the agent can make and record
-every decision, and still never see the answer.
-:::
