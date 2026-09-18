@@ -13,7 +13,7 @@ draft: true
 output-file: index.html
 author:
     name: Cail Daley
-    affiliation: "Département d'Astrophysique / UMR AIM · CEA Paris-Saclay"
+    affiliation: "CosmoStat, CEA Paris-Saclay"
 date: September 18, 2026
 date-format: long
 
@@ -343,7 +343,8 @@ The manual clipboard loop stays visible above; on advance, the harness takes ove
 </div>
 ```
 
-<div class="harness-feature-line">Remote sessions, port forwarding, browser use — built in</div>
+<ul class="harness-summary"><li>Minimal and extensible versus integrated</li></ul>
+<div class="harness-feature-line">SSH / remote work, automatic port forwarding,<br>built-in browsers (and browser use)</div>
 <details><summary>Sources &amp; notes</summary><a href="https://claude.com/">Claude</a>, <a href="https://openai.com/codex/">Codex</a>, <a href="https://pi.dev/">Pi</a>, <a href="https://opencode.ai/">OpenCode</a></details>
 
 ::: notes

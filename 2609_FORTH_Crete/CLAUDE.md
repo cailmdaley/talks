@@ -361,3 +361,7 @@ paragraph and the separate enjoyment/link closing slide. Keep source and tutoria
 Meeting transcripts now belong on “Talk to the model!”: a meeting with decisions A/B and
 open question C feeds meeting.vtt, then pull requests A/B and report C. Remove the duplicate
 transcript input from the wiki slide; keep its cross-project synthesis example.
+
+The closing section now includes “Becoming a project manager” before “Choosing what to work on”: three bullets about amnesiac interns, concurrency, and limited attention; one advance replaces them with OpenAI’s Symphony demo. Keep the video source in Sources & notes. The Vimeo embed requires internet.
+
+All backup slides and the backup divider have been removed at Cail’s request. The deck ends at “Closing thoughts”; do not restore the old appendix.

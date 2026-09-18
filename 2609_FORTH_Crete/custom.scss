@@ -315,3 +315,23 @@
 @media (prefers-reduced-motion: reduce) { .harness-demo.visible .harness-tool, .harness-demo.visible .harness-signal { animation: none; } }
 
 .reveal .footer .talk-url { font-variant: normal; text-transform: none; letter-spacing: normal; }
+
+// Title composition: title, byline, occasion, and marks share one centered axis.
+.reveal section#title-slide {
+  padding: 135px 80px 65px;
+  text-align: center;
+}
+.reveal #title-slide .title { font-size: 104px; line-height: 1.12; margin: 0; }
+.reveal #title-slide .quarto-title-authors { margin-top: 65px; }
+.reveal #title-slide .quarto-title-author-name { font-size: 48px; }
+.reveal #title-slide .quarto-title-affiliation {
+  font-size: 36px; margin: 12px 0 0; font-variant-caps: normal;
+  font-feature-settings: normal; letter-spacing: 0;
+}
+.reveal #title-slide .title-spacer { min-height: 70px; }
+.reveal #title-slide .occasion { font-size: 36px; margin: 0; letter-spacing: 0.02em; }
+.reveal #title-slide .date { font-size: 32px; margin: 12px 0 0; }
+.reveal #title-slide .logo-bar {
+  position: static; display: flex; justify-content: center; align-items: center;
+  gap: 48px; margin-top: 42px; width: 100%;
+}
