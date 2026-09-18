@@ -201,7 +201,7 @@ The following slide introduces emerging practices and the invitation to explore 
 <div><span class="roadmap-number">03</span><span>High-level strategies</span></div>
 </div>
 <div class="roadmap-choice fragment" data-fragment-index="0">
-<div>To inform your own research practice:</div>
+
 <ul><li>Do you <strong>want</strong> to work this way?</li><li>If you do, which parts do you want to scale?</li></ul>
 </div>
 
@@ -343,8 +343,7 @@ The manual clipboard loop stays visible above; on advance, the harness takes ove
 </div>
 ```
 
-<ul class="harness-summary"><li>Minimal and extensible versus integrated</li></ul>
-<div class="harness-feature-line">SSH / remote work, automatic port forwarding,<br>built-in browsers (and browser use)</div>
+<div class="harness-feature-line">Minimal and extensible ⟷ integrated<br>Environment: files, shell, remote machines, browser</div>
 <details><summary>Sources &amp; notes</summary><a href="https://claude.com/">Claude</a>, <a href="https://openai.com/codex/">Codex</a>, <a href="https://pi.dev/">Pi</a>, <a href="https://opencode.ai/">OpenCode</a></details>
 
 ::: notes
