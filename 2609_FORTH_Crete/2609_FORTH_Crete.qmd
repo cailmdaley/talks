@@ -38,7 +38,8 @@ format:
             - assets/crete-capabilities/deck-bridge.html
             - live-demo.html
             - assets/sources-notes.html
-        footer: "Cail Daley | FORTH PIML Workshop | September 18, 2026"
+            - assets/crete-candles.html
+        footer: '<span class="talk-credit">Cail Daley | FORTH PIML Workshop | September 18, 2026</span> | <a class="talk-url" href="https://cailmdaley.github.io/talks/2609_FORTH_Crete/" target="_blank" rel="noopener">cailmdaley.github.io/talks/2609_FORTH_Crete/</a>'
         history: false
         hash: true
         pdf-separate-fragments: true
@@ -56,9 +57,9 @@ include-in-header: assets/mathjax.html
 ## Three questions {#overview}
 
 ::: {style="margin-top:110px;font-size:52px;line-height:1.4"}
-- What can **we** do with agentic science **now**?
-- How do we **engineer** this way of working?
-- What do we want our own **practice** to become?
+- What can agentic systems accomplish now?
+- What engineering constraints emerge from these systems?
+- Which kinds of scientific labor scale under these constraints?
 :::
 
 ::: notes
@@ -73,16 +74,16 @@ Cail usually finds this work very fun and enjoyable; it involves a different fra
 <div class="capabilities-layout">
 <iframe id="capabilities-chart" class="capabilities-embed" src="assets/crete-capabilities/chart.html" title="Human expert task duration at 50% agent success"></iframe>
 <div class="capabilities-facts">
-<div style="font-size:27px;color:#7A6F5C;margin-bottom:26px">Back of the envelope</div>
+<div class="fragment" data-fragment-index="0" style="font-size:36px;color:#7A6F5C;margin-bottom:26px">Back of the envelope</div>
 <div style="display:grid">
-<div class="fragment fade-out" data-fragment-index="0" style="grid-area:1/1;font-size:44px;line-height:1.3">Human expert time to solve a Millennium Prize Problem?</div>
+<div class="fragment" data-fragment-index="0" style="grid-area:1/1"><div class="fragment fade-out" data-fragment-index="1" style="font-size:44px;line-height:1.3">Human expert time to solve a Millennium Prize Problem?</div></div>
 <div style="grid-area:1/1">
-<div id="capabilities-cases" class="fragment" data-fragment-index="0">
+<div id="capabilities-cases" class="fragment" data-fragment-index="1">
 <div class="case-name">Navier–Stokes</div>
 <div>~10,000 concurrent agents</div>
 <div style="font-weight:bold;font-size:42px;margin-top:24px">≈880,000 agent-hours</div>
 </div>
-<div id="capabilities-hf" class="fragment" data-fragment-index="0">
+<div id="capabilities-hf" class="fragment" data-fragment-index="1">
 <div class="case-name" style="margin-top:28px">Hugging Face</div>
 <div style="font-size:30px;margin-bottom:18px">Felony-level cyberattack on a major ML platform</div>
 <div>~700 attack participants</div>
@@ -109,20 +110,6 @@ an established legal finding. The substantive point is the chain from a restrict
 through multiple exploits into major machine-learning dataset infrastructure.
 :::
 
-## October 2025: the future of enterprise agents {#dag-era}
-
-<div style="font-size:34px;color:#7A6F5C;margin-top:10px;margin-bottom:20px">OpenAI Agent Builder · less than a year ago</div>
-
-![](images/openai-agent-builder-october-2025.jpeg){style="display:block;width:100%;max-height:830px;object-fit:contain"}
-
-::: notes
-OpenAI introduced AgentKit, including Agent Builder, on October 6, 2025.
-Source: https://openai.com/index/introducing-agentkit/
-The slide's future-of-enterprise-agents framing is editorial, inspired by Ethan Mollick,
-not a direct quotation from the announcement. The June 3, 2026 update announces a wind-down.
-The contrast is human-authored workflow graphs versus the coordinated exploration shown next.
-:::
-
 ## The hardest problems are being solved by swarms {#swarms}
 
 <iframe id="swarm-chart" src="assets/crete-capabilities/swarm.html" title="Hugging Face agent activity from METR Figure 8" style="width:100%;height:810px;border:0"></iframe>
@@ -136,18 +123,20 @@ start is the investigation scope, not the attack duration. This follows the indi
 measurement question with concrete evidence of a swarm, before asking how we got here.
 :::
 
-## Yesterday’s frontier becomes cheap {#costs}
+## Yesterday’s frontier costs pennies today {#costs}
 
 <div style="margin-top:45px">
 <div style="font-size:42px;margin-bottom:40px">Navier–Stokes: 130B output tokens ≈ <strong>$6.5M</strong> at retail</div>
-<div style="font-size:30px;color:#7A6F5C">ARC-AGI-1 · semi-private evaluation</div>
-<div style="display:grid;grid-template-columns:1fr 130px 1fr;align-items:center;margin-top:40px">
-<div><div style="font-size:38px">o3-preview · December 2024</div><div style="font-size:110px;color:#BC4538">$4,560</div><div style="font-size:36px">per task · 87.5%</div></div>
-<div style="font-size:70px">→</div>
-<div><div style="font-size:38px">DeepSeek-V4-Flash · July 2026</div><div style="font-size:110px;color:#3F8278">$0.021</div><div style="font-size:36px">per task · 87.0%</div></div>
+<div class="fragment cost-reveal" data-fragment-index="0">
+<div class="cost-stage cost-left" style="font-size:30px;color:#7A6F5C">ARC-AGI-1 · semi-private evaluation</div>
+<div class="cost-comparison">
+<div class="cost-stage cost-left"><div style="font-size:38px">o3-preview · December 2024</div><div style="font-size:110px;color:#BC4538">$4,560</div><div style="font-size:36px">per task · 87.5%</div></div>
+<div class="cost-stage cost-arrow" style="font-size:70px">→</div>
+<div class="cost-stage cost-right"><div style="font-size:38px">DeepSeek-V4-Flash · July 2026</div><div style="font-size:110px;color:#3F8278">$0.021</div><div style="font-size:36px">per task · 87.0%</div></div>
 </div>
 
-<div style="border-top:1px solid #C5B89E;margin-top:40px;padding-top:25px;font-size:38px"><span style="color:#BC4538">Takeaway</span><br>Frontier moonshots may stay expensive.<br>Today’s hard problems can become cheap.</div>
+
+</div>
 <details style="font-size:28px;color:#7A6F5C;margin-top:24px;max-height:170px;overflow:auto"><summary style="cursor:pointer">Sources &amp; accounting notes</summary>
 <p><a href="https://arcprize.org/blog/oai-o3-pub-breakthrough">ARC Prize: o3 score &amp; retrospective cost</a> · <a href="https://arcprize.org/results/deepseek-v4-flash-0731">ARC Prize: DeepSeek score &amp; cost</a> · <a href="https://openai.com/index/navier-stokes-solution/">OpenAI: Navier–Stokes token count</a> · <a href="https://x.com/deredleritt3r/status/2098527713002672152">Prompted by prinz</a></p>
 <p>ARC-AGI-1 semi-private evaluation; different systems and inference budgets. o3’s $4,560 is a retrospective estimate using o3-pro pricing. DeepSeek High: 87.0% at $0.021402901/task.</p>
@@ -166,29 +155,115 @@ at what cost. The tweet's 2028 prediction remains its author's speculation.
 Navier pricing is a separate illustration, not a forecast or disclosed internal spend.
 :::
 
-## Computing changed how we do science {#soon}
+## What does this mean for scaling our personal research? {#engineering-bridge}
 
 ```{=html}
-<svg viewBox="0 0 1600 650" style="width:100%;margin-top:40px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif"><path d="M110 490 H1470" stroke="#C5B89E" stroke-width="3"/><g stroke="#1B1611" stroke-width="5" fill="none"><path d="M120 235 l245 -110 30 65 -245 110 Z M240 270 L175 415 M240 270 L330 415 M240 270 V415"/><circle cx="110" cy="130" r="5"/><path d="M370 80 v30 M355 95 h30"/></g><g fill="none" stroke="#3F8278" stroke-width="3"><rect x="620" y="115" width="320" height="270" rx="10"/><path d="M645 345 H915 M655 140 V350"/><path d="M655 330 Q735 100 790 260 T920 165" stroke-width="5"/></g><text x="655" y="410" font-size="29" fill="#7A6F5C">model → prediction</text><rect x="1190" y="145" width="90" height="70" rx="8" fill="#E0EAE3" stroke="#3F8278" stroke-width="3"/><rect x="1400" y="145" width="90" height="70" rx="8" fill="#E0EAE3" stroke="#3F8278" stroke-width="3"/><rect x="1190" y="330" width="90" height="70" rx="8" fill="#E0EAE3" stroke="#3F8278" stroke-width="3"/><rect x="1400" y="330" width="90" height="70" rx="8" fill="#E0EAE3" stroke="#3F8278" stroke-width="3"/><path d="M1280 180 H1400 M1235 215 V330 M1445 215 V330 M1280 365 H1400" fill="none" stroke="#C5B89E" stroke-width="4"/><text x="90" y="550" font-size="47" fill="#1B1611">Observe</text><text x="90" y="605" font-size="32" fill="#7A6F5C">Instruments · experiments</text><text x="620" y="550" font-size="47" fill="#1B1611">Compute</text><text x="620" y="605" font-size="32" fill="#7A6F5C">Models · simulations</text><text x="1160" y="550" font-size="47" fill="#1B1611">Engineer</text><text x="1160" y="605" font-size="32" fill="#7A6F5C">Pipelines · collaboration</text></svg>
+<div class="engineering-analogy">
+<div class="r-stack">
+<ul class="fragment fade-out" data-fragment-index="0">
+<li>Agentic approaches can solve hard scientific problems.</li>
+<li>Certain kinds of scientific labor will scale with tokens.</li>
+<li>Tokens at fixed capabilities get cheaper, intensifying this scaling.</li>
+</ul>
+<ul class="fragment fade-in" data-fragment-index="0">
+<li><strong>Computational</strong> approaches can solve hard scientific problems.</li>
+<li>Certain kinds of scientific labor will scale with <strong>computation</strong>.</li>
+<li><strong>Computation</strong> at fixed capabilities gets cheaper, intensifying this scaling.</li>
+</ul>
+</div>
+<div class="fragment historical-computer" data-fragment-index="0">Imagine being a “computer” in the 1950s…</div>
+</div>
 ```
 
-## Every capability brings engineering constraints {#engineering-constraints}
+<details><summary>Sources &amp; notes</summary>
 
+[NASA: Langley’s human computers, 1935–1970](https://www.nasa.gov/history/langleys-computers-1935-1970/). The transition was gradual; some human computers took on programming duties, and the job title persisted into the 1960s. This is an analogy about changing work, not an exact forecast of displacement.
+
+</details>
+
+::: notes
+One advance replaces the agentic formulation with the computational analogy, leading into
+how computing changed physics and astronomy. This is an argument about work we can organize
+to benefit from additional resources, not a claim that every task scales with token count.
+Cheaper tokens at comparable capability are a premise for the outlook, not a guaranteed price
+trajectory. Both versions use “fixed capabilities”; only agentic/computational and tokens/computation change.
+The next slides make the engineering constraints concrete; adoption remains a personal choice.
+Cail’s spoken analogy: computing transformed existing subdomains of physics and astronomy,
+and new subdomains emerged from the new constraints. Keep this explanation off the slide.
+The following slide introduces emerging practices and the invitation to explore them.
+:::
+
+## A roadmap for the rest of the talk {#roadmap}
+
+<div class="talk-roadmap">
+<div><span class="roadmap-number">01</span><span>Emerging building blocks</span></div>
+<div><span class="roadmap-number">02</span><span>A live demo: a small scientific analysis</span></div>
+<div><span class="roadmap-number">03</span><span>High-level strategies</span></div>
+</div>
+<div class="roadmap-choice fragment" data-fragment-index="0">
+<div>To inform your own research practice:</div>
+<ul><li>Do you <strong>want</strong> to work this way?</li><li>If you do, which parts do you want to scale?</li></ul>
+</div>
+
+::: notes
+The remaining talk has three parts: emerging low-level concepts, a live agentic analysis,
+and higher-level ways of organizing research. The purpose is informed choice, not a demand
+to adopt these tools. Give people a window into practical experience, then enough conceptual
+grounding to reason about their own practice: whether to engage, which labor to scale,
+and which activities to keep doing themselves. Both choices are legitimate.
+:::
+
+## What engineering constraints emerge from these systems? {#emerging-practices}
+
+<div class="practice-landscape">
+<div class="practice-known">
+<div class="practice-familiar"><span>Languages</span><div class="practice-logos"><img class="no-treat" src="images/crete-logo-python.svg" alt="python" /><img class="no-treat" src="images/crete-logo-julia.svg" alt="julia" /><img class="no-treat" src="images/crete-logo-cpp.svg" alt="cpp" /><img class="no-treat" src="images/crete-logo-fortran.svg" alt="Fortran" /></div></div>
+<div class="practice-familiar"><span>Storage (memory, disk)</span><div class="practice-logos"></div></div>
+<div class="practice-familiar"><span>Tests / CI</span><div class="practice-logos"></div></div>
+<div class="practice-familiar"><span>Control flow (loops, parallelization, if/else)</span><div class="practice-logos"></div></div>
+<div class="practice-familiar"><span>IDEs</span><div class="practice-logos"><img class="no-treat" src="images/crete-logo-jupyter.svg" alt="jupyter" /><img class="no-treat" src="images/crete-logo-vscode.svg" alt="vscode" /><img class="no-treat" src="images/crete-logo-vim.svg" alt="vim" /><img class="no-treat" src="images/crete-logo-emacs.svg" alt="emacs" /></div></div>
+</div>
+<svg class="practice-fog" viewBox="0 0 1050 600" role="img" aria-label="Paths from familiar engineering concepts dissolve and mingle in an undefined cloud." xmlns="http://www.w3.org/2000/svg">
+<defs>
+<filter id="practice-question"><feGaussianBlur stdDeviation="2.8"/></filter>
+<filter id="practice-mist"><feGaussianBlur stdDeviation="25"/></filter>
+<linearGradient id="practice-path"><stop stop-color="#7A6F5C" stop-opacity=".7"/><stop offset=".7" stop-color="#3F8278" stop-opacity=".18"/><stop offset="1" stop-color="#3F8278" stop-opacity="0"/></linearGradient>
+</defs>
+<g filter="url(#practice-mist)">
+<path d="M350 145 C380 0 720 40 775 130 C1000 110 1030 350 865 405 C895 555 580 590 510 465 C260 540 225 335 350 280 C290 215 285 165 350 145Z" fill="#3F8278" opacity=".13"/>
+<ellipse cx="700" cy="290" rx="215" ry="170" fill="#7A6F5C" opacity=".1"/>
+<ellipse cx="515" cy="280" rx="150" ry="185" fill="#F7F0DF" opacity=".65"/>
+</g>
+<g fill="none" stroke="url(#practice-path)" stroke-width="3" stroke-linecap="round">
+<path d="M-310 65 C200 65 210 300 640 280"/>
+<path d="M-345 170 C220 170 250 70 750 210"/>
+<path d="M-650 280 C220 280 290 425 780 325"/>
+<path d="M-45 390 C170 390 290 145 660 195"/>
+<path d="M-425 500 C190 500 265 285 780 390"/>
+</g>
+<text x="680" y="390" text-anchor="middle" font-family="EB Garamond, Georgia, serif" font-size="285" fill="#3F8278" opacity=".45" filter="url(#practice-question)">?</text>
+</svg>
+</div>
+
+
+<details><summary>Sources &amp; notes</summary>Official logos: <a href="https://github.com/fortran-lang/fortran-lang.org/blob/master/assets/img/fortran-logo.svg">Fortran</a>, <a href="https://www.python.org/community/logos/">Python</a>, <a href="https://github.com/JuliaLang/julia-logo-graphics">Julia</a> (Stefan Karpinski, CC BY-NC-SA 4.0), <a href="https://github.com/isocpp/logos">C++</a>, <a href="https://github.com/jupyter/design">Jupyter</a>, <a href="https://code.visualstudio.com/brand">VS Code</a>, <a href="https://www.vim.org/">Vim</a>, <a href="https://www.gnu.org/software/emacs/">Emacs</a>.</details>
+
+::: notes
+This single slide replaces the previous four-slide computing/history/constraints sequence.
+The left names established software-engineering concepts. Their paths mix and dissolve into
+a shared fog: the new categories and their relationships are not yet settled. Do not label
+the right side or imply a one-to-one mapping. The coming primitives provide
+concrete partial answers: intent and specifications, harnesses, context and durable memory,
+verification, and orchestration. Computing transformed existing fields and created new ones.
+The optimistic opportunity is both more ambitious science and room to invent a research
+practice. Keep that spoken rather than adding another slogan. Adoption is an informed choice.
+:::
+
+## From oracles to agents {#oracle-era}
+
+::: {style="display:flex;justify-content:center;margin-top:20px"}
 ```{=html}
-<svg viewBox="0 0 1600 650" style="width:100%;margin-top:55px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif"><line x1="80" y1="175" x2="1520" y2="175" stroke="#C5B89E"/><text x="90" y="100" font-size="42" fill="#7A6F5C">Finite memory</text><text x="700" y="100" font-size="42" fill="#1B1611">Data structures · lazy loading</text><line x1="80" y1="310" x2="1520" y2="310" stroke="#C5B89E"/><text x="90" y="235" font-size="42" fill="#7A6F5C">Expensive execution</text><text x="700" y="235" font-size="42" fill="#1B1611">Algorithms · caching · parallelism</text><line x1="80" y1="445" x2="1520" y2="445" stroke="#C5B89E"/><text x="90" y="370" font-size="42" fill="#7A6F5C">Complex collaborations</text><text x="700" y="370" font-size="42" fill="#1B1611">Interfaces · tests · version control</text><text x="800" y="565" text-anchor="middle" font-size="36" fill="#3F8278">Editors · IDEs · notebooks — interfaces for human execution</text></svg>
-```
-
-## Agentic work changes what we must engineer {#agentic-engineering}
-
-```{=html}
-<svg viewBox="0 0 1600 650" style="width:100%;margin-top:40px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif"><text x="80" y="420" font-size="50" fill="#1B1611">Delegate</text><text x="80" y="470" font-size="34" fill="#7A6F5C">Tools · permissions</text><text x="600" y="420" font-size="50" fill="#1B1611">Coordinate</text><text x="600" y="470" font-size="34" fill="#7A6F5C">Context · workers</text><text x="1120" y="420" font-size="50" fill="#1B1611">Verify</text><text x="1120" y="470" font-size="34" fill="#7A6F5C">Evidence · feedback</text><g fill="none" stroke="#BC4538" stroke-width="4"><circle cx="160" cy="165" r="38"/><path d="M205 165 H350 M325 150 L350 165 L325 180"/><rect x="365" y="120" width="100" height="90" rx="10"/><path d="M385 245 h60 M415 210 v35"/></g><g fill="none" stroke="#3F8278" stroke-width="4"><circle cx="800" cy="150" r="35"/><circle cx="665" cy="280" r="25"/><circle cx="935" cy="280" r="25"/><path d="M775 175 L685 260 M825 175 L915 260 M690 280 H910"/></g><g fill="none" stroke="#3D5BA0" stroke-width="4"><rect x="1200" y="105" width="210" height="205" rx="12"/><path d="M1230 145 l12 12 25 -30 M1285 145 h85 M1230 210 l12 12 25 -30 M1285 210 h85 M1230 270 h35 M1285 270 h85"/></g><text x="800" y="590" text-anchor="middle" font-size="40" fill="#1B1611">Judgment → work agents can carry out and we can check</text></svg>
-```
-
-## From answers in a chat to work in the world {#oracle-era}
-
-::: {style="display:flex;justify-content:center;margin-top:100px"}
-```{=html}
-<svg viewBox="0 0 1500 560" style="width:1400px" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1500 510" style="width:100%;height:490px" xmlns="http://www.w3.org/2000/svg">
   <!-- chat window -->
   <g>
     <rect x="40" y="40" width="520" height="460" rx="14" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2.5"/>
@@ -198,11 +273,11 @@ Navier pricing is a separate illustration, not a forecast or disclosed internal 
     <rect x="200" y="130" width="320" height="64" rx="18" fill="#EDE2CE"/>
     <text x="228" y="170" font-family="EB Garamond, serif" font-size="28" fill="#1B1611">write me a likelihood…</text>
     <!-- assistant bubble w/ code -->
-    <rect x="80" y="230" width="400" height="220" rx="18" fill="#F4ECDC" stroke="#C5B89E" stroke-width="1.5"/>
-    <text x="110" y="280" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">def log_like(theta, d):</text>
-    <text x="110" y="320" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">    r = d - model(theta)</text>
-    <text x="110" y="360" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">    return -0.5 * r @ Cinv @ r</text>
-    <text x="110" y="420" font-family="EB Garamond, serif" font-size="26" fill="#7A6F5C">Here is a simple likelihood…</text>
+    <rect x="80" y="230" width="400" height="160" rx="18" fill="#F4ECDC" stroke="#C5B89E" stroke-width="1.5"/>
+    <text x="110" y="280" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">def log_like(p, d):</text>
+    <text x="110" y="320" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">    r = d - model(p)</text>
+    <text x="110" y="360" font-family="IBM Plex Mono, monospace" font-size="24" fill="#3D5BA0">    return -.5*r@Cinv@r</text>
+<rect x="125" y="410" width="410" height="65" rx="15" fill="#EDE2CE"/><text x="140" y="451" font-family="IBM Plex Mono, monospace" font-size="28" fill="#BC4538">NameError: Cinv</text>
   </g>
   <!-- clipboard arrow -->
   <g>
@@ -215,13 +290,12 @@ Navier pricing is a separate illustration, not a forecast or disclosed internal 
     <rect x="880" y="40" width="580" height="460" rx="14" fill="#1B1611"/>
     <rect x="880" y="40" width="580" height="56" rx="14" fill="#332B21"/>
     <circle cx="916" cy="68" r="9" fill="#BC4538"/><circle cx="948" cy="68" r="9" fill="#C49333"/><circle cx="980" cy="68" r="9" fill="#3F8278"/>
-    <text x="1020" y="77" font-family="IBM Plex Mono, monospace" font-size="24" fill="#C5B89E">analysis.py — you run it</text>
-    <text x="920" y="160" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1">def log_like(theta, d):</text>
-    <text x="920" y="200" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1">    r = d - model(theta)</text>
-    <text x="920" y="240" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1">    return -0.5 * r @ Cinv @ r</text>
-    <text x="920" y="320" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C"># you fix the imports,</text>
-    <text x="920" y="360" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C"># you run it, you read the</text>
-    <text x="920" y="400" font-family="IBM Plex Mono, monospace" font-size="24" fill="#7A6F5C"># traceback, you go back…</text>
+    <text x="1020" y="77" font-family="IBM Plex Mono, monospace" font-size="24" fill="#C5B89E">analysis.py</text>
+    <text x="920" y="160" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1">def log_like(p, d):</text>
+    <text x="920" y="200" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1">    r = d - model(p)</text>
+    <text x="920" y="240" font-family="IBM Plex Mono, monospace" font-size="24" fill="#F7F0E1">    return -.5*r@Cinv@r</text>
+    <text x="920" y="360" font-family="IBM Plex Mono, monospace" font-size="24" fill="#C5B89E">$ python analysis.py</text>
+    <text x="920" y="410" font-family="IBM Plex Mono, monospace" font-size="28" fill="#BC4538">NameError: Cinv</text>
   </g>
   <defs>
     <marker id="arr" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto">
@@ -232,129 +306,212 @@ Navier pricing is a separate illustration, not a forecast or disclosed internal 
 ```
 :::
 
+
+<div class="fragment harness-demo" data-fragment-index="0">
+<svg viewBox="0 0 1700 380" style="width:100%;height:350px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif" role="img" aria-label="The model calls read, edit, or bash; results return to the model.">
+<path d="M40 5 H1660" stroke="#C5B89E" stroke-width="2"/><text x="40" y="65" font-size="43">Harness:</text><g transform="translate(0 80)"><defs><marker id="harness-tip" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#3F8278" stroke-width="2"/></marker></defs>
+<rect x="220" y="40" width="280" height="100" rx="12" fill="none" stroke="#BC4538" stroke-width="3"/><text x="360" y="105" text-anchor="middle" font-size="46">Model</text>
+<path d="M500 90 H895" stroke="#3F8278" stroke-width="3" marker-end="url(#harness-tip)"/><text x="695" y="67" text-anchor="middle" font-size="38">Tool call</text>
+<g fill="none" stroke="#3F8278" stroke-width="2"><rect class="harness-tool harness-read" x="920" y="40" width="180" height="100" rx="10"/><rect class="harness-tool harness-edit" x="1120" y="40" width="180" height="100" rx="10"/><rect class="harness-tool harness-bash" x="1320" y="40" width="180" height="100" rx="10"/></g>
+<g font-size="42" text-anchor="middle"><text x="1010" y="105">Read</text><text x="1210" y="105">Edit</text><text x="1410" y="105">Bash</text></g>
+<path d="M1210 145 V240 H360 V147" fill="none" stroke="#3F8278" stroke-width="3" marker-end="url(#harness-tip)"/><text x="780" y="220" text-anchor="middle" font-size="38" fill="#3F8278">Result</text>
+<circle class="harness-signal signal-read" r="8" fill="#BC4538"/><circle class="harness-signal signal-edit" r="8" fill="#BC4538"/><circle class="harness-signal signal-bash" r="8" fill="#BC4538"/></g></svg>
+<div class="harness-reading">See <a href="https://earendil.com/posts/what-is-a-harness/">Earendil: What is a Harness?</a></div>
+</div>
+<details><summary>Sources &amp; notes</summary><a href="https://earendil.com/posts/what-is-a-harness/">Earendil: What is a Harness?</a> | <a href="https://claude.com/">Claude</a>, <a href="https://openai.com/codex/">Codex</a>, <a href="https://pi.dev/">Pi</a>, <a href="https://opencode.ai/">OpenCode</a></details>
+
 ::: notes
-~2 min, setting the stage with history. Two years ago — late 2024 — the way most of us touched
-these models was this: a chatbot in a browser tab. The model was already smart, and the smart thing
-to do was to treat it as an oracle: ask it for the code, then carry the intelligence out through the
-clipboard, into your editor, where you fixed the imports, ran it, read the traceback, and went back
-to ask again. Every loop through the problem passed through your hands. The model thought; you did
-everything else. Hold onto that division of labor — the whole history I want to tell you is the
-story of that division dissolving.
+The manual clipboard loop stays visible above; on advance, the harness takes over tool execution and returning results. Keep the visible loop minimal: the harness dispatches read/edit/bash operations and returns their results. System prompts and model API translation are explained in the linked reading. The three tools are examples, not an exhaustive inventory. The linked reading covers the fuller architecture.
 :::
 
-
-## A harness closes the execution loop {#harness}
+## Harnesses are working environments, like IDEs {#harness}
 
 ```{=html}
-<svg viewBox="0 0 1600 650" style="width:100%;max-height:730px;margin-top:45px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond, Georgia, serif"><defs><marker id="middle-arrow-3" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#7A6F5C" stroke-width="1.5"/></marker></defs><text x="800" y="45" text-anchor="middle" font-size="42" fill="#1B1611">“Write me a likelihood”</text><rect x="120" y="220" width="320" height="120" rx="12" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="280.0" y="293.0" text-anchor="middle" font-size="38" fill="#BC4538">Model</text><path d="M440,280 L620,280" fill="none" stroke="#BC4538" stroke-width="4" marker-end="url(#middle-arrow-3)"/><rect x="620" y="220" width="360" height="120" rx="12" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="800.0" y="293.0" text-anchor="middle" font-size="38" fill="#3D5BA0">Write likelihood.py</text><g class="fragment" data-fragment-index="0"><path d="M980,280 L1150,280" fill="none" stroke="#BC4538" stroke-width="4" marker-end="url(#middle-arrow-3)"/><rect x="1150" y="220" width="360" height="120" rx="12" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="1330.0" y="293.0" text-anchor="middle" font-size="38" fill="#3F8278">Run via shell</text><text x="1330" y="400" text-anchor="middle" font-size="30" fill="#3F8278">python check_likelihood.py</text></g><g class="fragment" data-fragment-index="1"><path d="M1330 430 L1330 530 L280 530 L280 340" fill="none" stroke="#3F8278" stroke-width="4" marker-end="url(#middle-arrow-3)"/><text x="800" y="510" text-anchor="middle" font-size="38" fill="#3F8278">Output · errors · diagnostics</text></g><text x="800" y="625" text-anchor="middle" font-size="32" fill="#7A6F5C">Tool request → harness execution → model observation</text></svg>
+<div class="environment-clouds">
+<div class="environment-cloud"><div class="environment-label">IDEs</div><div class="logo-cloud">
+<img class="no-treat" src="images/crete-logo-jupyter.svg" alt="Jupyter" title="Jupyter">
+<img class="no-treat" src="images/crete-logo-vscode.svg" alt="VS Code" title="VS Code">
+<img class="no-treat" src="images/crete-logo-vim.svg" alt="Vim" title="Vim">
+<img class="no-treat" src="images/crete-logo-emacs.svg" alt="Emacs" title="Emacs">
+</div></div>
+<div class="environment-cloud"><div class="environment-label">Harnesses</div><div class="logo-cloud">
+<img class="no-treat" src="images/crete-logo-claude.png" alt="Claude" title="Claude">
+<img class="no-treat" src="images/crete-logo-codex.png" alt="Codex" title="Codex">
+<img class="no-treat" src="images/crete-logo-pi.svg" alt="Pi" title="Pi">
+<img class="no-treat" src="images/crete-logo-opencode.svg" alt="OpenCode" title="OpenCode">
+</div></div>
+</div>
 ```
 
-<details style="font-size:26px;color:#7A6F5C;margin-top:10px"><summary>Sources &amp; notes</summary><a href="https://earendil.com/posts/what-is-a-harness/">Pi / Earendil · What is a Harness?</a> · <a href="https://www.anthropic.com/news/claude-3-7-sonnet">Claude Code · February 2025</a> · <a href="https://claude.com/blog/building-agents-with-the-claude-agent-sdk">Tool-loop mechanics</a></details>
+<ul class="harness-summary"><li>Minimal and extensible versus integrated</li></ul>
+<div class="harness-feature-line">SSH / remote work, automatic port forwarding,<br>built-in browsers (and browser use)</div>
+<details><summary>Sources &amp; notes</summary><a href="https://claude.com/">Claude</a>, <a href="https://openai.com/codex/">Codex</a>, <a href="https://pi.dev/">Pi</a>, <a href="https://opencode.ai/">OpenCode</a></details>
 
 ::: notes
-Build on advance: writing code; then issuing a tool request that the harness executes; then returning output to the model for another step. The model emits a structured request, not an executable act by itself. Shell is one tool alongside file reads, edits, and search. Permissions and tool availability constrain execution. Claude Code made this pattern accessible in a terminal; tool use predates Claude Code. Introduce the loop before orchestration or subagents.
+The two loose logo groups compare kinds of working environments, without pairing individual products or implying a feature matrix. Features vary by product, interface, extension and version. The spectrum is between a minimal core that you extend and an integrated environment with more capabilities already present. SSH, forwarding and browsers are examples of what the surrounding environment may provide. Avoid suggesting every pictured harness ships all three features.
 :::
 
-## Context is working memory {#context-window}
+## Context is similar to RAM {#context-window}
+
+<div style="font-size:40px;margin-top:25px">Standard context length: 1M tokens</div>
 
 ```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="Finite context as an allocation of token slots, with a reserved region for the answer" font-family="EB Garamond, Georgia, serif"><text x="85" y="90" font-size="44" fill="#1B1611" text-anchor="start">One model call</text><text x="1510" y="90" font-size="38" fill="#BC4538" text-anchor="end">Finite capacity</text><rect x="85" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="109" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="133" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="157" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="181" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="205" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="229" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="253" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="277" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><rect x="301" y="205" width="18" height="155" fill="#3F8278" opacity="0.75"/><text x="85" y="410" font-size="38" fill="#3F8278" text-anchor="start">Instructions</text><rect x="330" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="354" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="378" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="402" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="426" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="450" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="474" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="498" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="522" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="546" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="570" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="594" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="618" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="642" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="666" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><rect x="690" y="205" width="18" height="155" fill="#3D5BA0" opacity="0.75"/><text x="330" y="410" font-size="38" fill="#3D5BA0" text-anchor="start">Conversation</text><rect x="740" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="764" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="788" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="812" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="836" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="860" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="884" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="908" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="932" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="956" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="980" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1004" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1028" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1052" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1076" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1100" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1124" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><rect x="1148" y="205" width="18" height="155" fill="#7A6F5C" opacity="0.75"/><text x="740" y="410" font-size="38" fill="#7A6F5C" text-anchor="start">Tool results</text><rect x="1190" y="205" width="320" height="155" fill="#FBF6E9" stroke="#3F8278" stroke-width="3" stroke-dasharray="9 8"/><text x="1350" y="270" font-size="36" fill="#3F8278" text-anchor="middle">Room for</text><text x="1350" y="318" font-size="36" fill="#3F8278" text-anchor="middle">the answer</text><path d="M85 165 V140 H1510 V165" fill="none" stroke="#1B1611" stroke-width="2" /><path d="M85 470 H1175" fill="none" stroke="#C5B89E" stroke-width="2" /><text x="85" y="545" font-size="42" fill="#3F8278" text-anchor="start">Select</text><text x="475" y="545" font-size="42" fill="#3D5BA0" text-anchor="start">Summarize</text><text x="975" y="545" font-size="42" fill="#7A6F5C" text-anchor="start">Discard noise</text></svg>
-```
+<svg viewBox="0 0 1700 800" style="width:100%;margin-top:35px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif" role="img" aria-label="A session context fills with system instructions, user messages, model responses and tool results. Reading a file adds content; compaction replaces the earlier history with a summary in a fresh context.">
+<defs><marker id="context-arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#7A6F5C" stroke-width="2"/></marker></defs>
+<text x="70" y="65" font-size="43">Session context</text>
+<rect x="70" y="125" width="1560" height="150" rx="6" fill="none" stroke="#C5B89E" stroke-width="3"/>
 
-::: notes
-Context management concerns what is available to the next inference. Input and output share a finite budget, with model-specific limits. Tool access to a file does not put that file in context until it is read. Selection and summaries are lossy; preserve important decisions and evidence outside the conversation.
-:::
-
-## Cache the unchanged part of working memory {#prompt-caching}
-
-```{=html}
-<svg viewBox="0 0 1600 650" style="width:100%;max-height:730px;margin-top:45px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond, Georgia, serif"><defs><marker id="middle-arrow-4" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#7A6F5C" stroke-width="1.5"/></marker></defs><text x="95" y="140" text-anchor="middle" font-size="32" fill="#7A6F5C">Step 1</text><rect x="190" y="90" width="500" height="75" fill="#3D5BA0" fill-opacity=".18" stroke="#3D5BA0"/><text x="440.0" y="140" text-anchor="middle" font-size="34" fill="#3D5BA0">Reusable prefix</text><rect x="705" y="90" width="210" height="75" fill="#BC4538" fill-opacity=".15" stroke="#BC4538"/><text x="810" y="140" text-anchor="middle" font-size="32" fill="#BC4538">New context</text><text x="95" y="265" text-anchor="middle" font-size="32" fill="#7A6F5C">Step 2</text><rect x="190" y="215" width="710" height="75" fill="#3D5BA0" fill-opacity=".18" stroke="#3D5BA0"/><text x="545.0" y="265" text-anchor="middle" font-size="34" fill="#3D5BA0">Reusable prefix</text><rect x="915" y="215" width="210" height="75" fill="#BC4538" fill-opacity=".15" stroke="#BC4538"/><text x="1020" y="265" text-anchor="middle" font-size="32" fill="#BC4538">New context</text><text x="95" y="390" text-anchor="middle" font-size="32" fill="#7A6F5C">Step 3</text><rect x="190" y="340" width="920" height="75" fill="#3D5BA0" fill-opacity=".18" stroke="#3D5BA0"/><text x="650.0" y="390" text-anchor="middle" font-size="34" fill="#3D5BA0">Reusable prefix</text><rect x="1125" y="340" width="210" height="75" fill="#BC4538" fill-opacity=".15" stroke="#BC4538"/><text x="1230" y="390" text-anchor="middle" font-size="32" fill="#BC4538">New context</text><text x="800" y="535" text-anchor="middle" font-size="40" fill="#1B1611">Same prefix · reused computation · new suffix</text><text x="800" y="610" text-anchor="middle" font-size="34" fill="#7A6F5C">Input processing saved · context capacity unchanged</text></svg>
-```
-
-<details style="font-size:26px;color:#7A6F5C;margin-top:10px"><summary>Sources &amp; notes</summary><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching">Prompt caching mechanics</a></details>
-
-::: notes
-Build directly on the previous context-as-working-memory slide. The working set is still supplied to the model; caching reuses internal computation for an eligible unchanged prefix. This is not external memory, a smaller context, or a cache of finished answers. Schematic of repeated model requests. Cache hits require matching eligible prefixes and depend on provider retention and minimum lengths. They can reduce input cost and latency; they do not remove context limits or make generated output free. No universal cost multiplier or claim of zero prefill latency. Compaction trades prefix reuse against relevance and capacity; never-edit-history is not an absolute rule.
-:::
-
-## Load durable memory when the task needs it {#external-memory}
-
-```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="A compact index selects one experiment from durable records into working context; decisions are saved back" font-family="EB Garamond, Georgia, serif"><text x="100" y="80" font-size="44" fill="#7A6F5C" text-anchor="start">Persistent storage</text><text x="1100" y="80" font-size="44" fill="#3F8278" text-anchor="start">Working set</text><rect x="170" y="170" width="490" height="405" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><rect x="140" y="145" width="490" height="405" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><rect x="110" y="120" width="490" height="405" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="145" y="180" font-size="40" fill="#3D5BA0" text-anchor="start">index.md</text><circle cx="160" cy="250" r="5" fill="#C5B89E" /><text x="190" y="260" font-size="38" fill="#1B1611" text-anchor="start">Decisions</text><path d="M420 250 H550" fill="none" stroke="#C5B89E" stroke-width="2" /><circle cx="160" cy="330" r="5" fill="#C5B89E" /><text x="190" y="340" font-size="38" fill="#1B1611" text-anchor="start">Experiments</text><path d="M420 330 H550" fill="none" stroke="#C5B89E" stroke-width="2" /><circle cx="160" cy="410" r="5" fill="#C5B89E" /><text x="190" y="420" font-size="38" fill="#1B1611" text-anchor="start">Evidence</text><path d="M420 410 H550" fill="none" stroke="#C5B89E" stroke-width="2" /><rect x="135" y="288" width="450" height="72" fill="#3F8278" opacity="0.10"/><path d="M600 322 C760 322 790 210 980 210" fill="none" stroke="#3F8278" stroke-width="4" /><path d="M964 198 L982 210 L964 222" fill="none" stroke="#3F8278" stroke-width="3" /><text x="735" y="265" font-size="36" fill="#3F8278" text-anchor="start">Read</text><rect x="995" y="135" width="485" height="260" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="1035" y="200" font-size="38" fill="#3F8278" text-anchor="start">Current experiment</text><text x="1035" y="267" font-size="36" fill="#1B1611" text-anchor="start">Assumptions</text><text x="1035" y="330" font-size="36" fill="#1B1611" text-anchor="start">Relevant evidence</text><path d="M1080 430 C1080 560 700 565 620 490" fill="none" stroke="#3D5BA0" stroke-width="3" /><path d="M625 510 L620 490 L641 492" fill="none" stroke="#3D5BA0" stroke-width="3" /><text x="890" y="580" font-size="38" fill="#3D5BA0" text-anchor="middle">Save the decision</text></svg>
-```
-
-::: notes
-Analogy: context is working memory, files are persistent storage. An index helps find the relevant notes without loading everything. This is deliberate external memory management, not a guarantee of automatic recall. Save decisions with their assumptions and links to evidence. Results should be traceable to their inputs and configuration.
-:::
-
-## Skills make procedures reusable {#skills}
-
-```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="An annotated skill document containing a trigger, scientific conventions, validation checks, and supporting scripts" font-family="EB Garamond, Georgia, serif"><text x="90" y="85" font-size="44" fill="#3F8278" text-anchor="start">Procedure, on demand</text><path d="M210 150 H760 L825 215 V560 H210 Z" fill="none" stroke="#C5B89E" stroke-width="3" /><path d="M760 150 V215 H825" fill="none" stroke="#C5B89E" stroke-width="3" /><text x="255" y="215" font-size="36" fill="#7A6F5C" text-anchor="start">SKILL.md</text><text x="255" y="295" font-size="48" fill="#3F8278" text-anchor="start">Fit a likelihood</text><path d="M255 342 H665" fill="none" stroke="#C5B89E" stroke-width="5" /><path d="M255 364 H595" fill="none" stroke="#C5B89E" stroke-width="5" /><path d="M255 452 H690" fill="none" stroke="#C5B89E" stroke-width="5" /><path d="M255 474 H615" fill="none" stroke="#C5B89E" stroke-width="5" /><path d="M255 496 H655" fill="none" stroke="#C5B89E" stroke-width="5" /><rect x="250" y="390" width="525" height="35" fill="#3F8278" opacity="0.12"/><path d="M850 215 H955" fill="none" stroke="#7A6F5C" stroke-width="2" /><text x="990" y="227" font-size="40" fill="#7A6F5C" text-anchor="start">When to use it</text><path d="M850 315 H955" fill="none" stroke="#3F8278" stroke-width="2" /><text x="990" y="327" font-size="40" fill="#3F8278" text-anchor="start">Scientific conventions</text><path d="M850 410 H955" fill="none" stroke="#3F8278" stroke-width="2" /><text x="990" y="422" font-size="40" fill="#3F8278" text-anchor="start">Known-case checks</text><path d="M850 510 H955" fill="none" stroke="#3D5BA0" stroke-width="2" /><text x="990" y="522" font-size="40" fill="#3D5BA0" text-anchor="start">Scripts + references</text><text x="255" y="610" font-size="38" fill="#7A6F5C" text-anchor="start">Versioned · inspectable · reusable</text></svg>
-```
-
-::: notes
-Skills package procedural guidance, often with references and helper scripts. They are instructions supplied to the model, not a guarantee that each step will execute. The selected scientific example is illustrative. Put checks in executable tools or hooks where reliable execution matters.
-:::
-
-## Plugins package a working environment {#plugins}
-
-```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="An open research kit containing different components: procedural skills, callable tools, and event hooks" font-family="EB Garamond, Georgia, serif"><text x="80" y="85" font-size="46" fill="#3F8278" text-anchor="start">One installable research kit</text><path d="M170 275 L270 195 H610 L665 245 H1410 L1290 565 H170 Z" fill="none" stroke="#C5B89E" stroke-width="3" /><rect x="260" y="180" width="300" height="300" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="288" y="245" font-size="44" fill="#3F8278" text-anchor="start">Skills</text><text x="288" y="300" font-size="34" fill="#7A6F5C" text-anchor="start">Procedures</text><path d="M290 345 H505" fill="none" stroke="#3F8278" stroke-width="3" /><path d="M290 373 H485" fill="none" stroke="#3F8278" stroke-width="3" /><path d="M290 401 H465" fill="none" stroke="#3F8278" stroke-width="3" /><rect x="655" y="140" width="300" height="300" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="683" y="205" font-size="44" fill="#3D5BA0" text-anchor="start">Tools</text><text x="683" y="260" font-size="34" fill="#7A6F5C" text-anchor="start">Data + compute</text><text x="685" y="350" font-size="56" fill="#3D5BA0" text-anchor="start">&gt;_ </text><path d="M775 330 H890" fill="none" stroke="#3D5BA0" stroke-width="4" /><rect x="1050" y="100" width="300" height="300" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="1078" y="165" font-size="44" fill="#BC4538" text-anchor="start">Hooks</text><text x="1078" y="220" font-size="34" fill="#7A6F5C" text-anchor="start">Event checks</text><path d="M1085 320 H1315" fill="none" stroke="#BC4538" stroke-width="3" /><circle cx="1145" cy="320" r="11" fill="#BC4538" /><path d="M1145 310 V275 H1255" fill="none" stroke="#BC4538" stroke-width="3" /><path d="M170 400 H1290 V565 H170 Z" fill="none" stroke="#3F8278" stroke-width="3" /><rect x="173" y="403" width="1114" height="159" fill="#FBF6E9" /><text x="220" y="495" font-size="48" fill="#3F8278" text-anchor="start">Research environment</text><text x="1430" y="605" font-size="34" fill="#7A6F5C" text-anchor="end">Contents vary by harness</text></svg>
-```
-
-::: notes
-Plugin is a packaging concept; exact contents and discovery vary across harnesses. A plugin can bundle tools, skills, and configuration. It does not add autonomous judgment by itself. Scientific example: analysis guidance alongside connectors or command wrappers that expose the relevant data and compute.
-:::
-
-## Hooks make checks event-driven {#hooks}
-
-```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="A file edit interrupts the normal timeline with configured checks; failure returns actionable diagnostics for repair" font-family="EB Garamond, Georgia, serif"><text x="80" y="90" font-size="42" fill="#7A6F5C" text-anchor="start">Inside the harness</text><path d="M90 290 H1510" fill="none" stroke="#C5B89E" stroke-width="5" /><circle cx="150" cy="290" r="12" fill="#3D5BA0" /><text x="150" y="355" font-size="40" fill="#3D5BA0" text-anchor="middle">Read</text><circle cx="490" cy="290" r="12" fill="#3D5BA0" /><text x="490" y="355" font-size="40" fill="#3D5BA0" text-anchor="middle">Edit</text><circle cx="1390" cy="290" r="12" fill="#3D5BA0" /><text x="1390" y="355" font-size="40" fill="#3D5BA0" text-anchor="middle">Continue</text><path d="M620 290 V155 H1120 V290" fill="none" stroke="#3F8278" stroke-width="5" /><text x="870" y="115" font-size="44" fill="#3F8278" text-anchor="middle">Configured hook</text><circle cx="680" cy="155" r="10" fill="#3F8278" /><circle cx="1050" cy="155" r="10" fill="#3F8278" /><text x="865" y="218" font-size="38" fill="#3F8278" text-anchor="middle">Units · known cases</text><path d="M1120 290 V485 H490 V390" fill="none" stroke="#BC4538" stroke-width="4" /><path d="M477 410 L490 390 L503 410" fill="none" stroke="#BC4538" stroke-width="3" /><text x="830" y="535" font-size="38" fill="#BC4538" text-anchor="middle">Failure → diagnostic → repair</text><text x="1480" y="610" font-size="36" fill="#7A6F5C" text-anchor="end">Event-triggered execution</text></svg>
+<rect x="70" y="125" width="220" height="150" fill="#3F8278" fill-opacity=".17" stroke="#3F8278" stroke-width="2"/><text x="180.0" y="210.0" font-size="32" text-anchor="middle" fill="#3F8278">System prompt</text><rect x="290" y="125" width="220" height="150" fill="#3F8278" fill-opacity=".17" stroke="#3F8278" stroke-width="2"/><text x="400.0" y="210.0" font-size="32" text-anchor="middle" fill="#3F8278">Tool definitions</text><rect x="510" y="125" width="230" height="150" fill="#947126" fill-opacity=".17" stroke="#947126" stroke-width="2"/><text x="625.0" y="190.0" font-size="32" text-anchor="middle" fill="#947126">AGENTS.md /</text><text x="625.0" y="230.0" font-size="32" text-anchor="middle" fill="#947126">CLAUDE.md</text><rect x="740" y="125" width="125" height="150" fill="#3D5BA0" fill-opacity=".17" stroke="#3D5BA0" stroke-width="2"/><text x="802.5" y="210.0" font-size="32" text-anchor="middle" fill="#3D5BA0">User</text><rect x="865" y="125" width="170" height="150" fill="#BC4538" fill-opacity=".17" stroke="#BC4538" stroke-width="2"/><text x="950.0" y="210.0" font-size="32" text-anchor="middle" fill="#BC4538">Model</text><rect x="1035" y="125" width="205" height="150" fill="#7A6F5C" fill-opacity=".17" stroke="#7A6F5C" stroke-width="2"/><text x="1137.5" y="210.0" font-size="32" text-anchor="middle" fill="#7A6F5C">Tool result</text>
+<g class="fragment" data-fragment-index="0">
+<rect x="1240" y="125" width="240" height="150" fill="#7A6F5C" fill-opacity=".17" stroke="#7A6F5C" stroke-width="2"/>
+<text x="1360" y="210" font-size="32" text-anchor="middle" fill="#7A6F5C">File contents</text>
+<g class="fragment fade-out" data-fragment-index="1"><path d="M1360 350 V290" fill="none" stroke="#7A6F5C" stroke-width="3" marker-end="url(#context-arrow)"/>
+<text x="1360" y="400" font-size="38" text-anchor="middle">Read a file</text>
+<text x="1360" y="450" font-family="IBM Plex Mono,monospace" font-size="32" text-anchor="middle" fill="#7A6F5C">≈ malloc()</text>
+</g></g>
+<g class="fragment" data-fragment-index="1">
+<path d="M740 295 V325 H1480 V295 M1110 325 V365" fill="none" stroke="#7A6F5C" stroke-width="3"/>
+<text x="1110" y="415" font-family="IBM Plex Mono,monospace" font-size="40" text-anchor="middle">lossy_compress()</text>
+<path d="M1110 445 V485 H930 V565" fill="none" stroke="#7A6F5C" stroke-width="3" marker-end="url(#context-arrow)"/>
+<text x="70" y="535" font-size="43">Fresh context</text>
+<rect x="70" y="580" width="1560" height="150" rx="6" fill="none" stroke="#C5B89E" stroke-width="3"/>
+<rect x="70" y="580" width="220" height="150" fill="#3F8278" fill-opacity=".17" stroke="#3F8278" stroke-width="2"/><text x="180.0" y="665.0" font-size="32" text-anchor="middle" fill="#3F8278">System prompt</text><rect x="290" y="580" width="220" height="150" fill="#3F8278" fill-opacity=".17" stroke="#3F8278" stroke-width="2"/><text x="400.0" y="665.0" font-size="32" text-anchor="middle" fill="#3F8278">Tool definitions</text><rect x="510" y="580" width="230" height="150" fill="#947126" fill-opacity=".17" stroke="#947126" stroke-width="2"/><text x="625.0" y="645.0" font-size="32" text-anchor="middle" fill="#947126">AGENTS.md /</text><text x="625.0" y="685.0" font-size="32" text-anchor="middle" fill="#947126">CLAUDE.md</text><rect x="740" y="580" width="380" height="150" fill="#947126" fill-opacity=".17" stroke="#947126" stroke-width="2"/><text x="930.0" y="665.0" font-size="32" text-anchor="middle" fill="#947126">Compacted summary</text>
+</g>
+</svg>
 ```
 
 ::: notes
-A configured hook runs on a defined harness event. Unlike a skill asking the model to remember a check, the trigger lives in the surrounding software. Whether a hook can block a tool or completion depends on the harness and event. Example is deliberately generic; a check still needs a scientifically meaningful assertion.
+Context is a finite working set, analogous to RAM. Show the session's accumulating sequence:
+system prompt, user messages, model responses and tool results. Empty capacity stays unlabeled.
+First advance: a read tool returns file contents, occupying context. The malloc analogy is
+about consuming a finite working budget, not literal allocation: tokens are not addressable RAM,
+and reading generally appends content rather than reserving an independently freeable block.
+Second advance: compaction summarizes the history into a fresh model context after the system
+prompt. This can continue the same user-facing session; it need not create a new chat.
+The drawing is schematic: implementations may preserve recent turns and tool state as well.
+Summarization is lossy. Keep consequential decisions and evidence in durable files.
 :::
 
-## Delegate a piece of work without losing the thread {#delegation}
+## Cache rules everything around me {#prompt-caching}
 
 ```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:40px" font-family="EB Garamond,Georgia,serif"><path d="M220 300 H550 M710 300 H980" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><circle cx="140" cy="300" r="80" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="140" y="312" text-anchor="middle" font-size="36" fill="#BC4538">You</text><circle cx="630" cy="300" r="80" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="630" y="312" text-anchor="middle" font-size="36" fill="#3F8278">Agent</text><text x="1090" y="245" text-anchor="middle" font-size="40" fill="#1B1611">Read · write · run</text><text x="1090" y="325" text-anchor="middle" font-size="34" fill="#1B1611">Code · tools · results</text><g class="fragment"><path d="M630 385 Q630 520 910 520" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><circle cx="1000" cy="520" r="80" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1000" y="532" text-anchor="middle" font-size="36" fill="#3D5BA0">Worker</text><text x="1280" y="450" text-anchor="middle" font-size="36" fill="#1B1611">A bounded question</text><text x="1280" y="525" text-anchor="middle" font-size="32" fill="#1B1611">Literature · code search</text><text x="1280" y="570" text-anchor="middle" font-size="32" fill="#1B1611">Implementation · review</text></g></svg>
+<svg viewBox="0 0 1700 850" style="width:100%;margin-top:10px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif" role="img" aria-label="Turn-based caching costs: an initial prompt, a follow-up with prefix reuse, and a later turn with mostly cached history.">
+<text x="850" y="42" text-anchor="middle" font-size="40" fill="#1B1611">Astra &amp; Fable 5.1 — base input $10 / Mtok</text>
+<text x="320" y="108" text-anchor="middle" font-size="38" fill="#947126">Cache write 1.25×</text>
+<text x="850" y="108" text-anchor="middle" font-size="38" fill="#3F8278">Cache read 0.025–0.1×</text>
+<text x="1400" y="108" text-anchor="middle" font-size="38" fill="#3D5BA0">Output 5×</text>
+<text x="850" y="155" text-anchor="middle" font-size="34" fill="#7A6F5C">Cache lifetime: 5–60 min</text>
+<path d="M55 185 H1645" stroke="#C5B89E" stroke-width="1.72"/><g class="fragment" data-fragment-index="0"><text x="65" y="230" text-anchor="start" font-size="38" fill="#1B1611">Turn 1</text><rect x="65" y="270" width="577.92" height="65" rx="3" fill="#947126" fill-opacity=".12" stroke="#947126" stroke-width="1.72"/><text x="353.96" y="313" text-anchor="middle" font-size="30" fill="#1B1611">Instructions + tools</text><rect x="642.92" y="270" width="24.08" height="65" rx="3" fill="#947126" fill-opacity=".12" stroke="#947126" stroke-width="1.72"/><text x="654.96" y="261" text-anchor="middle" font-size="30" fill="#1B1611">User</text><text x="366" y="376" text-anchor="middle" font-size="36" fill="#1B1611"><tspan fill="#1B1611">$1 × </tspan><tspan fill="#947126">1.25 = $1.25</tspan></text><text x="692.8" y="313" text-anchor="middle" font-size="36" fill="#1B1611">→</text><rect x="718.6" y="270" width="120.4" height="65" rx="3" fill="#3D5BA0" fill-opacity=".12" stroke="#3D5BA0" stroke-width="1.72"/><text x="778.8" y="313" text-anchor="middle" font-size="30" fill="#1B1611">Assistant</text><text x="718.6" y="376" text-anchor="start" font-size="36" fill="#1B1611"><tspan fill="#1B1611">$0.20 × </tspan><tspan fill="#3D5BA0">5 = $1.00</tspan></text><text x="869" y="313" text-anchor="start" font-size="40" fill="#1B1611">$2.25</text></g><g class="fragment" data-fragment-index="1"><text x="65" y="435" text-anchor="start" font-size="38" fill="#1B1611">Turn 2</text><rect x="65" y="475" width="602" height="65" rx="3" fill="#3F8278" fill-opacity=".12" stroke="#3F8278" stroke-width="1.72"/><text x="366" y="518" text-anchor="middle" font-size="30" fill="#1B1611">Instructions + tools + User</text><text x="366" y="581" text-anchor="middle" font-size="36" fill="#3F8278"><tspan fill="#1B1611">$1 × </tspan><tspan fill="#3F8278">0.1 = $0.10</tspan></text><rect x="667" y="475" width="120.4" height="65" rx="3" fill="#947126" fill-opacity=".12" stroke="#947126" stroke-width="1.72"/><text x="727.2" y="518" text-anchor="middle" font-size="30" fill="#1B1611">Assistant</text><text x="727.2" y="581" text-anchor="middle" font-size="34" fill="#947126">$0.25</text><rect x="787.4" y="475" width="24.08" height="65" rx="3" fill="#947126" fill-opacity=".12" stroke="#947126" stroke-width="1.72"/><text x="799.44" y="466" text-anchor="middle" font-size="30" fill="#1B1611">User</text><text x="799.44" y="581" text-anchor="middle" font-size="30" fill="#947126">$0.05</text><text x="837.28" y="518" text-anchor="middle" font-size="36" fill="#1B1611">→</text><rect x="863.08" y="475" width="120.4" height="65" rx="3" fill="#3D5BA0" fill-opacity=".12" stroke="#3D5BA0" stroke-width="1.72"/><text x="923.28" y="518" text-anchor="middle" font-size="30" fill="#1B1611">Assistant</text><text x="923.28" y="581" text-anchor="middle" font-size="34" fill="#3D5BA0">$1.00</text><text x="1013.48" y="518" text-anchor="start" font-size="40" fill="#1B1611">$1.40</text></g><g class="fragment" data-fragment-index="2"><text x="65" y="640" text-anchor="start" font-size="38" fill="#1B1611">Turn 5</text><rect x="65" y="680" width="1035.44" height="65" rx="3" fill="#3F8278" fill-opacity=".12" stroke="#3F8278" stroke-width="1.72"/><text x="582.72" y="723" text-anchor="middle" font-size="30" fill="#1B1611">Instructions + conversation</text><text x="582.72" y="786" text-anchor="middle" font-size="36" fill="#3F8278">$0.172</text><rect x="1100.44" y="680" width="120.4" height="65" rx="3" fill="#947126" fill-opacity=".12" stroke="#947126" stroke-width="1.72"/><text x="1160.64" y="723" text-anchor="middle" font-size="30" fill="#1B1611">Assistant</text><text x="1160.64" y="786" text-anchor="middle" font-size="34" fill="#947126">$0.25</text><rect x="1220.84" y="680" width="24.08" height="65" rx="3" fill="#947126" fill-opacity=".12" stroke="#947126" stroke-width="1.72"/><text x="1232.88" y="671" text-anchor="middle" font-size="30" fill="#1B1611">User</text><text x="1232.88" y="786" text-anchor="middle" font-size="30" fill="#947126">$0.05</text><text x="1270.72" y="723" text-anchor="middle" font-size="36" fill="#1B1611">→</text><rect x="1296.52" y="680" width="120.4" height="65" rx="3" fill="#3D5BA0" fill-opacity=".12" stroke="#3D5BA0" stroke-width="1.72"/><text x="1356.72" y="723" text-anchor="middle" font-size="30" fill="#1B1611">Assistant</text><text x="1356.72" y="786" text-anchor="middle" font-size="34" fill="#3D5BA0">$1.00</text><text x="1446.92" y="723" text-anchor="start" font-size="40" fill="#1B1611">$1.472</text></g></svg>
+```
+
+<details><summary>Sources &amp; notes</summary>
+<p><a href="https://developers.openai.com/api/docs/guides/prompt-caching">OpenAI: prompt caching</a> (animation adapted from “What is the prompt cache?”); <a href="https://developers.openai.com/api/docs/pricing#text-tokens">OpenAI pricing</a>; <a href="https://platform.claude.com/docs/en/about-claude/pricing">Claude pricing</a>; <a href="https://x.com/trq212/status/2024574133011673516">Thariq: Prompt Caching Is Everything</a>.</p>
+<p>Rates checked September 17, 2026. Astra and Fable 5.1 both have $10/M base input, $12.50/M short-cache writes and $50/M output; cache reads are $1/M and $0.25/M respectively. Astra: standard short-context API pricing. Fable: five-minute cache writes; one-hour writes cost $20/M. Read multipliers are 0.1× and 0.025× respectively; output 5×. Prices exclude batch, fast mode, regional uplifts and other modifiers.</p>
+<p>Illustrative Astra short-context accounting: Turn 1 writes a 100k-token prefix ($1.25) and generates 20k output tokens ($1). Turn 2 hits the original 100k ($0.10), writes the previous 20k-token answer ($0.25) plus a 4k-token user follow-up ($0.05), and generates another 20k ($1). Turn 5 continues the same pattern: its cached prefix is 100k + 3 × 24k = 172k tokens ($0.172), followed by the latest 20k-token assistant answer ($0.25 write), a 4k-token user addition ($0.05 write), and 20k output ($1). Turns 3–4 are omitted; each adds 24k tokens to the next cached prefix. All bars share a linear scale of 6.02 SVG units per 1,000 tokens. The initial prefix consists of 96k instructions/tool tokens and a 4k user message; arrows are fixed separators, not tokens. The example assumes the indicated cache hits; actual reusable boundaries depend on the service. Fable 5.1 read costs are one quarter of these Astra read costs. KV states, not a ready-made answer, are cached.</p>
+<p>Retention is model-specific: Astra's documented minimum is 30 minutes after write/reuse; Claude offers five-minute and one-hour writes. Older OpenAI in-memory caches typically last 5–10 minutes of inactivity, up to one hour.</p>
+</details>
+
+::: notes
+Stay at conversation-turn level. First show instructions, tools and the user's message being processed, followed by an answer. Advance: retain that prefix, append the answer and follow-up, and generate another answer. Cache reuse avoids reprocessing the matched history; new history and output still cost money. The boundary is schematic, not a promise that output is never cached. Final reveal gives representative multipliers relative to $10/M base input; exact per-model rates stay in Sources & notes. KV mechanics are supporting detail, not the on-slide explanation.
+:::
+
+## Benchmarks aren't everything {#cost-performance}
+
+<div style="font-size:42px;margin:20px 0 25px">…but it's important to think about cost versus performance.</div>
+
+<div style="width:calc(100% + 120px);margin:0 -60px;aspect-ratio:2464 / 946;overflow:hidden"><img src="images/artificial_analysis_cost_intelligence_2026_09_17.png" style="display:block;width:100%;max-width:none;max-height:none;height:auto;margin:-7.711% 0 0;border:0;box-shadow:none" alt="Artificial Analysis Intelligence Index versus cost per task, September 17, 2026. Cost is shown on a logarithmic axis."></div>
+
+<details><summary>Sources &amp; notes</summary>
+<p>Artificial Analysis, Intelligence Index vs. Cost per Intelligence Index Task. Chart downloaded September 17, 2026. Original full-resolution export; the chart retains its attribution and benchmark definitions.</p>
+</details>
+
+## Plugins allow you to customize your harness {#skills}
+
+```{=html}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1700 800" style="width:100%;margin-top:30px" font-family="EB Garamond,Georgia,serif" role="img" aria-label="A data visualization skill file tree alongside hooks placed on a session timeline.">
+<text x="50" y="55" font-size="48" fill="#3F8278">Skills</text>
+<text x="50" y="112" font-size="36">Lazy loading / progressive disclosure</text>
+<text x="890" y="55" font-size="48" fill="#BC4538">Hooks</text>
+<text x="890" y="112" font-size="36">Run code at session events</text>
+<path d="M825 25 V765" stroke="#C5B89E" stroke-width="2"/>
+<g font-family="monospace" font-size="32" fill="#1B1611">
+<text x="50" y="208">data-visualization/</text>
+<text x="105" y="274" fill="#3F8278">SKILL.md</text>
+<text x="105" y="340">references/</text>
+<text x="165" y="402">1d.md</text>
+<text x="165" y="464">2d.md</text>
+<text x="105" y="530">scripts/</text>
+<text x="165" y="592">colorblindcheck.py</text>
+<text x="105" y="658">assets/</text>
+<text x="165" y="720">colormap.json</text>
+</g>
+<path d="M70 225 V646 H90 M70 262 H90 M70 328 H90 M70 518 H90 M130 353 V453 H150 M130 391 H150 M130 544 V581 H150 M130 672 V709 H150" stroke="#C5B89E" stroke-width="2.5" fill="none"/>
+<path d="M925 185 V755 l-9 -17 m9 17 l9 -17" stroke="#7A6F5C" stroke-width="3" fill="none"/>
+<text transform="translate(891 482) rotate(-90)" text-anchor="middle" font-size="30" fill="#7A6F5C">Time</text>
+<g fill="#BC4538"><circle cx="925" cy="205" r="7"/><circle cx="925" cy="315" r="7"/><circle cx="925" cy="405" r="7"/><circle cx="925" cy="530" r="7"/><circle cx="925" cy="710" r="7"/></g>
+<g font-size="34" fill="#1B1611">
+<text x="955" y="216">Session start</text>
+<text x="955" y="326">User message</text>
+<text x="955" y="416">Before tool call</text>
+<rect x="950" y="440" width="210" height="54" rx="3" fill="#3F8278" fill-opacity=".12"/>
+<text x="978" y="479">Edit file</text>
+<text x="955" y="541">After tool call</text>
+<text x="955" y="721">Stop</text>
+</g>
+<path d="M1210 205 H1255 M1210 405 H1255 M1210 530 H1315" stroke="#BC4538" stroke-width="2"/>
+<g font-size="34" fill="#BC4538"><text x="1280" y="192" font-family="monospace" font-size="27">2 commits behind</text><text x="1280" y="230" font-family="monospace" font-size="27">origin</text><text x="1280" y="410" font-size="31">Block destructive action</text><text x="1335" y="541">Run a linter</text></g>
+<text x="1055" y="623" font-size="36" fill="#7A6F5C">⋮</text>
+</svg>
 ```
 
 ::: notes
-Start with user → main agent → tools. Advance adds a bounded worker with its own context. Examples include literature search, code investigation, review, and implementation. The main session carries the relationship with the user and integrates the result. Delegation is not necessarily parallel, and a returned summary is not proof of correctness.
+Skills load instructions and references on demand. The visualization directory is an illustrative example: read 1d.md or 2d.md when relevant, run colorblindcheck.py, and use the colormap asset. Hooks execute configured code at lifecycle events, for example injecting Git divergence status at session start, blocking a destructive action before a tool call, or linting after a file edit. Event names vary by harness. Plugins package these customizations.
+:::
+
+## Delegate to sub-agents for scoped work {#delegation}
+
+```{=html}
+<svg class="delegation-schematic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 680" style="width:100%;margin-top:40px" font-family="EB Garamond,Georgia,serif">
+<path d="M235 300 H535" fill="none" stroke="#C5B89E" stroke-width="3"/><circle cx="160" cy="300" r="75" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="160" y="312" text-anchor="middle" font-size="36" fill="#BC4538">You</text><circle cx="620" cy="300" r="85" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="620" y="312" text-anchor="middle" font-size="36" fill="#3F8278">Agent</text><g class="fragment"><path d="M705 300 Q900 300 1075 130" fill="none" stroke="#C5B89E" stroke-width="3"/><circle cx="1150" cy="130" r="75" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1150" y="142" text-anchor="middle" font-size="36" fill="#3D5BA0">Sub-agent</text></g><text x="800" y="603" text-anchor="middle" font-size="37"><tspan fill="#1B1611">Useful pattern: </tspan><tspan fill="#3F8278">strong model for discussion and planning</tspan></text>
+<text x="800" y="650" text-anchor="middle" font-size="37" fill="#3D5BA0">sub-agent for scoped exploration and implementation</text>
+</svg>
+```
+
+::: notes
+Start with user → main agent → tools. Advance adds a bounded worker with its own context. Examples include literature search, code investigation, review, and implementation. The main session carries the relationship with the user and integrates the result. Delegation is not necessarily parallel, and a returned summary is not proof of correctness. Separate context does not always mean a fork: Claude Code supports both full-history forks and fresh-context agents. This Codex session can inherit all, some, or none of the conversation. Two use cases: an independent side investigation, or a conversational lead delegating implementation and exploration. Model-cost allocation belongs on the following teams slide.
 :::
 
 ## Teams coordinate while the work is happening {#agent-teams}
 
 ```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:40px" font-family="EB Garamond,Georgia,serif"><circle cx="160" cy="310" r="75" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="160" y="322" text-anchor="middle" font-size="36" fill="#BC4538">You</text><circle cx="620" cy="310" r="85" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="620" y="322" text-anchor="middle" font-size="36" fill="#3F8278">Lead</text><path d="M235 310 H535" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><path d="M705 310 Q900 310 1075 130" fill="none" stroke="#3F8278" stroke-width="3" stroke-dasharray=""/><circle cx="1150" cy="130" r="75" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1150" y="142" text-anchor="middle" font-size="36" fill="#3D5BA0">Search</text><circle r="7" fill="#BC4538"><animateMotion dur="3s" repeatCount="indefinite" path="M705 310 Q900 310 1075 130"/></circle><circle r="6" fill="#3F8278"><animateMotion dur="4s" repeatCount="indefinite" path="M1075 130 Q900 310 705 310"/></circle><path d="M705 310 Q900 310 1255 330" fill="none" stroke="#3F8278" stroke-width="3" stroke-dasharray=""/><circle cx="1330" cy="330" r="75" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1330" y="342" text-anchor="middle" font-size="36" fill="#3D5BA0">Build</text><circle r="7" fill="#BC4538"><animateMotion dur="3s" repeatCount="indefinite" path="M705 310 Q900 310 1255 330"/></circle><circle r="6" fill="#3F8278"><animateMotion dur="4s" repeatCount="indefinite" path="M1255 330 Q900 310 705 310"/></circle><path d="M705 310 Q900 310 1025 525" fill="none" stroke="#3F8278" stroke-width="3" stroke-dasharray=""/><circle cx="1100" cy="525" r="75" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1100" y="537" text-anchor="middle" font-size="36" fill="#3D5BA0">Review</text><circle r="7" fill="#BC4538"><animateMotion dur="3s" repeatCount="indefinite" path="M705 310 Q900 310 1025 525"/></circle><circle r="6" fill="#3F8278"><animateMotion dur="4s" repeatCount="indefinite" path="M1025 525 Q900 310 705 310"/></circle><path d="M1195 190 Q1280 210 1305 250 M1280 390 Q1210 465 1165 490" fill="none" stroke="#7A6F5C" stroke-width="3" stroke-dasharray="7 8"/><text x="550" y="95" text-anchor="middle" font-size="40" fill="#1B1611">Direction · questions · evidence</text><text x="560" y="620" text-anchor="middle" font-size="38" fill="#1B1611">Steer while work is in flight</text><text x="620" y="438" text-anchor="middle" font-size="31" fill="#3F8278">Frontier judgment</text><text x="620" y="480" text-anchor="middle" font-size="31" fill="#7A6F5C">Design · decomposition</text><text x="1370" y="535" text-anchor="middle" font-size="31" fill="#3D5BA0">Scoped tasks</text><text x="1370" y="576" text-anchor="middle" font-size="31" fill="#7A6F5C">Lower-cost models</text></svg>
+<svg class="delegation-schematic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 680" style="width:100%;margin-top:40px" font-family="EB Garamond,Georgia,serif">
+<path d="M235 300 H535" fill="none" stroke="#C5B89E" stroke-width="3"/><circle cx="160" cy="300" r="75" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="160" y="312" text-anchor="middle" font-size="36" fill="#BC4538">You</text><circle cx="620" cy="300" r="85" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="620" y="312" text-anchor="middle" font-size="36" fill="#3F8278">Lead</text><path d="M705 300 Q900 300 1075 130" fill="none" stroke="#C5B89E" stroke-width="3"/><circle cx="1150" cy="130" r="75" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1150" y="142" text-anchor="middle" font-size="36" fill="#3D5BA0">Search</text><circle class="team-message" r="9" fill="#3F8278">
+<animateMotion dur="6s" begin="0s" repeatCount="indefinite" path="M705 300 Q900 300 1075 130" keyPoints="0;1;1;0;0" keyTimes="0;0.4;0.5;0.9;1" calcMode="linear"/>
+<animate attributeName="fill" values="#3F8278;#3D5BA0;#3F8278" keyTimes="0;0.5;1" calcMode="discrete" dur="6s" begin="0s" repeatCount="indefinite"/>
+</circle><path d="M705 300 H1255" fill="none" stroke="#C5B89E" stroke-width="3"/><circle cx="1330" cy="300" r="75" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1330" y="312" text-anchor="middle" font-size="36" fill="#3D5BA0">Build</text><circle class="team-message" r="9" fill="#3F8278">
+<animateMotion dur="6s" begin="-2s" repeatCount="indefinite" path="M705 300 H1255" keyPoints="0;1;1;0;0" keyTimes="0;0.4;0.5;0.9;1" calcMode="linear"/>
+<animate attributeName="fill" values="#3F8278;#3D5BA0;#3F8278" keyTimes="0;0.5;1" calcMode="discrete" dur="6s" begin="-2s" repeatCount="indefinite"/>
+</circle><path d="M705 300 Q900 300 1025 500" fill="none" stroke="#C5B89E" stroke-width="3"/><circle cx="1100" cy="500" r="75" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1100" y="512" text-anchor="middle" font-size="36" fill="#3D5BA0">Review</text><circle class="team-message" r="9" fill="#3F8278">
+<animateMotion dur="6s" begin="-4s" repeatCount="indefinite" path="M705 300 Q900 300 1025 500" keyPoints="0;1;1;0;0" keyTimes="0;0.4;0.5;0.9;1" calcMode="linear"/>
+<animate attributeName="fill" values="#3F8278;#3D5BA0;#3F8278" keyTimes="0;0.5;1" calcMode="discrete" dur="6s" begin="-4s" repeatCount="indefinite"/>
+</circle><circle class="team-message" r="9" fill="#BC4538">
+<animateMotion dur="6s" begin="-1s" repeatCount="indefinite" path="M235 300 H535" keyPoints="0;1;1;0;0" keyTimes="0;0.4;0.5;0.9;1" calcMode="linear"/>
+<animate attributeName="fill" values="#BC4538;#3F8278;#BC4538" keyTimes="0;0.5;1" calcMode="discrete" dur="6s" begin="-1s" repeatCount="indefinite"/>
+</circle><text x="800" y="635" text-anchor="middle" font-size="40" fill="#1B1611">Models now trained in multi-agent environments…</text></svg>
 ```
 
 ::: notes
 Message motion illustrates ongoing communication, not real telemetry. The lead can clarify scope, interrupt, redirect, and integrate emerging results; some systems also support peer messaging. This differs from fire-and-forget delegation. Shared goals, ownership, and communication discipline are necessary: more messages do not automatically mean better coordination. Preserve the user’s ability to steer. A strong, expensive lead can concentrate judgment in design and decomposition, giving lower-cost workers sufficiently clear task parameters. Model choice should follow task difficulty: review and ambiguous research can still need frontier intelligence. This is a useful allocation pattern, not a guarantee of lower total cost.
 :::
 
-## Parallel workers shorten independent work {#parallel-work}
+## Workflows express loops and parallelism on the fly {#generated-workflow}
 
 ```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:40px" font-family="EB Garamond,Georgia,serif"><text x="800" y="60" text-anchor="middle" font-size="42" fill="#1B1611">Independent work, overlapping time</text><text x="180" y="145" text-anchor="middle" font-size="36" fill="#7A6F5C">Serial</text><text x="180" y="355" text-anchor="middle" font-size="36" fill="#3F8278">Parallel</text><rect x="350" y="110" width="320" height="80" fill="#3D5BA0" fill-opacity=".15" stroke="#3D5BA0"/><text x="510" y="160" text-anchor="middle" font-size="34" fill="#3D5BA0">Literature</text><rect x="350" y="290" width="470" height="70" fill="#3D5BA0" fill-opacity=".15" stroke="#3D5BA0"/><text x="530" y="335" text-anchor="middle" font-size="34" fill="#3D5BA0">Literature</text><rect x="700" y="110" width="320" height="80" fill="#3F8278" fill-opacity=".15" stroke="#3F8278"/><text x="860" y="160" text-anchor="middle" font-size="34" fill="#3F8278">Code search</text><rect x="350" y="385" width="580" height="70" fill="#3F8278" fill-opacity=".15" stroke="#3F8278"/><text x="530" y="430" text-anchor="middle" font-size="34" fill="#3F8278">Code search</text><rect x="1050" y="110" width="320" height="80" fill="#BC4538" fill-opacity=".15" stroke="#BC4538"/><text x="1210" y="160" text-anchor="middle" font-size="34" fill="#BC4538">Review</text><rect x="350" y="480" width="390" height="70" fill="#BC4538" fill-opacity=".15" stroke="#BC4538"/><text x="530" y="525" text-anchor="middle" font-size="34" fill="#BC4538">Review</text><path d="M350 605 H1460" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><text x="1360" y="645" text-anchor="middle" font-size="32" fill="#1B1611">Time →</text><path d="M970 280 V565" fill="none" stroke="#7A6F5C" stroke-width="3" stroke-dasharray="6 8"/><text x="1180" y="430" text-anchor="middle" font-size="40" fill="#1B1611">Integrate the results</text><text x="1180" y="490" text-anchor="middle" font-size="32" fill="#7A6F5C">Dependencies · contention · cost</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 720" style="width:100%;margin-top:75px" font-family="EB Garamond,Georgia,serif"><defs><marker id="workflow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#7A6F5C" stroke-width="1.5"/></marker></defs><path d="M245 352 L340 207" fill="none" stroke="#7A6F5C" stroke-width="2.5" marker-end="url(#workflow-arrow)"/><path d="M245 352 H340" fill="none" stroke="#7A6F5C" stroke-width="2.5" marker-end="url(#workflow-arrow)"/><path d="M245 352 L340 497" fill="none" stroke="#7A6F5C" stroke-width="2.5" marker-end="url(#workflow-arrow)"/><path d="M590 207 L690 352" fill="none" stroke="#7A6F5C" stroke-width="2.5" marker-end="url(#workflow-arrow)"/><path d="M590 352 H690" fill="none" stroke="#7A6F5C" stroke-width="2.5" marker-end="url(#workflow-arrow)"/><path d="M590 497 L690 352" fill="none" stroke="#7A6F5C" stroke-width="2.5" marker-end="url(#workflow-arrow)"/><path d="M900 352 H1010" fill="none" stroke="#7A6F5C" stroke-width="2.5" marker-end="url(#workflow-arrow)"/><path d="M1240 352 H1340" fill="none" stroke="#7A6F5C" stroke-width="2.5" marker-end="url(#workflow-arrow)"/><rect x="20" y="310" width="225" height="85" rx="5" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="132.5" y="365" text-anchor="middle" font-size="36" fill="#BC4538">Task + criteria</text><rect x="340" y="165" width="250" height="85" rx="5" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="465.0" y="220" text-anchor="middle" font-size="36" fill="#3D5BA0">Candidate A</text><rect x="340" y="310" width="250" height="85" rx="5" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="465.0" y="365" text-anchor="middle" font-size="36" fill="#3D5BA0">Candidate B</text><rect x="340" y="455" width="250" height="85" rx="5" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="465.0" y="510" text-anchor="middle" font-size="36" fill="#3D5BA0">Candidate C</text><rect x="690" y="310" width="210" height="85" rx="5" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="795.0" y="365" text-anchor="middle" font-size="36" fill="#3F8278">Plan</text><rect x="1010" y="310" width="230" height="85" rx="5" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="1125.0" y="365" text-anchor="middle" font-size="36" fill="#3F8278">Implement</text><rect x="1340" y="310" width="230" height="85" rx="5" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="1455.0" y="365" text-anchor="middle" font-size="36" fill="#3D5BA0">Review</text><path d="M1455 405 V565 H1125 V405" fill="none" stroke="#7A6F5C" stroke-width="3" marker-end="url(#workflow-arrow)"/><text x="1290" y="615" text-anchor="middle" font-size="38">Iterate</text></svg>
 ```
 
 ::: notes
-Parallelization overlaps independent work. Schematic durations, not measured speedups. Join only when needed; the slowest required branch and integration cost limit the benefit. Avoid simultaneous conflicting writes; divide ownership or isolate workspaces. Extra workers spend extra resources. Independence and a plan for integrating evidence matter more than worker count.
-:::
-
-## Generate the workflow, then execute its rules {#generated-workflow}
-
-```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:40px" font-family="EB Garamond,Georgia,serif"><text x="800" y="55" text-anchor="middle" font-size="40" fill="#1B1611">Task → generated orchestration code → execution</text><rect x="30" y="275" width="230" height="75" rx="6" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="145.0" y="323" text-anchor="middle" font-size="32" fill="#BC4538">Task + criteria</text><path d="M260 312 L350 168" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><rect x="350" y="130" width="250" height="75" rx="6" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="475.0" y="178" text-anchor="middle" font-size="32" fill="#3D5BA0">Candidate A</text><path d="M600 168 L710 312" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><path d="M260 312 L350 313" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><rect x="350" y="275" width="250" height="75" rx="6" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="475.0" y="323" text-anchor="middle" font-size="32" fill="#3D5BA0">Candidate B</text><path d="M600 313 L710 312" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><path d="M260 312 L350 458" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><rect x="350" y="420" width="250" height="75" rx="6" fill="#FBF6E9" stroke="#3D5BA0" stroke-width="3"/><text x="475.0" y="468" text-anchor="middle" font-size="32" fill="#3D5BA0">Candidate C</text><path d="M600 458 L710 312" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><rect x="710" y="275" width="200" height="75" rx="6" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="810.0" y="323" text-anchor="middle" font-size="32" fill="#3F8278">Gather</text><path d="M910 312 L1010 200 M910 312 L1010 430" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><rect x="1010" y="160" width="240" height="75" rx="6" fill="#FBF6E9" stroke="#BC4538" stroke-width="3"/><text x="1130.0" y="208" text-anchor="middle" font-size="32" fill="#BC4538">Challenge</text><rect x="1010" y="390" width="240" height="75" rx="6" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="1130.0" y="438" text-anchor="middle" font-size="32" fill="#3F8278">Verify</text><path d="M1250 200 L1350 310 M1250 430 L1350 310" fill="none" stroke="#C5B89E" stroke-width="3" stroke-dasharray=""/><path d="M1410 235 L1490 310 L1410 385 L1330 310 Z" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/><text x="1410" y="320" text-anchor="middle" font-size="32" fill="#1B1611">Pass?</text><path d="M1490 310 H1560" fill="none" stroke="#3F8278" stroke-width="3" stroke-dasharray=""/><text x="1510" y="375" text-anchor="middle" font-size="32" fill="#1B1611">Accept</text><path d="M1410 235 V100 H300 V312" fill="none" stroke="#BC4538" stroke-width="3" stroke-dasharray=""/><text x="945" y="90" text-anchor="middle" font-size="32" fill="#BC4538">Revise · retry within budget</text><text x="800" y="590" text-anchor="middle" font-size="38" fill="#1B1611">Explicit dependencies · executable rules · inspectable control</text></svg>
-```
-
-::: notes
-A task-specific program can define scatter/gather, adversarial review, checks, conditional retry, and acceptance. The forward dependency graph is DAG-like; the retry edge makes the overall program a loop, not literally a DAG. The orchestration is explicit code, while individual model calls remain stochastic. A failure can trigger bounded revision or human escalation. Link to the October 2025 Agent Builder image: graphs remain useful; code generation makes it practical to construct one for this task. People can inspect, modify, and approve its rules. This is one route toward coordinated swarms, not an inevitable evolution or a promise that model-generated orchestration is correct.
+Fan out candidate approaches and plan from their results. Implement the selected approach, review it, and iterate between implementation and review. The orchestration can be generated for the task and inspected as code.
 :::
 
 ## With great output comes great chaos {#experiment-record}
@@ -370,12 +527,12 @@ A task-specific program can define scatter/gather, adversarial review, checks, c
 <g transform="translate(740 210) rotate(17)" color="#BC4538"><use href="#slop-page"/><path d="M22 112 V48 M22 112 H129 M30 97 L49 87 L65 96 L87 57 L105 69 L122 40" fill="none" stroke="currentColor" stroke-width="3"/></g>
 <g transform="translate(495 392) rotate(13)" color="#7A6F5C"><use href="#slop-page"/><text x="13" y="62" font-size="28" fill="currentColor">final_final</text><text x="13" y="99" font-size="28" fill="currentColor">.ipynb</text></g>
 <g transform="translate(780 435) rotate(-11)" color="#3F8278"><use href="#slop-page"/><text x="15" y="65" font-size="28" fill="currentColor">chain.npy</text><path d="M16 91 H129 M16 108 H129" stroke="currentColor" stroke-width="2"/></g>
-<text x="545" y="620" font-size="36" fill="#BC4538" text-anchor="middle">100 files · 20 experiments</text>
+<text x="545" y="620" font-size="36" fill="#BC4538" text-anchor="middle">100 files from 20 experiments</text>
 <path d="M990 55 V590" stroke="#C5B89E" stroke-width="2"/>
 <text x="1300" y="105" text-anchor="middle" font-size="40" fill="#1B1611">What belongs together?</text>
 <g font-size="37"><text x="1080" y="240" fill="#3D5BA0">Inputs</text><text x="1080" y="338" fill="#BC4538">Decisions</text><text x="1080" y="436" fill="#3F8278">Recipe → outputs</text></g>
 <path d="M1050 207 H1032 V448 H1050" fill="none" stroke="#7A6F5C" stroke-width="3"/>
-<text x="1300" y="560" text-anchor="middle" font-size="35" fill="#3F8278">Identity · lineage · evidence</text>
+
 </svg>
 ```
 
@@ -385,68 +542,58 @@ The slop cannon is a joke about unorganized throughput, not a claim that every g
 
 ## Lightcone Research {#lightcone}
 
-<div style="display:flex;align-items:center;gap:55px;margin-top:40px">
-<img src="images/lightcone_mark_blue.svg" style="width:150px;height:150px;border:0;box-shadow:none" alt="Lightcone logo">
-<div style="font-size:48px;line-height:1.3">An open ecosystem for science<br><a href="https://www.lightconeresearch.org/" style="font-size:34px">lightconeresearch.org</a></div>
+<div style="display:flex;align-items:center;gap:45px;margin-top:30px">
+<img src="images/lightcone_mark_blue.svg" style="width:125px;height:125px;border:0;box-shadow:none" alt="Lightcone logo">
+<div style="font-size:46px">An open ecosystem for science<br><a href="https://www.lightconeresearch.org/" style="font-size:34px">lightconeresearch.org</a></div>
 </div>
+
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:75px;margin-top:50px">
-<div style="border-top:4px solid #3F8278;padding-top:24px"><div style="font-size:49px;color:#3F8278">ASTRA</div><div style="font-size:35px;margin-top:12px">Specification + validator</div><div style="font-size:32px;margin-top:25px;color:#7A6F5C">Inputs · outputs · decisions · evidence</div><div style="font-size:34px;margin-top:22px">Reproducible · verifiable</div></div>
-<div style="border-top:4px solid #3D5BA0;padding-top:24px"><div style="font-size:49px;color:#3D5BA0">Lightcone tools</div><div style="font-size:35px;margin-top:12px">Agentic execution on that foundation</div><div style="font-size:32px;margin-top:25px;color:#7A6F5C">Skills · agents · hooks · workflows</div><div style="font-size:34px;margin-top:22px">Plan · execute · inspect</div></div>
+<div style="border-top:4px solid #3F8278;padding-top:24px"><div style="font-size:49px;color:#3F8278">ASTRA</div><div style="font-size:35px;margin-top:12px">Specification + validator</div><div style="font-size:32px;margin-top:25px;color:#7A6F5C">The scientific choices behind each result</div><div style="font-size:34px;margin-top:22px">A community standard (hopefully)</div></div>
+<div style="border-top:4px solid #3D5BA0;padding-top:24px"><div style="font-size:49px;color:#3D5BA0">Lightcone tools</div><div style="font-size:35px;margin-top:12px">Agentic execution on that foundation</div><div style="font-size:32px;margin-top:25px;color:#7A6F5C">Execute the specified analysis</div><div style="font-size:34px;margin-top:22px">Inspect the resulting artifacts</div></div>
 </div>
-<div style="display:flex;align-items:center;gap:28px;font-size:29px;color:#7A6F5C;margin-top:48px"><img src="images/cnrs_logo.svg" style="height:62px;border:0;box-shadow:none" alt="CNRS"><div>François Lanusse · Liam Parker<br>CNRS AISSAI · BIDS / UC Berkeley</div></div>
+<div style="display:flex;align-items:center;justify-content:center;gap:35px;font-size:29px;color:#7A6F5C;margin-top:65px"><img src="images/cnrs_logo.svg" style="height:75px;border:0;box-shadow:none" alt="CNRS"><span>CNRS AISSAI and BIDS / UC Berkeley</span><img src="images/berkeley_lightcone.svg" style="width:220px;height:80px;object-fit:contain;border:0;box-shadow:none" alt="UC Berkeley"></div>
 <details style="font-size:26px;color:#7A6F5C;margin-top:20px"><summary>Sources &amp; notes</summary><a href="https://www.lightconeresearch.org/about">Team &amp; institutions</a> · <a href="https://www.lightconeresearch.org/projects">Projects &amp; architecture</a> · <a href="https://astra-spec.org/">ASTRA specification</a></details>
 
 ::: notes
-Use the CNRS deck's ecosystem framing and shared branding. Co-led by François Lanusse and Liam Parker; based at CNRS AISSAI and BIDS / UC Berkeley. Two layers: ASTRA is the specification and validator for the scientific record; Lightcone tools provide agentic execution using that record. The official projects page describes lightcone-cli as the execution layer, with skills, agents, hooks, workflow support and execution manifests. A schema helps keep agents on track by making dependencies, decisions and evidence inspectable; it is not a guarantee of scientific correctness. No personal-membership line on the slide.
+ASTRA specifies the analysis; the agent implements it. ASTRA is a specification and validator, while Lightcone tools execute the analysis and expose its artifacts. Based at CNRS AISSAI and BIDS / UC Berkeley. Use the actual tutorial specifications to introduce the ASTRA structure; do not show a flattened top-level recipe sketch.
 :::
 
-## ASTRA records the analysis; the agent does the work {#astra-intro}
+## Live Demo: Measure Dark Energy in 15 Minutes {#tutorial-open}
 
-::: {style="display:flex;justify-content:center;align-items:center;gap:90px;margin-top:90px"}
-::: {style="width:44%"}
-```yaml
-# astra.yaml — machine-readable record
-inputs:      # what goes in
-outputs:     # what comes out
-recipes:     # how, exactly
-decisions:   # the choices that matter
-evidence:    # verified against sources
+```{=html}
+<div class="candle-demo">
+<div style="font-size:38px;text-align:center;line-height:1.45;margin-top:15px">Supernovae are standard candles:</div>
+<svg id="candle-plot" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 620" style="width:100%;height:620px" font-family="EB Garamond,Georgia,serif" role="img" aria-label="Standard candles on a distance–redshift plot, with a flat LCDM prediction controlled by Omega Lambda">
+<defs><radialGradient id="candle-glow"><stop offset="0" stop-color="#FFC857" stop-opacity=".8"/><stop offset="1" stop-color="#FFC857" stop-opacity="0"/></radialGradient></defs>
+<g id="candle-axes"></g>
+<path id="candle-prediction" fill="none" stroke="#3F8278" stroke-width="5"/>
+<g id="candle-observations"></g>
+<text x="850" y="605" text-anchor="middle" font-size="36">Redshift (cosmic expansion)</text>
+<text transform="translate(75 300) rotate(-90)" text-anchor="middle" font-size="36">Distance (from brightness)</text>
+</svg>
+<div style="display:flex;align-items:center;justify-content:center;gap:30px;font-size:40px;color:#3F8278"><label for="candle-omega">ΩΛ</label><input id="candle-omega" aria-label="Omega Lambda" type="range" min="0" max="1" step="0.01" value="0.7" style="width:650px;accent-color:#3F8278"></div>
+</div>
 ```
-:::
-::: {style="width:40%"}
-```bash
-uv tool install astra-tools
-
-claude plugin install \
-  astra@lightcone-research
-```
-:::
-:::
-
-<details style="font-size:26px;color:#7A6F5C;margin-top:10px"><summary>Sources &amp; notes</summary><a href="https://astra-spec.org/">ASTRA specification</a></details>
 
 ::: notes
-Two pieces of infrastructure, both installable in one line. ASTRA is a format — a YAML file that
-is a machine-readable record of an analysis: its inputs, its outputs, the recipes that connect
-them, and — the part I'll spend the most time on — the consequential methodological decisions, with
-evidence that gets verified against the literature. ASTRA runs nothing; it validates and inspects.
-The runner is the agent — the harness you just met. And the plugin teaches your agent the format:
-the judgment about what counts as a decision, how to parameterize choices, when to split an
-analysis. You install these two things, start your agent in an empty directory, and everything from
-here on is prompts.
+Type Ia supernovae are standardizable candles. Their calibrated luminosity and apparent brightness give luminosity distance. Spectra give redshift; the distance–redshift relation constrains expansion history. The candles stay fixed as the model prediction changes. The tutorial uses actual Union2.1 measurements to fit Omega_Lambda.
 :::
 
+## Give your agent Lightcone tools {#installation}
 
-## Bring your agent; add Lightcone {#installation}
+<div style="font-size:36px;color:#1B1611;margin:22px 0 32px">If you don't have <code>uv</code> (Python package and project manager) installed:</div>
 
-<div style="font-size:28px;color:#7A6F5C;margin:22px 0">Prerequisites: uv · Git · Claude Code or Codex installed and signed in</div>
+```{.bash code-line-numbers="false"}
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.local/bin:$PATH"
+```
 
-::: {.columns}
-::: {.column width="56%"}
-**Terminal setup · choose your agent**
+<div style="font-size:36px;margin-top:24px">Install <code>lightcone-cli</code>:</div>
 
 ```{.bash code-line-numbers="false"}
 uv tool install lightcone-cli==0.5.0rc2
+mkdir -p /tmp/lightcone-demo
+cd /tmp/lightcone-demo
 ```
 
 **Claude Code**
@@ -455,8 +602,6 @@ uv tool install lightcone-cli==0.5.0rc2
 claude plugin marketplace add LightconeResearch/agent-skills
 claude plugin install lightcone@lightcone-research
 ```
-
-
 **Codex**
 
 ```{.bash code-line-numbers="false"}
@@ -465,46 +610,16 @@ codex plugin add lightcone@lightcone-research
 ```
 
 
+<details><summary>Sources &amp; notes</summary>
 
-:::
-::: {.column width="44%"}
-**Optional · JupyterLab + chat**
+[uv installer](https://docs.astral.sh/uv/getting-started/installation/) · [Lightcone plugins](https://github.com/LightconeResearch/agent-skills)
 
-```{.bash code-line-numbers="false"}
-uv venv ~/.lightcone-lab
-source ~/.lightcone-lab/bin/activate
-uv pip install jupyterlab nodejs-wheel \
-  'jupyterlab-lightcone[ai]==0.0.6'
-npm install --prefix "$VIRTUAL_ENV" \
-  @agentclientprotocol/claude-agent-acp \
-  @agentclientprotocol/codex-acp
-export PATH="$VIRTUAL_ENV/node_modules/.bin:$PATH"
-jupyter lab
-```
-
-<div style="font-size:25px">Includes Node + npm · macOS / Linux shell</div>
-:::
-:::
-
-<details style="font-size:25px;margin-top:20px"><summary>Sources &amp; notes</summary>
-
-[Lightcone plugins](https://github.com/LightconeResearch/agent-skills) · [Jupyter AI setup](https://jupyter-ai.readthedocs.io/en/latest/getting-started.html)
-
-The CLI includes astra-tools; the Lightcone plugin bundles ASTRA guidance and hooks. Start a fresh agent session after installation. Node/npm are supplied by the community-maintained [nodejs-wheel](https://pypi.org/project/nodejs-wheel/) package in an isolated environment.
+The CLI block creates and enters `/tmp/lightcone-demo`, reusing it if it already exists. Run the setup and your chosen agent in the same terminal. Copy out results you want to keep before the operating system clears temporary files. The uv installer and CLI use their standard user-level installation locations. The CLI includes astra-tools; the Lightcone plugin bundles ASTRA guidance and hooks. Start a fresh agent session after installation. Create the analysis with prompt 1 before opening JupyterLab.
 
 </details>
 
-## Measure dark energy in fifteen minutes {.section-divider #tutorial-open}
 
-<div style="text-align:center;margin-top:90px;font-size:48px">580 supernovae · one parameter · an inspectable analysis</div>
-<div style="text-align:center;margin-top:75px;font-size:32px"><a href="https://lightconeresearch.github.io/agent-skills/latest/astra/">ASTRA tutorial</a></div>
-
-::: notes
-A deliberately simple problem lets the audience watch execution, provenance, verification,
-and methodological choices. Fifteen-minute live tutorial budget; the full exercise can take longer.
-:::
-
-## 1 · Kick off an analysis with Lightcone {#step-spec}
+## 1. Kick off an analysis with Lightcone {#step-spec}
 
 ::: {.live-pair}
 ::: {.live-left}
@@ -513,7 +628,7 @@ I'd like to use Lightcone tools to analyze the Union2.1 supernova compilation fr
 
 Please produce two outputs: the best fit Omega_Lambda with uncertainties, and a downstream Hubble diagram figure with an absolute panel and a residuals panel. As you go, briefly walk me through each ASTRA element that you add; this is a live tutorial! Don't add any decisions yet.
 
-<a class="prompt-source" data-copy-url href="https://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt">Union2.1 data · SCPUnion2.1_mu_vs_z.txt ↗</a>
+<a class="prompt-source" data-copy-url href="https://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt">Union2.1 catalogue ↗</a>
 :::
 :::
 ::: {.live-right}
@@ -552,7 +667,38 @@ being the thing you hand-wire to being an artifact the agent maintains.
 :::
 
 
-## 2 · Did we reproduce the published result? {#step-verify}
+## View the analysis in JupyterLab {#tutorial-viewer}
+
+
+```{.bash code-line-numbers="false"}
+uv venv .venv
+source .venv/bin/activate
+uv pip install jupyterlab nodejs-wheel \
+  'jupyterlab-lightcone[ai]==0.0.6'
+npm install --prefix "$VIRTUAL_ENV" \
+  @agentclientprotocol/claude-agent-acp \
+  @agentclientprotocol/codex-acp
+export PATH="$VIRTUAL_ENV/node_modules/.bin:$PATH"
+jupyter lab
+```
+
+
+<details><summary>Sources &amp; notes</summary>
+
+[Jupyter AI setup](https://jupyter-ai.readthedocs.io/en/latest/getting-started.html) · [Node and npm package](https://pypi.org/project/nodejs-wheel/)
+
+Optional viewer and chat setup for macOS/Linux. The project already exists when the viewer opens. Keep analysis files in the project directory and installed packages in its `.venv` subfolder. If prompt 1 created a project subdirectory, enter that directory first. These commands do not create a second temporary workspace. Both Claude Code and Codex ACP adapters are installed; continue using the terminal agent if preferred.
+
+</details>
+
+::: notes
+The tutorial sequence is agent setup → prompt 1 creates the analysis → open the project in
+JupyterLab → inspect outputs → prompt 2 → prompt 3. Jupyter is a viewer and optional chat surface,
+not a prerequisite for starting the analysis. Launch it from the actual ASTRA project root.
+:::
+
+
+## 2. Did we reproduce the published result? {#step-verify}
 
 ::: {.live-pair}
 ::: {.live-left}
@@ -598,7 +744,7 @@ that should scare you: we're *too* confident.
 :::
 
 
-## 3 · What changes when we include systematics? {#step-decision}
+## 3. What changes when we include systematics? {#step-decision}
 
 ::: {.live-pair}
 ::: {.live-left}
@@ -608,7 +754,7 @@ Let's improve our systematics treatment to reproduce their published result. Tra
 :::
 ::: {.live-right}
 ::: {.watch-head}
-add a decision · covariance treatment
+Choose the covariance treatment
 :::
 ```yaml
 decisions:
@@ -648,323 +794,183 @@ of them written down. ASTRA writes them down.
 
 
 
-## Give the agent a task, not just a question {#longhorizon-tasks}
+## Just talk to the model {#reusable-practice}
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:100px;margin-top:110px">
-<div style="border-top:4px solid #C5B89E;padding-top:35px"><div style="font-size:36px;color:#7A6F5C">An answer</div><div style="font-size:52px;margin-top:35px">How would I fit this?</div></div>
-<div style="border-top:4px solid #3F8278;padding-top:35px"><div style="font-size:36px;color:#3F8278">A piece of work</div><div style="font-size:52px;margin-top:35px">Fit · check · report</div><div style="font-size:36px;margin-top:45px">Inputs · authority · acceptance criteria</div></div>
+<div style="display:grid;grid-template-columns:40% 57%;gap:3%;align-items:center;margin-top:65px">
+<div style="font-size:43px;line-height:1.4">
+<p class="fragment" data-fragment-index="0">Convey intent rather than commands.</p>
+<p class="fragment" data-fragment-index="1" style="margin-top:55px">Voice / transcription is faster and gives the model a richer picture of your intent.</p>
+<p class="fragment" data-fragment-index="2" style="margin-top:55px">Meeting transcripts are a goldmine.</p>
+</div>
+<svg class="fragment" data-fragment-index="2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 760" style="width:100%" font-family="EB Garamond,Georgia,serif" role="img" aria-label="A meeting with decisions A and B and open question C becomes a VTT transcript, then pull requests A and B and report C">
+<defs><marker id="meeting-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M1 1 L7 4 L1 7" fill="none" stroke="#7A6F5C" stroke-width="1.4"/></marker></defs>
+<ellipse cx="220" cy="215" rx="145" ry="68" fill="#E3E9E1" stroke="#3F8278" stroke-width="3"/>
+<g fill="#FBF6E9" stroke="#3F8278" stroke-width="3"><circle cx="95" cy="130" r="23"/><path d="M55 189 Q55 156 95 156 Q135 156 135 189"/><circle cx="220" cy="95" r="23"/><path d="M180 154 Q180 121 220 121 Q260 121 260 154"/><circle cx="345" cy="130" r="23"/><path d="M305 189 Q305 156 345 156 Q385 156 385 189"/></g>
+<g font-size="35"><text x="470" y="125" fill="#3F8278">Decision A</text><text x="470" y="185" fill="#3D5BA0">Decision B</text><text x="470" y="245" fill="#BC4538">Open question C</text></g>
+<path d="M160 208 H280 M188 229 H250" stroke="#3F8278" stroke-width="3" opacity=".5"/>
+<path d="M430 282 V352" stroke="#7A6F5C" stroke-width="3" marker-end="url(#meeting-arrow)"/>
+<path d="M270 365 H560 L600 405 V495 H270 Z M560 365 V405 H600" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/>
+<text x="435" y="444" text-anchor="middle" font-size="34" fill="#1B1611" font-family="monospace">meeting.vtt</text>
+<g fill="none" stroke="#7A6F5C" stroke-width="2.5" marker-end="url(#meeting-arrow)"><path d="M435 500 V545 Q435 570 170 590 V630"/><path d="M435 500 V630"/><path d="M435 500 V545 Q435 570 710 590 V630"/></g>
+<g font-size="34" text-anchor="middle"><text x="170" y="680" fill="#3F8278">Pull request A</text><text x="435" y="680" fill="#3D5BA0">Pull request B</text><text x="710" y="680" fill="#BC4538">Report C</text></g>
+</svg>
 </div>
 
 ::: notes
-Return to the hurdle introduced by the clipboard: chatting with Claude is not yet delegating
-execution. Asking questions remains useful for learning and reflection; the limitation is having
-to carry every action between the answer and the world. A task gives the system permission,
-tools, and a way to tell whether the work is acceptable. Long-horizon work needs checkpoints,
-budgets, and escalation rather than unlimited unattended action. No Shuttle demonstration needed.
+Open the post-tutorial discussion with conversation as a practical way to communicate intent.
+Voice and transcription make it easier to share the context, uncertainty, and motivations
+that can be lost when compressing a request into a short command.
 :::
 
-## Turn repeated work into a reusable practice {#reusable-practice}
+## Have the model write everything down {#wiki-primitive}
 
 ```{=html}
-<svg viewBox="0 0 1600 650" style="width:100%;margin-top:60px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif">
-<g fill="none" stroke="#C5B89E" stroke-width="3"><path d="M100 200 Q230 90 360 200 T620 200"/><path d="M100 320 Q230 210 360 320 T620 320"/><path d="M100 440 Q230 330 360 440 T620 440"/></g>
-<g font-size="38" fill="#7A6F5C" text-anchor="middle"><text x="350" y="90">Repeated manual effort</text><text x="350" y="560">Same task · another session</text></g>
-<path d="M750 100 L750 580" stroke="#C5B89E" stroke-width="2"/>
-<path d="M950 145 H1330 L1410 225 V540 H950 Z M1330 145 V225 H1410" fill="#FBF6E9" stroke="#3F8278" stroke-width="3"/>
-<g font-size="40" fill="#3F8278"><text x="990" y="270">Procedure</text><text x="990" y="365">Executable checks</text><text x="990" y="460">Evidence + examples</text></g>
-<text x="1180" y="90" font-size="38" fill="#1B1611" text-anchor="middle">Capture the generalizable part</text>
-<text x="1180" y="610" font-size="34" fill="#7A6F5C" text-anchor="middle">Version · reuse · improve</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 760" style="width:100%;margin-top:20px" font-family="EB Garamond,Georgia,serif" role="img" aria-label="Linked notes carry a low-ell binning fix from multi-probe cosmology to cosmic shear systematics">
+<defs><marker id="wiki-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto-start-reverse"><path d="M1 1 L7 4 L1 7" fill="none" stroke="#3F8278" stroke-width="1.3"/></marker></defs>
+<text x="800" y="55" text-anchor="middle" font-size="44">Searchable LLM wikis</text>
+<text x="90" y="125" font-size="35" fill="#3F8278">Multi-probe cosmology</text>
+
+<g fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"><rect x="80" y="245" width="650" height="145" rx="8"/><rect x="80" y="455" width="650" height="145" rx="8"/></g>
+<g font-size="32" fill="#1B1611"><text x="105" y="285" fill="#3F8278">[[Spectrum bias]]</text><text x="105" y="330">“…missing low-ℓ mode coupling…”</text><text x="105" y="370" fill="#3F8278">→ [[Low-ℓ binning fix]]</text><text x="105" y="495" fill="#3F8278">[[Low-ℓ binning fix]]</text><text x="105" y="540">“…extend bins to low ℓ to avoid bias…”</text><text x="105" y="580" fill="#3F8278">← [[Spectrum bias]]</text></g>
+<path d="M405 396 V448" stroke="#3F8278" stroke-width="2" marker-start="url(#wiki-arrow)" marker-end="url(#wiki-arrow)"/>
+<text x="100" y="655" font-size="30" fill="#7A6F5C">Experiments, prompts → linked records</text>
+<g class="fragment" data-fragment-index="0">
+<text x="875" y="125" font-size="35" fill="#3D5BA0">Cosmic shear systematics</text>
+<g fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"><rect x="870" y="245" width="650" height="145" rx="8"/><rect x="870" y="455" width="650" height="145" rx="8"/></g>
+<g font-size="32" fill="#1B1611"><text x="895" y="285" fill="#3D5BA0">[[Shear power spectrum]]</text><text x="895" y="330">“…check the binning at low ℓ…”</text><text x="895" y="370" fill="#3D5BA0">→ [[Mode-coupling checks]]</text><text x="895" y="495" fill="#3D5BA0">[[Mode-coupling checks]]</text><text x="895" y="540">“…test recovery with extended bins…”</text><text x="895" y="580" fill="#3D5BA0">← [[Shear power spectrum]]</text></g>
+<path d="M1195 396 V448" stroke="#3F8278" stroke-width="2" marker-start="url(#wiki-arrow)" marker-end="url(#wiki-arrow)"/>
+</g>
+<g class="fragment" data-fragment-index="1" fill="none" stroke="#BC4538" stroke-width="3" stroke-dasharray="8 7"><path d="M735 315 Q800 220 865 315"/><path d="M735 520 Q800 600 865 520"/></g>
+<g class="fragment" data-fragment-index="1" text-anchor="middle" font-size="35" fill="#BC4538"><text x="800" y="708">“Apply the mode-coupling binning fix</text><text x="800" y="748">we used in the multi-probe cosmology project.”</text></g>
 </svg>
 ```
 
 ::: notes
-Cail's practical aspiration: when a task repeats, stop doing the same handwork and teach the
-system the reusable procedure. A skill or script captures instructions; tests and reference
-cases capture what success means. Not every first attempt deserves automation: stabilize the
-scientific intent before generalizing. Reliability comes from the surrounding engineering,
-not from pretending stochastic model output is deterministic. Keep human review for choices
-that cannot be adequately checked automatically.
+Cail’s cross-project example: in multi-probe cosmology, extending bins to low multipoles
+addressed mode-coupling bias from contributions not represented by the truncated coupling
+matrix. That fix also informed the cosmic shear project. The displayed snippets are condensed
+illustrations of this finding, not verbatim quotes from the project records. Reveal the second
+project, then the request to retrieve and apply the earlier fix. No blinded numerical results.
 :::
 
-## Search, inspect, follow the thread {#search-as-action}
+## Iterate on long-horizon work {#iteration}
+
+<div style="margin-top:120px;font-size:48px;line-height:1.4">
+<div style="display:flex;align-items:center;gap:50px"><span>“Check your work”</span><span style="color:#3F8278">→</span><span>Task / environment engineering</span></div>
+<p style="margin-top:60px">Define testable requirements<br>so you can focus on higher-level questions.</p>
+<p style="margin-top:50px">Workflows allow iteration with separate contexts<br>(independent review).</p>
+</div>
+
+::: notes
+“Check your work” becomes useful when the task and environment provide ways to evaluate it.
+A workflow can separate implementation and review contexts. Separate contexts do not guarantee
+unbiased judgment: models may still share systematic blind spots.
+:::
+
+## Ask for HTML reports {#review-reports}
 
 ```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:50px" font-family="EB Garamond,Georgia,serif"><text x="90" y="80" font-size="48" fill="#1B1611">“Why did we change the covariance?”</text><path d="M120 150 V540 H1450" fill="none" stroke="#C5B89E" stroke-width="3"/><circle cx="180" cy="540" r="9" fill="#3F8278"/><text x="150" y="605" font-size="34" fill="#1B1611">Search</text><circle cx="650" cy="540" r="9" fill="#3F8278"/><text x="620" y="605" font-size="34" fill="#1B1611">Inspect</text><circle cx="1190" cy="540" r="9" fill="#3F8278"/><text x="1160" y="605" font-size="34" fill="#1B1611">Follow</text><text x="155" y="245" font-size="36" fill="#3F8278">grep · filenames · indexes</text><text x="155" y="305" font-size="34" fill="#1B1611">covariance / systematics</text><g class="fragment"><path d="M570 190 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="590" y="290" font-size="34" fill="#1B1611">Meeting notes</text><text x="585" y="425" font-size="34" fill="#3F8278">Decision → experiment 12</text></g><g class="fragment"><path d="M1080 190 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="1100" y="290" font-size="34" fill="#1B1611">Experiment 12</text><text x="1080" y="425" font-size="34" fill="#3F8278">Inputs · result · rationale</text><path d="M900 285 Q970 180 1080 285" fill="none" stroke="#3F8278" stroke-width="3"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 790" style="width:100%;margin-top:15px" font-family="EB Garamond,Georgia,serif" role="img" aria-label="Example report layout with executive summary, two plots, verification, and open questions or decisions needed">
+<rect x="20" y="15" width="1560" height="755" rx="12" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/>
+<text x="65" y="75" font-size="40" fill="#1B1611">Executive summary</text>
+
+<g stroke="#C5B89E" stroke-width="7" stroke-linecap="round"><path d="M65 108 H1260 M65 134 H995"/></g>
+
+<g stroke="#C5B89E" stroke-width="2" fill="none"><path d="M100 222 V435 H715 M875 222 V435 H1490"/></g>
+<path d="M110 409 Q310 270 705 241" stroke="#3F8278" stroke-width="4" fill="none"/>
+<g fill="#3D5BA0"><circle cx="145" cy="391" r="6"/><circle cx="235" cy="330" r="6"/><circle cx="325" cy="310" r="6"/><circle cx="415" cy="276" r="6"/><circle cx="505" cy="274" r="6"/><circle cx="595" cy="247" r="6"/><circle cx="685" cy="249" r="6"/></g>
+<path d="M880 325 H1480" stroke="#3F8278" stroke-width="2" stroke-dasharray="8 6"/>
+<g fill="#3D5BA0"><circle cx="910" cy="316" r="6"/><circle cx="1000" cy="342" r="6"/><circle cx="1090" cy="313" r="6"/><circle cx="1180" cy="332" r="6"/><circle cx="1270" cy="319" r="6"/><circle cx="1360" cy="335" r="6"/><circle cx="1450" cy="318" r="6"/></g>
+<path d="M65 480 H1530" stroke="#C5B89E" stroke-width="2"/>
+<text x="65" y="535" font-size="38">Verification</text>
+<g stroke="#C5B89E" stroke-width="7" stroke-linecap="round"><path d="M65 567 H1150 M65 591 H880"/></g>
+<path d="M65 620 H1530" stroke="#C5B89E" stroke-width="2"/>
+<text x="65" y="673" font-size="38">Open questions / decisions needed</text>
+<g stroke="#C5B89E" stroke-width="7" stroke-linecap="round"><path d="M65 707 H1040 M65 737 H795"/></g>
+</svg>
 ```
 
 ::: notes
-An illustrative retrieval episode, not a claim about a specific meeting. An agent can search, read, refine the query, and follow links. grep is a useful primitive; semantic retrieval and vector stores can still help. The point is iterative retrieval under the model’s control, not that one search technology makes all others obsolete. No historical popularity claim is needed.
-:::
-
-## A wiki gives knowledge an address {#wiki-primitive}
-
-```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:50px" font-family="EB Garamond,Georgia,serif"><path d="M610 215 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="630" y="315" font-size="34" fill="#1B1611">Covariance choices</text><path d="M80 65 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="100" y="165" font-size="34" fill="#1B1611">Meeting notes</text><path d="M80 395 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="100" y="495" font-size="34" fill="#1B1611">Paper + quotation</text><path d="M1160 65 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="1180" y="165" font-size="34" fill="#1B1611">Experiment record</text><path d="M1160 395 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="1180" y="495" font-size="34" fill="#1B1611">Project index</text><g stroke="#3F8278" stroke-width="3" fill="none"><path d="M420 165 Q540 165 610 290"/><path d="M420 495 Q540 495 610 350"/><path d="M950 290 Q1050 165 1160 165"/><path d="M950 350 Q1050 495 1160 495"/></g><text x="620" y="180" font-size="36" fill="#3F8278">A named, linked page</text><text x="585" y="585" font-size="36" fill="#1B1611">Index · links · sources · upkeep</text></svg>
-```
-
-::: notes
-A wiki is an organizing primitive in the toolbox, not a complete external brain or a guarantee of recall. Named pages and indexes make knowledge findable; links preserve relationships; sources let claims be checked. Markdown files can serve this purpose without a dedicated wiki application. Keep raw records and provenance accessible, and update or mark stale summaries. This builds on the earlier working-memory versus persistent-storage distinction.
-:::
-
-## Past work becomes material for new work {#knowledge-compounds}
-
-```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;margin-top:50px" font-family="EB Garamond,Georgia,serif"><text x="80" y="75" font-size="42" fill="#7A6F5C">Accumulated work</text><path d="M80 130 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="100" y="230" font-size="34" fill="#1B1611">Project A · a method</text><path d="M80 390 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="100" y="490" font-size="34" fill="#1B1611">Project B · a caveat</text><path d="M440 225 Q740 225 880 335 M440 485 Q740 485 880 335" stroke="#C5B89E" stroke-width="3" fill="none"/><circle cx="900" cy="335" r="13" fill="#BC4538"/><text x="670" y="120" font-size="44" fill="#1B1611">A new question</text><g class="fragment"><path d="M920 335 H1120" stroke="#3F8278" stroke-width="4"/><path d="M1120 235 h300 l40 40 v160 h-340 Z m300 0 v40 h40" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="1140" y="335" font-size="34" fill="#1B1611">Candidate connection</text><text x="1120" y="520" font-size="34" fill="#3F8278">Trace back · test · retain</text></g><text x="545" y="605" font-size="42" fill="#1B1611">Searchable records × new questions</text></svg>
-```
-
-::: notes
-The compounding value is reusable knowledge: previous work can inform a question in another project. Cail describes using LLMs as a filesystem: remembering meaning approximately and asking the agent to recover the source. Cross-project synthesis is a possibility to investigate, not evidence that a proposed connection is correct. Keep the distinction between discovering a candidate and validating its applicability. No unverified mathematical breakthrough example is asserted.
-:::
-
-## Iteration needs a target and a stopping rule {#iteration}
-
-```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="Illustrative parameter-recovery error oscillates toward a target band across attempts and stops when tolerance is met" font-family="EB Garamond, Georgia, serif"><text x="90" y="75" font-size="44" fill="#1B1611" text-anchor="start">Parameter recovery</text><text x="1480" y="75" font-size="34" fill="#7A6F5C" text-anchor="end">Schematic</text><rect x="180" y="310" width="1130" height="80" fill="#3F8278" opacity="0.12"/><path d="M180 350 H1350" fill="none" stroke="#3F8278" stroke-width="2" stroke-dasharray="9 7"/><text x="1380" y="363" font-size="36" fill="#3F8278" text-anchor="start">Target</text><path d="M180 140 V530 H1500" fill="none" stroke="#C5B89E" stroke-width="3" /><text x="125" y="290" font-size="36" fill="#7A6F5C" text-anchor="middle">Error</text><text x="1490" y="585" font-size="38" fill="#7A6F5C" text-anchor="end">Attempts</text><path d="M215 185 L390 455 L565 260 L740 410 L915 320 L1090 357" fill="none" stroke="#3D5BA0" stroke-width="4" /><circle cx="215" cy="185" r="10" fill="#3D5BA0" /><text x="215" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">1</text><circle cx="390" cy="455" r="10" fill="#3D5BA0" /><text x="390" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">2</text><circle cx="565" cy="260" r="10" fill="#3D5BA0" /><text x="565" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">3</text><circle cx="740" cy="410" r="10" fill="#3D5BA0" /><text x="740" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">4</text><circle cx="915" cy="320" r="10" fill="#3D5BA0" /><text x="915" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">5</text><circle cx="1090" cy="357" r="10" fill="#3D5BA0" /><text x="1090" y="515" font-size="34" fill="#7A6F5C" text-anchor="middle">6</text><path d="M1090 150 V475" fill="none" stroke="#BC4538" stroke-width="2" stroke-dasharray="7 8"/><text x="1115" y="185" font-size="42" fill="#BC4538" text-anchor="start">Stop</text><text x="1115" y="240" font-size="36" fill="#BC4538" text-anchor="start">Tolerance met</text><text x="185" y="620" font-size="38" fill="#7A6F5C" text-anchor="start">Tolerance · budget · escalation</text></svg>
-```
-
-::: notes
-A loop is a way to spend more effort, not a guarantee of improvement. Define the goal, observable evaluation, stopping rule, and when to return to the human. Example: parameter recovery on synthetic data with a stated tolerance. Independent checks matter because repeating the same blind spot can reinforce it.
-:::
-
-## Verification lets attention move higher {#backpressure}
-
-```{=html}
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 650" style="width:100%;height:auto" role="img" aria-label="Candidate work passes through units, limiting cases, and parameter-recovery checks; failures return for repair and surviving results reach review" font-family="EB Garamond, Georgia, serif"><text x="90" y="75" font-size="42" fill="#3D5BA0" text-anchor="start">Scalable effort</text><text x="1450" y="75" font-size="42" fill="#BC4538" text-anchor="end">Scientific judgment</text><path d="M100 190 C280 155 350 215 580 190" fill="none" stroke="#3D5BA0" stroke-width="3" /><circle cx="105" cy="190" r="6" fill="#3D5BA0" /><path d="M100 260 C280 225 350 285 580 260" fill="none" stroke="#3D5BA0" stroke-width="3" /><circle cx="105" cy="260" r="6" fill="#3D5BA0" /><path d="M100 330 C280 295 350 355 580 330" fill="none" stroke="#3D5BA0" stroke-width="3" /><circle cx="105" cy="330" r="6" fill="#3D5BA0" /><path d="M100 400 C280 365 350 425 580 400" fill="none" stroke="#3D5BA0" stroke-width="3" /><circle cx="105" cy="400" r="6" fill="#3D5BA0" /><path d="M100 470 C280 435 350 495 580 470" fill="none" stroke="#3D5BA0" stroke-width="3" /><circle cx="105" cy="470" r="6" fill="#3D5BA0" /><path d="M600 135 V505" fill="none" stroke="#3F8278" stroke-width="7" /><text x="600" y="565" font-size="38" fill="#3F8278" text-anchor="middle">Units</text><path d="M850 135 V505" fill="none" stroke="#3F8278" stroke-width="7" /><text x="850" y="565" font-size="38" fill="#3F8278" text-anchor="middle">Limits</text><path d="M1100 135 V505" fill="none" stroke="#3F8278" stroke-width="7" /><text x="1100" y="565" font-size="38" fill="#3F8278" text-anchor="middle">Recovery</text><path d="M600 190 H1420 M600 400 H1420" fill="none" stroke="#3F8278" stroke-width="4" /><circle cx="1440" cy="190" r="14" fill="#3F8278" /><circle cx="1440" cy="400" r="14" fill="#3F8278" /><path d="M600 260 H850 M600 470 H850" fill="none" stroke="#3D5BA0" stroke-width="3" /><path d="M588 318 L612 342 M588 342 L612 318" fill="none" stroke="#BC4538" stroke-width="4" /><path d="M838 248 L862 272 M838 272 L862 248" fill="none" stroke="#BC4538" stroke-width="4" /><path d="M838 458 L862 482 M838 482 L862 458" fill="none" stroke="#BC4538" stroke-width="4" /><path d="M850 470 C850 635 250 640 130 530" fill="none" stroke="#BC4538" stroke-width="3" /><text x="320" y="610" font-size="38" fill="#BC4538" text-anchor="start">Repair</text><text x="1440" y="315" font-size="40" fill="#3F8278" text-anchor="middle">Review</text><text x="1000" y="625" font-size="38" fill="#7A6F5C" text-anchor="start">Checks encode decisions</text></svg>
-```
-
-::: notes
-Backpressure means actionable resistance to invalid progress: failed validation, withheld acceptance, or escalation. Engineering checks carries human decisions into repeated work, letting attention move to higher-level choices. Passing a test suite is not proof of scientific truth. Include model misspecification, held-out cases, provenance, and independent scientific review; do not optimize solely against an easy proxy.
+A report layout, not measured results. Request a real executive summary, plots side by side,
+verification evidence, and open questions or decisions needed. The report should link to actual
+artifacts and make failed or incomplete checks visible. Review the results rather than trusting
+presentation polish.
 :::
 
 ## Do you still need to read code? {#read-code}
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;margin-top:65px">
-<div style="font-size:42px;line-height:1.5"><div style="color:#3F8278;margin-bottom:40px">Understand the implementation</div><div>Ask for a walkthrough</div><div style="font-size:32px;color:#7A6F5C">Assumptions · data flow · examples</div><div style="margin-top:35px">Read the critical core</div><div style="font-size:32px;color:#7A6F5C">Likelihood · units · interfaces</div></div>
-<svg viewBox="0 0 720 530" xmlns="http://www.w3.org/2000/svg" style="width:100%"><rect x="20" y="20" width="680" height="480" rx="14" fill="#FBF6E9" stroke="#C5B89E" stroke-width="2"/><text x="55" y="75" fill="#7A6F5C" font-size="28" font-family="monospace">likelihood.py</text><g stroke="#C5B89E" stroke-width="9" stroke-linecap="round"><path d="M60 120 H310 M85 160 H490 M85 200 H380 M85 365 H460 M60 410 H295 M85 450 H370"/></g><rect x="40" y="233" width="640" height="98" fill="#E0EAE3" rx="5"/><text x="65" y="272" fill="#3F8278" font-size="26" font-family="monospace">r = data - model</text><text x="65" y="310" fill="#3F8278" font-size="26" font-family="monospace">chi2 = r.T @ solve(cov, r)</text></svg>
+<div style="margin-top:65px;font-size:44px;line-height:1.4">
+<p style="font-size:56px;color:#3F8278;margin-bottom:45px">Sometimes!</p>
+<ul style="margin:0;padding-left:45px">
+<li style="margin-bottom:32px">Define the high-level design before implementation<br><span style="font-size:36px">(product requirements document, etc.)</span></li>
+<li style="margin-bottom:32px">Grill the model until you understand what it does.<br>Diagrams help.</li>
+<li>Core code is worth reading.</li>
+</ul>
 </div>
 
 ::: notes
-Understanding is the obligation; line-by-line reading is one means. An agent walkthrough can
-be an effective entry point, but an explanation can be wrong too. Check explanations against
-actual source and behavior. Direct inspection is especially worthwhile where a small mistake
-propagates through the analysis: scientific assumptions, core interfaces, and shared primitives.
+Understand what the implementation does at a high level. Establish the design before delegating
+implementation; then question the model until its explanation makes sense. Diagrams can help.
+Read core code directly, especially fundamental architecture, scientific assumptions, and shared
+primitives. Model explanations remain something to check against the source and behavior.
 :::
 
-## Ask for a report you can inspect {#review-reports}
+## Choosing what to work on {#choice}
 
-<div style="display:grid;grid-template-columns:38% 58%;gap:4%;align-items:center;margin-top:45px">
-<div style="font-size:38px;line-height:1.7">HTML report<br><span style="color:#7A6F5C">Plots · comparisons<br>Checks · caveats<br>Links to artifacts</span></div>
-<div style="border:2px solid #C5B89E;border-radius:12px;background:#FBF6E9;padding:32px;box-shadow:0 8px 24px #1b161110">
-<div style="font-size:34px;border-bottom:1px solid #C5B89E;padding-bottom:18px">Analysis review <span style="float:right;font-size:23px;color:#7A6F5C">schematic</span></div>
-<svg viewBox="0 0 750 280" style="width:100%" xmlns="http://www.w3.org/2000/svg"><path d="M55 25 V230 H715" stroke="#C5B89E" fill="none" stroke-width="3"/><path d="M60 210 Q190 80 330 100 T710 40" fill="none" stroke="#3F8278" stroke-width="5"/><path d="M60 195 Q190 110 330 120 T710 65" fill="none" stroke="#BC4538" stroke-width="4" stroke-dasharray="10 8"/><text x="430" y="255" font-size="24" font-family="Georgia" fill="#7A6F5C">baseline / revised analysis</text></svg>
-<div style="display:flex;justify-content:space-between;font-size:28px;color:#7A6F5C;border-top:1px solid #C5B89E;padding-top:20px">Evidence <span>Open questions</span><span>Inspect files ↗</span></div>
-</div>
-</div>
+<div style="text-align:center;font-size:46px;margin-top:45px">Not all problems are equally scalable.</div>
 
-::: notes
-Programmatic checks do not replace looking at the results. Ask the agent to prepare a concise
-HTML report with real plots, comparisons, validation results, caveats, and links to the exact
-artifacts and code. Review those results yourself. A polished report is a review surface, not
-proof of correctness. The figure on this slide is explicitly schematic, not a scientific result.
-:::
-
-## Track the work, not the chat windows {#project-management}
-
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:25px;margin-top:80px;font-size:32px">
-<div style="border-top:4px solid #C5B89E;padding-top:20px">Ready<div class="work-card">Literature check<br><small>Scope · acceptance criteria</small></div></div>
-<div style="border-top:4px solid #3D5BA0;padding-top:20px">Running<div class="work-card">Covariance sweep<br><small>Progress · last checkpoint</small><div aria-hidden="true" style="height:8px;background:#DAD4C6;margin-top:22px"><div style="width:65%;height:100%;background:#3D5BA0"></div></div></div></div>
-<div style="border-top:4px solid #BC4538;padding-top:20px">Needs you<div class="work-card">Model comparison<br><small style="color:#BC4538">Which covariance?</small></div></div>
-<div style="border-top:4px solid #3F8278;padding-top:20px">Review<div class="work-card">Reproduction<br><small style="color:#3F8278">✓ Checks passed · report ready</small></div></div>
-</div>
-<div style="text-align:center;font-size:34px;margin-top:65px;color:#7A6F5C">One place to resume, inspect, and steer</div>
-
-<details><summary>Sources &amp; notes</summary><a href="https://openai.com/index/open-source-codex-orchestration-symphony/">OpenAI · Symphony</a> · <a href="https://github.com/openai/symphony">GitHub</a>. Symphony connects a project board such as Linear to isolated agent runs and returns evidence for review. The board above is a schematic research workflow, not a Symphony screenshot.</details>
-
-::: notes
-Long-running work makes concurrent tasks natural. Track objective, status, blockers, checkpoints,
-and the evidence needed for acceptance independently of individual chat windows. Symphony is
-an example of board-driven orchestration, not a required tool. Keep the personal tooling aside
-oral; no custom-system demonstration is needed here.
-:::
-
-## The meta-skill: knowing what is computationally tractable {#ball-2}
-
-::: {style="display:flex;justify-content:center;margin-top:110px"}
-::: {.quote-card style="max-width:1400px"}
-"if you can master the meta-skill of figuring out what problems in arbitrary domains are
-computationally tractable … you'll have refined heuristics for the right questions to ask about
-everything. … **this is probably the skill to have optimized for** … though I readily admit I don't
-know how long it will remain a human advantage. **it is for now though.**"
-
-::: {.quote-attrib}
-Dean W. Ball — August 8, 2026
-:::
-:::
-:::
-
-::: notes
-Second claim, and this one is about you. The scarce skill in this regime is not coding and it's
-not prompting — it's the meta-skill of looking at an arbitrary domain and knowing which of its
-problems are computationally tractable, and what question to ask to make progress along the
-margin. Master that and you get to be, in his phrase, a kind of meta-genius — for at least a year
-or two, maybe longer. Everyone in this room is unusually well positioned for this: physics-informed
-ML is *already* the discipline of knowing what physics can be pushed through computation. But
-notice the honesty of the last clause: he doesn't know how long it remains a human advantage. It is
-for now. The meta-skill is temporary — and that's not a reason for despair, it's a reason for
-urgency and, honestly, for joy: this is the window in which knowing how to do this makes you
-extraordinary.
-:::
-
-
-## The stake in the ground {#stake}
-
-::: {style="display:flex;justify-content:center;align-items:center;margin-top:160px"}
-::: {style="max-width:1400px;text-align:center;font-size:1.35em;line-height:1.45"}
-In five years, I expect frontier AI to be **better at astrophysics and cosmology than the vast
-majority of currently employed astrophysicists and cosmologists** — to the extent that the
-economics of our field are drastically changed.
-:::
-:::
-
-::: notes
-So let me put a stake in the ground — a concrete, falsifiable position you can hold me to. In five
-years, I expect frontier AI to be better at astrophysics and cosmology than the vast majority of
-currently employed astrophysicists and cosmologists — to the point that the economics of our field
-are drastically changed. I might be wrong! It's a prediction, and predictions about exponentials
-are hard in both directions. But notice that everything you saw today — the harness, the tutorial,
-the verified analysis — is the current state, distinct from this forecast. If you think I'm wrong,
-I'd genuinely love to argue about it in the discussion. If I'm right, then the interesting question
-isn't whether — it's what you personally do about it.
-:::
-
-
-## Pharmakon: we get to choose what science becomes {#pharmakon .vcenter}
-
-:::::::::::::: {.columns style="margin-top:0.85em;align-items:stretch"}
-::: {.column style="width:50%"}
-
-::: {style="height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:0.2em 1em;border-left:5px solid #7a6f5c"}
-[**AI science factories**]{style="font-size:1.08em"}
-
-::: {style="text-align:center"}
-![](images/competing_ai_scientists.png){.no-treat style="width:94%;border-radius:5px;box-shadow:0 8px 20px rgba(27,22,17,0.18)"}
-
-![](images/parallel_arxiv.png){.no-treat style="width:94%;border-radius:5px;box-shadow:0 8px 20px rgba(27,22,17,0.18);margin-top:0.22em"}
-:::
-
-::: {style="line-height:1.35"}
-[alienation from scientific labor]{style="color:#bc4538;font-size:1.0em"}<br>
-[discovery scales with capital, not expertise]{style="color:#bc4538;font-size:0.9em"}
-:::
-:::
-
-:::
-::: {.column style="width:50%"}
-
-::: {style="height:100%;display:flex;flex-direction:column;padding:0.2em 1.1em;border-left:5px solid #3F8278"}
-[**An economy of contribution**]{style="font-size:1.08em;color:#3F8278"}
-
-::: {style="flex:1;display:flex;flex-direction:column;justify-content:center;color:#1B1611;padding-bottom:2.5em"}
-[« …l'augmentation du savoir des travailleurs à travers un nouvel agencement entre la machine et le travailleur »]{style="display:block;text-align:center;font-size:0.98em;line-height:1.5;padding:0 0.2em"}
-
-[— Bernard Stiegler]{style="display:block;text-align:right;color:#3F8278;font-size:0.9em;letter-spacing:0.02em;margin-top:0.55em"}
-:::
-:::
-
-:::
-::::::::::::::
-
-::: notes
-~1.5 min. [Lifted from CNRS `#the-choice` — the frame is a DRAFT for you to make your own; the
-first-person passage at the end is yours, keep verbatim.] Before I put the choice to you personally,
-the collective version — and I get to use a Greek word in Crete. *Pharmakon*: the remedy that is
-also the poison, one dose, both faces at once. Which face science gets is not decided by the
-technology; it's decided by the practice we build around it.
-
-The poison — "AI science factories." Not hypothetical: papers already framed as *Competing with AI
-Scientists*, the John Henry race humans are built to lose; a *Parallel ArXiv* where agents write the
-papers and agents review them — a literature with no one in it. What's lost isn't jobs, it's the
-*doing* of science. And a structural loss underneath: once people are out of the loop, output is a
-function of capital — the labs have every incentive to stop selling the tools and do the science
-in-house. Discovery scales with capital, not expertise.
-
-The cure — same tools, different practice. The grunt work goes to the agents; the human is freed for
-the science that matters — you talk to the model, it hands you a plot, you argue about it with a
-colleague on a walk, and the argument becomes the next set of actions. Not agent fleets replacing
-people, not the lone genius — networks of humans amplified by agents. Stiegler called it an
-*économie de la contribution*: the machine augments the worker's knowledge rather than displacing it.
-
-[Cail's, verbatim:] This is not only about jobs. It is about keeping the part of the work we
-actually love — discovery. I would far rather spend this era in wonderful, beautiful discovery,
-amplified, than watch the work get slowly ripped from our hands by agent "competitors." If a day
-comes when there is nothing left for us to add, so be it — but I would rather enjoy the good times
-while they last, and shape the practice so people stay *in* it.
-:::
-
-
-## Choosing how to change {#revolutionizing-oneself}
-
-<blockquote style="font-size:54px;line-height:1.4;max-width:1350px;margin:100px auto 45px;border:0;box-shadow:none;background:none;text-align:left">“Of course I would rather not be swept away by the revolution. … I would rather be the one who revolutionizes myself.”</blockquote>
-
-<div style="text-align:center;font-size:30px;color:#7A6F5C">A DeepSeek kernel engineer · excerpt from the English translation</div>
-
-<details><summary>Sources &amp; notes</summary><a href="https://x.com/teortaxesTex/status/2099575222512836893">English translation posted by Teortaxes</a>. Translation credited in the post to Astra-xhigh. Ellipsis marks an omission. The author describes retaining a livelihood while potentially losing a beloved form of work; this is an ambivalent response, not an instruction to the audience. Original author identity has not been independently verified.</details>
-
-## Different practices, different sources of meaning {#choice}
-
-::: {style="display:flex;justify-content:center;margin-top:150px"}
 ```{=html}
-<svg viewBox="0 0 1560 580" style="width:1650px" xmlns="http://www.w3.org/2000/svg">
-  <!-- left: eddy -->
-  <g>
-    <path d="M 390 260 a 120 120 0 1 1 -6 -62" fill="none" stroke="#3D5BA0" stroke-width="6"/>
-    <path d="M 390 245 a 82 82 0 1 1 -8 -44" fill="none" stroke="#3D5BA0" stroke-width="5" opacity="0.7"/>
-    <path d="M 383 235 a 48 48 0 1 1 -10 -28" fill="none" stroke="#3D5BA0" stroke-width="4" opacity="0.45"/>
-    <text x="300" y="470" font-family="EB Garamond, serif" font-size="38" fill="#1B1611" text-anchor="middle" font-weight="600">find a protected eddy</text>
-    <text x="300" y="520" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">direct practice · craft · relationships</text>
-  </g>
-  <!-- right: wave -->
-  <g>
-    <path d="M 820 380 C 950 380, 1050 340, 1130 260 C 1190 200, 1230 150, 1260 120 C 1290 160, 1350 220, 1460 260"
-          fill="none" stroke="#3F8278" stroke-width="7"/>
-    <path d="M 820 420 C 970 420, 1090 390, 1190 330 C 1270 282, 1330 240, 1400 220"
-          fill="none" stroke="#3F8278" stroke-width="5" opacity="0.55"/>
-    <circle cx="1252" cy="128" r="12" fill="#BC4538"/>
-    <text x="1140" y="470" font-family="EB Garamond, serif" font-size="38" fill="#1B1611" text-anchor="middle" font-weight="600">ride the wave</text>
-    <text x="1140" y="520" font-family="EB Garamond, serif" font-size="30" fill="#7A6F5C" text-anchor="middle">delegation · verification · orchestration</text>
-  </g>
+<svg viewBox="0 0 1600 700" style="width:100%;margin-top:15px" xmlns="http://www.w3.org/2000/svg" font-family="EB Garamond,Georgia,serif" role="img" aria-label="One current rises into a wave while curling into a sheltered eddy; contrasting work limited by data, instruments or people with work that benefits from more computation">
+<defs><linearGradient id="choice-water" x1="0" x2="1"><stop offset="0" stop-color="#3D5BA0"/><stop offset="1" stop-color="#3F8278"/></linearGradient></defs>
+<!-- A single body of water: a slow recirculation beside an accelerating crest. -->
+<path d="M65 355 C210 340 300 395 470 390 C720 390 895 350 1030 220 C1125 125 1215 65 1320 105 C1390 133 1400 215 1345 235 C1320 245 1290 230 1295 202 C1340 253 1430 315 1535 330 L1535 480 C1190 515 785 500 450 490 C240 480 135 460 65 440 Z" fill="url(#choice-water)" opacity=".09"/>
+<g fill="none" stroke="url(#choice-water)" stroke-linecap="round">
+<path d="M65 355 C210 340 300 395 470 390 C720 390 895 350 1030 220 C1125 125 1215 65 1320 105 C1390 133 1400 215 1345 235 C1320 245 1290 230 1295 202" stroke-width="6"/>
+<path d="M65 397 C205 380 280 428 470 430 C720 430 960 385 1120 245 C1215 165 1260 158 1295 175" stroke-width="4" opacity=".65"/>
+<path d="M65 440 C230 455 320 480 510 470 C800 460 1030 450 1210 330 C1350 240 1420 335 1535 365" stroke-width="3" opacity=".4"/>
+<!-- The eddy joins the same current instead of sitting in a separate panel. -->
+<path d="M650 394 C535 368 540 255 410 225 C290 198 215 270 250 335 C285 395 455 405 480 320 C505 240 370 224 324 268 C275 315 354 364 411 334 C446 315 412 276 380 292" stroke-width="4"/>
+<path d="M580 416 C508 410 485 397 475 380" stroke-width="3" opacity=".5"/>
+</g>
+<g stroke="#7A6F5C" stroke-width="2" fill="none"><path d="M365 405 V530"/><path d="M1215 300 V530"/></g>
+<g fill="#1B1611" font-size="39" text-anchor="middle">
+<text x="365" y="585">Work limited by data,</text><text x="365" y="632">instruments, or people</text>
+<text x="1215" y="585">Work that benefits from</text><text x="1215" y="632">more computation</text>
+</g>
 </svg>
 ```
-:::
 
 ::: notes
-And here is the honest framing of that choice, because I want to be careful: neither path is bad —
-it depends on what you want. One real option: find a niche where things don't scale — where data is
-scarce, where the loop runs through hardware, through a wet lab, through people — and hold on a
-while longer. Those eddies exist and they are legitimate places to do beautiful science. The other:
-use exactly this window to become an expert in scaling — in the meta-skill — and move with the wave
-to see what comes next. What I'd argue against is only the default: drifting into one of these by
-not choosing. Think about the futures you'd actually want to live in — including the uncomfortable
-ones — so that you can genuinely advocate for what you want in the world.
+The distinction is the bottleneck: additional machine effort can directly advance some
+problems; others depend on obtaining data, building instruments, or sustained human interaction.
+These are not permanent categories, nor a ranking of scientific worth. A project may contain
+both. This connects the computational-tractability discussion to a personal choice about work,
+without predicting a safe niche or prescribing adoption. The following DeepSeek quotation
+provides one person's response to changing work, rather than a universal answer.
 :::
 
+## Closing thoughts {#revolutionizing-oneself}
 
-## Might as well enjoy it while the going's good {#close}
+<div style="font-size:46px;line-height:1.4;margin-top:65px">
+<p>The practice of doing research is being revolutionized.</p>
+<p style="margin-top:40px">Changing the way we work may allow us to raise our standards<br>and tackle more ambitious problems.</p>
+</div>
 
-::: {style="text-align:center;margin-top:180px"}
-[discovery · understanding · collaboration]{style="font-size:1.1em"}
-:::
+<div class="fragment">
+<blockquote style="font-size:44px;line-height:1.4;max-width:1450px;margin:85px auto 35px;border:0;box-shadow:none;background:none;text-align:left">
+“Of course I would rather not be swept away by the revolution.<br>But if I have to be, then I would rather be the one who revolutionizes myself.”
+</blockquote>
 
-::: {style="text-align:center;margin-top:120px;color:#7A6F5C;font-size:0.8em"}
-[cailmdaley.github.io/talks · lightconeresearch.github.io/agent-skills]{style="font-family:'IBM Plex Mono',monospace"}
-:::
+<div style="text-align:right;margin-right:75px;font-size:30px;color:#7A6F5C">A DeepSeek kernel engineer (English translation, excerpt)</div>
+</div>
+
+<details><summary>Sources &amp; notes</summary><a href="https://x.com/teortaxesTex/status/2099575222512836893">English translation posted by Teortaxes</a>. Translation credited in the post to Astra-xhigh. Quote wording supplied by Cail. Original author identity has not been independently verified. <a href="https://lightconeresearch.github.io/agent-skills/">Lightcone tutorial and agent skills</a>.</details>
 
 ::: notes
-Return to the opening choice about scientific practice. Cail finds this work enjoyable and
-wants others to have a concrete basis for choosing. Future capabilities remain an open question;
-do not frame the extinction of existing practices as settled or adoption as compulsory.
+Combine the final quotation and closing slide. Changing practice offers the possibility of
+higher standards and more ambitious work. The quotation is one personal response, not a demand
+to adopt these tools. Keep the audience's choice central.
 :::
-
 
 <!-- ═══════════════ BACKUP ═══════════════ -->
 

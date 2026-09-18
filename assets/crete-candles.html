@@ -1,0 +1,44 @@
+<script>
+(() => {
+  const svg = document.getElementById('candle-plot');
+  const slider = document.getElementById('candle-omega');
+  if (!svg || !slider) return;
+  const ns = 'http://www.w3.org/2000/svg';
+  function add(parent, name, attrs, text) {
+    const el = document.createElementNS(ns, name);
+    for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, value);
+    if (text !== undefined) el.textContent = text;
+    parent.appendChild(el); return el;
+  }
+  // Composite Simpson integration of flat-LCDM luminosity distance, in Gpc.
+  function distance(z, omega) {
+    const n = 120, h = z / n;
+    const f = t => 1 / Math.sqrt((1 - omega) * (1 + t) ** 3 + omega);
+    let sum = f(0) + f(z);
+    for (let i = 1; i < n; i++) sum += (i % 2 ? 4 : 2) * f(i * h);
+    return (1 + z) * 299792.458 / 70 / 1000 * h * sum / 3;
+  }
+  const x = z => 180 + z / 1.5 * 1300;
+  const y = d => 535 - d / 18 * 475;
+  const axes = document.getElementById('candle-axes');
+  add(axes, 'path', {d:'M180 50 V535 H1500',fill:'none',stroke:'#7A6F5C','stroke-width':3});
+  const observations = document.getElementById('candle-observations');
+  for (const z of [.12,.32,.55,.82,1.12,1.42]) {
+    const d = distance(z,.7), brightness = Math.pow(distance(.12,.7)/d,.32);
+    const g = add(observations,'g',{transform:`translate(${x(z)} ${y(d)})`});
+    add(g,'circle',{cx:0,cy:-18,r:24+brightness*24,fill:'url(#candle-glow)',opacity:.2+.8*brightness});
+    add(g,'path',{d:'M0 -42 C-4 -32 -12 -25 -8 -18 Q0 -8 8 -18 C12 -27 3 -34 0 -42',fill:'#E5AC37',opacity:.3+.7*brightness});
+    add(g,'rect',{x:-7,y:-12,width:14,height:27,rx:2,fill:'#FBF6E9',stroke:'#947126','stroke-width':2});
+    add(g,'circle',{cx:0,cy:0,r:3,fill:'#947126'});
+  }
+  function update() {
+    const omega = Number(slider.value);
+    document.getElementById('candle-prediction').setAttribute('d',Array.from({length:151},(_,i)=> {
+      const z=i/100; return `${i?'L':'M'}${x(z).toFixed(2)} ${y(distance(z,omega)).toFixed(2)}`;
+    }).join(' '));
+  }
+  slider.addEventListener('input',update);
+  slider.addEventListener('keydown',event=>event.stopPropagation());
+  update();
+})();
+</script>

@@ -56,3 +56,7 @@ Deployment is automatic: **pushing to `main` triggers `.github/workflows/publish
 - **Drafts:** `draft: true` in a talk's front matter keeps it out of the index listing, but the Action
   still renders it and serves it at its direct URL (`.../<talk>/<talk>.html`).
 - Live site: <https://cailmdaley.github.io/talks/>
+
+### Clean talk URLs
+Set `output-file: index.html` in each deck front matter so the public URL is
+`/talks/<talk-directory>/`, without repeating the talk name. Keep descriptive `.qmd` filenames.

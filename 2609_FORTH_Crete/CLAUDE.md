@@ -17,11 +17,24 @@ uses three substantial bullets; Cail approved this exception to the usual sparse
 ## What we are trying to convey
 
 This is a mixed tutorial and talk about scaling scientific labor, framed around three questions:
-1. What can we do with agentic science now?
-2. What do I want my scientific practice to be, given these capabilities?
-3. What will agentic science be able to do in the future, and where does that leave us?
+1. What can agentic systems accomplish now?
+2. What engineering constraints emerge from these systems?
+3. Which kinds of scientific labor scale under these constraints?
 
-The change of subject (we → I → agentic science) leaves a tension about agency implicit.
+The progression is capabilities → engineering primitives → scaling a research practice.
+After costs, separate the scaling argument from the engineering invitation. Slide six asks
+what this means for scaling personal research; its three bullets swap agentic/tokens for
+computational/computation on one advance, keeping “fixed capabilities” in both versions.
+That advance also reveals “Imagine being a ‘computer’ in the 1950s.” Use the NASA source in
+the slide notes: this was a gradual transition, with some human computers becoming programmers.
+Initial text is plain; changed computational terms are green. The next slide condenses the
+former four-slide transition into five established concepts (languages, IDEs, memory/disk,
+tests/CI, parallelization), each pointing to an open agentic-engineering question. Use real
+language and editor logos. The right-hand side is visibly provisional; subsequent slides
+develop partial answers. Retain the informed-choice goal as its last reveal. Optimism about
+more ambitious science and new ways of working stays in the spoken explanation. Keep the
+DeepSeek quote near the end. These bridges are intentional text-led exceptions.
+Leave the tension about agency implicit.
 Do not announce a predetermined loss of agency. Distinguish changes in the surrounding field
 from the personal choice of how to work. The tutorial offers practical experience to inform
 that choice, not an injunction to adopt agents. Cail usually finds this work very fun and
@@ -91,7 +104,13 @@ grimness**. Tutorial-style throughout; this is the closing keynote, permission t
    specifies and validates the analysis, while agents/execution tooling run it. The singularity
    slide is removed. The Bitter Lesson informs the engineering framing as an analogy, not a
    prediction that direct human practice becomes worthless.
-4. **The ASTRA tutorial (~15 min).** Exactly the tutorial at
+4. **The ASTRA tutorial (~15 min).** Setup is deliberately split: install the CLI and chosen
+   agent plugin, create a temporary workspace, then run prompt 1 in that agent. Only after the
+   analysis exists, install and open JupyterLab from the directory containing `astra.yaml`;
+   its environment goes in `.venv/`. Do not open an empty viewer before the project is set up.
+   Then continue with prompts 2 and 3.
+
+    Exactly the tutorial at
    <https://lightconeresearch.github.io/agent-skills/latest/astra/> (extract:
    `astra_tutorial_reference.md`): measure dark energy from 580 Union2.1 supernovae. Five steps:
    data → spec (astra.yaml) → run (Ω_Λ = 0.722 ± 0.013) → verify against Suzuki et al. 2012
@@ -178,7 +197,7 @@ The first practical hurdle is delegation of execution: using a chatbot for answe
 from giving a tool-equipped agent a bounded piece of work. Questions remain valuable; avoid
 implying inquiry itself is passive or inferior. The clipboard/harness pair makes the distinction.
 Before the tutorial: low-level components and context, then organization / Lightcone / ASTRA.
-After the tutorial: task versus question → reusable procedures → iteration → verification
+After the tutorial: talking to the model to convey intent → iteration → verification
 backpressure → meta-skill → stake → pharmakon → differing practices / meaning → enjoyment.
 Iteration and verification now generalize from the audience's actual tutorial experience.
 Repeated/generalizable work should become procedures plus checks when worth the investment;
@@ -186,7 +205,7 @@ reliability is engineered around stochastic output. Do not promise deterministic
 The task-board screenshots and duplicated CNRS practice/principles/science examples are backups,
 as are the information-science and simulation/RL detours. No Shuttle UI required in the main arc.
 
-Three exploratory slides follow reusable practice: iterative search → wiki as an addressable
+Three exploratory slides follow the conversation slide: iterative search → wiki as an addressable
 knowledge primitive → past work informing new questions. Keep this distinct from the earlier
 context-window mechanics. Wikis, plain files, grep, indexes, and semantic retrieval are tools
 that can be combined; no claim that grep universally replaces RAG. Sources and upkeep matter.
@@ -266,3 +285,79 @@ explanations are aids to scrutiny, not substitutes for checking actual behavior 
 
 Published URL: `https://cailmdaley.github.io/talks/2609_FORTH_Crete/`. The deck uses
 `output-file: index.html`; keep the source filename unchanged.
+
+The computing transition uses physics and astronomy as the historical example for an ML-heavy audience: simulation, inference, and ensembles; then the human edit/run/debug working environment; then agents operating that loop under engineered context, tools and checks. Avoid generic topic labels separated by centered dots. Prefer concrete scientific actions and constraints.
+
+Avoid the recurring “noun · noun · noun” caption pattern throughout the deck. Remove redundant slogans or replace them with a specific action, relationship, or example; swapping dots for commas does not fix it. Tutorial opening explains standardizable candles through brightness-derived distance and cosmological wavelength stretching, for an audience that includes non-physicists.
+
+The engineering comparison keeps only familiar concepts on the left (languages, storage, tests/CI, control flow, then IDEs). Paths mingle into an amorphous fog with a fuzzy question mark on the right: no answer boxes, row-by-row mappings, or introductory prose. The talk-goal reveal lives on a separate roadmap slide immediately after the scaling/computation analogy. Its three parts are emerging building blocks, a live small analysis, and high-level strategies. Frame the goal as informed choice: whether to engage, what labor to scale, and what to keep for oneself.
+
+The oracle-to-agent transition keeps the clipboard/code example, including a pasted error, then reveals the harness loop below: model, read/edit/bash, and results returning to the model. The following slide uses two loose logo clouds for IDEs and harnesses, without product names or pairings; minimal and extensible versus integrated is one bullet. Link the fuller Earendil explanation visibly beneath the simplified loop.
+
+Context is introduced as RAM through an accumulating session history. A file-read reveal illustrates consumption of capacity (a loose malloc analogy); compaction then produces a summary after the system prompt in a fresh context. Leave unused space unlabeled. This precedes prompt caching.
+
+The caching slide is titled “Cache rules everything around me” and visibly links Thariq’s essay and OpenAI’s guide. Use a simplified, credited GPT-5.6 implicit two-request example: 12k prefix reused plus 3k new tokens. Current docs specify 0.1× read / 1.25× write pricing and 30-minute minimum lifetime refreshed by use; do not present older 5–10 minute retention as the GPT-5.6 policy.
+
+The external-memory bridge is “Read only what you need, when you need it”: lazy loading ↔ progressive disclosure, with a static skill-description → instructions → specific reference illustration. Avoid the generic files-on-disk analogy and save/read loop.
+
+### Consolidated primitives (September 17)
+Skills, plugins, and hooks share one slide: a plugin bracket around a SKILL.md file tree
+(references, scripts, assets) and the major hook events. Keep guidance to the model distinct
+from configured event execution; avoid extra gloss. Delegation introduces scoped work. The
+following team slide carries the intelligent conversational lead / cheaper worker pattern.
+Subagents need not inherit the conversation: context initialization depends on harness and
+agent type. Combine parallelization and generated workflows into one diagram with fan-out,
+gather, review and bounded retry. No duplicate timeline or explanatory footer. Then retain
+the experiment-chaos → Lightcone → ASTRA introduction before the tutorial.
+
+Caching is taught at conversation-turn level: shared prefix, added history, new answer. Keep KV internals in notes. Reveal the second turn, then representative Astra/Fable API prices; avoid token-by-token decoding on the main slide.
+
+The post-tutorial section is being cut back. Remove the separate task-versus-question slide;
+open with “Talk to the model!” Keep only intent rather than commands
+and voice/transcription as a faster, richer way to communicate intent. Do not restore the
+reusable-procedure graphic or its explanatory captions on this slide.
+
+Post-tutorial wiki material is one visual slide, “Have the model write everything down”: audio
+transcripts, experiments, and prompts feed wikilink-style notes connected by backlinks. Replace
+the separate wiki and knowledge-compounding slides; keep explanatory prose off the slide.
+
+The wiki slide now starts with concrete, illustrative excerpts and explicit [[wikilinks]] in
+one project, reveals an unrelated project, then possible synthesis links. Keep transfer a
+question to test. Iteration is a sparse bridge from “Check your work” to task/environment
+engineering and separate review contexts; separate does not mean unbiased.
+
+Remove the standalone verification/backpressure slide from the closing. “Do you still need
+to read code?” answers “Sometimes!”: define the high-level design before implementation,
+grill the model until you understand (diagrams help), and read core code. No code illustration.
+
+Closing order: iterate on long-horizon work → ask for HTML reports → read code. Remove the
+project-management board slide. Iteration includes testable requirements that free attention
+for higher-level questions. The report slide is a full-slide report layout: executive summary,
+two plots, verification, then open questions / decisions needed.
+
+Closing cuts (September 18): remove the meta-skill, stake-in-the-ground prediction, and
+pharmakon slides. After code reading, proceed directly to “Choosing how to change,” then
+“Different practices, different sources of meaning,” and the closing slide.
+
+Report mockup: only section headings, text-shaped lines, and two plots. No plot captions,
+example verification claims, or “illustrative report” label. The DeepSeek slide uses Cail’s
+full supplied quotation, beginning “But whatever happens…” and ending “revolutionizes myself.”
+
+Remove “Search, inspect, follow the thread.” The wiki example now uses Cail’s actual transfer:
+multi-probe cosmology → cosmic shear systematics, extending bins to low ℓ to avoid missing
+mode-coupling contributions. Use condensed snippets and a prompt to retrieve/apply the earlier
+fix; do not imply the displayed snippets are verbatim project records.
+
+Final closing order: “Choosing what to work on” precedes the DeepSeek quotation. One connected
+wave/eddy graphic contrasts work limited by data, instruments, or people with work benefiting
+from more computation. One label per direction; headline “Not all problems are equally scalable.”
+Treat these as bottlenecks that can coexist in a project, not permanent safe/unsafe categories.
+
+The final two slides are merged into “Closing thoughts”: research practice is being
+revolutionized; changing how we work may raise standards and enable more ambitious problems.
+Then the DeepSeek quote begins “Of course I would rather not be swept away…”; omit its earlier
+paragraph and the separate enjoyment/link closing slide. Keep source and tutorial links in notes.
+
+Meeting transcripts now belong on “Talk to the model!”: a meeting with decisions A/B and
+open question C feeds meeting.vtt, then pull requests A/B and report C. Remove the duplicate
+transcript input from the wiki slide; keep its cross-project synthesis example.
