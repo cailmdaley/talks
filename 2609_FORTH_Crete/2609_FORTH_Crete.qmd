@@ -316,7 +316,6 @@ practice. Keep that spoken rather than adding another slogan. Adoption is an inf
 <g font-size="42" text-anchor="middle"><text x="1010" y="105">Read</text><text x="1210" y="105">Edit</text><text x="1410" y="105">Bash</text></g>
 <path d="M1210 145 V240 H360 V147" fill="none" stroke="#3F8278" stroke-width="3" marker-end="url(#harness-tip)"/><text x="780" y="220" text-anchor="middle" font-size="38" fill="#3F8278">Result</text>
 <circle class="harness-signal signal-read" r="8" fill="#BC4538"/><circle class="harness-signal signal-edit" r="8" fill="#BC4538"/><circle class="harness-signal signal-bash" r="8" fill="#BC4538"/></g></svg>
-<div class="harness-reading">See <a href="https://earendil.com/posts/what-is-a-harness/">Earendil: What is a Harness?</a></div>
 </div>
 <details><summary>Sources &amp; notes</summary><a href="https://earendil.com/posts/what-is-a-harness/">Earendil: What is a Harness?</a> | <a href="https://claude.com/">Claude</a>, <a href="https://openai.com/codex/">Codex</a>, <a href="https://pi.dev/">Pi</a>, <a href="https://opencode.ai/">OpenCode</a></details>
 
