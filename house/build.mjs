@@ -465,7 +465,9 @@ async function main(argv) {
   if (oi >= 0) { out = path.resolve(args[oi + 1]); args.splice(oi, 2); }
   const li = args.indexOf('--listing');
   if (li >= 0) { listing(path.resolve(args[li + 1])); return 0; }
-  const dirs = args.includes('--all') ? houseDecks() : args.filter(a => !a.startsWith('--'));
+  const all = args.includes('--all');
+  const dirs = all ? houseDecks() : args.filter(a => !a.startsWith('--'));
+  if (all && !dirs.length) { console.log('no house decks to build'); return 0; }
   if (!dirs.length) { console.error('usage: node house/build.mjs <deck-dir>... | --all [--out DIR] | --listing FILE'); return 2; }
   let failed = 0;
   for (const d of dirs) {
