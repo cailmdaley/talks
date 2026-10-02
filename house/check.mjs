@@ -39,7 +39,7 @@ const SCHEMA = {
   table:         { head: 'h2', body: [['table', 1, 1], ['span.source', 0, 1], ['p.source', 0, 1], ['p', 0, 1]] },
   quote:         { head: null, body: [['blockquote', 1, 1], ['span.source', 0, 1], ['p.source', 0, 1]] },
   closing:       { head: 'h2', body: [['ol', 0, 1], ['ul', 0, 1], ['p', 0, 2], ['p.contact', 0, 1]], need: 1 },
-  people:        { head: 'h2', body: [['div.people', 1, 1], ['div.memoriam', 0, 1]] },
+  people:        { head: 'h2', body: [['div.people', 1, 1], ['div.memoriam', 0, 1], ['div.text', 0, 1], ['span.source', 0, 1], ['p.source', 0, 1]] },
 };
 const MAX_PEOPLE = 24;
 
@@ -118,7 +118,8 @@ function lintBlock(el, where, vocab, out, isDetail) {
     for (const b of blocks) {
       for (const k of b.children) {
         if (k.localName !== 'figure') out.errors.push(`${where}: ${describe(k)} inside div.people; it holds only <figure>s`);
-        else if (!k.querySelector(':scope > img') || !k.querySelector(':scope > figcaption')) out.errors.push(`${where}: a portrait is <figure><img …><figcaption>Name</figcaption></figure>`);
+        else if ([...k.children].filter(c => c.localName === 'img' || (c.localName === 'span' && c.classList.contains('initials'))).length !== 1 || !k.querySelector(':scope > figcaption'))
+          out.errors.push(`${where}: a portrait is <figure><img …><figcaption>Name</figcaption></figure>, or <span class="initials">AB</span> in place of the <img>`);
         else n++;
       }
       if (b.classList.contains('memoriam') && !b.getAttribute('data-label')) out.errors.push(`${where}: div.people.memoriam needs data-label (its heading)`);
@@ -128,6 +129,7 @@ function lintBlock(el, where, vocab, out, isDetail) {
     if (n > MAX_PEOPLE) out.errors.push(`${where}: ${n} portraits; a people slide holds at most ${MAX_PEOPLE}, so split it`);
   }
   for (const fig of el.querySelectorAll('figure')) {
+    if (fig.parentElement?.classList.contains('people')) continue;
     const visuals = [...fig.children].filter(c => c.localName === 'img' || c.localName === 'svg' || c.classList.contains('placeholder'));
     if (visuals.length !== 1) out.errors.push(`${where}: a <figure> holds exactly one <img>, inline <svg> or .placeholder (has ${visuals.length})`);
   }

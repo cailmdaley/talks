@@ -314,24 +314,38 @@ function frameFigures(frame, deckDir, problems, where, assets) {
   }
 }
 
-// people: choose the rows that give the largest portraits in the nominal body
-// (1712 × 771), with the memoriam block as extra columns on the right. The CSS
-// sizes the portraits from the real body with the same arithmetic.
-const PEOPLE = { W: 1712, H: 771, gap: 32, rowGap: 16, caption: 72, sep: 64, label: 40 };
+// people: the build gathers the portrait blocks into .roster (the size
+// container) and chooses the rows that give the largest portraits in the
+// nominal roster box: the body, less the text column (60 % of the width) and
+// the source line. The memoriam block is extra columns on the right. The CSS
+// sizes the portraits from the real roster with the same arithmetic.
+const PEOPLE = { W: 1712, H: 771, col: 64, gap: 32, rowGap: 16, caption: 72, sep: 64, label: 40, source: 48, max: 240 };
 function peopleGrid(frame, body) {
-  const n = body.querySelectorAll(':scope > .people:not(.memoriam) > figure').length;
-  const m = body.querySelectorAll(':scope > .people.memoriam > figure').length;
-  const { W, H, gap, rowGap, caption, sep, label } = PEOPLE;
+  const blocks = [...body.querySelectorAll(':scope > .people')];
+  if (!blocks.length) return;
+  const roster = body.ownerDocument.createElement('div');
+  roster.className = 'roster';
+  body.insertBefore(roster, blocks[0]);
+  for (const b of blocks) roster.appendChild(b);
+  const main = blocks.find(b => !b.classList.contains('memoriam'));
+  const n = main ? main.querySelectorAll(':scope > figure').length : 0;
+  const m = roster.querySelectorAll(':scope > .memoriam > figure').length;
+  const P = PEOPLE;
+  const W = body.querySelector(':scope > .text') ? (P.W - P.col) * 0.6 : P.W;
+  const H = P.H - (body.querySelector(':scope > .source') ? P.source : 0);
+  const lab = main?.hasAttribute('data-label') ? P.label : 0;
   let best = null;
   for (let rows = 1; rows <= Math.max(n, 1); rows++) {
     const cols = Math.ceil(n / rows);
     const mrows = m ? Math.min(rows, m) : 0;
     const mcols = m ? Math.ceil(m / mrows) : 0;
     const d = Math.min(
-      (W - (m ? sep : 0)) / (cols + mcols) - gap,
-      (H - (rows - 1) * rowGap) / rows - caption,
-      m ? (H - label - (mrows - 1) * rowGap) / mrows - caption : Infinity);
-    if (!best || d > best.d) best = { d, rows, cols, mrows, mcols };
+      (W - (m ? P.sep : 0)) / (cols + mcols) - P.gap,
+      (H - lab - (rows - 1) * P.rowGap) / rows - P.caption,
+      m ? (H - P.label - (mrows - 1) * P.rowGap) / mrows - P.caption : Infinity);
+    // past the size cap, the fewest rows win
+    const score = Math.min(d, P.max);
+    if (!best || score > best.score + 0.5) best = { score, rows, cols, mrows, mcols };
   }
   const { rows, cols, mrows, mcols } = best;
   frame.setAttribute('style', `${frame.getAttribute('style') ? frame.getAttribute('style') + ';' : ''}--cols:${cols};--rows:${rows};--mcols:${mcols};--mrows:${mrows}`);

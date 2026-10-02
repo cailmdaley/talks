@@ -105,23 +105,25 @@ Above 60 words of on-screen text the checker warns: the audience reads instead o
 | `grid` | `<h2>`, three to six `<figure>` | three columns; four make a 2 × 2; `data-cols="2\|3"` sets the columns |
 | `number` | `<h2>`, one to three `div.stat` | key numbers: `<div class="stat"><span class="value">385</span><span class="label">deg² …</span></div>` |
 | `bleed` | optional `<h2>`, one `<figure>` | a photograph filling the canvas; headline on a band |
-| `table` | `<h2>`, one `<table>`, `.source` | `th`/`td`; `td.r` right-aligns, `tr.hl` highlights a row |
+| `table` | `<h2>`, one `<table>`, `.source` | `th`/`td`; `td.r` right-aligns, `tr.hl` highlights a row; `table.large` sets a short table at body size with its first column unwrapped |
 | `quote` | one `<blockquote>`, `.source` | a quotation |
 | `closing` | `<h2>`, an `<ol>` of takeaways, `p.contact` | stays on screen for questions |
-| `people` | `<h2>`, one `div.people`, optional `div.people.memoriam` | portraits with names, for acknowledging a team; see below |
+| `people` | `<h2>`, one `div.people`, optional `div.people.memoriam`, optional `div.text`, `.source` | portraits with names, for a team or a project's leads; see below |
 
-A `people` slide holds up to 24 portraits, each `<figure><img src="images/collaborators/…" alt="Name"><figcaption>Name</figcaption></figure>`:
+A `people` slide holds up to 24 portraits, each `<figure><img src="images/collaborators/…" alt="Name"><figcaption>Name</figcaption></figure>`, or `<span class="initials">AB</span>` in place of the image for someone without a photo:
 
 ```html
 <section data-layout="people">
   <h2>The Euclid CMBX working group</h2>
-  <div class="people"> <figure>…</figure> … </div>
-  <div class="people memoriam" data-label="In memoriam"> <figure>…</figure> </div>
+  <div class="text"> <span class="kicker">…</span> <p>…</p> <ul>…</ul> </div>        <!-- optional -->
+  <div class="people" data-label="SWG leads"> <figure>…</figure> … </div>
+  <div class="people memoriam" data-label="In memoriam"> <figure>…</figure> </div>   <!-- optional -->
+  <p class="source">…</p>                                                            <!-- optional -->
   <aside class="notes">…</aside>
 </section>
 ```
 
-The build picks the number of rows that gives the largest portraits in the body; every portrait is the same round crop (`object-fit: cover`, centred a little above the middle, where faces sit), with its name at the fine size, which may wrap to two lines. The optional memoriam block sits to the right behind a thin rule, under its small-caps `data-label`, in the same portrait style. Portraits keep their own backgrounds: images in a `people` block are never multiplied into the ground.
+The build picks the number of rows that gives the largest portraits in the space they have: the whole body, or 60 % of its width beside a `div.text` (text left; `data-flip` puts it right), less a `.source` line under both. Portraits are capped at 240 px, and once a group reaches the cap the fewest rows win. Every portrait is the same round crop (`object-fit: cover`, centred a little above the middle, where faces sit), with its name at the fine size, which may wrap to two lines; initials sit in a disc of the same size at the headline size. `data-label` on a block puts a small-caps heading above its portraits. The memoriam block sits to the right of the others behind a thin rule, in the same portrait style. Portraits keep their own backgrounds: images in a `people` block are never multiplied into the ground.
 
 ## Figures
 
@@ -163,7 +165,7 @@ with any layout. A detail is shown whole: fragments inside it appear at once. A 
 
 Errors:
 
-- structure: an unknown layout or a class outside the vocabulary (house.css, the themes, the deck's css); content a layout does not allow, or too many of it; a figure without exactly one image, inline SVG or placeholder; an id used on two slides; elements the build cannot inline (`<script>`, `<iframe>`, `<video>`, SVG `<image>`, `url()` in a style); an inline type size or scale; build failures (missing image, TeX error, text outside the `<section>`, a highlight or crop outside its image);
+- structure: an unknown layout or a class outside the vocabulary (house.css, the themes, the deck's css); content a layout does not allow, or too many of it; a figure without exactly one image, inline SVG or placeholder (a portrait: one image or one `span.initials`, and a name); an id used on two slides; elements the build cannot inline (`<script>`, `<iframe>`, `<video>`, SVG `<image>`, `url()` in a style); an inline type size or scale; build failures (missing image, TeX error, text outside the `<section>`, a highlight or crop outside its image);
 - geometry: text ink or a box outside the content box, anything off the canvas (footer, logos and themed bands may leave the content box but not the canvas); an element clipping its content; the headline overlapping the body, or sibling blocks overlapping anywhere in the body; a caption or source wider than its figure (a portrait's name may take two lines within its column); more than 24 portraits on a `people` slide; a scaled or transformed slide frame; a three-line headline;
 - legibility: text set below 24 px, SVG text as displayed included; contrast below 4.5:1 for text against its background, with opacity, and for SVG text against the filled shape under its centre;
 - the page: a script error, a file that fails to load, any network request (decks work offline).
