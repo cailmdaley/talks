@@ -8,7 +8,7 @@
   --face: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --face-head: var(--face);
 
-  --ground:       #F3F5F8;
+  --ground:       #EBF0F6;
   --ground-deep:  #E2E7EE;
   --ink:          #111418;
   --muted:        #535B67;
@@ -18,7 +18,7 @@
   --ochre:        #9C7414;
   --rule:         #C6CEDA;
   --panel:        #E4E9F2;
-  --veil:         rgba(243, 245, 248, 0.86);
+  --veil:         rgba(235, 240, 246, 0.86);
   --figure-card:  transparent;
   --figure-blend: multiply;
 
@@ -59,7 +59,7 @@
   content: "";
   position: absolute;
   right: 40px;
-  top: 16px;
+  top: 44px;
   width: 232px;
   height: 118px;
   background: url("../../images/euclid_logo.png") right center / contain no-repeat;
@@ -70,13 +70,13 @@
 .theme-euclid .slide > .foot { font-variant-caps: normal; font-feature-settings: normal; letter-spacing: 0.01em; }
 .theme-euclid .slide > .foot > span:first-child {
   position: absolute;
-  left: calc(12px - var(--pad-x));
+  left: calc(-1 * var(--pad-x));
   bottom: -36px;
-  height: var(--band-w);
-  line-height: 25px;
-  padding: 12px 0 12px 24px;
-  transform: rotate(-90deg);
-  transform-origin: 0 0;
+  width: var(--band-w);
+  padding-top: 32px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  line-height: var(--band-w);
   white-space: nowrap;
   background: var(--band);
   color: #FFFFFF;
