@@ -7,6 +7,9 @@
 **/*.quarto_ipynb
 unused_images/
 *.pdf
+!images/*.pdf
 *.pptx
 2606_SPT_summer/screenshots/
 _quarto_internal_scss_error.scss
+node_modules/
+**/_check/

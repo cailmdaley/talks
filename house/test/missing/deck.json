@@ -1,0 +1,4 @@
+{
+  "title": "Missing-image fixture", "author": "house test", "date": "2026-10-02", "footer": "fixture", "draft": true,
+  "sections": [ { "title": "Missing", "outline": "A slide whose image does not exist.", "slides": ["missing"] } ]
+}
