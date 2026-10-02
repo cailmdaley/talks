@@ -70,15 +70,15 @@ The headline is a claim, one line. The notes are prose: the report variant print
 
 Every slide is a fixed 1920×1080 frame. The content box is x 104–1816, y 72–968 (1712 × 896 px); the footer sits below it. With a one-line headline the body box is **1712 × 771 px** (y 197–968). Space is arithmetic: count before you write, and when content does not fit, **split the slide — nothing shrinks**. The checker rejects inline type sizes and anything below 24 px.
 
-The type scale has five sizes, shared by every theme. Emphasis is weight (`<strong>`) or colour (`.accent`, `.muted`), never another size. Characters per line depend on the theme's face; measured averages for prose, as house (EB Garamond) / euclid (Inter):
+The type scale has five sizes, shared by every theme. Emphasis is weight (`<strong>`) or colour (`.accent`, `.muted`), never another size. Every theme sets prose in EB Garamond; measured average characters per line:
 
 | token | px | used for | line pitch | full 1712 | points 1560 | text column 659 | half 824 | third 544 |
 |---|---|---|---|---|---|---|---|---|
-| `--t-display` | 104 | title, section divider, big numbers | 108 | 41 / 33 | — | 16 / 12 | 20 / 16 | 13 / 10 |
-| `--t-head` | 60 | headlines, statements, quotes | 67 | 72 / 58 | 65 / 53 | 27 / 22 | 34 / 28 | 22 / 18 |
-| `--t-body` | 44 | body text, bullets | 59 | 101 / 82 | 92 / 74 | 39 / 31 | 48 / 39 | 32 / 26 |
-| `--t-small` | 32 | captions, table cells, stat labels, nested bullets | 43 | 139 / 113 | 127 / 103 | 53 / 43 | 67 / 54 | 44 / 36 |
-| `--t-fine` | 24 | sources, kickers, footer — the floor | 32 | 185 / 151 | 169 / 138 | 71 / 58 | 89 / 72 | 59 / 48 |
+| `--t-display` | 104 | title, section divider, big numbers | 108 | 41 | — | 16 | 20 | 13 |
+| `--t-head` | 60 | headlines, statements, quotes | 67 | 72 | 65 | 27 | 34 | 22 |
+| `--t-body` | 44 | body text, bullets | 59 | 101 | 92 | 39 | 48 | 32 |
+| `--t-small` | 32 | captions, table cells, stat labels, nested bullets | 43 | 139 | 127 | 53 | 67 | 44 |
+| `--t-fine` | 24 | sources, kickers, footer — the floor | 32 | 185 | 169 | 71 | 89 | 59 |
 
 Characters per line are measured averages for prose in EB Garamond; plan on about 85 % of them, since words wrap whole. Rules of thumb for the 771 px body:
 
@@ -162,9 +162,9 @@ A theme is a token set in `house/themes/<name>.css` over the same layouts; `deck
 
 - `house` — warm paper (`#F7F0E1`), ink, one cinnabar accent, EB Garamond.
 - `house-dark` — the same palette on a dark ground; figures sit on white cards instead of multiplying.
-- `euclid` — for talks given as a Euclid member, inside the Euclid Consortium frame taken from the official "Euclid Slide Theme" master: Euclid blue `#435AA1`, a blue band down the left edge carrying the footer line, the consortium logo top right (`images/euclid_logo.png`), bold sans headlines in black (Inter standing in for Helvetica Neue), a blue subtitle band on the title slide and a blue band behind section titles. The ground is a pale cool off-white (`#F3F5F8`) that sits with the blue; plots multiply into it.
+- `euclid` — for talks given as a Euclid member, inside the Euclid Consortium frame taken from the official "Euclid Slide Theme" master: Euclid blue `#435AA1`, a blue band down the left edge carrying the footer line, the consortium logo top right (`images/euclid_logo.png`), bold EB Garamond headlines in black, a blue subtitle band on the title slide and a blue band behind section titles. The ground is a pale cool off-white (`#F3F5F8`) that sits with the blue; plots multiply into it.
 
-A theme sets `--face` and `--face-head` (EB Garamond, Inter and IBM Plex Mono are inlined in every deck), `--ground`, `--ground-deep`, `--ink`, `--muted`, `--accent`, `--teal`, `--cobalt`, `--ochre`, `--rule`, `--panel`, `--veil`, `--figure-card` and `--figure-blend` (`multiply` makes the build multiply figures into `--ground`, which must then be a six-digit hex; `normal` leaves them as they are) and may add furniture (a logo, a band) with ordinary CSS; `url(…)` paths in a theme are resolved relative to `house/themes/` and inlined. Contrast is checked per deck, so a new theme is tested with `node house/check.mjs house/demo --theme <name>`.
+A theme sets `--face` and `--face-head` (EB Garamond and IBM Plex Mono are inlined in every deck), `--ground`, `--ground-deep`, `--ink`, `--muted`, `--accent`, `--teal`, `--cobalt`, `--ochre`, `--rule`, `--panel`, `--veil`, `--figure-card` and `--figure-blend` (`multiply` makes the build multiply figures into `--ground`, which must then be a six-digit hex; `normal` leaves them as they are) and may add furniture (a logo, a band) with ordinary CSS; `url(…)` paths in a theme are resolved relative to `house/themes/` and inlined. Contrast is checked per deck, so a new theme is tested with `node house/check.mjs house/demo --theme <name>`.
 
 ## Output
 

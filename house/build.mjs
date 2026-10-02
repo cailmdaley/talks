@@ -135,10 +135,6 @@ function fontFaces() {
     out.push(face('EB Garamond', `${g}/eb-garamond-latin-ext-wght-${style}.woff2`, '400 800', style, LATIN_EXT));
     out.push(face('EB Garamond', `${g}/eb-garamond-greek-wght-${style}.woff2`, '400 800', style, GREEK));
   }
-  const inter = path.join(NM, '@fontsource-variable/inter/files');
-  out.push(face('Inter', `${inter}/inter-latin-wght-normal.woff2`, '100 900', 'normal', LATIN));
-  out.push(face('Inter', `${inter}/inter-latin-ext-wght-normal.woff2`, '100 900', 'normal', LATIN_EXT));
-  out.push(face('Inter', `${inter}/inter-greek-wght-normal.woff2`, '100 900', 'normal', GREEK));
   for (const w of [400, 500])
     out.push(face('IBM Plex Mono', `${m}/ibm-plex-mono-latin-${w}-normal.woff2`, w, 'normal', LATIN));
   return out.join('\n');

@@ -1,13 +1,10 @@
 /* euclid — inside the Euclid Consortium slide frame (the official "Euclid Slide
    Theme" Google Slides master): Euclid blue #435AA1, a vertical blue band at the
-   left edge carrying the footer, the consortium logo top right, bold sans
+   left edge carrying the footer, the consortium logo top right, bold
    headlines in black, a blue subtitle band on the title slide and a blue band
-   on section dividers. Inter stands in for Helvetica Neue. The ground is a pale
+   on section dividers. Type stays the house EB Garamond. The ground is a pale
    cool off-white that sits with the blue; plots multiply into it. */
 :root {
-  --face: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --face-head: var(--face);
-
   --ground:       #EBF0F6;
   --ground-deep:  #E2E7EE;
   --ink:          #111418;
@@ -26,26 +23,10 @@
   --band-w: 49px;
 }
 
-/* sans faces read best at regular weight and without old-style details */
-.theme-euclid .slide { font-weight: 400; letter-spacing: -0.003em; }
-.theme-euclid .slide strong { font-weight: 650; }
-.theme-euclid .slide h1, .theme-euclid .slide h2, .theme-euclid .slide h3 { font-weight: 700; letter-spacing: -0.015em; }
 .theme-euclid .slide > h2::after { display: none; }
 .theme-euclid .slide > h2 { padding-right: 240px; }
 .theme-euclid .slide[data-layout="bleed"] > h2 { padding-right: var(--pad-x); }
 .theme-euclid .slide em { font-style: normal; color: var(--accent); }
-
-/* small caps become spaced capitals in the sans */
-.theme-euclid .slide .kicker,
-.theme-euclid .slide th,
-.theme-euclid .slide[data-layout="title"] .affil,
-.theme-euclid .slide[data-layout="title"] .venue {
-  font-variant-caps: normal;
-  font-feature-settings: normal;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-}
-.theme-euclid .slide .kicker { font-weight: 600; }
 
 /* furniture: the left band and the logo */
 .theme-euclid .slide::before {
@@ -67,7 +48,6 @@
 }
 
 /* footer: the deck line runs up the band; the number stays bottom right */
-.theme-euclid .slide > .foot { font-variant-caps: normal; font-feature-settings: normal; letter-spacing: 0.01em; }
 .theme-euclid .slide > .foot > span:first-child {
   position: absolute;
   left: calc(-1 * var(--pad-x));
@@ -80,20 +60,18 @@
   white-space: nowrap;
   background: var(--band);
   color: #FFFFFF;
-  font-weight: 300;
 }
 
 /* title slide: centred, no band, subtitle in a blue band */
 .theme-euclid .slide[data-layout="title"]::before { display: none; }
 .theme-euclid .slide[data-layout="title"] { justify-items: center; text-align: center; padding-top: 170px; }
-.theme-euclid .slide[data-layout="title"] h1 { letter-spacing: -0.02em; line-height: 1.08; }
+.theme-euclid .slide[data-layout="title"] h1 { line-height: 1.08; }
 .theme-euclid .slide[data-layout="title"] .subtitle {
   justify-self: stretch;
   margin: 48px -39px 0;
   padding: 30px 48px 34px;
   background: var(--band);
   color: #FFFFFF;
-  font-weight: 300;
   max-width: none;
 }
 .theme-euclid .slide[data-layout="title"] .byline { margin-top: 48px; font-weight: 600; }
@@ -108,7 +86,7 @@
 }
 .theme-euclid .slide[data-layout="section"] > .body { margin-top: 8px; }
 
-.theme-euclid .slide[data-layout="quote"] blockquote { border-left-color: var(--band); font-weight: 400; }
+.theme-euclid .slide[data-layout="quote"] blockquote { border-left-color: var(--band); }
 .theme-euclid .slide[data-layout="closing"] ol > li::before { font-weight: 700; }
 .theme-euclid .slide > .foot { justify-content: flex-end; }
 .theme-euclid .slide[data-layout="statement"] > h2 { padding-right: 0; }
