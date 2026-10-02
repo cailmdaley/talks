@@ -18,10 +18,20 @@ const EXPECT = {
   toomany: 'allows at most 2 figure',
   overlap: 'overlaps div.text',
   offcanvas: 'p.wide "wide" is clipped by the canvas (right',
+  stepfade: 'at step 0 of 2: p.fragment.fade-out "gone later" is clipped by the canvas',
+  svgtext: 'text.fill-ground "same colour as its box" has contrast 1.00:1',
+  faint: 'p "barely there" has contrast',
+  headline: 'overlaps the headline',
+  nested: 'p "first paragraph here" overlaps p "second paragraph"',
+  shrunk: 'the slide frame is scaled or transformed',
+  emptyfig: 'a <figure> holds exactly one',
+  widemath: 'leaves the content box (right',
+  cssurl: 'loads a file through url() in a style',
 };
+const SVG_OFF = 'text "far right" is clipped by the canvas';
 
-let fail = 0;
-const ok = (cond, msg) => { console.log(`${cond ? '✓' : '✗'} ${msg}`); if (!cond) fail++; };
+let failed = 0;
+const ok = (cond, msg) => { console.log(`${cond ? '✓' : '✗'} ${msg}`); if (!cond) failed++; };
 
 const demo = run(path.join(HERE, '..', 'demo'));
 ok(demo.status === 0, `demo deck passes (${demo.stdout.trim().split('\n').pop()})`);
@@ -38,8 +48,20 @@ for (const line of broken.stdout.split('\n')) {
 for (const [slide, needle] of Object.entries(EXPECT))
   ok((blocks[slide] || []).some(l => l.includes(needle)), `${slide}: reports "${needle}"`);
 
-const missing = run(path.join(HERE, 'missing'));
-ok(missing.status === 1 && missing.stderr.includes('missing image images/does_not_exist.png'), 'missing image fails the build');
+ok((blocks.svgtext || []).some(l => l.includes(SVG_OFF)), `svgtext: reports "${SVG_OFF}"`);
+ok(broken.stdout.includes('failed to load file:///tmp/missing.png'), 'a failed file load is reported');
 
-console.log(fail ? `\n${fail} failed` : '\nall passed');
-process.exit(fail ? 1 : 0);
+const fail = run(path.join(HERE, 'buildfail'));
+ok(fail.status === 1, 'build-failure fixture exits 1');
+for (const needle of [
+  'slides/missing.html: missing image images/does_not_exist.png',
+  'slides/badbox.html: <mark> needs data-box="x y w h" in percent of the image, inside it',
+  'slides/stray.html: text outside the <section> ("LOST TEXT")',
+  'slides/badtex.html: TeX error in $\\frac{1}{$',
+]) ok(fail.stderr.includes(needle), `build refuses: ${needle}`);
+
+const only = spawnSync(process.execPath, [CHECK, path.join(HERE, '..', 'demo'), '--only', 'nope'], { encoding: 'utf8' });
+ok(only.status === 2 && only.stderr.includes('no slide named nope'), '--only with an unknown slide fails');
+
+console.log(failed ? `\n${failed} failed` : '\nall passed');
+process.exit(failed ? 1 : 0);

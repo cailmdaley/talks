@@ -21,7 +21,8 @@
   --lh-tight: 1.12;
   --lh-body:  1.35;
 
-  --serif: 'EB Garamond', Georgia, serif;
+  --face: 'EB Garamond', Georgia, serif;
+  --face-head: var(--face);
   --mono:  'IBM Plex Mono', ui-monospace, monospace;
 
   /* space */
@@ -38,7 +39,7 @@
 
 /* ── Reveal shell ───────────────────────────────────────────────────────── */
 html, body { background: var(--ground); }
-.reveal { font-family: var(--serif); color: var(--ink); }
+.reveal { font-family: var(--face); color: var(--ink); }
 .reveal .slides { text-align: left; }
 .reveal .slides > section { padding: 0; width: 1920px; height: 1080px; }
 .reveal .slides > section { top: 0 !important; }
@@ -53,7 +54,7 @@ html, body { background: var(--ground); }
   padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
   background: var(--ground);
   color: var(--ink);
-  font-family: var(--serif);
+  font-family: var(--face);
   font-size: var(--t-body);
   font-weight: 500;
   line-height: var(--lh-body);
@@ -78,7 +79,7 @@ html, body { background: var(--ground); }
 /* headline: a claim, at the top margin, with the cinnabar kicker rule */
 .slide h1, .slide h2, .slide h3 {
   margin: 0;
-  font-family: var(--serif);
+  font-family: var(--face-head);
   font-weight: 600;
   font-synthesis: none;
   letter-spacing: -0.005em;
@@ -178,54 +179,75 @@ html, body { background: var(--ground); }
 .slide > .foot .num { font-variant-caps: normal; letter-spacing: 0.02em; }
 
 /* ── Figures ────────────────────────────────────────────────────────────────
-   <figure> holds an optional <figcaption> and one image. The build wraps the
-   image in .frame and sets --ar from its pixel size; .cell is a size
-   container, so the frame takes the largest box of that aspect ratio that
-   fits. White plot backgrounds multiply into the ground; .plain opts out.  */
+   <figure> holds an optional <figcaption>, one image or inline <svg>, optional
+   <mark> highlights and an optional .source. The build wraps the image in
+   .frame (with --ar from its pixel size or viewBox) and puts caption, frame and
+   source together in .cell, a size container: the frame takes the largest box
+   of its aspect ratio that fits beside the one-line caption and source, so
+   all three stay together, centred in the space the layout gives the figure.
+   White plot backgrounds multiply into the ground; .plain opts out.         */
 .slide figure {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  display: flex;
+  flex-direction: column;
   min-height: 0;
   min-width: 0;
   height: 100%;
 }
-.slide figure > figcaption { grid-row: 1; }
-.slide figure > .cell, .slide figure > .placeholder, .slide figure > svg { grid-row: 2; }
-.slide figure > figcaption {
-  font-size: var(--t-small);
-  line-height: 1.2;
-  color: var(--ink);
-  margin-bottom: var(--s2);
-  text-align: center;
-}
 .slide figure > .cell {
+  flex: 1 1 0;
   container-type: size;
   min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  --chrome: 0px;
 }
-.slide figure > .cell > .source { text-align: center; margin-top: 16px; height: 32px; line-height: 32px; white-space: nowrap; }
-.slide figure > .cell:has(> .source) > .frame { width: min(100cqw, (100cqh - 48px) * var(--ar)); }
+.slide figure > .cell:has(> figcaption) { --chrome: 54px; }
+.slide figure > .cell:has(> .source) { --chrome: 48px; }
+.slide figure > .cell:has(> figcaption):has(> .source) { --chrome: 102px; }
+.slide figure figcaption {
+  font-size: var(--t-small);
+  line-height: 38px;
+  height: 38px;
+  margin-bottom: var(--s2);
+  white-space: nowrap;
+  color: var(--ink);
+  text-align: center;
+  max-width: 100%;
+}
+.slide figure > figcaption { flex: none; }
+.slide figure > .placeholder { flex: 1 1 0; }
+.slide figure .cell > .source { text-align: center; margin-top: 16px; height: 32px; line-height: 32px; white-space: nowrap; max-width: 100%; }
 .slide .frame {
   position: relative;
   display: block;
+  flex: none;
   aspect-ratio: var(--ar);
-  width: min(100cqw, 100cqh * var(--ar));
+  width: min(100cqw, (100cqh - var(--chrome)) * var(--ar));
   background: var(--figure-card);
+  border-radius: var(--figure-radius, 0);
 }
+/* data-crop shows a region of the image (build sets the crop variables) */
+.slide .frame.crop { overflow: hidden; }
+.slide .frame.crop > img {
+  position: absolute;
+  left: calc(var(--cx) * -100% / var(--cw));
+  top: calc(var(--cy) * -100% / var(--ch));
+  width: calc(100% / var(--cw));
+  height: calc(100% / var(--ch));
+  max-width: none;
+}
+.slide figure.left > .cell { align-items: flex-start; }
+.slide figure.left figcaption, .slide figure.left .source { text-align: left; }
 .slide .frame > img {
   display: block;
   width: 100%;
   height: 100%;
-  mix-blend-mode: var(--figure-blend);
 }
+/* raster figures are multiplied into the ground at build time; SVG images blend here */
+.slide .frame > img[data-blend] { mix-blend-mode: var(--figure-blend); }
 .slide .frame > svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.slide figure.plain .frame > img { mix-blend-mode: normal; }
-.slide figure.left > .cell { align-items: flex-start; }
-.slide figure.left > figcaption, .slide figure.left .source { text-align: left; }
-.slide .frame { border-radius: var(--figure-radius, 0); }
 
 /* highlight a region of any image: <mark class="box fragment" data-box="x y w h">
    in percent of the image; .spot dims everything outside the region instead */
@@ -266,7 +288,7 @@ html, body { background: var(--ground); }
 .slide .frame > mark.below[data-label]::before { bottom: auto; top: calc(100% + 10px); }
 
 /* inline SVG schematics: text in the deck's face, colours from the theme */
-.slide svg text { font-family: var(--serif); font-weight: 500; fill: var(--ink); }
+.slide svg text { font-family: var(--face); font-weight: 500; fill: var(--ink); }
 .slide svg .fill-ink    { fill: var(--ink); }     .slide svg .stroke-ink    { stroke: var(--ink); }
 .slide svg .fill-muted  { fill: var(--muted); }   .slide svg .stroke-muted  { stroke: var(--muted); }
 .slide svg .fill-accent { fill: var(--accent); }  .slide svg .stroke-accent { stroke: var(--accent); }
@@ -326,6 +348,7 @@ html, body { background: var(--ground); }
 
 /* two columns inside a text body */
 .slide .cols {
+  align-self: stretch;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   column-gap: var(--s5);
@@ -484,6 +507,10 @@ html, body { background: var(--ground); }
   min-width: 0;
 }
 
+/* compare and grid align their figures to a shared top, so captions line up */
+.slide[data-layout="compare"] figure > .cell,
+.slide[data-layout="grid"] figure > .cell { justify-content: flex-start; }
+
 /* compare — two figures side by side, each with a caption label */
 .slide[data-layout="compare"] > .body {
   display: grid;
@@ -500,7 +527,9 @@ html, body { background: var(--ground); }
   gap: var(--s4) var(--s4);
   min-height: 0;
 }
-.slide[data-layout="grid"][data-count="4"] > .body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.slide[data-layout="grid"][data-count="4"] > .body,
+.slide[data-layout="grid"][data-cols="2"] > .body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.slide[data-layout="grid"][data-cols="3"] > .body { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 /* number — one to three key numbers with labels */
 .slide[data-layout="number"] > .body {
@@ -526,7 +555,7 @@ html, body { background: var(--ground); }
 .slide[data-layout="bleed"] > .body { grid-row: 1; grid-column: 1; display: grid; }
 .slide[data-layout="bleed"] > .body > figure { height: 1080px; }
 .slide[data-layout="bleed"] .frame { width: 100cqw; height: 100cqh; aspect-ratio: auto; }
-.slide[data-layout="bleed"] .frame > img { object-fit: cover; mix-blend-mode: normal; }
+.slide[data-layout="bleed"] .frame > img { object-fit: cover; }
 .slide[data-layout="bleed"] > h2 {
   grid-row: 1;
   grid-column: 1;
@@ -575,7 +604,7 @@ body.report {
   margin: 0;
   background: var(--ground-deep);
   color: var(--ink);
-  font-family: var(--serif);
+  font-family: var(--face);
   font-weight: 500;
   font-feature-settings: "lnum" 1;
 }
@@ -614,3 +643,4 @@ body.report {
 }
 /* the report shows each slide in its final state; presenter-only emphasis is left out */
 .report .slide .fade-out, .report .slide .fade-in-then-out, .report .slide .current-visible, .report .slide mark.spot { display: none; }
+@media print { .slide > .chips { display: none; } }

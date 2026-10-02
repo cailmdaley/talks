@@ -29,9 +29,12 @@ jobs:
       - name: Install house deck dependencies
         run: |
           sudo apt-get update -q && sudo apt-get install -y -q poppler-utils
-          npm ci --omit=dev
-        env:
-          PUPPETEER_SKIP_DOWNLOAD: "1"
+          npm ci
+
+      - name: Test the checker, then check every house deck
+        run: |
+          npm test
+          node house/check.mjs --all
 
       - name: List house decks on the index
         run: node house/build.mjs --listing house-decks.yml

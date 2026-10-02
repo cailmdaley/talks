@@ -3,7 +3,8 @@
 // every slide (and every detail overlay) headless at 1920×1080 with all fragments
 // shown, measure it, and save screenshots plus a contact sheet.
 //
-//   node house/check.mjs <deck-dir> [--steps] [--only name,name]
+//   node house/check.mjs <deck-dir> [--steps] [--only name,name] [--theme name]
+//   node house/check.mjs --all                  every directory holding a deck.json
 //
 // Writes <deck-dir>/_check/: NN-name.png per slide, NN-name.detail-K.png per
 // overlay, contact.png, and check.txt (the same report printed here).
@@ -13,7 +14,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { loadDeck, parseSlide, buildDeck, BuildError, LAYOUTS } from './build.mjs';
+import { loadDeck, parseSlide, buildDeck, BuildError, LAYOUTS, houseDecks } from './build.mjs';
 
 const HOUSE = path.dirname(fileURLToPath(import.meta.url));
 const MIN_PX = 24;
@@ -43,7 +44,9 @@ const SCHEMA = {
 const REVEAL_CLASSES = ['fragment', 'fade-in', 'fade-out', 'fade-up', 'fade-down', 'fade-left', 'fade-right',
   'fade-in-then-out', 'fade-in-then-semi-out', 'semi-fade-out', 'current-visible', 'highlight-red', 'highlight-blue',
   'highlight-green', 'highlight-current-red', 'highlight-current-blue', 'highlight-current-green', 'grow', 'shrink',
-  'strike', 'notes', 'detail', 'r-stack', 'r-hstack', 'r-vstack'];
+  'strike', 'notes', 'detail', 'r-stack', 'r-hstack', 'r-vstack',
+  // read by the build rather than styled
+  'plain'];
 
 function vocabulary(deck) {
   const files = [path.join(HOUSE, 'house.css'), ...fs.readdirSync(path.join(HOUSE, 'themes')).map(f => path.join(HOUSE, 'themes', f))];
@@ -72,6 +75,8 @@ function lintBlock(el, where, vocab, out, isDetail) {
   const schema = SCHEMA[layout];
   if (!schema) { out.errors.push(`${where}: unknown layout "${layout}" (one of ${LAYOUTS.join(', ')})`); return; }
   if (isDetail && !el.getAttribute('data-label')) out.errors.push(`${where}: detail needs data-label (the chip text)`);
+  if (el.hasAttribute('data-cols') && !(layout === 'grid' && ['2', '3'].includes(el.getAttribute('data-cols'))))
+    out.errors.push(`${where}: data-cols is 2 or 3, on a grid slide`);
   if (el.hasAttribute('data-split') && !['50', '60', '70'].includes(el.getAttribute('data-split')))
     out.errors.push(`${where}: data-split must be 50, 60 or 70`);
 
@@ -105,20 +110,27 @@ function lintBlock(el, where, vocab, out, isDetail) {
   });
   if (schema.need && !kids.length) out.errors.push(`${where}: a ${layout} slide needs a body`);
 
-  for (const d of el.querySelectorAll('*')) {
+  for (const fig of el.querySelectorAll('figure')) {
+    const visuals = [...fig.children].filter(c => c.localName === 'img' || c.localName === 'svg' || c.classList.contains('placeholder'));
+    if (visuals.length !== 1) out.errors.push(`${where}: a <figure> holds exactly one <img>, inline <svg> or .placeholder (has ${visuals.length})`);
+  }
+  for (const d of [el, ...el.querySelectorAll('*')]) {
+    if (d.localName === 'aside' && d !== el && d.classList.contains('detail') && d.parentElement === el) continue;
     for (const c of d.classList)
       if (!vocab.has(c)) out.errors.push(`${where}: class "${c}" is not in the design system (house.css, themes, or the deck's css)`);
     const style = d.getAttribute('style');
-    if (style) {
-      if (/(font-size|line-height|zoom|transform\s*:\s*scale|font\s*:)/i.test(style))
+    if (style && /url\(/i.test(style)) out.errors.push(`${where}: ${describe(d)} loads a file through url() in a style; images go in <img> so the build can inline them`);
+    else if (style) {
+      if (/(font-size|line-height|zoom|transform\s*:\s*(scale|matrix)|scale\s*:|font\s*:)/i.test(style))
         out.errors.push(`${where}: ${describe(d)} sets type size inline (${style.trim()}); sizes come from the scale, so cut words or split`);
       else out.warnings.push(`${where}: ${describe(d)} has an inline style (${style.trim()}); fine for a one-off`);
     }
-    if (d.localName === 'section') out.errors.push(`${where}: nested <section>; decks are strictly linear (use an <aside class="detail">)`);
+    if (d.localName === 'section' && d !== el) out.errors.push(`${where}: nested <section>; decks are strictly linear (use an <aside class="detail">)`);
     if (d.localName === 'mark' && d.parentElement?.localName !== 'figure') out.errors.push(`${where}: <mark> highlights belong directly inside a <figure>`);
     if (d.localName === 'mark' && !d.hasAttribute('data-box')) out.errors.push(`${where}: <mark> needs data-box="x y w h"`);
     if (d.localName === 'img' && !d.hasAttribute('alt')) out.warnings.push(`${where}: <img src="${d.getAttribute('src')}"> has no alt text`);
-    if (d.localName === 'font' || d.localName === 'center') out.errors.push(`${where}: <${d.localName}> is not allowed`);
+    if (['font', 'center', 'script', 'style', 'link', 'iframe', 'object', 'embed', 'video', 'audio', 'source', 'image', 'use', 'foreignobject'].includes(d.localName))
+      out.errors.push(`${where}: <${d.localName}> is not supported in a slide (the build inlines only <img> and inline <svg> drawing)`);
   }
 }
 
@@ -170,8 +182,16 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
     const t = (el.textContent || '').trim().replace(/\s+/g, ' ');
     return t ? `${s} "${t.slice(0, 36)}${t.length > 36 ? '…' : ''}"` : s;
   };
-  const exempt = el => el.closest('.foot, .chips, mjx-container, .logos') ||
-    (layout === 'bleed' && el.closest('figure')) || el.closest('svg') && el.localName !== 'svg';
+  // internals measured through their container: MathJax glyph machinery, SVG
+  // shapes (SVG text is measured), the pixels of a cropped image
+  const internal = el => (el.closest('mjx-container') && el.localName !== 'mjx-container') ||
+    (el.closest('svg') && el.localName !== 'svg' && el.localName !== 'text' && !el.closest('mjx-container')) ||
+    (el.localName === 'img' && el.parentElement?.matches('.frame.crop'));
+  // furniture that may sit outside the content box but must stay on the canvas
+  const furniture = el => el.closest('.foot, .chips, .logos') || (layout === 'bleed' && el.closest('figure'));
+  // the ink of an element: its text, not its box
+  const ink = el => { const range = document.createRange(); range.selectNodeContents(el); return range.getBoundingClientRect(); };
+  const opacity = el => { let o = 1; for (let e = el; e && e !== frame; e = e.parentElement) o *= parseFloat(getComputedStyle(e).opacity); return o; };
   const visible = el => {
     const st = getComputedStyle(el);
     if (st.display === 'none' || st.visibility === 'hidden') return false;
@@ -197,6 +217,23 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
     return bg;
   };
 
+  // what lies under SVG text: the topmost filled shape at its centre, else the page
+  const svgBackground = el => {
+    const r = el.getBoundingClientRect();
+    const stack = document.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    const svg = el.closest('svg');
+    for (const u of stack) {
+      if (u === el || u.contains(el) || !svg.contains(u) || u.localName === 'text' || u.closest('text')) continue;
+      const st = getComputedStyle(u);
+      const f = parse(st.fill || '');
+      if (f && st.fill !== 'none' && f.a > 0) return over({ ...f, a: f.a * parseFloat(st.fillOpacity || 1) * opacity(u) }, background(svg));
+    }
+    return background(svg);
+  };
+
+  if (getComputedStyle(frame).transform !== 'none' || Math.abs(F.width - 1920 * Reveal.getScale()) > 2)
+    errors.push('the slide frame is scaled or transformed; sizes come from the scale, so cut words or split');
+
   const all = [...frame.querySelectorAll('*')];
   const flagged = new Set();
   let words = 0;
@@ -206,16 +243,27 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
     if (r.width === 0 && r.height === 0) continue;
     const ownText = [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
 
-    // geometry
-    if (!exempt(el)) {
-      const out = { left: C.left - r.left, right: r.right - C.right, top: C.top - r.top, bottom: r.bottom - C.bottom };
+    // geometry: text is measured by its ink (a range over its contents), so a
+    // themed band behind a headline may run to the canvas edge; a box with its
+    // own background may too, as long as it stays on the canvas
+    if (!internal(el)) {
+      let g = r;
+      const bgc = parse(getComputedStyle(el).backgroundColor);
+      const inlineMath = el.localName === 'mjx-container' && el.getAttribute('display') !== 'true';
+      if (ownText || inlineMath) { const t = ink(el); g = { left: t.left, right: t.right, top: inlineMath ? C.top : r.top, bottom: inlineMath ? C.top : r.bottom }; }
+      const onCanvas = r.left >= F.left - 1 && r.right <= F.right + 1 && r.top >= F.top - 1 && r.bottom <= F.bottom + 1;
+      if (!ownText && bgc && bgc.a > 0 && onCanvas) g = null;
+      // off the canvas is judged by the box, the content box by the ink
+      if (furniture(el) && onCanvas) g = null;
+      const box = onCanvas ? g : r;
+      const ref = onCanvas ? C : F;
+      const out = box ? { left: ref.left - box.left, right: box.right - ref.right, top: ref.top - box.top, bottom: box.bottom - ref.bottom } : { none: 0 };
       const worst = Object.entries(out).sort((a, b) => b[1] - a[1])[0];
       let ancestorFlagged = false;
       for (let e = el.parentElement; e && e !== frame; e = e.parentElement) if (flagged.has(e)) { ancestorFlagged = true; break; }
       if (worst[1] > 1.5 && !ancestorFlagged) {
         flagged.add(el);
-        const offCanvas = r.left < F.left - 1 || r.right > F.right + 1 || r.top < F.top - 1 || r.bottom > F.bottom + 1;
-        errors.push(`${label(el)} ${offCanvas ? 'is clipped by the canvas' : 'leaves the content box'} (${worst[0]} by ${px(worst[1])}px)`);
+        errors.push(`${label(el)} ${onCanvas ? 'leaves the content box' : 'is clipped by the canvas'} (${worst[0]} by ${px(worst[1])}px)`);
       }
       const st = getComputedStyle(el);
       if ((st.overflowX !== 'visible' || st.overflowY !== 'visible') && !el.matches('.slide, .frame, .cell') &&
@@ -224,16 +272,19 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
     }
 
     // type size and contrast, for elements that carry text themselves
-    if (ownText && !el.closest('mjx-container')) {
+    if (ownText && !el.closest('mjx-container') && !(el.closest('svg') && !el.closest('text'))) {
       const st = getComputedStyle(el);
       let size = parseFloat(st.fontSize);
       if (el.closest('svg')) { const m = el.getScreenCTM?.(); if (m) size *= Math.hypot(m.a, m.b) / scale; }
       if (size < MIN_PX - 0.5) errors.push(`${label(el)} is set at ${size.toFixed(1)}px (minimum ${MIN_PX}px)`);
       if (!el.closest('svg') && !el.closest('.foot')) words += [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join(' ').split(/\s+/).filter(w => /\w/.test(w)).length;
       const fg = parse(st.color);
-      if (fg && !el.closest('svg')) {
-        const bg = background(el);
-        const c = ratio(over(fg, bg), bg);
+      let svgFill = null;
+      if (el.closest('svg') && el.localName === 'text') svgFill = parse(st.fill || '');
+      const ink = svgFill || fg;
+      if (ink) {
+        const bg = el.closest('svg') ? svgBackground(el) : background(el);
+        const c = ratio(over({ ...ink, a: ink.a * opacity(el) * (svgFill ? parseFloat(st.fillOpacity || 1) : 1) }, bg), bg);
         if (c < MIN_CONTRAST - 0.005) errors.push(`${label(el)} has contrast ${c.toFixed(2)}:1 (minimum ${MIN_CONTRAST}:1)`);
       }
     }
@@ -241,28 +292,69 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
 
   // headline: one line wanted, three is an error
   const h = frame.querySelector(':scope > h2');
-  if (h && layout !== 'section') {
+  if (h && !['section', 'statement'].includes(layout)) {
     const lh = parseFloat(getComputedStyle(h).lineHeight);
     const lines = Math.round((h.getBoundingClientRect().height / scale - (layout === 'bleed' ? 52 : 18)) / lh);
     if (lines >= 3) errors.push(`headline runs to ${lines} lines; tighten it or split the slide`);
     else if (lines === 2) warnings.push('headline wraps to two lines; a claim reads best on one');
   }
 
-  // top-level body blocks must not overlap each other
+  // blocks must not overlap: the headline against the body, and siblings at every level of the body
   const body = frame.querySelector(':scope > .body');
-  const blocks = body ? [...body.children].filter(visible).map(e => [e, e.getBoundingClientRect()]) : [];
-  for (let i = 0; i < blocks.length; i++)
-    for (let j = i + 1; j < blocks.length; j++) {
-      const [a, ra] = blocks[i], [b, rb] = blocks[j];
-      const ox = Math.min(ra.right, rb.right) - Math.max(ra.left, rb.left);
-      const oy = Math.min(ra.bottom, rb.bottom) - Math.max(ra.top, rb.top);
-      if (ox > 2 && oy > 2 && getComputedStyle(body).display !== 'contents') errors.push(`${label(a)} overlaps ${label(b)} (${px(ox)}×${px(oy)}px)`);
+  const overlap = (ra, rb) => [Math.min(ra.right, rb.right) - Math.max(ra.left, rb.left), Math.min(ra.bottom, rb.bottom) - Math.max(ra.top, rb.top)];
+  const blockish = e => visible(e) && getComputedStyle(e).display !== 'inline' && !internal(e) && !e.closest('.frame, mjx-container, svg');
+  if (h && body && layout !== 'bleed') {
+    const hr = h.getBoundingClientRect();
+    for (const e of body.querySelectorAll('*')) {
+      if (!blockish(e)) continue;
+      const [ox, oy] = overlap(hr, e.getBoundingClientRect());
+      if (ox > 2 && oy > 2) { errors.push(`${label(e)} overlaps the headline (${px(ox)}×${px(oy)}px)`); break; }
     }
+  }
+  if (body) {
+    const containers = [body, ...body.querySelectorAll('*')].filter(c => c === body || blockish(c));
+    const reported = new Set();
+    for (const c of containers) {
+      if (getComputedStyle(c).display === 'contents' && c !== body) continue;
+      const kids = [...c.children].filter(blockish).filter(k => getComputedStyle(k).display !== 'contents')
+        .map(e => [e, [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) ? ink(e) : e.getBoundingClientRect()]);
+      for (let i = 0; i < kids.length; i++)
+        for (let j = i + 1; j < kids.length; j++) {
+          const [a, ra] = kids[i], [b, rb] = kids[j];
+          const [ox, oy] = overlap(ra, rb);
+          if (ox > 2 && oy > 2 && !reported.has(a) && !reported.has(b)) { reported.add(a); reported.add(b); errors.push(`${label(a)} overlaps ${label(b)} (${px(ox)}×${px(oy)}px)`); }
+        }
+    }
+  }
+
+  // captions and sources stay within their figure's column
+  for (const fig of frame.querySelectorAll('figure')) {
+    const fr = fig.getBoundingClientRect();
+    for (const t of fig.querySelectorAll('figcaption, .source'))
+      if (visible(t)) {
+        const tr = t.getBoundingClientRect();
+        if (t.scrollWidth > t.clientWidth + 2 || tr.left < fr.left - 1 || tr.right > fr.right + 1)
+          errors.push(`${label(t)} is wider than its figure; shorten it (captions and sources are one line)`);
+      }
+  }
+
+  // a text slide that fills little of its body is a candidate for statement, or for merging
+  if (body && ['points', 'closing'].includes(layout)) {
+    const br = body.getBoundingClientRect();
+    let bottom = br.top;
+    for (const e of body.querySelectorAll('*')) if (visible(e)) bottom = Math.max(bottom, e.getBoundingClientRect().bottom);
+    const used = (bottom - br.top) / br.height;
+    if (used < 0.4 && layout === 'points') warnings.push(`content fills ${Math.round(used * 100)}% of the body height; consider a statement slide, or merging`);
+  }
 
   // images: present, decoded, and not drawn at zero size
   for (const img of frame.querySelectorAll('img')) {
     if (!img.complete || !img.naturalWidth) errors.push(`image ${img.getAttribute('data-src-path') || '(inline)'} did not load`);
-    else if (visible(img) && img.getBoundingClientRect().height < 40 * scale && !img.closest('.logos')) errors.push(`image ${img.getAttribute('data-src-path')} is drawn ${px(img.getBoundingClientRect().height)}px tall`);
+    else if (visible(img) && !img.closest('.logos')) {
+      const fr = (img.closest('.frame') || img).getBoundingClientRect();
+      if (fr.height < 40 * scale) errors.push(`image ${img.getAttribute('data-src-path')} is drawn ${px(fr.height)}px tall`);
+      else if (fr.height < 240 * scale && fr.width < 900 * scale) warnings.push(`image ${img.getAttribute('data-src-path')} is drawn only ${px(fr.width)}×${px(fr.height)}px; check its labels are legible, or give it more room (fewer panels, data-crop)`);
+    }
   }
   for (const ph of frame.querySelectorAll('.placeholder')) if (visible(ph)) warnings.push(`placeholder "${ph.textContent.trim().slice(0, 40)}" still on the slide`);
 
@@ -281,6 +373,9 @@ async function render(deck, built, outDir, { steps, only }) {
   page.on('request', r => { if (!/^(data:|file:|about:|blob:)/.test(r.url())) pageErrors.push(`network request to ${r.url().slice(0, 80)} (decks must be self-contained)`); });
   await page.goto(pathToFileURL(built.index).href, { waitUntil: 'load', timeout: 120000 });
   await page.evaluate(async () => { await document.fonts.ready; await new Promise(r => Reveal.isReady() ? r() : Reveal.on('ready', r)); });
+  // measure settled states: no transitions or animations
+  await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; animation: none !important; }' });
+  page.on('requestfailed', r => pageErrors.push(`failed to load ${r.url().slice(0, 80)} (${r.failure()?.errorText})`));
   const results = new Map();
   const shots = [];
   const n = await page.evaluate(() => Reveal.getTotalSlides());
@@ -290,18 +385,26 @@ async function render(deck, built, outDir, { steps, only }) {
     const tag = `${String(i + 1).padStart(2, '0')}-${s.name}`;
     const res = { errors: [], warnings: [] };
     results.set(s.name, res);
-    if (steps) {
-      const count = await page.evaluate(i => { Reveal.slide(i, 0, -1); return Reveal.getCurrentSlide().querySelectorAll('.fragment').length; }, i);
-      for (let f = -1; f < count; f++) {
-        await page.evaluate((i, f) => Reveal.slide(i, 0, f), i, f);
-        await new Promise(r => setTimeout(r, 120));
-        await page.screenshot({ path: path.join(outDir, `${tag}.step${f + 1}.png`) });
-      }
+    // every fragment state is measured; a problem seen only before the final
+    // state is reported with its step
+    const count = await page.evaluate(i => {
+      Reveal.slide(i, 0, -1);
+      const idx = [...Reveal.getCurrentSlide().querySelectorAll(':scope > .slide:not(.detail) .fragment')].map(f => +f.getAttribute('data-fragment-index'));
+      return idx.length ? Math.max(...idx) + 1 : 0;
+    }, i);
+    const final = new Set();
+    const early = [];
+    for (let f = count - 1; f >= -1; f--) {
+      await page.evaluate((i, f) => Reveal.slide(i, 0, f), i, f);
+      await new Promise(r => setTimeout(r, 60));
+      const m = await page.evaluate(measure, { MIN_PX, MIN_CONTRAST, MAX_WORDS });
+      if (f === count - 1) { res.errors.push(...m.errors); res.warnings.push(...m.warnings); m.errors.forEach(e => final.add(e)); }
+      else for (const e of m.errors) if (!final.has(e)) { final.add(e); early.push(`at step ${f + 1} of ${count}: ${e}`); }
+      if (steps && count) await page.screenshot({ path: path.join(outDir, `${tag}.step${f + 1}.png`) });
     }
+    res.errors.push(...early);
     await page.evaluate(i => Reveal.slide(i, 0, 999), i);
-    await new Promise(r => setTimeout(r, 150));
-    const m = await page.evaluate(measure, { MIN_PX, MIN_CONTRAST, MAX_WORDS });
-    res.errors.push(...m.errors); res.warnings.push(...m.warnings);
+    await new Promise(r => setTimeout(r, 60));
     const file = path.join(outDir, `${tag}.png`);
     await page.screenshot({ path: file });
     shots.push({ file, tag, name: s.name, res });
@@ -344,14 +447,30 @@ body{margin:0;padding:24px;background:#2b2722;font:18px/1.3 system-ui;color:#ddd
 // ── Main ──────────────────────────────────────────────────────────────────
 
 async function main(argv) {
-  const dir = argv.find(a => !a.startsWith('--'));
-  if (!dir) { console.error('usage: node house/check.mjs <deck-dir> [--steps] [--only a,b]'); return 2; }
+  if (argv.includes('--all')) {
+    let worst = 0;
+    for (const d of houseDecks()) {
+      console.log(`── ${path.basename(d)}`);
+      worst = Math.max(worst, await checkDeck([d, ...argv.filter(a => a !== '--all')]));
+    }
+    return worst;
+  }
+  return checkDeck(argv);
+}
+
+async function checkDeck(argv) {
+  const dir = argv.find((a, i) => !a.startsWith('--') && !['--only', '--theme'].includes(argv[i - 1]));
+  if (!dir) { console.error('usage: node house/check.mjs <deck-dir> | --all [--steps] [--only a,b] [--theme name]'); return 2; }
   const oi = argv.indexOf('--only');
   const only = oi >= 0 ? argv[oi + 1].split(',') : null;
   const steps = argv.includes('--steps');
+  const ti = argv.indexOf('--theme');
+  const theme = ti >= 0 ? argv[ti + 1] : null;
   let deck;
   try { deck = loadDeck(dir); }
   catch (e) { console.error(e instanceof BuildError ? `deck index:\n${e.message}` : e.stack); return 1; }
+  const unknown = (only || []).filter(n => !deck.slides.some(s => s.name === n));
+  if (unknown.length) { console.error(`--only: no slide named ${unknown.join(', ')} in deck.json`); return 2; }
 
   const outDir = path.join(deck.dir, '_check');
   fs.rmSync(outDir, { recursive: true, force: true });
@@ -359,7 +478,7 @@ async function main(argv) {
 
   const linted = lint(deck);
   let built;
-  try { built = await buildDeck(deck.dir, fs.mkdtempSync(path.join(os.tmpdir(), 'house-check-'))); }
+  try { built = await buildDeck(deck.dir, fs.mkdtempSync(path.join(os.tmpdir(), 'house-check-')), { theme }); }
   catch (e) {
     const lines = [`build failed:`, e instanceof BuildError ? e.message : e.stack];
     for (const [name, r] of linted) for (const m of r.errors) lines.push(`  slides/${name}.html: ${m}`);

@@ -1,0 +1,59 @@
+{
+  "title": "Euclid × CMB Lensing",
+  "author": "Cail Daley & Euclid CMBX team",
+  "venue": "SPT Secondaries and Cross-Correlations Call",
+  "date": "2026-03-30",
+  "description": "Status update on Euclid × ACT/SPT CMB lensing cross-correlations",
+  "footer": "Cail Daley · Euclid × CMB-κ · SPT Secondaries & Cross-Correlations · March 30, 2026",
+  "theme": "house",
+  "draft": true,
+  "sections": [
+    {
+      "title": "Status",
+      "outline": "Euclid DR1 is coming on a hard schedule, and the Paris CMBX group is building the cross-correlation pipeline for it.",
+      "slides": [
+        "title",
+        "dr1-timeline",
+        "cmbx-group",
+        "spt-logistics"
+      ]
+    },
+    {
+      "title": "RR2 data",
+      "outline": "The unblinded RR2 release overlaps ACT DR6 and SPT-3G, with six tomographic bins for each tracer.",
+      "slides": [
+        "rr2-unblinded",
+        "rr2-footprints",
+        "tomographic-bins"
+      ]
+    },
+    {
+      "title": "Cross-spectra",
+      "outline": "Galaxy density, cosmic shear and tSZ cross-spectra from RR2, and a check of the map estimator against the catalogue estimator.",
+      "slides": [
+        "density-kappa",
+        "shear-kappa",
+        "tsz-clustering",
+        "map-vs-catalog"
+      ]
+    },
+    {
+      "title": "Systematics",
+      "outline": "Eleven systematic maps, and the contamination they could imprint on each galaxy–CMB-lensing cross-spectrum.",
+      "slides": [
+        "systematic-maps-1",
+        "systematic-maps-2",
+        "systematic-maps-3",
+        "contamination-1",
+        "contamination-2"
+      ]
+    },
+    {
+      "title": "Scale dependence",
+      "outline": "How the fitted lensing amplitude in each bin changes with the maximum multipole used.",
+      "slides": [
+        "ell-dependence"
+      ]
+    }
+  ]
+}
