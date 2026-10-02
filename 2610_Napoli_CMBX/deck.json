@@ -17,11 +17,10 @@
     },
     {
       "title": "The working group",
-      "outline": "Who the working group is and how it is organised.",
+      "outline": "Who the working group is, how it is organised, and its DR1 key projects.",
       "slides": [
-        "people",
-        "kp-overview",
-        "logistics"
+        "swg",
+        "kp-overview"
       ]
     },
     {
@@ -35,6 +34,7 @@
       "title": "DR1-KP-CMBX-2-3",
       "outline": "Data vectors and systematics; likelihood and theory; simulations and covariance.",
       "slides": [
+        "kp-3",
         "kp23-data-vectors",
         "kp23-likelihood",
         "kp23-simulations"
