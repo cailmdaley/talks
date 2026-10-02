@@ -603,7 +603,7 @@ html, body { background: var(--ground); }
 .slide[data-layout="closing"] .contact { font-size: var(--t-small); color: var(--muted); }
 
 /* people — a grid of portraits with names, optionally beside a .text column
-   (text 40 %, left; data-flip puts it right) and with a .source line under
+   (text 40 %, left; data-flip puts it right; data-stack puts it on top at full width) and with a .source line under
    both. The build gathers the .people blocks into .roster and sets --cols/--rows
    (and --mcols/--mrows for the .memoriam block, set apart on the right behind
    a rule); --d is the portrait size, computed from the roster and capped at
@@ -619,6 +619,11 @@ html, body { background: var(--ground); }
 }
 .slide[data-layout="people"] > .body:has(> .source) { grid-template-rows: minmax(0, 1fr) auto; }
 .slide[data-layout="people"] > .body:has(> .text) { grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); }
+.slide[data-layout="people"][data-stack] > .body:has(> .text) { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); row-gap: var(--s4); }
+.slide[data-layout="people"][data-stack] > .body:has(> .text):has(> .source) { grid-template-rows: auto minmax(0, 1fr) auto; }
+.slide[data-layout="people"][data-stack] > .body > .text { order: -1; justify-content: flex-start; }
+.slide[data-layout="people"][data-stack] .roster { align-items: flex-end; }
+.slide[data-layout="people"][data-stack] .people { align-content: flex-end; }
 .slide[data-layout="people"][data-flip] > .body:has(> .text) { grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); }
 .slide[data-layout="people"][data-flip] > .body > .text { order: 2; }
 .slide[data-layout="people"] > .body > .source { grid-column: 1 / -1; order: 3; }

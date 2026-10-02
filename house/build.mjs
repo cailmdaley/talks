@@ -316,8 +316,8 @@ function frameFigures(frame, deckDir, problems, where, assets) {
 
 // people: the build gathers the portrait blocks into .roster (the size
 // container) and chooses the rows that give the largest portraits in the
-// nominal roster box: the body, less the text column (60 % of the width) and
-// the source line. The memoriam block is extra columns on the right. The CSS
+// nominal roster box: the body, less the text column (60 % of the width, or
+// half the height under data-stack) and the source line. The memoriam block is extra columns on the right. The CSS
 // sizes the portraits from the real roster with the same arithmetic.
 const PEOPLE = { W: 1712, H: 771, col: 64, gap: 32, rowGap: 16, caption: 72, sep: 64, label: 40, source: 48, max: 240 };
 function peopleGrid(frame, body) {
@@ -331,8 +331,11 @@ function peopleGrid(frame, body) {
   const n = main ? main.querySelectorAll(':scope > figure').length : 0;
   const m = roster.querySelectorAll(':scope > .memoriam > figure').length;
   const P = PEOPLE;
-  const W = body.querySelector(':scope > .text') ? (P.W - P.col) * 0.6 : P.W;
-  const H = P.H - (body.querySelector(':scope > .source') ? P.source : 0);
+  const text = !!body.querySelector(':scope > .text');
+  const stack = text && frame.hasAttribute('data-stack');
+  const W = text && !stack ? (P.W - P.col) * 0.6 : P.W;
+  // stacked under the text, the portraits are planned for half the body
+  const H = (P.H - (body.querySelector(':scope > .source') ? P.source : 0)) * (stack ? 0.5 : 1);
   const lab = main?.hasAttribute('data-label') ? P.label : 0;
   let best = null;
   for (let rows = 1; rows <= Math.max(n, 1); rows++) {
@@ -358,7 +361,7 @@ function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, ass
   const frame = doc.createElement('div');
   frame.className = isDetail ? 'slide detail' : 'slide';
   if (layout) frame.setAttribute('data-layout', layout);
-  for (const a of ['data-split', 'data-flip', 'data-cols']) if (el.hasAttribute(a)) frame.setAttribute(a, el.getAttribute(a));
+  for (const a of ['data-split', 'data-flip', 'data-cols', 'data-stack']) if (el.hasAttribute(a)) frame.setAttribute(a, el.getAttribute(a));
   for (const c of el.classList) if (c !== 'detail') frame.classList.add(c);
   const style = el.getAttribute('style');
   if (style && !isDetail) frame.setAttribute('style', style);
@@ -428,7 +431,7 @@ function buildSlides(deck, typeset) {
       frame.appendChild(chips);
     }
     const attrs = [...section.attributes]
-      .filter(a => !['data-layout', 'data-split', 'data-flip', 'class', 'style', 'id'].includes(a.name))
+      .filter(a => !['data-layout', 'data-split', 'data-flip', 'data-stack', 'class', 'style', 'id'].includes(a.name))
       .map(a => ` ${a.name}="${esc(a.value)}"`).join('');
     out.push({
       ...s, number,

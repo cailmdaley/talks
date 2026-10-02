@@ -29,6 +29,7 @@ const EXPECT = {
   cssurl: 'loads a file through url() in a style',
   longname: 'does not fit under its portrait in two lines',
   noface: 'a portrait is <figure><img',
+  stackless: 'data-stack goes on a people slide with a div.text',
 };
 const SVG_OFF = 'text "far right" is clipped by the canvas';
 
