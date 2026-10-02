@@ -108,6 +108,20 @@ Above 60 words of on-screen text the checker warns: the audience reads instead o
 | `table` | `<h2>`, one `<table>`, `.source` | `th`/`td`; `td.r` right-aligns, `tr.hl` highlights a row |
 | `quote` | one `<blockquote>`, `.source` | a quotation |
 | `closing` | `<h2>`, an `<ol>` of takeaways, `p.contact` | stays on screen for questions |
+| `people` | `<h2>`, one `div.people`, optional `div.people.memoriam` | portraits with names, for acknowledging a team; see below |
+
+A `people` slide holds up to 24 portraits, each `<figure><img src="images/collaborators/…" alt="Name"><figcaption>Name</figcaption></figure>`:
+
+```html
+<section data-layout="people">
+  <h2>The Euclid CMBX working group</h2>
+  <div class="people"> <figure>…</figure> … </div>
+  <div class="people memoriam" data-label="In memoriam"> <figure>…</figure> </div>
+  <aside class="notes">…</aside>
+</section>
+```
+
+The build picks the number of rows that gives the largest portraits in the body; every portrait is the same round crop (`object-fit: cover`, centred a little above the middle, where faces sit), with its name at the fine size, which may wrap to two lines. The optional memoriam block sits to the right behind a thin rule, under its small-caps `data-label`, in the same portrait style. Portraits keep their own backgrounds: images in a `people` block are never multiplied into the ground.
 
 ## Figures
 
@@ -150,11 +164,11 @@ with any layout. A detail is shown whole: fragments inside it appear at once. A 
 Errors:
 
 - structure: an unknown layout or a class outside the vocabulary (house.css, the themes, the deck's css); content a layout does not allow, or too many of it; a figure without exactly one image, inline SVG or placeholder; an id used on two slides; elements the build cannot inline (`<script>`, `<iframe>`, `<video>`, SVG `<image>`, `url()` in a style); an inline type size or scale; build failures (missing image, TeX error, text outside the `<section>`, a highlight or crop outside its image);
-- geometry: text ink or a box outside the content box, anything off the canvas (footer, logos and themed bands may leave the content box but not the canvas); an element clipping its content; the headline overlapping the body, or sibling blocks overlapping anywhere in the body; a caption or source wider than its figure; a scaled or transformed slide frame; a three-line headline;
+- geometry: text ink or a box outside the content box, anything off the canvas (footer, logos and themed bands may leave the content box but not the canvas); an element clipping its content; the headline overlapping the body, or sibling blocks overlapping anywhere in the body; a caption or source wider than its figure (a portrait's name may take two lines within its column); more than 24 portraits on a `people` slide; a scaled or transformed slide frame; a three-line headline;
 - legibility: text set below 24 px, SVG text as displayed included; contrast below 4.5:1 for text against its background, with opacity, and for SVG text against the filled shape under its centre;
 - the page: a script error, a file that fails to load, any network request (decks work offline).
 
-Warnings: a two-line headline (not on `statement`); more than 60 words on screen; a `points` slide filling less than 40 % of its body (make it a `statement`, or merge); an image drawn under 240 px tall and under 900 px wide (check its labels, or give it room); missing speaker notes; a placeholder; inline styles; images without alt text.
+Warnings: a two-line headline (not on `statement`); more than 60 words on screen; a `points` slide filling less than 40 % of its body (make it a `statement`, or merge); an image drawn under 240 px tall and under 900 px wide (check its labels, or give it room; portraits and logos are exempt); missing speaker notes; a placeholder; inline styles; images without alt text.
 
 ## Themes
 

@@ -39,7 +39,9 @@ const SCHEMA = {
   table:         { head: 'h2', body: [['table', 1, 1], ['span.source', 0, 1], ['p.source', 0, 1], ['p', 0, 1]] },
   quote:         { head: null, body: [['blockquote', 1, 1], ['span.source', 0, 1], ['p.source', 0, 1]] },
   closing:       { head: 'h2', body: [['ol', 0, 1], ['ul', 0, 1], ['p', 0, 2], ['p.contact', 0, 1]], need: 1 },
+  people:        { head: 'h2', body: [['div.people', 1, 1], ['div.memoriam', 0, 1]] },
 };
+const MAX_PEOPLE = 24;
 
 const REVEAL_CLASSES = ['fragment', 'fade-in', 'fade-out', 'fade-up', 'fade-down', 'fade-left', 'fade-right',
   'fade-in-then-out', 'fade-in-then-semi-out', 'semi-fade-out', 'current-visible', 'highlight-red', 'highlight-blue',
@@ -110,6 +112,21 @@ function lintBlock(el, where, vocab, out, isDetail) {
   });
   if (schema.need && !kids.length) out.errors.push(`${where}: a ${layout} slide needs a body`);
 
+  if (layout === 'people') {
+    const blocks = [...el.children].filter(c => c.localName === 'div' && c.classList.contains('people'));
+    let n = 0;
+    for (const b of blocks) {
+      for (const k of b.children) {
+        if (k.localName !== 'figure') out.errors.push(`${where}: ${describe(k)} inside div.people; it holds only <figure>s`);
+        else if (!k.querySelector(':scope > img') || !k.querySelector(':scope > figcaption')) out.errors.push(`${where}: a portrait is <figure><img …><figcaption>Name</figcaption></figure>`);
+        else n++;
+      }
+      if (b.classList.contains('memoriam') && !b.getAttribute('data-label')) out.errors.push(`${where}: div.people.memoriam needs data-label (its heading)`);
+    }
+    for (const k of [...el.children].filter(c => c.classList.contains('memoriam') && !c.classList.contains('people')))
+      out.errors.push(`${where}: the memoriam block is <div class="people memoriam" data-label="…">`);
+    if (n > MAX_PEOPLE) out.errors.push(`${where}: ${n} portraits; a people slide holds at most ${MAX_PEOPLE}, so split it`);
+  }
   for (const fig of el.querySelectorAll('figure')) {
     const visuals = [...fig.children].filter(c => c.localName === 'img' || c.localName === 'svg' || c.classList.contains('placeholder'));
     if (visuals.length !== 1) out.errors.push(`${where}: a <figure> holds exactly one <img>, inline <svg> or .placeholder (has ${visuals.length})`);
@@ -333,7 +350,13 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
     for (const t of fig.querySelectorAll('figcaption, .source'))
       if (visible(t)) {
         const tr = t.getBoundingClientRect();
-        if (t.scrollWidth > t.clientWidth + 2 || tr.left < fr.left - 1 || tr.right > fr.right + 1)
+        // a portrait's name may wrap to two lines inside its column
+        if (fig.closest('.people')) {
+          const lines = Math.round(tr.height / parseFloat(getComputedStyle(t).lineHeight));
+          const k = ink(t);
+          if (lines > 2 || k.left < fr.left - 1 || k.right > fr.right + 1)
+            errors.push(`${label(t)} does not fit under its portrait in two lines; shorten the name or show fewer people`);
+        } else if (t.scrollWidth > t.clientWidth + 2 || tr.left < fr.left - 1 || tr.right > fr.right + 1)
           errors.push(`${label(t)} is wider than its figure; shorten it (captions and sources are one line)`);
       }
   }
@@ -350,7 +373,7 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
   // images: present, decoded, and not drawn at zero size
   for (const img of frame.querySelectorAll('img')) {
     if (!img.complete || !img.naturalWidth) errors.push(`image ${img.getAttribute('data-src-path') || '(inline)'} did not load`);
-    else if (visible(img) && !img.closest('.logos')) {
+    else if (visible(img) && !img.closest('.logos, .people')) {
       const fr = (img.closest('.frame') || img).getBoundingClientRect();
       if (fr.height < 40 * scale) errors.push(`image ${img.getAttribute('data-src-path')} is drawn ${px(fr.height)}px tall`);
       else if (fr.height < 240 * scale && fr.width < 900 * scale) warnings.push(`image ${img.getAttribute('data-src-path')} is drawn only ${px(fr.width)}×${px(fr.height)}px; check its labels are legible, or give it more room (fewer panels, data-crop)`);

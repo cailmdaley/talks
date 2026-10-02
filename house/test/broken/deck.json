@@ -26,7 +26,8 @@
         "shrunk",
         "emptyfig",
         "widemath",
-        "cssurl"
+        "cssurl",
+        "longname"
       ]
     }
   ]

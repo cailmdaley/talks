@@ -599,6 +599,83 @@ html, body { background: var(--ground); }
 }
 .slide[data-layout="closing"] .contact { font-size: var(--t-small); color: var(--muted); }
 
+/* people — a grid of portraits with names; an optional .memoriam block to the
+   right behind a rule. The build sets --cols/--rows (and --mcols/--mrows) for
+   the largest portraits that fit; --d is the portrait size, computed from the
+   body. Portraits keep their own backgrounds (no multiply). */
+.slide[data-layout="people"] > .body {
+  container-type: size;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --g: 32px;
+  --rg: 16px;
+  --cap: 72px;
+  --sep: 0px;
+  --lab: 40px;
+}
+.slide[data-layout="people"] > .body:has(> .memoriam) { --sep: 64px; }
+.slide[data-layout="people"] .people {
+  --d: min(
+    (100cqw - var(--sep)) / (var(--cols) + var(--mcols)) - var(--g),
+    (100cqh - (var(--rows) - 1) * var(--rg)) / var(--rows) - var(--cap),
+    (100cqh - var(--lab) - (max(var(--mrows), 1) - 1) * var(--rg)) / max(var(--mrows), 1) - var(--cap) + (1 - min(var(--mcols), 1)) * 1000px
+  );
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  row-gap: var(--rg);
+  width: calc(var(--cols) * (var(--d) + var(--g)));
+}
+.slide[data-layout="people"] .people.memoriam {
+  width: calc(var(--mcols) * (var(--d) + var(--g)) + var(--sep) / 2);
+  margin-left: calc(var(--sep) / 2);
+  padding-left: calc(var(--sep) / 2 - 2px);
+  border-left: 2px solid var(--rule);
+  align-self: stretch;
+}
+.slide[data-layout="people"] .memoriam::before {
+  content: attr(data-label);
+  flex: 0 0 100%;
+  margin-bottom: calc(-1 * var(--rg));
+  text-align: center;
+  font-size: var(--t-fine);
+  line-height: 32px;
+  height: var(--lab);
+  font-weight: 600;
+  font-variant-caps: small-caps;
+  font-feature-settings: "smcp" 1, "lnum" 1;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.slide[data-layout="people"] .people > figure {
+  flex: none;
+  width: calc(var(--d) + var(--g));
+  height: calc(var(--d) + var(--cap));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.slide[data-layout="people"] .people > figure > img {
+  display: block;
+  flex: none;
+  width: var(--d);
+  height: var(--d);
+  object-fit: cover;
+  object-position: 50% 30%;
+  border-radius: 50%;
+}
+.slide[data-layout="people"] .people > figure > figcaption {
+  font-size: var(--t-fine);
+  line-height: 32px;
+  height: auto;
+  margin: 8px 0 0;
+  white-space: normal;
+  text-wrap: balance;
+  width: 100%;
+}
+
 /* ═══ Report: the same slides as a scrolling document with their notes ═════ */
 body.report {
   margin: 0;

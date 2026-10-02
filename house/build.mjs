@@ -22,7 +22,7 @@ const CACHE = path.join(NM, '.cache', 'house');
 
 export const LAYOUTS = [
   'title', 'section', 'statement', 'points', 'figure', 'figure-text',
-  'compare', 'grid', 'number', 'bleed', 'table', 'quote', 'closing',
+  'compare', 'grid', 'number', 'bleed', 'table', 'quote', 'closing', 'people',
 ];
 
 const MIME = {
@@ -286,13 +286,15 @@ function frameFigures(frame, deckDir, problems, where, assets) {
     try { im = loadImage(file); } catch (e) { problems.push(`${where}: ${src}: ${e.message}`); continue; }
     img.removeAttribute('src');
     const fig0 = img.parentElement?.localName === 'figure' ? img.parentElement : null;
-    const blend = !!fig0 && !fig0.classList.contains('plain') && frame.getAttribute('data-layout') !== 'bleed';
+    // portraits are photographs and keep their own backgrounds
+    const portrait = !!img.closest('.people');
+    const blend = !!fig0 && !fig0.classList.contains('plain') && !portrait && frame.getAttribute('data-layout') !== 'bleed';
     img.setAttribute('data-asset', addAsset(assets, im, blend));
     if (blend && im.mime === 'image/svg+xml') img.setAttribute('data-blend', '');
     img.setAttribute('data-src-path', src);
     if (!img.hasAttribute('alt')) img.setAttribute('alt', '');
     const fig = img.parentElement;
-    if (fig?.localName !== 'figure') continue;
+    if (fig?.localName !== 'figure' || portrait) continue;
     // data-crop="x y w h": show only that region, in percent of the image
     let crop = null;
     if (img.hasAttribute('data-crop')) {
@@ -310,6 +312,29 @@ function frameFigures(frame, deckDir, problems, where, assets) {
     }
     moveMarks(fig, box, problems, where);
   }
+}
+
+// people: choose the rows that give the largest portraits in the nominal body
+// (1712 × 771), with the memoriam block as extra columns on the right. The CSS
+// sizes the portraits from the real body with the same arithmetic.
+const PEOPLE = { W: 1712, H: 771, gap: 32, rowGap: 16, caption: 72, sep: 64, label: 40 };
+function peopleGrid(frame, body) {
+  const n = body.querySelectorAll(':scope > .people:not(.memoriam) > figure').length;
+  const m = body.querySelectorAll(':scope > .people.memoriam > figure').length;
+  const { W, H, gap, rowGap, caption, sep, label } = PEOPLE;
+  let best = null;
+  for (let rows = 1; rows <= Math.max(n, 1); rows++) {
+    const cols = Math.ceil(n / rows);
+    const mrows = m ? Math.min(rows, m) : 0;
+    const mcols = m ? Math.ceil(m / mrows) : 0;
+    const d = Math.min(
+      (W - (m ? sep : 0)) / (cols + mcols) - gap,
+      (H - (rows - 1) * rowGap) / rows - caption,
+      m ? (H - label - (mrows - 1) * rowGap) / mrows - caption : Infinity);
+    if (!best || d > best.d) best = { d, rows, cols, mrows, mcols };
+  }
+  const { rows, cols, mrows, mcols } = best;
+  frame.setAttribute('style', `${frame.getAttribute('style') ? frame.getAttribute('style') + ';' : ''}--cols:${cols};--rows:${rows};--mcols:${mcols};--mrows:${mrows}`);
 }
 
 // Build one .slide frame from an authored element (a <section> or an <aside class="detail">).
@@ -332,6 +357,7 @@ function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, ass
   for (const n of kids) if (n !== head || layout === 'title' || !/^h[12]$/.test(head.localName)) body.appendChild(n);
   frame.appendChild(body);
   if (layout === 'grid') frame.setAttribute('data-count', String(body.querySelectorAll(':scope > figure').length));
+  if (layout === 'people') peopleGrid(frame, body);
 
   frameFigures(frame, deckDir, problems, where, assets);
   textPass(frame, typeset, problems, where);

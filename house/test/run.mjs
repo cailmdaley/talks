@@ -27,6 +27,7 @@ const EXPECT = {
   emptyfig: 'a <figure> holds exactly one',
   widemath: 'leaves the content box (right',
   cssurl: 'loads a file through url() in a style',
+  longname: 'does not fit under its portrait in two lines',
 };
 const SVG_OFF = 'text "far right" is clipped by the canvas';
 

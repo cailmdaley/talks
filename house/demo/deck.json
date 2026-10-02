@@ -44,8 +44,9 @@
     },
     {
       "title": "Closing",
-      "outline": "The takeaways stay on screen for questions.",
+      "outline": "The people behind the work, then the takeaways, which stay on screen for questions.",
       "slides": [
+        "people",
         "closing"
       ]
     }
