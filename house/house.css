@@ -612,3 +612,5 @@ body.report {
   color: var(--teal);
   margin: 0 0 10px 4px;
 }
+/* the report shows each slide in its final state; presenter-only emphasis is left out */
+.report .slide .fade-out, .report .slide .fade-in-then-out, .report .slide .current-visible, .report .slide mark.spot { display: none; }

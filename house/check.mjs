@@ -125,12 +125,19 @@ function lintBlock(el, where, vocab, out, isDetail) {
 function lint(deck) {
   const vocab = vocabulary(deck);
   const per = new Map();
+  const ids = new Map();
   for (const s of deck.slides) {
     const out = { errors: [], warnings: [] };
     per.set(s.name, out);
     const { top, section } = parseSlide(s.src);
     if (!section) { out.errors.push(`must hold exactly one top-level <section> (found ${top.map(describe).join(', ') || 'nothing'})`); continue; }
     lintBlock(section, 'slide', vocab, out, false);
+    for (const el of section.querySelectorAll('[id]')) {
+      const id = el.getAttribute('id');
+      if (ids.has(id)) out.errors.push(`id "${id}" is also used in slides/${ids.get(id)}.html; ids must be unique across the deck (prefix them with the slide name)`);
+      else ids.set(id, s.name);
+    }
+    if (section.hasAttribute('id')) out.errors.push('the <section> takes its id from the file name; remove id=""');
     section.querySelectorAll(':scope > aside.detail').forEach((d, k) => lintBlock(d, `detail ${k + 1}`, vocab, out, true));
     const notes = section.querySelector(':scope > aside.notes');
     if (!notes || !notes.textContent.trim()) out.warnings.push('no speaker notes; the report shows notes as the slide\'s prose');

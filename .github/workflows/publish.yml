@@ -21,8 +21,26 @@ jobs:
 
       - uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Render site
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install house deck dependencies
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q poppler-utils
+          npm ci --omit=dev
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: "1"
+
+      - name: List house decks on the index
+        run: node house/build.mjs --listing house-decks.yml
+
+      - name: Render Quarto site
         run: quarto render
+
+      - name: Build house decks
+        run: node house/build.mjs --all --out _site
 
       - uses: actions/upload-pages-artifact@v3
         with:

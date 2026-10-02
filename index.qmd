@@ -1,6 +1,9 @@
 ---
 title: "Cail Daley's Talks"
 listing: 
+    contents:
+        - "2*/*.qmd"
+        - house-decks.yml
     type: default
     sort: "date desc"
     fields: [title, description, date, image]
