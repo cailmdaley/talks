@@ -11,7 +11,55 @@
     {
       "title": "Opening",
       "outline": "An update from the whole Euclid CMBX working group.",
-      "slides": ["title"]
+      "slides": [
+        "title"
+      ]
+    },
+    {
+      "title": "The working group",
+      "outline": "Who the working group is and how it is organised.",
+      "slides": [
+        "people",
+        "kp-overview",
+        "logistics"
+      ]
+    },
+    {
+      "title": "DR1-KP-CMBX-1-2",
+      "outline": "CMB ISW and lensing cross-correlation with Euclid observables.",
+      "slides": [
+        "kp-1-2"
+      ]
+    },
+    {
+      "title": "DR1-KP-CMBX-2-3",
+      "outline": "Data vectors and systematics; likelihood and theory; simulations and covariance.",
+      "slides": [
+        "kp23-data-vectors",
+        "kp23-likelihood",
+        "kp23-simulations"
+      ]
+    },
+    {
+      "title": "DR1-KP-CMBX-4",
+      "outline": "Hot gas in the cosmic web via TSZ cross-correlation with GC, WL and clusters.",
+      "slides": [
+        "kp-4"
+      ]
+    },
+    {
+      "title": "DR1-KP-CMBX-5",
+      "outline": "Peculiar velocities from CMB-Euclid cross-correlation.",
+      "slides": [
+        "kp-5"
+      ]
+    },
+    {
+      "title": "Additional probes",
+      "outline": "Cross-correlations w/ AGNs, w/ Voids, FIR CIB, Cluster masses.",
+      "slides": [
+        "additional-probes"
+      ]
     }
   ]
 }
