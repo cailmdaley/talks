@@ -44,7 +44,8 @@
         "kp-3",
         "kp23-data-vectors",
         "kp23-likelihood",
-        "kp23-simulations"
+        "kp23-simulations",
+        "mock-recovery"
       ]
     },
     {

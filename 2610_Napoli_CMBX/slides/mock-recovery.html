@@ -1,0 +1,12 @@
+<section data-layout="figure">
+  <h2>Mock κ crosses recover the input to 10-seed noise</h2>
+  <figure>
+    <img src="images/napoli_mock_recovery_cmb.png" alt="Residuals of the 10-seed GLASS mean against the input spectrum, for galaxy density and shear crossed with CMB lensing, in six tomographic bins">
+    <span class="source">10 GLASS 6×2pt seeds · ACT DR6 lensing mask and noise · TR1 Euclid mask · NaMaster map estimator · 15 bands from $\ell = 100$ to 3000.</span>
+  </figure>
+  <aside class="notes">
+    <p>Each point is one bandpower of one cross-spectrum: the mean over 10 GLASS 6×2pt mock realizations minus the input theory spectrum, divided by $\sigma_1$. Top row is galaxy density × CMB lensing, bottom row is shear × CMB lensing, the six tomographic bins coloured from bin 1 (blue) to bin 6 (ochre) and nudged apart in $\ell$. The mocks use the ACT DR6 lensing mask and noise and the TR1 Euclid mask, and are measured with the production NaMaster pipeline.</p>
+    <p>$\sigma_1$ is the seed-to-seed scatter of a single realization: the sample standard deviation over the 10 seeds, not the Gaussian error bar of the data. The 10-seed mean is known to $\sigma_1/\sqrt{10} \approx 0.32\,\sigma_1$ (the darker band), so an unbiased pipeline should put about two points in three inside it.</p>
+    <p>That is what we see. Over all 180 bandpowers the mean $|\Delta|$ is $0.23\,\sigma_1$ (0.22 for density, 0.25 for shear), against $0.25\,\sigma_1$ expected from noise alone; the signed mean is $+0.007\,\sigma_1$, and no single spectrum's mean offset exceeds $0.18\,\sigma_1$. The largest point, $0.96\,\sigma_1$ in shear bin 1 at $\ell \approx 220$, is about 3 standard errors of the mean, about what one expects once among 180 bands. Bands are treated as independent here; a full-covariance $\chi^2$ is the next step.</p>
+  </aside>
+</section>
