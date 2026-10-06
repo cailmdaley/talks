@@ -61,6 +61,8 @@ C_DR1, C_DR1_EDGE = "#435AA1", "#24366E"   # Euclid blue, opaque on top
 COLOURS = {"planck": ("#8A93A3", 0.30),    # (colour, fill alpha): a grey wash for the near-full sky
            "act": ("#C08A1E", 0.50),       # ochre
            "spt": ("#1D8A8A", 0.62)}       # teal
+# each CMB boundary where it crosses DR1, in its own hue, light enough to read on the blue
+OUTLINE_ON_DR1 = {"planck": "#AEB5C2", "act": "#E0B04A", "spt": "#5FD0C8"}
 
 # canvas: the figure layout's body box less the .source line, 1712 x 723 px, at 2x
 W_PX, H_PX, DPI = 3424, 1446, 200
@@ -274,14 +276,18 @@ def draw_panel(ax, rgb, P, layers, A, title, dec_rings):
     def over(mask, colour, alpha):
         sub[mask] = (1 - alpha) * sub[mask] + alpha * np.array(to_rgb(colour))
 
+    edges = {}
     for k in layers:
         b = P.sample(A[f"map_{k}"])
         c, a = COLOURS[k]
         over(b, c, a)
-        over(edge(b, 2) & P.inside, c, 0.95)
+        edges[k] = edge(b, 2) & P.inside
+        over(edges[k], c, 0.95)
     dr1 = P.sample(A["map_dr1"])
     over(dr1, C_DR1, 1.0)
     over(edge(dr1, 2) & P.inside, C_DR1_EDGE, 1.0)
+    for k in layers:            # CMB boundaries stay visible across the opaque DR1 layer
+        over(edges[k] & dr1, OUTLINE_ON_DR1[k], 1.0)
 
     gl = dict(color=MUTED, lw=0.9, alpha=0.5, zorder=2)
     lab = dict(fontsize=FS_GRID, color=MUTED, zorder=5, path_effects=HALO)
@@ -337,14 +343,14 @@ def render(panels, layers, A, path, legend_xy, height):
     ax.imshow(rgb, extent=(0, W_PX, H_PX, 0), interpolation="nearest", zorder=0)
 
     # legend: one fixed slot per entry, so each frame fills the next slot and nothing moves.
-    # DR1-wide carries its own area; each CMB survey carries only its overlap with DR1-wide.
-    entries = [(C_DR1, C_DR1_EDGE, "Euclid DR1-wide: "
+    # DR1 (DR1-wide) carries its own area; each CMB survey only its overlap with it.
+    entries = [(C_DR1, C_DR1_EDGE, "Euclid DR1: "
                 f"{deg2(float(A['dr1_wide_s']) + float(A['dr1_wide_n']))} deg²\n"
                 f"(south {deg2(A['dr1_wide_s'])} + north {deg2(A['dr1_wide_n'])})")]
     for k in layers:
         c, a = COLOURS[k]
         entries.append((tuple((1 - a) + a * np.array(to_rgb(c))), c,
-                        f"{CMB[k][0]} ∩ DR1-wide: {deg2(A[f'{k}_cap'])} deg²"))
+                        f"{CMB[k][0]} ∩ DR1: {deg2(A[f'{k}_cap'])} deg²"))
     lx, ly = legend_xy
     for (fc, ec, text), y in zip(entries, LEG_SLOTS):
         ax.add_patch(matplotlib.patches.Rectangle((lx, ly + y - 25), 90, 50, fc=fc, ec=ec, lw=1.5, zorder=8))
@@ -370,8 +376,8 @@ def layout(A):
     so RA increases to the left in both."""
     ra0 = 5 * round(circ_mean_ra((A["map_dr1"] & south_mask()) | A["map_spt"]) / 5)
     sp, npj = Polar("south", ra0), Polar("north", ra0 + 180)
-    sb = bbox_of(sp, [A["map_dr1"] & south_mask(), A["map_spt"]], margin=0.04)
-    nb = bbox_of(npj, [A["map_dr1"] & ~south_mask()], margin=0.06,
+    sb = bbox_of(sp, [A["map_dr1"] & south_mask(), A["map_spt"]], margin=0.09)
+    nb = bbox_of(npj, [A["map_dr1"] & ~south_mask()], margin=0.11,
                  extra=[(r, 84.0) for r in range(0, 360, 15)])   # the pole, with a 6° cap around it
     sw, sh = sb[1] - sb[0], sb[3] - sb[2]
     nw, nh = nb[1] - nb[0], nb[3] - nb[2]
