@@ -1,15 +1,15 @@
 <section data-layout="figure">
   <h2>Euclid DR1 overlaps every CMB lensing survey</h2>
   <figure>
-    <img src="images/napoli_footprint_1_dr1.png" alt="Euclid DR1 observed footprint on an equatorial Mollweide map">
-    <img class="fragment" src="images/napoli_footprint_2_planck.png" alt="Euclid DR1 with the Planck PR4 lensing mask">
-    <img class="fragment" src="images/napoli_footprint_3_act.png" alt="Euclid DR1 with the Planck PR4 and ACT DR6 lensing masks">
-    <img class="fragment" src="images/napoli_footprint_4_spt.png" alt="Euclid DR1 with the Planck PR4, ACT DR6 and SPT-3G Main lensing masks">
-    <span class="source">DR1 observed VIS-mosaic coverage (archive, Oct 2025); not a shear mask. Equatorial Mollweide centred on RA 60°.</span>
+    <img src="images/napoli_footprint_1_dr1.png" alt="The Euclid DR1 wide regions seen from the south and north celestial poles">
+    <img class="fragment" src="images/napoli_footprint_2_planck.png" alt="Euclid DR1-wide with the Planck PR4 lensing mask">
+    <img class="fragment" src="images/napoli_footprint_3_act.png" alt="Euclid DR1-wide with the Planck PR4 and ACT DR6 lensing masks">
+    <img class="fragment" src="images/napoli_footprint_4_spt.png" alt="Euclid DR1-wide with the Planck PR4, ACT DR6 and SPT-3G Main lensing masks">
+    <span class="source">DR1 observed VIS-mosaic coverage (archive, Oct 2025); not a shear mask. Orthographic views from the celestial poles.</span>
   </figure>
   <aside class="notes">
-    <p>The blue region is where Euclid DR1 has VIS mosaics: the union of the MER tiles in the DR1_R1 and R2 releases, as listed in the archive in October 2025. It covers 2341 deg², 1745 in the south and 596 in the north. It is not a shear mask: there are no effective-coverage, star or bright-object cuts, and DR1 shear processing is not finished, so the areas that enter an analysis will be smaller.</p>
-    <p>The CMB lensing footprints arrive one at a time. Planck PR4 (23 356 deg²) covers all but about 125 deg² of DR1: the overlap is 2215 deg². ACT DR6, with its baseline lensing mask (9646 deg²), overlaps DR1 over 1523 deg², most of it in the DR1 south field down to about −60°. SPT-3G Main, the 1500 deg² winter field (1672 deg² in its lensing mask), overlaps 476 deg² at the southern edge of the DR1 south field. The DR1 north fields are seen by Planck alone; part of the south field is seen by all three.</p>
-    <p>Conventions: a CMB footprint's area counts mask pixels above 0.5, at the mask's native NSIDE 2048; for these apodized masks this agrees with the weighted area to 0.4 %. The overlap with DR1 is binary, mask above zero and DR1 observed, with DR1 upgraded from NSIDE 1024 to 2048. The maps are drawn at NSIDE 512.</p>
+    <p>The blue regions are the two wide areas of Euclid DR1 that a cosmology analysis will use, seen from the south (left) and north (right) celestial poles at the same scale. They come from the DR1 observed footprint: the union of the MER VIS tiles in the DR1_R1 and R2 releases, as listed in the archive in October 2025 (2341 deg² in all). That is where VIS mosaics exist, not a shear mask: there are no effective-coverage, star or bright-object cuts yet, and DR1 shear processing is not finished, so the analysis areas will be smaller. DR1-wide keeps, in each hemisphere, the largest connected region of that footprint and any piece within 1° of it: 1648 deg² in the south and 389 deg² in the north. The 304 deg² left out are isolated fields: the patches near the equator, the fields around the north ecliptic pole, and small pieces in the far south.</p>
+    <p>The CMB lensing footprints arrive one at a time. Planck PR4 (23 356 deg²) covers 1930 deg² of DR1-wide, nearly all of it in both hemispheres. ACT DR6, with its baseline lensing mask (9646 deg²), overlaps 1446 deg², all in the south. SPT-3G Main, the 1500 deg² winter field (1672 deg² in its lensing mask), overlaps 423 deg² on the southern side of the DR1 south region, partly inside ACT. The north region is seen by Planck alone.</p>
+    <p>Conventions: a CMB footprint's area counts mask pixels above 0.5 at the mask's native NSIDE 2048; for these apodized masks this agrees with the weighted area to 0.4 %. The overlap with DR1-wide is binary, mask above zero and DR1-wide, with DR1 upgraded from NSIDE 1024 to 2048. The maps are drawn at NSIDE 512. The orthographic view shrinks areas far from the pole: near Dec −20°, at the northern edge of the DR1 south region, regions appear at about a third of their true size relative to areas near the pole.</p>
   </aside>
 </section>

@@ -1,23 +1,30 @@
-"""Footprint build-up for the Napoli CMBX talk: Euclid DR1 with the CMB lensing
-footprints laid over it one at a time (Planck PR4, ACT DR6, SPT-3G Main).
+"""Footprint build-up for the Napoli CMBX talk: the Euclid DR1 wide regions with
+the CMB lensing footprints laid over them one at a time (Planck PR4, ACT DR6,
+SPT-3G Main), seen from the south and north celestial poles.
 
 Four PNGs with an identical frame, written to the shared images/ pool:
-  napoli_footprint_1_dr1.png     Euclid DR1 alone
+  napoli_footprint_1_dr1.png     Euclid DR1-wide alone
   napoli_footprint_2_planck.png  + Planck PR4
   napoli_footprint_3_act.png     + ACT DR6
   napoli_footprint_4_spt.png     + SPT-3G Main
-The slide stacks them, so each step adds exactly one layer.
+plus napoli_footprint_laea_preview.png, the last frame in a polar Lambert
+azimuthal equal-area projection for comparison. The slide stacks the four
+frames, so each step adds exactly one layer.
 
-Areas are measured at each mask's native NSIDE (DR1 is upgraded to 2048 for the
-overlaps; a binary map upgrades exactly):
+DR1-wide is the two main regions of the DR1 observed VIS-mosaic footprint:
+in each hemisphere, the largest connected group of pixels (8-neighbour, NSIDE
+1024), plus any other group that comes within LINK_DEG of it. Smaller isolated
+fields (equatorial patches, the fields around the north ecliptic pole, small
+far-south pieces) are left out; their areas are printed.
+
+Areas are measured at each mask's native NSIDE (DR1-wide is upgraded to 2048
+for the overlaps; a binary map upgrades exactly):
   - a CMB footprint's area counts pixels with mask > 0.5 (within 0.4 % of the
-    apodized mask's weighted sum, sum(w) * pixel area), and the drawn fill uses
-    the same threshold;
-  - its overlap with DR1 is binary: mask > 0 and DR1.
-The maps are drawn at NSIDE 512 in an equatorial Mollweide projection, RA
-increasing to the left, centred on the DR1 south field.
+    apodized mask's weighted sum), and the drawn fill uses the same threshold;
+  - its overlap with DR1-wide is binary: mask > 0 and DR1-wide.
+The maps are drawn at NSIDE 512.
 
-Run in the cmbx container: app python make_footprints.py [--cache areas_and_maps.npz]
+Run in the cmbx container: app python make_footprints.py [--cache file.npz]
 """
 import argparse
 import os
@@ -31,7 +38,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, patheffects
 from matplotlib.colors import to_rgb
-from matplotlib.patches import Patch
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "images")
@@ -45,70 +54,167 @@ CMB = {  # key: (label, path)
             "mask2048_border_apod_mask_threshold0.1_allghz_dense.fits"),
 }
 NSIDE_PLOT = 512
+LINK_DEG = 1.0
 
 # euclid theme (house/themes/euclid.css)
-INK, MUTED, GROUND = "#111418", "#535B67", "#EBF0F6"
-C_DR1 = "#435AA1"                      # Euclid blue, opaque on top
-COLOURS = {"planck": ("#8A93A3", 0.30),  # (colour, fill alpha): a grey wash for the near-full sky
-           "act": ("#C08A1E", 0.50),     # ochre
-           "spt": ("#1D8A8A", 0.62)}     # teal
+INK, MUTED = "#111418", "#535B67"
+C_DR1, C_DR1_EDGE = "#435AA1", "#24366E"   # Euclid blue, opaque on top
+COLOURS = {"planck": ("#8A93A3", 0.30),    # (colour, fill alpha): a grey wash for the near-full sky
+           "act": ("#C08A1E", 0.50),       # ochre
+           "spt": ("#1D8A8A", 0.62)}       # teal
 
 # canvas: the figure layout's body box less the .source line, 1712 x 723 px, at 2x
 W_PX, H_PX, DPI = 3424, 1446, 200
+FS = 21          # legend and panel titles: 21 pt at 200 dpi, shown at half size = 29 px
+FS_GRID = 19     # graticule labels: 26 px as shown
 
 
 # ---------------------------------------------------------------- measurement
+def dr1_wide(d, nside):
+    """DR1-wide: per hemisphere, the largest connected group plus groups within LINK_DEG of it."""
+    idx = np.flatnonzero(d)
+    pos = np.full(d.size, -1)
+    pos[idx] = np.arange(idx.size)
+    nb = hp.get_all_neighbours(nside, idx)
+    rows, cols = [], []
+    for k in range(8):
+        v = nb[k] >= 0
+        v[v] &= d[nb[k][v]]
+        rows.append(np.flatnonzero(v))
+        cols.append(pos[nb[k][v]])
+    rows, cols = np.concatenate(rows), np.concatenate(cols)
+    _, lab = connected_components(coo_matrix((np.ones(rows.size), (rows, cols)),
+                                             shape=(idx.size, idx.size)), directed=False)
+    size = np.bincount(lab)
+    vec = np.array(hp.pix2vec(nside, idx)).T
+    south = vec[:, 2] < 0
+    keep = np.zeros(idx.size, bool)
+    pa = hp.nside2pixarea(nside, degrees=True)
+    for hemi in (south, ~south):
+        comps = np.unique(lab[hemi])
+        main = comps[np.argmax(size[comps])]
+        tree = cKDTree(vec[lab == main])
+        for c in comps:
+            m = lab == c
+            sep = 0.0 if c == main else np.degrees(tree.query(vec[m])[0].min())
+            ra, dec = hp.pix2ang(nside, idx[m], lonlat=True)
+            ra = (ra + 180) % 360 - 180
+            kept = sep < LINK_DEG
+            keep |= m & kept
+            print(f"  DR1 group {size[c] * pa:7.1f} deg²  RA {ra.min():5.0f}..{ra.max():4.0f}  "
+                  f"Dec {dec.min():4.0f}..{dec.max():4.0f}  {sep:6.2f}° from main  "
+                  f"{'kept' if kept else 'dropped'}", flush=True)
+    out = np.zeros_like(d)
+    out[idx[keep]] = True
+    return out
+
+
+def upgrade_bool(b, nside_out):
+    """Exact upgrade of a boolean RING map: each child pixel takes its parent's value."""
+    nside_in = hp.npix2nside(b.size)
+    f = (nside_out // nside_in) ** 2
+    nest = b[hp.nest2ring(nside_in, np.arange(b.size))]
+    return np.repeat(nest, f)[hp.ring2nest(nside_out, np.arange(hp.nside2npix(nside_out)))]
+
+
 def measure():
     def read(p):
         return np.nan_to_num(hp.read_map(p, dtype=np.float64))
 
-    d = read(DR1_PATH)
+    d = read(DR1_PATH) > 0
     ns_d = hp.npix2nside(d.size)
-    out = {"dr1_area": (d > 0).sum() * hp.nside2pixarea(ns_d, degrees=True)}
-    ra, dec = hp.pix2ang(ns_d, np.flatnonzero(d > 0), lonlat=True)
-    out["dr1_south"] = (dec < 0).sum() * hp.nside2pixarea(ns_d, degrees=True)
-    out["dr1_north"] = (dec >= 0).sum() * hp.nside2pixarea(ns_d, degrees=True)
-    out["map_dr1"] = hp.ud_grade(d, NSIDE_PLOT) > 0.5
-    d_up = {}
+    pa_d = hp.nside2pixarea(ns_d, degrees=True)
+    wide = dr1_wide(d, ns_d)
+    _, dec = hp.pix2ang(ns_d, np.arange(d.size), lonlat=True)
+    A = {"dr1_all": d.sum() * pa_d,
+         "dr1_wide_s": (wide & (dec < 0)).sum() * pa_d,
+         "dr1_wide_n": (wide & (dec >= 0)).sum() * pa_d,
+         "map_dr1": hp.ud_grade(wide.astype(float), NSIDE_PLOT) > 0.5}
+    up = {}
     for k, (_, p) in CMB.items():
         m = read(p)
         ns = hp.npix2nside(m.size)
         pa = hp.nside2pixarea(ns, degrees=True)
-        if ns not in d_up:
-            d_up[ns] = hp.ud_grade(d, ns) > 0.5
-        out[f"{k}_area"] = (m > 0.5).sum() * pa
-        out[f"{k}_area_gt0"] = (m > 0).sum() * pa
-        out[f"{k}_area_w"] = m.sum() * pa
-        out[f"{k}_cap"] = ((m > 0) & d_up[ns]).sum() * pa
-        out[f"{k}_cap_half"] = ((m > 0.5) & d_up[ns]).sum() * pa
-        out[f"map_{k}"] = hp.ud_grade(m, NSIDE_PLOT) > 0.5
+        if ns not in up:
+            w_up = upgrade_bool(wide, ns)
+            _, dec2 = hp.pix2ang(ns, np.arange(w_up.size), lonlat=True)
+            up[ns] = (w_up, upgrade_bool(d, ns), dec2 < 0)
+        w_up, d_up, s_up = up[ns]
+        A[f"{k}_area"] = (m > 0.5).sum() * pa
+        A[f"{k}_area_w"] = m.sum() * pa
+        A[f"{k}_cap"] = ((m > 0) & w_up).sum() * pa
+        A[f"{k}_cap_s"] = ((m > 0) & w_up & s_up).sum() * pa
+        A[f"{k}_cap_n"] = ((m > 0) & w_up & ~s_up).sum() * pa
+        A[f"{k}_cap_all"] = ((m > 0) & d_up).sum() * pa
+        A[f"map_{k}"] = hp.ud_grade(m, NSIDE_PLOT) > 0.5
         print(f"{k}: nside {ns}", flush=True)
-    return out
+    return A
 
 
 # ---------------------------------------------------------------- projection
-SQ2 = np.sqrt(2.0)
+class Polar:
+    """Azimuthal view centred on a celestial pole, north up and east left as on the sky.
+    South: the pole sits below the field (RA ra0 straight up); north: above it."""
+
+    def __init__(self, hemi, ra0, kind):
+        self.s = -1 if hemi == "south" else 1
+        self.ra0 = np.radians(ra0)
+        self.kind = kind
+
+    def fwd(self, ra, dec):
+        th = np.radians(90.0 - self.s * np.asarray(dec, float))
+        r = np.sin(th) if self.kind == "ortho" else 2 * np.sin(th / 2)
+        ph = np.radians(ra) - self.ra0
+        return -r * np.sin(ph), -self.s * r * np.cos(ph)
+
+    def inv(self, x, y):
+        r = np.hypot(x, y)
+        ph = np.arctan2(-x, -self.s * y)
+        with np.errstate(invalid="ignore"):
+            th = np.arcsin(r) if self.kind == "ortho" else 2 * np.arcsin(r / 2)
+        dec = self.s * (90.0 - np.degrees(th))
+        return np.degrees(ph + self.ra0) % 360.0, dec
 
 
-def moll_inverse(x, y):
-    """Mollweide (x in [-2√2, 2√2], y in [-√2, √2]) -> lon, lat in radians; NaN outside."""
-    with np.errstate(invalid="ignore"):
-        th = np.arcsin(y / SQ2)
-        lat = np.arcsin((2 * th + np.sin(2 * th)) / np.pi)
-        lon = np.pi * x / (2 * SQ2 * np.cos(th))
-    bad = ~(np.abs(lon) <= np.pi)
-    lon[bad] = np.nan
-    lat[bad] = np.nan
-    return lon, lat
+class Panel:
+    def __init__(self, proj, bbox, rect):
+        """bbox (xmin, xmax, ymin, ymax) in projection units; rect (x0, y0, w, h) in figure pixels."""
+        self.p, self.bbox, self.rect = proj, bbox, rect
+        x0, y0, w, h = rect
+        xmin, xmax, ymin, ymax = bbox
+        X, Y = np.meshgrid(xmin + (np.arange(w) + 0.5) / w * (xmax - xmin),
+                           ymax - (np.arange(h) + 0.5) / h * (ymax - ymin))
+        ra, dec = proj.inv(X, Y)
+        self.inside = np.isfinite(dec) & (proj.s * dec > 0)
+        self.pix = np.full(X.shape, -1)
+        self.pix[self.inside] = hp.ang2pix(NSIDE_PLOT, ra[self.inside], dec[self.inside], lonlat=True)
+
+    def sample(self, hmap):
+        out = np.zeros(self.pix.shape, bool)
+        out[self.inside] = hmap[self.pix[self.inside]]
+        return out
+
+    def to_fig(self, ra, dec):
+        x, y = self.p.fwd(ra, dec)
+        x0, y0, w, h = self.rect
+        xmin, xmax, ymin, ymax = self.bbox
+        return x0 + (x - xmin) / (xmax - xmin) * w, y0 + (ymax - y) / (ymax - ymin) * h
 
 
-def moll_forward(lon, lat):
-    lat = np.asarray(lat, float)
-    th = lat.copy()
-    for _ in range(50):
-        f = 2 * th + np.sin(2 * th) - np.pi * np.sin(lat)
-        th = th - f / (2 + 2 * np.cos(2 * th) + 1e-12)
-    return 2 * SQ2 / np.pi * lon * np.cos(th), SQ2 * np.sin(th)
+def bbox_of(proj, hmaps, margin=0.06):
+    b = np.zeros_like(hmaps[0])
+    for m in hmaps:
+        b |= m
+    ra, dec = hp.pix2ang(NSIDE_PLOT, np.flatnonzero(b), lonlat=True)
+    x, y = proj.fwd(ra, dec)
+    dx, dy = x.max() - x.min(), y.max() - y.min()
+    return (x.min() - margin * dx, x.max() + margin * dx, y.min() - margin * dy, y.max() + margin * dy)
+
+
+def circ_mean_ra(hmap):
+    ra, _ = hp.pix2ang(NSIDE_PLOT, np.flatnonzero(hmap), lonlat=True)
+    r = np.radians(ra)
+    return np.degrees(np.arctan2(np.sin(r).mean(), np.cos(r).mean())) % 360
 
 
 # ---------------------------------------------------------------- drawing
@@ -123,49 +229,15 @@ def setup_font():
         f.flavor = None
         f.save(ttf)
         font_manager.fontManager.addfont(ttf)
-        name = font_manager.FontProperties(fname=ttf).get_name()
-        plt.rcParams["font.family"] = name
-        # the latin subset lacks ∩ and ²; fall back to DejaVu for those glyphs
-        plt.rcParams["font.family"] = [name, "DejaVu Serif"]
-        print("font:", name, flush=True)
+        # the latin subset lacks ∩; DejaVu Serif supplies it
+        plt.rcParams["font.family"] = [font_manager.FontProperties(fname=ttf).get_name(), "DejaVu Serif"]
     except Exception as e:  # noqa: BLE001
         print("EB Garamond unavailable, using DejaVu Serif:", e, flush=True)
         plt.rcParams["font.family"] = "DejaVu Serif"
 
 
 def deg2(x):
-    return f"{x:,.0f}".replace(",", " ")
-
-
-class Map:
-    def __init__(self, ra0_deg, rect):
-        """Centred on RA ra0_deg; rect: the ellipse's box (x0, y0, w, h) in figure pixels from the top-left."""
-        self.ra0_deg = ra0_deg
-        self.ra0 = np.radians(ra0_deg)
-        x0, y0, w, h = rect
-        self.rect = rect
-        # pixel centres -> Mollweide plane
-        xs = (np.arange(w) + 0.5) / w * 4 * SQ2 - 2 * SQ2
-        ys = SQ2 - (np.arange(h) + 0.5) / h * 2 * SQ2
-        X, Y = np.meshgrid(xs, ys)
-        lon, lat = moll_inverse(X, Y)
-        self.inside = np.isfinite(lon)
-        ra = np.degrees(self.ra0 - lon) % 360.0    # RA increases to the left
-        dec = np.degrees(lat)
-        self.pix = np.full(lon.shape, -1)
-        self.pix[self.inside] = hp.ang2pix(NSIDE_PLOT, ra[self.inside], dec[self.inside], lonlat=True)
-
-    def sample(self, hmap):
-        out = np.zeros(self.pix.shape, bool)
-        out[self.inside] = hmap[self.pix[self.inside]]
-        return out
-
-    def to_fig(self, ra, dec):
-        """RA, Dec in degrees -> figure pixel coordinates (from the top-left)."""
-        lon = (self.ra0 - np.radians(ra) + np.pi) % (2 * np.pi) - np.pi
-        x, y = moll_forward(lon, np.radians(dec))
-        x0, y0, w, h = self.rect
-        return x0 + (x + 2 * SQ2) / (4 * SQ2) * w, y0 + (SQ2 - y) / (2 * SQ2) * h
+    return f"{float(x):,.0f}".replace(",", " ")
 
 
 def edge(b, width=2):
@@ -178,74 +250,141 @@ def edge(b, width=2):
     return e
 
 
-def render(m, layers, A, path):
-    """layers: CMB keys drawn this frame, bottom to top."""
-    rgb = np.ones((H_PX, W_PX, 3))
-    x0, y0, w, h = m.rect
+HALO = [patheffects.withStroke(linewidth=6, foreground="white")]
+
+
+def crossings(px, py, rect):
+    """Where a sampled curve crosses into the rect: (x, y, side) for each entry or exit."""
+    x0, y0, w, h = rect
+    ins = (px > x0) & (px < x0 + w) & (py > y0) & (py < y0 + h)
+    out = []
+    for i in np.flatnonzero(ins[1:] != ins[:-1]):
+        j = i if ins[i] else i + 1
+        x, y = px[j], py[j]
+        side = min((abs(x - x0), "l"), (abs(x - x0 - w), "r"), (abs(y - y0), "t"), (abs(y - y0 - h), "b"))[1]
+        out.append((x, y, side))
+    return out
+
+
+def draw_panel(ax, rgb, P, layers, A, title, dec_rings):
+    x0, y0, w, h = P.rect
     sub = rgb[y0:y0 + h, x0:x0 + w]
-    sub[m.inside] = 1.0                       # white sky; white multiplies into the ground
 
     def over(mask, colour, alpha):
-        c = np.array(to_rgb(colour))
-        sub[mask] = (1 - alpha) * sub[mask] + alpha * c
+        sub[mask] = (1 - alpha) * sub[mask] + alpha * np.array(to_rgb(colour))
 
     for k in layers:
-        b = m.sample(A[f"map_{k}"])
+        b = P.sample(A[f"map_{k}"])
         c, a = COLOURS[k]
         over(b, c, a)
-        over(edge(b, 2) & m.inside, c, 0.95)
-    dr1 = m.sample(A["map_dr1"])
+        over(edge(b, 2) & P.inside, c, 0.95)
+    dr1 = P.sample(A["map_dr1"])
     over(dr1, C_DR1, 1.0)
-    over(edge(dr1, 2) & m.inside, "#24366E", 1.0)
+    over(edge(dr1, 2) & P.inside, C_DR1_EDGE, 1.0)
 
+    gl = dict(color=MUTED, lw=0.9, alpha=0.5, zorder=2)
+    lab = dict(fontsize=FS_GRID, color=MUTED, zorder=5, path_effects=HALO)
+    placed = [(x0 + 22, y0 + 18)]          # the title's corner; labels keep clear of each other
+
+    # the side away from the pole carries RA, the side by the pole carries Dec, and both use the sides
+    ra_sides, dec_sides = ("tlr", "blr") if P.p.s < 0 else ("blr", "lr")
+
+    def label(x, y, text, side):
+        near_corner = min(abs(x - x0), abs(x - x0 - w)) < 70 and min(abs(y - y0), abs(y - y0 - h)) < 70
+        if near_corner or any(np.hypot(x - a, y - b) < 110 for a, b in placed):
+            return
+        placed.append((x, y))
+        dx = {"l": 12, "r": -12}.get(side, 0)
+        dy = {"t": 12, "b": -12}.get(side, 0)
+        ax.text(x + dx, y + dy, text, ha={"l": "left", "r": "right"}.get(side, "center"),
+                va={"t": "top", "b": "bottom"}.get(side, "center"), **lab)
+
+    def curve(px, py):
+        ins = (px >= x0) & (px <= x0 + w) & (py >= y0) & (py <= y0 + h)
+        ax.plot(np.where(ins, px, np.nan), np.where(ins, py, np.nan), **gl)
+
+    dd = np.linspace(-89.9, 89.9, 1500)
+    dd = dd[P.p.s * dd > 0]
+    rr = np.linspace(0, 360, 1441)
+    pole = P.to_fig(0.0, P.p.s * 90.0)
+    for r in range(0, 360, 30):
+        px, py = P.to_fig(np.full_like(dd, r), dd)
+        curve(px, py)
+        for x, y, side in crossings(px, py, P.rect):
+            if side in ra_sides and np.hypot(x - pole[0], y - pole[1]) > 300:   # spokes crowd at the pole
+                label(x, y, f"{r}°", side)
+    for d in dec_rings:
+        px, py = P.to_fig(rr, np.full_like(rr, d))
+        curve(px, py)
+        for x, y, side in crossings(px, py, P.rect):
+            if side in dec_sides:
+                label(x, y, f"{d:+d}°".replace("-", "\u2212"), side)
+    ax.add_patch(matplotlib.patches.Rectangle((x0, y0), w, h, fill=False, ec=MUTED, lw=1.4, zorder=6))
+    ax.text(x0 + 22, y0 + 18, title, ha="left", va="top", fontsize=FS, color=INK, zorder=7,
+            path_effects=HALO)
+
+
+def render(panels, layers, A, path, legend_xy):
+    rgb = np.ones((H_PX, W_PX, 3))   # white multiplies into the slide ground
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, W_PX)
     ax.set_ylim(H_PX, 0)
     ax.axis("off")
+    for P, title, rings in panels:
+        draw_panel(ax, rgb, P, layers, A, title, rings)
     ax.imshow(rgb, extent=(0, W_PX, H_PX, 0), interpolation="nearest", zorder=0)
 
-    # graticule: light, under nothing important
-    gl = dict(color=MUTED, lw=0.9, alpha=0.45, zorder=2)
-    dd = np.linspace(-90, 90, 361)
-    for r in range(0, 360, 60):
-        ax.plot(*m.to_fig(np.full_like(dd, r), dd), **gl)
-    rr = np.linspace(m.ra0_deg - 179.999, m.ra0_deg + 179.999, 721)
-    for d in (-60, -30, 0, 30, 60):
-        ax.plot(*m.to_fig(rr, np.full_like(rr, d)), **gl)
-    # ellipse outline
-    ax.plot(*m.to_fig(np.full_like(dd, m.ra0_deg + 179.999), dd), color=MUTED, lw=1.4, zorder=3)
-    ax.plot(*m.to_fig(np.full_like(dd, m.ra0_deg - 179.999), dd), color=MUTED, lw=1.4, zorder=3)
-    lab = dict(fontsize=19, color=MUTED, zorder=4)
-    for r in range(0, 360, 60):
-        if abs(((r - m.ra0_deg + 180) % 360) - 180) > 165:
-            continue
-        x, y = m.to_fig(r, 0.0)
-        ax.text(x + 10, y + 8, f"{r}°", ha="left", va="top", **lab)
-    for d in (-30, 30, 60):     # Dec on the left limb; -60 on the right, clear of the legend
-        x, y = m.to_fig(m.ra0_deg + 179.999, d)
-        ax.text(x - 22, y, f"{d:+d}°".replace("-", "−"), ha="right", va="center", **lab)
-    x, y = m.to_fig(m.ra0_deg - 179.999, -60)
-    ax.text(x + 22, y, "−60°", ha="left", va="center", **lab)
-
-    # legend: DR1 first, then the CMB layers in the order they arrive; the top is fixed
-    # so each frame only adds a line beneath (four lines end at the bottom edge)
-    hs = [Patch(facecolor=C_DR1, edgecolor="#24366E", lw=1.5,
-                label=f"Euclid DR1 ({deg2(A['dr1_area'])} deg²)")]
+    # legend: a fixed slot per entry (DR1 and Planck left, ACT and SPT right), so each
+    # frame only fills the next slot and nothing moves between steps
+    entries = [(C_DR1, C_DR1_EDGE, f"Euclid DR1-wide (south {deg2(A['dr1_wide_s'])} deg², "
+                                   f"north {deg2(A['dr1_wide_n'])} deg²)")]
     for k in layers:
         c, a = COLOURS[k]
-        fc = tuple((1 - a) * 1.0 + a * np.array(to_rgb(c)))
-        hs.append(Patch(facecolor=fc, edgecolor=c, lw=1.5,
-                        label=f"{CMB[k][0]} ({deg2(A[f'{k}_area'])} deg²; ∩ DR1 {deg2(A[f'{k}_cap'])} deg²)"))
-    leg = ax.legend(handles=hs, loc="upper left", bbox_to_anchor=(0.0, 0.283), frameon=False,
-                    fontsize=21, handlelength=1.6, handleheight=1.0, handletextpad=0.6,
-                    labelspacing=0.45, borderaxespad=0.2, borderpad=0.5, fancybox=False)
-    for t in leg.get_texts():   # a white halo keeps the text clean where it crosses the sky
-        t.set_color(INK)
-        t.set_path_effects([patheffects.withStroke(linewidth=7, foreground="white")])
+        entries.append((tuple((1 - a) + a * np.array(to_rgb(c))), c,
+                        f"{CMB[k][0]} ({deg2(A[f'{k}_area'])} deg²; ∩ DR1-wide {deg2(A[f'{k}_cap'])} deg²)"))
+    lx, ly = legend_xy
+    for i, (fc, ec, text) in enumerate(entries):
+        x, y = lx + (i // 2) * LEG_COL, ly + (i % 2) * LEG_ROW
+        ax.add_patch(matplotlib.patches.Rectangle((x, y - 25), 90, 50, fc=fc, ec=ec, lw=1.5, zorder=8))
+        ax.text(x + 115, y, text, ha="left", va="center_baseline", fontsize=FS, color=INK, zorder=8)
     fig.savefig(path, dpi=DPI, facecolor="white")
     plt.close(fig)
     print("wrote", path, flush=True)
+
+
+LEG_ROW, LEG_COL = 92, 1800   # legend slot pitch in figure pixels
+
+
+def layout(A, kind):
+    """South and north panels side by side at one scale, the legend in two columns beneath."""
+    # south: RA0 at the middle of DR1-wide south and SPT together, so the pair lies across the panel
+    sp = Polar("south", 5 * round(circ_mean_ra((A["map_dr1"] & south_mask()) | A["map_spt"]) / 5), kind)
+    sb = bbox_of(sp, [A["map_dr1"] & south_mask(), A["map_spt"]], margin=0.04)
+    npj = Polar("north", 15 * round(circ_mean_ra(A["map_dr1"] & ~south_mask()) / 15), kind)
+    nb = bbox_of(npj, [A["map_dr1"] & ~south_mask()], margin=0.14)
+    sw, sh = sb[1] - sb[0], sb[3] - sb[2]
+    nw, nh = nb[1] - nb[0], nb[3] - nb[2]
+    gap, pad = 40, 4
+    leg_h = LEG_ROW + 60                     # two legend rows below the panels
+    k = min((W_PX - gap - 2 * pad) / (sw + nw), (H_PX - leg_h - gap - 2 * pad) / max(sh, nh))
+    sr = (pad, pad, int(k * sw), int(k * sh))
+    nr = (W_PX - pad - int(k * nw), pad, int(k * nw), int(k * nh))
+    print(f"{kind}: south RA0 {np.degrees(sp.ra0):.0f} {sr}, north RA0 {np.degrees(npj.ra0):.0f} {nr}", flush=True)
+    panels = [(Panel(sp, sb, sr), "South", [-15, -30, -45, -60, -75]),
+              (Panel(npj, nb, nr), "North", [45, 60, 75])]
+    return panels, (pad, sr[1] + sr[3] + gap + 26)
+
+
+_SOUTH = None
+
+
+def south_mask():
+    global _SOUTH
+    if _SOUTH is None:
+        _, dec = hp.pix2ang(NSIDE_PLOT, np.arange(hp.nside2npix(NSIDE_PLOT)), lonlat=True)
+        _SOUTH = dec < 0
+    return _SOUTH
 
 
 def main():
@@ -258,28 +397,21 @@ def main():
         A = measure()
         if args.cache:
             np.savez(args.cache, **A)
-    for k in ("dr1_area", "dr1_south", "dr1_north"):
-        print(f"{k}: {float(A[k]):.1f} deg²")
+    print(f"DR1 observed: {float(A['dr1_all']):.1f} deg²; DR1-wide south {float(A['dr1_wide_s']):.1f}, "
+          f"north {float(A['dr1_wide_n']):.1f} deg²")
     for k in CMB:
-        print(f"{k}: >0.5 {float(A[k + '_area']):.1f}  >0 {float(A[k + '_area_gt0']):.1f}  "
-              f"weighted {float(A[k + '_area_w']):.1f}  ∩DR1 (>0) {float(A[k + '_cap']):.1f}  "
-              f"∩DR1 (>0.5) {float(A[k + '_cap_half']):.1f} deg²", flush=True)
+        print(f"{k}: >0.5 {float(A[k + '_area']):.1f}  weighted {float(A[k + '_area_w']):.1f}  "
+              f"∩DR1-wide {float(A[k + '_cap']):.1f} (S {float(A[k + '_cap_s']):.1f}, N {float(A[k + '_cap_n']):.1f})  "
+              f"∩DR1-all {float(A[k + '_cap_all']):.1f} deg²", flush=True)
 
     setup_font()
-    # centre on the DR1 south field
-    ra, dec = hp.pix2ang(NSIDE_PLOT, np.flatnonzero(A["map_dr1"]), lonlat=True)
-    s = dec < 0
-    ra0 = np.degrees(np.arctan2(np.sin(np.radians(ra[s])).mean(), np.cos(np.radians(ra[s])).mean())) % 360
-    ra0 = 15 * round(ra0 / 15)
-    print("centre RA", ra0)
-    # the map ellipse, right-aligned; the legend sits in the empty lower-left corner
-    h = int(0.92 * H_PX)
-    w = 2 * h
-    m = Map(ra0, (W_PX - w - 8, 6, w, h))
+    panels, leg = layout(A, "ortho")
     frames = [("1_dr1", []), ("2_planck", ["planck"]), ("3_act", ["planck", "act"]),
               ("4_spt", ["planck", "act", "spt"])]
     for name, layers in frames:
-        render(m, layers, A, os.path.join(OUT, f"napoli_footprint_{name}.png"))
+        render(panels, layers, A, os.path.join(OUT, f"napoli_footprint_{name}.png"), leg)
+    panels, leg = layout(A, "laea")
+    render(panels, frames[-1][1], A, os.path.join(OUT, "napoli_footprint_laea_preview.png"), leg)
 
 
 if __name__ == "__main__":
