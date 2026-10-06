@@ -305,6 +305,15 @@ function frameFigures(frame, deckDir, problems, where, assets) {
       }
     }
     const ar = im.w && im.h ? (im.w / im.h) * (crop ? crop[2] / crop[3] : 1) : null;
+    // a stack: a later <img> in the same figure is drawn over the first, in its frame
+    const under = fig.querySelector(':scope > .cell > .frame');
+    if (under) {
+      const ar0 = Number((under.getAttribute('style') || '').match(/--ar:([\d.]+)/)?.[1]);
+      if (crop || under.classList.contains('crop')) problems.push(`${where}: ${src}: the images of a stack take no data-crop`);
+      else if (!ar || Math.abs(ar / ar0 - 1) > 0.002) problems.push(`${where}: ${src}: a stacked image needs the aspect ratio of the first (${ar?.toFixed(4)} vs ${ar0.toFixed(4)})`);
+      under.insertBefore(img, under.querySelector(':scope > mark'));
+      continue;
+    }
     const box = wrapInFrame(fig, img, ar);
     if (crop) {
       box.classList.add('crop');

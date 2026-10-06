@@ -133,7 +133,9 @@ function lintBlock(el, where, vocab, out, isDetail) {
   for (const fig of el.querySelectorAll('figure')) {
     if (fig.parentElement?.classList.contains('people')) continue;
     const visuals = [...fig.children].filter(c => c.localName === 'img' || c.localName === 'svg' || c.classList.contains('placeholder'));
-    if (visuals.length !== 1) out.errors.push(`${where}: a <figure> holds exactly one <img>, inline <svg> or .placeholder (has ${visuals.length})`);
+    // a stack: several <img>, every one after the first a fragment, drawn over the first
+    const stack = visuals.length > 1 && visuals.every((c, i) => c.localName === 'img' && (i === 0) !== c.classList.contains('fragment'));
+    if (visuals.length !== 1 && !stack) out.errors.push(`${where}: a <figure> holds exactly one <img>, inline <svg> or .placeholder, or a stack of <img>s whose later ones are fragments (has ${visuals.length})`);
   }
   for (const d of [el, ...el.querySelectorAll('*')]) {
     if (d.localName === 'aside' && d !== el && d.classList.contains('detail') && d.parentElement === el) continue;
