@@ -1,0 +1,21 @@
+<section data-layout="figure-text">
+  <h2>CMB lensing: one source plane behind every bin</h2>
+  <figure>
+    <img src="images/napoli_lensing_kernels_shear.png" alt="Normalised n(z) of the six Euclid TR1 source bins and their lensing kernels against redshift">
+    <img class="fragment" src="images/napoli_lensing_kernels.png" alt="The same, with the CMB lensing kernel peaking near z = 2 and extending behind all six bins">
+    <span class="source">TR1 LensMC n(z), SOM-direct (unblinded) · Planck 2018 ΛCDM · same units for all kernels.</span>
+  </figure>
+  <div class="text">
+    <span class="kicker">The CMB as a lensing source</span>
+    <ul>
+      <li>one source plane, $z_* \approx 1100,$ precisely known</li>
+      <li>no shape noise, no intrinsic alignments, no photo-z</li>
+      <li>kernel peaks at $z \approx 2,$ overlapping and behind all our bins</li>
+    </ul>
+  </div>
+  <aside class="notes">
+    <p>Top: the redshift distributions of the six Euclid TR1 weak-lensing source bins (LensMC, SOM-direct calibration against COSMOS2020), each normalised to unit area and drawn with a light Hann smoothing of width $\Delta z = 0.05.$ Bottom: the lensing kernel $W(z)$ of each bin, the efficiency with which matter at redshift $z$ lenses that bin, in the same units for every curve so their heights compare directly. The kernels use the unsmoothed n(z), at a Planck 2018 ΛCDM background.</p>
+    <p>The second step adds the CMB lensing kernel. Its source is the last-scattering surface, a single plane at $z_* \approx 1100$ whose distance is fixed by the CMB itself, so the kernel has no redshift-distribution uncertainty. It peaks at $z \approx 1.9$ and stays large to $z = 4$ and beyond, so it overlaps every Euclid kernel and extends behind the highest bin. On the CMB side there is no shape noise, no intrinsic alignment and no photometric-redshift error: the reconstruction noise of κ is of a different kind, and independent of anything in the shear catalogue.</p>
+    <p>A cross-spectrum still inherits the galaxy side's systematics: $\gamma\kappa$ carries the sources' multiplicative bias, n(z) and an intrinsic-alignment term, and $\delta\kappa$ the galaxy bias. What the CMB adds is a second lens-plane weighting with none of those nuisances on its own side, which is what breaks the degeneracies on the next slide.</p>
+  </aside>
+</section>
