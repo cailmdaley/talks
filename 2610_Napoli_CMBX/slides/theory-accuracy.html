@@ -1,0 +1,12 @@
+<section data-layout="figure">
+  <h2>Fast theory matches dense integration to 0.014σ</h2>
+  <figure>
+    <img src="images/napoli_theory_accuracy.png" alt="Difference between the fast theory operator and a dense integration, in units of the Gaussian error, for all 1350 bandpowers: within 0.014 sigma at two parameter points, while a spline variant reaches 0.25 sigma">
+    <span class="source">Mock 6×2pt data-vector layout (GLASS, no real data) · reference: CCL qag_quad at every integer $\ell$ through the bandpower windows · $\sigma$ from the Gaussian covariance.</span>
+  </figure>
+  <aside class="notes">
+    <p>Each point is one bandpower: the fast theory operator the likelihood uses, minus a dense reference calculation, divided by that band's Gaussian error. The fast operator evaluates the Limber integrals on a sparse grid in $\ell$ and applies the nuisances through cached responses; the reference computes every integer $\ell$ with adaptive quadrature and convolves with the same bandpower windows. All 1350 retained bands are shown: 90 spectra (the twelve CMB-lensing crosses and the 78 Euclid 3×2pt spectra) of 15 bands each, $\ell$ from 100 to 3000. The CMB-lensing auto-spectrum is not part of this comparison.</p>
+    <p>At the fiducial point with every nuisance at zero the largest difference is $+0.014\sigma$; at a second point with intrinsic alignments, two redshift shifts and a shear-calibration bias switched on it is $-0.012\sigma$. Only two bands at each point exceed $0.01\sigma$, and the median is about $10^{-5}\sigma$. The bottom panel is the foil: the same operator with spline Limber integration drifts to $+0.25\sigma$ in the highest-$\ell$ bands of the bin-6 galaxy auto-spectrum and crosses the $0.1\sigma$ acceptance bar in eight bands, so it is not used.</p>
+    <p>Caveats. This is a numerical-accuracy test of the operator at two parameter points, not a validation of the physical model, and not a mock-recovery test. The reference builds its own tracers and does not share the fast operator's projection code, but both rest on the same library (CCL), so it is not an independent code comparison. The errors come from a realization-dependent Gaussian covariance of the mock data vector.</p>
+  </aside>
+</section>

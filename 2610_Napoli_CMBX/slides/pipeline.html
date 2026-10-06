@@ -1,0 +1,111 @@
+<section data-layout="figure">
+  <h2>TR1 runs from catalogues to a blinded likelihood</h2>
+  <figure>
+    <svg viewBox="0 0 1712 771" role="img" aria-label="KP2-3 pipeline: Euclid catalogues and CMB lensing maps feed NaMaster pseudo-Cl bandpowers for six spectra, then a Gaussian covariance, a blind, and a likelihood with nuisances; GLASS mocks check every stage">
+      <defs>
+        <marker id="pipeline-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" class="fill-muted"/>
+        </marker>
+        <marker id="pipeline-arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" class="fill-teal"/>
+        </marker>
+      </defs>
+
+      <!-- inputs -->
+      <g>
+        <rect x="2" y="2" width="326" height="226" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="26" y="58" font-size="40" font-weight="700">Euclid</text>
+        <text x="26" y="106" font-size="30">TR1, RR2 catalogues</text>
+        <text x="26" y="146" font-size="30">shear, positions, n(z)</text>
+        <text x="26" y="196" font-size="28" class="fill-muted">DR1 next</text>
+
+        <rect x="2" y="262" width="326" height="226" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="26" y="318" font-size="40" font-weight="700">CMB lensing κ</text>
+        <text x="26" y="366" font-size="30">ACT DR6</text>
+        <text x="26" y="406" font-size="30">SPT-3G Main</text>
+        <text x="26" y="456" font-size="28" class="fill-muted">Planck PR4 next</text>
+      </g>
+
+      <!-- bandpowers -->
+      <g class="fragment">
+        <path d="M330 115 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <path d="M330 375 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <text x="358" y="245" font-size="26" class="fill-muted" text-anchor="middle" transform="rotate(-90 358 245)">maps, masks</text>
+        <rect x="392" y="2" width="360" height="486" rx="14" class="fill-ground stroke-accent" stroke-width="4"/>
+        <text x="572" y="60" font-size="40" font-weight="700" text-anchor="middle">Pseudo-Cℓ</text>
+        <text x="572" y="102" font-size="30" class="fill-muted" text-anchor="middle">NaMaster, 6 families</text>
+        <text x="497" y="160" font-size="28" class="fill-muted" text-anchor="middle">Euclid</text>
+        <text x="647" y="160" font-size="28" class="fill-muted" text-anchor="middle">× CMB</text>
+        <rect x="422" y="182" width="150" height="80" rx="10" class="fill-panel stroke-cobalt" stroke-width="3"/>
+        <text x="497" y="236" font-size="44" text-anchor="middle" class="fill-cobalt">γγ</text>
+        <rect x="422" y="276" width="150" height="80" rx="10" class="fill-panel stroke-cobalt" stroke-width="3"/>
+        <text x="497" y="330" font-size="44" text-anchor="middle" class="fill-cobalt">γδ</text>
+        <rect x="422" y="370" width="150" height="80" rx="10" class="fill-panel stroke-cobalt" stroke-width="3"/>
+        <text x="497" y="424" font-size="44" text-anchor="middle" class="fill-cobalt">δδ</text>
+        <rect x="592" y="182" width="110" height="80" rx="10" class="fill-panel stroke-teal" stroke-width="3"/>
+        <text x="647" y="236" font-size="44" text-anchor="middle" class="fill-teal">γκ</text>
+        <rect x="592" y="276" width="110" height="80" rx="10" class="fill-panel stroke-teal" stroke-width="3"/>
+        <text x="647" y="330" font-size="44" text-anchor="middle" class="fill-teal">δκ</text>
+        <rect x="592" y="370" width="110" height="80" rx="10" class="fill-panel stroke-teal" stroke-width="3"/>
+        <text x="647" y="424" font-size="44" text-anchor="middle" class="fill-teal">κκ</text>
+      </g>
+
+      <!-- covariance and blind -->
+      <g class="fragment">
+        <path d="M754 245 H806" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <rect x="812" y="122" width="250" height="246" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="937" y="182" font-size="40" font-weight="700" text-anchor="middle">Gaussian</text>
+        <text x="937" y="226" font-size="40" font-weight="700" text-anchor="middle">covariance</text>
+        <text x="937" y="280" font-size="28" class="fill-muted" text-anchor="middle">analytic, with</text>
+        <text x="937" y="316" font-size="28" class="fill-muted" text-anchor="middle">every cross-block</text>
+
+        <path d="M1064 245 H1112" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <rect x="1118" y="122" width="236" height="246" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="1236" y="182" font-size="40" font-weight="700" text-anchor="middle">Blind</text>
+        <text x="1236" y="236" font-size="28" class="fill-muted" text-anchor="middle">hidden shift of</text>
+        <text x="1236" y="272" font-size="28" class="fill-muted" text-anchor="middle">cosmology adds</text>
+        <text x="1236" y="308" font-size="28" class="fill-muted" text-anchor="middle">ΔCℓ to all six</text>
+      </g>
+
+      <!-- likelihood -->
+      <g class="fragment">
+        <path d="M1356 245 H1404" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <rect x="1410" y="122" width="300" height="246" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="1560" y="182" font-size="40" font-weight="700" text-anchor="middle">Likelihood</text>
+        <text x="1560" y="236" font-size="28" class="fill-muted" text-anchor="middle">theory vector with</text>
+        <text x="1560" y="272" font-size="28" class="fill-muted" text-anchor="middle">b, Δz, m, IA</text>
+        <text x="1560" y="326" font-size="28" class="fill-accent" text-anchor="middle">TR1 chains next</text>
+      </g>
+
+      <!-- mocks -->
+      <g class="fragment">
+        <rect x="2" y="582" width="1708" height="186" rx="14" class="fill-ground stroke-teal" stroke-width="4"/>
+        <text x="26" y="646" font-size="40" font-weight="700" class="fill-teal">GLASS mocks</text>
+        <text x="26" y="692" font-size="28" class="fill-muted">correlated 6×2pt,</text>
+        <text x="26" y="730" font-size="28" class="fill-muted">ACT noise, TR1 mask</text>
+
+        <path d="M572 576 V494" class="stroke-teal fill-none" stroke-width="4" marker-end="url(#pipeline-arrow-teal)"/>
+        <text x="572" y="660" font-size="30" text-anchor="middle">κ crosses recovered</text>
+        <text x="572" y="702" font-size="28" class="fill-teal" text-anchor="middle">10 seeds, done</text>
+
+        <path d="M937 576 V374" class="stroke-teal fill-none" stroke-width="4" stroke-dasharray="10 9" marker-end="url(#pipeline-arrow-teal)"/>
+        <text x="937" y="660" font-size="30" text-anchor="middle">scatter vs σ</text>
+        <text x="937" y="702" font-size="28" class="fill-muted" text-anchor="middle">planned</text>
+
+        <path d="M1236 576 V374" class="stroke-teal fill-none" stroke-width="4" marker-end="url(#pipeline-arrow-teal)"/>
+        <text x="1236" y="660" font-size="30" text-anchor="middle">blind rehearsal</text>
+        <text x="1236" y="702" font-size="28" class="fill-teal" text-anchor="middle">done</text>
+
+        <path d="M1560 576 V374" class="stroke-teal fill-none" stroke-width="4" marker-end="url(#pipeline-arrow-teal)"/>
+        <text x="1560" y="660" font-size="30" text-anchor="middle">mock chains</text>
+        <text x="1560" y="702" font-size="28" class="fill-accent" text-anchor="middle">running</text>
+      </g>
+    </svg>
+  </figure>
+  <aside class="notes">
+    <p>The KP2-3 pipeline end to end. Euclid TR1 shear and positions (and earlier the RR2 catalogues) are pixelised into maps with their masks and redshift distributions; the CMB-lensing inputs are the ACT DR6 and SPT-3G Main convergence maps. NaMaster pseudo-$C_\ell$ turns them into bandpowers for all six families: the three Euclid 3×2pt spectra and the three involving CMB lensing. An analytic Gaussian covariance covers every block, including the cross-blocks between families.</p>
+    <p>The blind is a parameter-shift blind in the style of Muir et al. (2019): a sealed shift in cosmology is turned into a $\Delta C_\ell$ added to the whole six-family data vector, so shapes, signal-to-noise, the covariance and the null tests stay visible while the inferred cosmology is hidden. We run it ourselves because the official pipeline blinds only the Euclid 2pt spectra. The blinded TR1 × SPT-3G likelihood input exists; the TR1 chains come next.</p>
+    <p>The likelihood evaluates a fast theory vector carrying the nuisances: linear galaxy bias, photometric-redshift shifts, shear calibration $m$ and intrinsic alignments. Its numerical accuracy is the next slide.</p>
+    <p>GLASS 6×2pt mocks, with correlated Euclid and CMB-lensing fields, ACT DR6 reconstruction noise and the TR1 mask, run through the same code. So far they check bandpower recovery (10 seeds; the CMB-lensing crosses are shown two slides on), the blind (a rehearsal on a mock), and the likelihood (mock chains, still converging). Using the mock scatter to test the Gaussian covariance is planned, not done. Planck PR4 lensing and the DR1 catalogues are the next inputs.</p>
+  </aside>
+</section>

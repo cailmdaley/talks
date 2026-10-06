@@ -43,6 +43,8 @@
       "outline": "Data vectors, theory and likelihood, simulations: where the 3×2pt × CMB-lensing pipeline stands.",
       "slides": [
         "kp-3",
+        "pipeline",
+        "theory-accuracy",
         "mock-recovery"
       ]
     },
