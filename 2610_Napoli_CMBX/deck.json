@@ -20,7 +20,8 @@
       "outline": "Who the working group is, how it is organised, its DR1 key projects and its people.",
       "slides": [
         "swg",
-        "kp-overview"
+        "kp-overview",
+        "people"
       ]
     },
     {
@@ -43,6 +44,7 @@
       "outline": "Data vectors, theory and likelihood, simulations: where the 3×2pt × CMB-lensing pipeline stands.",
       "slides": [
         "kp-3",
+        "kp-3-papers",
         "pipeline",
         "theory-accuracy",
         "mock-recovery"
