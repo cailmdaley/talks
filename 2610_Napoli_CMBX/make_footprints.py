@@ -39,6 +39,7 @@ from matplotlib import font_manager, patheffects
 from matplotlib.colors import to_rgb
 from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
+from scipy import ndimage
 from scipy.spatial import cKDTree
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -60,7 +61,7 @@ INK, MUTED = "#111418", "#535B67"
 C_DR1, C_DR1_EDGE = "#435AA1", "#24366E"   # Euclid blue, opaque on top
 COLOURS = {"planck": ("#8A93A3", 0.30),    # (colour, fill alpha): a grey wash for the near-full sky
            "act": ("#C08A1E", 0.50),       # ochre
-           "spt": ("#1D8A8A", 0.62)}       # teal
+           "spt": ("#0E5E62", 0.66)}       # dark teal
 # each CMB boundary where it crosses DR1, in its own hue, light enough to read on the blue
 OUTLINE_ON_DR1 = {"planck": "#AEB5C2", "act": "#E0B04A", "spt": "#5FD0C8"}
 
@@ -186,6 +187,8 @@ class Panel:
                            ymax - (np.arange(h) + 0.5) / h * (ymax - ymin))
         ra, dec = proj.inv(X, Y)
         self.inside = np.isfinite(dec) & (proj.s * dec > 0)
+        # the projection is equal-area with unit radius, so every pixel covers the same solid angle
+        self.pix_deg2 = ((xmax - xmin) / w) * ((ymax - ymin) / h) * np.degrees(1) ** 2
         self.pix = np.full(X.shape, -1)
         self.pix[self.inside] = hp.ang2pix(NSIDE_PLOT, ra[self.inside], dec[self.inside], lonlat=True)
 
@@ -243,6 +246,19 @@ def deg2(x):
     return f"{float(x):,.0f}".replace(",", " ")
 
 
+OUTLINE_PX = 4        # CMB outlines: 4 figure pixels, 2 px as shown
+HOLE_DEG2 = 10.0      # holes smaller than this (point-source cuts) get no outline
+
+
+def fill_small_holes(b, pix_deg2):
+    """b with its holes smaller than HOLE_DEG2 filled, so only the outer boundary is outlined."""
+    lab, n = ndimage.label(~b)
+    size = np.bincount(lab.ravel(), minlength=n + 1) * pix_deg2
+    small = size < HOLE_DEG2
+    small[0] = False
+    return b | small[lab]
+
+
 def edge(b, width=2):
     """Boundary pixels of a boolean raster, about `width` pixels thick."""
     e = np.zeros_like(b)
@@ -281,7 +297,7 @@ def draw_panel(ax, rgb, P, layers, A, title, dec_rings):
         b = P.sample(A[f"map_{k}"])
         c, a = COLOURS[k]
         over(b, c, a)
-        edges[k] = edge(b, 2) & P.inside
+        edges[k] = edge(fill_small_holes(b, P.pix_deg2), OUTLINE_PX) & P.inside
         over(edges[k], c, 0.95)
     dr1 = P.sample(A["map_dr1"])
     over(dr1, C_DR1, 1.0)
