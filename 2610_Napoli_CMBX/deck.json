@@ -24,6 +24,13 @@
       ]
     },
     {
+      "title": "Footprints",
+      "outline": "Euclid DR1 overlaps Planck, ACT and SPT-3G lensing.",
+      "slides": [
+        "footprint"
+      ]
+    },
+    {
       "title": "DR1-KP-CMBX-1-2",
       "outline": "CMB ISW and lensing cross-correlation with Euclid observables.",
       "slides": [
