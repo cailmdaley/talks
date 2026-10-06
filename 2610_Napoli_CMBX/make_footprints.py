@@ -7,9 +7,8 @@ Four PNGs with an identical frame, written to the shared images/ pool:
   napoli_footprint_2_planck.png  + Planck PR4
   napoli_footprint_3_act.png     + ACT DR6
   napoli_footprint_4_spt.png     + SPT-3G Main
-plus napoli_footprint_laea_preview.png, the last frame in a polar Lambert
-azimuthal equal-area projection for comparison. The slide stacks the four
-frames, so each step adds exactly one layer.
+The slide stacks them, so each step adds exactly one layer. Both panels are
+polar Lambert azimuthal equal-area views at one scale and one central RA.
 
 DR1-wide is the two main regions of the DR1 observed VIS-mosaic footprint:
 in each hemisphere, the largest connected group of pixels (8-neighbour, NSIDE
@@ -153,17 +152,16 @@ def measure():
 
 # ---------------------------------------------------------------- projection
 class Polar:
-    """Azimuthal view centred on a celestial pole, north up and east left as on the sky.
+    """Polar Lambert azimuthal equal-area view, north up and east left as on the sky.
     South: the pole sits below the field (RA ra0 straight up); north: above it."""
 
-    def __init__(self, hemi, ra0, kind):
+    def __init__(self, hemi, ra0):
         self.s = -1 if hemi == "south" else 1
         self.ra0 = np.radians(ra0)
-        self.kind = kind
 
     def fwd(self, ra, dec):
         th = np.radians(90.0 - self.s * np.asarray(dec, float))
-        r = np.sin(th) if self.kind == "ortho" else 2 * np.sin(th / 2)
+        r = 2 * np.sin(th / 2)
         ph = np.radians(ra) - self.ra0
         return -r * np.sin(ph), -self.s * r * np.cos(ph)
 
@@ -171,7 +169,7 @@ class Polar:
         r = np.hypot(x, y)
         ph = np.arctan2(-x, -self.s * y)
         with np.errstate(invalid="ignore"):
-            th = np.arcsin(r) if self.kind == "ortho" else 2 * np.arcsin(r / 2)
+            th = 2 * np.arcsin(r / 2)
         dec = self.s * (90.0 - np.degrees(th))
         return np.degrees(ph + self.ra0) % 360.0, dec
 
@@ -201,11 +199,14 @@ class Panel:
         return x0 + (x - xmin) / (xmax - xmin) * w, y0 + (ymax - y) / (ymax - ymin) * h
 
 
-def bbox_of(proj, hmaps, margin=0.06):
+def bbox_of(proj, hmaps, margin=0.06, extra=()):
+    """Bounding box in projection units of the union of maps, plus any extra (RA, Dec) points."""
     b = np.zeros_like(hmaps[0])
     for m in hmaps:
         b |= m
     ra, dec = hp.pix2ang(NSIDE_PLOT, np.flatnonzero(b), lonlat=True)
+    ra = np.concatenate([ra, [p[0] for p in extra]])
+    dec = np.concatenate([dec, [p[1] for p in extra]])
     x, y = proj.fwd(ra, dec)
     dx, dy = x.max() - x.min(), y.max() - y.min()
     return (x.min() - margin * dx, x.max() + margin * dx, y.min() - margin * dy, y.max() + margin * dy)
@@ -324,7 +325,7 @@ def draw_panel(ax, rgb, P, layers, A, title, dec_rings):
             path_effects=HALO)
 
 
-def render(panels, layers, A, path, legend_xy):
+def render(panels, layers, A, path, legend_xy, height):
     rgb = np.ones((H_PX, W_PX, 3))   # white multiplies into the slide ground
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
     ax = fig.add_axes([0, 0, 1, 1])
@@ -335,45 +336,58 @@ def render(panels, layers, A, path, legend_xy):
         draw_panel(ax, rgb, P, layers, A, title, rings)
     ax.imshow(rgb, extent=(0, W_PX, H_PX, 0), interpolation="nearest", zorder=0)
 
-    # legend: a fixed slot per entry (DR1 and Planck left, ACT and SPT right), so each
-    # frame only fills the next slot and nothing moves between steps
-    entries = [(C_DR1, C_DR1_EDGE, f"Euclid DR1-wide (south {deg2(A['dr1_wide_s'])} deg², "
-                                   f"north {deg2(A['dr1_wide_n'])} deg²)")]
+    # legend: one fixed slot per entry, so each frame fills the next slot and nothing moves.
+    # DR1-wide carries its own area; each CMB survey carries only its overlap with DR1-wide.
+    entries = [(C_DR1, C_DR1_EDGE, "Euclid DR1-wide: "
+                f"{deg2(float(A['dr1_wide_s']) + float(A['dr1_wide_n']))} deg²\n"
+                f"(south {deg2(A['dr1_wide_s'])} + north {deg2(A['dr1_wide_n'])})")]
     for k in layers:
         c, a = COLOURS[k]
         entries.append((tuple((1 - a) + a * np.array(to_rgb(c))), c,
-                        f"{CMB[k][0]} ({deg2(A[f'{k}_area'])} deg²; ∩ DR1-wide {deg2(A[f'{k}_cap'])} deg²)"))
+                        f"{CMB[k][0]} ∩ DR1-wide: {deg2(A[f'{k}_cap'])} deg²"))
     lx, ly = legend_xy
-    for i, (fc, ec, text) in enumerate(entries):
-        x, y = lx + (i // 2) * LEG_COL, ly + (i % 2) * LEG_ROW
-        ax.add_patch(matplotlib.patches.Rectangle((x, y - 25), 90, 50, fc=fc, ec=ec, lw=1.5, zorder=8))
-        ax.text(x + 115, y, text, ha="left", va="center_baseline", fontsize=FS, color=INK, zorder=8)
+    for (fc, ec, text), y in zip(entries, LEG_SLOTS):
+        ax.add_patch(matplotlib.patches.Rectangle((lx, ly + y - 25), 90, 50, fc=fc, ec=ec, lw=1.5, zorder=8))
+        two = "\n" in text      # a two-line entry hangs from the top of its swatch
+        ax.text(lx + 115, ly + y - (32 if two else 0), text, ha="left", va="top" if two else "center_baseline",
+                fontsize=FS, color=INK, zorder=8, linespacing=1.15)
     fig.savefig(path, dpi=DPI, facecolor="white")
     plt.close(fig)
+    from PIL import Image          # trim the canvas to the panels' height; every frame alike
+    Image.open(path).crop((0, 0, W_PX, height)).save(path)
     print("wrote", path, flush=True)
 
 
-LEG_ROW, LEG_COL = 92, 1800   # legend slot pitch in figure pixels
+# legend slots (y of each entry's swatch centre, from the legend's top) and the legend box
+LEG_SLOTS = (25, 185, 275, 365)
+LEG_W, LEG_H = 1010, 400
 
 
-def layout(A, kind):
-    """South and north panels side by side at one scale, the legend in two columns beneath."""
-    # south: RA0 at the middle of DR1-wide south and SPT together, so the pair lies across the panel
-    sp = Polar("south", 5 * round(circ_mean_ra((A["map_dr1"] & south_mask()) | A["map_spt"]) / 5), kind)
+def layout(A):
+    """South panel on the left; on the right the north panel above the legend. Both panels share
+    one scale and one orientation: north up and east left, as on the sky, with the same great
+    circle vertical through both poles (RA0 above the south pole, RA0 + 180° below the north pole),
+    so RA increases to the left in both."""
+    ra0 = 5 * round(circ_mean_ra((A["map_dr1"] & south_mask()) | A["map_spt"]) / 5)
+    sp, npj = Polar("south", ra0), Polar("north", ra0 + 180)
     sb = bbox_of(sp, [A["map_dr1"] & south_mask(), A["map_spt"]], margin=0.04)
-    npj = Polar("north", 15 * round(circ_mean_ra(A["map_dr1"] & ~south_mask()) / 15), kind)
-    nb = bbox_of(npj, [A["map_dr1"] & ~south_mask()], margin=0.14)
+    nb = bbox_of(npj, [A["map_dr1"] & ~south_mask()], margin=0.06,
+                 extra=[(r, 84.0) for r in range(0, 360, 15)])   # the pole, with a 6° cap around it
     sw, sh = sb[1] - sb[0], sb[3] - sb[2]
     nw, nh = nb[1] - nb[0], nb[3] - nb[2]
     gap, pad = 40, 4
-    leg_h = LEG_ROW + 60                     # two legend rows below the panels
-    k = min((W_PX - gap - 2 * pad) / (sw + nw), (H_PX - leg_h - gap - 2 * pad) / max(sh, nh))
+    W, H = W_PX - 2 * pad, H_PX - 2 * pad
+    k = (W - gap) / (sw + nw)                      # right column as wide as the north panel
+    if k * nw < LEG_W:                             # ... or as the legend, if that is wider
+        k = (W - gap - LEG_W) / sw
+    k = min(k, H / sh, (H - gap - LEG_H) / nh)
     sr = (pad, pad, int(k * sw), int(k * sh))
-    nr = (W_PX - pad - int(k * nw), pad, int(k * nw), int(k * nh))
-    print(f"{kind}: south RA0 {np.degrees(sp.ra0):.0f} {sr}, north RA0 {np.degrees(npj.ra0):.0f} {nr}", flush=True)
+    col = sr[0] + sr[2] + gap
+    nr = (col, pad, int(k * nw), int(k * nh))
+    print(f"RA0 {ra0} / {ra0 + 180}  south {sr}  north {nr}", flush=True)
     panels = [(Panel(sp, sb, sr), "South", [-15, -30, -45, -60, -75]),
               (Panel(npj, nb, nr), "North", [45, 60, 75])]
-    return panels, (pad, sr[1] + sr[3] + gap + 26)
+    return panels, (col, sr[1] + sr[3] - LEG_H), sr[1] + sr[3] + pad
 
 
 _SOUTH = None
@@ -405,13 +419,11 @@ def main():
               f"∩DR1-all {float(A[k + '_cap_all']):.1f} deg²", flush=True)
 
     setup_font()
-    panels, leg = layout(A, "ortho")
+    panels, leg, height = layout(A)
     frames = [("1_dr1", []), ("2_planck", ["planck"]), ("3_act", ["planck", "act"]),
               ("4_spt", ["planck", "act", "spt"])]
     for name, layers in frames:
-        render(panels, layers, A, os.path.join(OUT, f"napoli_footprint_{name}.png"), leg)
-    panels, leg = layout(A, "laea")
-    render(panels, frames[-1][1], A, os.path.join(OUT, "napoli_footprint_laea_preview.png"), leg)
+        render(panels, layers, A, os.path.join(OUT, f"napoli_footprint_{name}.png"), leg, height)
 
 
 if __name__ == "__main__":
