@@ -324,43 +324,43 @@ function frameFigures(frame, deckDir, problems, where, assets) {
 }
 
 // people: the build gathers the portrait blocks into .roster (the size
-// container) and chooses the rows that give the largest portraits in the
-// nominal roster box: the body, less the text column (60 % of the width, or
-// half the height under data-stack) and the source line. The memoriam block is extra columns on the right. The CSS
-// sizes the portraits from the real roster with the same arithmetic.
-const PEOPLE = { W: 1712, H: 771, col: 64, gap: 32, rowGap: 16, caption: 72, sep: 64, label: 40, source: 48, max: 240 };
+// container) and chooses one row count for all of them, the one that gives the
+// largest portraits in the nominal roster box: the body, less the text column
+// (60 % of the width, or half the height under data-stack) and the source line.
+// Each block takes the columns its people need in that many rows, side by side,
+// each after the first behind a thin rule (the memoriam block last). A column is
+// at least `name` wide, so a name wraps to at most two lines; a row count whose
+// columns are narrower is taken only when none is wider. The CSS sizes the
+// portraits from the real roster with the same arithmetic.
+const PEOPLE = { W: 1712, H: 771, col: 64, gap: 32, rowGap: 16, caption: 72, sep: 64, label: 40, source: 48, max: 240, name: 176 };
 function peopleGrid(frame, body) {
   const blocks = [...body.querySelectorAll(':scope > .people')];
   if (!blocks.length) return;
   const roster = body.ownerDocument.createElement('div');
   roster.className = 'roster';
   body.insertBefore(roster, blocks[0]);
+  blocks.sort((a, b) => a.classList.contains('memoriam') - b.classList.contains('memoriam'));
   for (const b of blocks) roster.appendChild(b);
-  const main = blocks.find(b => !b.classList.contains('memoriam'));
-  const n = main ? main.querySelectorAll(':scope > figure').length : 0;
-  const m = roster.querySelectorAll(':scope > .memoriam > figure').length;
+  const counts = blocks.map(b => Math.max(b.querySelectorAll(':scope > figure').length, 1));
   const P = PEOPLE;
   const text = !!body.querySelector(':scope > .text');
   const stack = text && frame.hasAttribute('data-stack');
-  const W = text && !stack ? (P.W - P.col) * 0.6 : P.W;
+  const W = (text && !stack ? (P.W - P.col) * 0.6 : P.W) - (blocks.length - 1) * P.sep;
   // stacked under the text, the portraits are planned for half the body
   const H = (P.H - (body.querySelector(':scope > .source') ? P.source : 0)) * (stack ? 0.5 : 1);
-  const lab = main?.hasAttribute('data-label') ? P.label : 0;
+  const lab = blocks.some(b => b.hasAttribute('data-label')) ? P.label : 0;
   let best = null;
-  for (let rows = 1; rows <= Math.max(n, 1); rows++) {
-    const cols = Math.ceil(n / rows);
-    const mrows = m ? Math.min(rows, m) : 0;
-    const mcols = m ? Math.ceil(m / mrows) : 0;
-    const d = Math.min(
-      (W - (m ? P.sep : 0)) / (cols + mcols) - P.gap,
-      (H - lab - (rows - 1) * P.rowGap) / rows - P.caption,
-      m ? (H - P.label - (mrows - 1) * P.rowGap) / mrows - P.caption : Infinity);
+  for (let rows = 1; rows <= Math.max(...counts); rows++) {
+    const cols = counts.map(c => Math.ceil(c / Math.min(rows, c)));
+    const total = cols.reduce((x, y) => x + y, 0);
+    const d = Math.min(W / total - P.gap, (H - lab - (rows - 1) * P.rowGap) / rows - P.caption);
     // past the size cap, the fewest rows win
-    const score = Math.min(d, P.max);
-    if (!best || score > best.score + 0.5) best = { score, rows, cols, mrows, mcols };
+    const score = Math.min(d, P.max) + (W / total >= P.name ? 1e4 : 0);
+    if (!best || score > best.score + 0.5) best = { score, rows, cols, total };
   }
-  const { rows, cols, mrows, mcols } = best;
-  frame.setAttribute('style', `${frame.getAttribute('style') ? frame.getAttribute('style') + ';' : ''}--cols:${cols};--rows:${rows};--mcols:${mcols};--mrows:${mrows}`);
+  const { rows, cols, total } = best;
+  blocks.forEach((b, i) => b.setAttribute('style', `--bcols:${cols[i]}`));
+  frame.setAttribute('style', `${frame.getAttribute('style') ? frame.getAttribute('style') + ';' : ''}--rows:${rows};--tcols:${total};--nsep:${blocks.length - 1}`);
 }
 
 // Build one .slide frame from an authored element (a <section> or an <aside class="detail">).

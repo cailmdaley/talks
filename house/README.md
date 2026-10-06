@@ -108,9 +108,9 @@ Above 60 words of on-screen text the checker warns: the audience reads instead o
 | `table` | `<h2>`, one `<table>`, `.source` | `th`/`td`; `td.r` right-aligns, `tr.hl` highlights a row; `table.large` sets a short table at body size with its first column unwrapped |
 | `quote` | one `<blockquote>`, `.source` | a quotation |
 | `closing` | `<h2>`, an `<ol>` of takeaways, `p.contact` | stays on screen for questions |
-| `people` | `<h2>`, one `div.people`, optional `div.people.memoriam`, optional `div.text`, `.source` | portraits with names, for a team or a project's leads; see below |
+| `people` | `<h2>`, one to six `div.people`, optional `div.people.memoriam`, optional `div.text`, `.source` | portraits with names, for a team, a project's leads, or several groups side by side; see below |
 
-A `people` slide holds up to 24 portraits, each `<figure><img src="images/collaborators/…" alt="Name"><figcaption>Name</figcaption></figure>`, or `<span class="initials">AB</span>` in place of the image for someone without a photo:
+A `people` slide holds up to 32 portraits, each `<figure><img src="images/collaborators/…" alt="Name"><figcaption>Name</figcaption></figure>`, or `<span class="initials">AB</span>` in place of the image for someone without a photo:
 
 ```html
 <section data-layout="people">
@@ -123,7 +123,7 @@ A `people` slide holds up to 24 portraits, each `<figure><img src="images/collab
 </section>
 ```
 
-The build picks the number of rows that gives the largest portraits in the space they have: the whole body, or 60 % of its width beside a `div.text` (text left; `data-flip` puts it right), or the full width under it with `data-stack` on the section (text at the top, portraits and any memoriam block in a row anchored to the bottom of the body; rows are planned for half the body's height), less a `.source` line under both. Portraits are capped at 240 px, and once a group reaches the cap the fewest rows win. Every portrait is the same round crop (`object-fit: cover`, centred a little above the middle, where faces sit), with its name at the fine size, which may wrap to two lines; initials sit in a disc of the same size at the headline size. `data-label` on a block puts a small-caps heading above its portraits. The memoriam block sits to the right of the others behind a thin rule, in the same portrait style. Portraits keep their own backgrounds: images in a `people` block are never multiplied into the ground.
+Several groups (a key project each, say) are several `div.people` blocks, up to six, each with its `data-label`; a block may end in one `<p>` of names for people without portraits (one per line with `<br>`). The blocks sit side by side, each after the first behind a thin rule (the memoriam block last, its heading muted), all the same height so their headings line up. The build picks one number of rows for all of them, the one that gives the largest portraits in the space they have: the whole body, or 60 % of its width beside a `div.text` (text left; `data-flip` puts it right), or the full width under it with `data-stack` on the section (text at the top, portraits anchored to the bottom of the body; rows are planned for half the body's height), less a `.source` line under both. Each block takes the columns its people need in that many rows. A column is never planned narrower than 176 px, so that names wrap to at most two lines; when the rows rather than the width limit the portraits, columns widen up to 208 px to give names room. Portraits are capped at 240 px, and once they reach the cap the fewest rows win. Every portrait is the same round crop (`object-fit: cover`, centred a little above the middle, where faces sit), with its name at the fine size, which may wrap to two lines; initials sit in a disc of the same size at the headline size. `data-label` on a block puts a small-caps heading above its portraits. Portraits keep their own backgrounds: images in a `people` block are never multiplied into the ground. Example of a grouped slide: `2610_Napoli_CMBX/slides/people.html`.
 
 ## Figures
 
@@ -143,7 +143,7 @@ A `<figure>` holds an optional `<figcaption>` (a one-line label above), one imag
 - `.kicker` — small-caps label above a block. `.source` — attribution in the fine size. `.num` — a key number inline. `.tag` — a pill.
 - Hyphens next to a digit (SPT-3G, DR1-KP, KP2-3) are made non-breaking by the build, so names never split across lines.
 - `.accent`, `.muted`, `.teal`, `.cobalt` — colour emphasis. `.small`, `.fine` — the two smaller sizes, for secondary lines.
-- `<div class="cols">` — two or more equal columns inside a `points` body.
+- `<div class="cols">` — two or more equal columns inside a `points` body; a column that is a `<div>` stacks its blocks (a label over its list).
 - `<pre><code>` — code in the mono face at the fine size.
 - Fragments are reveal's: `class="fragment"` on any element, with reveal's variants (`fade-in-then-out`, `semi-fade-out`, …).
 
@@ -167,7 +167,7 @@ with any layout. A detail is shown whole: fragments inside it appear at once. A 
 Errors:
 
 - structure: an unknown layout or a class outside the vocabulary (house.css, the themes, the deck's css); content a layout does not allow, or too many of it; a figure without exactly one image, inline SVG or placeholder (a portrait: one image or one `span.initials`, and a name); an id used on two slides; elements the build cannot inline (`<script>`, `<iframe>`, `<video>`, SVG `<image>`, `url()` in a style); an inline type size or scale; build failures (missing image, TeX error, text outside the `<section>`, a highlight or crop outside its image);
-- geometry: text ink or a box outside the content box, anything off the canvas (footer, logos and themed bands may leave the content box but not the canvas); an element clipping its content; the headline overlapping the body, or sibling blocks overlapping anywhere in the body; a caption or source wider than its figure (a portrait's name may take two lines within its column); more than 24 portraits on a `people` slide; a scaled or transformed slide frame; a three-line headline;
+- geometry: text ink or a box outside the content box, anything off the canvas (footer, logos and themed bands may leave the content box but not the canvas); an element clipping its content; the headline overlapping the body, or sibling blocks overlapping anywhere in the body; a caption or source wider than its figure (a portrait's name may take two lines within its column); more than 32 portraits on a `people` slide; a scaled or transformed slide frame; a three-line headline;
 - legibility: text set below 24 px, SVG text as displayed included; contrast below 4.5:1 for text against its background, with opacity, and for SVG text against the filled shape under its centre;
 - the page: a script error, a file that fails to load, any network request (decks work offline).
 

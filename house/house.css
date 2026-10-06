@@ -355,6 +355,8 @@ html, body { background: var(--ground); }
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   column-gap: var(--s5);
 }
+/* a column that is a <div> stacks its blocks, e.g. a label over its list */
+.slide .cols > div { display: flex; flex-direction: column; gap: var(--s3); }
 
 /* tables */
 .slide table {
@@ -606,12 +608,17 @@ html, body { background: var(--ground); }
 
 /* people — a grid of portraits with names, optionally beside a .text column
    (text 40 %, left; data-flip puts it right; data-stack puts it on top at full width) and with a .source line under
-   both. The build gathers the .people blocks into .roster and sets --cols/--rows
-   (and --mcols/--mrows for the .memoriam block, set apart on the right behind
-   a rule); --d is the portrait size, computed from the roster and capped at
-   240 px. A [data-label] block carries a small heading above its portraits.
-   Portraits keep their own backgrounds (no multiply); a person without a
-   photo is a disc of initials. */
+   both. The build gathers the .people blocks into .roster and sets --rows,
+   --tcols (columns over all blocks) and --nsep (rules between blocks) on the
+   slide and --bcols on each block. Blocks sit side by side, each after the
+   first behind a thin rule, all the same height so their headings line up;
+   --d is the portrait size, computed from the roster and capped at 240 px, and
+   --w the column width: d plus the gap, widened towards --name when the rows
+   limit the portraits and the width allows, so long names wrap less.
+   A [data-label] block carries a small heading above its portraits; a closing
+   <p> in a block is a line of names for people without portraits. Portraits
+   keep their own backgrounds (no multiply); a person without a photo is a
+   disc of initials. */
 .slide[data-layout="people"] > .body {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -625,7 +632,6 @@ html, body { background: var(--ground); }
 .slide[data-layout="people"][data-stack] > .body:has(> .text):has(> .source) { grid-template-rows: auto minmax(0, 1fr) auto; }
 .slide[data-layout="people"][data-stack] > .body > .text { order: -1; justify-content: flex-start; }
 .slide[data-layout="people"][data-stack] .roster { align-items: flex-end; }
-.slide[data-layout="people"][data-stack] .people { align-content: flex-end; }
 .slide[data-layout="people"][data-flip] > .body:has(> .text) { grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); }
 .slide[data-layout="people"][data-flip] > .body > .text { order: 2; }
 .slide[data-layout="people"] > .body > .source { grid-column: 1 / -1; order: 3; }
@@ -646,32 +652,32 @@ html, body { background: var(--ground); }
   --g: 32px;
   --rg: 16px;
   --cap: 72px;
-  --sep: 0px;
-  --lab: 40px;
-  --lab1: 0px;
+  --sep: 64px;
+  --lab: 0px;
+  --name: 208px;
 }
-.slide[data-layout="people"] .roster:has(> .memoriam) { --sep: 64px; }
-.slide[data-layout="people"] .roster:has(> .people[data-label]:not(.memoriam)) { --lab1: 40px; }
+.slide[data-layout="people"] .roster:has(> .people[data-label]) { --lab: 40px; }
 .slide[data-layout="people"] .people {
+  --avail: calc((100cqw - var(--nsep) * var(--sep)) / var(--tcols));
   --d: min(
     240px,
-    (100cqw - var(--sep)) / (var(--cols) + var(--mcols)) - var(--g),
-    (100cqh - var(--lab1) - (var(--rows) - 1) * var(--rg)) / var(--rows) - var(--cap),
-    (100cqh - var(--lab) - (max(var(--mrows), 1) - 1) * var(--rg)) / max(var(--mrows), 1) - var(--cap) + (1 - min(var(--mcols), 1)) * 1000px
+    var(--avail) - var(--g),
+    (100cqh - var(--lab) - (var(--rows) - 1) * var(--rg)) / var(--rows) - var(--cap)
   );
+  --w: max(var(--d) + var(--g), min(var(--avail), var(--name)));
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-content: center;
+  align-content: flex-start;
   row-gap: var(--rg);
-  width: calc(var(--cols) * (var(--d) + var(--g)));
+  width: calc(var(--bcols) * var(--w));
+  height: calc(var(--lab) + var(--rows) * (var(--d) + var(--cap)) + (var(--rows) - 1) * var(--rg));
 }
-.slide[data-layout="people"] .people.memoriam {
-  width: calc(var(--mcols) * (var(--d) + var(--g)) + var(--sep) / 2);
+.slide[data-layout="people"] .people + .people {
+  width: calc(var(--bcols) * var(--w) + var(--sep) / 2);
   margin-left: calc(var(--sep) / 2);
   padding-left: calc(var(--sep) / 2 - 2px);
   border-left: 2px solid var(--rule);
-  align-self: stretch;
 }
 .slide[data-layout="people"] .people[data-label]::before {
   content: attr(data-label);
@@ -688,9 +694,18 @@ html, body { background: var(--ground); }
   color: var(--muted);
 }
 .slide[data-layout="people"] .people:not(.memoriam)[data-label]::before { color: var(--accent); }
+.slide[data-layout="people"] .people > p {
+  flex: 0 0 100%;
+  margin: 0;
+  font-size: var(--t-fine);
+  line-height: 32px;
+  text-align: center;
+  text-wrap: balance;
+  color: var(--muted);
+}
 .slide[data-layout="people"] .people > figure {
   flex: none;
-  width: calc(var(--d) + var(--g));
+  width: var(--w);
   height: calc(var(--d) + var(--cap));
   display: flex;
   flex-direction: column;

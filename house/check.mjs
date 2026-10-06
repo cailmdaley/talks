@@ -39,9 +39,9 @@ const SCHEMA = {
   table:         { head: 'h2', body: [['table', 1, 1], ['span.source', 0, 1], ['p.source', 0, 1], ['p', 0, 1]] },
   quote:         { head: null, body: [['blockquote', 1, 1], ['span.source', 0, 1], ['p.source', 0, 1]] },
   closing:       { head: 'h2', body: [['ol', 0, 1], ['ul', 0, 1], ['p', 0, 2], ['p.contact', 0, 1]], need: 1 },
-  people:        { head: 'h2', body: [['div.people', 1, 1], ['div.memoriam', 0, 1], ['div.text', 0, 1], ['span.source', 0, 1], ['p.source', 0, 1]] },
+  people:        { head: 'h2', body: [['div.people', 1, 6], ['div.memoriam', 0, 1], ['div.text', 0, 1], ['span.source', 0, 1], ['p.source', 0, 1]] },
 };
-const MAX_PEOPLE = 24;
+const MAX_PEOPLE = 32;
 
 const REVEAL_CLASSES = ['fragment', 'fade-in', 'fade-out', 'fade-up', 'fade-down', 'fade-left', 'fade-right',
   'fade-in-then-out', 'fade-in-then-semi-out', 'semi-fade-out', 'current-visible', 'highlight-red', 'highlight-blue',
@@ -119,7 +119,8 @@ function lintBlock(el, where, vocab, out, isDetail) {
     let n = 0;
     for (const b of blocks) {
       for (const k of b.children) {
-        if (k.localName !== 'figure') out.errors.push(`${where}: ${describe(k)} inside div.people; it holds only <figure>s`);
+        if (k.localName === 'p' && !k.nextElementSibling) continue;  // a closing line of names without portraits
+        if (k.localName !== 'figure') out.errors.push(`${where}: ${describe(k)} inside div.people; it holds <figure>s and at most a closing <p> of names`);
         else if ([...k.children].filter(c => c.localName === 'img' || (c.localName === 'span' && c.classList.contains('initials'))).length !== 1 || !k.querySelector(':scope > figcaption'))
           out.errors.push(`${where}: a portrait is <figure><img …><figcaption>Name</figcaption></figure>, or <span class="initials">AB</span> in place of the <img>`);
         else n++;
