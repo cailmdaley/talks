@@ -26,8 +26,9 @@ Outputs (images/):
   napoli_lens_ratio_1.png   mocks only: 10 seeds, median per bin, blind band
   napoli_lens_ratio_2.png   + TR1 x SPT-3G data and the shared-mu band
       at 2x the figure-text (60 %) figure cell less a .source line (989 x 723 px)
-  napoli_bias_blinded.png, napoli_Agk_blinded.png
-      at 2x one compare half less caption and source (824 x 669 px)
+  napoli_galaxy_bias.png    b per lens bin, at the same figure-text cell size
+  napoli_gk_amplitude.png   A^gk per source bin, at 2x the figure layout's body
+                            less a caption and a .source line (1400 x 669 px)
 
 Run in the cmbx container: app python make_crosses.py
 """
@@ -211,55 +212,55 @@ def lens_ratio(a, med, rob):
         print("wrote", os.path.normpath(out))
 
 
-def blinded_tag(ax, x, y, ha="left"):
-    ax.text(x, y, "BLINDED", transform=ax.transAxes, fontsize=LABEL, color=DATA, weight="bold",
-            ha=ha, va="top")
-
-
 def bias(a):
-    W_PX, H_PX = 1648, 1338
+    """Single panel: fiducial b as a line per bin, measured bins filled, the rest open."""
+    W_PX, H_PX = 1978, 1446
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
-    ax = fig.add_axes([0.13, 0.18, 0.85, 0.79])
+    ax = fig.add_axes([0.115, 0.165, 0.87, 0.80])
     x = bin_axis(ax, a["zl"], r"lens bin, mean $z$")
-    ax.set_ylim(0, 4.6)
+    top = 4.2
+    ax.set_ylim(0, top)
     ax.yaxis.set_major_locator(FixedLocator([0, 1, 2, 3, 4]))
     ax.set_ylabel(r"galaxy bias $b$", labelpad=8)
-    lo_b, hi_b = a["blind_b"].min(0), a["blind_b"].max(0)
-    for xi, f, l, h in zip(x, a["b_fid"], lo_b, hi_b):
-        ax.fill_between([xi - 0.36, xi + 0.36], f * l, f * h, color=BAND, lw=0, zorder=0)
-        ax.plot([xi - 0.36, xi + 0.36], [f, f], color=INK, lw=2.0, zorder=1)
+    for xi, f in zip(x, a["b_fid"]):
+        ax.plot([xi - 0.32, xi + 0.32], [f, f], color=INK, lw=2.4, zorder=1)
     v = a["b"]
-    # 3, 6: measurements; 2: low S/N; 4, 5: delta-delta excess; 1: one delta-kappa band, not measured
-    solid = np.array([False, False, True, False, False, True])
+    # 3, 6: measured; 1: one delta-kappa band; 2: low S/N; 4, 5: delta-delta excess (notes)
+    measured = np.array([False, False, True, False, False, True])
     for i in range(6):
-        col = DATA if solid[i] else GREYED
-        alpha = 0.35 if i == 0 else 1.0
-        hi = min(v[i, 0] + v[i, 2], 4.55) - v[i, 0]
-        ax.errorbar(x[i], v[i, 0], yerr=[[v[i, 1]], [hi]], fmt="o", ms=12, color=col,
-                    mfc=col if solid[i] else "white", mew=2.2 if not solid[i] else 1.2,
-                    mec=col if not solid[i] else "white", elinewidth=2.8, capsize=0, zorder=3,
-                    alpha=alpha)
-        if v[i, 0] + v[i, 2] > 4.55:
-            ax.annotate("", xy=(x[i], 4.58), xytext=(x[i], 4.3),
-                        arrowprops=dict(arrowstyle="-|>", color=col, lw=2.6, mutation_scale=22))
-    ax.text(0.62, 0.03, "not measured at this cut", fontsize=LABEL, color=MUTED, ha="left",
-            va="bottom")
-    ax.text(2.0, 2.42, "low S/N", fontsize=LABEL, color=MUTED, ha="center", va="bottom")
-    ax.text(4.42, 3.95, "$\\delta\\delta$ excess\nrising with $\\ell$", fontsize=LABEL, color=MUTED,
-            ha="right", va="top", linespacing=1.1)
-    blinded_tag(ax, 0.02, 0.99)
-    out = os.path.join(IMG, "napoli_bias_blinded.png")
+        col = DATA if measured[i] else GREYED
+        hi = min(v[i, 0] + v[i, 2], top - 0.05) - v[i, 0]
+        ax.errorbar(x[i], v[i, 0], yerr=[[v[i, 1]], [hi]], fmt="o", ms=15, color=col,
+                    mfc=col if measured[i] else "white", mec="white" if measured[i] else col,
+                    mew=1.4 if measured[i] else 2.6, elinewidth=3.2 if measured[i] else 2.4,
+                    capsize=0, zorder=3 if measured[i] else 2, alpha=1.0 if measured[i] else 0.5)
+        if v[i, 0] + v[i, 2] > top - 0.05:
+            ax.annotate("", xy=(x[i], top + 0.02), xytext=(x[i], top - 0.3),
+                        arrowprops=dict(arrowstyle="-|>", color=col, lw=2.4, mutation_scale=22, alpha=0.5),
+                        annotation_clip=False)
+    # key, upper left
+    y0, dy = 0.95, 0.085
+    ax.plot([0.03, 0.08], [y0, y0], transform=ax.transAxes, color=INK, lw=2.4)
+    ax.text(0.10, y0, "fiducial", transform=ax.transAxes, fontsize=LABEL, color=INK, va="center")
+    ax.plot([0.055], [y0 - dy], "o", transform=ax.transAxes, ms=15, color=DATA, mec="white", mew=1.4)
+    ax.text(0.10, y0 - dy, "measured", transform=ax.transAxes, fontsize=LABEL, color=INK, va="center")
+    ax.plot([0.055], [y0 - 2 * dy], "o", transform=ax.transAxes, ms=15, mfc="white", mec=GREYED, mew=2.6,
+            alpha=0.5)
+    ax.text(0.10, y0 - 2 * dy, "low S/N or not measured at this cut", transform=ax.transAxes,
+            fontsize=LABEL, color=MUTED, va="center")
+    out = os.path.join(IMG, "napoli_galaxy_bias.png")
     fig.savefig(out, dpi=DPI)
     plt.close(fig)
     print("wrote", os.path.normpath(out))
 
 
 def amplitude(a):
-    W_PX, H_PX = 1648, 1338
+    """gamma-kappa amplitude per source bin, with the range a blind-sized shift could move it."""
+    W_PX, H_PX = 2800, 1338
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
-    ax = fig.add_axes([0.13, 0.18, 0.85, 0.79])
+    ax = fig.add_axes([0.085, 0.18, 0.62, 0.79])
     x = bin_axis(ax, a["zs"], r"source bin, mean $z$")
-    ax.set_ylim(0, 2.0)
+    ax.set_ylim(0, 1.6)
     ax.yaxis.set_major_locator(FixedLocator([0, 0.5, 1.0, 1.5]))
     ax.set_ylabel(r"$\gamma\kappa$ amplitude / fiducial", labelpad=8)
     ax.axhline(1, color=INK, lw=1.6, ls=(0, (5, 4)), zorder=1)
@@ -268,12 +269,23 @@ def amplitude(a):
     for i in range(6):
         g = i == 0
         col = GREYED if g else DATA
-        ax.errorbar(x[i], a["A"][i], yerr=a["A_err"][i], fmt="o", ms=12, color=col,
-                    mfc="white" if g else col, mec=col if g else "white", mew=2.2 if g else 1.2,
-                    elinewidth=2.8, capsize=0, zorder=3)
-    ax.text(1.12, 0.03, "mocks: 1.25 high", fontsize=LABEL, color=MUTED, ha="left", va="bottom")
-    blinded_tag(ax, 0.02, 0.99)
-    out = os.path.join(IMG, "napoli_Agk_blinded.png")
+        ax.errorbar(x[i], a["A"][i], yerr=a["A_err"][i], fmt="o", ms=14, color=col,
+                    mfc="white" if g else col, mec=col if g else "white", mew=2.6 if g else 1.4,
+                    elinewidth=3.0, capsize=0, zorder=3)
+    # key to the right of the axes
+    kx, ky, dy = 1.04, 0.80, 0.13
+    t = ax.transAxes
+    ax.plot([kx + 0.02], [ky], "o", transform=t, ms=14, color=DATA, mec="white", mew=1.4, clip_on=False)
+    ax.text(kx + 0.06, ky, "TR1 × SPT-3G", transform=t, fontsize=LABEL, color=INK, va="center")
+    ax.add_patch(plt.Rectangle((kx, ky - dy - 0.035), 0.04, 0.07, transform=t, color=BAND, lw=0,
+                               clip_on=False))
+    ax.text(kx + 0.06, ky - dy, "range a blind-sized\ncosmology shift spans", transform=t,
+            fontsize=LABEL, color=INK, va="center", linespacing=1.1)
+    ax.plot([kx + 0.02], [ky - 2.25 * dy], "o", transform=t, ms=14, mfc="white", mec=GREYED, mew=2.6,
+            clip_on=False)
+    ax.text(kx + 0.06, ky - 2.25 * dy, "bin 1: mocks recover\nit 25 % high", transform=t,
+            fontsize=LABEL, color=MUTED, va="center", linespacing=1.1)
+    out = os.path.join(IMG, "napoli_gk_amplitude.png")
     fig.savefig(out, dpi=DPI)
     plt.close(fig)
     print("wrote", os.path.normpath(out))

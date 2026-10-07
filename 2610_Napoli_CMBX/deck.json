@@ -51,7 +51,7 @@
         "blind-rehearsal",
         "dv-prism",
         "lens-ratio",
-        "bias-amplitude",
+        "galaxy-bias",
         "dr1-clustering"
       ]
     },
@@ -91,7 +91,8 @@
         "kp23-data-vectors",
         "kp23-likelihood",
         "kp23-simulations",
-        "tr1-spt-gk"
+        "tr1-spt-gk",
+        "gk-amplitude"
       ]
     }
   ]
