@@ -15,7 +15,7 @@ House.app('dv_vector', function (figure, data, ctx) {
   'use strict';
   var T0 = performance.now();
   var NS = 'http://www.w3.org/2000/svg';
-  var W = 1712, H = 723;
+  var W = 1712, H = 771;                         // the figure layout's whole body
   var PAN_MS = 1000, ZOOM_MS = 1400, EASE = 'cubic-bezier(0.65, 0, 0.35, 1)';
 
   // ── data ────────────────────────────────────────────────────────────────
@@ -228,7 +228,7 @@ House.app('dv_vector', function (figure, data, ctx) {
   // ── layouts ─────────────────────────────────────────────────────────────
   // the kappa row: gamma_1..6 then delta_1..6, a frame width apart
   var LEFT = 118, GAP = 18, PW = (W - LEFT - 10 - 5 * GAP) / 6;
-  var MAIN = { y: 78, h: 392 }, STRIP = { y: 482, h: 150 };
+  var MAIN = { y: 70, h: 440 }, STRIP = { y: 522, h: 162 };
   var rowKeys = [0, 1, 2, 3, 4, 5].map(function (i) { return 'kappa_l' + i; })
     .concat([0, 1, 2, 3, 4, 5].map(function (i) { return 'kappa_g' + i; }));
   var rowX = function (j) { return (j < 6 ? 0 : W) + LEFT + (j % 6) * (PW + GAP); };
@@ -240,7 +240,7 @@ House.app('dv_vector', function (figure, data, ctx) {
     var rank = function (t) { return (t[0] === 'g' ? 0 : 10) + +t.slice(1); };
     return rank(a) <= rank(b) ? a + '_' + b : b + '_' + a;
   };
-  var GX = 76, GY = 64, KAPPA_GAP = 16, LAB = 44;
+  var GX = 58, GY = 2, KAPPA_GAP = 14, LAB = 42;
   var CP = (W - GX - 2) / 12, CW = CP - 10;
   var RP = (H - GY - LAB - KAPPA_GAP) / 13, CH = RP - 7;
   var cell = function (row, col) {
@@ -326,12 +326,15 @@ House.app('dv_vector', function (figure, data, ctx) {
   text(tdec, GX - 14, kc.y + kc.h / 2 + 10, 'κ', { size: 28, anchor: 'end' });
   var nb = 0, nf = 0;
   Object.keys(pairs).forEach(function (k) { nb += pairs[k].ell.length; nf += pairs[k].nfit; });
-  var hc = cell(0, 3);
-  text(tdec, hc.x, GY + 26, 'The blinded TR1 × SPT-3G data vector', { size: 32 });
-  text(tdec, hc.x, GY + 70, Object.keys(pairs).length + ' spectra · ' + nb + ' bandpowers · ' + nf + ' inside the scale cut',
+  // title, counts, key and source fill the empty upper-right triangle
+  var at = function (row, col) { var c = cell(row, col); return { x: c.x, y: c.y }; };
+  text(tdec, at(0, 2).x, at(0, 0).y + 36, 'The blinded TR1 × SPT-3G data vector', { size: 34 });
+  text(tdec, at(1, 2).x, at(1, 0).y + 34, Object.keys(pairs).length + ' spectra · ' + nb + ' bandpowers · ' + nf + ' inside the scale cut',
     { size: 26, cls: 'dvv-muted' });
-  keys.push({ g: el('g', {}, tdec), items: ['pt', 'th', 'cut'], stack: { x: cell(2, 7).x, y: cell(2, 7).y + 30 } });
-  text(tdec, cell(5, 9).x + CW, cell(5, 9).y + 30, 'click a panel to open it', { size: 24, anchor: 'end', cls: 'dvv-muted dvv-hint', italic: true });
+  keys.push({ g: el('g', {}, tdec), items: ['pt', 'th', 'cut'], stack: { x: at(2, 5).x + 40, y: at(2, 0).y + 56 } });
+  text(tdec, W - 8, at(6, 0).y + 34, 'click a panel to open it', { size: 24, anchor: 'end', cls: 'dvv-muted dvv-hint', italic: true });
+  text(tdec, W - 8, at(5, 0).y + 34, ['SPT-3G Main winter κ · NaMaster, 15 bands, ', 'ℓ', ' = 100–3000 · Gaussian covariance'],
+    { size: 24, anchor: 'end', cls: 'dvv-muted' });
   add(tdec, [{ o: 0, v: false }, { o: 0, v: false }, { o: 1, v: true }]);
   var kr = cell(12, 0), kr2 = cell(12, 11);
   el('rect', { x: kr.x - 6, y: kr.y - 5, width: kr2.x + kr2.w - kr.x + 12, height: kr.h + 10, rx: 4 }, tint);
@@ -406,7 +409,7 @@ House.app('dv_vector', function (figure, data, ctx) {
       : p.nfit + ' of ' + p.fit.length + ' bands inside the validated linear-bias cut';
     text(box, B.x + 48, B.y + 100, name(c.a) + ' × ' + name(c.b) + ' · blinded · ' + note, { size: 26, cls: 'dvv-muted' });
     drawKey({ g: el('g', {}, box), right: B.x + B.w - 40, y: B.y + 60, items: ['pt', 'th'].concat(p.nfit < p.fit.length ? ['cut'] : []) });
-    var m = { x: B.x + 150, y: B.y + 140, w: B.w - 196, h: 300 }, s = { x: m.x, y: m.y + m.h + 12, w: m.w, h: 118 };
+    var m = { x: B.x + 150, y: B.y + 140, w: B.w - 196, h: 320 }, s = { x: m.x, y: m.y + m.h + 12, w: m.w, h: 132 };
     var q = (function () {
       var lo = 0, hi = 0;
       p.t.forEach(function (t) { lo = Math.min(lo, t); hi = Math.max(hi, t); });
@@ -424,7 +427,7 @@ House.app('dv_vector', function (figure, data, ctx) {
     var rg = el('g', { transform: 'translate(' + s.x + ' ' + s.y + ') scale(' + s.w + ' ' + s.h + ')' }, box);
     drawResid(rg, p);
     drawAxes(box, m, s, q, { labels: true, ylabel: ylabel(p.e), xt: [100, 300, 1000, 3000] });
-    text(box, m.x + m.w / 2, s.y + s.h + 76, ['multipole ', 'ℓ'], { size: 28, anchor: 'middle' });
+    text(box, m.x + m.w / 2, s.y + s.h + 72, ['multipole ', 'ℓ'], { size: 28, anchor: 'middle' });
     // what the strip cannot show, said plainly
     var edge = [];
     p.r.forEach(function (r, i) { if (p.fit[i] && Math.abs(r) >= 3.7) edge.push((r > 0 ? '+' : '−') + Math.abs(r).toFixed(1)); });
