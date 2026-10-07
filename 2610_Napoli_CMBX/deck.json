@@ -48,7 +48,9 @@
         "kp-3-papers",
         "pipeline",
         "mock-recovery",
-        "blind-rehearsal"
+        "blind-rehearsal",
+        "lens-ratio",
+        "bias-amplitude"
       ]
     },
     {
