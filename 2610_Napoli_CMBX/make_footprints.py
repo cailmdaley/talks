@@ -10,15 +10,19 @@ Four PNGs with an identical frame, written to the shared images/ pool:
 The slide stacks them, so each step adds exactly one layer. Both panels are
 polar Lambert azimuthal equal-area views at one scale and one central RA.
 
-Euclid DR1 is the DR1_R2 VMPZ WL effective coverage (8964 wide tiles, Aug
-2025): each pixel holds the fraction of it that is effectively covered. The
+Euclid DR1 is a DR1_R2 VMPZ WL effective-coverage map, chosen with --coverage:
+  r2          all 8964 wide tiles (Aug 2025), the slide's map
+  validtiles  the 8389 tiles on the LE3-WL VALID list (F006)
+Each pixel holds the fraction of it that is effectively covered. The
 drawn footprint is effcov > 0. Every area is effective, Σ effcov × pixel area:
 DR1's own, and its overlap with each CMB footprint (effcov summed over the
 pixels where the CMB mask is > 0, with effcov upgraded from NSIDE 1024 to the
 mask's 2048 by giving each child its parent's value). The CMB footprints are
 drawn where the mask is > 0.5. The maps are drawn at NSIDE 512.
 
-Run in the cmbx container: app python make_footprints.py [--cache file.npz]
+Run in the cmbx container:
+  app python make_footprints.py [--coverage r2|validtiles] [--preview] [--cache file.npz]
+--preview renders only the last frame, to images/napoli_footprint_<coverage>_preview.png.
 """
 import argparse
 import os
@@ -37,7 +41,8 @@ from scipy import ndimage
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "images")
 INPUTS = "/leonardo_work/EUHPC_E07_074/cmbx/inputs"
-DR1_PATH = f"{INPUTS}/euclid/dr1/vmpz/effcov/effcov_wl_dr1r2_nside1024.fits"
+COVERAGE = {"r2": f"{INPUTS}/euclid/dr1/vmpz/effcov/effcov_wl_dr1r2_nside1024.fits",
+            "validtiles": f"{INPUTS}/euclid/dr1/vmpz/effcov/effcov_wl_dr1r2_validF006_nside1024.fits"}
 CMB = {  # key: (label, path)
     "planck": ("Planck PR4", f"{INPUTS}/planck/masks/mask_rotated.fits"),
     "act": ("ACT DR6", f"{INPUTS}/act/masks/mask_act_dr6_lensing_v1_healpix_nside_2048_baseline.fits"),
@@ -45,6 +50,7 @@ CMB = {  # key: (label, path)
             "mask2048_border_apod_mask_threshold0.1_allghz_dense.fits"),
 }
 NSIDE_PLOT = 512
+RA0 = 30.0   # central RA: the middle of DR1 south and SPT-3G Main together, fixed for every coverage
 
 # euclid theme (house/themes/euclid.css)
 INK, MUTED = "#111418", "#535B67"
@@ -70,13 +76,13 @@ def upgrade(b, nside_out):
     return np.repeat(nest, f)[hp.ring2nest(nside_out, np.arange(hp.nside2npix(nside_out)))]
 
 
-def measure():
+def measure(dr1_path):
     def read(p):
         m = np.nan_to_num(hp.read_map(p, dtype=np.float64))
         m[m < 0] = 0.0                       # UNSEEN outside a footprint reads as zero
         return m
 
-    e = read(DR1_PATH)
+    e = read(dr1_path)
     ns_e = hp.npix2nside(e.size)
     pa_e = hp.nside2pixarea(ns_e, degrees=True)
     _, dec = hp.pix2ang(ns_e, np.arange(e.size), lonlat=True)
@@ -167,12 +173,6 @@ def bbox_of(proj, hmaps, margin=0.06, extra=()):
     x, y = proj.fwd(ra, dec)
     dx, dy = x.max() - x.min(), y.max() - y.min()
     return (x.min() - margin * dx, x.max() + margin * dx, y.min() - margin * dy, y.max() + margin * dy)
-
-
-def circ_mean_ra(hmap):
-    ra, _ = hp.pix2ang(NSIDE_PLOT, np.flatnonzero(hmap), lonlat=True)
-    r = np.radians(ra)
-    return np.degrees(np.arctan2(np.sin(r).mean(), np.cos(r).mean())) % 360
 
 
 # ---------------------------------------------------------------- drawing
@@ -342,7 +342,7 @@ def layout(A):
     one scale and one orientation: north up and east left, as on the sky, with the same great
     circle vertical through both poles (RA0 above the south pole, RA0 + 180° below the north pole),
     so RA increases to the left in both."""
-    ra0 = 5 * round(circ_mean_ra((A["map_dr1"] & south_mask()) | A["map_spt"]) / 5)
+    ra0 = RA0
     sp, npj = Polar("south", ra0), Polar("north", ra0 + 180)
     sb = bbox_of(sp, [A["map_dr1"] & south_mask(), A["map_spt"]], margin=0.09)
     nb = bbox_of(npj, [A["map_dr1"] & ~south_mask()], margin=0.11,
@@ -377,12 +377,16 @@ def south_mask():
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--cache", help="npz holding the measured areas and plot maps (made if missing)")
+    ap.add_argument("--coverage", choices=COVERAGE, default="r2", help="the Euclid DR1 coverage map")
+    ap.add_argument("--preview", action="store_true",
+                    help="render only the last frame, as napoli_footprint_<coverage>_preview.png")
+    ap.add_argument("--cache", help="npz holding the measured areas and plot maps (made if missing); "
+                                    "one per coverage")
     args = ap.parse_args()
     if args.cache and os.path.exists(args.cache):
         A = dict(np.load(args.cache))
     else:
-        A = measure()
+        A = measure(COVERAGE[args.coverage])
         if args.cache:
             np.savez(args.cache, **A)
     print(f"DR1 effective {float(A['dr1_eff']):.1f} deg² (south {float(A['dr1_eff_s']):.1f}, "
@@ -396,6 +400,8 @@ def main():
     panels, leg, height = layout(A)
     frames = [("1_dr1", []), ("2_planck", ["planck"]), ("3_act", ["planck", "act"]),
               ("4_spt", ["planck", "act", "spt"])]
+    if args.preview:
+        frames = [(f"{args.coverage}_preview", frames[-1][1])]
     for name, layers in frames:
         render(panels, layers, A, os.path.join(OUT, f"napoli_footprint_{name}.png"), leg, height)
 
