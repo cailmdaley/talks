@@ -310,21 +310,23 @@ def render(panels, layers, A, path, legend_xy, height):
         draw_panel(ax, rgb, P, layers, A, title, rings)
     ax.imshow(rgb, extent=(0, W_PX, H_PX, 0), interpolation="nearest", zorder=0)
 
-    # legend: one fixed slot per entry, so each frame fills the next slot and nothing moves.
-    # DR1 carries its effective area; each CMB survey only its effective overlap with DR1.
-    entries = [(C_DR1, C_DR1_EDGE, "Euclid DR1: "
-                f"{deg2(A['dr1_eff'])} deg²\n"
-                f"(south {deg2(A['dr1_eff_s'])} + north {deg2(A['dr1_eff_n'])})")]
+    # legend: one fixed slot per row, so each frame fills the next slot and nothing moves. Names sit
+    # in one column and areas, right-aligned, in another; DR1's south and north parts are rows of
+    # their own under it. Each CMB survey carries only its effective overlap with DR1.
+    rows = [(C_DR1, C_DR1_EDGE, "Euclid DR1", A["dr1_eff"], INK),
+            (None, None, "south", A["dr1_eff_s"], MUTED),
+            (None, None, "north", A["dr1_eff_n"], MUTED)]
     for k in layers:
         c, a = COLOURS[k]
-        entries.append((tuple((1 - a) + a * np.array(to_rgb(c))), c,
-                        f"{CMB[k][0]} ∩ DR1: {deg2(A[f'{k}_cap'])} deg²"))
-    lx, ly = legend_xy
-    for (fc, ec, text), y in zip(entries, LEG_SLOTS):
-        ax.add_patch(matplotlib.patches.Rectangle((lx, ly + y - 25), 90, 50, fc=fc, ec=ec, lw=1.5, zorder=8))
-        two = "\n" in text      # a two-line entry hangs from the top of its swatch
-        ax.text(lx + 115, ly + y - (32 if two else 0), text, ha="left", va="top" if two else "center_baseline",
-                fontsize=FS, color=INK, zorder=8, linespacing=1.15)
+        rows.append((tuple((1 - a) + a * np.array(to_rgb(c))), c, f"{CMB[k][0]} ∩ DR1", A[f"{k}_cap"], INK))
+    lx, ly, rx = legend_xy
+    for (fc, ec, name, area, ink), y in zip(rows, LEG_SLOTS):
+        if fc is not None:
+            ax.add_patch(matplotlib.patches.Rectangle((lx, ly + y - 25), 90, 50, fc=fc, ec=ec, lw=1.5, zorder=8))
+        ax.text(lx + (115 if fc is not None else 145), ly + y, name, ha="left", va="center_baseline",
+                fontsize=FS, color=ink, zorder=8)
+        ax.text(rx, ly + y, f"{deg2(area)} deg²", ha="right", va="center_baseline",
+                fontsize=FS, color=ink, zorder=8)
     fig.savefig(path, dpi=DPI, facecolor="white")
     plt.close(fig)
     from PIL import Image          # trim the canvas to the panels' height; every frame alike
@@ -332,9 +334,9 @@ def render(panels, layers, A, path, legend_xy, height):
     print("wrote", path, flush=True)
 
 
-# legend slots (y of each entry's swatch centre, from the legend's top) and the legend box
-LEG_SLOTS = (25, 185, 275, 365)
-LEG_W, LEG_H = 1010, 400
+# legend slots (y of each row's centre, from the legend's top) and the legend box
+LEG_SLOTS = (60, 125, 185, 275, 360, 445)
+LEG_W, LEG_H = 1010, 485
 
 
 def layout(A):
@@ -361,7 +363,7 @@ def layout(A):
     print(f"RA0 {ra0} / {ra0 + 180}  south {sr}  north {nr}", flush=True)
     panels = [(Panel(sp, sb, sr), "South", [-15, -30, -45, -60, -75]),
               (Panel(npj, nb, nr), "North", [45, 60, 75])]
-    return panels, (col, sr[1] + sr[3] - LEG_H), sr[1] + sr[3] + pad
+    return panels, (col, sr[1] + sr[3] - LEG_H, col + max(nr[2], LEG_W) - 8), sr[1] + sr[3] + pad
 
 
 _SOUTH = None
