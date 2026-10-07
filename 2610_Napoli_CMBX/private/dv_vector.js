@@ -1,5 +1,5 @@
-// The blinded TR1 3x2pt + kappa data vector (house data-app), with toggles
-// between the shear methods and CMB lensing surveys that have been measured.
+// The blinded TR1 3x2pt + kappa data vector (house data-app), for each shear
+// method and CMB lensing survey measured; the deck's variant control picks one.
 //
 // Nothing is drawn here: private/render_dv_vector.py renders the figure with
 // matplotlib as two SVG layers, and this script only places, moves and fades
@@ -58,10 +58,6 @@ House.app('dv_vector', function (figure, data, ctx) {
     '.dvv-card { fill: var(--ground); stroke: var(--rule); stroke-width: 1.5px; }',
     '.dvv-shadow { fill: var(--ink); opacity: 0.06; }',
     '.dvv-note { fill: var(--muted); font-style: italic; }',
-    '.dvv-seg { fill: var(--ground); stroke: var(--rule); stroke-width: 1.5px; }',
-    '.dvv-seg-on { fill: var(--panel); stroke: var(--muted); }',
-    '.dvv-seg-text { fill: var(--ink); }',
-    '.dvv-seg-off .dvv-seg { stroke-dasharray: 4 4; } .dvv-seg-off .dvv-seg-text { fill: var(--muted); font-style: italic; }',
   ].join('\n');
   frameEl.appendChild(defs);
 
@@ -88,7 +84,7 @@ House.app('dv_vector', function (figure, data, ctx) {
   };
   var ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
 
-  var cardShown = function (on) { if (ui) ui.style.visibility = on ? 'hidden' : 'visible'; };
+  var cardShown = function (on) { var c = figure.closest('.slide').querySelector(':scope > .variants'); if (c) c.style.visibility = on ? 'hidden' : 'visible'; };
 
   function scene(variant) {
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'class': 'app-view', role: 'img' });
@@ -195,63 +191,20 @@ House.app('dv_vector', function (figure, data, ctx) {
     };
   }
 
-  // ── toggles: shear method and CMB survey; a variant not measured is shown but disabled
-  var ui = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'class': 'app-view dvv-ui' });
-  ui.style.pointerEvents = 'none';
-  var uiDone = false;
-  var sel = Object.keys(data.variants)[0].split('|');
-  function drawUI() {
-    while (ui.firstChild) ui.removeChild(ui.firstChild);
-    var x = W - 8, y = 14, h = 40, pad = 16, gap = 22;
-    var groups = [['cmb', Object.keys(data.cmbs), data.cmbs], ['shear', Object.keys(data.shears), data.shears]];
-    var ok = true;
-    groups.forEach(function (gr) {
-      for (var i = gr[1].length - 1; i >= 0; i--) {
-        var id = gr[1][i];
-        var want = gr[0] === 'cmb' ? sel[0] + '|' + id : id + '|' + sel[1];
-        var on = gr[0] === 'cmb' ? sel[1] === id : sel[0] === id;
-        var has = !!data.variants[want];
-        var g = el('g', {}, ui);
-        var r = el('rect', {}, g);
-        var t = el('text', { 'font-size': 24, 'text-anchor': 'middle' }, g);
-        t.textContent = gr[2][id];
-        var w = t.getComputedTextLength();
-        if (!w) { ok = false; return; }
-        w += 2 * pad;
-        r.setAttribute('x', x - w); r.setAttribute('y', y); r.setAttribute('width', w); r.setAttribute('height', h);
-        r.setAttribute('rx', 6);
-        r.setAttribute('class', 'dvv-seg' + (on ? ' dvv-seg-on' : ''));
-        t.setAttribute('x', x - w / 2); t.setAttribute('y', y + h / 2 + 8);
-        t.setAttribute('class', 'dvv-seg-text');
-        el('title', {}, g).textContent = has ? gr[2][id] : gr[2][id] + ': not measured yet';
-        if (!has) g.setAttribute('class', 'dvv-seg-off');
-        else if (!on) {
-          g.style.pointerEvents = 'auto';
-          g.style.cursor = 'pointer';
-          g.addEventListener('click', (function (vk) { return function (e) { e.stopPropagation(); use(vk); }; })(want));
-        }
-        x -= w - 1.5;
-      }
-      x -= gap;
-    });
-    uiDone = ok;
-  }
-
-  var S = null, state = null;
+  var S = null, state = null, shown = null;
   function use(vk) {
+    if (vk === shown || !data.variants[vk]) return;
     var next = scene(data.variants[vk]);
     if (S) { S.closeCard(); frameEl.replaceChild(next.svg, S.svg); }
-    else frameEl.insertBefore(next.svg, ui);
+    else frameEl.appendChild(next.svg);
     S = next;
-    sel = vk.split('|');
+    shown = vk;
     S.land(state == null ? 0 : state);
-    drawUI();
   }
 
   // ── steps ───────────────────────────────────────────────────────────────
   function step(k, animate) {
     k = Math.max(0, Math.min(2, k));
-    if (!uiDone) drawUI();
     if (k !== 2) { S.closeCard(); S.hover(false); }
     var from = state;
     state = k;
@@ -260,7 +213,7 @@ House.app('dv_vector', function (figure, data, ctx) {
       // reduced motion: the old view, frozen, fades out over the new one
       var ghost = S.svg.cloneNode(true);
       ghost.style.pointerEvents = 'none';
-      S.svg.parentNode.insertBefore(ghost, ui);
+      S.svg.parentNode.insertBefore(ghost, S.svg.nextSibling);
       S.land(k);
       var gone = function () { if (ghost.parentNode) ghost.parentNode.removeChild(ghost); };
       try { ghost.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 450, easing: 'ease-in-out', fill: 'forwards' }).finished.then(gone, gone); }
@@ -270,8 +223,10 @@ House.app('dv_vector', function (figure, data, ctx) {
     S.fly(k);
   }
 
-  frameEl.appendChild(ui);
+  // the deck's variant control and shared choice pick the variant; the first is the
+  // default, and without the house variants hook the default is all there is
   use(Object.keys(data.variants)[0]);
+  if (ctx.variants) ctx.variants(Object.keys(data.variants), use);
   S.svg.setAttribute('data-mount-ms', (performance.now() - T0).toFixed(1));
   return {
     step: step,

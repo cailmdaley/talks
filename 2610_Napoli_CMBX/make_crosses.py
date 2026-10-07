@@ -1,14 +1,14 @@
 """Crude estimators from the CMB-lensing crosses, redrawn for the Napoli CMBX talk.
 
-Source: the cmbx chair's exploratory estimators on the blinded TR1 x SPT-3G
-likelihood input (blind cmbx_dr1_a) and 10 GLASS 6x2pt seeds,
-results/scratch/napoli/crosses/ (README.md there: method, ell ranges, caveats;
-results.json holds every number).  Nothing is refitted here: this reads
-results.json and draws.
+Source: the exploratory estimators in results/scratch/napoli/crosses/ (README.md
+there: method, ell ranges, caveats), run on each blinded TR1 likelihood input
+(blind cmbx_dr1_a) and on 10 GLASS 6x2pt seeds.  Each data variant (shear
+method x CMB lensing survey) has its own results_<shear>_<cmb>.json there; this
+script draws every variant present and refits nothing.
 
 Three estimators, all relative to the fiducial theory vector:
 
-  Scale cut (results.json["scale_cut_used"]): the PT-validated split,
+  Scale cut (results["scale_cut_used"]): the PT-validated split,
   k_max = 0.2 h/Mpc for delta-delta, 0.15 h/Mpc for delta-kappa and
   gamma-delta, ell_max = k_max chi(z_lens) - 1/2.
 
@@ -16,19 +16,25 @@ Three estimators, all relative to the fiducial theory vector:
               source bin with a free amplitude per lens bin, so galaxy bias and
               sigma8 cancel; mu_i ~ (1+m_i) x source-bin lensing efficiency
               relative to the CMB's.  Blind-immune (x0.98-1.04 over the
-              public blinding envelope).
+              public blinding envelope), so a variant's mu is drawn only when it
+              is listed in MU_PUBLIC (Cail's explicit OK, talks CLAUDE.md).
   b           galaxy bias from delta-delta vs delta-kappa on linear scales.
               sigma8 cancels, Omega_m does not -> blinded.
   A^gk        gamma-kappa amplitude per source bin, 100 < ell < 3000;
               ~ S8^2.6 -> blinded.
 
-Outputs (images/):
+Every variant is drawn on the same axes (the union of what the variants
+need), so the slides' variant control changes only the points.
+
+Outputs (images/), for the default variant (LensMC x SPT-3G):
   napoli_lens_ratio_1.png   mocks only: 10 seeds, median per bin, blind band
-  napoli_lens_ratio_2.png   + TR1 x SPT-3G data and the shared-mu band
+  napoli_lens_ratio_2.png   + the data and the shared-mu band
       at 2x the figure-text (60 %) figure cell less a .source line (989 x 723 px)
   napoli_galaxy_bias.png    b per lens bin, at the same figure-text cell size
   napoli_gk_amplitude.png   A^gk per source bin, at 2x the figure layout's body
                             less a caption and a .source line (1400 x 669 px)
+and for every other variant the same names with __<shear>_<cmb> before .png,
+which the slides list in data-alt.
 
 Run in the cmbx container: app python make_crosses.py
 """
@@ -47,7 +53,16 @@ from matplotlib.ticker import FixedLocator
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(HERE, "..", "images")
 BIAS_CUT = "0.2/0.15"         # delta-delta / delta-kappa k_max, h/Mpc
-SRC = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/napoli/crosses/results.json"
+CROSSES = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/napoli/crosses"
+SHEARS = {"lensmc": "LensMC", "metacal": "MetaCal"}
+CMBS = {"spt": "SPT-3G", "act": "ACT DR6"}
+DEFAULT = ("lensmc", "spt")
+# variants whose blind-immune lens ratio may be shown (Cail's explicit OK per variant)
+MU_PUBLIC = {("lensmc", "spt")}
+# lens bins 4 and 5 carry the delta-delta excess (felt: gg-amplitude-pattern-lens-nz),
+# so b there is not read as measured whatever the CMB side
+DD_EXCESS = {3, 4}
+SNR_MEASURED = 4.0           # delta-kappa S/N inside the cut for b to count as measured
 
 # euclid theme (house/themes/euclid.css)
 INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
@@ -95,9 +110,11 @@ def setup_font():
     print(f"tick labels ~ {TICK * PT:.0f} px, labels ~ {LABEL * PT:.0f} px displayed")
 
 
-def load():
-    r = json.load(open(SRC))
-    m, d, bs = r["mock"], r["data_spt"], r["blind_sensitivity"]["points"]
+def load(src):
+    r = json.load(open(src))
+    assert r.get("blinded") == "cmbx_dr1_a", f"{src}: blind stamp {r.get('blinded')!r}"
+    data_key = next(k for k in r if k.startswith("data_"))
+    m, d, bs = r["mock"], r[data_key], r["blind_sensitivity"]["points"]
     z = r["mean_z"]
     out = {
         "zl": np.array([z[f"g{j}"] for j in range(6)]),       # lens bins
@@ -118,7 +135,35 @@ def load():
         "blind_b": np.array([p["b_over_bfid"] for p in bs]),
         "blind_A": np.array([p["A_gk"] for p in bs]),
     }
+    out["measured"] = np.array([s >= SNR_MEASURED and i not in DD_EXCESS for i, s in enumerate(out["snr_dk"])])
     return out
+
+
+def variants():
+    """Every (shear, cmb) whose results exist, the default first."""
+    found = []
+    for s in SHEARS:
+        for c in CMBS:
+            f = os.path.join(CROSSES, f"results_{s}_{c}.json")
+            if os.path.exists(f):
+                found.append((s, c, f))
+    found.sort(key=lambda v: (v[:2] != DEFAULT, v[:2]))
+    assert found and found[0][:2] == DEFAULT, f"no results_{DEFAULT[0]}_{DEFAULT[1]}.json in {CROSSES}"
+    return found
+
+
+def axes_ranges(all_a):
+    """y ranges shared by every variant: the default's limits, widened where any variant needs it."""
+    mu_lo = min(0.45, *(float((a["mu"][:, 0] - a["mu"][:, 1]).min()) - 0.05 for a in all_a))
+    mu_hi = max(1.75, *(float((a["mu"][:, 0] + a["mu"][:, 2]).max()) + 0.05 for a in all_a))
+    b_hi = max(4.2, *(float((a["b"][m, 0] + a["b"][m, 2]).max()) + 0.2 for a in all_a
+                      for m in [a["measured"]] if m.any()))
+    A_hi = max(1.6, *(float((a["A"] + a["A_err"]).max()) + 0.1 for a in all_a))
+    return {"mu": (mu_lo, min(mu_hi, 2.5)), "b": min(b_hi, 6.0), "A": min(A_hi, 2.5)}
+
+
+def name(base, variant):
+    return f"{base}.png" if variant == DEFAULT else f"{base}__{variant[0]}_{variant[1]}.png"
 
 
 def summarize(a):
@@ -140,7 +185,7 @@ def summarize(a):
           f"shared: {a['blind_mu_all'].min():.3f}-{a['blind_mu_all'].max():.3f}")
     print(f"data b ({BIAS_CUT}): " + "  ".join(f"{v[0]:.2f}-{v[1]:.2f}+{v[2]:.2f}" for v in a["b"]))
     print("  (b - b_fid)/sigma_lo: " + " ".join(f"{(v[0] - f) / v[1]:+.1f}" for v, f in zip(a["b"], a["b_fid"])))
-    print("  delta-kappa S/N (SPT): " + " ".join(f"{x:.1f}" for x in a["snr_dk"]))
+    print("  delta-kappa S/N: " + " ".join(f"{x:.1f}" for x in a["snr_dk"]))
     print("  ell_max: " + " ".join(f"{x:.0f}" for x in a["lmax"]))
     print("  mock median b/b_true: " + " ".join(f"{x:.2f}" for x in np.median(a["mock_b_ratio"], 0)))
     print(f"  mock bin-1 b/b_true range: {a['mock_b_ratio'][:, 0].min():.2f} to {a['mock_b_ratio'][:, 0].max():.2f}")
@@ -161,17 +206,17 @@ def bin_axis(ax, z, label):
     return x
 
 
-def lens_ratio(a, med, rob):
+def lens_ratio(a, med, rob, R, variant):
     W_PX, H_PX = 1978, 1446
     n = a["mock_mu"].shape[0]
     lo_b, hi_b = a["blind_mu"].min(0), a["blind_mu"].max(0)
-    top = 1.75
+    bottom, top = R["mu"]
     for frame in (1, 2):
         fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
         ax = fig.add_axes([0.135, 0.165, 0.85, 0.665])
         x = bin_axis(ax, a["zs"], r"source bin, mean $z$")
-        ax.set_ylim(0.45, top)
-        ax.yaxis.set_major_locator(FixedLocator([0.6, 0.8, 1.0, 1.2, 1.4, 1.6]))
+        ax.set_ylim(bottom, top)
+        ax.yaxis.set_major_locator(FixedLocator([v for v in np.arange(0.2, 2.6, 0.2) if bottom < v < top]))
         ax.set_ylabel(r"lens ratio $\mu_i$ / fiducial", labelpad=8)
         ax.axhline(1, color=INK, lw=1.6, ls=(0, (5, 4)), zorder=1.8)
         # blind-sized shift of mu, per bin, drawn above the data band
@@ -202,31 +247,31 @@ def lens_ratio(a, med, rob):
             v = a["mu"]
             ax.errorbar(x + 0.13, v[:, 0], yerr=[v[:, 1], v[:, 2]], fmt="o", ms=13, color=DATA,
                         elinewidth=3.0, capsize=0, mec="white", mew=1.2, zorder=4)
-            ax.text(1.0, 1.15, "TR1 × SPT-3G, blinded", transform=ax.transAxes, fontsize=LABEL,
+            ax.text(1.0, 1.15, "TR1 data, blinded", transform=ax.transAxes, fontsize=LABEL,
                     color=DATA, ha="right", va="bottom", weight="bold")
             ax.text(1.0, 1.045, r"band: one shared $\mu \pm 1\sigma$",
                     transform=ax.transAxes, fontsize=LABEL, color=MUTED, ha="right", va="bottom")
-        out = os.path.join(IMG, f"napoli_lens_ratio_{frame}.png")
+        out = os.path.join(IMG, name(f"napoli_lens_ratio_{frame}", variant))
         fig.savefig(out, dpi=DPI)
         plt.close(fig)
         print("wrote", os.path.normpath(out))
 
 
-def bias(a):
+def bias(a, R, variant):
     """Single panel: fiducial b as a line per bin, measured bins filled, the rest open."""
     W_PX, H_PX = 1978, 1446
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
     ax = fig.add_axes([0.115, 0.165, 0.87, 0.80])
     x = bin_axis(ax, a["zl"], r"lens bin, mean $z$")
-    top = 4.2
+    top = R["b"]
     ax.set_ylim(0, top)
-    ax.yaxis.set_major_locator(FixedLocator([0, 1, 2, 3, 4]))
+    ax.yaxis.set_major_locator(FixedLocator([v for v in range(0, 7) if v < top]))
     ax.set_ylabel(r"galaxy bias $b$", labelpad=8)
     for xi, f in zip(x, a["b_fid"]):
         ax.plot([xi - 0.32, xi + 0.32], [f, f], color=INK, lw=2.4, zorder=1)
     v = a["b"]
-    # 3, 6: measured; 1: one delta-kappa band; 2: low S/N; 4, 5: delta-delta excess (notes)
-    measured = np.array([False, False, True, False, False, True])
+    # measured: delta-kappa S/N >= SNR_MEASURED outside the delta-delta-excess bins
+    measured = a["measured"]
     for i in range(6):
         col = DATA if measured[i] else GREYED
         hi = min(v[i, 0] + v[i, 2], top - 0.05) - v[i, 0]
@@ -248,20 +293,20 @@ def bias(a):
             alpha=0.5)
     ax.text(0.10, y0 - 2 * dy, "low S/N or not measured at this cut", transform=ax.transAxes,
             fontsize=LABEL, color=MUTED, va="center")
-    out = os.path.join(IMG, "napoli_galaxy_bias.png")
+    out = os.path.join(IMG, name("napoli_galaxy_bias", variant))
     fig.savefig(out, dpi=DPI)
     plt.close(fig)
     print("wrote", os.path.normpath(out))
 
 
-def amplitude(a):
+def amplitude(a, R, variant):
     """gamma-kappa amplitude per source bin, with the range a blind-sized shift could move it."""
     W_PX, H_PX = 2800, 1338
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
     ax = fig.add_axes([0.085, 0.18, 0.62, 0.79])
     x = bin_axis(ax, a["zs"], r"source bin, mean $z$")
-    ax.set_ylim(0, 1.6)
-    ax.yaxis.set_major_locator(FixedLocator([0, 0.5, 1.0, 1.5]))
+    ax.set_ylim(0, R["A"])
+    ax.yaxis.set_major_locator(FixedLocator([v for v in np.arange(0, 2.6, 0.5) if v < R["A"]]))
     ax.set_ylabel(r"$\gamma\kappa$ amplitude / fiducial", labelpad=8)
     ax.axhline(1, color=INK, lw=1.6, ls=(0, (5, 4)), zorder=1)
     for xi, l, h in zip(x, a["blind_A"].min(0), a["blind_A"].max(0)):
@@ -276,7 +321,7 @@ def amplitude(a):
     kx, ky, dy = 1.04, 0.80, 0.13
     t = ax.transAxes
     ax.plot([kx + 0.02], [ky], "o", transform=t, ms=14, color=DATA, mec="white", mew=1.4, clip_on=False)
-    ax.text(kx + 0.06, ky, "TR1 × SPT-3G", transform=t, fontsize=LABEL, color=INK, va="center")
+    ax.text(kx + 0.06, ky, "TR1 data, blinded", transform=t, fontsize=LABEL, color=INK, va="center")
     ax.add_patch(plt.Rectangle((kx, ky - dy - 0.035), 0.04, 0.07, transform=t, color=BAND, lw=0,
                                clip_on=False))
     ax.text(kx + 0.06, ky - dy, "range a blind-sized\ncosmology shift spans", transform=t,
@@ -285,7 +330,7 @@ def amplitude(a):
             clip_on=False)
     ax.text(kx + 0.06, ky - 2.25 * dy, "bin 1: mocks recover\nit 25 % high", transform=t,
             fontsize=LABEL, color=MUTED, va="center", linespacing=1.1)
-    out = os.path.join(IMG, "napoli_gk_amplitude.png")
+    out = os.path.join(IMG, name("napoli_gk_amplitude", variant))
     fig.savefig(out, dpi=DPI)
     plt.close(fig)
     print("wrote", os.path.normpath(out))
@@ -293,11 +338,19 @@ def amplitude(a):
 
 def main():
     setup_font()
-    a = load()
-    med, rob = summarize(a)
-    lens_ratio(a, med, rob)
-    bias(a)
-    amplitude(a)
+    found = variants()
+    loaded = [(v[:2], load(v[2])) for v in found]
+    R = axes_ranges([a for _, a in loaded])
+    print("variants:", ", ".join(f"{s}_{c}" for (s, c), _ in loaded), "| shared ranges:", R)
+    for variant, a in loaded:
+        print(f"── TR1 {SHEARS[variant[0]]} × {CMBS[variant[1]]}")
+        med, rob = summarize(a)
+        if variant in MU_PUBLIC:
+            lens_ratio(a, med, rob, R, variant)
+        else:
+            print("  lens ratio not drawn: blind-immune, needs Cail's OK (MU_PUBLIC)")
+        bias(a, R, variant)
+        amplitude(a, R, variant)
 
 
 if __name__ == "__main__":

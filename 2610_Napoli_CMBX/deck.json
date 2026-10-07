@@ -8,6 +8,16 @@
   "theme": "euclid",
   "draft": true,
   "noindex": true,
+  "variants": {
+    "shear": {
+      "lensmc": "LensMC",
+      "metacal": "MetaCal"
+    },
+    "cmb": {
+      "spt": "SPT-3G",
+      "act": "ACT DR6"
+    }
+  },
   "sections": [
     {
       "title": "Opening",
