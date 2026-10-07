@@ -24,6 +24,12 @@ counts and bounds. The likelihood product's own (placeholder) fit mask is still
 asserted equal to the lc outputs. The fiducial is the reference pushed through the bandpower
 windows, not a fit. No amplitude, fit or goodness-of-fit is computed here.
 
+Variants beyond LensMC x SPT-3G come straight from their universe's lc outputs
+(results/<universe>/likelihood_product/{likelihood_input,datavector_vs_theory}.tar),
+checked against each other and stamped with the same blind. Their validated cut is the
+SPT export's per-pair ell bounds: the cut depends only on the lens bins (k_max chi at
+each lens bin's mean redshift), so it carries over to any CMB map, and the bands'
+ell_eff are asserted equal before it is applied.
 Run in the cmbx container:
   app python private/make_dv_vector.py
 """
@@ -41,6 +47,11 @@ NPZ = f"{CMBX}/results/scratch/napoli/crosses/arrays/tr1_spt_blinded_dvt.npz"
 INDEX = f"{CMBX}/results/scratch/napoli/crosses/arrays/tr1_spt_blinded_dvt.json"
 LIKE = f"{CMBX}/results/tr1/likelihood_product/likelihood_input.tar"
 DVT = f"{CMBX}/results/tr1/likelihood_product/datavector_vs_theory.tar"
+# (shear method, CMB survey) -> the universe holding it, or None when not yet measured.
+# The first is the export the cut was validated on; the toggles follow this order.
+SHEARS = {"lensmc": "LensMC", "metacal": "MetaCal"}
+CMBS = {"spt": "SPT-3G", "act": "ACT DR6", "planck": "Planck PR4"}
+UNIVERSES = {("lensmc", "spt"): "tr1", ("lensmc", "act"): "tr1_act"}
 BLIND = "cmbx_dr1_a"
 
 
@@ -119,17 +130,73 @@ def tracers(key):
     return [a, b]
 
 
+def load_universe(universe, index):
+    """All pairs of one universe's lc likelihood product, blinded, with the validated cut
+    carried over from the SPT export's per-pair ell bounds. None when not materialized."""
+    like = f"{CMBX}/results/{universe}/likelihood_product/likelihood_input.tar"
+    dvt = f"{CMBX}/results/{universe}/likelihood_product/datavector_vs_theory.tar"
+    if not (os.path.exists(like) and os.path.exists(dvt)):
+        print(f"{universe}: likelihood product not materialized, left out")
+        return None
+    with tarfile.open(like) as tar:
+        member = next(m for m in tar.getmembers()
+                      if m.name.endswith(".pkl") and not m.name.endswith("_dndz.pkl"))
+        payload = pickle.load(tar.extractfile(member))
+    with tarfile.open(dvt) as tar:
+        record = json.load(tar.extractfile("check.json"))
+    for meta in (payload["metadata"].get("blind"), record["metadata"].get("blind")):
+        assert BLIND in json.dumps(meta, default=str), f"{universe}: blind stamp {meta!r} is not {BLIND}"
+    assert payload["metadata"]["covariance"]["method"] == "namaster_gaussian"
+    assert payload["metadata"]["covariance"]["full"] is True
+    cov = np.asarray(payload["cov_all"])
+    recs = {r["spectrum"]: r for r in record["spectra"]}
+    pairs, cursor = {}, 0
+    for k in payload["cls"]:
+        rec, n = recs[k], len(payload["cls"][k]["cl"])
+        idx = np.arange(cursor, cursor + n)
+        cursor += n
+        ell = np.asarray(payload["cls"][k]["leff"], float)
+        data = np.asarray(payload["cls"][k]["cl"], float)
+        sigma = np.sqrt(np.diag(cov)[idx])
+        assert np.allclose(ell, rec["ell_eff"]) and np.allclose(data, rec["data"], rtol=1e-12, atol=0)
+        assert np.allclose(sigma, rec["sigma_gaussian"], rtol=1e-12, atol=0)
+        assert rec["covariance_indices"] == idx.tolist()
+        ref = index["pairs"][k]
+        assert np.allclose(ell, np.load(NPZ)[f"{k}__ell_eff"]), f"{universe} {k}: bands differ from the export"
+        lo, hi = ref["fit_bounds_validated"]
+        fit = (ell >= lo) & (ell <= hi)
+        assert int(fit.sum()) == ref["n_fit_validated"], k
+        pairs[k] = dict(family=rec["family"], ell=ell, data=data, sigma=sigma,
+                        theory=np.asarray(rec["theory_binned"], float), fit=fit)
+    assert cov.shape == (cursor, cursor) and set(pairs) == set(index["order"])
+    print(f"{universe}: {len(pairs)} pairs, {cursor} bands, blinded {BLIND}")
+    return pairs
+
+
+def packed(pairs):
+    return {k: {"t": tracers(k), "family": p["family"], "ell": sig(p["ell"], 5),
+                "cl": sig(p["data"]), "sig": sig(p["sigma"]), "th": sig(p["theory"]),
+                "fit": [int(v) for v in p["fit"]]}
+            for k, p in pairs.items()}
+
+
 def main():
     pairs, index = load()
+    variants = {"lensmc|spt": packed(pairs)}
+    for (shear, cmb), universe in UNIVERSES.items():
+        if (shear, cmb) == ("lensmc", "spt"):
+            continue
+        got = load_universe(universe, index)
+        if got is not None:
+            variants[f"{shear}|{cmb}"] = packed(got)
     out = {
         "blind": BLIND,
         "source": index["source"],
         "cut": "validated linear-bias cut (k_max 0.2 h/Mpc delta-delta, 0.15 h/Mpc gamma-delta and "
                "delta-kappa; PT contamination test < 0.3 sigma_2D)",
-        "pairs": {k: {"t": tracers(k), "family": p["family"], "ell": sig(p["ell"], 5),
-                      "cl": sig(p["data"]), "sig": sig(p["sigma"]), "th": sig(p["theory"]),
-                      "fit": [int(v) for v in p["fit"]]}
-                  for k, p in pairs.items()},
+        "shears": SHEARS,
+        "cmbs": CMBS,
+        "variants": variants,
     }
     text = json.dumps(out, separators=(",", ":"))
     open(OUT, "w").write(text)

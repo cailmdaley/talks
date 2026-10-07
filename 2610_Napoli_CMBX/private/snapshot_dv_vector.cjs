@@ -1,8 +1,8 @@
 // Static frames of the dv-vector slide, for its fallback stack (the report, a
 // render without JS): the live SVG at each rest state, on white at twice the
 // displayed size. White multiplies into any theme's ground, and an opaque frame
-// hides the one under it, as a stack needs. The click hint is left out: the
-// frames do not respond to clicks.
+// hides the one under it, as a stack needs. The click hint and the toggles are
+// left out: the frames do not respond to clicks.
 //
 //   node house/build.mjs 2610_Napoli_CMBX --out /tmp/site
 //   node 2610_Napoli_CMBX/private/snapshot_dv_vector.cjs /tmp/site/2610_Napoli_CMBX/index.html
@@ -17,7 +17,7 @@ const deck = path.resolve(process.argv[2]);
   await p.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
   await p.goto('file://' + deck + '#/dv-vector', { waitUntil: 'load' });
   await p.evaluate(async () => { await document.fonts.ready; await new Promise(r => Reveal.isReady() ? r() : Reveal.on('ready', r)); });
-  await p.addStyleTag({ content: 'html, body, .reveal, .reveal .slides, .reveal section, .slide { background: #FFFFFF !important; } .dvv-hint { display: none; }' });
+  await p.addStyleTag({ content: 'html, body, .reveal, .reveal .slides, .reveal section, .slide { background: #FFFFFF !important; } .dvv-hint, .dvv-ui { display: none; }' });
   for (let k = 0; k < 3; k++) {
     await p.evaluate(k => {
       const i = Reveal.getIndices(document.getElementById('dv-vector'));

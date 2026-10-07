@@ -1,4 +1,5 @@
-// The blinded TR1 x SPT-3G 3x2pt + kappa data vector, drawn live (house data-app).
+// The blinded TR1 3x2pt + kappa data vector, drawn live (house data-app), with
+// toggles between the shear methods and CMB lensing surveys that have been measured.
 //
 // One drawing, one camera. The drawing is the whole data vector as a lower
 // triangle of panels (columns gamma_1..6 then delta_1..6, kappa at the base),
@@ -17,6 +18,7 @@
 // Plain SVG attributes and requestAnimationFrame only; a do-nothing Web
 // Animation is the clock, so finishing it (as the house checker does) lands the
 // step, and without Web Animations a step is instant.
+// A toggle rebuilds the drawing from another variant and lands it on the current step.
 // Data: private/dv_vector.json from private/make_dv_vector.py (blind cmbx_dr1_a).
 House.app('dv_vector', function (figure, data, ctx) {
   'use strict';
@@ -24,11 +26,23 @@ House.app('dv_vector', function (figure, data, ctx) {
   var NS = 'http://www.w3.org/2000/svg';
   var W = 1712, H = 771;                         // the figure layout's whole body
   var PAN_MS = 900, ZOOM_MS = 1500;
+  var frameEl = figure.querySelector('.frame');
+
+  // the clock: a Web Animation that does nothing; finishing it lands the step
+  var tick = document.createElement('span');
+  tick.setAttribute('aria-hidden', 'true');
+  tick.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;';
+  frameEl.appendChild(tick);
+
+  // the toggles step aside while a detail card is open
+  function cardShown(on) { if (ui) ui.style.visibility = on ? 'hidden' : 'visible'; }
+
+  function scene(pairs, vk) {
+  var shearName = data.shears[vk.split('|')[0]], cmbName = data.cmbs[vk.split('|')[1]];
 
   // ── data ────────────────────────────────────────────────────────────────
   var sym = function (t) { return t === 'kappa' ? ['κ'] : [t[0] === 'l' ? 'γ' : 'δ', +t.slice(1) + 1]; };
   var name = function (t) { return t === 'kappa' ? 'CMB lensing' : (t[0] === 'l' ? 'source bin ' : 'lens bin ') + (+t.slice(1) + 1); };
-  var pairs = data.pairs;
   var L0 = Math.log10(100 / 1.12), L1 = Math.log10(3000 * 1.12);
   var ux = function (ell) { return (Math.log10(ell) - L0) / (L1 - L0); };
   var fam = {};
@@ -104,27 +118,33 @@ House.app('dv_vector', function (figure, data, ctx) {
       var s = el('tspan', {}, t), want = 0;
       if (Array.isArray(part)) {
         s.textContent = part[0];
-        s.setAttribute('font-size', Math.max(24, Math.round(size * 0.8)));
-        want = part[1] === 'sub' ? 0.24 * size : -0.36 * size;
+        if (part[1] === 'it' || part[2]) s.setAttribute('font-style', 'italic');
+        if (part[1] === 'sub' || part[1] === 'sup') {
+          s.setAttribute('font-size', Math.max(24, Math.round(size * 0.72)));
+          want = part[1] === 'sub' ? 0.22 * size : -0.4 * size;
+        }
       } else s.textContent = part;
       if (want !== shift) { s.setAttribute('dy', want - shift); shift = want; }
     });
     return t;
   };
+  // a tracer as math: a Greek letter with its bin as a subscript (upright: the
+  // deck face's italic delta is a partial-derivative sign)
   var symParts = function (t) { var s = sym(t); return s.length > 1 ? [s[0], [String(s[1]), 'sub']] : s; };
 
   var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'class': 'app-view', role: 'img',
-    'aria-label': 'The blinded TR1 by SPT-3G 3x2pt plus CMB lensing data vector' });
+    'aria-label': 'The blinded TR1 ' + shearName + ' by ' + cmbName + ' 3x2pt plus CMB lensing data vector' });
   el('style', {}, svg).textContent = [
-    '.dvv-pt { fill: none; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-width: var(--dvv-dot, 11px); }',
-    '.dvv-bar { fill: none; vector-effect: non-scaling-stroke; stroke-width: var(--dvv-bar, 2.4px); }',
-    '.dvv-line { fill: none; vector-effect: non-scaling-stroke; stroke-width: var(--dvv-line, 3px); stroke-linejoin: round; }',
-    '.dvv-spine { fill: none; vector-effect: non-scaling-stroke; stroke: var(--muted); stroke-width: 1.4px; stroke-opacity: var(--dvv-spine, 1); }',
-    '.dvv-tick { fill: none; stroke: var(--muted); stroke-width: 1.4px; }',
-    '.dvv-in { stroke: var(--cobalt); } .dvv-out { stroke: #A1A9B5; } .dvv-th { stroke: var(--ochre); }',
-    '.dvv-cut { fill: #8E99A9; fill-opacity: 0.17; }',
-    '.dvv-b2 { fill: var(--rule); fill-opacity: 0.35; } .dvv-b1 { fill: var(--rule); fill-opacity: 0.6; }',
-    '.dvv-zero { stroke: var(--muted); stroke-opacity: 0.5; vector-effect: non-scaling-stroke; stroke-width: 1.2px; }',
+    '.dvv-pt { fill: none; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-width: var(--dvv-dot, 8px); }',
+    '.dvv-halo { fill: none; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke: var(--ground); stroke-width: calc(var(--dvv-dot, 8px) + 3px); }',
+    '.dvv-bar { fill: none; vector-effect: non-scaling-stroke; stroke-width: var(--dvv-bar, 2px); }',
+    '.dvv-line { fill: none; vector-effect: non-scaling-stroke; stroke-width: var(--dvv-line, 2.2px); stroke-linejoin: round; }',
+    '.dvv-spine { fill: none; vector-effect: non-scaling-stroke; stroke: var(--muted); stroke-width: 1.3px; stroke-opacity: var(--dvv-spine, 1); }',
+    '.dvv-tick { fill: none; stroke: var(--muted); stroke-width: 1.3px; }',
+    '.dvv-in { stroke: var(--cobalt); } .dvv-out { stroke: #A9B0BB; } .dvv-th { stroke: var(--ink); }',
+    '.dvv-cut { fill: #8E99A9; fill-opacity: 0.14; }',
+    '.dvv-b2 { fill: var(--rule); fill-opacity: 0.22; } .dvv-b1 { fill: var(--rule); fill-opacity: 0.5; }',
+    '.dvv-zero { stroke: var(--rule); vector-effect: non-scaling-stroke; stroke-width: 1.3px; }',
     '.dvv-muted { fill: var(--muted); }',
     '.dvv-ground { fill: var(--ground); }',
     '.dvv-hit { fill: transparent; cursor: pointer; }',
@@ -155,7 +175,7 @@ House.app('dv_vector', function (figure, data, ctx) {
         pts += dot(x, p.v[i], eps);
       });
       if (bars) el('path', { d: bars, 'class': 'dvv-bar dvv-' + which }, inner);
-      if (pts) el('path', { d: pts, 'class': 'dvv-pt dvv-' + which }, inner);
+      if (pts) { el('path', { d: pts, 'class': 'dvv-halo' }, inner); el('path', { d: pts, 'class': 'dvv-pt dvv-' + which }, inner); }
     });
     el('path', { d: 'M0 0 V1 H1', 'class': 'dvv-spine' }, g);
   };
@@ -180,15 +200,16 @@ House.app('dv_vector', function (figure, data, ctx) {
   var unitBox = function (parent, r) {
     return el('g', { transform: 'translate(' + r.x + ' ' + r.y + ') scale(' + r.w + ' ' + r.h + ')' }, parent);
   };
-  var ylabel = function (e) { return ['10', [String(e), 'sup'], ' ℓ C', ['ℓ', 'sub']]; };
+  var ylabel = function (e) { return ['ℓ', ['C', 'it'], ['ℓ', 'sub'], '  [10', ['−' + e, 'sup'], ']']; };
+  var rlabel = ['Δ/', ['σ', 'it']];
 
   // ── keys (legends): a swatch before each label ──────────────────────────
-  var LABEL = { pt: ['blinded data ± σ', ['G', 'sub']], th: 'windowed fiducial', cut: 'outside validated linear-bias cut' };
+  var LABEL = { pt: ['blinded data ± ', ['σ', 'it']], th: 'fiducial model', cut: 'outside the scale cut' };
   var swatch = function (g, x, y, kind) {
     if (kind === 'pt') {
-      el('path', { d: 'M' + x + ' ' + (y - 24) + ' v28', 'class': 'dvv-bar dvv-in', style: 'stroke-width:2.4px' }, g);
-      el('path', { d: dot(x, y - 10, 0.01), 'class': 'dvv-pt dvv-in', style: 'stroke-width:11px' }, g);
-    } else if (kind === 'th') el('path', { d: 'M' + (x - 16) + ' ' + (y - 10) + ' h32', 'class': 'dvv-line dvv-th', style: 'stroke-width:3px' }, g);
+      el('path', { d: 'M' + x + ' ' + (y - 24) + ' v28', 'class': 'dvv-bar dvv-in', style: 'stroke-width:2px' }, g);
+      el('path', { d: dot(x, y - 10, 0.01), 'class': 'dvv-pt dvv-in', style: 'stroke-width:8px' }, g);
+    } else if (kind === 'th') el('path', { d: 'M' + (x - 16) + ' ' + (y - 10) + ' h32', 'class': 'dvv-line dvv-th', style: 'stroke-width:2.2px' }, g);
     else el('rect', { x: x - 16, y: y - 26, width: 32, height: 32, rx: 3, 'class': 'dvv-cut' }, g);
   };
   var keys = [];
@@ -200,6 +221,18 @@ House.app('dv_vector', function (figure, data, ctx) {
         swatch(k.g, k.stack.x + 16, k.stack.y + i * 44, it);
         text(k.g, k.stack.x + 44, k.stack.y + i * 44, LABEL[it], { size: 26 });
       });
+      k.done = true;
+      return;
+    }
+    if (k.left != null) {
+      var lx = k.left;
+      for (var j = 0; j < k.items.length; j++) {
+        var lt = text(k.g, lx + 40, k.y, LABEL[k.items[j]], { size: 26 });
+        var lw = lt.getComputedTextLength();
+        if (!lw) { while (k.g.firstChild) k.g.removeChild(k.g.firstChild); return; }
+        swatch(k.g, lx + 16, k.y, k.items[j]);
+        lx += 40 + lw + 44;
+      }
       k.done = true;
       return;
     }
@@ -271,25 +304,36 @@ House.app('dv_vector', function (figure, data, ctx) {
   };
   var label = function (node, at, op) { labels.push({ el: node, at: at, op: op }); return node; };
 
-  // per kappa panel: bin name, x ticks and their labels (under the gutter)
+  // per kappa panel: its pair as math, ticks on both axes (majors labelled under
+  // the strip, minors bare), and the multipole label
+  var MAJOR = [100, 1000], MINOR = [200, 300, 400, 500, 600, 700, 800, 900, 2000, 3000];
+  var yTicks = function (yl) { return nice(yl[0], yl[1] - 0.12 * (yl[1] - yl[0]), 3); };
   var near = el('g', {}, svg);
   cells.filter(function (c) { return c.row === 12; }).forEach(function (c) {
-    var kp = kparts(c), half = c.b[0] === 'l' ? 0 : 1;
-    var n = text(near, 0, 0, (half ? 'lens bin ' : 'source bin ') + (+c.b.slice(1) + 1), { size: 28, anchor: 'end' });
-    label(n, function (cam) { return [sx(cam, kp.main.x + kp.main.w) - 12, sy(cam, kp.main.y) + 34]; },
+    var kp = kparts(c), yl = rowYlim[pairs[c.key].family];
+    var n = text(near, 0, 0, [].concat(symParts(c.b), ['κ']), { size: 34, anchor: 'end' });
+    label(n, function (cam) { return [sx(cam, kp.main.x + kp.main.w) - 14, sy(cam, kp.main.y) + 40]; },
       function (z, p, cam) { return inView(cam, c) ? closeOp(z) : 0; });
     var ticks = el('path', { 'class': 'dvv-tick' }, near);
     label(ticks, null, function (z, p, cam) {
-      var d = '', yb = sy(cam, kp.strip.y + kp.strip.h);
-      [100, 300, 1000].forEach(function (l) { var x = sx(cam, kp.strip.x + kp.strip.w * ux(l)); d += 'M' + x + ' ' + yb + ' v8'; });
+      var d = '', yb = sy(cam, kp.strip.y + kp.strip.h), xl = sx(cam, kp.main.x);
+      MAJOR.forEach(function (l) { d += 'M' + sx(cam, kp.strip.x + kp.strip.w * ux(l)) + ' ' + yb + ' v9'; });
+      MINOR.forEach(function (l) { d += 'M' + sx(cam, kp.strip.x + kp.strip.w * ux(l)) + ' ' + yb + ' v5'; });
+      yTicks(yl).forEach(function (v) {
+        d += 'M' + xl + ' ' + sy(cam, kp.main.y + kp.main.h * (yl[1] - v) / (yl[1] - yl[0])) + ' h-7';
+      });
+      [-2, 2].forEach(function (r) { d += 'M' + xl + ' ' + sy(cam, kp.strip.y + kp.strip.h * (R - r) / (2 * R)) + ' h-7'; });
       ticks.setAttribute('d', d);
       return inView(cam, c) ? closeOp(z) : 0;
     });
-    [100, 300, 1000].forEach(function (l) {
+    MAJOR.forEach(function (l) {
       var t = text(near, 0, 0, String(l), { size: 26, anchor: 'middle', cls: 'dvv-muted' });
       label(t, function (cam) { return [sx(cam, kp.strip.x + kp.strip.w * ux(l)), sy(cam, kp.strip.y + kp.strip.h) + 36]; },
         function (z, p, cam) { return inView(cam, c) ? closeOp(z) : 0; });
     });
+    var ell = text(near, 0, 0, [['ℓ', 'it']], { size: 30, anchor: 'middle' });
+    label(ell, function (cam) { return [sx(cam, kp.strip.x + kp.strip.w / 2), sy(cam, kp.strip.y + kp.strip.h) + 74]; },
+      function (z, p, cam) { return inView(cam, c) ? closeOp(z) : 0; });
   });
   // the gutter: a quiet column for the y axes, the panels sliding beneath it
   var gutter = el('g', {}, svg);
@@ -300,7 +344,7 @@ House.app('dv_vector', function (figure, data, ctx) {
     var Y = function (v) { return MAIN.y + MAIN.h * (yl[1] - v) / (yl[1] - yl[0]); };
     var RY = function (r) { return MAIN.y + MAIN.h + SGAP + STRIP * (R - r) / (2 * R); };
     var d = '';
-    nice(yl[0], yl[1] - 0.12 * (yl[1] - yl[0]), 3).forEach(function (v) {
+    yTicks(yl).forEach(function (v) {
       d += 'M' + (LEFT - 8) + ' ' + Y(v) + ' h8';
       text(g, LEFT - 14, Y(v) + 9, fmt(v), { size: 26, anchor: 'end', cls: 'dvv-muted' });
     });
@@ -310,19 +354,11 @@ House.app('dv_vector', function (figure, data, ctx) {
     });
     el('path', { d: d, 'class': 'dvv-tick' }, g);
     text(g, LEFT - 66, MAIN.y + MAIN.h / 2, ylabel(fam[h[1]]), { size: 30, anchor: 'middle', rotate: true });
-    text(g, LEFT - 66, MAIN.y + MAIN.h + SGAP + STRIP / 2, ['Δ/σ', ['G', 'sub']], { size: 30, anchor: 'middle', rotate: true });
+    text(g, LEFT - 66, MAIN.y + MAIN.h + SGAP + STRIP / 2, rlabel, { size: 30, anchor: 'middle', rotate: true });
     label(g, null, function (z, p) { return fixedOp(z) * (half ? smooth(0.45, 0.6, p) : 1 - smooth(0.4, 0.55, p)); });
-    // the half's title and key on the header line, and its ell label
-    var first = cell(12, 6 * half), mid = cell(12, 6 * half + 2);
-    var title = text(svg, 0, 40, half ? 'TR1 galaxies × SPT-3G κ · blinded' : 'TR1 shear × SPT-3G κ · blinded', { size: 32 });
-    label(title, function (cam) { return [sx(cam, first.x), 40]; },
-      function (z, p, cam) { var x = sx(cam, first.x); return x > LEFT - 40 && x < W - 300 ? fixedOp(z) : 0; });
-    var ell = text(svg, 0, H - 12, ['multipole ', 'ℓ'], { size: 28, anchor: 'middle' });
-    var foot = mid.y + (MAIN.h + SGAP + STRIP) / SY;                  // the strips' bottom, in the drawing
-    label(ell, function (cam) { return [sx(cam, mid.x + CW + (CP - CW) / 2), sy(cam, foot) + 75]; },
-      function (z, p, cam) { var x = sx(cam, mid.x); return x > 0 && x < W ? closeOp(z) : 0; });
+    // the half's key on the header line, left; the toggles sit on its right
     var key = el('g', {}, svg);
-    keys.push({ g: key, right: W - 10, y: 40, items: ['pt', 'th'].concat(half ? ['cut'] : []) });
+    keys.push({ g: key, left: LEFT - 8, y: 48, items: ['pt', 'th'].concat(half ? ['cut'] : []) });
     label(key, null, function (z, p) { return fixedOp(z) * (half ? smooth(0.5, 0.9, p) : 1 - smooth(0.1, 0.5, p)); });
   });
 
@@ -341,13 +377,11 @@ House.app('dv_vector', function (figure, data, ctx) {
   var nb = 0, nf = 0;
   Object.keys(pairs).forEach(function (k) { nb += pairs[k].ell.length; nf += pairs[k].nfit; });
   var corner = el('g', {}, far);
-  text(corner, cell(0, 2).x, cell(0, 0).y + 36, 'The blinded TR1 × SPT-3G data vector', { size: 34 });
-  text(corner, cell(1, 2).x, cell(1, 0).y + 34, Object.keys(pairs).length + ' spectra · ' + nb + ' bandpowers · ' + nf + ' inside the scale cut',
+  text(corner, cell(0, 2).x, cell(0, 0).y + 36, 'TR1 ' + shearName + ' × ' + cmbName, { size: 34 });
+  text(corner, cell(1, 2).x, cell(1, 0).y + 34, Object.keys(pairs).length + ' spectra, ' + nb + ' bandpowers, ' + nf + ' inside the scale cut',
     { size: 26, cls: 'dvv-muted' });
   var tkey = el('g', {}, corner);
-  keys.push({ g: tkey, items: ['pt', 'th', 'cut'], stack: { x: cell(2, 5).x + 40, y: cell(2, 0).y + 56 } });
-  text(corner, W - 8, cell(5, 0).y + 34, ['SPT-3G Main winter κ · NaMaster, 15 bands, ', 'ℓ', ' = 100–3000 · Gaussian covariance'],
-    { size: 24, anchor: 'end', cls: 'dvv-muted' });
+  keys.push({ g: tkey, items: ['pt', 'th', 'cut'], stack: { x: cell(0, 6).x + 40, y: cell(2, 0).y + 40 } });
   text(corner, W - 8, cell(6, 0).y + 34, 'click a panel to open it', { size: 24, anchor: 'end', cls: 'dvv-muted dvv-hint', italic: true });
   // the block keeps its shape and rides on the camera from its top-left anchor
   var PX = cell(0, 2).x, PY = cell(0, 0).y;
@@ -362,9 +396,9 @@ House.app('dv_vector', function (figure, data, ctx) {
     var wx = (LEFT - cam.tx) / cam.sx, a = cell(12, 0).x, b = cell(12, 6).x;
     var p = Math.max(0, Math.min(1, (wx - a) / (b - a)));                                 // 0 source half, 1 lens half
     var mix = function (u, v) { return u + (v - u) * z; };
-    svg.style.setProperty('--dvv-dot', mix(11, 5) + 'px');
-    svg.style.setProperty('--dvv-bar', mix(2.4, 1.4) + 'px');
-    svg.style.setProperty('--dvv-line', mix(3, 2) + 'px');
+    svg.style.setProperty('--dvv-dot', mix(8, 4.5) + 'px');
+    svg.style.setProperty('--dvv-bar', mix(2, 1.2) + 'px');
+    svg.style.setProperty('--dvv-line', mix(2.2, 1.5) + 'px');
     svg.style.setProperty('--dvv-spine', mix(1, 0.4));
     tint.setAttribute('opacity', 0.5 * farOp(z));
     labels.forEach(function (l) {
@@ -393,12 +427,7 @@ House.app('dv_vector', function (figure, data, ctx) {
   };
   var ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
 
-  // the clock: a Web Animation that does nothing; finishing it lands the step
-  var tick = document.createElement('span');
-  tick.setAttribute('aria-hidden', 'true');
-  tick.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;';
-  figure.querySelector('.frame').appendChild(tick);
-  var flight = null, state = null;
+  var flight = null;
   function land(k) {
     if (flight) { var f = flight; flight = null; cancelAnimationFrame(f.raf); try { f.clock.cancel(); } catch (e) { /* gone */ } }
     cam = { sx: CAMS[k].sx, sy: CAMS[k].sy, tx: CAMS[k].tx, ty: CAMS[k].ty };
@@ -455,11 +484,12 @@ House.app('dv_vector', function (figure, data, ctx) {
       d += 'M' + (s.x - 8) + ' ' + RY(r) + ' h8';
       text(g, s.x - 14, RY(r) + 9, (r > 0 ? '+' : '−') + '2', { size: 26, anchor: 'end', cls: 'dvv-muted' });
     });
-    [100, 300, 1000, 3000].forEach(function (l) {
+    [100, 1000].forEach(function (l) {
       var x = s.x + s.w * ux(l);
-      d += 'M' + x + ' ' + (s.y + s.h) + ' v8';
+      d += 'M' + x + ' ' + (s.y + s.h) + ' v9';
       text(g, x, s.y + s.h + 36, String(l), { size: 26, anchor: 'middle', cls: 'dvv-muted' });
     });
+    [200, 300, 400, 500, 600, 700, 800, 900, 2000, 3000].forEach(function (l) { d += 'M' + (s.x + s.w * ux(l)) + ' ' + (s.y + s.h) + ' v5'; });
     el('path', { d: d, 'class': 'dvv-tick' }, g);
   };
   function onKey(e) { if (e.key === 'Escape' || e.key === 'Backspace') { closeCard(); e.preventDefault(); e.stopPropagation(); } }
@@ -471,7 +501,7 @@ House.app('dv_vector', function (figure, data, ctx) {
     var g = el('g', {}, svg);
     el('rect', { x: 0, y: 0, width: W, height: H, 'class': 'dvv-ground', opacity: 0.82 }, g);
     var box = el('g', {}, g);
-    ['--dvv-dot', '--dvv-bar', '--dvv-line', '--dvv-spine'].forEach(function (v, i) { box.style.setProperty(v, ['9px', '2.2px', '3px', '1'][i]); });
+    ['--dvv-dot', '--dvv-bar', '--dvv-line', '--dvv-spine'].forEach(function (v, i) { box.style.setProperty(v, ['8px', '2px', '2.2px', '1'][i]); });
     var B = { x: 140, y: 12, w: W - 280, h: H - 24 };
     el('rect', { x: B.x + 2, y: B.y + 6, width: B.w, height: B.h, rx: 16, 'class': 'dvv-shadow' }, box);
     el('rect', { x: B.x, y: B.y, width: B.w, height: B.h, rx: 14, 'class': 'dvv-card' }, box);
@@ -479,7 +509,7 @@ House.app('dv_vector', function (figure, data, ctx) {
     var note = p.nfit === p.fit.length ? 'every band inside the validated linear-bias cut'
       : p.nfit === 0 ? 'every band outside the validated linear-bias cut'
       : p.nfit + ' of ' + p.fit.length + ' bands inside the validated linear-bias cut';
-    text(box, B.x + 48, B.y + 100, name(c.a) + ' × ' + name(c.b) + ' · blinded · ' + note, { size: 26, cls: 'dvv-muted' });
+    text(box, B.x + 48, B.y + 100, name(c.a) + ' × ' + name(c.b) + ', blinded; ' + note, { size: 26, cls: 'dvv-muted' });
     var k = { g: el('g', {}, box), right: B.x + B.w - 40, y: B.y + 60, items: ['pt', 'th'].concat(p.nfit < p.fit.length ? ['cut'] : []) };
     drawKey(k);
     var m = { x: B.x + 150, y: B.y + 140, w: B.w - 196, h: 320 }, s = { x: m.x, y: m.y + m.h + 12, w: m.w, h: 132 };
@@ -494,18 +524,19 @@ House.app('dv_vector', function (figure, data, ctx) {
     drawResid(unitBox(box, s), p);
     drawAxes(box, m, s, q);
     text(box, m.x - 96, m.y + m.h / 2, ylabel(p.e), { size: 30, anchor: 'middle', rotate: true });
-    text(box, s.x - 96, s.y + s.h / 2, ['Δ/σ', ['G', 'sub']], { size: 30, anchor: 'middle', rotate: true });
-    text(box, m.x + m.w / 2, s.y + s.h + 72, ['multipole ', 'ℓ'], { size: 28, anchor: 'middle' });
+    text(box, s.x - 96, s.y + s.h / 2, rlabel, { size: 30, anchor: 'middle', rotate: true });
+    text(box, m.x + m.w / 2, s.y + s.h + 72, [['ℓ', 'it']], { size: 30, anchor: 'middle' });
     // what the strip cannot show, said plainly
     var edge = [];
     p.r.forEach(function (r, i) { if (p.fit[i] && Math.abs(r) >= R - 0.2) edge.push((r > 0 ? '+' : '−') + Math.abs(r).toFixed(1)); });
     var off = p.r.filter(function (r, i) { return !p.fit[i] && Math.abs(r) >= R - 0.2; }).length;
-    var says = edge.length ? ['on the strip edge, inside the cut: ' + edge.join(', ') + ' σ', ['G', 'sub']] : [];
-    if (off) says.push((says.length ? ' · ' : '') + off + (off > 1 ? ' bands' : ' band') + ' outside the cut lie beyond the strip');
+    var says = edge.length ? ['on the strip edge, inside the cut: ' + edge.join(', '), [' σ', 'it']] : [];
+    if (off) says.push((says.length ? '; ' : '') + off + (off > 1 ? ' bands' : ' band') + ' outside the cut lie beyond the strip');
     if (says.length) text(box, B.x + 48, B.y + B.h - 24, says, { size: 24, cls: 'dvv-muted', italic: true });
     text(box, B.x + B.w - 40, B.y + B.h - 24, 'Esc to close', { size: 24, anchor: 'end', cls: 'dvv-muted', italic: true });
     if (g.animate && !ctx.still()) try { g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: 'ease-out' }); } catch (e) { /* static */ }
     card = { g: g, box: box };
+    cardShown(true);
     ctx.keyboard(false);
     document.addEventListener('keydown', onKey, true);
     document.addEventListener('pointerdown', onDown, true);
@@ -515,40 +546,119 @@ House.app('dv_vector', function (figure, data, ctx) {
     if (!card) return;
     svg.removeChild(card.g);
     card = null;
+    cardShown(false);
     ctx.keyboard(true);
     document.removeEventListener('keydown', onKey, true);
     document.removeEventListener('pointerdown', onDown, true);
   }
 
+  return {
+    svg: svg, land: land, fly: fly, closeCard: closeCard, openCard: openCard, cells: cells,
+    ready: function () { keys.forEach(drawKey); },
+    hover: function (on) { if (!on) hl.style.visibility = 'hidden'; },
+  };
+  }
+
+  // ── toggles: shear method and CMB survey; a variant not measured is shown but disabled
+  var ui = document.createElementNS(NS, 'svg');
+  ui.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  ui.setAttribute('class', 'app-view dvv-ui');
+  ui.style.pointerEvents = 'none';
+  var uiStyle = document.createElementNS(NS, 'style');
+  uiStyle.textContent = [
+    '.dvv-seg { fill: var(--ground); stroke: var(--rule); stroke-width: 1.5px; }',
+    '.dvv-seg-on { fill: var(--panel); stroke: var(--muted); }',
+    '.dvv-seg-text { fill: var(--ink); }',
+    '.dvv-seg-off .dvv-seg { stroke-dasharray: 4 4; } .dvv-seg-off .dvv-seg-text { fill: var(--muted); font-style: italic; }',
+  ].join('\n');
+  ui.appendChild(uiStyle);
+  var uiDone = false;
+  var sel = Object.keys(data.variants)[0].split('|');
+  function drawUI() {
+    while (ui.childNodes.length > 1) ui.removeChild(ui.lastChild);
+    var x = W - 8, y = 18, h = 40, pad = 16, gap = 22;
+    var groups = [['cmb', Object.keys(data.cmbs), data.cmbs], ['shear', Object.keys(data.shears), data.shears]];
+    var ok = true;
+    groups.forEach(function (gr) {
+      for (var i = gr[1].length - 1; i >= 0; i--) {
+        var id = gr[1][i];
+        var want = gr[0] === 'cmb' ? sel[0] + '|' + id : id + '|' + sel[1];
+        var on = gr[0] === 'cmb' ? sel[1] === id : sel[0] === id;
+        var has = !!data.variants[want];
+        var g = document.createElementNS(NS, 'g');
+        ui.appendChild(g);
+        var r = document.createElementNS(NS, 'rect');
+        var t = document.createElementNS(NS, 'text');
+        t.textContent = gr[2][id];
+        t.setAttribute('font-size', 24);
+        t.setAttribute('text-anchor', 'middle');
+        g.appendChild(r); g.appendChild(t);
+        var w = t.getComputedTextLength();
+        if (!w) { ok = false; return; }
+        w += 2 * pad;
+        r.setAttribute('x', x - w); r.setAttribute('y', y); r.setAttribute('width', w); r.setAttribute('height', h);
+        r.setAttribute('rx', 6);
+        r.setAttribute('class', 'dvv-seg' + (on ? ' dvv-seg-on' : ''));
+        t.setAttribute('x', x - w / 2); t.setAttribute('y', y + h / 2 + 8);
+        t.setAttribute('class', 'dvv-seg-text');
+        var tip = document.createElementNS(NS, 'title');
+        tip.textContent = has ? gr[2][id] : gr[2][id] + ': not measured yet';
+        g.appendChild(tip);
+        if (!has) g.setAttribute('class', 'dvv-seg-off');
+        else if (!on) {
+          g.style.pointerEvents = 'auto';
+          g.style.cursor = 'pointer';
+          g.addEventListener('click', (function (vk) { return function (e) { e.stopPropagation(); use(vk); }; })(want));
+        }
+        x -= w - 1.5;
+      }
+      x -= gap;
+    });
+    uiDone = ok;
+  }
+
+  var S = null, state = null;
+  function use(vk) {
+    var next = scene(data.variants[vk], vk);
+    if (S) { S.closeCard(); frameEl.replaceChild(next.svg, S.svg); }
+    else frameEl.insertBefore(next.svg, ui);
+    S = next;
+    sel = vk.split('|');
+    S.ready();
+    S.land(state == null ? 0 : state);
+    drawUI();
+  }
+
   // ── steps ───────────────────────────────────────────────────────────────
   function step(k, animate) {
     k = Math.max(0, Math.min(2, k));
-    keys.forEach(drawKey);
-    if (k !== 2) { closeCard(); hl.style.visibility = 'hidden'; }
+    S.ready();
+    if (!uiDone) drawUI();
+    if (k !== 2) { S.closeCard(); S.hover(false); }
     var from = state;
     state = k;
-    if (!animate || from == null || from === k) { land(k); return; }
+    if (!animate || from == null || from === k) { S.land(k); return; }
     if (ctx.still()) {
       // reduced motion: the old view, frozen, fades out over the new one
-      var ghost = svg.cloneNode(true);
+      var ghost = S.svg.cloneNode(true);
       Array.prototype.forEach.call(ghost.querySelectorAll('[id]'), function (n) { n.removeAttribute('id'); });
       ghost.style.pointerEvents = 'none';
-      svg.parentNode.appendChild(ghost);
-      land(k);
+      S.svg.parentNode.insertBefore(ghost, ui);
+      S.land(k);
       var gone = function () { if (ghost.parentNode) ghost.parentNode.removeChild(ghost); };
       try { ghost.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 450, easing: 'ease-in-out', fill: 'forwards' }).finished.then(gone, gone); }
       catch (e) { gone(); }
       return;
     }
-    fly(k);
+    S.fly(k);
   }
 
-  figure.querySelector('.frame').appendChild(svg);
-  land(0);
-  svg.setAttribute('data-mount-ms', (performance.now() - T0).toFixed(1));
+  frameEl.appendChild(ui);
+  use(Object.keys(data.variants)[0]);
+  S.svg.setAttribute('data-mount-ms', (performance.now() - T0).toFixed(1));
   return {
     step: step,
-    leave: closeCard,
-    open: function (key) { var c = cells.filter(function (x) { return x.key === key; })[0]; if (c) openCard(c); },
+    leave: function () { S.closeCard(); },
+    open: function (key) { var c = S.cells.filter(function (x) { return x.key === key; })[0]; if (c) S.openCard(c); },
   };
 });
