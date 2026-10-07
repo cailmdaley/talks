@@ -51,7 +51,8 @@ DVT = f"{CMBX}/results/tr1/likelihood_product/datavector_vs_theory.tar"
 # The first is the export the cut was validated on; the toggles follow this order.
 SHEARS = {"lensmc": "LensMC", "metacal": "MetaCal"}
 CMBS = {"spt": "SPT-3G", "act": "ACT DR6"}
-UNIVERSES = {("lensmc", "spt"): "tr1", ("lensmc", "act"): "tr1_act"}
+UNIVERSES = {("lensmc", "spt"): "tr1", ("lensmc", "act"): "tr1_act",
+             ("metacal", "spt"): "tr1_metacal", ("metacal", "act"): "tr1_act_metacal"}
 BLIND = "cmbx_dr1_a"
 
 
