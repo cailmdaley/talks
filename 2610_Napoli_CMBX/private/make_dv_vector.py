@@ -50,7 +50,7 @@ DVT = f"{CMBX}/results/tr1/likelihood_product/datavector_vs_theory.tar"
 # (shear method, CMB survey) -> the universe holding it, or None when not yet measured.
 # The first is the export the cut was validated on; the toggles follow this order.
 SHEARS = {"lensmc": "LensMC", "metacal": "MetaCal"}
-CMBS = {"spt": "SPT-3G", "act": "ACT DR6", "planck": "Planck PR4"}
+CMBS = {"spt": "SPT-3G", "act": "ACT DR6"}
 UNIVERSES = {("lensmc", "spt"): "tr1", ("lensmc", "act"): "tr1_act"}
 BLIND = "cmbx_dr1_a"
 
