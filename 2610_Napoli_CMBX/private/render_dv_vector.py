@@ -15,10 +15,11 @@ writes) and writes private/dv_vector_app.json, which the slide's app
   glyphs   every glyph and marker path the SVGs use, once; the SVGs reference
            them by id, and their inline styles become shared CSS classes.
 
-Every y axis, in every view, has the same two major ticks: 0 and the largest of
-1, 2 or 5 x 10^k below the top of its range, labelled in units of 10^-e, where
-10^-e is set once per block of rows (gamma-gamma, gamma-delta, delta-delta, and
-each half of the CMB lensing row). Residual strips span +-3 sigma with ticks at
+Every y axis, in every view, has the same three major ticks: 0, s and 2s, s the
+largest 1, 2 or 5 x 10^k with 2s below the top of its range, in units of 10^-e set
+once per block of rows (gamma-gamma, gamma-delta, delta-delta, and each half of
+the CMB lensing row). The overview marks them but labels nothing on its y axes;
+the close-up and the detail cards label them. Residual strips span +-3 sigma with ticks at
 -2, 0 and 2; a band beyond the strip is drawn as a triangle on its edge.
 
 Run in the cmbx container, after make_dv_vector.py:
@@ -55,11 +56,11 @@ plt.rcParams.update({
 
 # ── overview geometry (world units: SVG user units = pt = px at rest) ───────
 W, H = 1712.0, 771.0
-GUT, G, MG, RM = 60.0, 6.0, 60.0, 34.0      # left gutter, column gap, gamma|delta gap, right
+GUT, G, MG, RM = 20.0, 6.0, 50.0, 34.0      # left gutter, column gap, gamma|delta gap, right
 CW = (W - GUT - 10 * G - MG - RM) / 12
 T0, RG, MR, KG, BOT = 8.0, 3.0, 8.0, 10.0, 34.0
-RH = (H - T0 - BOT - 11 * RG - MR - KG) / 13.5        # a 3x2pt row; the kappa row is 1.5 of them
-KH = 1.5 * RH
+RH = (H - T0 - BOT - 11 * RG - MR - KG) / 13          # every row, the kappa row included
+KH = RH
 TR = [f"l{i}" for i in range(6)] + [f"g{i}" for i in range(6)]
 R = 3.0                                                # residual strip half-range, sigma
 XLIM = (100 / 1.12, 3000 * 1.12)
@@ -80,11 +81,12 @@ def row_h(r):
 
 
 # ── close-up camera: the kappa row's halves, columns in register ────────────
-VW = GUT + 6 * CW + 5 * G + 8                          # world width each close-up view shows
+CL = 48.0                                              # world room left of a half for its y labels
+VW = CL + 6 * CW + 5 * G + 8                           # world width each close-up view shows
 S_CLOSE = W / VW
 VH = H / S_CLOSE
-V0X = 0.0
-V1X = col_x(6) - MG + 3                                # clear of gamma_6's right spine
+V0X = col_x(0) - CL
+V1X = col_x(6) - CL                                    # gamma_6's right spine stays outside (MG > CL)
 # vertically, the close-up's main panels sit over the overview's kappa row
 NM_TOP, NM_H, NS_GAP, NS_H = 200.0, 352.0, 12.0, 92.0  # close-up main and strip, screen px
 VY = row_y(12) + KH / 2 - (NM_TOP + NM_H / 2) / S_CLOSE
@@ -142,13 +144,14 @@ def span(ds):
 
 
 def yaxis(lo, hi):
-    """Limits and the two major ticks: 0 and the largest 1, 2 or 5 x 10^k below the top."""
+    """Limits and the three major ticks: 0, s and 2s, s the largest 1, 2 or 5 x 10^k with
+    2s below the top."""
     top = max(hi, 1e-30)
-    k = np.floor(np.log10(0.9 * top))
-    tick = max(m * 10 ** k for m in (1, 2, 5) if m * 10 ** k <= 0.9 * top)
+    k = np.floor(np.log10(0.45 * top))
+    s = max(m * 10 ** k for m in (1, 2, 5) if m * 10 ** k <= 0.45 * top)
     lo = min(lo, 0.0)
     pad = 0.06 * (top - lo)
-    return (lo - pad, top + pad), [0.0, float(f"{tick:.6g}")]
+    return (lo - pad, top + pad), [0.0, float(f"{s:.6g}"), float(f"{2 * s:.6g}")]
 
 
 def errorbars(ax, x, y, s, lw, ms):
@@ -321,27 +324,15 @@ def segments(pairs):
     return cells, out, e_of
 
 
-def overview(pairs, title, glyphs, segs, e_of):
+def overview(pairs, title, glyphs, segs):
     fig = plt.figure(figsize=(W / 72, H / 72), dpi=72)
-    fs_tick, fs_name = 16.0, 21.0
+    fs_name = 21.0
     for (r, h), sg in segs.items():
         for c, k in sg["cols"]:
             d = prep(pairs[k], sg["e"])
             ax = axes_at(fig, col_x(c), row_y(r), CW, row_h(r), W, H)
             draw_panel(ax, d, sg["ylim"], sg["ticks"], lw_bar=0.7, ms=2.5, lw_th=0.85,
                        tick_len=2.4, lw_frame=0.5, minor=False)
-        # tick labels on the segment's leftmost panel only
-        c0 = sg["cols"][0][0]
-        lo, hi = sg["ylim"]
-        for v in sg["ticks"]:
-            y = row_y(r) + row_h(r) * (hi - v) / (hi - lo)
-            text_at(fig, col_x(c0) - 4, y, fmt(v), W, H, ha="right", va="center", fontsize=fs_tick)
-    # one unit per block, rotated, in the gutter beside its rows
-    spans = {("a", 0): (0, 5), ("b", 0): (6, 11), ("b", 1): (6, 11), ("kappa", 0): (12, 12), ("kappa", 1): (12, 12)}
-    for (b, h), (r0, r1) in spans.items():
-        y0, y1 = row_y(r0), row_y(r1) + row_h(r1)
-        text_at(fig, col_x(6 * h) - 42, (y0 + y1) / 2, rf"$\times 10^{{-{e_of[(b, h)]}}}$", W, H,
-                rotation=90, ha="center", va="center", fontsize=fs_tick)
     # row names at the row's end, column names under the kappa row
     for r, t in enumerate(TR + ["kappa"]):
         last = r if r < 12 else 11
@@ -395,7 +386,7 @@ def near(pairs, title, glyphs, segs):
         text_at(fig, mid, NM_TOP + NM_H + NS_GAP + NS_H + 44, r"$\ell$", fw, fh, ha="center", va="top",
                 fontsize=fs + 2)
         # title and key at the top of this half's view
-        left = nx((V0X if h == 0 else V1X) + GUT)
+        left = nx(col_x(6 * h))
         text_at(fig, left, 40, title, fw, fh, ha="left", va="top", fontsize=fs + 3)
         key(fig, left, 96, fs - 1, fw, fh)
     return svg_of(fig, fw, fh, glyphs)
@@ -445,8 +436,8 @@ def main():
     for vk, pairs in src["variants"].items():
         shear, cmb = vk.split("|")
         title = f"TR1 {src['shears'][shear]} $\\times$ {src['cmbs'][cmb]}, blinded"
-        cells, segs, e_of = segments(pairs)
-        lay = dict(over=overview(pairs, title, glyphs, segs, e_of), near=near(pairs, title, glyphs, segs))
+        cells, segs, _ = segments(pairs)
+        lay = dict(over=overview(pairs, title, glyphs, segs), near=near(pairs, title, glyphs, segs))
         det = {}
         for (r, c), k in cells.items():
             a, b = ("kappa", TR[c]) if r == 12 else (TR[r], TR[c])
