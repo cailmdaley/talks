@@ -59,12 +59,19 @@ export function loadDeck(dir) {
     if (!sec.title) problems.push(`deck.json: section ${i + 1} has no "title"`);
     if (!sec.outline) problems.push(`deck.json: section "${sec.title ?? i + 1}" has no one-sentence "outline"`);
     if (!Array.isArray(sec.slides) || !sec.slides.length) { problems.push(`deck.json: section "${sec.title ?? i + 1}" lists no slides`); continue; }
+    const backup = /^backup$/i.test(sec.title ?? '');
+    if (backup && i !== meta.sections.length - 1) problems.push('deck.json: the Backup section must be the last section');
+    // The Backup section opens with a divider the build writes itself; it and every slide
+    // after it stay out of the slide count and the progress bar.
+    if (backup) slides.push({ name: 'backup', backup: true, generated: true, section: sec,
+      src: `<section data-layout="section">\n  <h2>${esc(sec.title)}</h2>\n  <p>${esc(sec.outline ?? '')}</p>\n  <aside class="notes"><p>Backup slides, kept for questions.</p></aside>\n</section>\n` });
     for (const name of sec.slides) {
       if (seen.has(name)) problems.push(`deck.json: slide "${name}" listed twice`);
+      if (name === 'backup') problems.push('deck.json: "backup" is the name of the divider the build writes; rename slides/backup.html');
       seen.add(name);
       const src = path.join(dir, 'slides', `${name}.html`);
       if (!fs.existsSync(src)) problems.push(`deck.json: slides/${name}.html does not exist`);
-      slides.push({ name, src, section: sec });
+      slides.push({ name, src, section: sec, backup });
     }
   }
   const slideDir = path.join(dir, 'slides');
@@ -214,7 +221,8 @@ function parseFragment(html) {
 }
 
 export function parseSlide(src) {
-  const document = parseFragment(read(src));
+  // src is a slide file's path, or the HTML itself for a slide the build writes (the Backup divider)
+  const document = parseFragment(src.trimStart().startsWith('<') ? src : read(src));
   const top = [...document.body.children];
   const stray = [...document.body.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent.trim()).join(' ').trim();
   return { document, top, stray, section: top.length === 1 && top[0].localName === 'section' ? top[0] : null };
@@ -456,12 +464,15 @@ function buildSlides(deck, typeset) {
   out.assets = assets;
   const apps = { code: new Map(), data: new Map() };
   out.apps = apps;
+  let counted = 0, extra = 0;
   deck.slides.forEach((s, i) => {
-    const where = `slides/${s.name}.html`;
+    const where = s.generated ? 'the Backup divider' : `slides/${s.name}.html`;
     const { section, stray } = parseSlide(s.src);
     if (!section) { problems.push(`${where}: must hold exactly one top-level <section>`); return; }
     if (stray) problems.push(`${where}: text outside the <section> ("${stray.slice(0, 40)}") would be lost`);
-    const number = i + 1;
+    // main slides count 1, 2, …; backup slides are B1, B2, … and the divider carries no number
+    const divider = Boolean(s.generated);
+    const number = !s.backup ? ++counted : divider ? '' : `B${++extra}`;
     const footer = esc(deck.meta.footer);
     const frame = makeFrame(section, { deckDir: deck.dir, problems, where, footer, number, assets, apps, typeset });
     const notes = [...section.querySelectorAll(':scope > aside.notes')];
@@ -479,7 +490,7 @@ function buildSlides(deck, typeset) {
     }
     const attrs = [...section.attributes]
       .filter(a => !['data-layout', 'data-split', 'data-flip', 'data-stack', 'class', 'style', 'id'].includes(a.name))
-      .map(a => ` ${a.name}="${esc(a.value)}"`).join('');
+      .map(a => ` ${a.name}="${esc(a.value)}"`).join('') + (s.backup ? ' data-visibility="uncounted"' : '');
     out.push({
       ...s, number,
       sectionAttrs: `id="${esc(s.name)}" data-house-slide="${esc(s.name)}"${attrs}`,
