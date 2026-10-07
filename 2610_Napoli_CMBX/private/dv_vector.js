@@ -2,18 +2,20 @@
 // between the shear methods and CMB lensing surveys that have been measured.
 //
 // Nothing is drawn here: private/render_dv_vector.py renders the figure with
-// matplotlib as SVG layers that share one coordinate system ("world", the
-// figure box at rest on the overview), and this script only places, moves and
-// fades them. The layers are the 78 3x2pt panels (tri), the CMB lensing row
-// with its residual strips (krow), that row's labels at close-up size (close),
-// and the row and column names at overview size (far). One matrix on one group
-// is the camera; the three rest states are three views of the world:
+// matplotlib as two SVG layers, and this script only places, moves and fades
+// them. "over" is the whole data vector as a triangle of panels in world
+// coordinates (the figure box at rest on the overview); "near" is the CMB
+// lensing row close up, with residual strips, drawn in the close-up camera's
+// screen units and placed in the world so its columns lie exactly over the
+// overview's. One matrix on one group is the camera, a uniform zoom (glyphs
+// never stretch); the three rest states are three views of the world:
 //   0  close on the kappa row's source-bin half: gamma_i x kappa
 //   1  the same zoom, panned right to its lens-bin half: delta_i x kappa
 //   2  pulled back to the whole triangle
-// The zoom is uniform, so glyphs keep their shapes; each layer's opacity is a
-// function of the camera alone, so a camera at rest or in flight draws the same
-// way. On the overview a cell lights under the pointer and a click opens that
+// The close-up's row is taller than the overview's, so on the way out "near"
+// shrinks with the camera and crossfades into "over", columns in register.
+// Each layer's opacity is a function of the camera alone, so a camera at rest
+// or in flight draws the same way. On the overview a cell lights under the pointer and a click opens that
 // pair's own pre-rendered panel (Esc, Backspace or a click outside closes it).
 // A do-nothing Web Animation is the clock, so finishing it (as the house
 // checker does) lands the step; without Web Animations a step is instant.
@@ -91,18 +93,19 @@ House.app('dv_vector', function (figure, data, ctx) {
   function scene(variant) {
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'class': 'app-view', role: 'img' });
     var world = el('g', {}, svg);
-    var layer = {};
-    ['tri', 'krow', 'far', 'close'].forEach(function (k) {
-      var n = group(variant.layers[k], { 'class': 'dvv-mpl' });
-      world.appendChild(n);
-      layer[k] = n;
-    });
+    var N = data.near;
+    var layer = {
+      over: group(variant.layers.over, { 'class': 'dvv-mpl' }),
+      near: group(variant.layers.near, { 'class': 'dvv-mpl', transform: 'translate(' + N.x + ' ' + N.y + ') scale(' + (1 / N.s) + ')' }),
+    };
+    world.appendChild(layer.over);
+    world.appendChild(layer.near);
 
     var cam = { s: 1, tx: 0, ty: 0 };
     function render() {
       world.setAttribute('transform', 'matrix(' + cam.s + ' 0 0 ' + cam.s + ' ' + cam.tx + ' ' + cam.ty + ')');
       var z = Math.max(0, Math.min(1, (LZ - Math.log(cam.s)) / LZ));        // 0 close, 1 far
-      var op = { tri: smooth(0.2, 0.85, z), krow: 1, far: smooth(0.6, 1, z), close: 1 - smooth(0, 0.3, z) };
+      var op = { over: smooth(0.1, 0.5, z), near: 1 - smooth(0.02, 0.42, z) };
       Object.keys(op).forEach(function (k) {
         layer[k].setAttribute('opacity', op[k].toFixed(3));
         layer[k].style.visibility = op[k] > 0.002 ? 'visible' : 'hidden';
