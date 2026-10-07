@@ -88,9 +88,9 @@
         <text x="572" y="660" font-size="30" text-anchor="middle">κ crosses recovered</text>
         <text x="572" y="702" font-size="28" class="fill-teal" text-anchor="middle">10 seeds, done</text>
 
-        <path d="M937 576 V374" class="stroke-teal fill-none" stroke-width="4" stroke-dasharray="10 9" marker-end="url(#pipeline-arrow-teal)"/>
+        <path d="M937 576 V374" class="stroke-teal fill-none" stroke-width="4" marker-end="url(#pipeline-arrow-teal)"/>
         <text x="937" y="660" font-size="30" text-anchor="middle">scatter vs σ</text>
-        <text x="937" y="702" font-size="28" class="fill-muted" text-anchor="middle">planned</text>
+        <text x="937" y="702" font-size="28" class="fill-teal" text-anchor="middle">10 seeds, done</text>
 
         <path d="M1236 576 V374" class="stroke-teal fill-none" stroke-width="4" marker-end="url(#pipeline-arrow-teal)"/>
         <text x="1236" y="660" font-size="30" text-anchor="middle">blind rehearsal</text>
@@ -98,14 +98,14 @@
 
         <path d="M1560 576 V374" class="stroke-teal fill-none" stroke-width="4" marker-end="url(#pipeline-arrow-teal)"/>
         <text x="1560" y="660" font-size="30" text-anchor="middle">mock chains</text>
-        <text x="1560" y="702" font-size="28" class="fill-accent" text-anchor="middle">running</text>
+        <text x="1560" y="702" font-size="28" class="fill-teal" text-anchor="middle">done</text>
       </g>
     </svg>
   </figure>
   <aside class="notes">
     <p>The KP2-3 pipeline end to end. Euclid TR1 shear and positions (and earlier the RR2 catalogues) are pixelised into maps with their masks and redshift distributions; the CMB-lensing inputs are the ACT DR6 and SPT-3G Main convergence maps. NaMaster pseudo-$C_\ell$ turns them into bandpowers for all six families: the three Euclid 3×2pt spectra and the three involving CMB lensing. An analytic Gaussian covariance covers every block, including the cross-blocks between families.</p>
     <p>The blind is a parameter-shift blind in the style of Muir et al. (2019): a sealed shift in cosmology is turned into a $\Delta C_\ell$ added to the whole six-family data vector, so shapes, signal-to-noise, the covariance and the null tests stay visible while the inferred cosmology is hidden. We run it ourselves because the official pipeline blinds only the Euclid 2pt spectra. The blinded TR1 × SPT-3G likelihood input exists; the TR1 chains come next.</p>
-    <p>The likelihood evaluates a fast theory vector carrying the nuisances: linear galaxy bias, photometric-redshift shifts, shear calibration $m$ and intrinsic alignments. Its numerical accuracy is the next slide.</p>
-    <p>GLASS 6×2pt mocks, with correlated Euclid and CMB-lensing fields, ACT DR6 reconstruction noise and the TR1 mask, run through the same code. So far they check bandpower recovery (10 seeds; the CMB-lensing crosses are shown two slides on), the blind (a rehearsal on a mock), and the likelihood (mock chains, still converging). Using the mock scatter to test the Gaussian covariance is planned, not done. Planck PR4 lensing and the DR1 catalogues are the next inputs.</p>
+    <p>The likelihood evaluates a fast theory vector carrying the nuisances: linear galaxy bias, photometric-redshift shifts, shear calibration $m$ and intrinsic alignments. Its numerical accuracy is checked against a dense integration (backup).</p>
+    <p>GLASS 6×2pt mocks, with correlated Euclid and CMB-lensing fields, ACT DR6 reconstruction noise and the TR1 mask, run through the same code. So far they check bandpower recovery (10 seeds; the CMB-lensing crosses are shown later in this section), the Gaussian covariance against the seed-to-seed scatter (10 seeds: the bulk agrees, while the stiffest low-$\ell$ clustering modes scatter about 1.3 times more than the covariance allows), the blind (a rehearsal on a mock) and the likelihood (mock chains that recover the input cosmology). Planck PR4 lensing and the DR1 catalogues are the next inputs.</p>
   </aside>
 </section>

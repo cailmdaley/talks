@@ -1,11 +1,15 @@
-"""Lensing kernels for the Napoli CMBX talk: the six Euclid TR1 source bins and
+"""Lensing kernels for the Napoli CMBX talk: the six Euclid DR1 source bins and
 the CMB lensing kernel on one redshift axis, with the source n(z) above them.
 
-Top panel: the TR1 LensMC weak-lensing n(z) (SOM-direct, COSMOS2020
-calibration; the analysis's `redshift.wl_nz`), each bin normalised to unit
-area, drawn with the analysis's own Hann smoothing switch (width dz = 0.05)
-because the raw SOM histograms are spiky at dz = 0.002.  Kernels below use the
-unsmoothed n(z).
+Top panel: the official Euclid DR1 weak-lensing tomographic n(z)
+(DpdBinMeanRedshift, PHZ MergeNz 1.0.2, release DR1_WLSOUTH_R1, source bins
+TOM_BIN, WEIGHT_METHOD = PHZ_WEIGHT; bin means 0.45-1.73), each bin normalised
+to unit area.  The table's N_Z is a histogram on bins of width dz = 0.01 whose
+centres are (i + 1/2) dz: that grid reproduces the header's MEAN_Z.  WLNORTH_R1
+differs by at most 5 % in total variation per bin and 0.014 in mean z, which
+does not show at this scale; South is drawn.  The top panel is drawn with the
+analysis's Hann smoothing (nz_io.smooth_hann, width dz = 0.05) to calm the
+histogram's bin-to-bin spikes; the kernels below use the unsmoothed n(z).
 
 Bottom panel: the lensing efficiency per unit redshift, in the same units for
 every tracer, so heights compare directly:
@@ -42,9 +46,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "images", "napoli_lensing_kernels.png")
 OUT_SHEAR = os.path.join(HERE, "..", "images", "napoli_lensing_kernels_shear.png")
 CMBX = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx"
-WL_NZ = "/leonardo_work/EUHPC_E07_074/cmbx/inputs/euclid/dndz/tr1/TR1_nz_WL_lensmc_C2020_sel_pv"
+WL_NZ = ("/leonardo_work/EUHPC_E07_074/cmbx/inputs/euclid/dr1/nz_official_tombinz_20260523/"
+         "EUC_PHZ_TOMBINZ__20260523T200621.112482Z_00.00.fits")   # WLSOUTH_R1, source, PHZ_WEIGHT
 sys.path.insert(0, f"{CMBX}/workflow/scripts")
-import nz_io  # noqa: E402
+from nz_io import smooth_hann  # noqa: E402
 
 # euclid theme (house/themes/euclid.css)
 INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
@@ -104,10 +109,25 @@ def cmb_kernel(z):
     return prefactor(z) * (chi_star - chi_of_z(z)) / chi_star
 
 
+def load_nz(path):
+    """{bin: (z, n(z) normalised to unit area)} and {bin: mean z} from a DpdBinMeanRedshift FITS."""
+    from astropy.io import fits
+    with fits.open(path) as h:
+        hdr, d = h["BIN_INFO"].header, h["BIN_INFO"].data
+        assert hdr["BIN_TYPE"].strip() == "TOM_BIN" and hdr["WEIGHT_METHOD"].strip() == "PHZ_WEIGHT"
+        dz = float(hdr["Z_STEP"])
+        out, mean_z = {}, {}
+        for bid, n in zip(d["BIN_ID"], d["N_Z"]):
+            z = (np.arange(n.size) + 0.5) * dz
+            n = np.asarray(n, float) / np.trapezoid(n, z)
+            out[int(bid)], mean_z[int(bid)] = (z, n), float(np.trapezoid(z * n, z))
+    return out, mean_z
+
+
 def main():
     setup_font()
-    raw, mean_z = nz_io.load_nz(WL_NZ)
-    smooth, _ = nz_io.load_nz(WL_NZ, smoothing={"method": "hann_self", "hann_width_dz": 0.05})
+    raw, mean_z = load_nz(WL_NZ)
+    smooth = {b: (z, smooth_hann(z, n, 0.05)) for b, (z, n) in raw.items()}
     bins = sorted(raw)
     z = np.linspace(0.0, ZMAX, 401)
     zs, _ = raw[bins[0]]
@@ -150,7 +170,7 @@ def draw(out, with_cmb, bins, smooth, mean_z, z, kern, wk, zpk):
     ax_n.set_ylim(0, None)
     ax_n.set_yticks([])
     ax_n.set_ylabel(r"$n(z)$")
-    ax_n.text(0.985, 0.88, "Euclid TR1 source bins", transform=ax_n.transAxes, ha="right", va="top",
+    ax_n.text(0.985, 0.88, "Euclid DR1 source bins", transform=ax_n.transAxes, ha="right", va="top",
               fontsize=24, color=INK)
     ax_w.set_xlim(0, ZMAX)
     ax_w.set_ylim(0, 1.12 * max(wk.max(), max(k.max() for k in kern.values())))

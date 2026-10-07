@@ -2,16 +2,19 @@
 
 The GLASS 6x2pt mock ensemble (10 seeds, ACT DR6 lensing mask and noise, TR1
 Euclid mask, map estimator) measured delta_i x kappa and gamma_i x kappa for the
-six tomographic bins.  The analysis figure (lc output
+six tomographic bins.  This is the analysis figure (lc output
 results/tr1_act/glass_6x2pt_mocks/stack_review_figures.tar, fig_cmb_crosses.png)
-draws twelve spectrum panels with residual strips; at slide scale only the
-residuals carry the claim, so this figure draws them alone: one row per family,
-the six bins overlaid in a sequential ramp and nudged apart in ell.
+redrawn at projector scale: two rows of six panels, delta x kappa above and
+gamma x kappa below, each panel the 10-seed mean of ell C_ell against the input
+theory, with a residual strip under it.  Each row shares one y axis and one
+exponent, so heights compare across bins.
 
-y is (ensemble mean - input) / sigma_1, where sigma_1 is the seed-to-seed scatter
-of ONE realization (sample std over the 10 seeds), not the data's Gaussian sigma.
-The mean of 10 seeds is known to sigma_1 / sqrt(10), so an unbiased pipeline
-puts the points inside +-0.32 sigma_1 about two times in three.
+Main panels: points are the ensemble mean, bars are +-sigma_1, the seed-to-seed
+scatter of ONE realization (sample std over the 10 seeds) -- what one survey of
+this size is worth -- not the data's Gaussian sigma.  Residual strips:
+(mean - input) / sigma_1, with the mean's own error bar 1/sqrt(10); the shaded
+band is +-sigma_1/sqrt(10), where an unbiased pipeline puts about two points in
+three.
 
 The arrays are read with the analysis's own loader
 (analyses/glass_6x2pt_mocks/src/twin_ensemble_figures.py: load_stores,
@@ -33,8 +36,7 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
-from matplotlib.colors import LinearSegmentedColormap
-from matplotlib.ticker import FixedLocator, FuncFormatter, NullLocator
+from matplotlib.ticker import FixedLocator, FuncFormatter, MaxNLocator, NullFormatter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "images", "napoli_mock_recovery_cmb.png")
@@ -47,13 +49,16 @@ from twin_ensemble_figures import estimator_key, load_stores, mock_series  # noq
 # euclid theme (house/themes/euclid.css)
 INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
 COBALT, TEAL, OCHRE = "#2E417C", "#1D6C78", "#9C7414"
-BAND_OUTER, BAND_INNER = "#DCE3EE", "#BFCADB"
+BAND = "#D6DEEA"
 
 # canvas: 1712 x 723 px displayed, drawn at 2x
 W_PX, H_PX, DPI = 3424, 1446, 200
 PT = DPI / 72 / 2            # displayed px per point
-FAMILIES = [("delta", r"$\delta_i \times \kappa$"), ("gammaE", r"$\gamma_i \times \kappa$")]
-ELL_TICKS = [100, 300, 1000, 3000]
+FAMILIES = [("delta", r"$\delta_{i}\kappa$"), ("gammaE", r"$\gamma_{i}\kappa$")]
+COLOUR = {"delta": COBALT, "gammaE": TEAL}
+ELL_TICKS = [100, 1000]
+ELL_MINOR = [200, 300, 500, 2000, 3000]
+TICK, LABEL = 21, 23         # pt; x PT -> 29 px, 32 px displayed
 
 
 def setup_font():
@@ -86,7 +91,10 @@ def load():
         rows = []
         for i in range(1, 7):
             key = estimator_key(f"{fam}_{i}xkappa_cmb", st, "map")
-            rows.append(mock_series(key, st))
+            m = mock_series(key, st)
+            for k in ("mean", "truth", "sigma1"):     # C_ell -> ell C_ell; resid is unchanged
+                m[k] = m["ell"] * m[k]
+            rows.append(m)
         out[fam] = rows
     return out, len(store["seeds"])
 
@@ -111,59 +119,79 @@ def draw(series, n, mean_abs):
     plt.rcParams.update({
         "axes.linewidth": 1.4, "axes.edgecolor": MUTED,
         "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK,
-        "xtick.labelsize": 22, "ytick.labelsize": 22, "axes.labelsize": 25,
+        "xtick.labelsize": TICK, "ytick.labelsize": TICK, "axes.labelsize": LABEL,
         "xtick.major.width": 1.4, "ytick.major.width": 1.4,
-        "xtick.major.size": 7, "ytick.major.size": 7,
+        "xtick.major.size": 7, "ytick.major.size": 7, "xtick.minor.size": 4,
         "axes.spines.top": False, "axes.spines.right": False,
         "figure.facecolor": "white", "axes.facecolor": "white",
     })
-    print(f"tick labels ≈ {22 * PT:.0f} px, axis labels ≈ {25 * PT:.0f} px displayed")
-    cmap = LinearSegmentedColormap.from_list("bins", [COBALT, TEAL, OCHRE])
-    colours = [cmap(t) for t in np.linspace(0, 1, 6)]
+    print(f"tick labels ≈ {TICK * PT:.0f} px, axis labels ≈ {LABEL * PT:.0f} px displayed")
     inner = 1 / np.sqrt(n)
 
-    fig, axes = plt.subplots(2, 1, figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI, sharex=True,
-                             gridspec_kw=dict(hspace=0.12, left=0.085, right=0.80,
-                                              top=0.905, bottom=0.115))
-    lim = 1.15
-    for ax, (fam, tag) in zip(axes, FAMILIES):
+    fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
+    outer = fig.add_gridspec(2, 1, hspace=0.22, left=0.088, right=0.995, top=0.925, bottom=0.10)
+    for r, (fam, tag) in enumerate(FAMILIES):
         rows = series[fam]
-        ell = rows[0]["ell"]
-        ax.axhspan(-1, 1, color=BAND_OUTER, lw=0, zorder=0)
-        ax.axhspan(-inner, inner, color=BAND_INNER, lw=0, zorder=0)
-        ax.axhline(0, color=MUTED, lw=1.4, zorder=1)
-        for i, (m, c) in enumerate(zip(rows, colours)):
-            x = m["ell"] * 1.032 ** (i - 2.5)
-            ax.plot(x, m["resid"], "o", ms=11, color=c, mec="white", mew=1.2, zorder=3)
-        ax.set_xscale("log")
-        ax.set_xlim(0.86 * ell.min(), 1.16 * ell.max())
-        ax.set_ylim(-lim, lim)
-        ax.set_yticks([-1, 0, 1])
-        ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _p: f"{v:+.0f}".replace("-", "\u2212") if v else "0"))
-        ax.text(0.012, 0.95, tag, transform=ax.transAxes, fontsize=30, color=INK,
-                ha="left", va="top", zorder=5)
-        ax.text(1.015, 0.5, f"mean $|\\Delta|$ = {mean_abs[fam]:.2f} $\\sigma_1$",
-                transform=ax.transAxes, fontsize=22, color=INK, ha="left", va="center")
-        # band labels at the right edge
-        ax.text(1.015, (1 + lim) / (2 * lim) - 0.03, r"$\pm 1\,\sigma_1$", transform=ax.transAxes,
-                fontsize=22, color=MUTED, ha="left", va="center")
-        ax.text(1.015, (inner + lim) / (2 * lim) + 0.03, r"$\pm \sigma_1/\sqrt{10}$",
-                transform=ax.transAxes, fontsize=22, color=MUTED, ha="left", va="center")
-    ax = axes[-1]
-    ax.xaxis.set_major_locator(FixedLocator(ELL_TICKS))
-    ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _p: f"{int(v)}"))
-    ax.xaxis.set_minor_locator(NullLocator())
-    ax.set_xlabel(r"multipole $\ell$")
-    fig.supylabel(r"$\Delta / \sigma_1$  (one realization)", fontsize=25, color=INK, x=0.012)
+        expo = int(np.floor(np.log10(max(np.nanmax(m["mean"] + m["sigma1"]) for m in rows))))
+        scale = 10.0 ** expo
+        lo = min(np.nanmin(m["mean"] - m["sigma1"]) for m in rows) / scale
+        hi = max(np.nanmax(m["mean"] + m["sigma1"]) for m in rows) / scale
+        pad = 0.06 * (hi - lo)
+        inner_gs = outer[r].subgridspec(2, 6, height_ratios=[2.5, 1], hspace=0.06, wspace=0.07)
+        for i, m in enumerate(rows):
+            ax = fig.add_subplot(inner_gs[0, i], sharey=ax0 if i else None)
+            axr = fig.add_subplot(inner_gs[1, i], sharex=ax, sharey=axr0 if i else None)
+            if not i:
+                ax0, axr0 = ax, axr
+            ell = m["ell"]
+            ax.axhline(0, color=RULE, lw=1.2, zorder=0)
+            ax.plot(ell, m["truth"] / scale, color=INK, lw=2.4, zorder=2)
+            ax.errorbar(ell, m["mean"] / scale, yerr=m["sigma1"] / scale, fmt="o", ms=6.5,
+                        color=COLOUR[fam], ecolor=COLOUR[fam], elinewidth=1.8, capsize=0,
+                        mec="white", mew=0.8, zorder=3)
+            ax.set_ylim(min(lo - pad, -pad), hi + pad)
+            ax.text(0.95, 0.94, tag.format(i=i + 1), transform=ax.transAxes, fontsize=LABEL,
+                    color=INK, ha="right", va="top")
+            axr.axhspan(-inner, inner, color=BAND, lw=0, zorder=0)
+            axr.axhline(0, color=MUTED, lw=1.2, zorder=1)
+            axr.errorbar(ell, m["resid"], yerr=inner, fmt="o", ms=5.5, color=COLOUR[fam],
+                         elinewidth=1.5, capsize=0, mec="white", mew=0.6, zorder=3)
+            axr.set_ylim(-1.25, 1.25)
+            axr.set_yticks([-1, 1])
+            axr.yaxis.set_major_formatter(FuncFormatter(lambda v, _p: f"{v:+.0f}".replace("-", "\u2212")))
+            axr.set_xscale("log")
+            axr.set_xlim(0.8 * ell.min(), 1.25 * ell.max())
+            axr.xaxis.set_major_locator(FixedLocator(ELL_TICKS))
+            axr.xaxis.set_major_formatter(FuncFormatter(lambda v, _p: f"{int(v)}"))
+            axr.xaxis.set_minor_locator(FixedLocator(ELL_MINOR))
+            axr.xaxis.set_minor_formatter(NullFormatter())
+            plt.setp(ax.get_xticklabels(), visible=False)
+            ax.tick_params(axis="x", which="both", length=0)
+            if r == 0:
+                plt.setp(axr.get_xticklabels(), visible=False)
+            if i:
+                plt.setp(ax.get_yticklabels(), visible=False)
+                plt.setp(axr.get_yticklabels(), visible=False)
+            else:
+                ax.yaxis.set_major_locator(MaxNLocator(3, integer=True))
+                ax.set_ylabel(rf"$\ell C_\ell\;[10^{{{expo}}}]$", labelpad=6)
+                axr.set_ylabel(r"$\Delta/\sigma_1$", labelpad=6)
+            if r == 1:
+                axr.set_xlabel(r"$\ell$", labelpad=2)
+    fig.align_ylabels()
 
-    # bin key along the top, in the bins' own colours
-    x0 = 0.085
-    fig.text(x0, 0.955, "tomographic bin", fontsize=22, color=MUTED, ha="left", va="center")
-    for i, c in enumerate(colours):
-        fig.text(x0 + 0.13 + 0.035 * i, 0.955, f"{i + 1}", fontsize=24, color=c,
-                 fontweight="bold", ha="center", va="center")
-    fig.text(0.80, 0.955, f"mean of {n} GLASS seeds − input", fontsize=22, color=MUTED,
-             ha="right", va="center")
+    # key along the top
+    fig.add_artist(plt.Line2D([0.088, 0.112], [0.975, 0.975], color=INK, lw=2.4,
+                              transform=fig.transFigure))
+    fig.text(0.118, 0.975, "input theory", fontsize=LABEL, color=INK, ha="left", va="center")
+    fig.add_artist(plt.Line2D([0.226], [0.975], marker="o", ms=8, color=COBALT, mec="white",
+                              transform=fig.transFigure))
+    fig.add_artist(plt.Line2D([0.235], [0.975], marker="o", ms=8, color=TEAL, mec="white",
+                              transform=fig.transFigure))
+    fig.text(0.243, 0.975, f"mean of {n} GLASS seeds $\\pm\\,\\sigma_1$ (one realization)",
+             fontsize=LABEL, color=INK, ha="left", va="center")
+    fig.text(0.995, 0.975, f"strips: (mean $-$ input)$/\\sigma_1$, band $\\pm\\,${inner:.2f}$\\,\\sigma_1$",
+             fontsize=LABEL, color=MUTED, ha="right", va="center")
     fig.savefig(OUT, dpi=DPI)
     plt.close(fig)
     print("wrote", os.path.normpath(OUT))

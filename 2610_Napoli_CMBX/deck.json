@@ -46,8 +46,8 @@
         "kp-3",
         "kp-3-papers",
         "pipeline",
-        "theory-accuracy",
-        "mock-recovery"
+        "mock-recovery",
+        "blind-rehearsal"
       ]
     },
     {
@@ -80,8 +80,9 @@
     },
     {
       "title": "Backup",
-      "outline": "KP2-3 workstream scope slides from Barcelona.",
+      "outline": "Theory-operator accuracy, and the KP2-3 workstream scope slides from Barcelona.",
       "slides": [
+        "theory-accuracy",
         "kp23-data-vectors",
         "kp23-likelihood",
         "kp23-simulations"
