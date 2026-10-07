@@ -145,6 +145,50 @@
   Reveal.on('fragmenthidden', onFragment(true));
   Reveal.on('slidechanged', settle);
 
-  // Hooks for the checker and for scripted capture.
-  window.House = { open: open, close: close, settle: settle };
+  // ── Apps: <figure data-app> drawn live by a script the build inlines ──
+  // A script registers House.app(name, factory); factory(figure, data, ctx)
+  // draws into the figure and returns { step(k, animate), leave() }. k is the
+  // number of the figure's fragments shown, so the figure's fallback stack
+  // drives the steps; animate is true for a single step forward or back
+  // (false on a jump, a slide entered mid-way or a PDF). ctx.still() is true
+  // when the reader prefers reduced motion: the app crossfades instead.
+  var apps = {};
+  function stepOf(fig) { return fig.querySelectorAll('.fragment.visible').length; }
+  function mountApps() {
+    if (!Reveal.isReady()) return;
+    document.querySelectorAll('figure[data-app]').forEach(function (fig) {
+      var factory = apps[fig.getAttribute('data-app')];
+      if (fig.houseApp || !factory) return;
+      var el = document.getElementById('house-data-' + fig.getAttribute('data-app-data'));
+      var ctx = {
+        keyboard: function (on) { Reveal.configure({ keyboard: on }); },
+        still: function () { return still.matches; },
+      };
+      fig.houseApp = factory(fig, el ? JSON.parse(el.textContent) : null, ctx);
+      fig.classList.add('app-live');
+      fig.houseApp.step(stepOf(fig), false);
+    });
+  }
+  function appFragments(e) {
+    var done = [];
+    (e.fragments || []).forEach(function (f) {
+      var fig = f.closest('figure.app-live');
+      if (!fig || done.indexOf(fig) >= 0) return;
+      done.push(fig);
+      fig.houseApp.step(stepOf(fig), e.fragments.length === 1 && !(Reveal.isPrintView && Reveal.isPrintView()));
+    });
+  }
+  Reveal.on('ready', mountApps);
+  Reveal.on('fragmentshown', appFragments);
+  Reveal.on('fragmenthidden', appFragments);
+  Reveal.on('slidechanged', function (e) {
+    if (e.previousSlide) e.previousSlide.querySelectorAll('figure.app-live').forEach(function (f) { if (f.houseApp.leave) f.houseApp.leave(); });
+    e.currentSlide.querySelectorAll('figure.app-live').forEach(function (f) { f.houseApp.step(stepOf(f), false); });
+  });
+
+  // Hooks for the checker, for scripted capture and for app scripts.
+  window.House = {
+    open: open, close: close, settle: settle,
+    app: function (name, factory) { apps[name] = factory; mountApps(); },
+  };
 })();

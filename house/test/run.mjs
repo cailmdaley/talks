@@ -65,6 +65,7 @@ for (const needle of [
   'slides/stray.html: text outside the <section> ("LOST TEXT")',
   'slides/badtex.html: TeX error in $\\frac{1}{$',
   'slides/badzoom.html: images/napoli_footprint_2_planck.png: data-zoom needs "x y w h"',
+  'slides/badapp.html: missing app script private/nowhere.js',
 ]) ok(fail.stderr.includes(needle), `build refuses: ${needle}`);
 
 const only = spawnSync(process.execPath, [CHECK, path.join(HERE, '..', 'demo'), '--only', 'nope'], { encoding: 'utf8' });

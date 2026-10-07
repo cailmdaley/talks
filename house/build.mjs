@@ -369,8 +369,37 @@ function peopleGrid(frame, body) {
   frame.setAttribute('style', `${frame.getAttribute('style') ? frame.getAttribute('style') + ';' : ''}--rows:${rows};--tcols:${total};--nsep:${blocks.length - 1}`);
 }
 
+// apps: <figure data-app="script.js" data-app-data="data.json"> is drawn live by
+// a script over the figure it holds, which stays as the fallback (the report, no
+// JS). The deck inlines each script once and each data file once; the figure
+// keeps the script's name and the data's key, and runtime.js mounts it.
+function frameApps(frame, deckDir, problems, where, apps) {
+  for (const fig of frame.querySelectorAll('figure[data-app]')) {
+    const js = path.resolve(deckDir, fig.getAttribute('data-app'));
+    if (!fs.existsSync(js)) { problems.push(`${where}: missing app script ${fig.getAttribute('data-app')}`); continue; }
+    const name = path.basename(js).replace(/\.[^.]+$/, '');
+    apps.code.set(name, read(js));
+    fig.setAttribute('data-app', name);
+    if (!fig.hasAttribute('data-app-data')) continue;
+    const src = fig.getAttribute('data-app-data');
+    const file = path.resolve(deckDir, src);
+    if (!fs.existsSync(file)) { problems.push(`${where}: missing app data ${src}`); continue; }
+    const text = read(file);
+    try { JSON.parse(text); } catch (e) { problems.push(`${where}: app data ${src} is not JSON (${e.message})`); continue; }
+    const key = crypto.createHash('sha1').update(text).digest('hex').slice(0, 12);
+    apps.data.set(key, text);
+    fig.setAttribute('data-app-data', key);
+  }
+}
+
+function appScripts(apps) {
+  const data = [...apps.data].map(([k, t]) => `<script type="application/json" id="house-data-${k}">${t.replace(/</g, '\\u003c')}</script>`);
+  const code = [...apps.code].map(([n, c]) => `<script>/* app: ${n} */\n${c.replace(/<\/script/gi, '<\\/script')}\n</script>`);
+  return [...data, ...code].join('\n');
+}
+
 // Build one .slide frame from an authored element (a <section> or an <aside class="detail">).
-function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, assets, typeset }) {
+function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, assets, apps, typeset }) {
   const doc = el.ownerDocument;
   const layout = el.getAttribute('data-layout');
   const frame = doc.createElement('div');
@@ -392,6 +421,7 @@ function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, ass
   if (layout === 'people') peopleGrid(frame, body);
 
   frameFigures(frame, deckDir, problems, where, assets);
+  if (!isDetail) frameApps(frame, deckDir, problems, where, apps);
   textPass(frame, typeset, problems, where);
   // a detail is shown whole: it has no fragment sequence of its own
   if (isDetail) for (const f of frame.querySelectorAll('.fragment')) f.classList.remove('fragment');
@@ -424,6 +454,8 @@ function buildSlides(deck, typeset) {
   const out = [];
   const assets = new Map();
   out.assets = assets;
+  const apps = { code: new Map(), data: new Map() };
+  out.apps = apps;
   deck.slides.forEach((s, i) => {
     const where = `slides/${s.name}.html`;
     const { section, stray } = parseSlide(s.src);
@@ -431,7 +463,7 @@ function buildSlides(deck, typeset) {
     if (stray) problems.push(`${where}: text outside the <section> ("${stray.slice(0, 40)}") would be lost`);
     const number = i + 1;
     const footer = esc(deck.meta.footer);
-    const frame = makeFrame(section, { deckDir: deck.dir, problems, where, footer, number, assets, typeset });
+    const frame = makeFrame(section, { deckDir: deck.dir, problems, where, footer, number, assets, apps, typeset });
     const notes = [...section.querySelectorAll(':scope > aside.notes')];
     for (const n of notes) textPass(n, typeset, problems, `${where} notes`);
     const details = [...section.querySelectorAll(':scope > aside.detail')].map((d, k) => {
@@ -520,6 +552,7 @@ ${assetScript(slides.assets)}
 <script>${read(path.join(NM, 'reveal.js/dist/reveal.js'))}</script>
 <script>${read(path.join(NM, 'reveal.js/dist/plugin/notes.js'))}</script>
 <script>${read(path.join(HOUSE, 'runtime.js'))}</script>
+${appScripts(slides.apps)}
 </body>
 </html>
 `;
