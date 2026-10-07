@@ -2,7 +2,7 @@
   <h2>Fast theory matches dense integration to 0.014σ</h2>
   <figure>
     <img src="images/napoli_theory_accuracy.png" alt="Difference between the fast theory operator and a dense integration, in units of the Gaussian error, for all 1350 bandpowers: within 0.014 sigma at two parameter points, while a spline variant reaches 0.25 sigma">
-    <span class="source">Mock 6×2pt data-vector layout (GLASS, no real data) · reference: CCL qag_quad at every integer $\ell$ through the bandpower windows · $\sigma$ from the Gaussian covariance.</span>
+    <span class="source">Mock 6×2pt layout against a dense CCL integration, in units of the Gaussian σ.</span>
   </figure>
   <aside class="notes">
     <p>Each point is one bandpower: the fast theory operator the likelihood uses, minus a dense reference calculation, divided by that band's Gaussian error. The fast operator evaluates the Limber integrals on a sparse grid in $\ell$ and applies the nuisances through cached responses; the reference computes every integer $\ell$ with adaptive quadrature and convolves with the same bandpower windows. All 1350 retained bands are shown: 90 spectra (the twelve CMB-lensing crosses and the 78 Euclid 3×2pt spectra) of 15 bands each, $\ell$ from 100 to 3000. The CMB-lensing auto-spectrum is not part of this comparison.</p>

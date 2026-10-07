@@ -18,10 +18,11 @@ analysis's own loader, workflow/scripts/summarize_mock_cosmology_chains.py:load)
 
 Left panel: the three posteriors where they land, arrows from the unblinded
 mean to unblinded mean + injected shift.  Right panel: zoom on the truth, with
-each blinded posterior moved back by its injected shift.  Two frames of one
-plot for a slide stack:
-  images/napoli_blind_rehearsal_1.png   unblinded posterior and truth only
-  images/napoli_blind_rehearsal_2.png   + blinds A and B
+each blinded posterior moved back by its injected shift.  Three frames of one
+plot for a slide stack, the right panel blank until the last:
+  images/napoli_blind_rehearsal_1.png   left: unblinded mock posterior and truth
+  images/napoli_blind_rehearsal_2.png   left: + blinds A and B
+  images/napoli_blind_rehearsal_3.png   + right: blinds moved back
 at 2x the figure layout's body box less a .source line (1712 x 723 px).
 
 Run in the cmbx container: app python make_blind_rehearsal.py
@@ -39,7 +40,7 @@ from getdist import MCSamples
 from matplotlib import font_manager
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUTS = [os.path.join(HERE, "..", "images", f"napoli_blind_rehearsal_{k}.png") for k in (1, 2)]
+OUTS = [os.path.join(HERE, "..", "images", f"napoli_blind_rehearsal_{k}.png") for k in (1, 2, 3)]
 CMBX = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx"
 sys.path.insert(0, f"{CMBX}/workflow/scripts")
 from summarize_mock_cosmology_chains import load  # noqa: E402
@@ -124,7 +125,7 @@ def main():
               f"mean ({m[0]:.4f}, {m[1]:.4f}) sd ({sd[0]:.4f}, {sd[1]:.4f})  "
               f"width ratio ({sd[0] / sd0[0]:.2f}, {sd[1] / sd0[1]:.2f})  residual/σ0 ({res[0]:+.2f}, {res[1]:+.2f})")
     for i, out in enumerate(OUTS):
-        draw(out, i == 1, raw, back, inj, m0, sd0)
+        draw(out, i >= 1, i >= 2, raw, back, inj, m0, sd0)
 
 
 def contours(ax, s, key, filled=True, lw=2.6, ls="-"):
@@ -140,7 +141,7 @@ def truth_mark(ax):
     ax.axhline(TRUTH["S8"], color=MUTED, lw=1.4, ls=(0, (4, 3)), zorder=0)
 
 
-def draw(out, with_blinds, raw, back, inj, m0, sd0):
+def draw(out, with_blinds, with_right, raw, back, inj, m0, sd0):
     plt.rcParams.update({
         "axes.linewidth": 1.4, "axes.edgecolor": MUTED,
         "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK,
@@ -156,7 +157,7 @@ def draw(out, with_blinds, raw, back, inj, m0, sd0):
     # left: where each posterior lands
     truth_mark(axl)
     contours(axl, raw["unblinded"], "unblinded")
-    axl.text(m0[0] + 0.013, m0[1] - 0.008, "unblinded", color=INK, fontsize=LABEL, ha="left", va="top")
+    axl.text(m0[0] + 0.004, m0[1] - 0.011, "unblinded mock", color=INK, fontsize=LABEL, ha="left", va="top")
     if with_blinds:
         for k, (dx, dy, ha) in {"A": (0.016, 0.004, "left"), "B": (-0.046, -0.005, "right")}.items():
             contours(axl, raw[k], k)
@@ -170,28 +171,29 @@ def draw(out, with_blinds, raw, back, inj, m0, sd0):
     axl.set_ylim(0.782, 0.892)
     axl.set_xlabel(r"$\Omega_\mathrm{m}$")
     axl.set_ylabel(r"$S_8$")
-    axl.set_title("where the posterior lands", fontsize=LABEL, color=MUTED, loc="left", pad=12)
+    axl.set_title("posteriors as measured", fontsize=LABEL, color=MUTED, loc="left", pad=12)
 
     # right: injected shift removed
+    if not with_right:
+        axr.set_visible(False)
     truth_mark(axr)
     contours(axr, raw["unblinded"], "unblinded")
-    if with_blinds:
-        for k in ("A", "B"):
-            contours(axr, back[k], k, filled=False, lw=3.0)
+    for k in ("A", "B"):
+        contours(axr, back[k], k, filled=False, lw=3.0)
+        axr.plot([], [], color=COL[k], lw=3.0, label=f"blind {k}")
+    axr.fill_between([], [], color=FILL["unblinded"], ec=INK, lw=2.6, label="unblinded mock")
+    axr.legend(loc="lower right", fontsize=LABEL - 2, frameon=False, handlelength=1.6, ncol=3,
+               columnspacing=1.2, borderaxespad=0.2)
     axr.plot(TRUTH["Omega_m"], TRUTH["S8"], marker="*", ms=22, color=INK, mec="white", mew=1.4, zorder=5)
     axr.text(TRUTH["Omega_m"] - 0.0008, 0.8462, "truth", fontsize=LABEL, color=MUTED,
              ha="right", va="top", zorder=5)
     axr.set_xlim(0.292, 0.362)
-    axr.set_ylim(0.8215, 0.8465)
+    axr.set_ylim(0.8165, 0.8465)
     axr.set_xticks([0.30, 0.32, 0.34, 0.36])
     axr.set_yticks([0.825, 0.835, 0.845])
     axr.set_xlabel(r"$\Omega_\mathrm{m}$")
     axr.set_ylabel(r"$S_8$")
-    axr.set_title("blinds moved back by their injected shift" if with_blinds else "unblinded mock chain",
-                  fontsize=LABEL, color=MUTED, loc="left", pad=12)
-    axr.text(0.97, 0.05, rf"$\Omega_\mathrm{{m}} = {m0[0]:.3f} \pm {sd0[0]:.3f}$" "\n"
-             rf"$S_8 = {m0[1]:.4f} \pm {sd0[1]:.4f}$", transform=axr.transAxes, fontsize=LABEL,
-             color=INK, ha="right", va="bottom", linespacing=1.4)
+    axr.set_title("blinds shifted back by their hidden shift", fontsize=LABEL, color=MUTED, loc="left", pad=12)
     fig.savefig(out, dpi=DPI)
     plt.close(fig)
     print("wrote", os.path.normpath(out))
