@@ -14,9 +14,14 @@ Inputs, all blinded (blind cmbx_dr1_a):
     them (data, ell_eff, covariance indices, sigma_G from the diagonal of the full
     NaMaster Gaussian covariance, fiducial, fit mask) before anything is written.
 
-The scale cut is the likelihood product's fit mask: the placeholder linear-bias
-cut (k_max 0.125 h/Mpc for delta-delta, 0.083 for gamma-delta and delta-kappa;
-validated: false). The fiducial is the reference pushed through the bandpower
+The scale cut drawn is the validated linear-bias cut (the export's
+fit_mask_validated): k_max 0.2 h/Mpc for delta-delta (a cross takes the lower
+lens ell_max), 0.15 for gamma-delta and delta-kappa, no lens cut for
+gamma-gamma and gamma-kappa, all within 100 < ell < 3000; its PT contamination
+test shifts S8-Omega_m by under 0.3 sigma_2D. The export computed it with the
+likelihood's own resolver; here it is checked against the export's per-pair
+counts and bounds. The likelihood product's own (placeholder) fit mask is still
+asserted equal to the lc outputs. The fiducial is the reference pushed through the bandpower
 windows, not a fit. No amplitude, fit or goodness-of-fit is computed here.
 
 Run in the cmbx container:
@@ -85,9 +90,22 @@ def load():
         assert np.array_equal(npz[f"{k}__theory_fid"], theory)
         assert np.array_equal(npz[f"{k}__fit_mask"].astype(bool), fit)
         assert index["pairs"][k]["family"] == rec["family"]
-        pairs[k] = dict(family=rec["family"], ell=ell, data=data, sigma=sigma, theory=theory, fit=fit)
-    print(f"{len(pairs)} pairs, {cursor} bands, {sum(p['fit'].sum() for p in pairs.values())} inside the "
-          "placeholder scale cut; export == lc outputs for every pair")
+        # the validated cut: per-pair count and ell bounds as the export records them
+        cut = npz[f"{k}__fit_mask_validated"].astype(bool)
+        meta = index["pairs"][k]
+        assert int(cut.sum()) == meta["n_fit_validated"], k
+        lo, hi = meta["fit_bounds_validated"]
+        assert np.array_equal(cut, (ell >= lo) & (ell <= hi)), (k, lo, hi)
+        pairs[k] = dict(family=rec["family"], ell=ell, data=data, sigma=sigma, theory=theory, fit=cut)
+    kept = index["fit_mask_validated"]["retained_bands"]["validated"]
+    for fam, n in kept.items():
+        if fam != "total":
+            assert sum(int(p["fit"].sum()) for p in pairs.values() if p["family"] == fam) == n, fam
+    total = sum(int(p["fit"].sum()) for p in pairs.values())
+    assert total == kept["total"] and not index["fit_mask_validated"]["empty_pairs"]
+    assert all(p["fit"].any() for p in pairs.values())
+    print(f"{len(pairs)} pairs, {cursor} bands, {total} inside the validated linear-bias cut; "
+          "export == lc outputs for every pair")
     return pairs, index
 
 
@@ -106,8 +124,8 @@ def main():
     out = {
         "blind": BLIND,
         "source": index["source"],
-        "cut": "placeholder linear-bias scale cut (k_max 0.125 h/Mpc delta-delta, "
-               "0.083 h/Mpc gamma-delta and delta-kappa; unvalidated)",
+        "cut": "validated linear-bias cut (k_max 0.2 h/Mpc delta-delta, 0.15 h/Mpc gamma-delta and "
+               "delta-kappa; PT contamination test < 0.3 sigma_2D)",
         "pairs": {k: {"t": tracers(k), "family": p["family"], "ell": sig(p["ell"], 5),
                       "cl": sig(p["data"]), "sig": sig(p["sigma"]), "th": sig(p["theory"]),
                       "fit": [int(v) for v in p["fit"]]}

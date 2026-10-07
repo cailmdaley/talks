@@ -186,7 +186,12 @@ House.app('dv_vector', function (figure, data, ctx) {
     el('path', { d: 'M0 ' + y(0) + ' H1', 'class': 'dvv-zero' }, g);
     ['out', 'in'].forEach(function (which) {
       var pts = '';
-      p.x.forEach(function (x, i) { if (!!p.fit[i] === (which === 'in') && (p.fit[i] || Math.abs(p.r[i]) < R - 0.2)) pts += 'M' + x + ' ' + y(p.r[i]) + ' h0'; });
+      p.x.forEach(function (x, i) {
+        if (!!p.fit[i] !== (which === 'in')) return;
+        if (!p.fit[i] && Math.abs(p.r[i]) >= R - 0.2) return;              // excluded, beyond the strip: left off
+        var r = Math.max(-(R - 0.2), Math.min(R - 0.2, p.r[i]));          // in the cut, beyond it: on its edge
+        pts += 'M' + x + ' ' + y(r) + ' h0';
+      });
       if (pts) el('path', { d: pts, 'class': 'dvv-pt dvv-' + which }, g);
     });
     el('path', { d: 'M0 0 V1 H1', 'class': 'dvv-spine' }, g);
@@ -323,7 +328,7 @@ House.app('dv_vector', function (figure, data, ctx) {
   Object.keys(pairs).forEach(function (k) { nb += pairs[k].ell.length; nf += pairs[k].nfit; });
   var hc = cell(0, 3);
   text(tdec, hc.x, GY + 26, 'The blinded TR1 × SPT-3G data vector', { size: 32 });
-  text(tdec, hc.x, GY + 70, Object.keys(pairs).length + ' spectra · ' + nb + ' bandpowers · ' + nf + ' inside the placeholder scale cut',
+  text(tdec, hc.x, GY + 70, Object.keys(pairs).length + ' spectra · ' + nb + ' bandpowers · ' + nf + ' inside the scale cut',
     { size: 26, cls: 'dvv-muted' });
   keys.push({ g: el('g', {}, tdec), items: ['pt', 'th', 'cut'], stack: { x: cell(2, 7).x, y: cell(2, 7).y + 30 } });
   text(tdec, cell(5, 9).x + CW, cell(5, 9).y + 30, 'click a panel to open it', { size: 24, anchor: 'end', cls: 'dvv-muted dvv-hint', italic: true });
@@ -334,7 +339,7 @@ House.app('dv_vector', function (figure, data, ctx) {
   add(tint, [{ o: 0, v: false }, { o: 0, v: false }, { o: 0.5, v: true }]);
 
   // ── keys (legends): a swatch before each label ──────────────────────────
-  var LABEL = { pt: ['blinded data ± σ', ['G', 'sub']], th: 'windowed fiducial', cut: 'outside placeholder scale cut' };
+  var LABEL = { pt: ['blinded data ± σ', ['G', 'sub']], th: 'windowed fiducial', cut: 'outside validated linear-bias cut' };
   function swatch(g, x, y, kind) {
     if (kind === 'pt') {
       el('path', { d: 'M' + x + ' ' + (y - 24) + ' v28', 'class': 'dvv-bar dvv-in', style: 'stroke-width:2.4px' }, g);
@@ -396,9 +401,9 @@ House.app('dv_vector', function (figure, data, ctx) {
     var B = { x: 140, y: 12, w: W - 280, h: H - 24 };
     el('rect', { x: B.x, y: B.y, width: B.w, height: B.h, rx: 14, 'class': 'dvv-card' }, box);
     var t1 = text(box, B.x + 48, B.y + 60, [].concat(symParts(c.a), [' × '], symParts(c.b)), { size: 40 });
-    var note = p.nfit === p.fit.length ? 'every band inside the placeholder scale cut'
-      : p.nfit === 0 ? 'every band outside the placeholder scale cut'
-      : p.nfit + ' of ' + p.fit.length + ' bands inside the placeholder scale cut';
+    var note = p.nfit === p.fit.length ? 'every band inside the validated linear-bias cut'
+      : p.nfit === 0 ? 'every band outside the validated linear-bias cut'
+      : p.nfit + ' of ' + p.fit.length + ' bands inside the validated linear-bias cut';
     text(box, B.x + 48, B.y + 100, name(c.a) + ' × ' + name(c.b) + ' · blinded · ' + note, { size: 26, cls: 'dvv-muted' });
     drawKey({ g: el('g', {}, box), right: B.x + B.w - 40, y: B.y + 60, items: ['pt', 'th'].concat(p.nfit < p.fit.length ? ['cut'] : []) });
     var m = { x: B.x + 150, y: B.y + 140, w: B.w - 196, h: 300 }, s = { x: m.x, y: m.y + m.h + 12, w: m.w, h: 118 };
@@ -420,9 +425,14 @@ House.app('dv_vector', function (figure, data, ctx) {
     drawResid(rg, p);
     drawAxes(box, m, s, q, { labels: true, ylabel: ylabel(p.e), xt: [100, 300, 1000, 3000] });
     text(box, m.x + m.w / 2, s.y + s.h + 76, ['multipole ', 'ℓ'], { size: 28, anchor: 'middle' });
+    // what the strip cannot show, said plainly
+    var edge = [];
+    p.r.forEach(function (r, i) { if (p.fit[i] && Math.abs(r) >= 3.7) edge.push((r > 0 ? '+' : '−') + Math.abs(r).toFixed(1)); });
     var off = p.r.filter(function (r, i) { return !p.fit[i] && Math.abs(r) >= 3.7; }).length;
-    if (off) text(box, B.x + 48, B.y + B.h - 24, off + (off > 1 ? ' bands' : ' band') + ' outside the cut lie beyond the strip',
-      { size: 24, cls: 'dvv-muted', italic: true });
+    var says = [];
+    if (edge.length) says = ['on the strip edge, inside the cut: ' + edge.join(', ') + ' σ', ['G', 'sub']];
+    if (off) says.push((says.length ? ' · ' : '') + off + (off > 1 ? ' bands' : ' band') + ' outside the cut lie beyond the strip');
+    if (says.length) text(box, B.x + 48, B.y + B.h - 24, says, { size: 24, cls: 'dvv-muted', italic: true });
     text(box, B.x + B.w - 40, B.y + B.h - 24, 'Esc to close', { size: 24, anchor: 'end', cls: 'dvv-muted', italic: true });
     g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: ctx.still() ? 0 : 160, easing: 'ease-out' });
     box.animate([{ transform: 'translateY(10px)' }, { transform: 'translateY(0px)' }], { duration: ctx.still() ? 0 : 220, easing: 'ease-out' });
