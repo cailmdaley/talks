@@ -20,8 +20,8 @@ lens ell_max), 0.15 for gamma-delta and delta-kappa, no lens cut for
 gamma-gamma and gamma-kappa, all within 100 < ell < 3000; its PT contamination
 test shifts S8-Omega_m by under 0.3 sigma_2D. The export computed it with the
 likelihood's own resolver; here it is checked against the export's per-pair
-counts and bounds. The likelihood product's own (placeholder) fit mask is still
-asserted equal to the lc outputs. The fiducial is the reference pushed through the bandpower
+counts and bounds, and every universe's lc figure carries the same cut as its own fit
+mask (the PT-validated default), asserted pair by pair. The fiducial is the reference pushed through the bandpower
 windows, not a fit. No amplitude, fit or goodness-of-fit is computed here.
 
 Variants beyond LensMC x SPT-3G come straight from their universe's lc outputs
@@ -99,10 +99,11 @@ def load():
         assert np.allclose(npz[f"{k}__ell_eff"], ell) and np.array_equal(npz[f"{k}__data"], data)
         assert np.allclose(npz[f"{k}__sigma_G"], sigma, rtol=1e-12, atol=0)
         assert np.array_equal(npz[f"{k}__theory_fid"], theory)
-        assert np.array_equal(npz[f"{k}__fit_mask"].astype(bool), fit)
         assert index["pairs"][k]["family"] == rec["family"]
-        # the validated cut: per-pair count and ell bounds as the export records them
+        # the validated cut: per-pair count and ell bounds as the export records them, and the
+        # lc figure's own fit mask (the PT-validated default) equal to it
         cut = npz[f"{k}__fit_mask_validated"].astype(bool)
+        assert np.array_equal(fit, cut), k
         meta = index["pairs"][k]
         assert int(cut.sum()) == meta["n_fit_validated"], k
         lo, hi = meta["fit_bounds_validated"]
@@ -166,6 +167,7 @@ def load_universe(universe, index):
         lo, hi = ref["fit_bounds_validated"]
         fit = (ell >= lo) & (ell <= hi)
         assert int(fit.sum()) == ref["n_fit_validated"], k
+        assert np.array_equal(fit, np.asarray(rec["fit_mask"], bool)), (universe, k)
         pairs[k] = dict(family=rec["family"], ell=ell, data=data, sigma=sigma,
                         theory=np.asarray(rec["theory_binned"], float), fit=fit)
     assert cov.shape == (cursor, cursor) and set(pairs) == set(index["order"])
