@@ -26,10 +26,14 @@ Use descriptive filenames to avoid collisions.
 ### Meta-work is fine to commit — with two hard bars
 The repo is public — build scaffolding (speaker notes, per-talk `CLAUDE.md`, outlines, internal
 reasoning, felt fiber names) is fine to commit and push, subject to two bars: **genuine PII**, and
-**blinded results**. No unblinded number from a blinded analysis — no amplitude value, no
-sub-/super-unity statement, no figure showing measured amplitudes against theory — may be committed
-*anywhere* in the repo (speaker notes, per-talk CLAUDE.md, retired figures, planning docs). Blinded
-background belongs in the private felt store; the repo carries a pointer at most.
+**unblinded results**. No unblinded number from a blinded analysis — no unblinded amplitude, no
+sub-/super-unity statement about unblinded data, no figure of unblinded measurements against theory —
+may be committed *anywhere* in the repo (speaker notes, per-talk CLAUDE.md, retired figures, planning
+docs); that background belongs in the private felt store, and the repo carries a pointer at most.
+**Blinded** data vectors and blinded estimates are allowed (Cail's decision, Oct 2026), labelled as
+blinded, in decks that set `"noindex": true` in `deck.json`. A quantity the blind does not move (for
+example a ratio in which cosmology cancels) is effectively unblinded: it goes in only with Cail's
+explicit approval.
 
 ### Image hygiene
 - **Resolution over file size**: use figures at full resolution — scientific figures need to stay

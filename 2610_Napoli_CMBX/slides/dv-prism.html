@@ -1,0 +1,14 @@
+<section data-layout="figure">
+  <h2>$\kappa$ adds two rows to the blinded 3×2pt vector</h2>
+  <figure data-prism>
+    <img src="private/dv_prism_1_gk.png" alt="Blinded TR1 shear cross SPT-3G CMB lensing bandpowers in six source bins, with the windowed fiducial and residual strips">
+    <img class="fragment" src="private/dv_prism_2_dk.png" alt="Blinded TR1 galaxy density cross SPT-3G CMB lensing bandpowers in six lens bins; bands outside the placeholder scale cut in grey">
+    <img class="fragment" src="private/dv_prism_3_all.png" data-zoom="0.92 66.67 51.07 51.07" alt="All 90 spectra of the blinded TR1 by SPT-3G 3x2pt plus CMB lensing data vector as a triangle of small panels, the CMB lensing row at its base">
+    <span class="source">Euclid TR1 · SPT-3G Main winter κ · NaMaster, 15 bands from $\ell = 100$ to 3000 · full Gaussian covariance · blinded.</span>
+  </figure>
+  <aside class="notes">
+    <p>These are blinded data, and the slide builds in three steps. First, the cross-spectrum between Euclid TR1 shear in each of the six source bins and the SPT-3G Main-field CMB lensing map: $\ell C_\ell^{\gamma\kappa}$ in 15 NaMaster bandpowers from $\ell = 100$ to 3000. Error bars are $\sigma_G$, the square root of the diagonal of the full NaMaster Gaussian covariance. The gold curve is the fiducial theory pushed through the same bandpower windows as the data: a fixed reference, not a fit. The strip under each panel is $(\text{data} - \text{fiducial})/\sigma_G$, with bands at $\pm 1$ and $\pm 2$. Every $\gamma\kappa$ band is inside the scale cut.</p>
+    <p>The figure then turns to the galaxy-density cross, $\delta\kappa$, in the six lens bins. Bands outside the scale cut are drawn grey and kept on the plot. That cut is a deliberately conservative placeholder ($k_{\max} \chi$ per lens bin, not yet validated): it removes lens bins 1 to 3 entirely and keeps the lowest one or two bands in bins 4 to 6. It is a choice about modelling, not a limit of the data.</p>
+    <p>Finally the view pulls back to the whole data vector: all 90 spectra, 1350 bandpowers, as a triangle of small panels. Rows and columns are the twelve Euclid tracers (lens bins $\delta_i$, source bins $\gamma_i$), and the CMB lensing row is the base: its left half is the $\delta\kappa$ row just shown, its right half the $\gamma\kappa$ row. Each small panel has its own vertical scale, set by the fiducial and the bands inside the cut; 472 bands are inside the placeholder cut. Excluded bands that lie far from the fiducial, among them high-$\ell$ $\delta\delta$ bands under investigation as an estimator-level effect, are clipped at the panel edge.</p>
+  </aside>
+</section>
