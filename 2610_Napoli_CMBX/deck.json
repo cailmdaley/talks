@@ -49,7 +49,7 @@
         "pipeline",
         "mock-recovery",
         "blind-rehearsal",
-        "dv-prism",
+        "dv-vector",
         "lens-ratio",
         "galaxy-bias",
         "dr1-clustering"
