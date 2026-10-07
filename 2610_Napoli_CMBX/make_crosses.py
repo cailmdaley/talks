@@ -291,7 +291,7 @@ def bias(a, R, variant):
     ax.text(0.10, y0 - dy, "measured", transform=ax.transAxes, fontsize=LABEL, color=INK, va="center")
     ax.plot([0.055], [y0 - 2 * dy], "o", transform=ax.transAxes, ms=15, mfc="white", mec=GREYED, mew=2.6,
             alpha=0.5)
-    ax.text(0.10, y0 - 2 * dy, "low S/N or not measured at this cut", transform=ax.transAxes,
+    ax.text(0.10, y0 - 2 * dy, "not counted: low S/N, or δδ high", transform=ax.transAxes,
             fontsize=LABEL, color=MUTED, va="center")
     out = os.path.join(IMG, name("napoli_galaxy_bias", variant))
     fig.savefig(out, dpi=DPI)
