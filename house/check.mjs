@@ -136,6 +136,11 @@ function lintBlock(el, where, vocab, out, isDetail) {
     const visuals = [...fig.children].filter(c => c.localName === 'img' || c.localName === 'svg' || c.classList.contains('placeholder'));
     // a stack: several <img>, every one after the first a fragment, drawn over the first
     const stack = visuals.length > 1 && visuals.every((c, i) => c.localName === 'img' && (i === 0) !== c.classList.contains('fragment'));
+    if (fig.hasAttribute('data-prism') && !stack) out.errors.push(`${where}: data-prism turns a stack; its <figure> needs two or more <img>s, every one after the first a fragment`);
+    visuals.forEach((c, i) => {
+      if (c.hasAttribute('data-zoom') && !(fig.hasAttribute('data-prism') && stack && i > 0))
+        out.errors.push(`${where}: data-zoom goes on a later face of a <figure data-prism>`);
+    });
     if (visuals.length !== 1 && !stack) out.errors.push(`${where}: a <figure> holds exactly one <img>, inline <svg> or .placeholder, or a stack of <img>s whose later ones are fragments (has ${visuals.length})`);
   }
   for (const d of [el, ...el.querySelectorAll('*')]) {
@@ -425,7 +430,8 @@ async function render(deck, built, outDir, { steps, only }) {
     const final = new Set();
     const early = [];
     for (let f = count - 1; f >= -1; f--) {
-      await page.evaluate((i, f) => Reveal.slide(i, 0, f), i, f);
+      // a step's animation (a prism turning) is finished at once: states are measured at rest
+      await page.evaluate((i, f) => { Reveal.slide(i, 0, f); document.getAnimations().forEach(a => a.finish()); }, i, f);
       await new Promise(r => setTimeout(r, 60));
       const m = await page.evaluate(measure, { MIN_PX, MIN_CONTRAST, MAX_WORDS });
       if (f === count - 1) { res.errors.push(...m.errors); res.warnings.push(...m.warnings); m.errors.forEach(e => final.add(e)); }
@@ -433,7 +439,7 @@ async function render(deck, built, outDir, { steps, only }) {
       if (steps && count) await page.screenshot({ path: path.join(outDir, `${tag}.step${f + 1}.png`) });
     }
     res.errors.push(...early);
-    await page.evaluate(i => Reveal.slide(i, 0, 999), i);
+    await page.evaluate(i => { Reveal.slide(i, 0, 999); document.getAnimations().forEach(a => a.finish()); }, i);
     await new Promise(r => setTimeout(r, 60));
     const file = path.join(outDir, `${tag}.png`);
     await page.screenshot({ path: file });

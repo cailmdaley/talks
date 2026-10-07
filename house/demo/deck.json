@@ -35,6 +35,7 @@
       "slides": [
         "section-figures",
         "figure",
+        "prism",
         "schematic",
         "figure-text",
         "compare",

@@ -247,6 +247,13 @@ html, body { background: var(--ground); }
 }
 /* a stack: later images (fragments) lie exactly over the first */
 .slide .frame > img ~ img { position: absolute; inset: 0; }
+/* a prism (<figure data-prism>) is a stack that runtime.js turns between its
+   steps: the two faces in play turn in perspective (or zoom, inside the frame)
+   while the rest of the stack waits hidden; at rest it is the plain stack */
+.slide .frame.turning { background: transparent; }
+.slide .frame.rolling { perspective: 1800px; }
+.slide .frame.zooming { overflow: hidden; }
+.reveal .slide .frame > img.prism-off { visibility: hidden !important; }
 /* raster figures are multiplied into the ground at build time; SVG images blend here */
 .slide .frame > img[data-blend] { mix-blend-mode: var(--figure-blend); }
 .slide .frame > svg { display: block; width: 100%; height: 100%; overflow: visible; }

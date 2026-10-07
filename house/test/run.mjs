@@ -31,6 +31,8 @@ const EXPECT = {
   longname: 'does not fit under its portrait in two lines',
   noface: 'a portrait is <figure><img',
   stackless: 'data-stack goes on a people slide with a div.text',
+  loneprism: 'data-prism turns a stack',
+  strayzoom: 'data-zoom goes on a later face of a <figure data-prism>',
 };
 const SVG_OFF = 'text "far right" is clipped by the canvas';
 
@@ -62,6 +64,7 @@ for (const needle of [
   'slides/badbox.html: <mark> needs data-box="x y w h" in percent of the image, inside it',
   'slides/stray.html: text outside the <section> ("LOST TEXT")',
   'slides/badtex.html: TeX error in $\\frac{1}{$',
+  'slides/badzoom.html: images/napoli_footprint_2_planck.png: data-zoom needs "x y w h"',
 ]) ok(fail.stderr.includes(needle), `build refuses: ${needle}`);
 
 const only = spawnSync(process.execPath, [CHECK, path.join(HERE, '..', 'demo'), '--only', 'nope'], { encoding: 'utf8' });

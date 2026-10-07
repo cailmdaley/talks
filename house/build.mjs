@@ -311,6 +311,12 @@ function frameFigures(frame, deckDir, problems, where, assets) {
       const ar0 = Number((under.getAttribute('style') || '').match(/--ar:([\d.]+)/)?.[1]);
       if (crop || under.classList.contains('crop')) problems.push(`${where}: ${src}: the images of a stack take no data-crop`);
       else if (!ar || Math.abs(ar / ar0 - 1) > 0.002) problems.push(`${where}: ${src}: a stacked image needs the aspect ratio of the first (${ar?.toFixed(4)} vs ${ar0.toFixed(4)})`);
+      // a prism face that zooms out of the face before: data-zoom="x y w h" is where that face lands
+      if (img.hasAttribute('data-zoom')) {
+        const z = img.getAttribute('data-zoom').trim().split(/[\s,]+/).map(Number);
+        if (z.length !== 4 || z.some(n => !Number.isFinite(n)) || z[2] <= 0 || z[3] <= 0)
+          problems.push(`${where}: ${src}: data-zoom needs "x y w h" in percent of the image, w and h above 0 (got "${img.getAttribute('data-zoom')}")`);
+      }
       under.insertBefore(img, under.querySelector(':scope > mark'));
       continue;
     }

@@ -30,7 +30,9 @@
         "cssurl",
         "longname",
         "noface",
-        "stackless"
+        "stackless",
+        "loneprism",
+        "strayzoom"
       ]
     }
   ]
