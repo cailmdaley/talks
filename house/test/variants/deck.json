@@ -1,0 +1,5 @@
+{
+  "title": "Variants fixture", "author": "house test", "date": "2026-10-08", "footer": "fixture", "draft": true,
+  "variants": { "cmb": { "a": "Map A", "b": "Map B", "c": "Map C" } },
+  "sections": [ { "title": "Variants", "outline": "A figure with per-variant images, one variant not made yet.", "slides": ["toggled", "plain"] } ]
+}

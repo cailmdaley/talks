@@ -217,7 +217,7 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
     (el.closest('svg') && el.localName !== 'svg' && el.localName !== 'text' && !el.closest('mjx-container')) ||
     (el.localName === 'img' && el.parentElement?.matches('.frame.crop'));
   // furniture that may sit outside the content box but must stay on the canvas
-  const furniture = el => el.closest('.foot, .chips, .logos') || (layout === 'bleed' && el.closest('figure'));
+  const furniture = el => el.closest(".foot, .chips, .logos, .variants") || (layout === 'bleed' && el.closest('figure'));
   // the ink of an element: its text, not its box
   const ink = el => { const range = document.createRange(); range.selectNodeContents(el); return range.getBoundingClientRect(); };
   const opacity = el => { let o = 1; for (let e = el; e && e !== frame; e = e.parentElement) o *= parseFloat(getComputedStyle(e).opacity); return o; };

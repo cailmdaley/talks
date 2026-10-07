@@ -79,6 +79,20 @@ export function loadDeck(dir) {
     for (const f of fs.readdirSync(slideDir))
       if (f.endsWith('.html') && !seen.has(f.slice(0, -5)))
         problems.push(`slides/${f} is not listed in deck.json (list it, e.g. in a Backup section, or delete it)`);
+  if (meta.variants !== undefined) {
+    const axes = meta.variants;
+    const id = /^[a-z0-9_-]+$/;
+    if (!axes || typeof axes !== 'object' || Array.isArray(axes) || !Object.keys(axes).length)
+      problems.push('deck.json: "variants" maps each axis to its options, e.g. {"cmb": {"spt": "SPT-3G", "act": "ACT DR6"}}');
+    else for (const [a, opts] of Object.entries(axes)) {
+      if (!id.test(a)) problems.push(`deck.json: variant axis "${a}" must be lowercase letters, digits, - or _`);
+      if (!opts || typeof opts !== 'object' || !Object.keys(opts).length) { problems.push(`deck.json: variant axis "${a}" lists no options`); continue; }
+      for (const [o, label] of Object.entries(opts)) {
+        if (!id.test(o)) problems.push(`deck.json: variant option "${a}.${o}" must be lowercase letters, digits, - or _`);
+        if (typeof label !== 'string' || !label) problems.push(`deck.json: variant option "${a}.${o}" needs a label`);
+      }
+    }
+  }
   if (problems.length) throw new BuildError(problems);
   return { dir, name: path.basename(dir), meta, slides };
 }
@@ -271,12 +285,71 @@ async function resolveAssets(assets, ground) {
   return out;
 }
 
-function assetScript(assets) {
-  const dict = JSON.stringify(Object.fromEntries(assets));
-  return `<script>(function(){var A=${dict};document.querySelectorAll('img[data-asset]').forEach(function(i){i.src=A[i.getAttribute('data-asset')];});})();</script>`;
+// The deck page carries every asset (variants included) and exposes them to the
+// runtime as House.assets; the report carries only those its pages show.
+function assetScript(assets, html) {
+  const used = html ? new Set([...html.matchAll(/data-asset="([0-9a-f]+)"/g)].map(m => m[1])) : null;
+  const dict = JSON.stringify(Object.fromEntries([...assets].filter(([k]) => !used || used.has(k))));
+  return `<script>(function(){var A=${dict};window.HouseAssets=A;document.querySelectorAll('img[data-asset]').forEach(function(i){i.src=A[i.getAttribute('data-asset')];});})();</script>`;
 }
 
-function frameFigures(frame, deckDir, problems, where, assets) {
+// Text for one variant: data-variant="<variant> …" on any element of a slide shows it
+// only while one of those variants is shown; the build hides the ones the default
+// does not name (data-hide), so the report and a PDF show the default.
+function frameVariantText(frame, problems, where, variants) {
+  const V = variantKeys(variants);
+  for (const el of frame.querySelectorAll('[data-variant]')) {
+    const keys = el.getAttribute('data-variant').trim().split(/\s+/);
+    if (!variants) { problems.push(`${where}: data-variant needs "variants" in deck.json`); continue; }
+    const bad = keys.filter(k => !V.ok(k));
+    if (bad.length) problems.push(`${where}: data-variant "${bad.join(' ')}" is not one of the deck's variants (axes ${V.axes.join('|')})`);
+    if (!keys.includes(V.def)) el.setAttribute('data-hide', '');
+  }
+}
+
+function variantScript(variants) {
+  return variants ? `<script type="application/json" id="house-variants">${JSON.stringify(variants).replace(/</g, '\\u003c')}</script>` : '';
+}
+
+// The deck's variants (deck.json "variants"): the axes, and the default variant,
+// the first option of each axis joined by "|" in axis order.
+function variantKeys(variants) {
+  if (!variants) return { axes: [], def: null, ok: () => false };
+  const axes = Object.keys(variants);
+  const def = axes.map(a => Object.keys(variants[a])[0]).join('|');
+  const ok = key => { const p = String(key).split('|'); return p.length === axes.length && p.every((v, i) => v in variants[axes[i]]); };
+  return { axes, def, ok };
+}
+
+// data-alt='{"<variant>": "<image>", …}' on an <img> names the image to show for
+// each variant other than the default (its src). An image not made yet is left
+// out, so the toggle shows that variant disabled; one that exists must match
+// the default's aspect ratio. The build rewrites data-alt to asset keys.
+function frameAlts(img, im, blend, src, deckDir, problems, where, assets, variants) {
+  if (!img.hasAttribute('data-alt')) return;
+  const V = variantKeys(variants);
+  let alt;
+  try { alt = JSON.parse(img.getAttribute('data-alt')); } catch { alt = null; }
+  if (!alt || typeof alt !== 'object' || Array.isArray(alt)) { problems.push(`${where}: ${src}: data-alt must be JSON, {"<variant>": "<image path>"}`); img.removeAttribute('data-alt'); return; }
+  if (!variants) { problems.push(`${where}: ${src}: data-alt needs "variants" in deck.json`); img.removeAttribute('data-alt'); return; }
+  const out = {};
+  for (const [key, p] of Object.entries(alt)) {
+    if (!V.ok(key)) { problems.push(`${where}: ${src}: data-alt variant "${key}" is not one of the deck's (axes ${V.axes.join('|')})`); continue; }
+    if (key === V.def) { problems.push(`${where}: ${src}: data-alt lists the default variant "${key}"; that image is the src`); continue; }
+    const f = path.resolve(deckDir, p);
+    if (!fs.existsSync(f)) continue;
+    let vi;
+    try { vi = loadImage(f); } catch (e) { problems.push(`${where}: ${p}: ${e.message}`); continue; }
+    if (im.w && im.h && vi.w && vi.h && Math.abs((vi.w / vi.h) / (im.w / im.h) - 1) > 0.002) {
+      problems.push(`${where}: ${p}: a variant image needs the aspect ratio of its default ${src} (${(vi.w / vi.h).toFixed(4)} vs ${(im.w / im.h).toFixed(4)})`);
+      continue;
+    }
+    out[key] = addAsset(assets, vi, blend);
+  }
+  img.setAttribute('data-alt', JSON.stringify(out));
+}
+
+function frameFigures(frame, deckDir, problems, where, assets, variants) {
   // inline SVG schematics: sized by their viewBox, coloured by theme tokens
   for (const svg of [...frame.querySelectorAll('figure > svg')]) {
     const vb = (svg.getAttribute('viewBox') || '').trim().split(/[\s,]+/).map(Number);
@@ -300,6 +373,7 @@ function frameFigures(frame, deckDir, problems, where, assets) {
     img.setAttribute('data-asset', addAsset(assets, im, blend));
     if (blend && im.mime === 'image/svg+xml') img.setAttribute('data-blend', '');
     img.setAttribute('data-src-path', src);
+    frameAlts(img, im, blend, src, deckDir, problems, where, assets, variants);
     if (!img.hasAttribute('alt')) img.setAttribute('alt', '');
     const fig = img.parentElement;
     if (fig?.localName !== 'figure' || portrait) continue;
@@ -407,7 +481,7 @@ function appScripts(apps) {
 }
 
 // Build one .slide frame from an authored element (a <section> or an <aside class="detail">).
-function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, assets, apps, typeset }) {
+function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, assets, apps, typeset, variants }) {
   const doc = el.ownerDocument;
   const layout = el.getAttribute('data-layout');
   const frame = doc.createElement('div');
@@ -428,7 +502,8 @@ function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, ass
   if (layout === 'grid') frame.setAttribute('data-count', String(body.querySelectorAll(':scope > figure').length));
   if (layout === 'people') peopleGrid(frame, body);
 
-  frameFigures(frame, deckDir, problems, where, assets);
+  frameFigures(frame, deckDir, problems, where, assets, variants);
+  frameVariantText(frame, problems, where, variants);
   if (!isDetail) frameApps(frame, deckDir, problems, where, apps);
   textPass(frame, typeset, problems, where);
   // a detail is shown whole: it has no fragment sequence of its own
@@ -474,11 +549,11 @@ function buildSlides(deck, typeset) {
     const divider = Boolean(s.generated);
     const number = !s.backup ? ++counted : divider ? '' : `B${++extra}`;
     const footer = esc(deck.meta.footer);
-    const frame = makeFrame(section, { deckDir: deck.dir, problems, where, footer, number, assets, apps, typeset });
+    const frame = makeFrame(section, { deckDir: deck.dir, problems, where, footer, number, assets, apps, typeset, variants: deck.meta.variants });
     const notes = [...section.querySelectorAll(':scope > aside.notes')];
     for (const n of notes) textPass(n, typeset, problems, `${where} notes`);
     const details = [...section.querySelectorAll(':scope > aside.detail')].map((d, k) => {
-      const f = makeFrame(d, { deckDir: deck.dir, problems, where: `${where} detail ${k + 1}`, footer, number, isDetail: true, assets, typeset });
+      const f = makeFrame(d, { deckDir: deck.dir, problems, where: `${where} detail ${k + 1}`, footer, number, isDetail: true, assets, typeset, variants: deck.meta.variants });
       f.setAttribute('data-detail', String(k));
       return { frame: f, label: d.getAttribute('data-label') || `Detail ${k + 1}` };
     });
@@ -560,6 +635,7 @@ ${deckCss(deck) ? `<style>${deckCss(deck)}</style>` : ''}
 ${sections}
 </div></div>
 ${assetScript(slides.assets)}
+${variantScript(deck.meta.variants)}
 <script>${read(path.join(NM, 'reveal.js/dist/reveal.js'))}</script>
 <script>${read(path.join(NM, 'reveal.js/dist/plugin/notes.js'))}</script>
 <script>${read(path.join(HOUSE, 'runtime.js'))}</script>
@@ -607,7 +683,7 @@ ${deckCss(deck) ? `<style>${deckCss(deck)}</style>` : ''}
 </header>
 ${body}
 </main>
-${assetScript(slides.assets)}
+${assetScript(slides.assets, body)}
 <script>
 (function () {
   function fit() {

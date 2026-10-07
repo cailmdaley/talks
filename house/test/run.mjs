@@ -66,7 +66,48 @@ for (const needle of [
   'slides/badtex.html: TeX error in $\\frac{1}{$',
   'slides/badzoom.html: images/napoli_footprint_2_planck.png: data-zoom needs "x y w h"',
   'slides/badapp.html: missing app script private/nowhere.js',
+  'slides/badalt.html: images/napoli_footprint_1_dr1.png: data-alt needs "variants" in deck.json',
 ]) ok(fail.stderr.includes(needle), `build refuses: ${needle}`);
+
+// Variants: the deck passes the checker, and in a browser the control swaps the image,
+// disables the variant with no image, shows each variant's text, and stays off slides
+// without variants; the report shows the default variant and no control.
+const vdir = path.join(HERE, 'variants');
+const vcheck = run(vdir);
+ok(vcheck.status === 0, `variants fixture passes (${vcheck.stdout.trim().split('\n').pop()})`);
+{
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'house-variants-'));
+  const b = spawnSync(process.execPath, [path.join(HERE, '..', 'build.mjs'), vdir, '--out', out], { encoding: 'utf8' });
+  ok(b.status === 0, 'variants fixture builds');
+  const { default: puppeteer } = await import('puppeteer');
+  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--allow-file-access-from-files'] });
+  try {
+    const page = await browser.newPage();
+    await page.goto('file://' + path.join(out, 'variants', 'index.html'));
+    await page.waitForFunction(() => window.Reveal && Reveal.isReady() && document.querySelector('.slide > .variants'));
+    const state = () => page.evaluate(() => {
+      const s = document.querySelector('#toggled .slide');
+      const btn = o => s.querySelector(`.variants button[data-option="${o}"]`);
+      const shown = [...s.querySelectorAll('.source [data-variant]')].filter(e => !e.hasAttribute('data-hide')).map(e => e.textContent);
+      return { src: s.querySelector('figure img').getAttribute('src'), on: [...s.querySelectorAll('.variants button.on')].map(x => x.dataset.option),
+        disabled: ['a', 'b', 'c'].filter(o => btn(o).disabled), shown, plain: !!document.querySelector('#plain .slide > .variants') };
+    });
+    const s0 = await state();
+    ok(s0.on.join() === 'a' && s0.disabled.join() === 'c', `control: a on, c disabled (on ${s0.on}, disabled ${s0.disabled})`);
+    ok(s0.shown.join() === 'map A', 'default text shown, the others hidden');
+    ok(!s0.plain, 'no control on a slide without variants');
+    await page.evaluate(() => document.querySelector('#toggled .variants button[data-option="b"]').click());
+    const s1 = await state();
+    ok(s1.src !== s0.src && s1.on.join() === 'b', 'clicking b swaps the image');
+    ok(s1.shown.join() === 'another map', "b's text shown");
+    ok(await page.evaluate(() => House.variant()) === 'b', 'the choice is the deck\'s');
+    const report = fs.readFileSync(path.join(out, 'variants', 'report.html'), 'utf8');
+    ok(!report.includes('class="variants"') && /<span[^>]*data-hide[^>]*>another map/.test(report) && !/<span[^>]*data-hide[^>]*>map A/.test(report),
+      'the report shows the default variant, with no control');
+  } finally { await browser.close(); }
+}
 
 const only = spawnSync(process.execPath, [CHECK, path.join(HERE, '..', 'demo'), '--only', 'nope'], { encoding: 'utf8' });
 ok(only.status === 2 && only.stderr.includes('no slide named nope'), '--only with an unknown slide fails');

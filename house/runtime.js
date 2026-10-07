@@ -166,6 +166,11 @@
       var ctx = {
         keyboard: function (on) { Reveal.configure({ keyboard: on }); },
         still: function () { return still.matches; },
+        // the app has these variants and draws one when asked; the deck's control
+        // and shared choice drive it
+        variants: function (keys, apply) {
+          vOffer(fig.closest('.slide'), { has: function (k) { return keys.indexOf(k) >= 0; }, apply: apply });
+        },
       };
       fig.houseApp = factory(fig, el ? JSON.parse(el.textContent) : null, ctx);
       fig.classList.add('app-live');
@@ -190,9 +195,119 @@
     e.currentSlide.querySelectorAll('figure.app-live').forEach(function (f) { f.houseApp.step(stepOf(f), false); });
   });
 
+  // ── Variants: one choice per axis (deck.json "variants"), shared by the deck ──
+  // A slide takes part when an <img> carries data-alt (the build maps each variant
+  // it has to an asset), when an element carries data-variant (shown only for
+  // those variants), or when an app offers variants through ctx.variants(keys, apply).
+  // Each such slide gets one control in its bottom-right corner, a segmented
+  // button group per axis. A choice made on any slide is the deck's choice: every
+  // other slide shows it too, or its default where it lacks that variant, and its
+  // control shows which variant is on screen. A variant a slide lacks is offered
+  // disabled. The report and a PDF show the default.
+  var VDEF = (function () { var el = document.getElementById('house-variants'); return el ? JSON.parse(el.textContent) : null; })();
+  var vAxes = VDEF ? Object.keys(VDEF) : [];
+  var vState = {};
+  vAxes.forEach(function (a) { vState[a] = Object.keys(VDEF[a])[0]; });
+  var vKey = function (s) { return vAxes.map(function (a) { return s[a]; }).join('|'); };
+  var V0 = vKey(vState);
+  var vFrames = [];              // { frame, offers: [{ has(key), apply(key) }], control }
+  var printing = function () { return !!(Reveal.isPrintView && Reveal.isPrintView()); };
+
+  function vFrame(frame) {
+    for (var i = 0; i < vFrames.length; i++) if (vFrames[i].frame === frame) return vFrames[i];
+    var f = { frame: frame, offers: [], control: null };
+    vFrames.push(f);
+    return f;
+  }
+  function vHas(f, key) { return key === V0 || f.offers.every(function (o) { return o.has(key); }); }
+  function vShown(f) { var k = vKey(vState); return vHas(f, k) ? k : V0; }
+
+  function vControl(f) {
+    var c = document.createElement('div');
+    c.className = 'variants';
+    c.setAttribute('role', 'group');
+    c.setAttribute('aria-label', 'Variant');
+    vAxes.forEach(function (a) {
+      var seg = document.createElement('span');
+      seg.className = 'seg';
+      Object.keys(VDEF[a]).forEach(function (o) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = VDEF[a][o];
+        b.setAttribute('data-axis', a);
+        b.setAttribute('data-option', o);
+        b.addEventListener('click', function (e) { e.stopPropagation(); House.setVariant(a, o); });
+        seg.appendChild(b);
+      });
+      c.appendChild(seg);
+    });
+    f.frame.appendChild(c);
+    return c;
+  }
+
+  function vRender(f) {
+    var key = printing() ? V0 : vShown(f);
+    f.offers.forEach(function (o) { o.apply(key); });
+    if (!f.control) return;
+    var parts = key.split('|');
+    f.control.querySelectorAll('button').forEach(function (b) {
+      var i = vAxes.indexOf(b.getAttribute('data-axis'));
+      var want = parts.slice();
+      want[i] = b.getAttribute('data-option');
+      var on = parts[i] === want[i], has = vHas(f, want.join('|'));
+      b.classList.toggle('on', on);
+      b.disabled = !has;
+      b.title = has ? '' : b.textContent + ': not available on this slide';
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function vOffer(frame, offer) {
+    if (!VDEF || !frame) return;
+    var f = vFrame(frame);
+    f.offers.push(offer);
+    if (!f.control && !printing()) f.control = vControl(f);
+    vRender(f);
+  }
+
+  function mountVariants() {
+    if (!VDEF || !Reveal.isReady()) return;
+    document.querySelectorAll('.reveal .slides .slide').forEach(function (frame) {
+      if (frame.houseVariants) return;
+      frame.houseVariants = true;
+      var imgs = Array.prototype.slice.call(frame.querySelectorAll('img[data-alt]'));
+      var texts = Array.prototype.slice.call(frame.querySelectorAll('[data-variant]'));
+      if (!imgs.length && !texts.length) return;
+      var maps = imgs.map(function (i) { try { return JSON.parse(i.getAttribute('data-alt')); } catch (e) { return {}; } });
+      vOffer(frame, {
+        has: function (key) { return maps.every(function (m) { return key in m; }); },
+        apply: function (key) {
+          var A = window.HouseAssets || {};
+          imgs.forEach(function (img, n) {
+            var asset = key === V0 ? img.getAttribute('data-asset') : maps[n][key];
+            if (asset && A[asset] && img.getAttribute('src') !== A[asset]) img.setAttribute('src', A[asset]);
+          });
+          texts.forEach(function (el) {
+            var show = el.getAttribute('data-variant').trim().split(/\s+/).indexOf(key) >= 0;
+            if (show) el.removeAttribute('data-hide'); else el.setAttribute('data-hide', '');
+          });
+        },
+      });
+    });
+  }
+  Reveal.on('ready', mountVariants);
+  Reveal.on('pdf-ready', mountVariants);
+
   // Hooks for the checker, for scripted capture and for app scripts.
   window.House = {
     open: open, close: close, settle: settle,
     app: function (name, factory) { apps[name] = factory; mountApps(); },
+    variant: function () { return vKey(vState); },
+    variantDefault: function () { return V0; },
+    setVariant: function (axis, option) {
+      if (!VDEF || !(axis in VDEF) || !(option in VDEF[axis])) return;
+      vState[axis] = option;
+      vFrames.forEach(vRender);
+    },
   };
 })();
