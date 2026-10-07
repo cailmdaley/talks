@@ -498,7 +498,7 @@ ${s.notes.trim() ? `<aside class="notes">${s.notes}</aside>` : ''}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(deck.meta.title)}</title>
-<meta name="description" content="${esc(deck.meta.description || '')}">
+${deck.meta.noindex ? '<meta name="robots" content="noindex">\n' : ''}<meta name="description" content="${esc(deck.meta.description || '')}">
 <style>${fontFaces()}</style>
 <style>${read(path.join(NM, 'reveal.js/dist/reveal.css'))}</style>
 <style>${read(path.join(HOUSE, 'house.css'))}</style>
@@ -542,7 +542,7 @@ ${s.details.map(d => `<div class="detail-copy"><p class="label">${esc(d.label)}<
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(m.title)} — report</title>
-<style>${fontFaces()}</style>
+${m.noindex ? '<meta name="robots" content="noindex">\n' : ''}<style>${fontFaces()}</style>
 <style>${read(path.join(HOUSE, 'house.css'))}</style>
 <style>${theme}</style>
 <style>${mathCss}</style>

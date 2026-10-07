@@ -7,6 +7,7 @@
   "footer": "Cail Daley · Euclid CMBX · OU-SHE × WLSWG · Napoli · October 2026",
   "theme": "euclid",
   "draft": true,
+  "noindex": true,
   "sections": [
     {
       "title": "Opening",

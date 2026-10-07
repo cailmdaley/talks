@@ -46,7 +46,7 @@ First time on a machine: `npm install` at the repo root (reveal, MathJax, fonts,
 }
 ```
 
-`theme` is one of the files in `house/themes/` (default `house`). `macros` are TeX macros for every slide. `css` names an optional deck stylesheet for rare one-offs; classes it defines join the vocabulary the linter accepts. `draft: true` keeps the deck off the talks index but still publishes it at its URL.
+`theme` is one of the files in `house/themes/` (default `house`). `macros` are TeX macros for every slide. `css` names an optional deck stylesheet for rare one-offs; classes it defines join the vocabulary the linter accepts. `draft: true` keeps the deck off the talks index but still publishes it at its URL. `noindex: true` adds `<meta name="robots" content="noindex">` to the deck and its report, so search engines that crawl the page leave it out of their index (don't also block it in robots.txt, or crawlers never see the tag).
 
 A slide file holds exactly one `<section>` with a `data-layout`, a headline, its content, and speaker notes:
 
