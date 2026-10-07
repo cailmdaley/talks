@@ -1,27 +1,22 @@
-"""Footprint build-up for the Napoli CMBX talk: the Euclid DR1 wide regions with
+"""Footprint build-up for the Napoli CMBX talk: the Euclid DR1 effective coverage with
 the CMB lensing footprints laid over them one at a time (Planck PR4, ACT DR6,
 SPT-3G Main), seen from the south and north celestial poles.
 
 Four PNGs with an identical frame, written to the shared images/ pool:
-  napoli_footprint_1_dr1.png     Euclid DR1-wide alone
+  napoli_footprint_1_dr1.png     Euclid DR1 alone
   napoli_footprint_2_planck.png  + Planck PR4
   napoli_footprint_3_act.png     + ACT DR6
   napoli_footprint_4_spt.png     + SPT-3G Main
 The slide stacks them, so each step adds exactly one layer. Both panels are
 polar Lambert azimuthal equal-area views at one scale and one central RA.
 
-DR1-wide is the two main regions of the DR1 observed VIS-mosaic footprint:
-in each hemisphere, the largest connected group of pixels (8-neighbour, NSIDE
-1024), plus any other group that comes within LINK_DEG of it. Smaller isolated
-fields (equatorial patches, the fields around the north ecliptic pole, small
-far-south pieces) are left out; their areas are printed.
-
-Areas are measured at each mask's native NSIDE (DR1-wide is upgraded to 2048
-for the overlaps; a binary map upgrades exactly):
-  - a CMB footprint's area counts pixels with mask > 0.5 (within 0.4 % of the
-    apodized mask's weighted sum), and the drawn fill uses the same threshold;
-  - its overlap with DR1-wide is binary: mask > 0 and DR1-wide.
-The maps are drawn at NSIDE 512.
+Euclid DR1 is the DR1_R2 VMPZ WL effective coverage (8964 wide tiles, Aug
+2025): each pixel holds the fraction of it that is effectively covered. The
+drawn footprint is effcov > 0. Every area is effective, Σ effcov × pixel area:
+DR1's own, and its overlap with each CMB footprint (effcov summed over the
+pixels where the CMB mask is > 0, with effcov upgraded from NSIDE 1024 to the
+mask's 2048 by giving each child its parent's value). The CMB footprints are
+drawn where the mask is > 0.5. The maps are drawn at NSIDE 512.
 
 Run in the cmbx container: app python make_footprints.py [--cache file.npz]
 """
@@ -37,16 +32,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, patheffects
 from matplotlib.colors import to_rgb
-from scipy.sparse import coo_matrix
-from scipy.sparse.csgraph import connected_components
 from scipy import ndimage
-from scipy.spatial import cKDTree
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "images")
 INPUTS = "/leonardo_work/EUHPC_E07_074/cmbx/inputs"
-DR1_PATH = ("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/footprints/"
-            "dr1_observed/euclid_dr1_observed_wide_nside1024.fits")
+DR1_PATH = f"{INPUTS}/euclid/dr1/vmpz/effcov/effcov_wl_dr1r2_nside1024.fits"
 CMB = {  # key: (label, path)
     "planck": ("Planck PR4", f"{INPUTS}/planck/masks/mask_rotated.fits"),
     "act": ("ACT DR6", f"{INPUTS}/act/masks/mask_act_dr6_lensing_v1_healpix_nside_2048_baseline.fits"),
@@ -54,7 +45,6 @@ CMB = {  # key: (label, path)
             "mask2048_border_apod_mask_threshold0.1_allghz_dense.fits"),
 }
 NSIDE_PLOT = 512
-LINK_DEG = 1.0
 
 # euclid theme (house/themes/euclid.css)
 INK, MUTED = "#111418", "#535B67"
@@ -72,47 +62,8 @@ FS_GRID = 19     # graticule labels: 26 px as shown
 
 
 # ---------------------------------------------------------------- measurement
-def dr1_wide(d, nside):
-    """DR1-wide: per hemisphere, the largest connected group plus groups within LINK_DEG of it."""
-    idx = np.flatnonzero(d)
-    pos = np.full(d.size, -1)
-    pos[idx] = np.arange(idx.size)
-    nb = hp.get_all_neighbours(nside, idx)
-    rows, cols = [], []
-    for k in range(8):
-        v = nb[k] >= 0
-        v[v] &= d[nb[k][v]]
-        rows.append(np.flatnonzero(v))
-        cols.append(pos[nb[k][v]])
-    rows, cols = np.concatenate(rows), np.concatenate(cols)
-    _, lab = connected_components(coo_matrix((np.ones(rows.size), (rows, cols)),
-                                             shape=(idx.size, idx.size)), directed=False)
-    size = np.bincount(lab)
-    vec = np.array(hp.pix2vec(nside, idx)).T
-    south = vec[:, 2] < 0
-    keep = np.zeros(idx.size, bool)
-    pa = hp.nside2pixarea(nside, degrees=True)
-    for hemi in (south, ~south):
-        comps = np.unique(lab[hemi])
-        main = comps[np.argmax(size[comps])]
-        tree = cKDTree(vec[lab == main])
-        for c in comps:
-            m = lab == c
-            sep = 0.0 if c == main else np.degrees(tree.query(vec[m])[0].min())
-            ra, dec = hp.pix2ang(nside, idx[m], lonlat=True)
-            ra = (ra + 180) % 360 - 180
-            kept = sep < LINK_DEG
-            keep |= m & kept
-            print(f"  DR1 group {size[c] * pa:7.1f} deg²  RA {ra.min():5.0f}..{ra.max():4.0f}  "
-                  f"Dec {dec.min():4.0f}..{dec.max():4.0f}  {sep:6.2f}° from main  "
-                  f"{'kept' if kept else 'dropped'}", flush=True)
-    out = np.zeros_like(d)
-    out[idx[keep]] = True
-    return out
-
-
-def upgrade_bool(b, nside_out):
-    """Exact upgrade of a boolean RING map: each child pixel takes its parent's value."""
+def upgrade(b, nside_out):
+    """Upgrade a RING map by giving each child pixel its parent's value."""
     nside_in = hp.npix2nside(b.size)
     f = (nside_out // nside_in) ** 2
     nest = b[hp.nest2ring(nside_in, np.arange(b.size))]
@@ -121,33 +72,34 @@ def upgrade_bool(b, nside_out):
 
 def measure():
     def read(p):
-        return np.nan_to_num(hp.read_map(p, dtype=np.float64))
+        m = np.nan_to_num(hp.read_map(p, dtype=np.float64))
+        m[m < 0] = 0.0                       # UNSEEN outside a footprint reads as zero
+        return m
 
-    d = read(DR1_PATH) > 0
-    ns_d = hp.npix2nside(d.size)
-    pa_d = hp.nside2pixarea(ns_d, degrees=True)
-    wide = dr1_wide(d, ns_d)
-    _, dec = hp.pix2ang(ns_d, np.arange(d.size), lonlat=True)
-    A = {"dr1_all": d.sum() * pa_d,
-         "dr1_wide_s": (wide & (dec < 0)).sum() * pa_d,
-         "dr1_wide_n": (wide & (dec >= 0)).sum() * pa_d,
-         "map_dr1": hp.ud_grade(wide.astype(float), NSIDE_PLOT) > 0.5}
+    e = read(DR1_PATH)
+    ns_e = hp.npix2nside(e.size)
+    pa_e = hp.nside2pixarea(ns_e, degrees=True)
+    _, dec = hp.pix2ang(ns_e, np.arange(e.size), lonlat=True)
+    A = {"dr1_eff": e.sum() * pa_e,
+         "dr1_eff_s": e[dec < 0].sum() * pa_e,
+         "dr1_eff_n": e[dec >= 0].sum() * pa_e,
+         "dr1_geom": (e > 0).sum() * pa_e,
+         "map_dr1": hp.ud_grade((e > 0).astype(float), NSIDE_PLOT) > 0.5}
     up = {}
     for k, (_, p) in CMB.items():
         m = read(p)
         ns = hp.npix2nside(m.size)
         pa = hp.nside2pixarea(ns, degrees=True)
         if ns not in up:
-            w_up = upgrade_bool(wide, ns)
-            _, dec2 = hp.pix2ang(ns, np.arange(w_up.size), lonlat=True)
-            up[ns] = (w_up, upgrade_bool(d, ns), dec2 < 0)
-        w_up, d_up, s_up = up[ns]
+            _, dec2 = hp.pix2ang(ns, np.arange(hp.nside2npix(ns)), lonlat=True)
+            up[ns] = (upgrade(e, ns), dec2 < 0)
+        e_up, s_up = up[ns]
+        on = m > 0
         A[f"{k}_area"] = (m > 0.5).sum() * pa
-        A[f"{k}_area_w"] = m.sum() * pa
-        A[f"{k}_cap"] = ((m > 0) & w_up).sum() * pa
-        A[f"{k}_cap_s"] = ((m > 0) & w_up & s_up).sum() * pa
-        A[f"{k}_cap_n"] = ((m > 0) & w_up & ~s_up).sum() * pa
-        A[f"{k}_cap_all"] = ((m > 0) & d_up).sum() * pa
+        A[f"{k}_cap"] = e_up[on].sum() * pa
+        A[f"{k}_cap_s"] = e_up[on & s_up].sum() * pa
+        A[f"{k}_cap_n"] = e_up[on & ~s_up].sum() * pa
+        A[f"{k}_cap_geom"] = (on & (e_up > 0)).sum() * pa
         A[f"map_{k}"] = hp.ud_grade(m, NSIDE_PLOT) > 0.5
         print(f"{k}: nside {ns}", flush=True)
     return A
@@ -359,10 +311,10 @@ def render(panels, layers, A, path, legend_xy, height):
     ax.imshow(rgb, extent=(0, W_PX, H_PX, 0), interpolation="nearest", zorder=0)
 
     # legend: one fixed slot per entry, so each frame fills the next slot and nothing moves.
-    # DR1 (DR1-wide) carries its own area; each CMB survey only its overlap with it.
+    # DR1 carries its effective area; each CMB survey only its effective overlap with DR1.
     entries = [(C_DR1, C_DR1_EDGE, "Euclid DR1: "
-                f"{deg2(float(A['dr1_wide_s']) + float(A['dr1_wide_n']))} deg²\n"
-                f"(south {deg2(A['dr1_wide_s'])} + north {deg2(A['dr1_wide_n'])})")]
+                f"{deg2(A['dr1_eff'])} deg²\n"
+                f"(south {deg2(A['dr1_eff_s'])} + north {deg2(A['dr1_eff_n'])})")]
     for k in layers:
         c, a = COLOURS[k]
         entries.append((tuple((1 - a) + a * np.array(to_rgb(c))), c,
@@ -433,12 +385,12 @@ def main():
         A = measure()
         if args.cache:
             np.savez(args.cache, **A)
-    print(f"DR1 observed: {float(A['dr1_all']):.1f} deg²; DR1-wide south {float(A['dr1_wide_s']):.1f}, "
-          f"north {float(A['dr1_wide_n']):.1f} deg²")
+    print(f"DR1 effective {float(A['dr1_eff']):.1f} deg² (south {float(A['dr1_eff_s']):.1f}, "
+          f"north {float(A['dr1_eff_n']):.1f}); effcov > 0 covers {float(A['dr1_geom']):.1f} deg²")
     for k in CMB:
-        print(f"{k}: >0.5 {float(A[k + '_area']):.1f}  weighted {float(A[k + '_area_w']):.1f}  "
-              f"∩DR1-wide {float(A[k + '_cap']):.1f} (S {float(A[k + '_cap_s']):.1f}, N {float(A[k + '_cap_n']):.1f})  "
-              f"∩DR1-all {float(A[k + '_cap_all']):.1f} deg²", flush=True)
+        print(f"{k}: mask > 0.5 {float(A[k + '_area']):.1f}  ∩DR1 effective {float(A[k + '_cap']):.1f} "
+              f"(S {float(A[k + '_cap_s']):.1f}, N {float(A[k + '_cap_n']):.1f})  "
+              f"∩DR1 geometric {float(A[k + '_cap_geom']):.1f} deg²", flush=True)
 
     setup_font()
     panels, leg, height = layout(A)
