@@ -8,13 +8,17 @@ results.json and draws.
 
 Three estimators, all relative to the fiducial theory vector:
 
+  Scale cut (results.json["scale_cut_used"]): the PT-validated split,
+  k_max = 0.2 h/Mpc for delta-delta, 0.15 h/Mpc for delta-kappa and
+  gamma-delta, ell_max = k_max chi(z_lens) - 1/2.
+
   lens ratio  mu_i = C^{gamma_i delta_j} / C^{kappa delta_j}, one amplitude per
               source bin with a free amplitude per lens bin, so galaxy bias and
               sigma8 cancel; mu_i ~ (1+m_i) x source-bin lensing efficiency
               relative to the CMB's.  Blind-immune (x0.98-1.04 over the
               public blinding envelope).
-  b           galaxy bias from delta-delta vs delta-kappa at ell < k_max chi(z),
-              k_max = 0.2 h/Mpc.  sigma8 cancels, Omega_m does not -> blinded.
+  b           galaxy bias from delta-delta vs delta-kappa on linear scales.
+              sigma8 cancels, Omega_m does not -> blinded.
   A^gk        gamma-kappa amplitude per source bin, 100 < ell < 3000;
               ~ S8^2.6 -> blinded.
 
@@ -41,6 +45,7 @@ from matplotlib.ticker import FixedLocator
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(HERE, "..", "images")
+BIAS_CUT = "0.2/0.15"         # delta-delta / delta-kappa k_max, h/Mpc
 SRC = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/napoli/crosses/results.json"
 
 # euclid theme (house/themes/euclid.css)
@@ -101,9 +106,10 @@ def load():
         "mock_mu_all": np.array([s["mu_all_point"] for s in m["lens"]]),
         "mu": np.array([[x["median"], x["lo"], x["hi"]] for x in d["lens"]["mu"]]),
         "mu_all": d["lens"]["mu_all"],
-        "b": np.array([[x["b"]["median"], x["b"]["lo"], x["b"]["hi"]] for x in d["bias"]["0.2"]]),
-        "snr_dk": np.array([x["snr_dk"] for x in d["bias"]["0.2"]]),
-        "lmax": np.array([x["lmax"] for x in d["bias"]["0.2"]]),
+        "b": np.array([[x["b"]["median"], x["b"]["lo"], x["b"]["hi"]] for x in d["bias"][BIAS_CUT]]),
+        "snr_dk": np.array([x["snr_dk"] for x in d["bias"][BIAS_CUT]]),
+        "lmax": np.array([x["lmax_dk"] for x in d["bias"][BIAS_CUT]]),
+        "mock_b_ratio": np.array([[x["b_point"] for x in s] for s in m["bias"][BIAS_CUT]]) / np.array(m["b_true"]),
         "A": np.array(d["gk"]["A"]), "A_err": np.array(d["gk"]["err"]),
         "mock_A": np.array([s["A"] for s in m["gk"]]),
         "blind_mu": np.array([p["mu"] for p in bs]),
@@ -131,10 +137,12 @@ def summarize(a):
     print("data mu_i: " + "  ".join(f"{v[0]:.2f}-{v[1]:.2f}+{v[2]:.2f}" for v in a["mu"]))
     print(f"blind range mu_i: {a['blind_mu'].min():.3f}-{a['blind_mu'].max():.3f}; "
           f"shared: {a['blind_mu_all'].min():.3f}-{a['blind_mu_all'].max():.3f}")
-    print("data b (k_max 0.2): " + "  ".join(f"{v[0]:.2f}-{v[1]:.2f}+{v[2]:.2f}" for v in a["b"]))
+    print(f"data b ({BIAS_CUT}): " + "  ".join(f"{v[0]:.2f}-{v[1]:.2f}+{v[2]:.2f}" for v in a["b"]))
     print("  (b - b_fid)/sigma_lo: " + " ".join(f"{(v[0] - f) / v[1]:+.1f}" for v, f in zip(a["b"], a["b_fid"])))
     print("  delta-kappa S/N (SPT): " + " ".join(f"{x:.1f}" for x in a["snr_dk"]))
     print("  ell_max: " + " ".join(f"{x:.0f}" for x in a["lmax"]))
+    print("  mock median b/b_true: " + " ".join(f"{x:.2f}" for x in np.median(a["mock_b_ratio"], 0)))
+    print(f"  mock bin-1 b/b_true range: {a['mock_b_ratio'][:, 0].min():.2f} to {a['mock_b_ratio'][:, 0].max():.2f}")
     print(f"blind range b/b_fid: {a['blind_b'].min():.2f}-{a['blind_b'].max():.2f}")
     print("data A_gk: " + "  ".join(f"{x:.2f}+-{e:.2f}" for x, e in zip(a["A"], a["A_err"])))
     print("mock A_gk mean: " + " ".join(f"{x:.2f}" for x in a["mock_A"].mean(0)))
@@ -221,17 +229,22 @@ def bias(a):
         ax.fill_between([xi - 0.36, xi + 0.36], f * l, f * h, color=BAND, lw=0, zorder=0)
         ax.plot([xi - 0.36, xi + 0.36], [f, f], color=INK, lw=2.0, zorder=1)
     v = a["b"]
+    # 3, 6: measurements; 2: low S/N; 4, 5: delta-delta excess; 1: one delta-kappa band, not measured
     solid = np.array([False, False, True, False, False, True])
     for i in range(6):
         col = DATA if solid[i] else GREYED
+        alpha = 0.35 if i == 0 else 1.0
         hi = min(v[i, 0] + v[i, 2], 4.55) - v[i, 0]
         ax.errorbar(x[i], v[i, 0], yerr=[[v[i, 1]], [hi]], fmt="o", ms=12, color=col,
                     mfc=col if solid[i] else "white", mew=2.2 if not solid[i] else 1.2,
-                    mec=col if not solid[i] else "white", elinewidth=2.8, capsize=0, zorder=3)
+                    mec=col if not solid[i] else "white", elinewidth=2.8, capsize=0, zorder=3,
+                    alpha=alpha)
         if v[i, 0] + v[i, 2] > 4.55:
             ax.annotate("", xy=(x[i], 4.58), xytext=(x[i], 4.3),
                         arrowprops=dict(arrowstyle="-|>", color=col, lw=2.6, mutation_scale=22))
-    ax.text(1.5, 2.15, "low S/N", fontsize=LABEL, color=MUTED, ha="center", va="bottom")
+    ax.text(0.62, 0.03, "not measured at this cut", fontsize=LABEL, color=MUTED, ha="left",
+            va="bottom")
+    ax.text(2.0, 2.42, "low S/N", fontsize=LABEL, color=MUTED, ha="center", va="bottom")
     ax.text(4.42, 3.95, "$\\delta\\delta$ excess\nrising with $\\ell$", fontsize=LABEL, color=MUTED,
             ha="right", va="top", linespacing=1.1)
     blinded_tag(ax, 0.02, 0.99)
