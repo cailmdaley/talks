@@ -45,6 +45,9 @@
       "outline": "Data vectors, theory and likelihood, simulations: where the 3×2pt × CMB-lensing pipeline stands.",
       "slides": [
         "kp-3",
+        "kp23-data-vectors",
+        "kp23-likelihood",
+        "kp23-simulations",
         "pipeline",
         "mock-recovery",
         "blind-rehearsal",
@@ -84,13 +87,8 @@
     },
     {
       "title": "Backup",
-      "outline": "Theory-operator accuracy, and the KP2-3 workstream scope slides from Barcelona.",
+      "outline": "The per-bin shear × CMB-lensing amplitude behind the galaxy-bias slide.",
       "slides": [
-        "theory-accuracy",
-        "kp23-data-vectors",
-        "kp23-likelihood",
-        "kp23-simulations",
-        "tr1-spt-gk",
         "gk-amplitude"
       ]
     }
