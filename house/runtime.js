@@ -159,6 +159,9 @@
     document.querySelectorAll('figure[data-app]').forEach(function (fig) {
       var factory = apps[fig.getAttribute('data-app')];
       if (fig.houseApp || !factory) return;
+      // a copy made after mounting (reveal's print view clones each fragment
+      // state) carries a frozen drawing: replace it with a live one
+      fig.querySelectorAll('.app-view').forEach(function (v) { v.parentNode.removeChild(v); });
       var el = document.getElementById('house-data-' + fig.getAttribute('data-app-data'));
       var ctx = {
         keyboard: function (on) { Reveal.configure({ keyboard: on }); },
@@ -179,6 +182,7 @@
     });
   }
   Reveal.on('ready', mountApps);
+  Reveal.on('pdf-ready', mountApps);
   Reveal.on('fragmentshown', appFragments);
   Reveal.on('fragmenthidden', appFragments);
   Reveal.on('slidechanged', function (e) {
