@@ -18,7 +18,8 @@ writes) and writes private/dv_vector_app.json, which the slide's app
 Every y axis, in every view, has the same three major ticks: 0, s and 2s, s the
 largest 1, 2 or 5 x 10^k with 2s below the top of its range, in units of 10^-e set
 once per block of rows (gamma-gamma, gamma-delta, delta-delta, and each half of
-the CMB lensing row). The overview marks them but labels nothing on its y axes;
+the CMB lensing row). Every range is the union over all variants on disk, so the
+toggles change only the points and a rerun with new variants rescales them all. The overview marks them but labels nothing on its y axes;
 the close-up and the detail cards label them. Residual strips span +-3 sigma with ticks at
 -2, 0 and 2; a band beyond the strip is drawn as a triangle on its edge.
 
@@ -300,8 +301,10 @@ def compact(node):
 
 
 # ── the variant's panels, and their axes ────────────────────────────────────
-def segments(pairs):
-    """Every row segment (row, half) with its cells, block exponent, y limits and ticks."""
+def segments(variants):
+    """Every row segment (row, half) with its cells, block exponent, y limits and ticks, and
+    every pair's own detail axis: each the union over all variants, so a toggle moves only
+    the points, never an axis."""
     cells = {}
     for r, a in enumerate(TR):
         for c, b in enumerate(TR[: r + 1]):
@@ -312,16 +315,20 @@ def segments(pairs):
     blocks = {}
     for (r, c), k in cells.items():
         blocks.setdefault(block(r, c // 6), []).append(k)
-    e_of = {b: exponent(pairs, ks) for b, ks in blocks.items()}
+    e_of = {b: max(exponent(pairs, ks) for pairs in variants) for b, ks in blocks.items()}
     segs = {}
     for (r, c), k in cells.items():
         segs.setdefault((r, c // 6), []).append((c, k))
     out = {}
     for (r, h), cs in segs.items():
         e = e_of[block(r, h)]
-        ylim, ticks = yaxis(*span([prep(pairs[k], e) for _, k in cs]))
+        ylim, ticks = yaxis(*span([prep(pairs[k], e) for _, k in cs for pairs in variants]))
         out[(r, h)] = dict(cols=sorted(cs), e=e, ylim=ylim, ticks=ticks)
-    return cells, out, e_of
+    axes = {}
+    for (r, c), k in cells.items():
+        e = out[(r, c // 6)]["e"]
+        axes[k] = (e,) + yaxis(*span([prep(pairs[k], e) for pairs in variants]))
+    return cells, out, axes
 
 
 def overview(pairs, title, glyphs, segs):
@@ -396,14 +403,13 @@ def near(pairs, title, glyphs, segs):
 DW, DH = 1320.0, 600.0
 
 
-def detail(pairs, k, a, b, glyphs, e):
-    p = pairs[k]
-    d = prep(p, e)
+def detail(pairs, k, a, b, glyphs, axis):
+    e, ylim, ticks = axis
+    d = prep(pairs[k], e)
     fig = plt.figure(figsize=(DW / 72, DH / 72), dpi=72)
     fs = 21.0
     m = axes_at(fig, 150, 96, DW - 190, 300, DW, DH)
     s = axes_at(fig, 150, 408, DW - 190, 110, DW, DH)
-    ylim, ticks = yaxis(*span([d]))
     draw_panel(m, d, ylim, ticks, lw_bar=1.4, ms=6.5, lw_th=1.6, tick_len=7, lw_frame=1.0)
     draw_strip(s, d, ms=6.0, tick_len=7, lw_frame=1.0)
     for ax in (m, s):
@@ -433,15 +439,15 @@ def main():
                detail=dict(w=DW, h=DH), views=VIEWS,
                near=dict(x=V0X, y=VY, s=S_CLOSE, w=NEAR_W, h=H), variants={})
     glyphs, cells_out = {}, None
+    cells, segs, axes = segments(list(src["variants"].values()))
     for vk, pairs in src["variants"].items():
         shear, cmb = vk.split("|")
         title = f"TR1 {src['shears'][shear]} $\\times$ {src['cmbs'][cmb]}, blinded"
-        cells, segs, _ = segments(pairs)
         lay = dict(over=overview(pairs, title, glyphs, segs), near=near(pairs, title, glyphs, segs))
         det = {}
         for (r, c), k in cells.items():
             a, b = ("kappa", TR[c]) if r == 12 else (TR[r], TR[c])
-            det[k] = detail(pairs, k, a, b, glyphs, segs[(r, c // 6)]["e"])
+            det[k] = detail(pairs, k, a, b, glyphs, axes[k])
         out["variants"][vk] = dict(layers=lay, details=det)
         cells_out = [dict(key=k, x=round(col_x(c), 2), y=round(row_y(r), 2), w=round(CW, 2), h=round(row_h(r), 2))
                      for (r, c), k in sorted(cells.items())]
