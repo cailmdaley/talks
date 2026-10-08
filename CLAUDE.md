@@ -31,9 +31,11 @@ sub-/super-unity statement about unblinded data, no figure of unblinded measurem
 may be committed *anywhere* in the repo (speaker notes, per-talk CLAUDE.md, retired figures, planning
 docs); that background belongs in the private felt store, and the repo carries a pointer at most.
 **Blinded** data vectors and blinded estimates are allowed (Cail's decision, Oct 2026), labelled as
-blinded, in decks that set `"noindex": true` in `deck.json`. A quantity the blind does not move (for
-example a ratio in which cosmology cancels) is effectively unblinded: it goes in only with Cail's
-explicit approval.
+blinded, in decks that set `"noindex": true` in `deck.json`. The rule for what counts as blinded:
+a quantity that carries cosmology is blinded; a non-cosmological quantity (a calibration such as the
+lens ratio γδ/κδ, which the blind moves by only a few per cent) or a null (template × data, whose
+expectation is zero whatever the cosmology) may be shown as it is. Call such a quantity
+blind-insensitive, never "unblinded".
 
 ### Image hygiene
 - **Resolution over file size**: use figures at full resolution — scientific figures need to stay
