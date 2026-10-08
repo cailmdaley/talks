@@ -50,15 +50,7 @@ House.app('dv_vector', function (figure, data, ctx) {
   defs.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;';
   defs.appendChild(parse('<svg xmlns="' + NS + '"><defs>' + data.glyphs + '</defs></svg>').firstChild);
   var css = el('style', {}, defs);
-  css.textContent = data.css + [
-    '.dvv-mpl * { stroke-linejoin: round; stroke-linecap: butt; }',
-    '.dvv-hit { fill: transparent; cursor: pointer; }',
-    '.dvv-hl { fill: none; stroke: var(--accent); stroke-width: 2px; pointer-events: none; }',
-    '.dvv-ground { fill: var(--ground); }',
-    '.dvv-card { fill: var(--ground); stroke: var(--rule); stroke-width: 1.5px; }',
-    '.dvv-shadow { fill: var(--ink); opacity: 0.06; }',
-    '.dvv-note { fill: var(--muted); font-style: italic; }',
-  ].join('\n');
+  css.textContent = data.css;          // the figure's own classes; app chrome is house.css
   frameEl.appendChild(defs);
 
   // the clock: a Web Animation that does nothing; finishing it lands the step
@@ -84,15 +76,13 @@ House.app('dv_vector', function (figure, data, ctx) {
   };
   var ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
 
-  var cardShown = function (on) { var c = figure.closest('.slide').querySelector(':scope > .variants'); if (c) c.style.visibility = on ? 'hidden' : 'visible'; };
-
   function scene(variant) {
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'class': 'app-view', role: 'img' });
     var world = el('g', {}, svg);
     var N = data.near;
     var layer = {
-      over: group(variant.layers.over, { 'class': 'dvv-mpl' }),
-      near: group(variant.layers.near, { 'class': 'dvv-mpl', transform: 'translate(' + N.x + ' ' + N.y + ') scale(' + (1 / N.s) + ')' }),
+      over: group(variant.layers.over, { 'class': 'app-mpl' }),
+      near: group(variant.layers.near, { 'class': 'app-mpl', transform: 'translate(' + N.x + ' ' + N.y + ') scale(' + (1 / N.s) + ')' }),
     };
     world.appendChild(layer.over);
     world.appendChild(layer.near);
@@ -139,10 +129,10 @@ House.app('dv_vector', function (figure, data, ctx) {
     }
 
     // ── hover and the detail card (overview only) ─────────────────────────
-    var hits = el('g', {}, svg), hl = el('rect', { 'class': 'dvv-hl', rx: 3 }, svg);
+    var hits = el('g', {}, svg), hl = el('rect', { 'class': 'app-hl', rx: 3 }, svg);
     hl.style.visibility = 'hidden';
     data.cells.forEach(function (c) {
-      var h = el('rect', { x: c.x - 2, y: c.y - 1.5, width: c.w + 4, height: c.h + 3, 'class': 'dvv-hit' }, hits);
+      var h = el('rect', { x: c.x - 2, y: c.y - 1.5, width: c.w + 4, height: c.h + 3, 'class': 'app-hit' }, hits);
       h.addEventListener('pointerenter', function () {
         hl.setAttribute('x', c.x - 2); hl.setAttribute('y', c.y - 1.5); hl.setAttribute('width', c.w + 4); hl.setAttribute('height', c.h + 3);
         hl.style.visibility = 'visible';
@@ -153,23 +143,22 @@ House.app('dv_vector', function (figure, data, ctx) {
 
     var card = null;
     function onKey(e) { if (e.key === 'Escape' || e.key === 'Backspace') { closeCard(); e.preventDefault(); e.stopPropagation(); } }
-    function onDown(e) { if (card && !card.box.contains(e.target)) { closeCard(); e.stopPropagation(); e.preventDefault(); } }
-    function openCard(c) {
+    function onDown(e) { if (card && !card.box.contains(e.target) && !e.target.closest('.variants')) { closeCard(); e.stopPropagation(); e.preventDefault(); } }
+    function openCard(c, instant) {
       var t0 = performance.now();
       closeCard();
       var g = el('g', {}, svg);
-      el('rect', { x: 0, y: 0, width: W, height: H, 'class': 'dvv-ground', opacity: 0.85 }, g);
+      el('rect', { x: 0, y: 0, width: W, height: H, 'class': 'fill-ground', opacity: 0.85 }, g);
       var box = el('g', {}, g);
       var bw = (H - 24) * DW / DH, B = { x: (W - bw) / 2, y: 12, w: bw, h: H - 24 };
-      el('rect', { x: B.x + 2, y: B.y + 6, width: B.w, height: B.h, rx: 16, 'class': 'dvv-shadow' }, box);
-      el('rect', { x: B.x, y: B.y, width: B.w, height: B.h, rx: 14, 'class': 'dvv-card' }, box);
+      el('rect', { x: B.x + 2, y: B.y + 6, width: B.w, height: B.h, rx: 16, 'class': 'app-shadow' }, box);
+      el('rect', { x: B.x, y: B.y, width: B.w, height: B.h, rx: 14, 'class': 'app-card' }, box);
       box.appendChild(group(variant.details[c.key],
-        { 'class': 'dvv-mpl', transform: 'translate(' + B.x + ' ' + B.y + ') scale(' + (B.h / DH) + ')' }));
-      var note = el('text', { x: B.x + B.w - 28, y: B.y + B.h - 22, 'text-anchor': 'end', 'font-size': 24, 'class': 'dvv-note' }, box);
+        { 'class': 'app-mpl', transform: 'translate(' + B.x + ' ' + B.y + ') scale(' + (B.h / DH) + ')' }));
+      var note = el('text', { x: B.x + B.w - 28, y: B.y + B.h - 22, 'text-anchor': 'end', 'font-size': 24, 'class': 'app-note' }, box);
       note.textContent = 'Esc to close';
-      if (g.animate && !ctx.still()) try { g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: 'ease-out' }); } catch (e) { /* static */ }
-      card = { g: g, box: box };
-      cardShown(true);
+      if (!instant && g.animate && !ctx.still()) try { g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: 'ease-out' }); } catch (e) { /* static */ }
+      card = { g: g, box: box, key: c.key };
       ctx.keyboard(false);
       document.addEventListener('keydown', onKey, true);
       document.addEventListener('pointerdown', onDown, true);
@@ -179,7 +168,6 @@ House.app('dv_vector', function (figure, data, ctx) {
       if (!card) return;
       svg.removeChild(card.g);
       card = null;
-      cardShown(false);
       ctx.keyboard(true);
       document.removeEventListener('keydown', onKey, true);
       document.removeEventListener('pointerdown', onDown, true);
@@ -188,6 +176,7 @@ House.app('dv_vector', function (figure, data, ctx) {
     return {
       svg: svg, land: land, fly: fly, closeCard: closeCard, openCard: openCard,
       hover: function (on) { if (!on) hl.style.visibility = 'hidden'; },
+      cardKey: function () { return card && card.key; },
     };
   }
 
@@ -195,11 +184,14 @@ House.app('dv_vector', function (figure, data, ctx) {
   function use(vk) {
     if (vk === shown || !data.variants[vk]) return;
     var next = scene(data.variants[vk]);
+    // an open detail card stays open across the switch, showing the same cell
+    var open = S && S.cardKey();
     if (S) { S.closeCard(); frameEl.replaceChild(next.svg, S.svg); }
     else frameEl.appendChild(next.svg);
     S = next;
     shown = vk;
     S.land(state == null ? 0 : state);
+    if (open) S.openCard(data.cells.filter(function (x) { return x.key === open; })[0], true);
   }
 
   // ── steps ───────────────────────────────────────────────────────────────

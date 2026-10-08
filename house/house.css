@@ -258,6 +258,14 @@ html, body { background: var(--ground); }
    over its own fallback (an image or stack), which keeps driving the steps */
 .reveal .slide figure.app-live .frame > img { visibility: hidden !important; }
 .slide figure.app-live .frame > .app-view { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
+/* app chrome, shared by every app: matplotlib SVG layers, clickable cells with
+   their hover outline, and the detail card a click opens over a ground veil */
+.slide .app-view .app-mpl * { stroke-linejoin: round; stroke-linecap: butt; }
+.slide .app-view .app-hit { fill: transparent; cursor: pointer; }
+.slide .app-view .app-hl { fill: none; stroke: var(--accent); stroke-width: 2px; pointer-events: none; }
+.slide .app-view .app-card { fill: var(--ground); stroke: var(--rule); stroke-width: 1.5px; }
+.slide .app-view .app-shadow { fill: var(--ink); opacity: 0.06; }
+.slide .app-view .app-note { fill: var(--muted); font-style: italic; }
 /* raster figures are multiplied into the ground at build time; SVG images blend here */
 .slide .frame > img[data-blend] { mix-blend-mode: var(--figure-blend); }
 .slide .frame > svg { display: block; width: 100%; height: 100%; overflow: visible; }

@@ -17,7 +17,7 @@ const deck = path.resolve(process.argv[2]);
   await p.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
   await p.goto('file://' + deck + '#/dv-vector', { waitUntil: 'load' });
   await p.evaluate(async () => { await document.fonts.ready; await new Promise(r => Reveal.isReady() ? r() : Reveal.on('ready', r)); });
-  await p.addStyleTag({ content: 'html, body, .reveal, .reveal .slides, .reveal section, .slide { background: #FFFFFF !important; } .dvv-hint, .slide > .variants { display: none !important; }' });
+  await p.addStyleTag({ content: 'html, body, .reveal, .reveal .slides, .reveal section, .slide { background: #FFFFFF !important; } .slide > .variants { display: none !important; }' });
   for (let k = 0; k < 3; k++) {
     await p.evaluate(k => {
       const i = Reveal.getIndices(document.getElementById('dv-vector'));

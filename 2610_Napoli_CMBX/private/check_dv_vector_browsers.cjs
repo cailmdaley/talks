@@ -106,7 +106,7 @@ const errors = [];
   await page.evaluate(h => { Reveal.slide(h, 0, 1); document.getAnimations().forEach(a => a.finish()); }, h);
   await wait(300);
   const hit = await page.evaluate(() => {
-    const r = document.querySelectorAll('#dv-vector .dvv-hit')[86].getBoundingClientRect();   // delta_5 x delta_5
+    const r = document.querySelectorAll('#dv-vector .app-hit')[86].getBoundingClientRect();   // delta_5 x delta_5
     return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
   });
   await page.mouse.move(hit.x, hit.y); await wait(150);
@@ -117,11 +117,27 @@ const errors = [];
   const openMs = Date.now() - t0;
   await wait(300);
   await page.screenshot({ path: path.join(OUT, `${NAME}-card.png`) });
+  // the variant control shows over an open card, and a click on another live
+  // variant swaps the card in place: same cell, still open, camera at rest
+  const swap = await page.evaluate(() => {
+    const c = document.querySelector('#dv-vector .variants');
+    const live = c && [...c.querySelectorAll('button:not(.on):not(:disabled)')][0];
+    if (!live) return { shown: !!c, skipped: true };
+    const r = live.getBoundingClientRect();
+    return { shown: getComputedStyle(c).visibility === 'visible', x: r.x + r.width / 2, y: r.y + r.height / 2, from: House.variant() };
+  });
+  if (!swap.skipped) { await page.mouse.click(swap.x, swap.y); await wait(300); }
+  const swapped = await page.evaluate(() => ({
+    variant: House.variant(), open: !!document.querySelector('#dv-vector .app-card'),
+    rest: document.querySelector('#dv-vector svg.app-view').getAttribute('data-rest'),
+  }));
+  results.push({ name: 'variant-over-card', ok: swap.shown && (swap.skipped || (swapped.variant !== swap.from && swapped.open && swapped.rest === '2')), ...swap, ...swapped });
+  await page.screenshot({ path: path.join(OUT, `${NAME}-card-swapped.png`) });
   const before = await page.evaluate(() => JSON.stringify(Reveal.getIndices()));
   await key('ArrowRight', 300);
   const stayed = before === await page.evaluate(() => JSON.stringify(Reveal.getIndices()));
   await key('Escape', 300);
-  const closed = await page.evaluate(() => !document.querySelector('#dv-vector .dvv-card'));
+  const closed = await page.evaluate(() => !document.querySelector('#dv-vector .app-card'));
   results.push({ name: 'card', ok: stayed && closed, openMs, keysHeldWhileOpen: stayed, escCloses: closed });
 
   // overview mode (Esc in reveal) and back
