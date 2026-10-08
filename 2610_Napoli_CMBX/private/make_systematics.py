@@ -48,8 +48,12 @@ def sig(x, n=5):
 
 
 def measurement(universe, template):
-    path = f"{CMBX}/results/{universe}/tr1_systematics/{template}.tar"
-    if not os.path.exists(path):
+    # ACT universes name their archives <template>_act (the SPT ids stay as they are)
+    for name in (template, f"{template}_act"):
+        path = f"{CMBX}/results/{universe}/tr1_systematics/{name}.tar"
+        if os.path.exists(path):
+            break
+    else:
         return None
     with tarfile.open(path) as t:
         return json.load(t.extractfile("measurement.json"))
