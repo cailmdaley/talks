@@ -137,11 +137,19 @@ def exponent(pairs, keys):
     return int(-np.floor(np.log10(m)))
 
 
-def span(ds):
-    """The data range of some panels: every band +- sigma and the fiducial."""
-    lo = min(min(np.min(d["t"]), np.min(d["v"] - d["s"])) for d in ds)
-    hi = max(max(np.max(d["t"]), np.max(d["v"] + d["s"])) for d in ds)
-    return lo, hi
+def span(ds, bars=True):
+    """The data range of some panels: every band (+- sigma when bars) and the fiducial.
+    Without bars the range holds the points and the model with a 15 % margin, and error
+    bars that reach past it are clipped at the frame: one noisy band in one variant then
+    does not empty a whole row in every other."""
+    if bars:
+        lo = min(min(np.min(d["t"]), np.min(d["v"] - d["s"])) for d in ds)
+        hi = max(max(np.max(d["t"]), np.max(d["v"] + d["s"])) for d in ds)
+        return lo, hi
+    lo = min(min(np.min(d["t"]), np.min(d["v"])) for d in ds)
+    hi = max(max(np.max(d["t"]), np.max(d["v"])) for d in ds)
+    m = 0.15 * (hi - min(lo, 0.0))
+    return lo - m, hi + m
 
 
 def yaxis(lo, hi):
@@ -322,7 +330,7 @@ def segments(variants):
     out = {}
     for (r, h), cs in segs.items():
         e = e_of[block(r, h)]
-        ylim, ticks = yaxis(*span([prep(pairs[k], e) for _, k in cs for pairs in variants]))
+        ylim, ticks = yaxis(*span([prep(pairs[k], e) for _, k in cs for pairs in variants], bars=False))
         out[(r, h)] = dict(cols=sorted(cs), e=e, ylim=ylim, ticks=ticks)
     axes = {}
     for (r, c), k in cells.items():
