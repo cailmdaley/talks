@@ -63,7 +63,6 @@
         "blind-rehearsal",
         "dv-vector",
         "lens-ratio",
-        "galaxy-bias",
         "dr1-clustering",
         "kp-3-open-goals"
       ]
@@ -100,6 +99,7 @@
       "title": "Backup",
       "outline": "The per-bin shear × CMB-lensing amplitude behind the galaxy-bias slide.",
       "slides": [
+        "galaxy-bias",
         "gk-amplitude"
       ]
     }

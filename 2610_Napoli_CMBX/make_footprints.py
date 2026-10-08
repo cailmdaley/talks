@@ -11,8 +11,8 @@ The slide stacks them, so each step adds exactly one layer. Both panels are
 polar Lambert azimuthal equal-area views at one scale and one central RA.
 
 Euclid DR1 is a DR1_R2 VMPZ WL effective-coverage map, chosen with --coverage:
-  r2          all 8964 wide tiles (Aug 2025), the slide's map
-  validtiles  the 8389 tiles on the LE3-WL VALID list (F006)
+  r2          all 8964 wide tiles (Aug 2025)
+  validtiles  the 8389 tiles on the LE3-WL VALID list (F006), the slide's map
 Each pixel holds the fraction of it that is effectively covered. The
 drawn footprint is effcov > 0. Every area is effective, Σ effcov × pixel area:
 DR1's own, and its overlap with each CMB footprint (effcov summed over the
@@ -379,7 +379,7 @@ def south_mask():
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--coverage", choices=COVERAGE, default="r2", help="the Euclid DR1 coverage map")
+    ap.add_argument("--coverage", choices=COVERAGE, default="validtiles", help="the Euclid DR1 coverage map")
     ap.add_argument("--preview", action="store_true",
                     help="render only the last frame, as napoli_footprint_<coverage>_preview.png")
     ap.add_argument("--cache", help="npz holding the measured areas and plot maps (made if missing); "
