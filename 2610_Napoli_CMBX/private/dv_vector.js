@@ -159,6 +159,7 @@ House.app('dv_vector', function (figure, data, ctx) {
       note.textContent = 'Esc to close';
       if (!instant && g.animate && !ctx.still()) try { g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: 'ease-out' }); } catch (e) { /* static */ }
       card = { g: g, box: box, key: c.key };
+      axesFor(c.key);
       ctx.keyboard(false);
       document.addEventListener('keydown', onKey, true);
       document.addEventListener('pointerdown', onDown, true);
@@ -168,6 +169,7 @@ House.app('dv_vector', function (figure, data, ctx) {
       if (!card) return;
       svg.removeChild(card.g);
       card = null;
+      axesFor(null);
       ctx.keyboard(true);
       document.removeEventListener('keydown', onKey, true);
       document.removeEventListener('pointerdown', onDown, true);
@@ -180,6 +182,19 @@ House.app('dv_vector', function (figure, data, ctx) {
     };
   }
 
+  // the variant axes the view on screen depends on: a cell with a shear tracer (l*)
+  // uses the shear method, one with kappa the CMB map; the close-ups follow their row
+  var cellAxes = function (key) {
+    var a = [];
+    if (/(^|_)l\d/.test(key)) a.push('shear');
+    if (/kappa/.test(key)) a.push('cmb');
+    return a;
+  };
+  function axesFor(key) {
+    if (!ctx.axes) return;
+    if (key) ctx.axes(cellAxes(key));
+    else ctx.axes(state === 1 ? ['cmb'] : null);
+  }
   var S = null, state = null, shown = null;
   function use(vk) {
     if (vk === shown || !data.variants[vk]) return;
@@ -200,6 +215,7 @@ House.app('dv_vector', function (figure, data, ctx) {
     if (k !== 2) { S.closeCard(); S.hover(false); }
     var from = state;
     state = k;
+    if (!S.cardKey()) axesFor(null);
     if (!animate || from == null || from === k) { S.land(k); return; }
     if (ctx.still()) {
       // reduced motion: the old view, frozen, fades out over the new one

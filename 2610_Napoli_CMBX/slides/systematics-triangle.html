@@ -1,0 +1,10 @@
+<section data-layout="figure">
+  <h2>Resolved contamination stays under half a σ</h2>
+  <figure data-app="private/systematics.js" data-app-data="private/systematics_app.json">
+    <img src="images/napoli_systematics_triangle.png" alt="The 90 pairs of the TR1 3x2pt plus CMB lensing data vector as a triangle of panels, each showing the contamination the extinction template would add, in units of the data's Gaussian error: every panel stays inside plus or minus one sigma">
+  </figure>
+  <aside class="notes">
+    <p>The same triangle as the data vector, cell for cell, but each panel now shows how much a systematics template S could move that pair if its measured cross with each tracer were all leakage: $X_\ell^{ab} = C_\ell^{aS} C_\ell^{bS} / C_\ell^{SS}$, in units of $\sigma_G$ of $C_\ell^{ab}$. Each panel spans $\pm 1.5\,\sigma_G$, with $\pm 1\,\sigma_G$ shaded; the bars are $\sigma_X/\sigma_G$, first-order error propagation that ignores the covariance between the two crosses and treats the template's auto-spectrum with a Gaussian error, which is least reliable at a tiling-periodic template's harmonics.</p>
+    <p>The buttons at the top right pick the template; the variant control picks the shear method and CMB map; a click on a cell opens it with the two template crosses that make it. Where X is resolved, nothing exceeds about 0.4 $\sigma_G$: the largest are exposures in δ1δ1 ($0.35 \pm 0.15$) and extinction in δ5δ5 ($0.24 \pm 0.12$; δκ at most $0.18 \pm 0.10$). The nominal maxima above 1 (exposures δ6δ6 at $\ell \approx 349$, PSF δ4γ1 at $\ell \approx 691$) sit at dips of the template's own power, where $\sigma_X$ is as large as X. The lens-bin-1 depth signature costs δ1δ1 about a third of $\sigma_G$ per band. Template crosses exist for LensMC × SPT-3G so far; the other variants show disabled until they are measured.</p>
+  </aside>
+</section>
