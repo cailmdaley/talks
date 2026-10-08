@@ -487,7 +487,14 @@ function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, ass
   const frame = doc.createElement('div');
   frame.className = isDetail ? 'slide detail' : 'slide';
   if (layout) frame.setAttribute('data-layout', layout);
-  for (const a of ['data-split', 'data-flip', 'data-cols', 'data-stack']) if (el.hasAttribute(a)) frame.setAttribute(a, el.getAttribute(a));
+  for (const a of ['data-split', 'data-flip', 'data-cols', 'data-stack', 'data-variant-axes']) if (el.hasAttribute(a)) frame.setAttribute(a, el.getAttribute(a));
+  if (el.hasAttribute('data-variant-axes')) {
+    const named = el.getAttribute('data-variant-axes').trim().split(/\s+/).filter(Boolean);
+    const known = variants ? Object.keys(variants) : [];
+    const bad = named.filter(a => !known.includes(a));
+    if (!variants) problems.push(`${where}: data-variant-axes needs "variants" in deck.json`);
+    else if (!named.length || bad.length) problems.push(`${where}: data-variant-axes "${bad.join(' ') || ''}" names no axis of the deck's variants (axes ${known.join(' ')})`);
+  }
   for (const c of el.classList) if (c !== 'detail') frame.classList.add(c);
   const style = el.getAttribute('style');
   if (style && !isDetail) frame.setAttribute('style', style);
@@ -564,7 +571,7 @@ function buildSlides(deck, typeset) {
       frame.appendChild(chips);
     }
     const attrs = [...section.attributes]
-      .filter(a => !['data-layout', 'data-split', 'data-flip', 'data-stack', 'class', 'style', 'id'].includes(a.name))
+      .filter(a => !['data-layout', 'data-split', 'data-flip', 'data-stack', 'data-variant-axes', 'class', 'style', 'id'].includes(a.name))
       .map(a => ` ${a.name}="${esc(a.value)}"`).join('') + (s.backup ? ' data-visibility="uncounted"' : '');
     out.push({
       ...s, number,

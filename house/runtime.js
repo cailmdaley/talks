@@ -171,6 +171,9 @@
         variants: function (keys, apply) {
           vOffer(fig.closest('.slide'), { has: function (k) { return keys.indexOf(k) >= 0; }, apply: apply });
         },
+        // the axes the view on screen depends on (e.g. ['cmb'] on a clustering-only
+        // panel); null returns to the slide's own data-variant-axes
+        axes: function (list) { vSetAxes(fig.closest('.slide'), list); },
       };
       fig.houseApp = factory(fig, el ? JSON.parse(el.textContent) : null, ctx);
       fig.classList.add('app-live');
@@ -203,7 +206,10 @@
   // button group per axis. A choice made on any slide is the deck's choice: every
   // other slide shows it too, or its default where it lacks that variant, and its
   // control shows which variant is on screen. A variant a slide lacks is offered
-  // disabled. The report and a PDF show the default.
+  // disabled. A slide whose content depends on only some axes names them in
+  // data-variant-axes="cmb" (an app can change this per view with ctx.axes); the
+  // other axes' segments stay visible but faded and inert, still showing the
+  // deck's choice, which they leave untouched. The report and a PDF show the default.
   var VDEF = (function () { var el = document.getElementById('house-variants'); return el ? JSON.parse(el.textContent) : null; })();
   var vAxes = VDEF ? Object.keys(VDEF) : [];
   var vState = {};
@@ -215,12 +221,23 @@
 
   function vFrame(frame) {
     for (var i = 0; i < vFrames.length; i++) if (vFrames[i].frame === frame) return vFrames[i];
-    var f = { frame: frame, offers: [], control: null };
+    var own = frame.getAttribute('data-variant-axes');
+    var f = { frame: frame, offers: [], control: null, own: own ? own.trim().split(/\s+/) : null, app: null };
     vFrames.push(f);
     return f;
   }
   function vHas(f, key) { return key === V0 || f.offers.every(function (o) { return o.has(key); }); }
-  function vShown(f) { var k = vKey(vState); return vHas(f, k) ? k : V0; }
+  function vLive(f) { var l = f.app || f.own; return l ? vAxes.filter(function (a) { return l.indexOf(a) >= 0; }) : vAxes; }
+  // the variant on screen: the deck's choice; where the slide lacks it, the
+  // choice on the live axes with the idle ones at their default; else the default
+  function vShown(f) {
+    var k = vKey(vState);
+    if (vHas(f, k)) return k;
+    var live = vLive(f), s = {};
+    vAxes.forEach(function (a) { s[a] = live.indexOf(a) >= 0 ? vState[a] : Object.keys(VDEF[a])[0]; });
+    k = vKey(s);
+    return vHas(f, k) ? k : V0;
+  }
 
   function vControl(f) {
     var c = document.createElement('div');
@@ -230,6 +247,7 @@
     vAxes.forEach(function (a) {
       var seg = document.createElement('span');
       seg.className = 'seg';
+      seg.setAttribute('data-axis', a);
       Object.keys(VDEF[a]).forEach(function (o) {
         var b = document.createElement('button');
         b.type = 'button';
@@ -249,12 +267,24 @@
     var key = printing() ? V0 : vShown(f);
     f.offers.forEach(function (o) { o.apply(key); });
     if (!f.control) return;
-    var parts = key.split('|');
+    var parts = key.split('|'), live = vLive(f);
+    f.control.querySelectorAll('.seg').forEach(function (seg) {
+      seg.classList.toggle('idle', live.indexOf(seg.getAttribute('data-axis')) < 0);
+    });
     f.control.querySelectorAll('button').forEach(function (b) {
-      var i = vAxes.indexOf(b.getAttribute('data-axis'));
+      var a = b.getAttribute('data-axis'), i = vAxes.indexOf(a), o = b.getAttribute('data-option');
+      if (live.indexOf(a) < 0) {
+        // an axis this view does not depend on: inert, showing the deck's choice
+        var mine = vState[a] === o;
+        b.classList.toggle('on', mine);
+        b.disabled = true;
+        b.title = 'this view does not depend on it';
+        b.setAttribute('aria-pressed', mine ? 'true' : 'false');
+        return;
+      }
       var want = parts.slice();
-      want[i] = b.getAttribute('data-option');
-      var on = parts[i] === want[i], has = vHas(f, want.join('|'));
+      want[i] = o;
+      var on = parts[i] === o, has = vHas(f, want.join('|'));
       b.classList.toggle('on', on);
       b.disabled = !has;
       b.title = has ? '' : b.textContent + ': not available on this slide';
@@ -267,6 +297,13 @@
     var f = vFrame(frame);
     f.offers.push(offer);
     if (!f.control && !printing()) f.control = vControl(f);
+    vRender(f);
+  }
+
+  function vSetAxes(frame, list) {
+    if (!VDEF || !frame) return;
+    var f = vFrame(frame);
+    f.app = list ? list.slice() : null;
     vRender(f);
   }
 

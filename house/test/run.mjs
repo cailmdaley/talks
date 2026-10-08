@@ -109,6 +109,43 @@ ok(vcheck.status === 0, `variants fixture passes (${vcheck.stdout.trim().split('
   } finally { await browser.close(); }
 }
 
+// Variant axes: a slide that names only some axes (data-variant-axes) shows the
+// others faded and inert, still showing the deck's choice, which it leaves alone.
+const adir = path.join(HERE, 'axes');
+const acheck = run(adir);
+ok(acheck.status === 0, `axes fixture passes (${acheck.stdout.trim().split('\n').pop()})`);
+{
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'house-axes-'));
+  const b = spawnSync(process.execPath, [path.join(HERE, '..', 'build.mjs'), adir, '--out', out], { encoding: 'utf8' });
+  ok(b.status === 0, 'axes fixture builds');
+  const { default: puppeteer } = await import('puppeteer');
+  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--allow-file-access-from-files'] });
+  try {
+    const page = await browser.newPage();
+    await page.goto('file://' + path.join(out, 'axes', 'index.html'));
+    await page.waitForFunction(() => window.Reveal && Reveal.isReady() && document.querySelectorAll('.slide > .variants').length === 2);
+    const seg = (slide, axis) => page.evaluate((sl, ax) => {
+      const g = document.querySelector(`#${sl} .variants .seg[data-axis="${ax}"]`);
+      return { idle: g.classList.contains('idle'), on: [...g.querySelectorAll('button.on')].map(x => x.dataset.option),
+        disabled: [...g.querySelectorAll('button')].filter(x => x.disabled).map(x => x.dataset.option) };
+    }, slide, axis);
+    ok(!(await seg('both', 'shear')).idle && !(await seg('both', 'cmb')).idle, 'both axes live on a slide that uses both');
+    const c0 = await seg('cmbonly', 'shear');
+    ok(c0.idle && c0.disabled.join() === 'x,y' && c0.on.join() === 'x', `shear idle and inert on the CMB-only slide (on ${c0.on}, disabled ${c0.disabled})`);
+    ok(!(await seg('cmbonly', 'cmb')).idle, 'the CMB axis stays live there');
+    await page.evaluate(() => House.setVariant('shear', 'y'));
+    const c1 = await seg('cmbonly', 'shear');
+    ok(c1.on.join() === 'y', "the idle segment shows the deck's choice");
+    const src = () => page.evaluate(() => document.querySelector('#cmbonly figure img').getAttribute('src'));
+    const s0 = await src();
+    await page.evaluate(() => document.querySelector('#cmbonly .variants button[data-option="b"]').click());
+    ok(await page.evaluate(() => House.variant()) === 'y|b', 'a click on the live axis keeps the idle axis\'s choice');
+    ok(await src() !== s0, 'the CMB-only slide shows b with its idle axis at the default (it has x|b only)');
+  } finally { await browser.close(); }
+}
+
 const only = spawnSync(process.execPath, [CHECK, path.join(HERE, '..', 'demo'), '--only', 'nope'], { encoding: 'utf8' });
 ok(only.status === 2 && only.stderr.includes('no slide named nope'), '--only with an unknown slide fails');
 

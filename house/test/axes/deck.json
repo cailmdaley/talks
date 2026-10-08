@@ -1,0 +1,5 @@
+{
+  "title": "Variant axes fixture", "author": "house test", "date": "2026-10-09", "footer": "fixture", "draft": true,
+  "variants": { "shear": { "x": "Shear X", "y": "Shear Y" }, "cmb": { "a": "Map A", "b": "Map B" } },
+  "sections": [ { "title": "Axes", "outline": "A slide on both axes and one on the CMB axis alone.", "slides": ["both", "cmbonly"] } ]
+}

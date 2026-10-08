@@ -809,7 +809,8 @@ body.report {
 
 /* ── Variants (deck.json "variants"; runtime.js draws the control) ──────────
    One segmented group per axis in the slide's bottom-right corner, beside the
-   number: the option on screen is filled, one the slide lacks is dashed. */
+   number: the option on screen is filled, one the slide lacks is dashed, and an
+   axis the view does not depend on is faded. */
 [data-hide] { display: none !important; }
 .slide > .variants {
   position: absolute;
@@ -819,8 +820,11 @@ body.report {
   gap: 22px;
   z-index: 3;
 }
-.slide > .variants .seg { display: flex; }
-.slide > .variants button {
+/* the same control drawn by an app inside its figure (an app's own axis, e.g. which
+   template), placed by the app */
+.variants.app-choice { position: absolute; display: flex; gap: 22px; z-index: 2; }
+.variants .seg { display: flex; }
+.variants button {
   font: inherit;
   font-family: var(--face);
   font-size: 24px;
@@ -832,8 +836,14 @@ body.report {
   padding: 8px 16px;
   cursor: pointer;
 }
-.slide > .variants button:first-child { margin-left: 0; border-radius: 6px 0 0 6px; }
-.slide > .variants button:last-child { border-radius: 0 6px 6px 0; }
-.slide > .variants button:only-child { border-radius: 6px; }
-.slide > .variants button.on { background: var(--panel); border-color: var(--muted); position: relative; z-index: 1; cursor: default; }
-.slide > .variants button:disabled { border-style: dashed; color: var(--muted); font-style: italic; cursor: default; }
+.variants button:first-child { margin-left: 0; border-radius: 6px 0 0 6px; }
+.variants button:last-child { border-radius: 0 6px 6px 0; }
+.variants button:only-child { border-radius: 6px; }
+.variants button.on { background: var(--panel); border-color: var(--muted); position: relative; z-index: 1; cursor: default; }
+.variants button:disabled { border-style: dashed; color: var(--muted); font-style: italic; cursor: default; }
+/* an axis the view does not depend on (data-variant-axes, ctx.axes): faded and
+   inert, still showing the deck's choice */
+.variants .seg { transition: opacity 0.25s ease; }
+.variants .seg.idle { opacity: 0.3; }
+.variants .seg.idle button:disabled { border-style: solid; color: var(--ink); font-style: normal; }
+.variants .seg.idle button.on { border-color: var(--muted); }

@@ -311,7 +311,9 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
       let svgFill = null;
       if (el.closest('svg') && el.localName === 'text') svgFill = parse(st.fill || '');
       const ink = svgFill || fg;
-      if (ink) {
+      // an inert variant segment (an axis the view does not use) is faded on purpose;
+      // inactive controls are exempt from contrast minimums (WCAG 1.4.3)
+      if (ink && !el.closest('.variants .seg.idle')) {
         const bg = el.closest('svg') ? svgBackground(el) : background(el);
         const c = ratio(over({ ...ink, a: ink.a * opacity(el) * (svgFill ? parseFloat(st.fillOpacity || 1) : 1) }, bg), bg);
         if (c < MIN_CONTRAST - 0.005) errors.push(`${label(el)} has contrast ${c.toFixed(2)}:1 (minimum ${MIN_CONTRAST}:1)`);
