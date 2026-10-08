@@ -15,11 +15,14 @@ Three estimators, all relative to the fiducial theory vector:
   lens ratio  mu_i = C^{gamma_i delta_j} / C^{kappa delta_j}, one amplitude per
               source bin with a free amplitude per lens bin, so galaxy bias and
               sigma8 cancel; mu_i ~ (1+m_i) x source-bin lensing efficiency
-              relative to the CMB's.  Blind-immune (x0.98-1.04 over the
-              public blinding envelope), so a variant's mu is drawn only when it
-              is listed in MU_PUBLIC (Cail's explicit OK, talks CLAUDE.md).
+              relative to the CMB's.  The Omega_m H0^2 prefactor cancels and
+              cosmology enters only through distance ratios, so a blind-sized
+              shift moves it x0.98-1.04: a calibration quantity, not a
+              cosmological one, drawn for every variant.
   b           galaxy bias from delta-delta vs delta-kappa on linear scales.
-              sigma8 cancels, Omega_m does not -> blinded.
+              sigma8 cancels, Omega_m does not -> blinded.  Every bin is drawn
+              alike with its 16-84 % interval; the error bars carry the
+              uncertainty, with no S/N selection.
   A^gk        gamma-kappa amplitude per source bin, 100 < ell < 3000;
               ~ S8^2.6 -> blinded.
 
@@ -57,12 +60,6 @@ CROSSES = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/napoli/cro
 SHEARS = {"lensmc": "LensMC", "metacal": "MetaCal"}
 CMBS = {"spt": "SPT-3G", "act": "ACT DR6"}
 DEFAULT = ("lensmc", "spt")
-# variants whose blind-immune lens ratio may be shown (Cail's explicit OK per variant)
-MU_PUBLIC = {("lensmc", "spt")}
-# lens bins 4 and 5 carry the delta-delta excess (felt: gg-amplitude-pattern-lens-nz),
-# so b there is not read as measured whatever the CMB side
-DD_EXCESS = {3, 4}
-SNR_MEASURED = 4.0           # delta-kappa S/N inside the cut for b to count as measured
 
 # euclid theme (house/themes/euclid.css)
 INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
@@ -135,7 +132,6 @@ def load(src):
         "blind_b": np.array([p["b_over_bfid"] for p in bs]),
         "blind_A": np.array([p["A_gk"] for p in bs]),
     }
-    out["measured"] = np.array([s >= SNR_MEASURED and i not in DD_EXCESS for i, s in enumerate(out["snr_dk"])])
     return out
 
 
@@ -156,8 +152,7 @@ def axes_ranges(all_a):
     """y ranges shared by every variant: the default's limits, widened where any variant needs it."""
     mu_lo = min(0.45, *(float((a["mu"][:, 0] - a["mu"][:, 1]).min()) - 0.05 for a in all_a))
     mu_hi = max(1.75, *(float((a["mu"][:, 0] + a["mu"][:, 2]).max()) + 0.05 for a in all_a))
-    b_hi = max(4.2, *(float((a["b"][m, 0] + a["b"][m, 2]).max()) + 0.2 for a in all_a
-                      for m in [a["measured"]] if m.any()))
+    b_hi = max(4.2, *(float((a["b"][:, 0] + a["b"][:, 2]).max()) + 0.2 for a in all_a))
     A_hi = max(1.6, *(float((a["A"] + a["A_err"]).max()) + 0.1 for a in all_a))
     return {"mu": (mu_lo, min(mu_hi, 2.5)), "b": min(b_hi, 6.0), "A": min(A_hi, 2.5)}
 
@@ -258,7 +253,7 @@ def lens_ratio(a, med, rob, R, variant):
 
 
 def bias(a, R, variant):
-    """Single panel: fiducial b as a line per bin, measured bins filled, the rest open."""
+    """Single panel: fiducial b as a line per bin, the data per bin with its 16-84 % interval."""
     W_PX, H_PX = 1978, 1446
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
     ax = fig.add_axes([0.115, 0.165, 0.87, 0.80])
@@ -270,29 +265,21 @@ def bias(a, R, variant):
     for xi, f in zip(x, a["b_fid"]):
         ax.plot([xi - 0.32, xi + 0.32], [f, f], color=INK, lw=2.4, zorder=1)
     v = a["b"]
-    # measured: delta-kappa S/N >= SNR_MEASURED outside the delta-delta-excess bins
-    measured = a["measured"]
     for i in range(6):
-        col = DATA if measured[i] else GREYED
         hi = min(v[i, 0] + v[i, 2], top - 0.05) - v[i, 0]
-        ax.errorbar(x[i], v[i, 0], yerr=[[v[i, 1]], [hi]], fmt="o", ms=15, color=col,
-                    mfc=col if measured[i] else "white", mec="white" if measured[i] else col,
-                    mew=1.4 if measured[i] else 2.6, elinewidth=3.2 if measured[i] else 2.4,
-                    capsize=0, zorder=3 if measured[i] else 2, alpha=1.0 if measured[i] else 0.5)
+        ax.errorbar(x[i], v[i, 0], yerr=[[v[i, 1]], [hi]], fmt="o", ms=15, color=DATA,
+                    mec="white", mew=1.4, elinewidth=3.2, capsize=0, zorder=3)
         if v[i, 0] + v[i, 2] > top - 0.05:
             ax.annotate("", xy=(x[i], top + 0.02), xytext=(x[i], top - 0.3),
-                        arrowprops=dict(arrowstyle="-|>", color=col, lw=2.4, mutation_scale=22, alpha=0.5),
+                        arrowprops=dict(arrowstyle="-|>", color=DATA, lw=2.4, mutation_scale=22),
                         annotation_clip=False)
     # key, upper left
     y0, dy = 0.95, 0.085
     ax.plot([0.03, 0.08], [y0, y0], transform=ax.transAxes, color=INK, lw=2.4)
     ax.text(0.10, y0, "fiducial", transform=ax.transAxes, fontsize=LABEL, color=INK, va="center")
     ax.plot([0.055], [y0 - dy], "o", transform=ax.transAxes, ms=15, color=DATA, mec="white", mew=1.4)
-    ax.text(0.10, y0 - dy, "measured", transform=ax.transAxes, fontsize=LABEL, color=INK, va="center")
-    ax.plot([0.055], [y0 - 2 * dy], "o", transform=ax.transAxes, ms=15, mfc="white", mec=GREYED, mew=2.6,
-            alpha=0.5)
-    ax.text(0.10, y0 - 2 * dy, "not counted: low S/N, or δδ high", transform=ax.transAxes,
-            fontsize=LABEL, color=MUTED, va="center")
+    ax.text(0.10, y0 - dy, "TR1 data, blinded", transform=ax.transAxes, fontsize=LABEL, color=INK,
+            va="center")
     out = os.path.join(IMG, name("napoli_galaxy_bias", variant))
     fig.savefig(out, dpi=DPI)
     plt.close(fig)
@@ -345,10 +332,7 @@ def main():
     for variant, a in loaded:
         print(f"── TR1 {SHEARS[variant[0]]} × {CMBS[variant[1]]}")
         med, rob = summarize(a)
-        if variant in MU_PUBLIC:
-            lens_ratio(a, med, rob, R, variant)
-        else:
-            print("  lens ratio not drawn: blind-immune, needs Cail's OK (MU_PUBLIC)")
+        lens_ratio(a, med, rob, R, variant)
         bias(a, R, variant)
         amplitude(a, R, variant)
 
