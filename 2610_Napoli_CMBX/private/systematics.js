@@ -1,15 +1,15 @@
 // Template contamination of the blinded TR1 3x2pt + kappa data vector (house data-app):
-// for a chosen systematics template, X_l^{ab} / sigma_G for every pair, laid out cell for
-// cell like the dv-vector slide, and moved by the same camera:
-//   0  close on the CMB lensing row's source-bin half: gamma_i x kappa
-//   1  the same zoom, panned right to its lens-bin half: delta_i x kappa
-//   2  pulled back to the whole triangle
-// Nothing is drawn here: private/render_systematics.py renders every layer and panel
-// with matplotlib as SVG ("near" is the kappa row close up, "over" the whole triangle,
-// both in the dv-vector slide's geometry), and this script places, moves, fades and
-// swaps them. The app's own control picks the template at every step; the deck's
-// variant control picks the shear method and CMB map. On the overview a click on a cell
-// opens its card: the pair's X / sigma_G along the bottom and the template's cross with
+// for a chosen systematics template, X_l^{ab} / sigma_ab for every pair, laid out cell for
+// cell like the dv-vector slide:
+//   0  one pair's card, gamma_6 x kappa, filling the figure: its contamination and the
+//      two template crosses it is made from
+//   1  the card shrinks into its cell of the whole triangle
+// Nothing is drawn here: private/render_systematics.py renders every panel with
+// matplotlib as SVG ("over" the whole triangle in the dv-vector slide's geometry, and
+// the card's pieces), and this script places, moves, fades and swaps them. The app's own
+// control picks the template at every step; the deck's variant control picks the shear
+// method and CMB map. On the overview a click on a cell opens its card the same way:
+// the pair's X / sigma_ab along the bottom and the template's cross with
 // each of its tracers above, each with its chi^2 PTE (Esc, Backspace or a click outside
 // closes it). The template control moves onto the card while it is open. The variant
 // axes the view depends on follow the step and the card. A do-nothing Web Animation is
@@ -19,7 +19,7 @@ House.app('systematics', function (figure, data, ctx) {
   'use strict';
   var NS = 'http://www.w3.org/2000/svg';
   var W = data.world.w, H = data.world.h, DW = data.detail.w, DH = data.detail.h;
-  var PAN_MS = 900, ZOOM_MS = 1500;
+  var ZOOM_MS = 1300, INTRO = 'kappa_l5';
   var frameEl = figure.querySelector('.frame');
 
   var el = function (tag, attrs, parent) {
@@ -100,31 +100,13 @@ House.app('systematics', function (figure, data, ctx) {
     });
   }
 
-  // ── views and the camera (the dv-vector slide's) ─────────────────────────
-  var camOf = function (v) { var s = W / v.w; return { s: s, tx: -v.x * s, ty: -v.y * s }; };
-  var CAMS = data.views.map(camOf);
-  var LZ = Math.log(CAMS[0].s);
-  var smooth = function (a, b, x) { var t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-  var view = function (c) { return { x: -c.tx / c.s, y: -c.ty / c.s, w: W / c.s, h: H / c.s }; };
-  var between = function (a, b, t) {
-    var va = view(a), vb = view(b);
-    var w = va.w * Math.pow(vb.w / va.w, t);
-    var cx = va.x + va.w / 2 + (vb.x + vb.w / 2 - va.x - va.w / 2) * t;
-    var cy = va.y + va.h / 2 + (vb.y + vb.h / 2 - va.y - va.h / 2) * t;
-    return camOf({ x: cx - w / 2, y: cy - (w * H / W) / 2, w: w });
-  };
-  var ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
-
   // ── the scene: one world group under one camera, the card above it ──────
   var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'class': 'app-view', role: 'img' });
   frameEl.appendChild(svg);
   frameEl.appendChild(choice);
-  var world = el('g', {}, svg);
-  var N = data.near_geom;
-  var layer = {
-    over: el('g', { 'class': 'app-mpl' }, world),
-    near: el('g', { 'class': 'app-mpl', transform: 'translate(' + N.x + ' ' + N.y + ') scale(' + (1 / N.s) + ')' }, world),
-  };
+  var over = el('g', { 'class': 'app-mpl' }, svg);
+  var cellOf = {};
+  data.cells.forEach(function (c) { cellOf[c.key] = c; });
   var hits = el('g', {}, svg), hl = el('rect', { 'class': 'app-hl', rx: 3 }, svg);
   hl.style.visibility = 'hidden';
   data.cells.forEach(function (c) {
@@ -137,19 +119,8 @@ House.app('systematics', function (figure, data, ctx) {
     h.addEventListener('click', function (e) { e.stopPropagation(); openCard(c.key); });
   });
 
-  var cam = { s: 1, tx: 0, ty: 0 };
-  function render() {
-    world.setAttribute('transform', 'matrix(' + cam.s + ' 0 0 ' + cam.s + ' ' + cam.tx + ' ' + cam.ty + ')');
-    var z = Math.max(0, Math.min(1, (LZ - Math.log(cam.s)) / LZ));        // 0 close, 1 far
-    var op = { over: smooth(0.1, 0.5, z), near: 1 - smooth(0.02, 0.42, z) };
-    Object.keys(op).forEach(function (k) {
-      layer[k].setAttribute('opacity', op[k].toFixed(3));
-      layer[k].style.visibility = op[k] > 0.002 ? 'visible' : 'hidden';
-    });
-  }
   function draw() {
-    fill(layer.over, data.over[tpl][vk]);
-    fill(layer.near, data.near[tpl][vk]);
+    fill(over, data.over[tpl][vk]);
     svg.setAttribute('data-template', tpl);
     svg.setAttribute('data-variant', vk);
   }
@@ -157,39 +128,49 @@ House.app('systematics', function (figure, data, ctx) {
   var state = null, flight = null;
   function land(k) {
     if (flight) { var f = flight; flight = null; cancelAnimationFrame(f.raf); try { f.clock.cancel(); } catch (e) { /* gone */ } }
-    cam = { s: CAMS[k].s, tx: CAMS[k].tx, ty: CAMS[k].ty };
-    render();
+    if (k === 0) openCard(INTRO, true, true);
+    else if (card && card.intro) closeCard();
     svg.setAttribute('data-rest', k);              // at rest on step k (read by tests)
-    hits.style.visibility = k === 2 ? 'visible' : 'hidden';
+    hits.style.visibility = k === 1 ? 'visible' : 'hidden';
+  }
+  // the intro card between its full size (t = 0) and its cell on the triangle (t = 1)
+  function shrink(t) {
+    var B = card.B, c = cellOf[INTRO];
+    var s = Math.exp(Math.log(c.w / B.w) * t);         // log-uniform: a steady zoom
+    var cx = B.x + B.w / 2 + (c.x + c.w / 2 - B.x - B.w / 2) * t;
+    var cy = B.y + B.h / 2 + (c.y + c.h / 2 - B.y - B.h / 2) * t;
+    card.box.setAttribute('transform', 'translate(' + cx + ' ' + cy + ') scale(' + s + ') translate(' + -(B.x + B.w / 2) + ' ' + -(B.y + B.h / 2) + ')');
+    card.box.setAttribute('opacity', (1 - Math.max(0, (t - 0.75) / 0.25)).toFixed(3));
+    card.veil.setAttribute('opacity', (1 - t).toFixed(3));
   }
   function fly(k) {
-    var from = { s: cam.s, tx: cam.tx, ty: cam.ty }, to = CAMS[k];
-    var dur = Math.abs(Math.log(from.s / to.s)) > 1e-6 ? ZOOM_MS : PAN_MS;
-    var clock;
+    var dur = ZOOM_MS, clock;
+    if (k === 0) { openCard(INTRO, true, true); shrink(1); }
+    if (!card) { land(k); return; }
     try { clock = tick.animate([{ opacity: 0 }, { opacity: 0 }], { duration: dur }); } catch (e) { clock = null; }
     if (!clock || !clock.finished) { land(k); return; }
     var f = { clock: clock, raf: 0 };
     flight = f;
+    restPlace();                                   // the template control waits at its rest place
     svg.removeAttribute('data-rest');
     hits.style.visibility = 'hidden';
     var frame = function () {
       if (flight !== f) return;
       var t = Math.min(1, (clock.currentTime || 0) / dur);
       if (t >= 1 || clock.playState === 'finished') { land(k); return; }
-      cam = between(from, to, ease(t));
-      render();
+      var e = ease(t);
+      shrink(k === 1 ? e : 1 - e);
       f.raf = requestAnimationFrame(frame);
     };
     clock.finished.then(function () { if (flight === f) land(k); }, function () {});
     f.raf = requestAnimationFrame(frame);
   }
+  var ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
 
   // the variant axes the view on screen depends on
   function axesFor() {
     if (!ctx.axes) return;
     if (card) ctx.axes(axesOf(card.key.split('_')));
-    else if (state === 0) ctx.axes(['shear', 'cmb']);
-    else if (state === 1) ctx.axes(['cmb']);
     else ctx.axes(null);
   }
 
@@ -199,11 +180,20 @@ House.app('systematics', function (figure, data, ctx) {
   function onDown(e) {
     if (card && !card.box.contains(e.target) && !e.target.closest('.variants')) { closeCard(); e.stopPropagation(); e.preventDefault(); }
   }
-  function openCard(key, instant) {
+  // the template control rides on a card, at its top right
+  function onCard(B) {
+    choice.style.left = '';
+    choice.style.right = (100 * (W - (B.x + B.w - 26)) / W) + '%';
+    choice.style.top = (100 * (B.y + 22) / H) + '%';
+  }
+  // intro: the step-0 card, which is the slide's own view rather than an overlay: an opaque
+  // ground, no close hint, and the keyboard and pointer stay with the deck
+  function openCard(key, instant, intro) {
+    if (card && card.intro && intro && card.key === key && card.tpl === tpl && card.vk === vk) { shrink(0); onCard(card.B); return; }
     closeCard();
     var t = key.split('_');
     var g = el('g', {}, svg);
-    el('rect', { x: 0, y: 0, width: W, height: H, 'class': 'fill-ground', opacity: 0.85 }, g);
+    var veil = el('rect', { x: 0, y: 0, width: W, height: H, 'class': 'fill-ground', opacity: intro ? 1 : 0.85 }, g);
     var box = el('g', {}, g);
     var bw = (H - 24) * DW / DH, B = { x: (W - bw) / 2, y: 12, w: bw, h: H - 24 }, s = B.h / DH;
     el('rect', { x: B.x + 2, y: B.y + 6, width: B.w, height: B.h, rx: 16, 'class': 'app-shadow' }, box);
@@ -216,15 +206,15 @@ House.app('systematics', function (figure, data, ctx) {
       inner.appendChild(group(data.crossp[tpl][tr + '|' + dep([tr], vk)],
         { 'class': 'app-mpl', transform: 'translate(' + slot[0] + ' ' + slot[1] + ')' }));
     });
-    var note = el('text', { x: B.x + B.w - 28, y: B.y + B.h - 22, 'text-anchor': 'end', 'font-size': 24, 'class': 'app-note' }, box);
-    note.textContent = 'Esc to close';
+    if (!intro) {
+      var note = el('text', { x: B.x + B.w - 28, y: B.y + B.h - 22, 'text-anchor': 'end', 'font-size': 24, 'class': 'app-note' }, box);
+      note.textContent = 'Esc to close';
+    }
     if (!instant && g.animate && !ctx.still()) try { g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: 'ease-out' }); } catch (e) { /* static */ }
-    card = { g: g, box: box, key: key };
-    // the template control rides on the card, at its top right
-    choice.style.left = '';
-    choice.style.right = (100 * (W - (B.x + B.w - 26)) / W) + '%';
-    choice.style.top = (100 * (B.y + 22) / H) + '%';
+    card = { g: g, box: box, veil: veil, B: B, key: key, intro: !!intro, tpl: tpl, vk: vk };
+    onCard(B);
     axesFor();
+    if (intro) return;
     ctx.keyboard(false);
     document.addEventListener('keydown', onKey, true);
     document.addEventListener('pointerdown', onDown, true);
@@ -232,10 +222,12 @@ House.app('systematics', function (figure, data, ctx) {
   }
   function closeCard() {
     if (!card) return;
+    var intro = card.intro;
     svg.removeChild(card.g);
     card = null;
     restPlace();
     axesFor();
+    if (intro) return;
     ctx.keyboard(true);
     document.removeEventListener('keydown', onKey, true);
     document.removeEventListener('pointerdown', onDown, true);
@@ -248,17 +240,18 @@ House.app('systematics', function (figure, data, ctx) {
   }
 
   function redraw() {
-    var open = card && card.key;
+    var open = card && card.key, intro = card && card.intro;
     draw();
-    if (open) openCard(open, true);
+    if (open) openCard(open, true, intro);
   }
   function setTemplate(t) { if (t === tpl) return; tpl = t; markChoice(); redraw(); }
   function use(k) { if (k === vk || data.variants.indexOf(k) < 0) return; vk = k; redraw(); }
 
   // ── steps ───────────────────────────────────────────────────────────────
   function step(k, animate) {
-    k = Math.max(0, Math.min(2, k));
-    if (k !== 2) { closeCard(); hl.style.visibility = 'hidden'; }
+    k = Math.max(0, Math.min(1, k));
+    if (card && !card.intro) closeCard();
+    if (k !== 1) hl.style.visibility = 'hidden';
     var from = state;
     state = k;
     axesFor();
@@ -266,6 +259,7 @@ House.app('systematics', function (figure, data, ctx) {
     if (ctx.still()) {
       // reduced motion: the old view, frozen, fades out over the new one
       var ghost = svg.cloneNode(true);
+      ghost.removeAttribute('data-rest');
       ghost.style.pointerEvents = 'none';
       svg.parentNode.insertBefore(ghost, svg.nextSibling);
       land(k);
@@ -284,7 +278,7 @@ House.app('systematics', function (figure, data, ctx) {
   if (ctx.variants) ctx.variants(data.variants, use);
   return {
     step: step,
-    leave: function () { closeCard(); },
+    leave: function () { if (card && !card.intro) closeCard(); },
     open: function (key) { openCard(key); },
     template: setTemplate,
   };

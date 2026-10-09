@@ -18,7 +18,7 @@ const deck = path.resolve(process.argv[2]);
   await p.goto('file://' + deck + '#/systematics-triangle', { waitUntil: 'load' });
   await p.evaluate(async () => { await document.fonts.ready; await new Promise(r => Reveal.isReady() ? r() : Reveal.on('ready', r)); });
   await p.addStyleTag({ content: 'html, body, .reveal, .reveal .slides, .reveal section, .slide { background: #FFFFFF !important; } .slide > .variants, .app-choice { display: none !important; }' });
-  for (let k = 0; k < 3; k++) {
+  for (let k = 0; k < 2; k++) {
     await p.evaluate(k => {
       const i = Reveal.getIndices(document.getElementById("systematics-triangle"));
       Reveal.slide(i.h, 0, k - 1);
