@@ -7,6 +7,9 @@ The geometry, style and SVG plumbing are the dv-vector slide's
 (render_dv_vector.py), so the two triangles lie cell for cell in the same places.
 
 For every template S and variant:
+  near    the CMB lensing row close up (its source-bin half, then its lens-bin half),
+          drawn in the close-up camera's screen units with the dv-vector slide's
+          geometry (its columns and zoom), with taller panels and views of its own (VIEWS)
   over    the whole data vector as a lower triangle of panels, each showing the
           contamination X_l^{ab} / sigma_G of its pair, +- sigma_X / sigma_G, on one
           fixed scale (+-YR) with the +-1 sigma_G band shaded; a band beyond the
@@ -16,7 +19,9 @@ for every variant part it depends on (a shear tracer on the shear method, kappa 
 the CMB map, a lens bin on neither):
   xcard   the card itself: the pair's name and its X / sigma_G panel along the bottom
   cross   one tracer's measured cross with the template, l C_l^{aS} +- sigma, for
-          the card's top row (two for a cross-pair, one for an auto)
+          the card's top row (two for a cross-pair, one for an auto), with its chi^2
+          against zero over the 15 bands and PTE (full Gaussian covariance; kappa
+          diagonal only)
 Every axis is the union over the variants on disk, so the deck's toggles move only
 the points.
 
@@ -28,6 +33,7 @@ import os
 
 import matplotlib
 import numpy as np
+from scipy import stats
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
@@ -126,19 +132,75 @@ def overview(per, ell, title, label, glyphs):
     return fig
 
 
+# the close-up: the dv-vector slide's columns and zoom, with taller panels (there are no
+# residual strips under them), centred on the overview's kappa row
+NM_TOP, NM_H = 200.0, 470.0
+VY = rdv.row_y(12) + rdv.KH / 2 - (NM_TOP + NM_H / 2) / rdv.S_CLOSE
+VIEWS = [dict(x=rdv.V0X, y=VY, w=rdv.VW, h=rdv.VH), dict(x=rdv.V1X, y=VY, w=rdv.VW, h=rdv.VH),
+         dict(x=0.0, y=0.0, w=W, h=H)]
+
+
+def near(per, ell, title, glyphs):
+    """The kappa row close up, in the close-up camera's screen px; columns over the overview's."""
+    fw, fh = rdv.NEAR_W, H
+    fig = plt.figure(figsize=(fw / 72, fh / 72), dpi=72)
+    fs = 23.0
+    for h in (0, 1):
+        for c in range(6 * h, 6 * h + 6):
+            k = rdv.key_of("kappa", TR[c])
+            x, w = rdv.nx(rdv.col_x(c)), rdv.S_CLOSE * rdv.CW
+            ax = rdv.axes_at(fig, x, NM_TOP, w, NM_H, fw, fh)
+            xaxis(ax, ell, tick_len=6, lw_frame=0.9)
+            x_points(ax, ell, per["x"][k], per["sx"][k], lw=1.3, ms=5.5)
+            rdv.text_at(fig, x + w - 12, NM_TOP + 12, rf"${rdv.sym(TR[c])}\times\kappa$", fw, fh, ha="right",
+                        va="top", fontsize=fs + 2)
+            for l in (100, 1000):
+                xx = x + w * (np.log10(l) - np.log10(rdv.XLIM[0])) / (np.log10(rdv.XLIM[1]) - np.log10(rdv.XLIM[0]))
+                rdv.text_at(fig, xx, NM_TOP + NM_H + 8, f"$10^{{{int(np.log10(l))}}}$", fw, fh,
+                            ha="center", va="top", fontsize=fs)
+        x0 = rdv.nx(rdv.col_x(6 * h))
+        for v in (-1, 0, 1):
+            rdv.text_at(fig, x0 - 8, NM_TOP + NM_H * (YR - v) / (2 * YR), rdv.fmt(v), fw, fh, ha="right",
+                        va="center", fontsize=fs)
+        rdv.text_at(fig, x0 - 50, NM_TOP + NM_H / 2, r"$X_\ell/\sigma_G$", fw, fh,
+                    rotation=90, ha="center", va="center", fontsize=fs + 1)
+        mid = (rdv.nx(rdv.col_x(6 * h)) + rdv.nx(rdv.col_x(6 * h + 5) + rdv.CW)) / 2
+        rdv.text_at(fig, mid, NM_TOP + NM_H + 44, r"$\ell$", fw, fh, ha="center", va="top", fontsize=fs + 2)
+        left = rdv.nx(rdv.col_x(6 * h))
+        rdv.text_at(fig, left, 30, title, fw, fh, ha="left", va="top", fontsize=fs + 3)
+        rdv.text_at(fig, left, 68, r"$X_\ell^{a\kappa} = C_\ell^{aS}\,C_\ell^{\kappa S}/C_\ell^{SS}$ in units of "
+                    r"$\sigma_G$ of $C_\ell^{a\kappa}$; shaded $\pm1\,\sigma_G$", fw, fh, ha="left", va="top",
+                    fontsize=fs - 3, color=MUTED)
+    return rdv.svg_of(fig, fw, fh, glyphs)
+
+
+def pte_text(chi2, n=15):
+    p = stats.chi2.sf(chi2, n)
+    if p >= 0.01:
+        ps = f"{p:.2f}"
+    elif p < 1e-6:
+        ps = r"<10^{-6}"
+    else:
+        m, e = f"{p:.1e}".split("e")
+        ps = rf"{m}\times10^{{{int(e)}}}"
+    return rf"$\chi^2 = {chi2:.1f}/{n}$, PTE ${ps}$"
+
+
 def sym_axis(lo, hi):
     """Limits and major ticks for a cross that may sit either side of zero: multiples of
-    one round step s (1, 2 or 5 x 10^k), at most two on each side, zero always marked."""
+    one round step s (1, 2 or 5 x 10^k), at most two on each side, spanning the range,
+    zero always marked."""
     lo, hi = min(lo, 0.0), max(hi, 0.0)
     m = max(-lo, hi)
-    k = np.floor(np.log10(0.45 * m))
-    s = max(f * 10 ** k for f in (1, 2, 5) if f * 10 ** k <= 0.45 * m)
+    # the smallest round step that keeps at most two ticks on each side of zero
+    k = np.floor(np.log10(m)) - 1
+    s = min(f * 10 ** kk for kk in (k, k + 1) for f in (1, 2, 5) if m / (f * 10 ** kk) < 3)
     ticks = [float(f"{j * s:.6g}") for j in range(-2, 3) if lo - 1e-12 <= j * s <= hi + 1e-12]
     pad = 0.06 * (hi - lo)
     return (lo - pad, hi + pad), ticks
 
 
-def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, glyphs):
+def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, glyphs):
     fw, fh = CROSS_W, CROSS_H
     fig = plt.figure(figsize=(fw / 72, fh / 72), dpi=72)
     fs = 19.0
@@ -152,6 +214,8 @@ def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, glyphs):
     ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"$10^{{{int(round(np.log10(v)))}}}$"))
     ax.set_ylabel(rf"$\ell C_\ell\;[10^{{-{e}}}]$", fontsize=fs, labelpad=6)
     fig.text(104 / fw, 1 - 6 / fh, rf"${rdv.sym(tracer)}\times S$, {tlabel.lower()}", fontsize=fs + 1, va="top")
+    fig.text(1 - 20 / fw, 1 - 9 / fh, pte_text(chi2) + (r" (diag.)" if tracer == "kappa" else ""), fontsize=fs - 3,
+             va="top", ha="right", color=MUTED)
     return rdv.svg_of(fig, fw, fh, glyphs)
 
 
@@ -160,7 +224,7 @@ def xcard(ell, x, sx, a, b, tlabel, glyphs):
     fs = 21.0
     a, b = sorted((a, b), key=lambda t: (2, 0) if t == "kappa" else (0 if t[0] == "l" else 1, int(t[1:])))
     fig.text(150 / DW, 1 - 22 / DH, rf"${rdv.sym(a)}\times{rdv.sym(b)}$", fontsize=fs + 9, va="top")
-    fig.text(150 / DW, 1 - 62 / DH, f"{tlabel} template: contamination of {rdv.name(a)} $\\times$ {rdv.name(b)}",
+    fig.text(150 / DW, 1 - 62 / DH, f"contamination of {rdv.name(a)} $\\times$ {rdv.name(b)}",
              fontsize=fs - 2, va="top", color=MUTED)
     ax = rdv.axes_at(fig, XP["x"], XP["y"], XP["w"], XP["h"], DW, DH)
     xaxis(ax, ell, tick_len=7, lw_frame=1.0, labels=True)
@@ -185,11 +249,12 @@ def main():
     labels = dict(src["templates"])
     out = dict(world=dict(w=W, h=H), detail=dict(w=DW, h=DH), cross=dict(w=CROSS_W, h=CROSS_H),
                slots=[list(s) for s in SLOTS], templates=src["templates"], variants=variants,
-               blind=src["blind"], over={}, xcard={}, crossp={})
+               blind=src["blind"], over={}, near={}, xcard={}, crossp={},
+               views=VIEWS, near_geom=dict(x=rdv.V0X, y=VY, s=rdv.S_CLOSE, w=rdv.NEAR_W, h=H))
     glyphs = {}
     tracers = TR + ["kappa"]
     for t, tlabel in src["templates"]:
-        out["over"][t], out["xcard"][t], out["crossp"][t] = {}, {}, {}
+        out["over"][t], out["near"][t], out["xcard"][t], out["crossp"][t] = {}, {}, {}, {}
         # each tracer's cross axis: the union over the variants on disk
         ax_of = {}
         for tr in tracers:
@@ -207,6 +272,7 @@ def main():
             title = f"TR1 {rdv_name(shear, cmb)}, contamination by one template"
             fig = overview(per, ell, title, "", glyphs)
             out["over"][t][vk] = rdv.svg_of(fig, W, H, glyphs)
+            out["near"][t][vk] = near(per, ell, f"TR1 {rdv_name(shear, cmb)}: the CMB lensing row", glyphs)
             if t == src["templates"][0][0] and vk == variants[0]:
                 fig = overview(per, ell, title, f"Template: {tlabel.lower()}", {})
                 fig.savefig(FALLBACK, dpi=144, transparent=False, facecolor="white")
@@ -221,8 +287,9 @@ def main():
                 if cid not in out["crossp"][t]:
                     e, ylim, ticks = ax_of[tr]
                     out["crossp"][t][cid] = cross_panel(ell, per["c"][tr], per["s"][tr], ylim, ticks, e, tr,
-                                                        tlabel, glyphs)
+                                                        tlabel, per["chi2"][tr], glyphs)
         print(t, f"over {sum(len(v) for v in out['over'][t].values()) / 1024:.0f} kB,",
+              f"near {sum(len(v) for v in out['near'][t].values()) / 1024:.0f} kB,",
               f"cards {sum(len(v) for v in out['xcard'][t].values()) / 1024:.0f} kB,",
               f"crosses {sum(len(v) for v in out['crossp'][t].values()) / 1024:.0f} kB")
     cells = {}

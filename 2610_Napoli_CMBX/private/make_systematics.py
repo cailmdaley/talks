@@ -67,6 +67,18 @@ def crosses(m):
     return out
 
 
+def null_chi2(m):
+    """chi^2 of each tracer's template cross against zero over the 15 bands: the full
+    Gaussian covariance for the Euclid tracers, the diagonal only for kappa."""
+    out = {}
+    for fam in ("GC", "WL"):
+        for k, r in m[fam].items():
+            cl = np.asarray(r["cross"])
+            out[k] = float(cl @ np.linalg.solve(np.asarray(r["covariance"]), cl))
+    out["kappa"] = float(np.sum(np.asarray(m["template_kappa"]["signed_pull"]) ** 2))
+    return out
+
+
 def xell(c, auto, a, b):
     css = np.asarray(auto["cl"])
     sss = css * np.sqrt(2 / (auto["fsky_support"] * (EDGES[1:] ** 2 - EDGES[:-1] ** 2)))
@@ -106,7 +118,8 @@ def main():
                 sg = np.asarray(p["sig"])
                 x[k], sx[k] = sig(xv / sg, 4), sig(sv / sg, 4)
             per[t] = dict(x=x, sx=sx, c={k: sig(ell * v[0]) for k, v in c.items()},
-                          s={k: sig(ell * v[1]) for k, v in c.items()})
+                          s={k: sig(ell * v[1]) for k, v in c.items()},
+                          chi2={k: round(v, 2) for k, v in null_chi2(m).items()})
         if len(per) == len(TEMPLATES):
             out["variants"][vk] = per
             worst = max((abs(v), t, k) for t, d in per.items() for k, xs in d["x"].items() for v in xs)

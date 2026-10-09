@@ -1,20 +1,25 @@
 // Template contamination of the blinded TR1 3x2pt + kappa data vector (house data-app):
-// for a chosen systematics template, X_l^{ab} / sigma_G for every pair, as a triangle
-// of panels laid out cell for cell like the dv-vector slide's.
-//
-// Nothing is drawn here: private/render_systematics.py renders every panel with
-// matplotlib as SVG, and this script places and swaps them. The app's own control
-// (top right of the triangle) picks the template; the deck's variant control picks
-// the shear method and CMB map. A click on a cell opens its card: the pair's X / sigma_G
-// along the bottom and the template's cross with each of its tracers above (Esc,
-// Backspace or a click outside closes it). The variant axes the view depends on follow
-// the card: a lens-bin-only pair depends on neither, a shear tracer on the shear
-// method, kappa on the CMB map.
+// for a chosen systematics template, X_l^{ab} / sigma_G for every pair, laid out cell for
+// cell like the dv-vector slide, and moved by the same camera:
+//   0  close on the CMB lensing row's source-bin half: gamma_i x kappa
+//   1  the same zoom, panned right to its lens-bin half: delta_i x kappa
+//   2  pulled back to the whole triangle
+// Nothing is drawn here: private/render_systematics.py renders every layer and panel
+// with matplotlib as SVG ("near" is the kappa row close up, "over" the whole triangle,
+// both in the dv-vector slide's geometry), and this script places, moves, fades and
+// swaps them. The app's own control picks the template at every step; the deck's
+// variant control picks the shear method and CMB map. On the overview a click on a cell
+// opens its card: the pair's X / sigma_G along the bottom and the template's cross with
+// each of its tracers above, each with its chi^2 PTE (Esc, Backspace or a click outside
+// closes it). The template control moves onto the card while it is open. The variant
+// axes the view depends on follow the step and the card. A do-nothing Web Animation is
+// the clock, so finishing it (as the house checker does) lands the step.
 // Data: private/systematics_app.json.
 House.app('systematics', function (figure, data, ctx) {
   'use strict';
   var NS = 'http://www.w3.org/2000/svg';
   var W = data.world.w, H = data.world.h, DW = data.detail.w, DH = data.detail.h;
+  var PAN_MS = 900, ZOOM_MS = 1500;
   var frameEl = figure.querySelector('.frame');
 
   var el = function (tag, attrs, parent) {
@@ -32,12 +37,23 @@ House.app('systematics', function (figure, data, ctx) {
     while (src.firstChild) g.appendChild(src.firstChild);
     return g;
   };
+  var fill = function (target, markup) {
+    while (target.firstChild) target.removeChild(target.firstChild);
+    var src = parse(markup);
+    while (src.firstChild) target.appendChild(src.firstChild);
+  };
 
   var defs = el('svg', { width: 0, height: 0, 'aria-hidden': 'true' });
   defs.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;';
   defs.appendChild(parse('<svg xmlns="' + NS + '"><defs>' + data.glyphs + '</defs></svg>').firstChild);
   el('style', {}, defs).textContent = data.css;
   frameEl.appendChild(defs);
+
+  // the clock: a Web Animation that does nothing; finishing it lands the step
+  var tick = document.createElement('span');
+  tick.setAttribute('aria-hidden', 'true');
+  tick.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;';
+  frameEl.appendChild(tick);
 
   // the variant parts a pair or a tracer depends on, as in the renderer's ids
   var dep = function (tracers, vk) {
@@ -59,8 +75,12 @@ House.app('systematics', function (figure, data, ctx) {
   choice.className = 'variants app-choice';
   choice.setAttribute('role', 'group');
   choice.setAttribute('aria-label', 'Template');
-  choice.style.left = (100 * data.choice.x / W) + '%';
-  choice.style.top = (100 * data.choice.y / H) + '%';
+  var restPlace = function () {
+    choice.style.right = '';
+    choice.style.left = (100 * data.choice.x / W) + '%';
+    choice.style.top = (100 * data.choice.y / H) + '%';
+  };
+  restPlace();
   var seg = document.createElement('span');
   seg.className = 'seg';
   data.templates.forEach(function (t) {
@@ -72,7 +92,6 @@ House.app('systematics', function (figure, data, ctx) {
     seg.appendChild(b);
   });
   choice.appendChild(seg);
-  frameEl.appendChild(choice);
   function markChoice() {
     seg.querySelectorAll('button').forEach(function (b) {
       var on = b.getAttribute('data-option') === tpl;
@@ -81,10 +100,31 @@ House.app('systematics', function (figure, data, ctx) {
     });
   }
 
-  // ── the triangle, its hover and the card ─────────────────────────────────
+  // ── views and the camera (the dv-vector slide's) ─────────────────────────
+  var camOf = function (v) { var s = W / v.w; return { s: s, tx: -v.x * s, ty: -v.y * s }; };
+  var CAMS = data.views.map(camOf);
+  var LZ = Math.log(CAMS[0].s);
+  var smooth = function (a, b, x) { var t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  var view = function (c) { return { x: -c.tx / c.s, y: -c.ty / c.s, w: W / c.s, h: H / c.s }; };
+  var between = function (a, b, t) {
+    var va = view(a), vb = view(b);
+    var w = va.w * Math.pow(vb.w / va.w, t);
+    var cx = va.x + va.w / 2 + (vb.x + vb.w / 2 - va.x - va.w / 2) * t;
+    var cy = va.y + va.h / 2 + (vb.y + vb.h / 2 - va.y - va.h / 2) * t;
+    return camOf({ x: cx - w / 2, y: cy - (w * H / W) / 2, w: w });
+  };
+  var ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+
+  // ── the scene: one world group under one camera, the card above it ──────
   var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'class': 'app-view', role: 'img' });
-  frameEl.insertBefore(svg, choice);
-  var layer = el('g', { 'class': 'app-mpl' }, svg);
+  frameEl.appendChild(svg);
+  frameEl.appendChild(choice);
+  var world = el('g', {}, svg);
+  var N = data.near_geom;
+  var layer = {
+    over: el('g', { 'class': 'app-mpl' }, world),
+    near: el('g', { 'class': 'app-mpl', transform: 'translate(' + N.x + ' ' + N.y + ') scale(' + (1 / N.s) + ')' }, world),
+  };
   var hits = el('g', {}, svg), hl = el('rect', { 'class': 'app-hl', rx: 3 }, svg);
   hl.style.visibility = 'hidden';
   data.cells.forEach(function (c) {
@@ -97,14 +137,63 @@ House.app('systematics', function (figure, data, ctx) {
     h.addEventListener('click', function (e) { e.stopPropagation(); openCard(c.key); });
   });
 
+  var cam = { s: 1, tx: 0, ty: 0 };
+  function render() {
+    world.setAttribute('transform', 'matrix(' + cam.s + ' 0 0 ' + cam.s + ' ' + cam.tx + ' ' + cam.ty + ')');
+    var z = Math.max(0, Math.min(1, (LZ - Math.log(cam.s)) / LZ));        // 0 close, 1 far
+    var op = { over: smooth(0.1, 0.5, z), near: 1 - smooth(0.02, 0.42, z) };
+    Object.keys(op).forEach(function (k) {
+      layer[k].setAttribute('opacity', op[k].toFixed(3));
+      layer[k].style.visibility = op[k] > 0.002 ? 'visible' : 'hidden';
+    });
+  }
   function draw() {
-    while (layer.firstChild) layer.removeChild(layer.firstChild);
-    var src = group(data.over[tpl][vk], {});
-    while (src.firstChild) layer.appendChild(src.firstChild);
+    fill(layer.over, data.over[tpl][vk]);
+    fill(layer.near, data.near[tpl][vk]);
     svg.setAttribute('data-template', tpl);
     svg.setAttribute('data-variant', vk);
   }
 
+  var state = null, flight = null;
+  function land(k) {
+    if (flight) { var f = flight; flight = null; cancelAnimationFrame(f.raf); try { f.clock.cancel(); } catch (e) { /* gone */ } }
+    cam = { s: CAMS[k].s, tx: CAMS[k].tx, ty: CAMS[k].ty };
+    render();
+    svg.setAttribute('data-rest', k);              // at rest on step k (read by tests)
+    hits.style.visibility = k === 2 ? 'visible' : 'hidden';
+  }
+  function fly(k) {
+    var from = { s: cam.s, tx: cam.tx, ty: cam.ty }, to = CAMS[k];
+    var dur = Math.abs(Math.log(from.s / to.s)) > 1e-6 ? ZOOM_MS : PAN_MS;
+    var clock;
+    try { clock = tick.animate([{ opacity: 0 }, { opacity: 0 }], { duration: dur }); } catch (e) { clock = null; }
+    if (!clock || !clock.finished) { land(k); return; }
+    var f = { clock: clock, raf: 0 };
+    flight = f;
+    svg.removeAttribute('data-rest');
+    hits.style.visibility = 'hidden';
+    var frame = function () {
+      if (flight !== f) return;
+      var t = Math.min(1, (clock.currentTime || 0) / dur);
+      if (t >= 1 || clock.playState === 'finished') { land(k); return; }
+      cam = between(from, to, ease(t));
+      render();
+      f.raf = requestAnimationFrame(frame);
+    };
+    clock.finished.then(function () { if (flight === f) land(k); }, function () {});
+    f.raf = requestAnimationFrame(frame);
+  }
+
+  // the variant axes the view on screen depends on
+  function axesFor() {
+    if (!ctx.axes) return;
+    if (card) ctx.axes(axesOf(card.key.split('_')));
+    else if (state === 0) ctx.axes(['shear', 'cmb']);
+    else if (state === 1) ctx.axes(['cmb']);
+    else ctx.axes(null);
+  }
+
+  // ── the card ─────────────────────────────────────────────────────────────
   var card = null;
   function onKey(e) { if (e.key === 'Escape' || e.key === 'Backspace') { closeCard(); e.preventDefault(); e.stopPropagation(); } }
   function onDown(e) {
@@ -131,8 +220,11 @@ House.app('systematics', function (figure, data, ctx) {
     note.textContent = 'Esc to close';
     if (!instant && g.animate && !ctx.still()) try { g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: 'ease-out' }); } catch (e) { /* static */ }
     card = { g: g, box: box, key: key };
-    choice.style.visibility = 'hidden';
-    if (ctx.axes) ctx.axes(axesOf(t));
+    // the template control rides on the card, at its top right
+    choice.style.left = '';
+    choice.style.right = (100 * (W - (B.x + B.w - 26)) / W) + '%';
+    choice.style.top = (100 * (B.y + 22) / H) + '%';
+    axesFor();
     ctx.keyboard(false);
     document.addEventListener('keydown', onKey, true);
     document.addEventListener('pointerdown', onDown, true);
@@ -142,8 +234,8 @@ House.app('systematics', function (figure, data, ctx) {
     if (!card) return;
     svg.removeChild(card.g);
     card = null;
-    choice.style.visibility = '';
-    if (ctx.axes) ctx.axes(null);
+    restPlace();
+    axesFor();
     ctx.keyboard(true);
     document.removeEventListener('keydown', onKey, true);
     document.removeEventListener('pointerdown', onDown, true);
@@ -163,11 +255,35 @@ House.app('systematics', function (figure, data, ctx) {
   function setTemplate(t) { if (t === tpl) return; tpl = t; markChoice(); redraw(); }
   function use(k) { if (k === vk || data.variants.indexOf(k) < 0) return; vk = k; redraw(); }
 
+  // ── steps ───────────────────────────────────────────────────────────────
+  function step(k, animate) {
+    k = Math.max(0, Math.min(2, k));
+    if (k !== 2) { closeCard(); hl.style.visibility = 'hidden'; }
+    var from = state;
+    state = k;
+    axesFor();
+    if (!animate || from == null || from === k) { land(k); return; }
+    if (ctx.still()) {
+      // reduced motion: the old view, frozen, fades out over the new one
+      var ghost = svg.cloneNode(true);
+      ghost.style.pointerEvents = 'none';
+      svg.parentNode.insertBefore(ghost, svg.nextSibling);
+      land(k);
+      var gone = function () { if (ghost.parentNode) ghost.parentNode.removeChild(ghost); };
+      try { ghost.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 450, easing: 'ease-in-out', fill: 'forwards' }).finished.then(gone, gone); }
+      catch (e) { gone(); }
+      return;
+    }
+    fly(k);
+  }
+
   markChoice();
   draw();
+  land(0);
+  state = 0;
   if (ctx.variants) ctx.variants(data.variants, use);
   return {
-    step: function () {},
+    step: step,
     leave: function () { closeCard(); },
     open: function (key) { openCard(key); },
     template: setTemplate,
