@@ -55,8 +55,10 @@
       "slides": [
         "kp-3",
         "pipeline",
+        "mocks",
         "mock-recovery",
         "blind-rehearsal",
+        "tr1-data",
         "dv-vector",
         "lens-ratio",
         "systematics-overview",
