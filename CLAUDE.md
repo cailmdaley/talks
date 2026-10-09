@@ -35,7 +35,9 @@ blinded, in decks that set `"noindex": true` in `deck.json`. The rule for what c
 a quantity that carries cosmology is blinded; a non-cosmological quantity (a calibration such as the
 lens ratio γδ/κδ, which the blind moves by only a few per cent) or a null (template × data, whose
 expectation is zero whatever the cosmology) may be shown as it is. Call such a quantity
-blind-insensitive, never "unblinded".
+blind-insensitive, never "unblinded". A noindex deck is unlisted, reachable only by its link like a
+shared Google Slides deck, so it carries no further publicity gate: contributed and in-progress material
+goes in, and Cail does the final pass before showing it.
 
 ### Image hygiene
 - **Resolution over file size**: use figures at full resolution — scientific figures need to stay
