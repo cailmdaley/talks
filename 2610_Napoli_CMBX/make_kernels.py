@@ -1,31 +1,39 @@
-"""Lensing kernels for the Napoli CMBX talk: the six Euclid DR1 source bins and
-the CMB lensing kernel on one redshift axis, with the source n(z) above them.
+"""Redshift kernels for the Napoli CMBX talk: the CMB secondaries (lensing,
+CIB, tSZ) above the six Euclid DR1 source-bin lensing kernels, on one
+redshift axis.
 
-Top panel: the official Euclid DR1 weak-lensing tomographic n(z)
+Bottom panel: the lensing efficiency per unit redshift of each Euclid DR1
+weak-lensing source bin, from the official tomographic n(z)
 (DpdBinMeanRedshift, PHZ MergeNz 1.0.2, release DR1_WLSOUTH_R1, source bins
-TOM_BIN, WEIGHT_METHOD = PHZ_WEIGHT; bin means 0.45-1.73), each bin normalised
-to unit area.  The table's N_Z is a histogram on bins of width dz = 0.01 whose
-centres are (i + 1/2) dz: that grid reproduces the header's MEAN_Z.  WLNORTH_R1
-differs by at most 5 % in total variation per bin and 0.014 in mean z, which
-does not show at this scale; South is drawn.  The top panel is drawn with the
-analysis's Hann smoothing (nz_io.smooth_hann, width dz = 0.05) to calm the
-histogram's bin-to-bin spikes; the kernels below use the unsmoothed n(z).
+TOM_BIN, WEIGHT_METHOD = PHZ_WEIGHT; bin means 0.45-1.73).  The table's N_Z is
+a histogram on bins of width dz = 0.01 whose centres are (i + 1/2) dz: that
+grid reproduces the header's MEAN_Z.
 
-Bottom panel: the lensing efficiency per unit redshift, in the same units for
-every tracer, so heights compare directly:
-    W(z) = (3/2) Omega_m H0^2 / c^2 * chi (1+z) * g(chi) * dchi/dz
-with g = int dz' n(z') (chi' - chi)/chi' for a galaxy bin and
-g = (chi_* - chi)/chi_* for the CMB, whose single source plane is the last
-scattering surface (z_* ~ 1090).  W(z) is dimensionless.
+    W(z) = (3/2) Omega_m H0^2 / c^2 * chi (1+z) * g(chi) * dchi/dz,
+    g = int dz' n(z') (chi' - chi)/chi',
 
-Cosmology: Planck 2018 TT,TE,EE+lowE+lensing best fit (flat LCDM; only the
-background matters here).
+in common units, so the bins' heights compare, scaled to the tallest.
+
+Top panel: the CMB secondaries, each scaled to unit peak (their units differ):
+  - CMB lensing: the same W(z) with g = (chi_* - chi)/chi_*, the single source
+    plane at last scattering (z_* ~ 1090);
+  - tSZ: dy/dz ~ dchi/dz * a * <b P_e>(z), the bias-weighted mean electron
+    pressure (CCL halo model: Tinker08 mass function, Tinker10 bias, M200c,
+    generalised-NFW pressure, Arnaud et al. 2010 with hydrostatic bias 0.8);
+  - CIB at 545 GHz: dI/dz ~ dchi/dz * a * <b j_nu>(z), the bias-weighted
+    emissivity of the Shang et al. 2012 halo model at CCL's default
+    (Planck 2013-like) parameters.
+Bias-weighted kernels are the ones a cross-correlation on linear scales sees.
+The tSZ and CIB shapes are model-dependent (the CIB peak especially); they
+are drawn as illustrations of where each signal comes from.
+
+Cosmology: Planck 2018 TT,TE,EE+lowE+lensing best fit (flat LCDM).
 
 Output: two frames of one plot, identical axes, for a slide stack:
-  images/napoli_lensing_kernels_shear.png  the source bins alone
-  images/napoli_lensing_kernels.png        + the CMB lensing kernel
-at 2x the figure-text layout's
-figure cell (1027 x 723 px displayed, the body less a .source line).
+  images/napoli_secondary_kernels_euclid.png  the source bins alone
+  images/napoli_secondary_kernels.png         + the CMB secondaries
+at 2x the figure-text layout's figure cell (1027 x 723 px displayed, the body
+less a .source line).
 
 Run in the cmbx container: app python make_kernels.py
 """
@@ -43,22 +51,21 @@ from matplotlib import font_manager
 from matplotlib.colors import LinearSegmentedColormap
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(HERE, "..", "images", "napoli_lensing_kernels.png")
-OUT_SHEAR = os.path.join(HERE, "..", "images", "napoli_lensing_kernels_shear.png")
+OUT = os.path.join(HERE, "..", "images", "napoli_secondary_kernels.png")
+OUT_EUCLID = os.path.join(HERE, "..", "images", "napoli_secondary_kernels_euclid.png")
 CMBX = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx"
 WL_NZ = ("/leonardo_work/EUHPC_E07_074/cmbx/inputs/euclid/dr1/nz_official_tombinz_20260523/"
          "EUC_PHZ_TOMBINZ__20260523T200621.112482Z_00.00.fits")   # WLSOUTH_R1, source, PHZ_WEIGHT
-sys.path.insert(0, f"{CMBX}/workflow/scripts")
-from nz_io import smooth_hann  # noqa: E402
 
 # euclid theme (house/themes/euclid.css)
 INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
 ACCENT, COBALT, TEAL, OCHRE = "#435AA1", "#2E417C", "#1D6C78", "#9C7414"
-CINNABAR = "#B0412E"   # the CMB kernel: one warm line against the cool bin ramp
+CINNABAR = "#B0412E"   # CMB lensing
+BIN_LO, BIN_HI = "#2E417C", "#9AABCF"   # the source bins: one cool ramp, under the secondaries
 
 W_PX, H_PX, DPI = 2054, 1446, 200
 PT = DPI / 72 / 2      # displayed px per point
-ZMAX = 4.0
+ZMAX = 5.0
 
 COSMO = ccl.Cosmology(Omega_c=0.2607, Omega_b=0.04897, h=0.6766, sigma8=0.8102, n_s=0.9665)
 
@@ -109,6 +116,22 @@ def cmb_kernel(z):
     return prefactor(z) * (chi_star - chi_of_z(z)) / chi_star
 
 
+def secondary_kernels(z):
+    """Bias-weighted tSZ and CIB (545 GHz) redshift kernels from CCL's halo model, unnormalised."""
+    md = ccl.halos.MassDef200c
+    hmc = ccl.halos.HMCalculator(mass_function=ccl.halos.MassFuncTinker08(mass_def=md),
+                                 halo_bias=ccl.halos.HaloBiasTinker10(mass_def=md), mass_def=md)
+    pressure = ccl.halos.HaloProfilePressureGNFW(mass_def=md)
+    cib = ccl.halos.HaloProfileCIBShang12(mass_def=md, concentration=ccl.halos.ConcentrationDuffy08(mass_def=md),
+                                          nu_GHz=545)
+    a = 1.0 / (1.0 + z)
+    dchi_dz = ccl.physical_constants.CLIGHT_HMPC / COSMO["h"] / ccl.h_over_h0(COSMO, a)
+    k = np.array([1e-3])   # linear scales: the 1-point bias-weighted mean
+    by = np.array([ccl.halos.halomod_bias_1pt(COSMO, hmc, k, ai, pressure)[0] for ai in a])
+    bj = np.array([ccl.halos.halomod_bias_1pt(COSMO, hmc, k, ai, cib)[0] for ai in a])
+    return dchi_dz * a * by, dchi_dz * a * bj
+
+
 def load_nz(path):
     """{bin: (z, n(z) normalised to unit area)} and {bin: mean z} from a DpdBinMeanRedshift FITS."""
     from astropy.io import fits
@@ -127,7 +150,6 @@ def load_nz(path):
 def main():
     setup_font()
     raw, mean_z = load_nz(WL_NZ)
-    smooth = {b: (z, smooth_hann(z, n, 0.05)) for b, (z, n) in raw.items()}
     bins = sorted(raw)
     z = np.linspace(0.0, ZMAX, 401)
     zs, _ = raw[bins[0]]
@@ -141,11 +163,17 @@ def main():
         zz_b, n_b = raw[b]
         print(f"  bin {b}: fraction of n(z) above z=2: {np.trapezoid(n_b[zz_b > 2], zz_b[zz_b > 2]):.3f}")
 
-    for out, with_cmb in ((OUT_SHEAR, False), (OUT, True)):
-        draw(out, with_cmb, bins, smooth, mean_z, z, kern, wk, zpk)
+    zz = np.linspace(0.02, ZMAX, 150)
+    wy, wc = secondary_kernels(zz)
+    sec = {"kappa": (z, wk / wk.max()), "tsz": (zz, wy / wy.max()), "cib": (zz, wc / wc.max())}
+    for n, (zn, wn) in sec.items():
+        half = zn[wn > 0.5]
+        print(f"{n}: peak z = {zn[np.argmax(wn)]:.2f}, half maximum over z = {half[0]:.2f}-{half[-1]:.2f}")
+    for out, with_sec in ((OUT_EUCLID, False), (OUT, True)):
+        draw(out, with_sec, bins, z, kern, sec)
 
 
-def draw(out, with_cmb, bins, smooth, mean_z, z, kern, wk, zpk):
+def draw(out, with_sec, bins, z, kern, sec):
     plt.rcParams.update({
         "axes.linewidth": 1.4, "axes.edgecolor": MUTED,
         "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK,
@@ -156,35 +184,38 @@ def draw(out, with_cmb, bins, smooth, mean_z, z, kern, wk, zpk):
         "figure.facecolor": "white", "axes.facecolor": "white",
     })
     print(f"tick labels ≈ {22 * PT:.0f} px, axis labels ≈ {25 * PT:.0f} px displayed")
-    cmap = LinearSegmentedColormap.from_list("bins", [COBALT, TEAL, OCHRE])
+    cmap = LinearSegmentedColormap.from_list("bins", [BIN_LO, BIN_HI])
     colours = [cmap(t) for t in np.linspace(0, 1, len(bins))]
 
-    fig, (ax_n, ax_w) = plt.subplots(2, 1, figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI, sharex=True,
-                                     gridspec_kw=dict(height_ratios=[1, 1.9], hspace=0.08, left=0.12,
+    fig, (ax_s, ax_w) = plt.subplots(2, 1, figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI, sharex=True,
+                                     gridspec_kw=dict(height_ratios=[1, 1], hspace=0.1, left=0.08,
                                                       right=0.97, top=0.95, bottom=0.115))
+    kmax = max(k.max() for k in kern.values())
     for b, c in zip(bins, colours):
-        zb, nb = smooth[b]
-        ax_n.fill_between(zb, nb, color=c, alpha=0.18, lw=0)
-        ax_n.plot(zb, nb, color=c, lw=2.2)
-        ax_w.plot(z, kern[b], color=c, lw=2.6)
-    ax_n.set_ylim(0, None)
-    ax_n.set_yticks([])
-    ax_n.set_ylabel(r"$n(z)$")
-    ax_n.text(0.985, 0.88, "Euclid DR1 source bins", transform=ax_n.transAxes, ha="right", va="top",
-              fontsize=24, color=INK)
+        ax_w.plot(z, kern[b] / kmax, color=c, lw=2.6)
     ax_w.set_xlim(0, ZMAX)
-    ax_w.set_ylim(0, 1.12 * max(wk.max(), max(k.max() for k in kern.values())))
-    ax_w.set_ylabel(r"lensing kernel $W(z)$")
-    ax_w.set_xlabel(r"redshift $z$")
+    ax_w.set_ylim(0, 1.15)
     ax_w.set_yticks([])
-    kmax6 = kern[bins[-1]].max()
-    ax_w.text(0.78, kmax6 * 1.04, "shear bins 1–6", fontsize=24, color=INK, ha="left", va="bottom")
-    if with_cmb:
-        ax_w.plot(z, wk, color=CINNABAR, lw=5.0, zorder=5)
-        ax_w.text(1.1, 0.86 * wk.max(), r"CMB lensing $\kappa$", fontsize=28, color=CINNABAR,
-                  ha="left", va="top")
-        ax_w.text(ZMAX - 0.05, 0.62 * wk.max(), r"source plane at $z_* \approx 1100$ $\rightarrow$",
-                  fontsize=22, color=CINNABAR, ha="right", va="top")
+    ax_w.set_ylabel("Euclid")
+    ax_w.set_xlabel(r"redshift $z$")
+    ax_w.text(0.985, 0.95, "DR1 source bins 1–6: shear lensing kernels", transform=ax_w.transAxes,
+              ha="right", va="top", fontsize=24, color=INK)
+
+    ax_s.set_ylim(0, 1.22)
+    ax_s.set_yticks([])
+    ax_s.set_ylabel("CMB")
+    if with_sec:
+        # label, colour, line width, and where the label sits (z, y, ha, va), in clear space
+        style = {"tsz": ("tSZ", TEAL, 3.6, (0.33, 1.04, "center", "bottom")),
+                 "cib": ("CIB 545 GHz", OCHRE, 3.6, (4.05, 0.40, "center", "top")),
+                 "kappa": (r"lensing $\kappa$", CINNABAR, 5.0, (4.0, 0.84, "center", "bottom"))}
+        for n in ("tsz", "cib", "kappa"):
+            zn, wn = sec[n]
+            label, colour, lw, (zl, yl, ha, va) = style[n]
+            ax_s.plot(zn, wn, color=colour, lw=lw, zorder=5 if n == "kappa" else 4)
+            ax_s.text(zl, yl, label, fontsize=28, color=colour, ha=ha, va=va)
+        ax_s.text(0.985, 0.08, "each scaled to its peak", transform=ax_s.transAxes,
+                  ha="right", va="bottom", fontsize=22, color=MUTED)
     fig.savefig(out, dpi=DPI)
     plt.close(fig)
     print("wrote", os.path.normpath(out))
