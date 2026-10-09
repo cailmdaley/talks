@@ -60,6 +60,9 @@ CROSSES = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/napoli/cro
 SHEARS = {"lensmc": "LensMC", "metacal": "MetaCal"}
 CMBS = {"spt": "SPT-3G", "act": "ACT DR6"}
 DEFAULT = ("lensmc", "spt")
+DNDZ = f"{CROSSES}/input/likelihood_input_spt_winter_gmvbhttprf_dndz.pkl"   # TR1 n(z), as delivered
+SIGMA_M = 2e-3                # Euclid requirement on the multiplicative bias (Cropper et al. 2013; Mellier et al., 2405.13491)
+SIGMA_ZMEAN = 0.002           # Euclid requirement on each bin's mean redshift, x (1 + z)
 
 # euclid theme (house/themes/euclid.css)
 INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
@@ -201,7 +204,42 @@ def bin_axis(ax, z, label):
     return x
 
 
-def lens_ratio(a, med, rob, R, variant):
+def requirement_band(front):
+    """Per source bin, the 1-sigma spread of mu_i the Euclid requirements allow.
+
+    mu_i ~ (1 + m_i) x g_i / g_kappa at the lens planes of the bins in front of it,
+    g_i(chi) = int dz n_i(z) (chi(z) - chi)/chi(z).  Shifting n_i by
+    dz = 0.002 (1 + zbar_i) changes ln g_i averaged over each front lens bin's n(z)
+    (an equal-weight mean over those lens bins); sigma(m) = 2e-3 adds in quadrature.
+    The kappa efficiency and the lens bins do not move, so they cancel.
+    """
+    import pickle
+    import pyccl as ccl
+    cosmo = ccl.Cosmology(Omega_c=0.2607, Omega_b=0.04897, h=0.6766, sigma8=0.8102, n_s=0.9665)
+    nz = pickle.load(open(DNDZ, "rb"))
+    zg = np.linspace(0.005, 4.0, 800)
+    chig = ccl.comoving_radial_distance(cosmo, 1 / (1 + zg))
+
+    def g_avg(i, j, shift):
+        zs, ns = (np.asarray(v, float) for v in nz[f"l{i}"])
+        n = np.interp(zg, zs + shift, ns, left=0, right=0)
+        n /= np.trapezoid(n, zg)
+        g = np.array([np.trapezoid(np.where(chig > c, n * (chig - c) / chig, 0.0), zg) for c in chig])
+        zl, nl = (np.asarray(v, float) for v in nz[f"g{j}"])
+        w = np.interp(zg, zl, nl, left=0, right=0)
+        return np.trapezoid(w * g, zg) / np.trapezoid(w, zg)
+
+    sig = []
+    for i in range(6):
+        zs, ns = (np.asarray(v, float) for v in nz[f"l{i}"])
+        dz = SIGMA_ZMEAN * (1 + np.trapezoid(zs * ns, zs) / np.trapezoid(ns, zs))
+        dln = np.mean([0.5 * (np.log(g_avg(i, j, dz)) - np.log(g_avg(i, j, -dz))) for j in front[str(i)]])
+        sig.append(float(np.hypot(dln, SIGMA_M)))
+    print("requirement 1-sigma on mu_i: " + " ".join(f"{s:.4f}" for s in sig))
+    return np.array(sig)
+
+
+def lens_ratio(a, med, rob, R, variant, req):
     W_PX, H_PX = 1978, 1446
     n = a["mock_mu"].shape[0]
     lo_b, hi_b = a["blind_mu"].min(0), a["blind_mu"].max(0)
@@ -214,6 +252,9 @@ def lens_ratio(a, med, rob, R, variant):
         ax.yaxis.set_major_locator(FixedLocator([v for v in np.arange(0.2, 2.6, 0.2) if bottom < v < top]))
         ax.set_ylabel(r"lens ratio $\mu_i$ / fiducial", labelpad=8)
         ax.axhline(1, color=INK, lw=1.6, ls=(0, (5, 4)), zorder=1.8)
+        # the Euclid requirement on m and the n(z) mean, propagated to mu_i: a band around 1
+        for xi, r in zip(x, req):
+            ax.fill_between([xi - 0.42, xi + 0.42], 1 - r, 1 + r, color=COBALT, lw=0, zorder=1.9)
         # blind-sized shift of mu, per bin, drawn above the data band
         for xi, l, h in zip(x, lo_b, hi_b):
             ax.fill_between([xi - 0.42, xi + 0.42], l, h, color=BAND, lw=0, zorder=1.2)
@@ -229,6 +270,13 @@ def lens_ratio(a, med, rob, R, variant):
                        color=SEED, lw=0, alpha=fade, zorder=2, clip_on=False)
         ax.errorbar(x + dxm, med, yerr=rob, fmt="o", ms=11, color=MOCK, elinewidth=2.6, capsize=0,
                     mec="white", mew=1.2, alpha=fade, zorder=3)
+        # key for the two bands around 1, lower right where no points fall
+        t = ax.transAxes
+        for k, (col, txt) in enumerate(((COBALT, "Euclid requirement on m and n(z)"),
+                                        (BAND, "blind-sized cosmology shift"))):
+            yk = 0.115 - k * 0.075
+            ax.add_patch(plt.Rectangle((0.38, yk - 0.018), 0.045, 0.036, transform=t, color=col, lw=0))
+            ax.text(0.44, yk, txt, transform=t, fontsize=LABEL, color=INK, va="center")
         # key above the axes: mocks left, data right (frame 2)
         ax.text(0.0, 1.15, f"{n} GLASS mocks, truth 1", transform=ax.transAxes, fontsize=LABEL,
                 color=MOCK, ha="left", va="bottom")
@@ -328,11 +376,12 @@ def main():
     found = variants()
     loaded = [(v[:2], load(v[2])) for v in found]
     R = axes_ranges([a for _, a in loaded])
+    req = requirement_band(json.load(open(found[0][2]))["front"])
     print("variants:", ", ".join(f"{s}_{c}" for (s, c), _ in loaded), "| shared ranges:", R)
     for variant, a in loaded:
         print(f"── TR1 {SHEARS[variant[0]]} × {CMBS[variant[1]]}")
         med, rob = summarize(a)
-        lens_ratio(a, med, rob, R, variant)
+        lens_ratio(a, med, rob, R, variant, req)
         bias(a, R, variant)
         amplitude(a, R, variant)
 
