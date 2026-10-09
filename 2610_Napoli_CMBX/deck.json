@@ -98,6 +98,14 @@
       ]
     },
     {
+      "title": "Closing",
+      "outline": "What CMB lensing can do for weak lensing, and the talk in four lines.",
+      "slides": [
+        "kappa-for-you",
+        "summary"
+      ]
+    },
+    {
       "title": "Backup",
       "outline": "The per-bin shear × CMB-lensing amplitude behind the galaxy-bias slide.",
       "slides": [
