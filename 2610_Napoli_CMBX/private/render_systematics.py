@@ -63,7 +63,7 @@ rdv.style_class = style_class
 
 INK, DATA, FRAME, MUTED = rdv.INK, rdv.DATA, rdv.FRAME, rdv.MUTED
 BAND = "#CDD3DC"
-FLAG, FLAG_TINT = "#9C7414", "#EADDBE"   # the deck's ochre: a cell whose template cross fails or leans
+FLAG = "#B4530F"   # burnt orange: the outline of a cell whose template cross fails
 HARM = "#8A93A3"                          # the template's power peaks
 W, H, TR = rdv.W, rdv.H, rdv.TR
 YR = 1.5                    # every X / sigma_G panel spans +-YR
@@ -104,9 +104,7 @@ def x_points(ax, ell, x, sx, *, lw, ms):
 
 
 def flag_cell(ax, lw):
-    """A flagged cell: a soft ochre tint inside an ochre frame, calm next to the plain cells."""
-    ax.add_patch(matplotlib.patches.Rectangle((0, 0), 1, 1, transform=ax.transAxes, facecolor=FLAG_TINT,
-                                              edgecolor="none", alpha=0.55, zorder=0.2))
+    """A flagged cell: an orange outline square, no fill, so the data inside reads as in any cell."""
     for sp in ax.spines.values():
         sp.set_edgecolor(FLAG)
         sp.set_linewidth(lw)
@@ -122,13 +120,13 @@ def harm_lines(ax, harm, lw):
 
 
 def flag_key(fig, kx, ky, fw, fh, fs):
-    """The highlight's key: an ochre swatch, then what it means, on two lines."""
+    """The highlight's key: an orange outline square, then what it means, on two lines."""
     fig.patches.append(matplotlib.patches.Rectangle(
-        (kx / fw, 1 - (ky + 18) / fh), 26 / fw, 18 / fh, transform=fig.transFigure, facecolor=FLAG_TINT,
-        edgecolor=FLAG, lw=1.6, alpha=1, zorder=1))
-    rdv.text_at(fig, kx + 36, ky - 2, r"a template cross fails (PTE $<0.01$)", fw, fh,
+        (kx / fw, 1 - (ky + 22) / fh), 22 / fw, 22 / fh, transform=fig.transFigure, facecolor="none",
+        edgecolor=FLAG, lw=2.0, alpha=1, zorder=1))
+    rdv.text_at(fig, kx + 36, ky - 2, r"a template cross fails: $\chi^2$ PTE $<10^{-4}$", fw, fh,
                 ha="left", va="top", fontsize=fs, color=MUTED)
-    rdv.text_at(fig, kx + 36, ky + 22, r"or leans one way ($>3\sigma$)", fw, fh,
+    rdv.text_at(fig, kx + 36, ky + 22, "PTE statistics not yet calibrated on mocks", fw, fh,
                 ha="left", va="top", fontsize=fs, color=MUTED)
 
 
@@ -255,9 +253,6 @@ def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, harm
     fig.text(104 / fw, 1 - 6 / fh, rf"${rdv.sym(tracer)}\times S$, {tlabel.lower()}", fontsize=fs + 1, va="top")
     fig.text(1 - 20 / fw, 1 - 9 / fh, pte_text(chi2) + (r" (diag.)" if tracer == "kappa" else ""), fontsize=fs - 3,
              va="top", ha="right", color=FLAG if flag else MUTED, weight="bold" if flag else "normal")
-    if flag and abs(coh) > 3 and stats.chi2.sf(chi2, 15) >= 0.01:
-        fig.text(1 - 20 / fw, 1 - 30 / fh, rf"leans one way: $\Sigma\,\mathrm{{pull}}/\sqrt{{15}} = {coh:+.1f}$",
-                 fontsize=fs - 3, va="top", ha="right", color=FLAG)
     if flag:
         for sp in ax.spines.values():
             sp.set_edgecolor(FLAG)

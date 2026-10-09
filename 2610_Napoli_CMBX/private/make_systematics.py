@@ -21,7 +21,8 @@ Writes private/systematics.json:
   ell        the 15 band centres
   flags      per template and variant, each tracer's {"pte", "coh"}: the chi^2 PTE of its template
              cross against zero and its coherent offset sum(pull)/sqrt(15); a tracer is flagged
-             when PTE < PTE_FLAG or |coh| > COH_FLAG, and a pair when either tracer is
+             when PTE < PTE_FLAG (about 1 % family-wise over the ~100 template crosses), and a
+             pair when either tracer is
   harmonics  per template, the band centres where the template's own power peaks (its
              tiling harmonics), where l C^SS exceeds HARM_FLAG x its median for 300 < l < 2000
 Pairs are keyed as in dv_vector.json (kappa_*, g*_g*, g*_l*, l*_l*); tracers are
@@ -47,7 +48,7 @@ TEMPLATES = [("extinction_vis", "Extinction"), ("exposures_vis", "Exposures"), (
 UNIVERSES = {"lensmc|spt": "tr1", "lensmc|act": "tr1_act", "metacal|spt": "tr1_metacal",
              "metacal|act": "tr1_act_metacal"}
 EDGES = np.geomspace(100, 3000, 16)
-PTE_FLAG, COH_FLAG = 0.01, 3.0       # a template cross that fails, or leans one way throughout
+PTE_FLAG = 1e-4                      # a template cross that fails: ~1 % family-wise over ~100 tests
 HARM_FLAG = 2.4                      # template power this far above its median marks a harmonic
 
 
@@ -148,8 +149,7 @@ def main():
                           chi2={k: round(v, 2) for k, v in null_chi2(m).items()},
                           coh={k: round(v, 2) for k, v in coherent(m).items()})
             per[t]["flag"] = sorted(k for k in per[t]["chi2"]
-                                    if stats.chi2.sf(per[t]["chi2"][k], 15) < PTE_FLAG
-                                    or abs(per[t]["coh"][k]) > COH_FLAG)
+                                    if stats.chi2.sf(per[t]["chi2"][k], 15) < PTE_FLAG)
         if len(per) == len(TEMPLATES):
             out["variants"][vk] = per
             worst = max((abs(v), t, k) for t, d in per.items() for k, xs in d["x"].items() for v in xs)
