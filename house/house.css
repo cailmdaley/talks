@@ -634,7 +634,8 @@ html, body { background: var(--ground); }
    --d is the portrait size, computed from the roster and capped at 240 px, and
    --w the column width: d plus the gap, widened towards --name when the rows
    limit the portraits and the width allows, so long names wrap less.
-   A [data-label] block carries a small heading above its portraits; a closing
+   A [data-label] block carries a small heading above its portraits, and a
+   [data-topic] one line under it (the build inserts it as span.topic); a closing
    <p> in a block is a line of names for people without portraits. Portraits
    keep their own backgrounds (no multiply); a person without a photo is a
    disc of initials. */
@@ -676,6 +677,7 @@ html, body { background: var(--ground); }
   --name: 208px;
 }
 .slide[data-layout="people"] .roster:has(> .people[data-label]) { --lab: 40px; }
+.slide[data-layout="people"] .roster:has(> .people > .topic) { --lab: 72px; }
 .slide[data-layout="people"] .people {
   --avail: calc((100cqw - var(--nsep) * var(--sep)) / var(--tcols));
   --d: min(
@@ -713,6 +715,17 @@ html, body { background: var(--ground); }
   color: var(--muted);
 }
 .slide[data-layout="people"] .people:not(.memoriam)[data-label]::before { color: var(--accent); }
+.slide[data-layout="people"] .roster:has(> .people > .topic) .people[data-label]::before { height: 32px; margin-bottom: 0; }
+.slide[data-layout="people"] .people > .topic {
+  flex: 0 0 100%;
+  height: 40px;
+  margin-bottom: calc(-1 * var(--rg));
+  text-align: center;
+  white-space: nowrap;
+  font-size: var(--t-fine);
+  line-height: 32px;
+  color: var(--muted);
+}
 .slide[data-layout="people"] .people > p {
   flex: 0 0 100%;
   margin: 0;

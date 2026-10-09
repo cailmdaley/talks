@@ -420,7 +420,7 @@ function frameFigures(frame, deckDir, problems, where, assets, variants) {
 // at least `name` wide, so a name wraps to at most two lines; a row count whose
 // columns are narrower is taken only when none is wider. The CSS sizes the
 // portraits from the real roster with the same arithmetic.
-const PEOPLE = { W: 1712, H: 771, col: 64, gap: 32, rowGap: 16, caption: 72, sep: 64, label: 40, source: 48, max: 240, name: 176 };
+const PEOPLE = { W: 1712, H: 771, col: 64, gap: 32, rowGap: 16, caption: 72, sep: 64, label: 40, topic: 32, source: 48, max: 240, name: 176 };
 function peopleGrid(frame, body) {
   const blocks = [...body.querySelectorAll(':scope > .people')];
   if (!blocks.length) return;
@@ -436,7 +436,16 @@ function peopleGrid(frame, body) {
   const W = (text && !stack ? (P.W - P.col) * 0.6 : P.W) - (blocks.length - 1) * P.sep;
   // stacked under the text, the portraits are planned for half the body
   const H = (P.H - (body.querySelector(':scope > .source') ? P.source : 0)) * (stack ? 0.5 : 1);
-  const lab = blocks.some(b => b.hasAttribute('data-label')) ? P.label : 0;
+  // a data-topic line under a block's label: every block gets the line (empty
+  // where it has none), so the first rows of portraits stay level
+  const topic = blocks.some(b => b.hasAttribute('data-topic'));
+  if (topic) for (const b of blocks) {
+    const t = body.ownerDocument.createElement('span');
+    t.className = 'topic';
+    t.textContent = b.getAttribute('data-topic') || '';
+    b.insertBefore(t, b.firstChild);
+  }
+  const lab = topic ? P.label + P.topic : blocks.some(b => b.hasAttribute('data-label')) ? P.label : 0;
   let best = null;
   for (let rows = 1; rows <= Math.max(...counts); rows++) {
     const cols = counts.map(c => Math.ceil(c / Math.min(rows, c)));

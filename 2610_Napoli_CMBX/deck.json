@@ -28,10 +28,9 @@
     },
     {
       "title": "The working group",
-      "outline": "Who the working group is, how it is organised, its DR1 key projects and its people.",
+      "outline": "Who the working group is and how it is organised: its DR1 key projects and their people.",
       "slides": [
         "swg",
-        "kp-overview",
         "people"
       ]
     },
