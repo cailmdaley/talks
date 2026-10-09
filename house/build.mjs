@@ -421,7 +421,7 @@ function frameFigures(frame, deckDir, problems, where, assets, variants) {
 // columns are narrower is taken only when none is wider. The CSS sizes the
 // portraits from the real roster with the same arithmetic.
 const PEOPLE = { W: 1712, H: 771, col: 64, gap: 32, rowGap: 16, caption: 72, sep: 64, label: 40, topic: 32, source: 48, max: 240, name: 176 };
-function peopleGrid(frame, body) {
+function peopleGrid(frame, body, problems, where) {
   const blocks = [...body.querySelectorAll(':scope > .people')];
   if (!blocks.length) return;
   const roster = body.ownerDocument.createElement('div');
@@ -439,6 +439,7 @@ function peopleGrid(frame, body) {
   // a data-topic line under a block's label: every block gets the line (empty
   // where it has none), so the first rows of portraits stay level
   const topic = blocks.some(b => b.hasAttribute('data-topic'));
+  if (topic && blocks.some(b => !b.hasAttribute('data-label'))) problems.push(`${where}: data-topic is a line under a block's label, so every block needs a data-label once one has a topic`);
   if (topic) for (const b of blocks) {
     const t = body.ownerDocument.createElement('span');
     t.className = 'topic';
@@ -516,7 +517,7 @@ function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, ass
   for (const n of kids) if (n !== head || layout === 'title' || !/^h[12]$/.test(head.localName)) body.appendChild(n);
   frame.appendChild(body);
   if (layout === 'grid') frame.setAttribute('data-count', String(body.querySelectorAll(':scope > figure').length));
-  if (layout === 'people') peopleGrid(frame, body);
+  if (layout === 'people') peopleGrid(frame, body, problems, where);
 
   frameFigures(frame, deckDir, problems, where, assets, variants);
   frameVariantText(frame, problems, where, variants);
@@ -580,8 +581,11 @@ function buildSlides(deck, typeset) {
       frame.appendChild(chips);
     }
     // data-opens="<label>" on any element of the slide (a box in a diagram) opens that detail on click
+    for (const d of details) if (d.frame.querySelector('[data-opens]')) problems.push(`${where}: data-opens inside the detail "${d.label}"; only the main slide can open a detail`);
     for (const el of frame.querySelectorAll('[data-opens]')) {
-      const k = details.findIndex(d => d.label === el.getAttribute('data-opens'));
+      const label = el.getAttribute('data-opens');
+      if (details.filter(d => d.label === label).length > 1) problems.push(`${where}: two details are labelled "${label}", so data-opens cannot tell them apart`);
+      const k = details.findIndex(d => d.label === label);
       if (k < 0) problems.push(`${where}: data-opens="${el.getAttribute('data-opens')}" names no detail of this slide (labels: ${details.map(d => d.label).join(', ') || 'none'})`);
       else { el.setAttribute('data-open', String(k)); el.removeAttribute('data-opens'); }
     }
