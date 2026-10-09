@@ -32,6 +32,7 @@ import json
 import os
 
 import matplotlib
+import matplotlib.patches
 import numpy as np
 from scipy import stats
 
@@ -62,6 +63,8 @@ rdv.style_class = style_class
 
 INK, DATA, FRAME, MUTED = rdv.INK, rdv.DATA, rdv.FRAME, rdv.MUTED
 BAND = "#CDD3DC"
+FLAG, FLAG_TINT = "#9C7414", "#EADDBE"   # the deck's ochre: a cell whose template cross fails or leans
+HARM = "#8A93A3"                          # the template's power peaks
 W, H, TR = rdv.W, rdv.H, rdv.TR
 YR = 1.5                    # every X / sigma_G panel spans +-YR
 DW, DH = rdv.DW, rdv.DH     # the card
@@ -100,6 +103,35 @@ def x_points(ax, ell, x, sx, *, lw, ms):
             ax.plot(ell[m], np.full(m.sum(), sgn * edge), mk, color=DATA, ms=ms * 1.3, mew=0, zorder=4)
 
 
+def flag_cell(ax, lw):
+    """A flagged cell: a soft ochre tint inside an ochre frame, calm next to the plain cells."""
+    ax.add_patch(matplotlib.patches.Rectangle((0, 0), 1, 1, transform=ax.transAxes, facecolor=FLAG_TINT,
+                                              edgecolor="none", alpha=0.55, zorder=0.2))
+    for sp in ax.spines.values():
+        sp.set_edgecolor(FLAG)
+        sp.set_linewidth(lw)
+
+
+def flagged(per, k):
+    return any(t in per["flag"] for t in k.split("_"))
+
+
+def harm_lines(ax, harm, lw):
+    for l in harm:
+        ax.axvline(l, color=HARM, lw=lw, ls=(0, (3, 3)), zorder=0.8)
+
+
+def flag_key(fig, kx, ky, fw, fh, fs):
+    """The highlight's key: an ochre swatch, then what it means, on two lines."""
+    fig.patches.append(matplotlib.patches.Rectangle(
+        (kx / fw, 1 - (ky + 18) / fh), 26 / fw, 18 / fh, transform=fig.transFigure, facecolor=FLAG_TINT,
+        edgecolor=FLAG, lw=1.6, alpha=1, zorder=1))
+    rdv.text_at(fig, kx + 36, ky - 2, r"a template cross fails (PTE $<0.01$)", fw, fh,
+                ha="left", va="top", fontsize=fs, color=MUTED)
+    rdv.text_at(fig, kx + 36, ky + 22, r"or leans one way ($>3\sigma$)", fw, fh,
+                ha="left", va="top", fontsize=fs, color=MUTED)
+
+
 def overview(per, ell, title, label, glyphs):
     fig = plt.figure(figsize=(W / 72, H / 72), dpi=72)
     fs_name = 21.0
@@ -112,6 +144,8 @@ def overview(per, ell, title, label, glyphs):
     for (r, c), k in cells.items():
         ax = rdv.axes_at(fig, rdv.col_x(c), rdv.row_y(r), rdv.CW, rdv.row_h(r), W, H)
         xaxis(ax, ell, tick_len=2.4, lw_frame=0.5)
+        if flagged(per, k):
+            flag_cell(ax, 1.6)
         x_points(ax, ell, per["x"][k], per["sx"][k], lw=0.7, ms=2.5)
     for r, t in enumerate(TR + ["kappa"]):
         last = r if r < 12 else 11
@@ -128,6 +162,7 @@ def overview(per, ell, title, label, glyphs):
     rdv.text_at(fig, x0, rdv.T0 + 74,
                 rf"each panel spans $\pm{YR:g}\,\sigma_G$; shaded $\pm1\,\sigma_G$; bars $\sigma_X/\sigma_G$",
                 W, H, ha="left", va="top", fontsize=fs_name - 2, color=MUTED)
+    flag_key(fig, x0 + 700, rdv.T0 + 121, W, H, fs_name - 3)
     rdv.text_at(fig, x0, rdv.T0 + 150, label, W, H, ha="left", va="top", fontsize=fs_name + 1, color=INK)
     return fig
 
@@ -151,6 +186,8 @@ def near(per, ell, title, glyphs):
             x, w = rdv.nx(rdv.col_x(c)), rdv.S_CLOSE * rdv.CW
             ax = rdv.axes_at(fig, x, NM_TOP, w, NM_H, fw, fh)
             xaxis(ax, ell, tick_len=6, lw_frame=0.9)
+            if flagged(per, k):
+                flag_cell(ax, 2.4)
             x_points(ax, ell, per["x"][k], per["sx"][k], lw=1.3, ms=5.5)
             rdv.text_at(fig, x + w - 12, NM_TOP + 12, rf"${rdv.sym(TR[c])}\times\kappa$", fw, fh, ha="right",
                         va="top", fontsize=fs + 2)
@@ -168,6 +205,7 @@ def near(per, ell, title, glyphs):
         rdv.text_at(fig, mid, NM_TOP + NM_H + 44, r"$\ell$", fw, fh, ha="center", va="top", fontsize=fs + 2)
         left = rdv.nx(rdv.col_x(6 * h))
         rdv.text_at(fig, left, 30, title, fw, fh, ha="left", va="top", fontsize=fs + 3)
+        flag_key(fig, left + 1040, 118, fw, fh, fs - 4)
         rdv.text_at(fig, left, 68, r"$X_\ell^{a\kappa} = C_\ell^{aS}\,C_\ell^{\kappa S}/C_\ell^{SS}$ in units of "
                     r"$\sigma_G$ of $C_\ell^{a\kappa}$; shaded $\pm1\,\sigma_G$", fw, fh, ha="left", va="top",
                     fontsize=fs - 3, color=MUTED)
@@ -200,14 +238,15 @@ def sym_axis(lo, hi):
     return (lo - pad, hi + pad), ticks
 
 
-def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, glyphs):
+def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, harm, glyphs):
     fw, fh = CROSS_W, CROSS_H
     fig = plt.figure(figsize=(fw / 72, fh / 72), dpi=72)
     fs = 19.0
     f = 10.0 ** e
-    ax = rdv.axes_at(fig, 104, 40, fw - 124, fh - 92, fw, fh)
+    ax = rdv.axes_at(fig, 104, 62, fw - 124, fh - 114, fw, fh)
     rdv.frame(ax, ylim, ticks, tick_len=6, lw_frame=0.9)
     ax.axhline(0, color=FRAME, lw=0.9 * 0.6, alpha=0.45, zorder=1)
+    harm_lines(ax, harm, 1.0)
     rdv.errorbars(ax, ell, np.asarray(c) * f, np.asarray(s) * f, 1.2, 5.2)
     ax.tick_params(labelsize=fs, labelleft=True, labelbottom=True)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: rdv.fmt(v)))
@@ -215,11 +254,18 @@ def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, glyphs):
     ax.set_ylabel(rf"$\ell C_\ell\;[10^{{-{e}}}]$", fontsize=fs, labelpad=6)
     fig.text(104 / fw, 1 - 6 / fh, rf"${rdv.sym(tracer)}\times S$, {tlabel.lower()}", fontsize=fs + 1, va="top")
     fig.text(1 - 20 / fw, 1 - 9 / fh, pte_text(chi2) + (r" (diag.)" if tracer == "kappa" else ""), fontsize=fs - 3,
-             va="top", ha="right", color=MUTED)
+             va="top", ha="right", color=FLAG if flag else MUTED, weight="bold" if flag else "normal")
+    if flag and abs(coh) > 3 and stats.chi2.sf(chi2, 15) >= 0.01:
+        fig.text(1 - 20 / fw, 1 - 30 / fh, rf"leans one way: $\Sigma\,\mathrm{{pull}}/\sqrt{{15}} = {coh:+.1f}$",
+                 fontsize=fs - 3, va="top", ha="right", color=FLAG)
+    if flag:
+        for sp in ax.spines.values():
+            sp.set_edgecolor(FLAG)
+            sp.set_linewidth(1.6)
     return rdv.svg_of(fig, fw, fh, glyphs)
 
 
-def xcard(ell, x, sx, a, b, tlabel, glyphs):
+def xcard(ell, x, sx, a, b, tlabel, harm, glyphs):
     fig = plt.figure(figsize=(DW / 72, DH / 72), dpi=72)
     fs = 21.0
     a, b = sorted((a, b), key=lambda t: (2, 0) if t == "kappa" else (0 if t[0] == "l" else 1, int(t[1:])))
@@ -228,6 +274,10 @@ def xcard(ell, x, sx, a, b, tlabel, glyphs):
              fontsize=fs - 2, va="top", color=MUTED)
     ax = rdv.axes_at(fig, XP["x"], XP["y"], XP["w"], XP["h"], DW, DH)
     xaxis(ax, ell, tick_len=7, lw_frame=1.0, labels=True)
+    harm_lines(ax, harm, 1.2)
+    if harm:
+        ax.text(harm[-1] * 1.04, YR * 0.93, "template power peaks", color=HARM, fontsize=fs - 4, va="top",
+                ha="left", style="italic")
     x_points(ax, ell, x, sx, lw=1.4, ms=6.5)
     ax.tick_params(labelsize=fs, labelleft=True, labelbottom=True)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: rdv.fmt(v)))
@@ -281,13 +331,15 @@ def main():
                 a, b = k.split("_")
                 cid = f"{k}|{dep((a, b), vk)}"
                 if cid not in out["xcard"][t]:
-                    out["xcard"][t][cid] = xcard(ell, per["x"][k], per["sx"][k], a, b, tlabel, glyphs)
+                    out["xcard"][t][cid] = xcard(ell, per["x"][k], per["sx"][k], a, b, tlabel,
+                                                 src["harmonics"][t], glyphs)
             for tr in tracers:
                 cid = f"{tr}|{dep((tr,), vk)}"
                 if cid not in out["crossp"][t]:
                     e, ylim, ticks = ax_of[tr]
                     out["crossp"][t][cid] = cross_panel(ell, per["c"][tr], per["s"][tr], ylim, ticks, e, tr,
-                                                        tlabel, per["chi2"][tr], glyphs)
+                                                        tlabel, per["chi2"][tr], per["coh"][tr],
+                                                        tr in per["flag"], src["harmonics"][t], glyphs)
         print(t, f"over {sum(len(v) for v in out['over'][t].values()) / 1024:.0f} kB,",
               f"near {sum(len(v) for v in out['near'][t].values()) / 1024:.0f} kB,",
               f"cards {sum(len(v) for v in out['xcard'][t].values()) / 1024:.0f} kB,",

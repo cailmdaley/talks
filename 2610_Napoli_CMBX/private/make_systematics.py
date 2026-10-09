@@ -19,6 +19,11 @@ Writes private/systematics.json:
   variants   {"lensmc|spt": {template: {"x": {pair: [X/sigma_G]}, "sx": {pair: [sigma_X/sigma_G]},
                                         "c": {tracer: [l C^{aS}]}, "s": {tracer: [l sigma]}}}}
   ell        the 15 band centres
+  flags      per template and variant, each tracer's {"pte", "coh"}: the chi^2 PTE of its template
+             cross against zero and its coherent offset sum(pull)/sqrt(15); a tracer is flagged
+             when PTE < PTE_FLAG or |coh| > COH_FLAG, and a pair when either tracer is
+  harmonics  per template, the band centres where the template's own power peaks (its
+             tiling harmonics), where l C^SS exceeds HARM_FLAG x its median for 300 < l < 2000
 Pairs are keyed as in dv_vector.json (kappa_*, g*_g*, g*_l*, l*_l*); tracers are
 g0..g5 (lens bins), l0..l5 (source bins) and kappa.
 
@@ -30,6 +35,7 @@ import os
 import tarfile
 
 import numpy as np
+from scipy import stats
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CMBX = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx"
@@ -41,6 +47,8 @@ TEMPLATES = [("extinction_vis", "Extinction"), ("exposures_vis", "Exposures"), (
 UNIVERSES = {"lensmc|spt": "tr1", "lensmc|act": "tr1_act", "metacal|spt": "tr1_metacal",
              "metacal|act": "tr1_act_metacal"}
 EDGES = np.geomspace(100, 3000, 16)
+PTE_FLAG, COH_FLAG = 0.01, 3.0       # a template cross that fails, or leans one way throughout
+HARM_FLAG = 2.4                      # template power this far above its median marks a harmonic
 
 
 def sig(x, n=5):
@@ -79,6 +87,22 @@ def null_chi2(m):
     return out
 
 
+def coherent(m):
+    """Each tracer's coherent offset: the sum of its band pulls over sqrt(n), which a
+    same-sign shift raises and random scatter does not."""
+    out = {k: float(np.sum(r["signed_pull"]) / np.sqrt(len(r["signed_pull"])))
+           for fam in ("GC", "WL") for k, r in m[fam].items()}
+    p = np.asarray(m["template_kappa"]["signed_pull"])
+    out["kappa"] = float(p.sum() / np.sqrt(p.size))
+    return out
+
+
+def harmonics(auto):
+    ell, cl = np.asarray(auto["ell"]), np.asarray(auto["cl"])
+    r = ell * cl / np.median(ell * cl)
+    return [float(round(l)) for l, v in zip(ell, r) if 300 < l < 2000 and v > HARM_FLAG]
+
+
 def xell(c, auto, a, b):
     css = np.asarray(auto["cl"])
     sss = css * np.sqrt(2 / (auto["fsky_support"] * (EDGES[1:] ** 2 - EDGES[:-1] ** 2)))
@@ -95,7 +119,9 @@ def xell(c, auto, a, b):
 def main():
     dv = json.load(open(DV))
     autos = json.load(open(AUTOS))
-    out = dict(templates=[list(t) for t in TEMPLATES], variants={}, ell=None, blind=dv["blind"])
+    out = dict(templates=[list(t) for t in TEMPLATES], variants={}, ell=None, blind=dv["blind"],
+               harmonics={t: harmonics(autos[t]) for t, _ in TEMPLATES})
+    print("harmonics:", out["harmonics"])
     for vk, universe in UNIVERSES.items():
         if vk not in dv["variants"]:
             print(f"{vk}: no data vector, left out")
@@ -119,11 +145,17 @@ def main():
                 x[k], sx[k] = sig(xv / sg, 4), sig(sv / sg, 4)
             per[t] = dict(x=x, sx=sx, c={k: sig(ell * v[0]) for k, v in c.items()},
                           s={k: sig(ell * v[1]) for k, v in c.items()},
-                          chi2={k: round(v, 2) for k, v in null_chi2(m).items()})
+                          chi2={k: round(v, 2) for k, v in null_chi2(m).items()},
+                          coh={k: round(v, 2) for k, v in coherent(m).items()})
+            per[t]["flag"] = sorted(k for k in per[t]["chi2"]
+                                    if stats.chi2.sf(per[t]["chi2"][k], 15) < PTE_FLAG
+                                    or abs(per[t]["coh"][k]) > COH_FLAG)
         if len(per) == len(TEMPLATES):
             out["variants"][vk] = per
             worst = max((abs(v), t, k) for t, d in per.items() for k, xs in d["x"].items() for v in xs)
             print(f"{vk} ({universe}): 6 templates; largest nominal |X/sigma_G| {worst[0]:.2f} ({worst[1]}, {worst[2]})")
+            for t, d in per.items():
+                print(f"   {t:15s} flagged: {' '.join(d['flag']) or '-'}")
         elif per:
             print(f"{vk} ({universe}): only {sorted(per)} measured, left out until all six land")
         else:
