@@ -574,20 +574,27 @@ function buildSlides(deck, typeset) {
       f.setAttribute('data-detail', String(k));
       return { frame: f, label: d.getAttribute('data-label') || `Detail ${k + 1}` };
     });
-    if (details.length) {
-      const chips = section.ownerDocument.createElement('div');
-      chips.className = 'chips';
-      chips.innerHTML = details.map((d, k) => `<button class="chip" type="button" data-open="${k}">${esc(d.label)}</button>`).join('');
-      frame.appendChild(chips);
-    }
-    // data-opens="<label>" on any element of the slide (a box in a diagram) opens that detail on click
+    // data-opens="<label>" on any element of the slide (a box in a diagram) opens that detail:
+    // a hover shows it as a popout beside the element, a click opens it whole
     for (const d of details) if (d.frame.querySelector('[data-opens]')) problems.push(`${where}: data-opens inside the detail "${d.label}"; only the main slide can open a detail`);
+    const opened = new Set();
     for (const el of frame.querySelectorAll('[data-opens]')) {
       const label = el.getAttribute('data-opens');
       if (details.filter(d => d.label === label).length > 1) problems.push(`${where}: two details are labelled "${label}", so data-opens cannot tell them apart`);
       const k = details.findIndex(d => d.label === label);
-      if (k < 0) problems.push(`${where}: data-opens="${el.getAttribute('data-opens')}" names no detail of this slide (labels: ${details.map(d => d.label).join(', ') || 'none'})`);
-      else { el.setAttribute('data-open', String(k)); el.removeAttribute('data-opens'); }
+      if (k < 0) { problems.push(`${where}: data-opens="${label}" names no detail of this slide (labels: ${details.map(d => d.label).join(', ') || 'none'})`); continue; }
+      el.setAttribute('data-open', String(k));
+      el.removeAttribute('data-opens');
+      opened.add(k);
+      markOpener(el);
+    }
+    // a detail nothing on the slide opens gets a chip above the footer
+    const unopened = details.map((d, k) => [d, k]).filter(([, k]) => !opened.has(k));
+    if (unopened.length) {
+      const chips = section.ownerDocument.createElement('div');
+      chips.className = 'chips';
+      chips.innerHTML = unopened.map(([d, k]) => `<button class="chip" type="button" data-open="${k}">${esc(d.label)}</button>`).join('');
+      frame.appendChild(chips);
     }
     const attrs = [...section.attributes]
       .filter(a => !['data-layout', 'data-split', 'data-flip', 'data-stack', 'data-variant-axes', 'class', 'style', 'id'].includes(a.name))
@@ -602,6 +609,21 @@ function buildSlides(deck, typeset) {
   });
   if (problems.length) throw new BuildError(problems);
   return out;
+}
+
+// An SVG group that opens a detail carries a small marker in the top-right corner of its
+// first rect, so the box shows it has more behind it before the pointer finds it.
+function markOpener(el) {
+  if (el.tagName.toLowerCase() !== 'g') return;
+  const rect = el.querySelector('rect');
+  if (!rect) return;
+  const x = Number(rect.getAttribute('x')) || 0, y = Number(rect.getAttribute('y')) || 0;
+  const w = Number(rect.getAttribute('width')) || 0;
+  const cx = x + w - 26, cy = y + 26;
+  const g = el.ownerDocument.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.setAttribute('class', 'open-mark');
+  g.innerHTML = `<circle cx="${cx}" cy="${cy}" r="15"></circle><path d="M${cx - 7} ${cy} H${cx + 7} M${cx} ${cy - 7} V${cy + 7}"></path>`;
+  el.appendChild(g);
 }
 
 // ── Output ────────────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 <section data-layout="figure">
   <h2>Catalogues to a blinded likelihood</h2>
   <figure>
-    <svg viewBox="0 0 1712 490" role="img" aria-label="KP2-3 pipeline: Euclid catalogues and CMB lensing maps feed NaMaster pseudo-Cl bandpowers for six spectra; a covariance and a blind run in parallel and, with the theory model, feed the likelihood">
+    <svg viewBox="0 0 1712 490" role="img" aria-label="KP2-3 pipeline: Euclid catalogues, CMB lensing maps and simulated mocks feed NaMaster pseudo-Cl bandpowers for six spectra; a covariance and a blind run in parallel and, with the theory model, feed the likelihood. Each box opens the workstream that owns it.">
       <defs>
         <marker id="pipeline-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
           <path d="M0 0 L10 5 L0 10 z" class="fill-muted"/>
@@ -11,24 +11,23 @@
         </marker>
       </defs>
 
-      <!-- inputs -->
-      <g>
-        <rect x="2" y="2" width="326" height="226" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+      <!-- inputs: the data and the mocks -->
+      <g data-opens="Data vectors and systematics">
+        <rect x="2" y="2" width="326" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
         <text x="26" y="62" font-size="40" font-weight="700">Euclid</text>
-        <text x="26" y="118" font-size="30">TR1 catalogues</text>
-        <text x="26" y="160" font-size="30">shear, positions, n(z)</text>
-
-        <rect x="2" y="262" width="326" height="226" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
-        <text x="26" y="318" font-size="40" font-weight="700">CMB lensing κ</text>
-        <text x="26" y="368" font-size="30">Planck PR4</text>
-        <text x="26" y="408" font-size="30">ACT DR6</text>
-        <text x="26" y="448" font-size="30">SPT-3G Main</text>
+        <text x="26" y="112" font-size="28">TR1 shear, positions, n(z)</text>
+      </g>
+      <g data-opens="Data vectors and systematics">
+        <rect x="2" y="170" width="326" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="26" y="226" font-size="40" font-weight="700">CMB lensing κ</text>
+        <text x="26" y="268" font-size="28">Planck PR4, ACT DR6</text>
+        <text x="26" y="304" font-size="28">SPT-3G Main</text>
       </g>
 
       <!-- bandpowers -->
       <g class="fragment">
-        <path d="M330 115 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
-        <path d="M330 375 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <path d="M330 77 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <path d="M330 245 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
         <g data-opens="Data vectors and systematics">
         <rect x="392" y="2" width="360" height="486" rx="14" class="fill-ground stroke-accent" stroke-width="4"/>
         <text x="572" y="60" font-size="40" font-weight="700" text-anchor="middle">Pseudo-Cℓ</text>
@@ -52,6 +51,13 @@
 
       <!-- covariance and blind, in parallel; theory -->
       <g class="fragment">
+        <g data-opens="Simulations and covariance">
+        <rect x="2" y="338" width="326" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="26" y="394" font-size="40" font-weight="700">Simulations</text>
+        <text x="26" y="436" font-size="28">GLASS, FLASK mocks</text>
+        <text x="26" y="472" font-size="28">same footprint and n(z)</text>
+        </g>
+        <path d="M330 413 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
         <path d="M754 115 H806" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
         <g data-opens="Simulations and covariance">
         <rect x="812" y="2" width="300" height="226" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
@@ -93,7 +99,8 @@
     <p>Two steps run in parallel on the bandpowers. The covariance is analytic and Gaussian, in NaMaster's improved narrow-kernel approximation (iNKA), and covers every block including the cross-blocks between families. The blind is a parameter-shift blind in the style of Muir et al. (2019): a sealed shift in cosmology is turned into a $\Delta C_\ell$ added to the whole six-family data vector, so shapes, signal-to-noise, the covariance and the null tests stay visible while the inferred cosmology is hidden. We run it ourselves because the official pipeline blinds only the Euclid 2pt spectra.</p>
     <p>The theory model computes the six families with CCL and passes them through the same bandpower windows as the data. The likelihood varies it with the nuisances: linear galaxy bias, photometric-redshift shifts, shear calibration $m$ and intrinsic alignments. The blinded TR1 likelihood input exists; the TR1 chains come next.</p>
     <p>The covariance box shows both covariances: the analytic Gaussian one, in the improved narrow-kernel approximation (iNKA), the pipeline uses now, and the numerical one from FLASK lognormal simulations that the simulations workstream is building. How each is validated is on the next slide, with the mocks.</p>
-    <p>Each box opens the workstream that owns it, with its scope and its people (the chips above the footer do the same): data vectors and systematics for the bandpowers, simulations and covariance for the covariance, likelihood and theory for the theory model and the likelihood. The workstream scopes and members are carried over from the Barcelona KP2-3 update by Legrand, Lembo and Fabbian.</p>
+    <p>The simulations box: GLASS and FLASK lognormal mocks on the TR1 footprint with the delivered n(z), run through the same NaMaster step as the data. GLASS validates the pipeline (the mock-recovery slide); FLASK gives the numerical covariance.</p>
+    <p>Each box opens the workstream that owns it, with its scope and its people: hover a box (the + in its corner) for a popout, click to open it whole. Data vectors and systematics owns the inputs and the bandpowers, simulations and covariance the mocks and the covariance, likelihood and theory the theory model and the likelihood. The blind is the pipeline's own step, shared across workstreams. The workstream scopes and members are carried over from the Barcelona KP2-3 update by Legrand, Lembo and Fabbian.</p>
   </aside>
   <aside class="detail" data-label="Data vectors and systematics" data-layout="people">
     <h2>Data vectors and systematics</h2>

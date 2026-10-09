@@ -1,8 +1,8 @@
 <section data-layout="figure-text">
   <h2>CMB secondaries: anchors with their own systematics</h2>
   <figure>
-    <img src="images/napoli_secondary_kernels_euclid.png" alt="Lensing kernels of the six Euclid DR1 source bins against redshift, with an empty panel above for the CMB secondaries">
-    <img class="fragment" src="images/napoli_secondary_kernels.png" alt="The same, with the CMB lensing, CIB and tSZ redshift kernels in the panel above, each scaled to its peak">
+    <img src="images/napoli_secondary_kernels_euclid.png" alt="The six Euclid DR1 source bins against redshift up to 3: their n(z) on top and their shear lensing kernels below, with an empty panel at the bottom for the CMB secondaries">
+    <img class="fragment" src="images/napoli_secondary_kernels.png" alt="The same, with the CMB lensing, CIB and tSZ redshift kernels in the bottom panel, each scaled to its peak">
     <span class="source">Euclid DR1 source n(z) (May 2026); tSZ and CIB from CCL halo models; Planck 2018 cosmology.</span>
   </figure>
   <div class="text">
@@ -10,13 +10,13 @@
     <ul>
       <li><strong>lensing κ:</strong> all matter, $z \approx 0.5$–$5$</li>
       <li><strong>CIB:</strong> dusty star formation, $z \approx 1$–$4$</li>
-      <li><strong>tSZ:</strong> hot gas in haloes, $z \lesssim 1$</li>
+      <li><strong>tSZ:</strong> hot gas in haloes, $z \lesssim 1.5$</li>
       <li>no shape noise, IA or photo-z on the CMB side</li>
     </ul>
   </div>
   <aside class="notes">
-    <p>Bottom: the lensing kernel $W(z)$ of each of the six Euclid DR1 weak-lensing source bins, from the official tomographic n(z) product (DpdBinMeanRedshift, PHZ-weighted, South release, May 2026; mean redshifts 0.45 to 1.73), in common units so the bins' heights compare, at a Planck 2018 ΛCDM background. The shear kernels peak below $z \approx 0.7$ and are gone by $z \approx 2.5$.</p>
-    <p>Top, at the second step: the redshift kernels of three CMB secondaries, each scaled to its own peak because their units differ. CMB lensing: the same lensing efficiency with a single source plane at last scattering, $z_* \approx 1100$, peaking at $z \approx 1.9$ and above half its peak from $z \approx 0.4$ to beyond $z = 5.$ The cosmic infrared background at 545 GHz: the bias-weighted emissivity of the Shang et al. (2012) halo model at CCL's default parameters, peaking at $z \approx 2.6$ and above half its peak over $z \approx 1.2$–$4.5.$ The thermal Sunyaev–Zel'dovich effect: the bias-weighted mean electron pressure in a generalised-NFW halo model, peaking at $z \approx 0.3$ and above half its peak below $z \approx 1.4.$ Bias-weighted kernels are what a cross-correlation sees on linear scales. The CIB and tSZ shapes depend on the model, the CIB peak most of all; they show where each signal comes from, not a measurement.</p>
+    <p>Top: the n(z) of the six Euclid DR1 weak-lensing source bins, each normalised to unit area and drawn with the analysis's Hann smoothing (width 0.05). Middle: the lensing kernel $W(z)$ of each bin, from the official tomographic n(z) product (DpdBinMeanRedshift, PHZ-weighted, South release, May 2026; mean redshifts 0.45 to 1.73), in common units so the bins' heights compare, at a Planck 2018 ΛCDM background. The shear kernels peak below $z \approx 0.7$ and are gone by $z \approx 2.5$.</p>
+    <p>Bottom, at the second step: the redshift kernels of three CMB secondaries, each scaled to its own peak because their units differ. CMB lensing: the same lensing efficiency with a single source plane at last scattering, $z_* \approx 1100$, peaking at $z \approx 1.9$ and above half its peak from $z \approx 0.4$ to beyond the plotted $z = 3.$ The cosmic infrared background at 545 GHz: the bias-weighted emissivity of the Shang et al. (2012) halo model at CCL's default parameters, peaking at $z \approx 2.6$ and above half its peak from $z \approx 1.2$ to beyond $z = 3$ (to $z \approx 4.5$). The thermal Sunyaev–Zel'dovich effect: the bias-weighted mean electron pressure in a generalised-NFW halo model, peaking at $z \approx 0.3$ and above half its peak below $z \approx 1.4.$ This is not a cluster selection function: a single cluster's SZ decrement does not dim with redshift, which is why SZ cluster catalogues are close to mass-limited out to high redshift. But the tSZ signal per unit redshift, which is what a cross-correlation sees, follows the abundance of massive, hot haloes, and that falls steeply beyond $z \sim 1$; most of the y signal comes from $z \lesssim 1.5.$ Bias-weighted kernels are what a cross-correlation sees on linear scales. The CIB and tSZ shapes depend on the model, the CIB peak most of all; they show where each signal comes from, not a measurement.</p>
     <p>Lensing and the CIB weight structure behind and across our source bins, where the shear kernels have little weight; the tSZ overlaps the low-redshift bins and traces hot gas rather than all matter. All three are measured from CMB maps, with no shape noise, intrinsic alignments or photometric redshifts on that side; their noise and foregrounds are of another kind, independent of the shear catalogue. A cross-spectrum still inherits the galaxy side's systematics: $\gamma\kappa$ carries the sources' multiplicative bias, n(z) and an intrinsic-alignment term, $\delta\kappa$ the galaxy bias. The next slide zooms in on CMB lensing.</p>
   </aside>
 </section>

@@ -39,7 +39,7 @@
 
   document.addEventListener('click', function (e) {
     var chip = e.target.closest('.chip[data-open], .slide:not(.detail) [data-open]');
-    if (chip) { open(chip.closest('section'), chip.getAttribute('data-open')); e.stopPropagation(); return; }
+    if (chip) { hidePeek(); open(chip.closest('section'), chip.getAttribute('data-open')); e.stopPropagation(); return; }
     if (e.target.closest('.slide.detail .close')) { close(); e.stopPropagation(); }
   }, true);
 
@@ -53,6 +53,107 @@
   });
 
   Reveal.on('slidechanged', close);
+
+  // ── Peek: hovering an element that opens a detail shows the detail as a
+  // popout beside it. The popout stays while the pointer is on the element or
+  // on the popout, and lingers a moment after it leaves both, so the pointer
+  // can cross the gap between them; a click opens the detail whole.
+  var PEEK_IN = 90, PEEK_OUT = 380, PEEK_GAP = 18;
+  var peek = null, peekFor = null, peekIn = 0, peekOut = 0;
+
+  function peekCard(section, k) {
+    var d = section.querySelector(':scope > .slide.detail[data-detail="' + k + '"]');
+    if (!d) return null;
+    var card = document.createElement('div');
+    card.className = 'peek';
+    var h = d.querySelector(':scope > h2');
+    if (h) { var t = document.createElement('h3'); t.innerHTML = h.innerHTML; card.appendChild(t); }
+    var text = d.querySelector(':scope > .body .text');
+    if (text) card.appendChild(text.cloneNode(true));
+    var figs = d.querySelectorAll(':scope > .body .people figure');
+    if (figs.length) {
+      var row = document.createElement('div');
+      row.className = 'peek-people';
+      figs.forEach(function (f) { row.appendChild(f.cloneNode(true)); });
+      card.appendChild(row);
+    }
+    var hint = document.createElement('p');
+    hint.className = 'peek-hint';
+    hint.textContent = 'click to open';
+    card.appendChild(hint);
+    card.addEventListener('pointerenter', function () { clearTimeout(peekOut); });
+    card.addEventListener('pointerleave', hidePeekSoon);
+    card.addEventListener('click', function (e) {
+      var s = peekFor && peekFor.closest('section'), key = peekFor && peekFor.getAttribute('data-open');
+      hidePeek();
+      if (s) open(s, key);
+      e.stopPropagation();
+    });
+    return card;
+  }
+
+  function placePeek(card, el, section) {
+    var scale = Reveal.getScale() || 1;
+    var sr = section.getBoundingClientRect(), er = el.getBoundingClientRect();
+    var W = 1920, H = 1080;
+    var box = { l: (er.left - sr.left) / scale, t: (er.top - sr.top) / scale,
+                w: er.width / scale, h: er.height / scale };
+    var cw = card.offsetWidth, ch = card.offsetHeight;
+    // beside the element, on whichever side has room; else below or above it
+    var x, y;
+    if (box.l + box.w + PEEK_GAP + cw <= W - 24) x = box.l + box.w + PEEK_GAP;
+    else if (box.l - PEEK_GAP - cw >= 24) x = box.l - PEEK_GAP - cw;
+    if (x !== undefined) y = Math.min(Math.max(box.t + box.h / 2 - ch / 2, 24), H - ch - 24);
+    else {
+      x = Math.min(Math.max(box.l + box.w / 2 - cw / 2, 24), W - cw - 24);
+      y = box.t + box.h + PEEK_GAP + ch <= H - 24 ? box.t + box.h + PEEK_GAP : Math.max(box.t - PEEK_GAP - ch, 24);
+    }
+    card.style.left = x + 'px';
+    card.style.top = y + 'px';
+  }
+
+  function showPeek(el) {
+    if (openDetail || peekFor === el) return;
+    hidePeek();
+    var section = el.closest('section');
+    var card = peekCard(section, el.getAttribute('data-open'));
+    if (!card) return;
+    section.appendChild(card);
+    placePeek(card, el, section);
+    card.classList.add('shown');
+    el.classList.add('peeking');
+    peek = card; peekFor = el;
+  }
+
+  function hidePeek() {
+    clearTimeout(peekIn); clearTimeout(peekOut);
+    if (peek) peek.remove();
+    if (peekFor) peekFor.classList.remove('peeking');
+    peek = null; peekFor = null;
+  }
+
+  function hidePeekSoon() {
+    clearTimeout(peekIn); clearTimeout(peekOut);
+    peekOut = setTimeout(hidePeek, PEEK_OUT);
+  }
+
+  document.addEventListener('pointerover', function (e) {
+    if (e.pointerType === 'touch') return;
+    var el = e.target.closest && e.target.closest('.slide:not(.detail) [data-open]:not(.chip)');
+    if (!el) return;
+    clearTimeout(peekOut);
+    if (peekFor === el) return;
+    clearTimeout(peekIn);
+    peekIn = setTimeout(function () { showPeek(el); }, peek ? 0 : PEEK_IN);
+  });
+  document.addEventListener('pointerout', function (e) {
+    var el = e.target.closest && e.target.closest('.slide:not(.detail) [data-open]:not(.chip)');
+    if (!el || (e.relatedTarget && el.contains(e.relatedTarget))) return;
+    if (peekFor === el) hidePeekSoon(); else clearTimeout(peekIn);
+  });
+  Reveal.on('slidechanged', hidePeek);
+  Reveal.on('fragmentshown', hidePeek);
+  Reveal.on('fragmenthidden', hidePeek);
 
   // ── Prism: a figure stack whose steps turn like the faces of a prism ──
   // <figure data-prism> holds a stack; each step turns the stack about its
