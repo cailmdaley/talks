@@ -64,7 +64,7 @@ export function loadDeck(dir) {
     // The Backup section opens with a divider the build writes itself; it and every slide
     // after it stay out of the slide count and the progress bar.
     if (backup) slides.push({ name: 'backup', backup: true, generated: true, section: sec,
-      src: `<section data-layout="section">\n  <h2>${esc(sec.title)}</h2>\n  <p>${esc(sec.outline ?? '')}</p>\n  <aside class="notes"><p>Backup slides, kept for questions.</p></aside>\n</section>\n` });
+      src: `<section data-layout="section">\n  <h2>${esc(sec.title)}</h2>\n  <aside class="notes"><p>Backup slides, kept for questions.</p></aside>\n</section>\n` });
     for (const name of sec.slides) {
       if (seen.has(name)) problems.push(`deck.json: slide "${name}" listed twice`);
       if (name === 'backup') problems.push('deck.json: "backup" is the name of the divider the build writes; rename slides/backup.html');

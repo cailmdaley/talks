@@ -26,7 +26,7 @@ First time on a machine: `npm install` at the repo root (reveal, MathJax, fonts,
 └── images -> ../images        # the shared figure pool; add new figures there
 ```
 
-`deck.json` is the index: metadata, theme, and the sections in order, each with a one-sentence outline and its slides (file names without `.html`). Every file in `slides/` must be listed; spare slides go in a `Backup` section, which must come last. The build opens it with a divider of its own (titled by the section, its outline beneath) and keeps the divider and every backup slide out of the count: main slides are numbered 1, 2, …, backup slides B1, B2, …, and reveal's progress bar ends at the last main slide (`data-visibility="uncounted"`).
+`deck.json` is the index: metadata, theme, and the sections in order, each with a one-sentence outline and its slides (file names without `.html`). Every file in `slides/` must be listed; spare slides go in a `Backup` section, which must come last. The build opens it with a divider of its own, the section's title alone (its outline appears in the report's contents) and keeps the divider and every backup slide out of the count: main slides are numbered 1, 2, …, backup slides B1, B2, …, and reveal's progress bar ends at the last main slide (`data-visibility="uncounted"`).
 
 ```json
 {
