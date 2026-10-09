@@ -162,7 +162,7 @@ A detail is a slide outside the linear order: a null test, the per-bin version o
 </aside>
 ```
 
-with any layout. A detail is shown whole: fragments inside it appear at once. A chip labelled with `data-label` appears above the footer; clicking it (or pressing `D`) opens the detail over the slide, and Escape returns to the same slide and fragment. The checker renders and measures every detail; the report prints each one after its slide. There are no vertical slides.
+with any layout. A detail is shown whole: fragments inside it appear at once. A chip labelled with `data-label` appears above the footer; clicking it (or pressing `D`) opens the detail over the slide, and Escape returns to the same slide and fragment. Any element of the slide can open a detail too: `data-opens="<its data-label>"` on a box in a diagram (an SVG `<g>`, say) makes a click on it open that detail; a label that names no detail fails the build. The checker renders and measures every detail; the report prints each one after its slide. There are no vertical slides.
 
 ## The checker
 

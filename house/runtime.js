@@ -38,7 +38,7 @@
   }
 
   document.addEventListener('click', function (e) {
-    var chip = e.target.closest('.chip[data-open]');
+    var chip = e.target.closest('.chip[data-open], .slide:not(.detail) [data-open]');
     if (chip) { open(chip.closest('section'), chip.getAttribute('data-open')); e.stopPropagation(); return; }
     if (e.target.closest('.slide.detail .close')) { close(); e.stopPropagation(); }
   }, true);

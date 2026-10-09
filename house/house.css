@@ -774,6 +774,11 @@ html, body { background: var(--ground); }
   width: 100%;
 }
 
+/* [data-open] — an element that opens one of the slide's details on click
+   (authored as data-opens="<label>"); it answers the pointer, nothing more. */
+.slide [data-open] { cursor: pointer; }
+.slide svg [data-open]:hover { opacity: 0.8; }
+
 /* who — a person inline: a small round portrait (or a disc of initials) and
    the name, sized by the text around it. For crediting people beside the work
    they lead (a paper, a box in a diagram); a team gets a people slide. */

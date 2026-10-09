@@ -1,7 +1,7 @@
 <section data-layout="figure">
-  <h2>Catalogues to a blinded likelihood, with mocks at every stage</h2>
+  <h2>Catalogues to a blinded likelihood</h2>
   <figure>
-    <svg viewBox="0 0 1712 771" role="img" aria-label="KP2-3 pipeline: Euclid catalogues and CMB lensing maps feed NaMaster pseudo-Cl bandpowers for six spectra; an analytic covariance and a blind run in parallel and, with the theory model, feed the likelihood; GLASS mocks check every stage">
+    <svg viewBox="0 0 1712 490" role="img" aria-label="KP2-3 pipeline: Euclid catalogues and CMB lensing maps feed NaMaster pseudo-Cl bandpowers for six spectra; a covariance and a blind run in parallel and, with the theory model, feed the likelihood">
       <defs>
         <marker id="pipeline-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
           <path d="M0 0 L10 5 L0 10 z" class="fill-muted"/>
@@ -29,6 +29,7 @@
       <g class="fragment">
         <path d="M330 115 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
         <path d="M330 375 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <g data-opens="Data vectors and systematics">
         <rect x="392" y="2" width="360" height="486" rx="14" class="fill-ground stroke-accent" stroke-width="4"/>
         <text x="572" y="60" font-size="40" font-weight="700" text-anchor="middle">Pseudo-Cℓ</text>
         <text x="572" y="102" font-size="30" class="fill-muted" text-anchor="middle">NaMaster</text>
@@ -46,15 +47,18 @@
         <text x="647" y="330" font-size="44" text-anchor="middle" class="fill-teal">δκ</text>
         <rect x="592" y="370" width="110" height="80" rx="10" class="fill-panel stroke-teal" stroke-width="3"/>
         <text x="647" y="424" font-size="44" text-anchor="middle" class="fill-teal">κκ</text>
+        </g>
       </g>
 
       <!-- covariance and blind, in parallel; theory -->
       <g class="fragment">
         <path d="M754 115 H806" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <g data-opens="Simulations and covariance">
         <rect x="812" y="2" width="300" height="226" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
         <text x="962" y="80" font-size="40" font-weight="700" text-anchor="middle">Covariance</text>
-        <text x="962" y="136" font-size="30" class="fill-muted" text-anchor="middle">analytic Gaussian</text>
-        <text x="962" y="176" font-size="30" class="fill-muted" text-anchor="middle">(iNKA)</text>
+        <text x="962" y="136" font-size="30" class="fill-muted" text-anchor="middle">analytic (iNKA)</text>
+        <text x="962" y="176" font-size="30" class="fill-muted" text-anchor="middle">numerical (FLASK)</text>
+        </g>
 
         <path d="M754 375 H806" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
         <rect x="812" y="262" width="300" height="226" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
@@ -62,10 +66,12 @@
         <text x="962" y="396" font-size="30" class="fill-muted" text-anchor="middle">hidden cosmology</text>
         <text x="962" y="436" font-size="30" class="fill-muted" text-anchor="middle">shift added to Cℓ</text>
 
+        <g data-opens="Likelihood and theory">
         <rect x="1440" y="2" width="270" height="226" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
         <text x="1575" y="80" font-size="40" font-weight="700" text-anchor="middle">Theory</text>
         <text x="1575" y="136" font-size="30" class="fill-muted" text-anchor="middle">CCL, through the</text>
         <text x="1575" y="176" font-size="30" class="fill-muted" text-anchor="middle">bandpower windows</text>
+        </g>
       </g>
 
       <!-- likelihood -->
@@ -73,28 +79,12 @@
         <path d="M1114 180 L1432 318" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
         <path d="M1114 410 H1432" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
         <path d="M1575 230 V254" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <g data-opens="Likelihood and theory">
         <rect x="1440" y="262" width="270" height="226" rx="14" class="fill-ground stroke-accent" stroke-width="4"/>
         <text x="1575" y="330" font-size="40" font-weight="700" text-anchor="middle">Likelihood</text>
         <text x="1575" y="384" font-size="30" class="fill-muted" text-anchor="middle">b, Δz, m, IA</text>
         <text x="1575" y="444" font-size="28" class="fill-accent" text-anchor="middle">TR1 chains next</text>
-      </g>
-
-      <!-- mocks -->
-      <g class="fragment">
-        <rect x="2" y="582" width="1708" height="186" rx="14" class="fill-ground stroke-teal" stroke-width="4"/>
-        <text x="26" y="660" font-size="40" font-weight="700" class="fill-teal">GLASS mocks</text>
-        <text x="26" y="708" font-size="28" class="fill-muted">correlated 6×2pt</text>
-
-        <path d="M572 576 V494" class="stroke-teal fill-none" stroke-width="4" marker-end="url(#pipeline-arrow-teal)"/>
-        <text x="572" y="666" font-size="30" text-anchor="middle">bandpowers recovered,</text>
-        <text x="572" y="708" font-size="30" text-anchor="middle">scatter matches covariance</text>
-
-        <path d="M962 576 V494" class="stroke-teal fill-none" stroke-width="4" marker-end="url(#pipeline-arrow-teal)"/>
-        <text x="962" y="686" font-size="30" text-anchor="middle">blind rehearsed</text>
-
-        <path d="M1575 576 V494" class="stroke-teal fill-none" stroke-width="4" marker-end="url(#pipeline-arrow-teal)"/>
-        <text x="1575" y="666" font-size="30" text-anchor="middle">input cosmology</text>
-        <text x="1575" y="708" font-size="30" text-anchor="middle">recovered</text>
+        </g>
       </g>
     </svg>
   </figure>
@@ -102,6 +92,56 @@
     <p>The KP2-3 pipeline end to end. Euclid TR1 shear and positions are pixelised into maps with their masks and redshift distributions; the CMB-lensing inputs are the Planck PR4, ACT DR6 and SPT-3G Main convergence maps. NaMaster pseudo-$C_\ell$ turns them into bandpowers for all six families: the three Euclid 3×2pt spectra and the three involving CMB lensing.</p>
     <p>Two steps run in parallel on the bandpowers. The covariance is analytic and Gaussian, in NaMaster's improved narrow-kernel approximation (iNKA), and covers every block including the cross-blocks between families. The blind is a parameter-shift blind in the style of Muir et al. (2019): a sealed shift in cosmology is turned into a $\Delta C_\ell$ added to the whole six-family data vector, so shapes, signal-to-noise, the covariance and the null tests stay visible while the inferred cosmology is hidden. We run it ourselves because the official pipeline blinds only the Euclid 2pt spectra.</p>
     <p>The theory model computes the six families with CCL and passes them through the same bandpower windows as the data. The likelihood varies it with the nuisances: linear galaxy bias, photometric-redshift shifts, shear calibration $m$ and intrinsic alignments. The blinded TR1 likelihood input exists; the TR1 chains come next.</p>
-    <p>GLASS 6×2pt mocks, with correlated Euclid and CMB-lensing fields, run through the same code and check each stage: bandpower recovery and the Gaussian covariance against the seed-to-seed scatter (10 seeds: the bulk agrees, while the stiffest low-$\ell$ clustering modes scatter about 1.3 times more than the covariance allows), the blind (a rehearsal on a mock) and the likelihood (mock chains that recover the input cosmology).</p>
+    <p>The covariance box shows both covariances: the analytic Gaussian one, in the improved narrow-kernel approximation (iNKA), the pipeline uses now, and the numerical one from FLASK lognormal simulations that the simulations workstream is building. How each is validated is on the next slide, with the mocks.</p>
+    <p>Each box opens the workstream that owns it, with its scope and its people (the chips above the footer do the same): data vectors and systematics for the bandpowers, simulations and covariance for the covariance, likelihood and theory for the theory model and the likelihood. The workstream scopes and members are carried over from the Barcelona KP2-3 update by Legrand, Lembo and Fabbian.</p>
+  </aside>
+  <aside class="detail" data-label="Data vectors and systematics" data-layout="people">
+    <h2>Data vectors and systematics</h2>
+    <div class="text">
+      <ul>
+        <li>Production of data vectors combining Euclid RR2 and TR1 (clustering and shear) with CMB lensing maps from ACT and SPT</li>
+        <li>Validation of the data vectors with systematics tests</li>
+      </ul>
+    </div>
+    <div class="people">
+      <figure><img src="images/collaborators/lea-dumilly-hires.jpg" alt="Léa Dumilly"><figcaption>Léa Dumilly</figcaption></figure>
+      <figure><img src="images/collaborators/emma-aycoberry.jpg" alt="Emma Ayçoberry"><figcaption>Emma Ayçoberry</figcaption></figure>
+      <figure><img src="images/collaborators/margherita-lembo-hires.jpg" alt="Margherita Lembo"><figcaption>Margherita Lembo</figcaption></figure>
+      <figure><img src="images/collaborators/cail-daley.jpg" alt="Cail Daley"><figcaption>Cail Daley</figcaption></figure>
+      <figure><img src="images/collaborators/giulio-fabbian.jpg" alt="Giulio Fabbian"><figcaption>Giulio Fabbian</figcaption></figure>
+    </div>
+  </aside>
+  <aside class="detail" data-label="Likelihood and theory" data-layout="people">
+    <h2>Likelihood and theory</h2>
+    <div class="text">
+      <ul>
+        <li>CMBX likelihood based on PyCCL + Cobaya</li>
+        <li>Implemented CMB lensing observable in cloe-lib, working to implement in cloe-like</li>
+      </ul>
+    </div>
+    <div class="people">
+      <figure><img src="images/collaborators/giulia-piccirilli.jpg" alt="Giulia Piccirilli"><figcaption>Giulia Piccirilli</figcaption></figure>
+      <figure><img src="images/collaborators/raphael-kou.jpg" alt="Raphaël Kou"><figcaption>Raphaël Kou</figcaption></figure>
+      <figure><img src="images/collaborators/luca-pagano.jpg" alt="Luca Pagano"><figcaption>Luca Pagano</figcaption></figure>
+      <figure><img src="images/collaborators/louis-legrand-hires.jpg" alt="Louis Legrand"><figcaption>Louis Legrand</figcaption></figure>
+      <figure><img src="images/collaborators/vilasini-tinnaneri-sreekanth-hires.jpg" alt="Vilasini Tinnaneri Sreekanth"><figcaption>Vilasini Tinnaneri Sreekanth</figcaption></figure>
+    </div>
+  </aside>
+  <aside class="detail" data-label="Simulations and covariance" data-layout="people">
+    <h2>Simulations and covariance</h2>
+    <div class="text">
+      <ul>
+        <li>Flask simulations to obtain numerical covariances</li>
+        <li>Calibrated on DEMNUni N-body simulations</li>
+      </ul>
+    </div>
+    <div class="people">
+      <figure><img src="images/collaborators/davide-luchina-hires.jpg" alt="Davide Luchina"><figcaption>Davide Luchina</figcaption></figure>
+      <figure><img src="images/collaborators/matteo-calabrese.jpg" alt="Matteo Calabrese"><figcaption>Matteo Calabrese</figcaption></figure>
+      <figure><img src="images/collaborators/sandeep-haridasu.jpg" alt="Sandeep Haridasu"><figcaption>Sandeep Haridasu</figcaption></figure>
+      <figure><img src="images/collaborators/melita-carbone.jpg" alt="Melita Carbone"><figcaption>Melita Carbone</figcaption></figure>
+      <figure><img src="images/collaborators/carlo-baccigalupi-hires.jpg" alt="Carlo Baccigalupi"><figcaption>Carlo Baccigalupi</figcaption></figure>
+      <figure><img src="images/collaborators/pauline-vielzeuf.jpg" alt="Pauline Vielzeuf"><figcaption>Pauline Vielzeuf</figcaption></figure>
+    </div>
   </aside>
 </section>

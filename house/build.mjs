@@ -579,6 +579,12 @@ function buildSlides(deck, typeset) {
       chips.innerHTML = details.map((d, k) => `<button class="chip" type="button" data-open="${k}">${esc(d.label)}</button>`).join('');
       frame.appendChild(chips);
     }
+    // data-opens="<label>" on any element of the slide (a box in a diagram) opens that detail on click
+    for (const el of frame.querySelectorAll('[data-opens]')) {
+      const k = details.findIndex(d => d.label === el.getAttribute('data-opens'));
+      if (k < 0) problems.push(`${where}: data-opens="${el.getAttribute('data-opens')}" names no detail of this slide (labels: ${details.map(d => d.label).join(', ') || 'none'})`);
+      else { el.setAttribute('data-open', String(k)); el.removeAttribute('data-opens'); }
+    }
     const attrs = [...section.attributes]
       .filter(a => !['data-layout', 'data-split', 'data-flip', 'data-stack', 'data-variant-axes', 'class', 'style', 'id'].includes(a.name))
       .map(a => ` ${a.name}="${esc(a.value)}"`).join('') + (s.backup ? ' data-visibility="uncounted"' : '');
