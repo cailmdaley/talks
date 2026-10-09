@@ -774,6 +774,37 @@ html, body { background: var(--ground); }
   width: 100%;
 }
 
+/* who — a person inline: a small round portrait (or a disc of initials) and
+   the name, sized by the text around it. For crediting people beside the work
+   they lead (a paper, a box in a diagram); a team gets a people slide. */
+.slide .who {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  margin-right: 0.7em;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.slide .who > img,
+.slide .who > .initials {
+  flex: none;
+  width: 1.7em;
+  height: 1.7em;
+  border-radius: 50%;
+}
+.slide .who > img { object-fit: cover; object-position: 50% 30%; }
+.slide .who > .initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel);
+  border: 2px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
 /* ═══ Report: the same slides as a scrolling document with their notes ═════ */
 body.report {
   margin: 0;

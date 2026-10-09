@@ -143,6 +143,7 @@ A `<figure>` holds an optional `<figcaption>` (a one-line label above), one imag
 ## Components
 
 - `<div class="eq"><span class="kicker">Label</span>$$…$$</div>` — a labelled display equation.
+- `<span class="who"><img src="images/collaborators/…" alt="Name">Name</span>` — a person inline: a small round portrait (or `<span class="initials">AB</span>`) and the name, sized by the surrounding text. For crediting people beside the work they lead; a team gets a `people` slide.
 - `.kicker` — small-caps label above a block. `.source` — attribution in the fine size. `.num` — a key number inline. `.tag` — a pill.
 - Hyphens next to a digit (SPT-3G, DR1-KP, KP2-3) are made non-breaking by the build, so names never split across lines.
 - `.accent`, `.muted`, `.teal`, `.cobalt` — colour emphasis. `.small`, `.fine` — the two smaller sizes, for secondary lines.
