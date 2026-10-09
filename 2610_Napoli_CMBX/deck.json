@@ -80,7 +80,9 @@
       "title": "DR1-KP-CMBX-4",
       "outline": "Hot gas in the cosmic web via TSZ cross-correlation with GC, WL and clusters.",
       "slides": [
-        "kp-4"
+        "kp-4",
+        "kp-4-godmax",
+        "kp-4-godmax-cloe"
       ]
     },
     {
