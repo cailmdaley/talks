@@ -220,14 +220,6 @@ def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, harm
     return rdv.svg_of(fig, fw, fh, glyphs)
 
 
-def pair_pte_text(chi2, a, b):
-    """The pair's verdict: X^{ab} vanishes when either template cross does, so the null is
-    composite, and its likelihood-ratio test is the intersection-union test,
-    PTE = max(PTE_a, PTE_b): exact at the boundary, valid whatever the other cross is."""
-    p = max(stats.chi2.sf(chi2[t], 15) for t in {a, b})
-    return p, r"$X \neq 0$" + ("" if a == b else " needs both") + ": PTE " + pte_text(0, p=p)
-
-
 def xcard(ell, x, sx, a, b, tlabel, harm, chi2, glyphs):
     fig = plt.figure(figsize=(DW / 72, DH / 72), dpi=72)
     fs = FS
@@ -241,9 +233,6 @@ def xcard(ell, x, sx, a, b, tlabel, harm, chi2, glyphs):
     if harm:
         fig.text(XP["x"] / DW, 1 - (XP["y"] - 40) / DH, "dashed: the template's power peaks ($\\approx 0.7^\\circ$ tiling)",
                  color=HARM, fontsize=fs, va="top", ha="left", style="italic")
-    p, txt = pair_pte_text(chi2, a, b)
-    fig.text((XP["x"] + XP["w"]) / DW, 1 - (XP["y"] - 40) / DH, txt, fontsize=fs, va="top", ha="right",
-             color=FLAG if p < PTE_FLAG else MUTED, weight="bold" if p < PTE_FLAG else "normal")
     x_points(ax, ell, x, sx, lw=1.4, ms=6.5)
     ax.tick_params(labelsize=fs, labelleft=True, labelbottom=True)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: rdv.fmt(v)))
