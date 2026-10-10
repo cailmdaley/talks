@@ -1,27 +1,23 @@
-<section data-layout="points">
-  <h2>Two kinds of mocks for two jobs</h2>
-  <div class="cols">
-    <div>
-      <p><strong class="accent">GLASS 6×2pt</strong><br><span class="small muted">validate the pipeline</span></p>
-      <ul class="small">
-        <li>correlated Euclid and CMB-lensing fields from one set of matter shells</li>
-        <li>run through the production pipeline: same masks, noise and code as the data</li>
-        <li>check every stage: bandpowers, covariance against scatter, blind, likelihood</li>
-      </ul>
-    </div>
-    <div>
-      <p><strong class="accent">FLASK lognormal</strong><br><span class="small muted">the numerical covariance</span></p>
-      <ul class="small">
-        <li>400 realisations; 3×2pt constrained on ACT DR6 simulations, and Planck-like with their own lensing reconstruction</li>
-        <li>calibrated on DEMNUni N‑body simulations</li>
-        <li>non-Gaussian and with real reconstruction noise: more accurate</li>
-        <li>Planck-constrained version next</li>
-      </ul>
-      <p class="small"><span class="who"><img src="images/collaborators/davide-luchina-hires.jpg" alt="Davide Luchina">Davide Luchina</span><span class="who"><img src="images/collaborators/melita-carbone.jpg" alt="Melita Carbone">Melita Carbone</span></p>
-    </div>
+<section data-layout="figure-text" data-split="60">
+  <h2>GLASS 6×2pt mocks recover the input shear × κ</h2>
+  <figure>
+    <img src="images/napoli_mock_recovery_gk.png" alt="Ten-mock GLASS mean of ell C_ell for shear crossed with CMB lensing in six source bins, against the input theory, with residual strips in units of the single-realization scatter">
+    <span class="source">10 GLASS mocks · ACT DR6 noise · TR1 mask</span>
+  </figure>
+  <div class="text">
+    <ul>
+      <li>Euclid and CMB-lensing fields from <strong>one set of matter shells</strong>: the full 6×2pt</li>
+      <li>through the <strong>production pipeline</strong>: same masks, noise and code as the data</li>
+      <li>mean |Δ| <span class="accent">0.25 σ₁</span> over 90 bands, as noise alone gives</li>
+    </ul>
   </div>
   <aside class="notes">
-    <p>The key project uses two kinds of simulation, for different jobs. GLASS 6×2pt mocks draw lognormal matter shells and derive from the same shells the Euclid galaxy density and shear fields and the CMB-lensing convergence, so every cross-correlation in the data vector is present in the mocks. They go through the production pipeline with the data's masks and noise and check each stage of it: that the bandpowers recover the input spectra, that the Gaussian covariance matches the seed-to-seed scatter (over 10 seeds the bulk agrees, while the stiffest low-$\ell$ clustering modes scatter about 1.3 times more than the covariance allows), that the blind behaves (a rehearsal on a mock), and that the likelihood recovers the input cosmology. They are quick to regenerate for a new footprint, n(z) or CMB noise level, which is what pipeline validation needs.</p>
-    <p>FLASK lognormal simulations, run by Davide Luchina with Carlo Baccigalupi, Matteo Calabrese, Melita Carbone, Sandeep Haridasu and Pauline Vielzeuf in the simulations-and-covariance workstream, are for the numerical covariance. As shown at the KP2-3 telecon of 8 October 2026: 400 simulations, 3×2pt lognormals constrained on the ACT DR6 Gaussian simulations, and full lognormals in a Planck-like configuration with their own lensing reconstruction; the Planck-constrained version is in preparation. The lognormal fields are calibrated on the DEMNUni N-body simulations, and constraining on the CMB experiments' own simulations carries their reconstruction noise into the covariance, which is why this covariance is expected to be more accurate than the analytic Gaussian one.</p>
+    <h3>The GLASS 6×2pt mocks</h3>
+    <p>GLASS 6×2pt mocks draw lognormal matter shells and derive from the same shells the Euclid galaxy density and shear fields and the CMB-lensing convergence, so every cross-correlation in the data vector is present in the mocks. They go through the production pipeline with the data's masks and noise and check each stage of it: that the bandpowers recover the input spectra (this slide), that the Gaussian covariance matches the seed-to-seed scatter (over 10 seeds the bulk agrees, while the stiffest low-$\ell$ clustering modes scatter about 1.3 times more than the covariance allows), that the blind behaves (next slide), and that the likelihood recovers the input cosmology. They are quick to regenerate for a new footprint, n(z) or CMB noise level, which is what pipeline validation needs.</p>
+    <h3>Reading the figure</h3>
+    <p>Shear × CMB lensing in the six source bins. Points are the mean of $\ell C_\ell$ over 10 mock realizations, the black line is the input theory, and all panels share one y axis, so the growth of the cross with source redshift reads directly. The mocks use the ACT DR6 lensing mask and noise and the TR1 Euclid mask, measured with the production NaMaster pipeline. The error bars are $\sigma_1,$ the seed-to-seed scatter of a single realization, so they show what one survey of this size is worth; they are not the Gaussian error bars of the data. The strip under each panel is the residual, mean minus input, in units of $\sigma_1$; the mean of 10 seeds is known to $\sigma_1/\sqrt{10} \approx 0.32\,\sigma_1$ (the shaded band), so an unbiased pipeline puts about two points in three inside it.</p>
+    <p>Over the 90 shear × κ bandpowers the mean $|\Delta|$ is $0.246\,\sigma_1$ against $0.252\,\sigma_1$ expected from noise alone, the signed mean $+0.014\,\sigma_1$; treating the bands as independent, $\sum 10\,(\Delta/\sigma_1)^2 = 89.7$ over 90 bands. The per-bin mean offsets are $+0.18$, $+0.08$, $-0.09$, $0.00$, $-0.09$ and $0.00\,\sigma_1$. The largest point, $0.96\,\sigma_1$ in source bin 1 at $\ell \approx 220,$ is about 3 standard errors of the mean, about what one expects once among 90 bands. The galaxy density × κ crosses recover their input as well (mean $|\Delta|$ $0.22\,\sigma_1$ over 90 bands). A full-covariance $\chi^2$ is the next step.</p>
+    <h3>FLASK, for the numerical covariance</h3>
+    <p>FLASK lognormal simulations, run by Davide Luchina with Carlo Baccigalupi, Matteo Calabrese, Melita Carbone, Sandeep Haridasu and Pauline Vielzeuf in the simulations-and-covariance workstream, are for the numerical covariance. As shown at the KP2-3 telecon of 8 October 2026: 400 simulations, 3×2pt lognormals constrained on the ACT DR6 Gaussian simulations, and full lognormals in a Planck-like configuration with their own lensing reconstruction; the Planck-constrained version is in preparation. The lognormal fields are calibrated on the DEMNUni N-body simulations, and constraining on the CMB experiments' own simulations carries their reconstruction noise into the covariance, which is why this covariance is expected to be more accurate than the analytic Gaussian one. On the slide that introduced them: 400 realisations; 3×2pt constrained on ACT DR6 simulations, and Planck-like with their own lensing reconstruction; calibrated on DEMNUni N‑body simulations; non-Gaussian and with real reconstruction noise: more accurate; Planck-constrained version next.</p>
   </aside>
 </section>

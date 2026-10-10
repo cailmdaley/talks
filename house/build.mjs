@@ -268,6 +268,15 @@ function moveMarks(fig, box, problems, where) {
     else mark.setAttribute('style', `--x:${nums[0]};--y:${nums[1]};--w:${nums[2]};--h:${nums[3]}`);
     box.appendChild(mark);
   }
+  // a step card: a panel over the figure for one step, its top-left corner and width
+  // in percent of the image (its height follows its content)
+  for (const card of [...fig.querySelectorAll(':scope > .step-card')]) {
+    const nums = (card.getAttribute('data-box') || '').trim().split(/[\s,]+/).map(Number);
+    if (nums.length !== 3 || nums.some(n => !Number.isFinite(n) || n < 0) || nums[2] <= 0 || nums[0] + nums[2] > 100.01 || nums[1] >= 100)
+      problems.push(`${where}: a .step-card needs data-box="x y w" in percent of the image, inside it (got "${card.getAttribute('data-box') || ''}")`);
+    else card.setAttribute('style', `--x:${nums[0]};--y:${nums[1]};--w:${nums[2]}`);
+    box.appendChild(card);
+  }
 }
 
 // Images are stored once per deck and referenced by key, so a figure shown

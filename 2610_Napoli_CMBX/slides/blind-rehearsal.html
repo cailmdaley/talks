@@ -1,5 +1,5 @@
 <section data-layout="figure">
-  <h2>Mock blinds land within 0.75σ of the injected shift</h2>
+  <h2>Blinding as in 3×2pt: a hidden shift of the data vector</h2>
   <figure>
     <img src="images/napoli_blind_rehearsal_1.png" alt="Omega_m and S8 posterior of the unblinded GLASS mock chain, with the input cosmology inside its 68 percent contour">
     <img class="fragment" src="images/napoli_blind_rehearsal_2.png" alt="Two throwaway blinds move the posterior far from the unblinded mock one">
@@ -7,6 +7,9 @@
     <span class="source">One GLASS 6×2pt mock, fitting $\Omega_\mathrm{m},$ $S_8$ and six galaxy biases; two throwaway blinds, revealed after the chains converged.</span>
   </figure>
   <aside class="notes">
+    <h3>The blind</h3>
+    <p>We blind the way the Euclid 3×2pt analysis does: a parameter-shift blind in the style of Muir et al. (2019), the same method as the 3×2pt blinding tool (blindspot) and LSST DESC's Smokescreen. A sealed shift in cosmology is turned into a $\Delta C_\ell$ added to the data vector, so shapes, signal-to-noise, the covariance and the null tests stay visible while the inferred cosmology is hidden. The official pipeline blinds only the Euclid 2pt spectra, so the κ crosses are blinded by our own module, over the whole 6×2pt data vector. This slide is the rehearsal on a mock, chains included: the recovered shifts match the injected ones to within $0.75\sigma$.</p>
+    <h3>The rehearsal</h3>
     <p>The full likelihood chain run on one GLASS 6×2pt mock: all 90 spectra of 15 bands, $\ell$ from 100 to 3000, scored with the fixed Gaussian covariance. The model is reduced to eight parameters, $\Omega_\mathrm{m}$ and $S_8$ plus six linear galaxy biases, with $\Omega_\mathrm{b}$, $h$, $n_s$ and the neutrino mass held at the mock's truth and no intrinsic-alignment, shear-calibration or photo-z nuisances, so the 0.4 % error on $S_8$ is optimistic. The unblinded chain gives $\Omega_\mathrm{m} = 0.326 \pm 0.010$ and $S_8 = 0.8338 \pm 0.0035$ against an input of 0.315 and 0.832: $+1.0\sigma$ and $+0.4\sigma,$ with the input inside the 68 % contour.</p>
     <p>The second step adds the blinding rehearsal and the third the right panel. Two throwaway blinds were drawn at random by the same blinding module the TR1 analysis uses, each a hidden shift in $(\Omega_\mathrm{m}, S_8)$ turned into a $\Delta C_\ell$ added to the data vector, and the full chain was rerun on each blinded vector; the shifts were revealed only after all chains had converged. On the left, the blinded posteriors land far from the unblinded one, which is the point of the blind. On the right, each is moved back by its injected shift. The recovered shifts match the injected ones to $-0.75$ and $+0.14$ unblinded $\sigma$ (blind A, in $\Omega_\mathrm{m}$ and $S_8$) and $+0.13$ and $+0.40\sigma$ (blind B).</p>
     <p>The blind is a translation only approximately. The residuals are larger than the chains' Monte Carlo error, and the posterior's shape changes with where it lands: blind A's $\Omega_\mathrm{m}$ width shrinks to a third of the unblinded one, while blind B keeps 83 % and 92 % of the widths. So widths read off a blinded chain are not the unblinded widths, and are not to be quoted as such. The real TR1 blind was never opened.</p>

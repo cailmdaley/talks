@@ -667,6 +667,13 @@ html, body { background: var(--ground); }
 .slide .cards .value { font-size: var(--t-head); font-weight: 700; line-height: 1.1; color: var(--accent); font-feature-settings: "lnum" 1, "tnum" 1; }
 .slide .cards .label { font-size: var(--t-fine); line-height: 1.2; }
 .slide .cards .sub { font-size: var(--t-fine); line-height: 1.2; font-weight: 700; color: var(--cobalt); }
+/* cards.rows — the same numbers stacked, one card a row: the value in a left
+   column as wide as the widest value, the label and .sub beside it. For values
+   too wide to share a narrow column (0.93 → 0.27) without wrapping. */
+.slide .cards.rows { grid-auto-flow: row; grid-template-columns: max-content minmax(0, 1fr); grid-auto-columns: auto; gap: var(--s2); }
+.slide .cards.rows > .card { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; column-gap: var(--s3); row-gap: 4px; align-items: center; padding: 14px var(--s3); }
+.slide .cards.rows .value { grid-column: 1; grid-row: 1 / span 2; white-space: nowrap; }
+.slide .cards.rows .label, .slide .cards.rows .sub { grid-column: 2; }
 /* callout — one highlighted remark: a panel with an accent rule on its left */
 .slide .callout { background: var(--panel); border-left: 6px solid var(--accent); border-radius: 0 10px 10px 0; padding: var(--s3) var(--s4); }
 
@@ -910,15 +917,31 @@ html, body { background: var(--ground); }
 .peek-people img { width: 104px; height: 104px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; }
 .peek-people figcaption { font-size: var(--t-fine); line-height: 1.1; color: var(--muted); margin-top: 6px; }
 .peek-hint { margin: 14px 0 0; font-size: var(--t-fine); color: var(--muted); font-style: italic; text-align: right; }
-/* a stepped popout (data-peek-at): placed and sized by its opener, one row of
-   portraits when it can */
-.peek.stepped .peek-people { gap: 12px 10px; }
-.peek.stepped .peek-people figure { width: 132px; }
-.peek.stepped { padding: 22px 30px 18px; }
-.peek.stepped .peek-people { margin-top: 12px; }
-.peek.stepped .peek-people img { width: 88px; height: 88px; }
-.peek.stepped .peek-hint { display: none; }
 @media print { .peek { display: none !important; } }
+/* step card — a panel over a figure for one step: <div class="step-card fragment
+   fade-in-then-out" data-box="x y w"> directly in the <figure>, its top-left corner
+   and width in percent of the image, arriving and leaving with the steps */
+.slide .frame > .step-card {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--w) * 1%);
+  box-sizing: border-box;
+  z-index: 3;
+  padding: 22px 30px 20px;
+  background: var(--ground);
+  border: 3px solid var(--teal);
+  border-radius: 18px;
+  box-shadow: 0 14px 40px rgb(0 0 0 / 0.16);
+  color: var(--ink);
+  font-size: var(--t-fine);
+  line-height: var(--lh-tight, 1.25);
+  text-align: left;
+}
+.slide .frame > .step-card > h3 { margin: 0 0 12px; font-size: var(--t-small); font-weight: 700; color: var(--teal); }
+.slide .frame > .step-card ul { margin: 0; padding-left: 1.1em; }
+.slide .frame > .step-card li { margin: 0 0 6px; }
+.slide .frame > .step-card > p { margin: 12px 0 0; }
 
 /* who — a person inline: a small round portrait (or a disc of initials) and
    the name, sized by the text around it. For crediting people beside the work

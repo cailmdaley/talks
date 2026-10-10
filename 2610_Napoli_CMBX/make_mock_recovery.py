@@ -1,13 +1,13 @@
-"""Mock recovery of the CMB-lensing crosses, redrawn for the Napoli CMBX talk.
+"""Mock recovery of shear x CMB lensing, redrawn for the Napoli CMBX talk.
 
 The GLASS 6x2pt mock ensemble (10 seeds, ACT DR6 lensing mask and noise, TR1
-Euclid mask, map estimator) measured delta_i x kappa and gamma_i x kappa for the
-six tomographic bins.  This is the analysis figure (lc output
+Euclid mask, map estimator) measured gamma_i x kappa for the six source bins.
+This is the analysis figure's shear row (lc output
 results/tr1_act/glass_6x2pt_mocks/stack_review_figures.tar, fig_cmb_crosses.png)
-redrawn at projector scale: two rows of six panels, delta x kappa above and
-gamma x kappa below, each panel the 10-seed mean of ell C_ell against the input
-theory, with a residual strip under it.  Each row shares one y axis and one
-exponent, so heights compare across bins.
+redrawn at projector scale for a figure-text slide: the six bins in two rows of
+three, each panel the 10-seed mean of ell C_ell against the input theory, with a
+residual strip under it. All panels share one y axis and one exponent, so
+heights compare across bins.
 
 Main panels: points are the ensemble mean, bars are +-sigma_1, the seed-to-seed
 scatter of ONE realization (sample std over the 10 seeds) -- what one survey of
@@ -21,8 +21,8 @@ The arrays are read with the analysis's own loader
 mock_series) from the committed recovery store, so the numbers here are the
 analysis figure's numbers.
 
-Output: images/napoli_mock_recovery_cmb.png, at 2x the figure layout's body box
-less a .source line (1712 x 723 px).
+Output: images/napoli_mock_recovery_gk.png, at 2x the figure column of a
+data-split="60" figure-text slide less a .source line (1000 x 740 px).
 
 Run in the cmbx container: app python make_mock_recovery.py
 """
@@ -39,7 +39,7 @@ from matplotlib import font_manager
 from matplotlib.ticker import FixedLocator, FuncFormatter, MaxNLocator, NullFormatter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(HERE, "..", "images", "napoli_mock_recovery_cmb.png")
+OUT = os.path.join(HERE, "..", "images", "napoli_mock_recovery_gk.png")
 CMBX = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx"
 GLASS = f"{CMBX}/analyses/glass_6x2pt_mocks"
 STORE = f"{GLASS}/inputs/review_stack_recovery"
@@ -51,14 +51,14 @@ INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
 COBALT, TEAL, OCHRE = "#2E417C", "#1D6C78", "#9C7414"
 BAND = "#D6DEEA"
 
-# canvas: 1712 x 723 px displayed, drawn at 2x
-W_PX, H_PX, DPI = 3424, 1446, 200
+# canvas: 1000 x 740 px displayed, drawn at 2x
+W_PX, H_PX, DPI = 2000, 1480, 200
 PT = DPI / 72 / 2            # displayed px per point
-FAMILIES = [("delta", r"$\delta_{i}\kappa$"), ("gammaE", r"$\gamma_{i}\kappa$")]
+FAMILIES = [("gammaE", r"$\gamma_{i}\kappa$")]
 COLOUR = {"delta": COBALT, "gammaE": TEAL}
 ELL_TICKS = [100, 1000]
 ELL_MINOR = [200, 300, 500, 2000, 3000]
-TICK, LABEL = 21, 23         # pt; x PT -> 29 px, 32 px displayed
+TICK, LABEL = 24, 25         # pt; x PT -> 33 px, 35 px drawn, about 32 px as displayed
 
 
 def setup_font():
@@ -127,21 +127,25 @@ def draw(series, n, mean_abs):
     })
     print(f"tick labels ≈ {TICK * PT:.0f} px, axis labels ≈ {LABEL * PT:.0f} px displayed")
     inner = 1 / np.sqrt(n)
+    fam, tag = FAMILIES[0]
+    rows = series[fam]
+    expo = int(np.floor(np.log10(max(np.nanmax(m["mean"] + m["sigma1"]) for m in rows))))
+    scale = 10.0 ** expo
+    lo = min(np.nanmin(m["mean"] - m["sigma1"]) for m in rows) / scale
+    hi = max(np.nanmax(m["mean"] + m["sigma1"]) for m in rows) / scale
+    pad = 0.06 * (hi - lo)
 
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
-    outer = fig.add_gridspec(2, 1, hspace=0.22, left=0.088, right=0.995, top=0.925, bottom=0.10)
-    for r, (fam, tag) in enumerate(FAMILIES):
-        rows = series[fam]
-        expo = int(np.floor(np.log10(max(np.nanmax(m["mean"] + m["sigma1"]) for m in rows))))
-        scale = 10.0 ** expo
-        lo = min(np.nanmin(m["mean"] - m["sigma1"]) for m in rows) / scale
-        hi = max(np.nanmax(m["mean"] + m["sigma1"]) for m in rows) / scale
-        pad = 0.06 * (hi - lo)
-        inner_gs = outer[r].subgridspec(2, 6, height_ratios=[2.5, 1], hspace=0.06, wspace=0.07)
-        for i, m in enumerate(rows):
-            ax = fig.add_subplot(inner_gs[0, i], sharey=ax0 if i else None)
-            axr = fig.add_subplot(inner_gs[1, i], sharex=ax, sharey=axr0 if i else None)
-            if not i:
+    outer = fig.add_gridspec(2, 1, hspace=0.16, left=0.135, right=0.99, top=0.86, bottom=0.10)
+    ax0 = axr0 = None
+    for r in range(2):
+        inner_gs = outer[r].subgridspec(2, 3, height_ratios=[2.5, 1], hspace=0.06, wspace=0.08)
+        for c in range(3):
+            i = 3 * r + c
+            m = rows[i]
+            ax = fig.add_subplot(inner_gs[0, c], sharey=ax0)
+            axr = fig.add_subplot(inner_gs[1, c], sharex=ax, sharey=axr0)
+            if ax0 is None:
                 ax0, axr0 = ax, axr
             ell = m["ell"]
             ax.axhline(0, color=RULE, lw=1.2, zorder=0)
@@ -169,29 +173,27 @@ def draw(series, n, mean_abs):
             ax.tick_params(axis="x", which="both", length=0)
             if r == 0:
                 plt.setp(axr.get_xticklabels(), visible=False)
-            if i:
+            if c:
                 plt.setp(ax.get_yticklabels(), visible=False)
                 plt.setp(axr.get_yticklabels(), visible=False)
             else:
                 ax.yaxis.set_major_locator(MaxNLocator(3, integer=True))
                 ax.set_ylabel(rf"$\ell C_\ell\;[10^{{{expo}}}]$", labelpad=6)
                 axr.set_ylabel(r"$\Delta/\sigma_1$", labelpad=6)
-            if r == 1:
+            if r == 1 and c == 1:
                 axr.set_xlabel(r"$\ell$", labelpad=2)
     fig.align_ylabels()
 
-    # key along the top
-    fig.add_artist(plt.Line2D([0.088, 0.112], [0.975, 0.975], color=INK, lw=2.4,
+    # key along the top, two lines
+    y1, y2 = 0.965, 0.915
+    fig.add_artist(plt.Line2D([0.135, 0.175], [y1, y1], color=INK, lw=2.4, transform=fig.transFigure))
+    fig.text(0.185, y1, "input theory", fontsize=LABEL, color=INK, ha="left", va="center")
+    fig.add_artist(plt.Line2D([0.43], [y1], marker="o", ms=8, color=COLOUR[fam], mec="white",
                               transform=fig.transFigure))
-    fig.text(0.118, 0.975, "input theory", fontsize=LABEL, color=INK, ha="left", va="center")
-    fig.add_artist(plt.Line2D([0.226], [0.975], marker="o", ms=8, color=COBALT, mec="white",
-                              transform=fig.transFigure))
-    fig.add_artist(plt.Line2D([0.235], [0.975], marker="o", ms=8, color=TEAL, mec="white",
-                              transform=fig.transFigure))
-    fig.text(0.243, 0.975, f"mean of {n} GLASS seeds $\\pm\\,\\sigma_1$ (one realization)",
+    fig.text(0.445, y1, f"mean of {n} mocks $\\pm\\,\\sigma_1$ (one realization)",
              fontsize=LABEL, color=INK, ha="left", va="center")
-    fig.text(0.995, 0.975, f"strips: (mean $-$ input)$/\\sigma_1$, band $\\pm\\,${inner:.2f}$\\,\\sigma_1$",
-             fontsize=LABEL, color=MUTED, ha="right", va="center")
+    fig.text(0.135, y2, f"strips: (mean $-$ input)$/\\sigma_1$, band $\\pm\\,${inner:.2f}$\\,\\sigma_1$",
+             fontsize=LABEL, color=MUTED, ha="left", va="center")
     fig.savefig(OUT, dpi=DPI)
     plt.close(fig)
     print("wrote", os.path.normpath(OUT))

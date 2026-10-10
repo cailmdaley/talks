@@ -9,7 +9,7 @@
       </defs>
 
       <!-- step 1: data vectors and systematics -->
-      <g data-opens="Data vectors and systematics" data-peek-at="930 24 760">
+      <g>
         <rect x="474" y="196" width="380" height="360" rx="14" class="fill-ground stroke-accent" stroke-width="4"/>
         <text x="664" y="248" font-size="40" font-weight="700" text-anchor="middle">Pseudo-Cℓ</text>
         <text x="664" y="290" font-size="32" class="fill-muted" text-anchor="middle">NaMaster</text>
@@ -58,7 +58,7 @@
       </g>
 
       <!-- step 2: simulations and covariance -->
-      <g class="fragment" data-opens="Simulations and covariance" data-peek-at="930 176 778">
+      <g class="fragment" data-fragment-index="0">
         <path d="M474 4 H1286 Q1300 4 1300 18 V152 Q1300 166 1286 166 H474 Q460 166 460 152 V18 Q460 4 474 4 Z" class="fill-none stroke-cobalt" stroke-width="3" stroke-dasharray="12 9"/>
         <rect x="474" y="18" width="380" height="134" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
         <text x="498" y="74" font-size="40" font-weight="700">Simulations</text>
@@ -72,7 +72,7 @@
       </g>
 
       <!-- step 3: theory and likelihood, with the blind -->
-      <g class="fragment">
+      <g class="fragment" data-fragment-index="1">
         <path d="M856 370 H930" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
         <rect x="938" y="270" width="320" height="200" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
         <text x="1098" y="336" font-size="40" font-weight="700" text-anchor="middle">Blind</text>
@@ -80,7 +80,7 @@
         <text x="1098" y="428" font-size="32" class="fill-muted" text-anchor="middle">shift added to Cℓ</text>
         <path d="M1260 370 H1332" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
         <path d="M1288 152 L1334 262" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
-        <g data-opens="Likelihood and theory" data-peek-at="14 166 848">
+        <g>
           <rect x="1340" y="270" width="354" height="218" rx="14" class="fill-ground stroke-accent" stroke-width="4"/>
           <text x="1517" y="336" font-size="40" font-weight="700" text-anchor="middle">Likelihood</text>
           <text x="1517" y="386" font-size="32" class="fill-muted" text-anchor="middle">b, Δz, m, IA</text>
@@ -94,68 +94,44 @@
         </g>
       </g>
 
-      <!-- step 4: where it stands -->
-      <g class="fragment">
+      <!-- step 4: the whole pipeline, no cards -->
+      <g class="fragment" data-fragment-index="2">
         <text x="1517" y="444" font-size="32" font-weight="700" class="fill-accent" text-anchor="middle">TR1 chains next</text>
       </g>
+
     </svg>
-  </figure>
-  <aside class="notes">
-    <p>The KP2-3 pipeline end to end, built up one workstream at a time; each block's popout gives its scope and its people, carried over from the Barcelona KP2-3 update by Legrand, Lembo and Fabbian. Click a block to open its workstream whole.</p>
-    <h3>Data vectors and systematics</h3>
-    <p>Euclid TR1 shear and positions are pixelised into maps with their masks and redshift distributions; the CMB-lensing inputs are the Planck PR4, ACT DR6 and SPT-3G Main convergence maps. NaMaster pseudo-$C_\ell$ turns them into bandpowers for all six families: the three Euclid 3×2pt spectra (left column) and the three involving CMB lensing (right column). The same estimator crosses the data with systematics maps, the templates carried by Euclid's VMPs (extinction, exposures, noise, PSF, zodiacal light, stars) and external CMB foreground maps, which gives the null tests and validation of the data vectors.</p>
-    <h3>Simulations and covariance</h3>
-    <p>GLASS and FLASK lognormal mocks on the TR1 footprint with the delivered n(z) run through the same NaMaster step as the data. GLASS validates the pipeline (the mock-recovery slide); FLASK, calibrated on DEMNUni N-body simulations, gives the numerical covariance. The covariance the pipeline uses now is analytic and Gaussian, in NaMaster's improved narrow-kernel approximation (iNKA), and covers every block including the cross-blocks between families.</p>
-    <h3>Theory and likelihood, and the blind</h3>
-    <p>The blind is a parameter-shift blind in the style of Muir et al. (2019): a sealed shift in cosmology is turned into a $\Delta C_\ell$ added to the whole six-family data vector, so shapes, signal-to-noise, the covariance and the null tests stay visible while the inferred cosmology is hidden. We run it ourselves because the official pipeline blinds only the Euclid 2pt spectra; it is the pipeline's own step, shared across the workstreams. The theory model computes the six families with CCL and passes them through the same bandpower windows as the data. The likelihood varies it with the nuisances: linear galaxy bias $b$, photometric-redshift shifts $\Delta z$, shear calibration $m$ and intrinsic alignments. The blinded TR1 likelihood input exists; the TR1 chains come next.</p>
-  </aside>
-  <aside class="detail" data-label="Data vectors and systematics" data-layout="people">
-    <h2>Data vectors and systematics</h2>
-    <div class="text">
+    <div class="step-card fragment fade-out" data-fragment-index="0" data-box="54.3 3.1 44.4">
+      <h3>Data vectors and systematics</h3>
       <ul>
         <li>Production of data vectors combining Euclid RR2 and TR1 (clustering and shear) with CMB lensing maps from ACT and SPT</li>
         <li>Validation of the data vectors with systematics tests</li>
       </ul>
+      <p><span class="who"><img src="images/collaborators/lea-dumilly-hires.jpg" alt="Léa Dumilly">Léa Dumilly</span> <span class="who"><img src="images/collaborators/emma-aycoberry.jpg" alt="Emma Ayçoberry">Emma Ayçoberry</span> <span class="who"><img src="images/collaborators/margherita-lembo-hires.jpg" alt="Margherita Lembo">Margherita Lembo</span> <span class="who"><img src="images/collaborators/cail-daley.jpg" alt="Cail Daley">Cail Daley</span> <span class="who"><img src="images/collaborators/giulio-fabbian.jpg" alt="Giulio Fabbian">Giulio Fabbian</span></p>
     </div>
-    <div class="people">
-      <figure><img src="images/collaborators/lea-dumilly-hires.jpg" alt="Léa Dumilly"><figcaption>Léa Dumilly</figcaption></figure>
-      <figure><img src="images/collaborators/emma-aycoberry.jpg" alt="Emma Ayçoberry"><figcaption>Emma Ayçoberry</figcaption></figure>
-      <figure><img src="images/collaborators/margherita-lembo-hires.jpg" alt="Margherita Lembo"><figcaption>Margherita Lembo</figcaption></figure>
-      <figure><img src="images/collaborators/cail-daley.jpg" alt="Cail Daley"><figcaption>Cail Daley</figcaption></figure>
-      <figure><img src="images/collaborators/giulio-fabbian.jpg" alt="Giulio Fabbian"><figcaption>Giulio Fabbian</figcaption></figure>
-    </div>
-  </aside>
-  <aside class="detail" data-label="Likelihood and theory" data-layout="people">
-    <h2>Likelihood and theory</h2>
-    <div class="text">
-      <ul>
-        <li>CMBX likelihood based on PyCCL + Cobaya</li>
-        <li>Implemented CMB lensing observable in cloe-lib, working to implement in cloe-like</li>
-      </ul>
-    </div>
-    <div class="people">
-      <figure><img src="images/collaborators/giulia-piccirilli.jpg" alt="Giulia Piccirilli"><figcaption>Giulia Piccirilli</figcaption></figure>
-      <figure><img src="images/collaborators/raphael-kou.jpg" alt="Raphaël Kou"><figcaption>Raphaël Kou</figcaption></figure>
-      <figure><img src="images/collaborators/luca-pagano.jpg" alt="Luca Pagano"><figcaption>Luca Pagano</figcaption></figure>
-      <figure><img src="images/collaborators/louis-legrand-hires.jpg" alt="Louis Legrand"><figcaption>Louis Legrand</figcaption></figure>
-      <figure><img src="images/collaborators/vilasini-tinnaneri-sreekanth-hires.jpg" alt="Vilasini Tinnaneri Sreekanth"><figcaption>Vilasini Tinnaneri Sreekanth</figcaption></figure>
-    </div>
-  </aside>
-  <aside class="detail" data-label="Simulations and covariance" data-layout="people">
-    <h2>Simulations and covariance</h2>
-    <div class="text">
+    <div class="step-card fragment fade-in-then-out" data-fragment-index="0" data-box="54.3 34.0 44.4">
+      <h3>Simulations and covariance</h3>
       <ul>
         <li>Flask simulations to obtain numerical covariances</li>
         <li>Calibrated on DEMNUni N-body simulations</li>
       </ul>
+      <p><span class="who"><img src="images/collaborators/davide-luchina-hires.jpg" alt="Davide Luchina">Davide Luchina</span> <span class="who"><img src="images/collaborators/matteo-calabrese.jpg" alt="Matteo Calabrese">Matteo Calabrese</span> <span class="who"><img src="images/collaborators/sandeep-haridasu.jpg" alt="Sandeep Haridasu">Sandeep Haridasu</span> <span class="who"><img src="images/collaborators/melita-carbone.jpg" alt="Melita Carbone">Melita Carbone</span> <span class="who"><img src="images/collaborators/carlo-baccigalupi-hires.jpg" alt="Carlo Baccigalupi">Carlo Baccigalupi</span> <span class="who"><img src="images/collaborators/pauline-vielzeuf.jpg" alt="Pauline Vielzeuf">Pauline Vielzeuf</span></p>
     </div>
-    <div class="people">
-      <figure><img src="images/collaborators/davide-luchina-hires.jpg" alt="Davide Luchina"><figcaption>Davide Luchina</figcaption></figure>
-      <figure><img src="images/collaborators/matteo-calabrese.jpg" alt="Matteo Calabrese"><figcaption>Matteo Calabrese</figcaption></figure>
-      <figure><img src="images/collaborators/sandeep-haridasu.jpg" alt="Sandeep Haridasu"><figcaption>Sandeep Haridasu</figcaption></figure>
-      <figure><img src="images/collaborators/melita-carbone.jpg" alt="Melita Carbone"><figcaption>Melita Carbone</figcaption></figure>
-      <figure><img src="images/collaborators/carlo-baccigalupi-hires.jpg" alt="Carlo Baccigalupi"><figcaption>Carlo Baccigalupi</figcaption></figure>
-      <figure><img src="images/collaborators/pauline-vielzeuf.jpg" alt="Pauline Vielzeuf"><figcaption>Pauline Vielzeuf</figcaption></figure>
+    <div class="step-card fragment fade-in-then-out" data-fragment-index="1" data-box="0.8 51 48.5">
+      <h3>Likelihood and theory</h3>
+      <ul>
+        <li>CMBX likelihood based on PyCCL + Cobaya</li>
+        <li>Implemented CMB lensing observable in cloe-lib, working to implement in cloe-like</li>
+      </ul>
+      <p><span class="who"><img src="images/collaborators/giulia-piccirilli.jpg" alt="Giulia Piccirilli">Giulia Piccirilli</span> <span class="who"><img src="images/collaborators/raphael-kou.jpg" alt="Raphaël Kou">Raphaël Kou</span> <span class="who"><img src="images/collaborators/luca-pagano.jpg" alt="Luca Pagano">Luca Pagano</span> <span class="who"><img src="images/collaborators/louis-legrand-hires.jpg" alt="Louis Legrand">Louis Legrand</span> <span class="who"><img src="images/collaborators/vilasini-tinnaneri-sreekanth-hires.jpg" alt="Vilasini Tinnaneri Sreekanth">Vilasini Tinnaneri Sreekanth</span></p>
     </div>
+  </figure>
+  <aside class="notes">
+    <p>The KP2-3 pipeline end to end, built up one workstream at a time; each step's card gives the workstream's scope and its people, carried over from the Barcelona KP2-3 update by Legrand, Lembo and Fabbian, and the last step shows the whole pipeline.</p>
+    <h3>Data vectors and systematics</h3>
+    <p>Euclid TR1 shear and positions are pixelised into maps with their masks and redshift distributions; the CMB-lensing inputs are the Planck PR4, ACT DR6 and SPT-3G Main convergence maps. NaMaster pseudo-$C_\ell$ turns them into bandpowers for all six families: the three Euclid 3×2pt spectra (left column) and the three involving CMB lensing (right column). The same estimator crosses the data with systematics maps, the templates carried by Euclid's VMPs (extinction, exposures, noise, PSF, zodiacal light, stars) and external CMB foreground maps, which gives the null tests and validation of the data vectors.</p>
+    <h3>Simulations and covariance</h3>
+    <p>GLASS and FLASK lognormal mocks on the TR1 footprint with the delivered n(z) run through the same NaMaster step as the data. GLASS validates the pipeline (the mocks slide); FLASK, calibrated on DEMNUni N-body simulations, gives the numerical covariance. The covariance the pipeline uses now is analytic and Gaussian, in NaMaster's improved narrow-kernel approximation (iNKA), and covers every block including the cross-blocks between families.</p>
+    <h3>Theory and likelihood, and the blind</h3>
+    <p>The blind is a parameter-shift blind in the style of Muir et al. (2019): a sealed shift in cosmology is turned into a $\Delta C_\ell$ added to the whole six-family data vector, so shapes, signal-to-noise, the covariance and the null tests stay visible while the inferred cosmology is hidden. We run it ourselves because the official pipeline blinds only the Euclid 2pt spectra; it is the pipeline's own step, shared across the workstreams. The theory model computes the six families with CCL and passes them through the same bandpower windows as the data. The likelihood varies it with the nuisances: linear galaxy bias $b$, photometric-redshift shifts $\Delta z$, shear calibration $m$ and intrinsic alignments. The blinded TR1 likelihood input exists; the TR1 chains come next.</p>
   </aside>
 </section>

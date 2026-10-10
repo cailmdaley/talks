@@ -138,7 +138,6 @@
 
   function hidePeekSoon() {
     clearTimeout(peekIn); clearTimeout(peekOut);
-    if (peek && peek.classList.contains('stepped')) return;  // a stepped popout stays for its step
     peekOut = setTimeout(hidePeek, PEEK_OUT);
   }
 
@@ -159,54 +158,6 @@
   Reveal.on('slidechanged', hidePeek);
   Reveal.on('fragmentshown', hidePeek);
   Reveal.on('fragmenthidden', hidePeek);
-
-  // ── Stepped popouts: an element that opens a detail and carries
-  // data-peek-at="x y w" shows that detail's popout unasked while it is the
-  // slide's latest step: a fragment (or an element inside one) while that
-  // fragment is current, an element outside every fragment while no fragment
-  // is shown. The card's top-left corner sits at (x, y) and its width is w, in
-  // the units of the SVG the element is drawn in; hover and click work as for
-  // any opener. A later step without one clears it.
-  function stepPeek() {
-    var s = Reveal.getCurrentSlide();
-    if (!s || openDetail) return;
-    var frame = s.querySelector(':scope > .slide:not(.detail)');
-    if (!frame) return;
-    var els = Array.prototype.slice.call(frame.querySelectorAll('[data-peek-at][data-open]'));
-    var anyShown = frame.querySelector('.fragment.visible');
-    var cur = els.filter(function (e) {
-      var f = e.classList.contains('fragment') ? e : e.closest('.fragment');
-      return f ? f.classList.contains('current-fragment') : !anyShown;
-    })[0] || null;
-    if (peek && peek.classList.contains('stepped') && peekFor !== cur) hidePeek();
-    if (!cur || peekFor === cur) return;
-    showPeek(cur);
-    if (!peek) return;
-    peek.classList.add('stepped');
-    var a = cur.getAttribute('data-peek-at').trim().split(/[\s,]+/).map(Number);
-    var svg = cur.ownerSVGElement || cur.closest('svg');
-    var m = svg && svg.getScreenCTM();
-    if (!m || a.length < 2) return;
-    var scale = Reveal.getScale() || 1, sr = s.getBoundingClientRect();
-    var p = svg.createSVGPoint(); p.x = a[0]; p.y = a[1]; p = p.matrixTransform(m);
-    if (a[2]) peek.style.width = (a[2] * m.a / scale) + 'px';
-    peek.style.left = ((p.x - sr.left) / scale) + 'px';
-    peek.style.top = ((p.y - sr.top) / scale) + 'px';
-    // portraits in balanced rows (3 + 3, not 5 + 1)
-    var row = peek.querySelector('.peek-people'), figs = row ? row.children : [];
-    if (figs.length > 1) {
-      var fw = figs[0].offsetWidth, gap = parseFloat(getComputedStyle(row).columnGap) || 0;
-      var per = Math.max(1, Math.floor((row.clientWidth + gap) / (fw + gap)));
-      var cols = Math.ceil(figs.length / Math.ceil(figs.length / per));
-      row.style.maxWidth = (cols * fw + (cols - 1) * gap + 1) + 'px';
-    }
-  }
-  ['ready', 'slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(function (ev) {
-    Reveal.on(ev, function () { setTimeout(stepPeek, 0); });
-  });
-  // closing a detail brings back the step's popout
-  var closeDetail = close;
-  close = function () { var was = openDetail; closeDetail(); if (was) setTimeout(stepPeek, 0); };
 
   // ── Prism: a figure stack whose steps turn like the faces of a prism ──
   // <figure data-prism> holds a stack; each step turns the stack about its
@@ -491,7 +442,7 @@
 
   // Hooks for the checker, for scripted capture and for app scripts.
   window.House = {
-    open: open, close: function () { close(); }, settle: settle, stepPeek: stepPeek,
+    open: open, close: function () { close(); }, settle: settle,
     app: function (name, factory) { apps[name] = factory; mountApps(); },
     variant: function () { return vKey(vState); },
     variantDefault: function () { return V0; },
