@@ -30,6 +30,7 @@ import os
 
 import matplotlib
 import matplotlib.patches
+import matplotlib.ticker
 import numpy as np
 from scipy import stats
 
@@ -64,11 +65,15 @@ FLAG = "#B4530F"   # burnt orange: the outline of a cell whose template cross fa
 HARM = "#8A93A3"                          # the template's power peaks
 W, H, TR = rdv.W, rdv.H, rdv.TR
 YR = 0.75                   # every X / sigma_ab panel spans +-YR: 99.6 % of all bands inside
+PTE_FLAG = 1e-4             # as make_systematics.py: a failing template cross
 BAND = 0.5                  # the shaded reference band, +-BAND sigma_ab
 DW, DH = rdv.DW, rdv.DH     # the card
-CROSS_W, CROSS_H = 560.0, 262.0
-SLOTS = [(118.0, 96.0), (712.0, 96.0)]     # the cross panels' places on the card
-XP = dict(x=150.0, y=388.0, w=DW - 190, h=150.0)
+CROSS_W, CROSS_H = 610.0, 268.0
+SLOTS = [(40.0, 96.0), (680.0, 96.0)]      # the cross panels' places on the card
+XP = dict(x=150.0, y=412.0, w=DW - 190, h=122.0)
+FS = 26.0                   # the card's body type: x1.245 on screen, so 32 px
+LEG = dict(x=620.0, y=8.0)  # the overview's legend, above the gamma-column staircase
+CHOICE = dict(x=885.0, y=250.0)   # the template control, right of the gamma_6 row, above delta_1
 
 
 def dep(tracers, vk):
@@ -119,18 +124,19 @@ def harm_lines(ax, harm, lw):
 
 def flag_key(fig, kx, ky, fw, fh, fs):
     """The highlight's key: an orange outline square, then what it means, on two lines."""
+    q = 0.9 * fs
     fig.patches.append(matplotlib.patches.Rectangle(
-        (kx / fw, 1 - (ky + 22) / fh), 22 / fw, 22 / fh, transform=fig.transFigure, facecolor="none",
-        edgecolor=FLAG, lw=2.0, alpha=1, zorder=1))
-    rdv.text_at(fig, kx + 36, ky - 2, r"a template cross fails: $\chi^2$ PTE $<10^{-4}$", fw, fh,
+        (kx / fw, 1 - (ky + 4 + q) / fh), q / fw, q / fh, transform=fig.transFigure, facecolor="none",
+        edgecolor=FLAG, lw=2.4, alpha=1, zorder=1))
+    rdv.text_at(fig, kx + q + 14, ky, r"a template cross fails: $\chi^2$ PTE $<10^{-4}$", fw, fh,
                 ha="left", va="top", fontsize=fs, color=MUTED)
-    rdv.text_at(fig, kx + 36, ky + 22, "PTE statistics not right yet", fw, fh,
+    rdv.text_at(fig, kx + q + 14, ky + 1.3 * fs, "PTE statistics not calibrated yet", fw, fh,
                 ha="left", va="top", fontsize=fs, color=MUTED)
 
 
 def overview(per, ell, title, label, glyphs):
     fig = plt.figure(figsize=(W / 72, H / 72), dpi=72)
-    fs_name = 21.0
+    fs_name = 32.0
     cells = {}
     for r, a in enumerate(TR):
         for c, b in enumerate(TR[: r + 1]):
@@ -150,21 +156,22 @@ def overview(per, ell, title, label, glyphs):
     for c, t in enumerate(TR):
         rdv.text_at(fig, rdv.col_x(c) + rdv.CW / 2, rdv.row_y(12) + rdv.KH + 6, f"${rdv.sym(t)}$", W, H,
                     ha="center", va="top", fontsize=fs_name)
-    x0 = rdv.col_x(3) + 30
-    rdv.text_at(fig, x0, rdv.T0 + 4, title, W, H, ha="left", va="top", fontsize=fs_name + 3)
-    rdv.text_at(fig, x0, rdv.T0 + 40,
+    x0, y0 = LEG["x"], LEG["y"]
+    rdv.text_at(fig, x0, y0, title, W, H, ha="left", va="top", fontsize=34)
+    rdv.text_at(fig, x0, y0 + 50,
                 r"$X_\ell^{ab} = C_\ell^{aS}\,C_\ell^{bS}/C_\ell^{SS}$ in units of $\sigma_{ab}$, the error of $C_\ell^{ab}$",
-                W, H, ha="left", va="top", fontsize=fs_name - 2, color=MUTED)
-    rdv.text_at(fig, x0, rdv.T0 + 74,
-                rf"each panel spans $\pm{YR:g}\,\sigma_{{ab}}$; shaded $\pm{BAND:g}\,\sigma_{{ab}}$; bars $\sigma_X/\sigma_{{ab}}$",
-                W, H, ha="left", va="top", fontsize=fs_name - 2, color=MUTED)
-    flag_key(fig, x0 + 700, rdv.T0 + 121, W, H, fs_name - 3)
-    rdv.text_at(fig, x0, rdv.T0 + 150, label, W, H, ha="left", va="top", fontsize=fs_name + 1, color=INK)
+                W, H, ha="left", va="top", fontsize=30, color=MUTED)
+    rdv.text_at(fig, x0, y0 + 94,
+                rf"panels span $\pm{YR:g}\,\sigma_{{ab}}$, shaded $\pm{BAND:g}\,\sigma_{{ab}}$",
+                W, H, ha="left", va="top", fontsize=30, color=MUTED)
+    flag_key(fig, x0, y0 + 142, W, H, 30)
+    rdv.text_at(fig, CHOICE["x"], CHOICE["y"] + 8, label, W, H, ha="left", va="top", fontsize=34, color=INK)
     return fig
 
 
-def pte_text(chi2, n=15):
-    p = stats.chi2.sf(chi2, n)
+def pte_text(chi2, n=15, p=None):
+    if p is None:
+        p = stats.chi2.sf(chi2, n)
     if p >= 0.01:
         ps = f"{p:.2f}"
     elif p < 1e-6:
@@ -172,7 +179,7 @@ def pte_text(chi2, n=15):
     else:
         m, e = f"{p:.1e}".split("e")
         ps = rf"{m}\times10^{{{int(e)}}}"
-    return rf"$\chi^2 = {chi2:.1f}/{n}$, PTE ${ps}$"
+    return rf"${ps}$" if chi2 == 0 else rf"$\chi^2 = {chi2:.1f}/{n}$, PTE ${ps}$"
 
 
 def sym_axis(lo, hi):
@@ -192,9 +199,9 @@ def sym_axis(lo, hi):
 def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, harm, glyphs):
     fw, fh = CROSS_W, CROSS_H
     fig = plt.figure(figsize=(fw / 72, fh / 72), dpi=72)
-    fs = 19.0
+    fs = FS
     f = 10.0 ** e
-    ax = rdv.axes_at(fig, 104, 62, fw - 124, fh - 114, fw, fh)
+    ax = rdv.axes_at(fig, 112, 82, fw - 132, fh - 128, fw, fh)
     rdv.frame(ax, ylim, ticks, tick_len=6, lw_frame=0.9)
     ax.axhline(0, color=FRAME, lw=0.9 * 0.6, alpha=0.45, zorder=1)
     harm_lines(ax, harm, 1.0)
@@ -202,10 +209,10 @@ def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, harm
     ax.tick_params(labelsize=fs, labelleft=True, labelbottom=True)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: rdv.fmt(v)))
     ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"$10^{{{int(round(np.log10(v)))}}}$"))
-    ax.set_ylabel(rf"$\ell C_\ell\;[10^{{-{e}}}]$", fontsize=fs, labelpad=6)
-    fig.text(104 / fw, 1 - 6 / fh, rf"${rdv.sym(tracer)}\times S$, {tlabel.lower()}", fontsize=fs + 1, va="top")
-    fig.text(1 - 20 / fw, 1 - 9 / fh, pte_text(chi2) + (r" (diag.)" if tracer == "kappa" else ""), fontsize=fs - 3,
-             va="top", ha="right", color=FLAG if flag else MUTED, weight="bold" if flag else "normal")
+    ax.set_ylabel(rf"$\ell C_\ell\;[10^{{-{e}}}]$", fontsize=fs, labelpad=4)
+    fig.text(112 / fw, 1 - 4 / fh, rf"${rdv.sym(tracer)}\times S$, {tlabel.lower()}", fontsize=fs + 2, va="top")
+    fig.text(112 / fw, 1 - 42 / fh, pte_text(chi2) + (r" (diag.)" if tracer == "kappa" else ""), fontsize=fs,
+             va="top", ha="left", color=FLAG if flag else MUTED, weight="bold" if flag else "normal")
     if flag:
         for sp in ax.spines.values():
             sp.set_edgecolor(FLAG)
@@ -213,29 +220,41 @@ def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, harm
     return rdv.svg_of(fig, fw, fh, glyphs)
 
 
-def xcard(ell, x, sx, a, b, tlabel, harm, glyphs):
+def pair_pte_text(chi2, a, b):
+    """The pair's verdict: X^{ab} vanishes when either template cross does, so the null is
+    composite, and its likelihood-ratio test is the intersection-union test,
+    PTE = max(PTE_a, PTE_b): exact at the boundary, valid whatever the other cross is."""
+    p = max(stats.chi2.sf(chi2[t], 15) for t in {a, b})
+    return p, r"$X \neq 0$" + ("" if a == b else " needs both") + ": PTE " + pte_text(0, p=p)
+
+
+def xcard(ell, x, sx, a, b, tlabel, harm, chi2, glyphs):
     fig = plt.figure(figsize=(DW / 72, DH / 72), dpi=72)
-    fs = 21.0
+    fs = FS
     a, b = sorted((a, b), key=lambda t: (2, 0) if t == "kappa" else (0 if t[0] == "l" else 1, int(t[1:])))
-    fig.text(150 / DW, 1 - 22 / DH, rf"${rdv.sym(a)}\times{rdv.sym(b)}$", fontsize=fs + 9, va="top")
-    fig.text(150 / DW, 1 - 62 / DH, f"contamination of {rdv.name(a)} $\\times$ {rdv.name(b)}",
-             fontsize=fs - 2, va="top", color=MUTED)
+    fig.text(XP["x"] / DW, 1 - 14 / DH, rf"${rdv.sym(a)}\times{rdv.sym(b)}$", fontsize=fs + 8, va="top")
+    fig.text(XP["x"] / DW, 1 - 56 / DH, f"{rdv.name(a)} $\\times$ {rdv.name(b)}",
+             fontsize=fs, va="top", color=MUTED)
     ax = rdv.axes_at(fig, XP["x"], XP["y"], XP["w"], XP["h"], DW, DH)
     xaxis(ax, ell, tick_len=7, lw_frame=1.0, labels=True)
-    harm_lines(ax, harm, 1.2)
+    harm_lines(ax, harm, 1.4)
     if harm:
-        ax.text(harm[-1] * 1.05, YR * 0.93, "template power peaks: the $\\approx 0.7^\\circ$ Euclid\nfield-of-view tiling and its harmonic",
-                color=HARM, fontsize=fs - 4, va="top", ha="left", style="italic", linespacing=1.25)
+        fig.text(XP["x"] / DW, 1 - (XP["y"] - 40) / DH, "dashed: the template's power peaks ($\\approx 0.7^\\circ$ tiling)",
+                 color=HARM, fontsize=fs, va="top", ha="left", style="italic")
+    p, txt = pair_pte_text(chi2, a, b)
+    fig.text((XP["x"] + XP["w"]) / DW, 1 - (XP["y"] - 40) / DH, txt, fontsize=fs, va="top", ha="right",
+             color=FLAG if p < PTE_FLAG else MUTED, weight="bold" if p < PTE_FLAG else "normal")
     x_points(ax, ell, x, sx, lw=1.4, ms=6.5)
     ax.tick_params(labelsize=fs, labelleft=True, labelbottom=True)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: rdv.fmt(v)))
     ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"$10^{{{int(round(np.log10(v)))}}}$"))
-    ax.set_ylabel(r"$X_\ell/\sigma_{ab}$", fontsize=fs + 2, labelpad=10)
-    ax.set_xlabel(r"$\ell$", fontsize=fs + 2, labelpad=4)
+    ax.set_ylabel(r"$X_\ell/\sigma_{ab}$", fontsize=fs + 2, labelpad=8)
+    fig.text((XP["x"] + XP["w"] + 10) / DW, 1 - (XP["y"] + XP["h"] + 2) / DH, r"$\ell$", fontsize=fs + 2,
+             va="center", ha="left")
     if a == b:
-        fig.text(SLOTS[1][0] / DW, 1 - (SLOTS[1][1] + 70) / DH,
+        fig.text((SLOTS[1][0] + 112) / DW, 1 - (SLOTS[1][1] + 70) / DH,
                  "An auto-spectrum: one cross,\n" + r"$X_\ell = (C_\ell^{aS})^2 / C_\ell^{SS}$.",
-                 fontsize=fs, va="top", color=MUTED, linespacing=1.4)
+                 fontsize=fs, va="top", color=MUTED, linespacing=1.5)
     return rdv.svg_of(fig, DW, DH, glyphs)
 
 
@@ -278,7 +297,7 @@ def main():
                 cid = f"{k}|{dep((a, b), vk)}"
                 if cid not in out["xcard"][t]:
                     out["xcard"][t][cid] = xcard(ell, per["x"][k], per["sx"][k], a, b, tlabel,
-                                                 src["harmonics"][t], glyphs)
+                                                 src["harmonics"][t], per["chi2"], glyphs)
             for tr in tracers:
                 cid = f"{tr}|{dep((tr,), vk)}"
                 if cid not in out["crossp"][t]:
@@ -297,7 +316,7 @@ def main():
         cells[(12, c)] = rdv.key_of("kappa", b)
     out["cells"] = [dict(key=k, x=round(rdv.col_x(c), 2), y=round(rdv.row_y(r), 2), w=round(rdv.CW, 2),
                          h=round(rdv.row_h(r), 2)) for (r, c), k in sorted(cells.items())]
-    out["choice"] = dict(x=round(rdv.col_x(3) + 30, 2), y=round(rdv.T0 + 112, 2))
+    out["choice"] = dict(CHOICE)
     out["glyphs"] = "".join(glyphs.values()).replace("xlink:href=", "href=")
     out["css"] = "".join(f".{c}{{{s}}}" for s, c in STYLES.items())
     text = json.dumps(out, separators=(",", ":"))
