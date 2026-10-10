@@ -61,7 +61,7 @@ rdv.style_class = style_class
 
 INK, DATA, FRAME, MUTED = rdv.INK, rdv.DATA, rdv.FRAME, rdv.MUTED
 BAND_C = "#CDD3DC"
-FLAG = "#B4530F"   # burnt orange: the outline of a cell whose template cross fails
+FLAG = "#B4530F"   # burnt orange: the outline of a cell whose two template crosses both fail
 HARM = "#8A93A3"                          # the template's power peaks
 W, H, TR = rdv.W, rdv.H, rdv.TR
 YR = 0.75                   # every X / sigma_ab panel spans +-YR: 99.6 % of all bands inside
@@ -114,7 +114,8 @@ def flag_cell(ax, lw):
 
 
 def flagged(per, k):
-    return any(t in per["flag"] for t in k.split("_"))
+    """A pair shares a correlation with the template only if both its crosses fail."""
+    return all(t in per["flag"] for t in k.split("_"))
 
 
 def harm_lines(ax, harm, lw):
@@ -128,7 +129,7 @@ def flag_key(fig, kx, ky, fw, fh, fs):
     fig.patches.append(matplotlib.patches.Rectangle(
         (kx / fw, 1 - (ky + 4 + q) / fh), q / fw, q / fh, transform=fig.transFigure, facecolor="none",
         edgecolor=FLAG, lw=2.4, alpha=1, zorder=1))
-    rdv.text_at(fig, kx + q + 14, ky, r"a template cross fails: $\chi^2$ PTE $<10^{-4}$", fw, fh,
+    rdv.text_at(fig, kx + q + 14, ky, r"both template crosses fail: $\chi^2$ PTE $<10^{-4}$", fw, fh,
                 ha="left", va="top", fontsize=fs, color=MUTED)
     rdv.text_at(fig, kx + q + 14, ky + 1.3 * fs, "PTE statistics not calibrated yet", fw, fh,
                 ha="left", va="top", fontsize=fs, color=MUTED)
