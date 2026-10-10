@@ -816,6 +816,14 @@ html, body { background: var(--ground); }
 .peek-people img { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; }
 .peek-people figcaption { font-size: 18px; line-height: 1.15; color: var(--muted); margin-top: 6px; }
 .peek-hint { margin: 14px 0 0; font-size: 18px; color: var(--muted); font-style: italic; text-align: right; }
+/* a stepped popout (data-peek-at): placed and sized by its opener, one row of
+   portraits when it can */
+.peek.stepped .peek-people { gap: 12px 10px; }
+.peek.stepped .peek-people figure { width: 132px; }
+.peek.stepped { padding: 22px 30px 18px; }
+.peek.stepped .peek-people { margin-top: 12px; }
+.peek.stepped .peek-people img { width: 88px; height: 88px; }
+.peek.stepped .peek-hint { display: none; }
 @media print { .peek { display: none !important; } }
 
 /* who — a person inline: a small round portrait (or a disc of initials) and

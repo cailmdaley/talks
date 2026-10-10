@@ -1,106 +1,113 @@
 <section data-layout="figure">
   <h2>Catalogues to a blinded likelihood</h2>
   <figure>
-    <svg viewBox="0 0 1712 490" role="img" aria-label="KP2-3 pipeline: Euclid catalogues, CMB lensing maps and simulated mocks feed NaMaster pseudo-Cl bandpowers for six spectra; a covariance and a blind run in parallel and, with the theory model, feed the likelihood. Each box opens the workstream that owns it.">
+    <svg viewBox="0 0 1712 771" role="img" aria-label="KP2-3 pipeline in three workstreams. Data vectors and systematics: Euclid catalogues, CMB lensing maps and systematics maps feed NaMaster pseudo-Cl bandpowers for six spectra and the null tests. Simulations and covariance: mocks feed the pseudo-Cl step and the covariance. Theory and likelihood: the blinded bandpowers, the covariance and the theory model feed the likelihood.">
       <defs>
         <marker id="pipeline-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
           <path d="M0 0 L10 5 L0 10 z" class="fill-muted"/>
         </marker>
-        <marker id="pipeline-arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-          <path d="M0 0 L10 5 L0 10 z" class="fill-teal"/>
-        </marker>
       </defs>
 
-      <!-- inputs: the data and the mocks -->
-      <g data-opens="Data vectors and systematics">
-        <rect x="2" y="2" width="326" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
-        <text x="26" y="62" font-size="40" font-weight="700">Euclid</text>
-        <text x="26" y="112" font-size="28">TR1 shear, positions, n(z)</text>
-      </g>
-      <g data-opens="Data vectors and systematics">
-        <rect x="2" y="170" width="326" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
-        <text x="26" y="226" font-size="40" font-weight="700">CMB lensing κ</text>
-        <text x="26" y="268" font-size="28">Planck PR4, ACT DR6</text>
-        <text x="26" y="304" font-size="28">SPT-3G Main</text>
+      <!-- step 1: data vectors and systematics -->
+      <g data-opens="Data vectors and systematics" data-peek-at="930 24 760">
+        <rect x="474" y="196" width="380" height="360" rx="14" class="fill-ground stroke-accent" stroke-width="4"/>
+        <text x="664" y="248" font-size="40" font-weight="700" text-anchor="middle">Pseudo-Cℓ</text>
+        <text x="664" y="290" font-size="32" class="fill-muted" text-anchor="middle">NaMaster</text>
+        <text x="574" y="336" font-size="32" class="fill-muted" text-anchor="middle">Euclid</text>
+        <text x="754" y="336" font-size="32" class="fill-muted" text-anchor="middle">× CMB</text>
+        <rect x="504" y="350" width="140" height="58" rx="10" class="fill-panel stroke-cobalt" stroke-width="3"/>
+        <text x="574" y="393" font-size="40" text-anchor="middle" class="fill-cobalt">γγ</text>
+        <rect x="504" y="416" width="140" height="58" rx="10" class="fill-panel stroke-cobalt" stroke-width="3"/>
+        <text x="574" y="459" font-size="40" text-anchor="middle" class="fill-cobalt">γδ</text>
+        <rect x="504" y="482" width="140" height="58" rx="10" class="fill-panel stroke-cobalt" stroke-width="3"/>
+        <text x="574" y="525" font-size="40" text-anchor="middle" class="fill-cobalt">δδ</text>
+        <rect x="684" y="350" width="140" height="58" rx="10" class="fill-panel stroke-teal" stroke-width="3"/>
+        <text x="754" y="393" font-size="40" text-anchor="middle" class="fill-teal">γκ</text>
+        <rect x="684" y="416" width="140" height="58" rx="10" class="fill-panel stroke-teal" stroke-width="3"/>
+        <text x="754" y="459" font-size="40" text-anchor="middle" class="fill-teal">δκ</text>
+        <rect x="684" y="482" width="140" height="58" rx="10" class="fill-panel stroke-teal" stroke-width="3"/>
+        <text x="754" y="525" font-size="40" text-anchor="middle" class="fill-teal">κκ</text>
+
+        <path d="M18 4 H398 Q412 4 412 18 V162 Q412 176 426 176 H854 Q868 176 868 190 V753 Q868 767 854 767 H18 Q4 767 4 753 V18 Q4 4 18 4 Z" class="fill-none stroke-accent" stroke-width="3" stroke-dasharray="12 9"/>
+        <text x="30" y="56" font-size="34" font-weight="700" class="fill-accent">Data vectors &amp; systematics</text>
+
+        <rect x="18" y="80" width="380" height="220" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="42" y="150" font-size="40" font-weight="700">Euclid</text>
+        <text x="42" y="202" font-size="32">TR1 shear, positions</text>
+        <text x="42" y="246" font-size="32">masks, n(z)</text>
+
+        <rect x="18" y="320" width="380" height="220" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="42" y="390" font-size="40" font-weight="700">CMB lensing κ</text>
+        <text x="42" y="442" font-size="32">Planck PR4, ACT DR6</text>
+        <text x="42" y="486" font-size="32">SPT-3G Main</text>
+
+        <rect x="18" y="608" width="380" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="42" y="660" font-size="40" font-weight="700">Systematics maps</text>
+        <text x="42" y="704" font-size="32">Euclid VMP templates</text>
+        <text x="42" y="742" font-size="32">CMB foreground maps</text>
+
+        <path d="M400 250 H466" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <path d="M400 430 H466" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <path d="M400 684 H466" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+
+        <path d="M664 558 V600" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <rect x="474" y="608" width="380" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="664" y="660" font-size="40" font-weight="700" text-anchor="middle">Null tests</text>
+        <text x="664" y="704" font-size="32" text-anchor="middle">templates × data</text>
+        <text x="664" y="742" font-size="32" text-anchor="middle">and validation</text>
       </g>
 
-      <!-- bandpowers -->
+      <!-- step 2: simulations and covariance -->
+      <g class="fragment" data-opens="Simulations and covariance" data-peek-at="930 176 778">
+        <path d="M474 4 H1286 Q1300 4 1300 18 V152 Q1300 166 1286 166 H474 Q460 166 460 152 V18 Q460 4 474 4 Z" class="fill-none stroke-cobalt" stroke-width="3" stroke-dasharray="12 9"/>
+        <rect x="474" y="18" width="380" height="134" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="498" y="74" font-size="40" font-weight="700">Simulations</text>
+        <text x="498" y="122" font-size="32">GLASS, FLASK mocks</text>
+        <path d="M664 154 V188" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <path d="M856 85 H930" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <rect x="938" y="18" width="348" height="134" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="1112" y="74" font-size="40" font-weight="700" text-anchor="middle">Covariance</text>
+        <text x="1112" y="122" font-size="32" class="fill-muted" text-anchor="middle">iNKA, FLASK</text>
+        <text x="1112" y="208" font-size="34" font-weight="700" text-anchor="middle" class="fill-cobalt">Simulations &amp; covariance</text>
+      </g>
+
+      <!-- step 3: theory and likelihood, with the blind -->
       <g class="fragment">
-        <path d="M330 77 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
-        <path d="M330 245 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
-        <g data-opens="Data vectors and systematics">
-        <rect x="392" y="2" width="360" height="486" rx="14" class="fill-ground stroke-accent" stroke-width="4"/>
-        <text x="572" y="60" font-size="40" font-weight="700" text-anchor="middle">Pseudo-Cℓ</text>
-        <text x="572" y="102" font-size="30" class="fill-muted" text-anchor="middle">NaMaster</text>
-        <text x="497" y="160" font-size="28" class="fill-muted" text-anchor="middle">Euclid</text>
-        <text x="647" y="160" font-size="28" class="fill-muted" text-anchor="middle">× CMB</text>
-        <rect x="422" y="182" width="150" height="80" rx="10" class="fill-panel stroke-cobalt" stroke-width="3"/>
-        <text x="497" y="236" font-size="44" text-anchor="middle" class="fill-cobalt">γγ</text>
-        <rect x="422" y="276" width="150" height="80" rx="10" class="fill-panel stroke-cobalt" stroke-width="3"/>
-        <text x="497" y="330" font-size="44" text-anchor="middle" class="fill-cobalt">γδ</text>
-        <rect x="422" y="370" width="150" height="80" rx="10" class="fill-panel stroke-cobalt" stroke-width="3"/>
-        <text x="497" y="424" font-size="44" text-anchor="middle" class="fill-cobalt">δδ</text>
-        <rect x="592" y="182" width="110" height="80" rx="10" class="fill-panel stroke-teal" stroke-width="3"/>
-        <text x="647" y="236" font-size="44" text-anchor="middle" class="fill-teal">γκ</text>
-        <rect x="592" y="276" width="110" height="80" rx="10" class="fill-panel stroke-teal" stroke-width="3"/>
-        <text x="647" y="330" font-size="44" text-anchor="middle" class="fill-teal">δκ</text>
-        <rect x="592" y="370" width="110" height="80" rx="10" class="fill-panel stroke-teal" stroke-width="3"/>
-        <text x="647" y="424" font-size="44" text-anchor="middle" class="fill-teal">κκ</text>
+        <path d="M856 370 H930" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <rect x="938" y="270" width="320" height="200" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="1098" y="336" font-size="40" font-weight="700" text-anchor="middle">Blind</text>
+        <text x="1098" y="386" font-size="32" class="fill-muted" text-anchor="middle">hidden cosmology</text>
+        <text x="1098" y="428" font-size="32" class="fill-muted" text-anchor="middle">shift added to Cℓ</text>
+        <path d="M1260 370 H1332" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <path d="M1288 152 L1334 262" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+        <g data-opens="Likelihood and theory" data-peek-at="14 166 848">
+          <rect x="1340" y="270" width="354" height="218" rx="14" class="fill-ground stroke-accent" stroke-width="4"/>
+          <text x="1517" y="336" font-size="40" font-weight="700" text-anchor="middle">Likelihood</text>
+          <text x="1517" y="386" font-size="32" class="fill-muted" text-anchor="middle">b, Δz, m, IA</text>
+          <path d="M1340 4 H1694 Q1708 4 1708 18 V488 Q1708 502 1694 502 H1340 Q1326 502 1326 488 V18 Q1326 4 1340 4 Z" class="fill-none stroke-teal" stroke-width="3" stroke-dasharray="12 9"/>
+          <rect x="1340" y="18" width="354" height="160" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+          <text x="1517" y="80" font-size="40" font-weight="700" text-anchor="middle">Theory</text>
+          <text x="1517" y="128" font-size="32" class="fill-muted" text-anchor="middle">CCL, through the</text>
+          <text x="1517" y="164" font-size="32" class="fill-muted" text-anchor="middle">bandpower windows</text>
+          <path d="M1517 180 V262" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
+          <text x="1517" y="548" font-size="34" font-weight="700" text-anchor="middle" class="fill-teal">Theory &amp; likelihood</text>
         </g>
       </g>
 
-      <!-- covariance and blind, in parallel; theory -->
+      <!-- step 4: where it stands -->
       <g class="fragment">
-        <g data-opens="Simulations and covariance">
-        <rect x="2" y="338" width="326" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
-        <text x="26" y="394" font-size="40" font-weight="700">Simulations</text>
-        <text x="26" y="436" font-size="28">GLASS, FLASK mocks</text>
-        <text x="26" y="472" font-size="28">same footprint and n(z)</text>
-        </g>
-        <path d="M330 413 H384" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
-        <path d="M754 115 H806" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
-        <g data-opens="Simulations and covariance">
-        <rect x="812" y="2" width="300" height="226" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
-        <text x="962" y="80" font-size="40" font-weight="700" text-anchor="middle">Covariance</text>
-        <text x="962" y="136" font-size="30" class="fill-muted" text-anchor="middle">analytic (iNKA)</text>
-        <text x="962" y="176" font-size="30" class="fill-muted" text-anchor="middle">numerical (FLASK)</text>
-        </g>
-
-        <path d="M754 375 H806" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
-        <rect x="812" y="262" width="300" height="226" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
-        <text x="962" y="340" font-size="40" font-weight="700" text-anchor="middle">Blind</text>
-        <text x="962" y="396" font-size="30" class="fill-muted" text-anchor="middle">hidden cosmology</text>
-        <text x="962" y="436" font-size="30" class="fill-muted" text-anchor="middle">shift added to Cℓ</text>
-
-        <g data-opens="Likelihood and theory">
-        <rect x="1440" y="2" width="270" height="226" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
-        <text x="1575" y="80" font-size="40" font-weight="700" text-anchor="middle">Theory</text>
-        <text x="1575" y="136" font-size="30" class="fill-muted" text-anchor="middle">CCL, through the</text>
-        <text x="1575" y="176" font-size="30" class="fill-muted" text-anchor="middle">bandpower windows</text>
-        </g>
-      </g>
-
-      <!-- likelihood -->
-      <g class="fragment">
-        <path d="M1114 180 L1432 318" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
-        <path d="M1114 410 H1432" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
-        <path d="M1575 230 V254" class="stroke-muted fill-none" stroke-width="4" marker-end="url(#pipeline-arrow)"/>
-        <g data-opens="Likelihood and theory">
-        <rect x="1440" y="262" width="270" height="226" rx="14" class="fill-ground stroke-accent" stroke-width="4"/>
-        <text x="1575" y="330" font-size="40" font-weight="700" text-anchor="middle">Likelihood</text>
-        <text x="1575" y="384" font-size="30" class="fill-muted" text-anchor="middle">b, Δz, m, IA</text>
-        <text x="1575" y="444" font-size="28" class="fill-accent" text-anchor="middle">TR1 chains next</text>
-        </g>
+        <text x="1517" y="444" font-size="32" font-weight="700" class="fill-accent" text-anchor="middle">TR1 chains next</text>
       </g>
     </svg>
   </figure>
   <aside class="notes">
-    <p>The KP2-3 pipeline end to end. Euclid TR1 shear and positions are pixelised into maps with their masks and redshift distributions; the CMB-lensing inputs are the Planck PR4, ACT DR6 and SPT-3G Main convergence maps. NaMaster pseudo-$C_\ell$ turns them into bandpowers for all six families: the three Euclid 3×2pt spectra and the three involving CMB lensing.</p>
-    <p>Two steps run in parallel on the bandpowers. The covariance is analytic and Gaussian, in NaMaster's improved narrow-kernel approximation (iNKA), and covers every block including the cross-blocks between families. The blind is a parameter-shift blind in the style of Muir et al. (2019): a sealed shift in cosmology is turned into a $\Delta C_\ell$ added to the whole six-family data vector, so shapes, signal-to-noise, the covariance and the null tests stay visible while the inferred cosmology is hidden. We run it ourselves because the official pipeline blinds only the Euclid 2pt spectra.</p>
-    <p>The theory model computes the six families with CCL and passes them through the same bandpower windows as the data. The likelihood varies it with the nuisances: linear galaxy bias, photometric-redshift shifts, shear calibration $m$ and intrinsic alignments. The blinded TR1 likelihood input exists; the TR1 chains come next.</p>
-    <p>The covariance box shows both covariances: the analytic Gaussian one, in the improved narrow-kernel approximation (iNKA), the pipeline uses now, and the numerical one from FLASK lognormal simulations that the simulations workstream is building. How each is validated is on the next slide, with the mocks.</p>
-    <p>The simulations box: GLASS and FLASK lognormal mocks on the TR1 footprint with the delivered n(z), run through the same NaMaster step as the data. GLASS validates the pipeline (the mock-recovery slide); FLASK gives the numerical covariance.</p>
-    <p>Each box opens the workstream that owns it, with its scope and its people: hover a box (the + in its corner) for a popout, click to open it whole. Data vectors and systematics owns the inputs and the bandpowers, simulations and covariance the mocks and the covariance, likelihood and theory the theory model and the likelihood. The blind is the pipeline's own step, shared across workstreams. The workstream scopes and members are carried over from the Barcelona KP2-3 update by Legrand, Lembo and Fabbian.</p>
+    <p>The KP2-3 pipeline end to end, built up one workstream at a time; each block's popout gives its scope and its people, carried over from the Barcelona KP2-3 update by Legrand, Lembo and Fabbian. Click a block to open its workstream whole.</p>
+    <h3>Data vectors and systematics</h3>
+    <p>Euclid TR1 shear and positions are pixelised into maps with their masks and redshift distributions; the CMB-lensing inputs are the Planck PR4, ACT DR6 and SPT-3G Main convergence maps. NaMaster pseudo-$C_\ell$ turns them into bandpowers for all six families: the three Euclid 3×2pt spectra (left column) and the three involving CMB lensing (right column). The same estimator crosses the data with systematics maps, the templates carried by Euclid's VMPs (extinction, exposures, noise, PSF, zodiacal light, stars) and external CMB foreground maps, which gives the null tests and validation of the data vectors.</p>
+    <h3>Simulations and covariance</h3>
+    <p>GLASS and FLASK lognormal mocks on the TR1 footprint with the delivered n(z) run through the same NaMaster step as the data. GLASS validates the pipeline (the mock-recovery slide); FLASK, calibrated on DEMNUni N-body simulations, gives the numerical covariance. The covariance the pipeline uses now is analytic and Gaussian, in NaMaster's improved narrow-kernel approximation (iNKA), and covers every block including the cross-blocks between families.</p>
+    <h3>Theory and likelihood, and the blind</h3>
+    <p>The blind is a parameter-shift blind in the style of Muir et al. (2019): a sealed shift in cosmology is turned into a $\Delta C_\ell$ added to the whole six-family data vector, so shapes, signal-to-noise, the covariance and the null tests stay visible while the inferred cosmology is hidden. We run it ourselves because the official pipeline blinds only the Euclid 2pt spectra; it is the pipeline's own step, shared across the workstreams. The theory model computes the six families with CCL and passes them through the same bandpower windows as the data. The likelihood varies it with the nuisances: linear galaxy bias $b$, photometric-redshift shifts $\Delta z$, shear calibration $m$ and intrinsic alignments. The blinded TR1 likelihood input exists; the TR1 chains come next.</p>
   </aside>
   <aside class="detail" data-label="Data vectors and systematics" data-layout="people">
     <h2>Data vectors and systematics</h2>
