@@ -207,7 +207,7 @@ House.app('systematics', function (figure, data, ctx) {
         { 'class': 'app-mpl', transform: 'translate(' + slot[0] + ' ' + slot[1] + ')' }));
     });
     if (!intro) {
-      var note = el('text', { x: B.x + B.w - 28, y: B.y + B.h - 22, 'text-anchor': 'end', 'font-size': 24, 'class': 'app-note' }, box);
+      var note = el('text', { x: B.x + B.w - 28, y: B.y + B.h - 22, 'text-anchor': 'end', 'font-size': 32, 'class': 'app-note' }, box);
       note.textContent = 'Esc to close';
     }
     if (!instant && g.animate && !ctx.still()) try { g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: 'ease-out' }); } catch (e) { /* static */ }

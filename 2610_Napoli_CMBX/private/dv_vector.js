@@ -155,7 +155,7 @@ House.app('dv_vector', function (figure, data, ctx) {
       el('rect', { x: B.x, y: B.y, width: B.w, height: B.h, rx: 14, 'class': 'app-card' }, box);
       box.appendChild(group(variant.details[c.key],
         { 'class': 'app-mpl', transform: 'translate(' + B.x + ' ' + B.y + ') scale(' + (B.h / DH) + ')' }));
-      var note = el('text', { x: B.x + B.w - 28, y: B.y + B.h - 22, 'text-anchor': 'end', 'font-size': 24, 'class': 'app-note' }, box);
+      var note = el('text', { x: B.x + B.w - 28, y: B.y + B.h - 22, 'text-anchor': 'end', 'font-size': 32, 'class': 'app-note' }, box);
       note.textContent = 'Esc to close';
       if (!instant && g.animate && !ctx.still()) try { g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: 'ease-out' }); } catch (e) { /* static */ }
       card = { g: g, box: box, key: c.key };

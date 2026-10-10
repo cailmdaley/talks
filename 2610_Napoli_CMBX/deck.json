@@ -4,7 +4,7 @@
   "venue": "OU-SHE × WLSWG meeting, Napoli",
   "date": "2026-10-15",
   "description": "Update from the Euclid CMBX science working group for the joint OU-SHE / WLSWG meeting.",
-  "footer": "Cail Daley · Euclid CMBX · OU-SHE × WLSWG · Napoli · October 2026",
+  "footer": "Cail Daley · Euclid CMBX · OU-SHE × WLSWG · Napoli 2026",
   "theme": "euclid",
   "draft": true,
   "noindex": true,
@@ -31,7 +31,8 @@
       "outline": "Who the working group is and how it is organised: its DR1 key projects and their people.",
       "slides": [
         "swg",
-        "people"
+        "people",
+        "people-other"
       ]
     },
     {
@@ -40,6 +41,14 @@
       "slides": [
         "why-kappa",
         "kappa-buys"
+      ]
+    },
+    {
+      "title": "Pre-launch KP1: extended forecasts",
+      "outline": "Fisher forecasts for Euclid 3×2pt with CMB lensing (6×2pt): the gain is largest where Euclid alone is weakest, and CMB lensing acts as a shear calibration.",
+      "slides": [
+        "kp1-forecast",
+        "kp1-calibration"
       ]
     },
     {
@@ -54,6 +63,7 @@
       "outline": "Data vectors, theory and likelihood, simulations: where the 3×2pt × CMB-lensing pipeline stands.",
       "slides": [
         "kp-3",
+        "kp-3-papers",
         "pipeline",
         "mocks",
         "mock-recovery",
