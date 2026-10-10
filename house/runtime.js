@@ -16,7 +16,6 @@
     backgroundTransition: 'none',
     pdfSeparateFragments: true,
     pdfMaxPagesPerSlide: 1,
-    plugins: [RevealNotes],
   });
 
   var openDetail = null;
@@ -40,16 +39,21 @@
   document.addEventListener('click', function (e) {
     var chip = e.target.closest('.chip[data-open], .slide:not(.detail) [data-open]');
     if (chip) { hidePeek(); open(chip.closest('section'), chip.getAttribute('data-open')); e.stopPropagation(); return; }
-    if (e.target.closest('.slide.detail .close')) { close(); e.stopPropagation(); }
+    if (e.target.closest('.slide.detail .close') || e.target.matches('.slide.detail.notes.open')) { close(); e.stopPropagation(); }
   }, true);
 
   document.addEventListener('keydown', function (e) {
     if (openDetail && (e.key === 'Escape' || e.key === 'Backspace')) { close(); e.preventDefault(); e.stopPropagation(); }
   }, true);
 
+  Reveal.addKeyBinding({ keyCode: 78, key: 'N', description: 'Open this slide\'s sources & notes' }, function () {
+    var s = Reveal.getCurrentSlide();
+    if (s && s.querySelector(':scope > .slide.detail.notes')) open(s, 'notes');
+  });
+
   Reveal.addKeyBinding({ keyCode: 68, key: 'D', description: 'Open this slide\'s first detail' }, function () {
     var s = Reveal.getCurrentSlide();
-    if (s && s.querySelector(':scope > .slide.detail')) open(s, '0');
+    if (s && s.querySelector(':scope > .slide.detail[data-detail="0"]')) open(s, '0');
   });
 
   Reveal.on('slidechanged', close);
@@ -140,7 +144,7 @@
 
   document.addEventListener('pointerover', function (e) {
     if (e.pointerType === 'touch') return;
-    var el = e.target.closest && e.target.closest('.slide:not(.detail) [data-open]:not(.chip)');
+    var el = e.target.closest && e.target.closest('.slide:not(.detail) [data-open]:not(.chip):not(.notes-open)');
     if (!el) return;
     clearTimeout(peekOut);
     if (peekFor === el) return;
@@ -148,7 +152,7 @@
     peekIn = setTimeout(function () { showPeek(el); }, peek ? 0 : PEEK_IN);
   });
   document.addEventListener('pointerout', function (e) {
-    var el = e.target.closest && e.target.closest('.slide:not(.detail) [data-open]:not(.chip)');
+    var el = e.target.closest && e.target.closest('.slide:not(.detail) [data-open]:not(.chip):not(.notes-open)');
     if (!el || (e.relatedTarget && el.contains(e.relatedTarget))) return;
     if (peekFor === el) hidePeekSoon(); else clearTimeout(peekIn);
   });

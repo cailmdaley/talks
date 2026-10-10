@@ -64,7 +64,7 @@ export function loadDeck(dir) {
     // The Backup section opens with a divider the build writes itself; it and every slide
     // after it stay out of the slide count and the progress bar.
     if (backup) slides.push({ name: 'backup', backup: true, generated: true, section: sec,
-      src: `<section data-layout="section">\n  <h2>${esc(sec.title)}</h2>\n  <aside class="notes"><p>Backup slides, kept for questions.</p></aside>\n</section>\n` });
+      src: `<section data-layout="section">\n  <h2>${esc(sec.title)}</h2>\n</section>\n` });
     for (const name of sec.slides) {
       if (seen.has(name)) problems.push(`deck.json: slide "${name}" listed twice`);
       if (name === 'backup') problems.push('deck.json: "backup" is the name of the divider the build writes; rename slides/backup.html');
@@ -420,7 +420,7 @@ function frameFigures(frame, deckDir, problems, where, assets, variants) {
 // at least `name` wide, so a name wraps to at most two lines; a row count whose
 // columns are narrower is taken only when none is wider. The CSS sizes the
 // portraits from the real roster with the same arithmetic.
-const PEOPLE = { W: 1712, H: 771, col: 64, gap: 32, rowGap: 16, caption: 72, sep: 64, label: 40, topic: 32, source: 48, max: 240, name: 176 };
+const PEOPLE = { W: 1712, H: 771, col: 64, gap: 32, rowGap: 16, caption: 88, sep: 64, label: 48, topic: 40, source: 56, max: 240, name: 200 };
 function peopleGrid(frame, body, problems, where) {
   const blocks = [...body.querySelectorAll(':scope > .people')];
   if (!blocks.length) return;
@@ -567,8 +567,39 @@ function buildSlides(deck, typeset) {
     const number = !s.backup ? ++counted : divider ? '' : `B${++extra}`;
     const footer = esc(deck.meta.footer);
     const frame = makeFrame(section, { deckDir: deck.dir, problems, where, footer, number, assets, apps, typeset, variants: deck.meta.variants });
-    const notes = [...section.querySelectorAll(':scope > aside.notes')];
-    for (const n of notes) textPass(n, typeset, problems, `${where} notes`);
+    // the notes are public: a "Sources & notes" overlay built like a detail (so
+    // figures, maths and the checker work in it), opened from the footer, and the
+    // slide's prose in the report
+    const notesSrc = [...section.querySelectorAll(':scope > aside.notes')];
+    let notes = null;
+    if (notesSrc.some(n => n.textContent.trim() || n.querySelector('img, figure'))) {
+      const doc = section.ownerDocument;
+      const a = doc.createElement('aside');
+      a.setAttribute('data-layout', 'notes');
+      a.setAttribute('data-label', 'Sources & notes');
+      const scroll = doc.createElement('div');
+      scroll.className = 'scroll';
+      for (const n of notesSrc) for (const c of [...n.childNodes]) scroll.appendChild(c);
+      a.appendChild(scroll);
+      notes = makeFrame(a, { deckDir: deck.dir, problems, where: `${where} notes`, footer, number, isDetail: true, assets, typeset, variants: deck.meta.variants });
+      notes.classList.add('notes');
+      notes.setAttribute('data-detail', 'notes');
+      notes.querySelector(':scope > .foot')?.remove();
+      const head = doc.createElement('div');
+      head.className = 'notes-head';
+      head.innerHTML = `<span class="kicker">Sources &amp; notes · slide ${number}</span><button class="close" type="button" aria-label="Close">×</button>`;
+      const nb = notes.querySelector(':scope > .body');
+      nb.insertBefore(head, nb.firstChild);
+      const foot = frame.querySelector(':scope > .foot');
+      if (foot) {
+        const b = doc.createElement('button');
+        b.className = 'notes-open';
+        b.type = 'button';
+        b.setAttribute('data-open', 'notes');
+        b.textContent = 'Sources & notes';
+        foot.insertBefore(b, foot.firstChild);
+      }
+    }
     const details = [...section.querySelectorAll(':scope > aside.detail')].map((d, k) => {
       const f = makeFrame(d, { deckDir: deck.dir, problems, where: `${where} detail ${k + 1}`, footer, number, isDetail: true, assets, typeset, variants: deck.meta.variants });
       f.setAttribute('data-detail', String(k));
@@ -603,7 +634,8 @@ function buildSlides(deck, typeset) {
       ...s, number,
       sectionAttrs: `id="${esc(s.name)}" data-house-slide="${esc(s.name)}"${attrs}`,
       frame: serialize(frame),
-      notes: notes.map(n => serialize(n, true)).join('\n'),
+      notes: notes ? serialize(notes.querySelector('.scroll'), true) : '',
+      notesFrame: notes ? serialize(notes) : '',
       details: details.map(d => ({ label: d.label, frame: serialize(d.frame) })),
     });
   });
@@ -662,7 +694,7 @@ function deckHTML(deck, slides, mathCss, theme) {
   const sections = slides.map(s => `<section ${s.sectionAttrs}>
 ${s.frame}
 ${s.details.map(d => d.frame).join('\n')}
-${s.notes.trim() ? `<aside class="notes">${s.notes}</aside>` : ''}
+${s.notesFrame}
 </section>`).join('\n');
   return `<!doctype html>
 <html lang="en" class="theme-${esc(deck.meta.theme || 'house')}">
@@ -685,7 +717,6 @@ ${sections}
 ${assetScript(slides.assets)}
 ${variantScript(deck.meta.variants)}
 <script>${read(path.join(NM, 'reveal.js/dist/reveal.js'))}</script>
-<script>${read(path.join(NM, 'reveal.js/dist/plugin/notes.js'))}</script>
 <script>${read(path.join(HOUSE, 'runtime.js'))}</script>
 ${appScripts(slides.apps)}
 </body>

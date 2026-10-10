@@ -26,7 +26,7 @@ const EXPECT = {
   shrunk: 'the slide frame is scaled or transformed',
   emptyfig: 'a <figure> holds exactly one',
   loosestack: 'or a stack of <img>s whose later ones are fragments (has 2)',
-  widemath: 'leaves the content box (right',
+  widemath: '(right by',
   cssurl: 'loads a file through url() in a style',
   longname: 'does not fit under its portrait in two lines',
   noface: 'a portrait is <figure><img',

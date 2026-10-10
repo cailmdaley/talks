@@ -14,10 +14,12 @@
 :root {
   /* type: five sizes, nothing below --t-fine */
   --t-display: 104px;
-  --t-head:     60px;
-  --t-body:     44px;
-  --t-small:    32px;
-  --t-fine:     24px;
+  --t-head:     64px;
+  --t-body:     52px;
+  --t-small:    40px;
+  --t-fine:     32px;
+  --lh-fine:   40px;
+  --lh-small:  50px;
   --lh-tight: 1.12;
   --lh-body:  1.35;
 
@@ -203,13 +205,13 @@ html, body { background: var(--ground); }
   justify-content: center;
   --chrome: 0px;
 }
-.slide figure > .cell:has(> figcaption) { --chrome: 54px; }
-.slide figure > .cell:has(> .source) { --chrome: 48px; }
-.slide figure > .cell:has(> figcaption):has(> .source) { --chrome: 102px; }
+.slide figure > .cell:has(> figcaption) { --chrome: 66px; }
+.slide figure > .cell:has(> .source) { --chrome: 56px; }
+.slide figure > .cell:has(> figcaption):has(> .source) { --chrome: 122px; }
 .slide figure figcaption {
   font-size: var(--t-small);
-  line-height: 38px;
-  height: 38px;
+  line-height: var(--lh-small);
+  height: var(--lh-small);
   margin-bottom: var(--s2);
   white-space: nowrap;
   color: var(--ink);
@@ -218,7 +220,7 @@ html, body { background: var(--ground); }
 }
 .slide figure > figcaption { flex: none; }
 .slide figure > .placeholder { flex: 1 1 0; }
-.slide figure .cell > .source { text-align: center; margin-top: 16px; height: 32px; line-height: 32px; white-space: nowrap; max-width: 100%; }
+.slide figure .cell > .source { text-align: center; margin-top: 16px; height: var(--lh-fine); line-height: var(--lh-fine); white-space: nowrap; max-width: 100%; }
 .slide .frame {
   position: relative;
   display: block;
@@ -450,6 +452,76 @@ html, body { background: var(--ground); }
   cursor: pointer;
 }
 
+/* Sources & notes: every slide's notes are public. The build makes them a
+   detail frame (.slide.detail.notes) shown as a card over a veil, opened by the
+   button at the left of the footer (or N); the card scrolls when the notes are
+   long. The prose is set at the small size, sources at the fine one. */
+.slide > .foot > .notes-open {
+  font: inherit;
+  font-size: var(--t-fine);
+  font-variant-caps: normal;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  padding: 8px 18px 10px;
+  border-radius: 999px;
+  border: 2px solid var(--rule);
+  background: var(--ground);
+  color: var(--muted);
+  cursor: pointer;
+}
+.slide > .foot > .notes-open:hover { border-color: var(--accent); color: var(--accent); }
+.slide > .foot > .notes-open::before { content: "≡ "; }
+.reveal .slides > section > .slide.detail.notes.open { display: flex; align-items: center; justify-content: center; }
+.slide.detail.notes { background: var(--veil); }
+.slide.detail.notes::before, .slide.detail.notes::after { display: none; }
+.slide.detail.notes > .body {
+  display: flex;
+  flex-direction: column;
+  width: 1500px;
+  max-height: 920px;
+  padding: var(--s4) var(--s5) var(--s5);
+  background: var(--ground);
+  border: 2px solid var(--rule);
+  border-radius: 14px;
+  box-shadow: 0 18px 60px rgba(17, 20, 24, 0.18);
+}
+.slide.detail.notes .notes-head {
+  flex: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--s3);
+}
+.slide.detail.notes .notes-head .kicker { margin: 0; }
+.slide.detail.notes .notes-head .close {
+  font: inherit;
+  font-size: var(--t-head);
+  line-height: 0.6;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.slide.detail.notes .scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  font-size: var(--t-small);
+  line-height: var(--lh-body);
+  padding-right: var(--s3);
+  padding-bottom: var(--s4);
+  /* the fold fades, so text under it reads as more to scroll, not as clipped */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 56px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 56px), transparent);
+}
+.slide.detail.notes .scroll > * + * { margin-top: 0.7em; }
+.slide.detail.notes .scroll h3 { font-size: var(--t-small); font-weight: 700; margin-top: 1.1em; }
+.slide.detail.notes .scroll ul { padding-left: 1.1em; }
+.slide.detail.notes .scroll figure { margin: var(--s3) 0; }
+.slide.detail.notes .scroll figure img { display: block; max-width: 100%; max-height: 640px; margin: 0 auto; }
+@media print { .slide > .foot > .notes-open { display: none; } }
+
 /* ═══ Layouts ═══════════════════════════════════════════════════════════════
    data-layout on .slide; the body is .body, the authored content after <h2>. */
 
@@ -532,6 +604,8 @@ html, body { background: var(--ground); }
   gap: var(--s4);
   min-width: 0;
 }
+/* a kicker labels the block under it, so it sits with that block, not a gap away */
+.slide > .body > .text > .kicker { margin-bottom: calc(var(--s1) - var(--s4)); }
 
 /* compare and grid align their figures to a shared top, so captions line up */
 .slide[data-layout="compare"] figure > .cell,
@@ -576,6 +650,26 @@ html, body { background: var(--ground); }
 }
 .slide .stat > .label { font-size: var(--t-small); line-height: 1.25; max-width: 30ch; }
 
+/* cards — a row of small key numbers inside a text block (a figure-text's
+   .text, a points body): each card a value at the headline size, a label, and
+   an optional .sub line in accent. For two to four numbers beside a figure;
+   a slide that is only numbers is the number layout. */
+.slide .cards { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: var(--s3); margin: var(--s2) 0; }
+.slide .cards > .card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px var(--s3) 16px;
+  background: var(--panel);
+  border: 2px solid var(--rule);
+  border-radius: 12px;
+}
+.slide .cards .value { font-size: var(--t-head); font-weight: 700; line-height: 1.1; color: var(--accent); font-feature-settings: "lnum" 1, "tnum" 1; }
+.slide .cards .label { font-size: var(--t-fine); line-height: 1.2; }
+.slide .cards .sub { font-size: var(--t-fine); line-height: 1.2; font-weight: 700; color: var(--cobalt); }
+/* callout — one highlighted remark: a panel with an accent rule on its left */
+.slide .callout { background: var(--panel); border-left: 6px solid var(--accent); border-radius: 0 10px 10px 0; padding: var(--s3) var(--s4); }
+
 /* bleed — one image filling the canvas; optional headline on a band */
 .slide[data-layout="bleed"] { padding: 0; grid-template-rows: minmax(0, 1fr); }
 .slide[data-layout="bleed"] > .body { grid-row: 1; grid-column: 1; display: grid; }
@@ -594,7 +688,7 @@ html, body { background: var(--ground); }
   max-width: 1500px;
 }
 .slide[data-layout="bleed"] > .foot { z-index: 2; left: auto; }
-.slide[data-layout="bleed"] > .foot > span:first-child { display: none; }
+.slide[data-layout="bleed"] > .foot > span:first-of-type { display: none; }
 .slide[data-layout="bleed"] > .foot .num { background: var(--veil); padding: 8px 12px; border-radius: 6px; color: var(--ink); }
 
 /* table — headline and one table */
@@ -706,7 +800,7 @@ html, body { background: var(--ground); }
   margin-bottom: calc(-1 * var(--rg));
   text-align: center;
   font-size: var(--t-fine);
-  line-height: 32px;
+  line-height: var(--lh-fine);
   height: var(--lab);
   font-weight: 600;
   font-variant-caps: small-caps;
@@ -715,22 +809,22 @@ html, body { background: var(--ground); }
   color: var(--muted);
 }
 .slide[data-layout="people"] .people:not(.memoriam)[data-label]::before { color: var(--accent); }
-.slide[data-layout="people"] .roster:has(> .people > .topic) .people[data-label]::before { height: 32px; margin-bottom: 0; }
+.slide[data-layout="people"] .roster:has(> .people > .topic) .people[data-label]::before { height: var(--lh-fine); margin-bottom: 0; }
 .slide[data-layout="people"] .people > .topic {
   flex: 0 0 100%;
-  height: 40px;
+  height: 48px;
   margin-bottom: calc(-1 * var(--rg));
   text-align: center;
   white-space: nowrap;
   font-size: var(--t-fine);
-  line-height: 32px;
+  line-height: var(--lh-fine);
   color: var(--muted);
 }
 .slide[data-layout="people"] .people > p {
   flex: 0 0 100%;
   margin: 0;
   font-size: var(--t-fine);
-  line-height: 32px;
+  line-height: var(--lh-fine);
   text-align: center;
   text-wrap: balance;
   color: var(--muted);
@@ -766,7 +860,7 @@ html, body { background: var(--ground); }
 }
 .slide[data-layout="people"] .people > figure > figcaption {
   font-size: var(--t-fine);
-  line-height: 32px;
+  line-height: var(--lh-fine);
   height: auto;
   margin: 8px 0 0;
   white-space: normal;
@@ -791,8 +885,8 @@ html, body { background: var(--ground); }
 .reveal .slides > section > .peek {
   position: absolute;
   z-index: 8;
-  width: 760px;
-  max-height: 900px;
+  width: 860px;
+  max-height: 1000px;
   overflow: hidden;
   padding: 28px 34px 22px;
   background: var(--ground);
@@ -812,10 +906,10 @@ html, body { background: var(--ground); }
 .peek .text ul { margin: 0; padding-left: 1.1em; }
 .peek .text li { margin: 0 0 8px; }
 .peek-people { display: flex; flex-wrap: wrap; gap: 14px 18px; margin-top: 18px; }
-.peek-people figure { margin: 0; width: 104px; text-align: center; }
-.peek-people img { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; }
-.peek-people figcaption { font-size: 18px; line-height: 1.15; color: var(--muted); margin-top: 6px; }
-.peek-hint { margin: 14px 0 0; font-size: 18px; color: var(--muted); font-style: italic; text-align: right; }
+.peek-people figure { margin: 0; width: 150px; text-align: center; }
+.peek-people img { width: 104px; height: 104px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; }
+.peek-people figcaption { font-size: var(--t-fine); line-height: 1.1; color: var(--muted); margin-top: 6px; }
+.peek-hint { margin: 14px 0 0; font-size: var(--t-fine); color: var(--muted); font-style: italic; text-align: right; }
 /* a stepped popout (data-peek-at): placed and sized by its opener, one row of
    portraits when it can */
 .peek.stepped .peek-people { gap: 12px 10px; }
@@ -840,8 +934,8 @@ html, body { background: var(--ground); }
 .slide .who > img,
 .slide .who > .initials {
   flex: none;
-  width: 1.7em;
-  height: 1.7em;
+  width: 1.5em;
+  height: 1.5em;
   border-radius: 50%;
 }
 .slide .who > img { object-fit: cover; object-position: 50% 30%; }
@@ -852,7 +946,7 @@ html, body { background: var(--ground); }
   background: var(--panel);
   border: 2px solid var(--rule);
   color: var(--muted);
-  font-size: 0.75em;
+  font-size: max(0.75em, var(--t-fine));
   font-weight: 600;
   letter-spacing: 0.04em;
 }
@@ -886,7 +980,7 @@ body.report {
 .report article { margin: 0 0 72px; }
 .report .viewport { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 6px; box-shadow: 0 1px 6px rgba(27, 22, 17, 0.18); }
 .report .viewport > .slide { transform-origin: 0 0; }
-.report .viewport .chips { display: none; }
+.report .viewport .chips, .report .viewport .notes-open { display: none; }
 .report .prose { font-size: 21px; line-height: 1.55; margin: 22px 4px 0; max-width: 70ch; }
 .report .prose p { margin: 0 0 0.8em; }
 .report .detail-copy { margin-top: 28px; }
@@ -923,7 +1017,7 @@ body.report {
 .variants button {
   font: inherit;
   font-family: var(--face);
-  font-size: 24px;
+  font-size: var(--t-fine);
   line-height: 1;
   color: var(--ink);
   background: var(--ground);

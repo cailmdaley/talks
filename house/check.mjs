@@ -17,7 +17,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadDeck, parseSlide, buildDeck, BuildError, LAYOUTS, houseDecks } from './build.mjs';
 
 const HOUSE = path.dirname(fileURLToPath(import.meta.url));
-const MIN_PX = 24;
+const MIN_PX = 32;
 const MIN_CONTRAST = 4.5;
 const MAX_WORDS = 60;
 
@@ -181,7 +181,7 @@ function lint(deck) {
     if (section.hasAttribute('id')) out.errors.push('the <section> takes its id from the file name; remove id=""');
     section.querySelectorAll(':scope > aside.detail').forEach((d, k) => lintBlock(d, `detail ${k + 1}`, vocab, out, true));
     const notes = section.querySelector(':scope > aside.notes');
-    if (!notes || !notes.textContent.trim()) out.warnings.push('no speaker notes; the report shows notes as the slide\'s prose');
+    if (!s.generated && (!notes || !notes.textContent.trim())) out.warnings.push('no notes; they are the slide\'s public sources & notes and its prose in the report');
   }
   return per;
 }
@@ -215,7 +215,9 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
   // shapes (SVG text is measured), the pixels of a cropped image
   const internal = el => (el.closest('mjx-container') && el.localName !== 'mjx-container') ||
     (el.closest('svg') && el.localName !== 'svg' && el.localName !== 'text' && !el.closest('mjx-container')) ||
-    (el.localName === 'img' && el.parentElement?.matches('.frame.crop'));
+    (el.localName === 'img' && el.parentElement?.matches('.frame.crop')) ||
+    // the notes card scrolls: what is below its fold is measured for size and contrast, not place
+    !!el.parentElement?.closest('.notes .scroll');
   // furniture that may sit outside the content box but must stay on the canvas
   const furniture = el => el.closest(".foot, .chips, .logos, .variants") || (layout === 'bleed' && el.closest('figure'));
   // the ink of an element: its text, not its box
@@ -295,7 +297,7 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
         errors.push(`${label(el)} ${onCanvas ? 'leaves the content box' : 'is clipped by the canvas'} (${worst[0]} by ${px(worst[1])}px)`);
       }
       const st = getComputedStyle(el);
-      if ((st.overflowX !== 'visible' || st.overflowY !== 'visible') && !el.matches('.slide, .frame, .cell') &&
+      if ((st.overflowX !== 'visible' || st.overflowY !== 'visible') && !el.matches('.slide, .frame, .cell, .notes .scroll') &&
           (el.scrollHeight > el.clientHeight + 2 || el.scrollWidth > el.clientWidth + 2))
         errors.push(`${label(el)} clips its content (${el.scrollWidth}×${el.scrollHeight} in ${el.clientWidth}×${el.clientHeight})`);
     }
@@ -395,7 +397,7 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
   }
   for (const ph of frame.querySelectorAll('.placeholder')) if (visible(ph)) warnings.push(`placeholder "${ph.textContent.trim().slice(0, 40)}" still on the slide`);
 
-  if (words > MAX_WORDS) warnings.push(`${words} words on screen; above ${MAX_WORDS} the audience reads instead of listening`);
+  if (words > MAX_WORDS && !frame.matches('.notes')) warnings.push(`${words} words on screen; above ${MAX_WORDS} the audience reads instead of listening`);
   return { errors, warnings, layout, words };
 }
 
@@ -446,16 +448,17 @@ async function render(deck, built, outDir, { steps, only }) {
     const file = path.join(outDir, `${tag}.png`);
     await page.screenshot({ path: file });
     shots.push({ file, tag, name: s.name, res });
-    const nd = await page.evaluate(() => Reveal.getCurrentSlide().querySelectorAll(':scope > .slide.detail').length);
-    for (let k = 0; k < nd; k++) {
-      await page.evaluate(k => House.open(Reveal.getCurrentSlide(), String(k)), k);
+    const keys = await page.evaluate(() => [...Reveal.getCurrentSlide().querySelectorAll(':scope > .slide.detail')].map(d => d.getAttribute('data-detail')));
+    for (let k = 0; k < keys.length; k++) {
+      await page.evaluate(key => House.open(Reveal.getCurrentSlide(), key), keys[k]);
       await new Promise(r => setTimeout(r, 150));
       const dm = await page.evaluate(measure, { MIN_PX, MIN_CONTRAST, MAX_WORDS });
-      res.errors.push(...dm.errors.map(e => `detail ${k + 1}: ${e}`));
-      res.warnings.push(...dm.warnings.map(e => `detail ${k + 1}: ${e}`));
-      const dfile = path.join(outDir, `${tag}.detail-${k + 1}.png`);
+      const dn = keys[k] === 'notes' ? 'notes' : `detail ${k + 1}`;
+      res.errors.push(...dm.errors.map(e => `${dn}: ${e}`));
+      res.warnings.push(...dm.warnings.map(e => `${dn}: ${e}`));
+      const dfile = path.join(outDir, `${tag}.${keys[k] === 'notes' ? 'notes' : `detail-${k + 1}`}.png`);
       await page.screenshot({ path: dfile });
-      shots.push({ file: dfile, tag: `${tag} · detail ${k + 1}`, name: s.name, res, detail: true });
+      shots.push({ file: dfile, tag: `${tag} · ${dn}`, name: s.name, res, detail: true });
       await page.evaluate(() => House.close());
     }
   }

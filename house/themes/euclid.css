@@ -48,7 +48,7 @@
 }
 
 /* footer: the deck line runs up the band; the number stays bottom right */
-.theme-euclid .slide > .foot > span:first-child {
+.theme-euclid .slide > .foot > span:first-of-type {
   position: absolute;
   left: calc(-1 * var(--pad-x));
   bottom: -36px;
@@ -89,4 +89,5 @@
 .theme-euclid .slide[data-layout="quote"] blockquote { border-left-color: var(--band); }
 .theme-euclid .slide[data-layout="closing"] ol > li::before { font-weight: 700; }
 .theme-euclid .slide > .foot { justify-content: flex-end; }
+.theme-euclid .slide > .foot > .notes-open { margin-right: auto; }
 .theme-euclid .slide[data-layout="statement"] > h2 { padding-right: 0; }
