@@ -68,9 +68,9 @@
         "blind-rehearsal",
         "dv-vector",
         "lens-ratio",
+        "ia",
         "systematics-triangle",
         "systematics-overview",
-        "dr1-clustering",
         "kp-3-open-goals"
       ]
     },
@@ -111,7 +111,8 @@
       "slides": [
         "kappa-buys",
         "galaxy-bias",
-        "gk-amplitude"
+        "gk-amplitude",
+        "dr1-clustering"
       ]
     }
   ]

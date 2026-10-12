@@ -60,6 +60,8 @@ CROSSES = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/napoli/cro
 SHEARS = {"lensmc": "LensMC", "metacal": "MetaCal"}
 CMBS = {"spt": "SPT-3G", "act": "ACT DR6"}
 DEFAULT = ("lensmc", "spt")
+IA = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/napoli/lens_ratio_ia"
+IA_SETTING = "A_IA=0.6"       # NLA, eta = 0, product pivot: the data's lens ratio uses gamma-delta templates with IA
 DNDZ = f"{CROSSES}/input/likelihood_input_spt_winter_gmvbhttprf_dndz.pkl"   # TR1 n(z), as delivered
 SIGMA_M = 2e-3                # Euclid requirement on the multiplicative bias (Cropper et al. 2013; Mellier et al., 2405.13491)
 SIGMA_ZMEAN = 0.002           # Euclid requirement on each bin's mean redshift, x (1 + z)
@@ -135,6 +137,12 @@ def load(src):
         "blind_b": np.array([p["b_over_bfid"] for p in bs]),
         "blind_A": np.array([p["A_gk"] for p in bs]),
     }
+    tag = os.path.basename(src)[len("results_"):-len(".json")]
+    ia = json.load(open(f"{IA}/results_ia_{tag}.json"))
+    assert ia["closure_exact"], tag
+    li = ia["settings"][IA_SETTING]
+    out["mu"] = np.array([[x["median"], x["lo"], x["hi"]] for x in li["mu"]])
+    out["mu_all"] = li["mu_all"]
     return out
 
 

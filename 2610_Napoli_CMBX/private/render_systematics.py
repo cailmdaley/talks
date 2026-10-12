@@ -124,14 +124,12 @@ def harm_lines(ax, harm, lw):
 
 
 def flag_key(fig, kx, ky, fw, fh, fs):
-    """The highlight's key: an orange outline square, then what it means, on two lines."""
+    """The highlight's key: an orange outline square, then what it means, on one line."""
     q = 0.9 * fs
     fig.patches.append(matplotlib.patches.Rectangle(
         (kx / fw, 1 - (ky + 4 + q) / fh), q / fw, q / fh, transform=fig.transFigure, facecolor="none",
         edgecolor=FLAG, lw=2.4, alpha=1, zorder=1))
-    rdv.text_at(fig, kx + q + 14, ky, r"both template crosses fail: $\chi^2$ PTE $<10^{-4}$", fw, fh,
-                ha="left", va="top", fontsize=fs, color=MUTED)
-    rdv.text_at(fig, kx + q + 14, ky + 1.3 * fs, "PTE statistics not calibrated yet", fw, fh,
+    rdv.text_at(fig, kx + q + 14, ky, r"both template crosses detect a signal (PTE $<10^{-4}$)", fw, fh,
                 ha="left", va="top", fontsize=fs, color=MUTED)
 
 
@@ -160,12 +158,9 @@ def overview(per, ell, title, label, glyphs):
     x0, y0 = LEG["x"], LEG["y"]
     rdv.text_at(fig, x0, y0, title, W, H, ha="left", va="top", fontsize=34)
     rdv.text_at(fig, x0, y0 + 50,
-                r"$X_\ell^{ab} = C_\ell^{aS}\,C_\ell^{bS}/C_\ell^{SS}$ in units of $\sigma_{ab}$, the error of $C_\ell^{ab}$",
+                rf"each panel: $X_\ell^{{ab}}/\sigma_{{ab}}$, shaded $\pm{BAND:g}\,\sigma_{{ab}}$",
                 W, H, ha="left", va="top", fontsize=30, color=MUTED)
-    rdv.text_at(fig, x0, y0 + 94,
-                rf"panels span $\pm{YR:g}\,\sigma_{{ab}}$, shaded $\pm{BAND:g}\,\sigma_{{ab}}$",
-                W, H, ha="left", va="top", fontsize=30, color=MUTED)
-    flag_key(fig, x0, y0 + 142, W, H, 30)
+    flag_key(fig, x0, y0 + 98, W, H, 30)
     rdv.text_at(fig, CHOICE["x"], CHOICE["y"] + 8, label, W, H, ha="left", va="top", fontsize=34, color=INK)
     return fig
 
@@ -228,6 +223,10 @@ def xcard(ell, x, sx, a, b, tlabel, harm, chi2, glyphs):
     fig.text(XP["x"] / DW, 1 - 14 / DH, rf"${rdv.sym(a)}\times{rdv.sym(b)}$", fontsize=fs + 8, va="top")
     fig.text(XP["x"] / DW, 1 - 56 / DH, f"{rdv.name(a)} $\\times$ {rdv.name(b)}",
              fontsize=fs, va="top", color=MUTED)
+    fig.text((DW - 40) / DW, 1 - 14 / DH, r"$X_\ell^{ab} = C_\ell^{aS}\,C_\ell^{bS}/C_\ell^{SS}$", fontsize=fs + 4,
+             va="top", ha="right")
+    fig.text((DW - 40) / DW, 1 - 56 / DH, r"what template $S$ adds to $C_\ell^{ab}$, below in units of its error $\sigma_{ab}$",
+             fontsize=fs, va="top", ha="right", color=MUTED)
     ax = rdv.axes_at(fig, XP["x"], XP["y"], XP["w"], XP["h"], DW, DH)
     xaxis(ax, ell, tick_len=7, lw_frame=1.0, labels=True)
     harm_lines(ax, harm, 1.4)
