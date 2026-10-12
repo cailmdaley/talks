@@ -30,9 +30,10 @@ Every variant is drawn on the same axes (the union of what the variants
 need), so the slides' variant control changes only the points.
 
 Outputs (images/), for the default variant (LensMC x SPT-3G):
-  napoli_lens_ratio_1.png   mocks only: 10 seeds, median per bin, blind band
+  napoli_lens_ratio_1.png   mocks only: median per bin +- the scatter of one mock
   napoli_lens_ratio_2.png   + the data and the shared-mu band
-      at 2x the figure-text (60 %) figure cell less a .source line (989 x 723 px)
+  napoli_lens_ratio_3.png   + sigma(S8) against the m-prior width (ia_kappa/m_prior_scan.json)
+      at 2x a stacked figure-text body under three text lines (1712 x 450 px)
   napoli_galaxy_bias.png    b per lens bin, at the same figure-text cell size
   napoli_gk_amplitude.png   A^gk per source bin, at 2x the figure layout's body
                             less a caption and a .source line (1400 x 669 px)
@@ -60,11 +61,9 @@ CROSSES = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/napoli/cro
 SHEARS = {"lensmc": "LensMC", "metacal": "MetaCal"}
 CMBS = {"spt": "SPT-3G", "act": "ACT DR6"}
 DEFAULT = ("lensmc", "spt")
+SCAN = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/napoli/ia_kappa/m_prior_scan.json"
 IA = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/napoli/lens_ratio_ia"
 IA_SETTING = "A_IA=0.6"       # NLA, eta = 0, product pivot: the data's lens ratio uses gamma-delta templates with IA
-DNDZ = f"{CROSSES}/input/likelihood_input_spt_winter_gmvbhttprf_dndz.pkl"   # TR1 n(z), as delivered
-SIGMA_M = 2e-3                # Euclid requirement on the multiplicative bias (Cropper et al. 2013; Mellier et al., 2405.13491)
-SIGMA_ZMEAN = 0.002           # Euclid requirement on each bin's mean redshift, x (1 + z)
 
 # euclid theme (house/themes/euclid.css)
 INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
@@ -176,7 +175,8 @@ def summarize(a):
     mm = a["mock_mu"]
     n = mm.shape[0]
     med = np.median(mm, 0)
-    rob = 1.4826 * np.median(np.abs(mm - med), 0) / np.sqrt(n)
+    scat = 1.4826 * np.median(np.abs(mm - med), 0)          # robust scatter of one mock
+    rob = scat / np.sqrt(n)
     print(f"mock mu per bin, median of {n} seeds: " + " ".join(f"{x:.3f}" for x in med))
     print("   robust scatter/sqrt(n):        " + " ".join(f"{x:.3f}" for x in rob))
     print("   mean:                          " + " ".join(f"{x:.3f}" for x in mm.mean(0)))
@@ -199,7 +199,7 @@ def summarize(a):
     print("data A_gk: " + "  ".join(f"{x:.2f}+-{e:.2f}" for x, e in zip(a["A"], a["A_err"])))
     print("mock A_gk mean: " + " ".join(f"{x:.2f}" for x in a["mock_A"].mean(0)))
     print(f"blind range A_gk: {a['blind_A'].min():.2f}-{a['blind_A'].max():.2f}")
-    return med, rob
+    return med, scat
 
 
 def bin_axis(ax, z, label):
@@ -212,85 +212,27 @@ def bin_axis(ax, z, label):
     return x
 
 
-def requirement_band(front):
-    """Per source bin, the 1-sigma spread of mu_i the Euclid requirements allow.
-
-    mu_i ~ (1 + m_i) x g_i / g_kappa at the lens planes of the bins in front of it,
-    g_i(chi) = int dz n_i(z) (chi(z) - chi)/chi(z).  Shifting n_i by
-    dz = 0.002 (1 + zbar_i) changes ln g_i averaged over each front lens bin's n(z)
-    (an equal-weight mean over those lens bins); sigma(m) = 2e-3 adds in quadrature.
-    The kappa efficiency and the lens bins do not move, so they cancel.
-    """
-    import pickle
-    import pyccl as ccl
-    cosmo = ccl.Cosmology(Omega_c=0.2607, Omega_b=0.04897, h=0.6766, sigma8=0.8102, n_s=0.9665)
-    nz = pickle.load(open(DNDZ, "rb"))
-    zg = np.linspace(0.005, 4.0, 800)
-    chig = ccl.comoving_radial_distance(cosmo, 1 / (1 + zg))
-
-    def g_avg(i, j, shift):
-        zs, ns = (np.asarray(v, float) for v in nz[f"l{i}"])
-        n = np.interp(zg, zs + shift, ns, left=0, right=0)
-        n /= np.trapezoid(n, zg)
-        g = np.array([np.trapezoid(np.where(chig > c, n * (chig - c) / chig, 0.0), zg) for c in chig])
-        zl, nl = (np.asarray(v, float) for v in nz[f"g{j}"])
-        w = np.interp(zg, zl, nl, left=0, right=0)
-        return np.trapezoid(w * g, zg) / np.trapezoid(w, zg)
-
-    sig = []
-    for i in range(6):
-        zs, ns = (np.asarray(v, float) for v in nz[f"l{i}"])
-        dz = SIGMA_ZMEAN * (1 + np.trapezoid(zs * ns, zs) / np.trapezoid(ns, zs))
-        dln = np.mean([0.5 * (np.log(g_avg(i, j, dz)) - np.log(g_avg(i, j, -dz))) for j in front[str(i)]])
-        sig.append(float(np.hypot(dln, SIGMA_M)))
-    print("requirement 1-sigma on mu_i: " + " ".join(f"{s:.4f}" for s in sig))
-    return np.array(sig)
-
-
-def lens_ratio(a, med, rob, R, variant, req):
-    W_PX, H_PX = 1978, 1446
+def lens_ratio(a, med, scat, R, variant, scan):
+    """Two panels on one canvas, three frames: mu_i on mocks; + TR1 data; + sigma(S8) against the
+    width of the m prior, with and without the kappa crosses (the same panel in every variant)."""
+    W_PX, H_PX = 3424, 960
     n = a["mock_mu"].shape[0]
-    lo_b, hi_b = a["blind_mu"].min(0), a["blind_mu"].max(0)
-    bottom, top = R["mu"]
-    for frame in (1, 2):
+    bottom, top = 0.55, 1.45
+    for frame in (1, 2, 3):
         fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
-        ax = fig.add_axes([0.135, 0.165, 0.85, 0.665])
+        ax = fig.add_axes([0.065, 0.25, 0.40, 0.55])
         x = bin_axis(ax, a["zs"], r"source bin, mean $z$")
         ax.set_ylim(bottom, top)
-        ax.yaxis.set_major_locator(FixedLocator([v for v in np.arange(0.2, 2.6, 0.2) if bottom < v < top]))
+        ax.yaxis.set_major_locator(FixedLocator([0.6, 0.8, 1.0, 1.2, 1.4]))
         ax.set_ylabel(r"lens ratio $\mu_i$", labelpad=8)
         ax.axhline(1, color=INK, lw=1.6, ls=(0, (5, 4)), zorder=1.8)
-        # the Euclid requirement on m and the n(z) mean, propagated to mu_i: a band around 1
-        for xi, r in zip(x, req):
-            ax.fill_between([xi - 0.42, xi + 0.42], 1 - r, 1 + r, color=COBALT, lw=0, zorder=1.9)
-        # blind-sized shift of mu, per bin, drawn above the data band
-        for xi, l, h in zip(x, lo_b, hi_b):
-            ax.fill_between([xi - 0.42, xi + 0.42], l, h, color=BAND, lw=0, zorder=1.2)
-        dxm = -0.13 if frame == 2 else 0.0
-        fade = 0.45 if frame == 2 else 1.0
-        # per-seed values; any beyond the axis sit on its top edge as a triangle
-        rng = np.random.default_rng(1)
-        for xi, col in zip(x, a["mock_mu"].T):
-            jit = rng.uniform(-0.07, 0.07, col.size)
-            inside = col < top - 0.03
-            ax.scatter(xi + dxm + jit[inside], col[inside], s=34, color=SEED, lw=0, alpha=fade, zorder=2)
-            ax.scatter(xi + dxm + jit[~inside], np.full((~inside).sum(), top - 0.025), s=70, marker="^",
-                       color=SEED, lw=0, alpha=fade, zorder=2, clip_on=False)
-        ax.errorbar(x + dxm, med, yerr=rob, fmt="o", ms=11, color=MOCK, elinewidth=2.6, capsize=0,
+        dxm = -0.13 if frame >= 2 else 0.0
+        fade = 0.55 if frame >= 2 else 1.0
+        ax.errorbar(x + dxm, med, yerr=scat, fmt="o", ms=11, color=MOCK, elinewidth=2.6, capsize=0,
                     mec="white", mew=1.2, alpha=fade, zorder=3)
-        # key for the two bands around 1, lower right where no points fall
-        t = ax.transAxes
-        for k, (col, txt) in enumerate(((COBALT, "Euclid requirement on m and n(z)"),
-                                        (BAND, "blind-sized cosmology shift"))):
-            yk = 0.115 - k * 0.075
-            ax.add_patch(plt.Rectangle((0.38, yk - 0.018), 0.045, 0.036, transform=t, color=col, lw=0))
-            ax.text(0.44, yk, txt, transform=t, fontsize=LABEL, color=INK, va="center")
-        # key above the axes: mocks left, data right (frame 2)
-        ax.text(0.0, 1.15, f"{n} GLASS mocks, truth 1", transform=ax.transAxes, fontsize=LABEL,
-                color=MOCK, ha="left", va="bottom")
-        ax.text(0.0, 1.045, r"median $\pm$ scatter$/\sqrt{10}$",
-                transform=ax.transAxes, fontsize=LABEL, color=MUTED, ha="left", va="bottom")
-        if frame == 2:
+        ax.text(0.0, 1.17, f"{n} GLASS mocks, truth 1: median $\\pm$ scatter of one mock",
+                transform=ax.transAxes, fontsize=LABEL, color=MOCK, ha="left", va="bottom")
+        if frame >= 2:
             ma = a["mu_all"]
             ax.axhspan(ma["median"] - ma["lo"], ma["median"] + ma["hi"], color=DATA_FILL, lw=0,
                        alpha=0.75, zorder=0.5)
@@ -298,14 +240,41 @@ def lens_ratio(a, med, rob, R, variant, req):
             v = a["mu"]
             ax.errorbar(x + 0.13, v[:, 0], yerr=[v[:, 1], v[:, 2]], fmt="o", ms=13, color=DATA,
                         elinewidth=3.0, capsize=0, mec="white", mew=1.2, zorder=4)
-            ax.text(1.0, 1.15, "TR1 data, blinded", transform=ax.transAxes, fontsize=LABEL,
-                    color=DATA, ha="right", va="bottom", weight="bold")
-            ax.text(1.0, 1.045, r"band: one shared $\mu \pm 1\sigma$",
-                    transform=ax.transAxes, fontsize=LABEL, color=MUTED, ha="right", va="bottom")
+            # a point beyond the axis sits on its edge as a triangle
+            for xi, y in zip(x, v[:, 0]):
+                if y > top:
+                    ax.plot(xi + 0.13, top - 0.02, marker="^", ms=14, color=DATA, mec="white", zorder=4)
+            ax.text(0.0, 1.04, r"TR1 data, blinded; band: one shared $\mu \pm 1\sigma$",
+                    transform=ax.transAxes, fontsize=LABEL, color=DATA, ha="left", va="bottom")
+        if frame == 3:
+            s8_panel(fig.add_axes([0.585, 0.25, 0.40, 0.55]), scan)
         out = os.path.join(IMG, name(f"napoli_lens_ratio_{frame}", variant))
         fig.savefig(out, dpi=DPI)
         plt.close(fig)
         print("wrote", os.path.normpath(out))
+
+
+def s8_panel(ax, scan):
+    """sigma(S8) against the width of a Gaussian prior on m (TR1 x SPT-3G setup, fiducial model
+    vector): Euclid 3x2pt alone and with the kappa crosses, one m shared by all bins or six m_i."""
+    sm = np.array(scan["sigma_m"])
+    for combo, col, lab in (("3x2pt", GREYED, "3×2pt"), ("5x2pt", MOCK, "+ κ crosses (5×2pt)")):
+        ax.plot(sm, scan["shared"][combo]["sigma_S8"], color=col, lw=3.2, label=lab)
+        ax.plot(sm, scan["per_bin"][combo]["sigma_S8"], color=col, lw=2.4, ls=(0, (5, 3)))
+    ax.set_xscale("log")
+    ax.set_xlim(sm[0], sm[-1])
+    ax.set_ylim(0, 0.085)
+    ax.yaxis.set_major_locator(FixedLocator([0, 0.02, 0.04, 0.06, 0.08]))
+    ax.set_xticks([1e-3, 1e-2, 1e-1])
+    ax.set_xticklabels(["0.001", "0.01", "0.1"])
+    ax.set_xlabel(r"prior width on shear calibration, $\sigma(m)$", labelpad=6)
+    ax.set_ylabel(r"$\sigma(S_8)$", labelpad=8)
+    t = ax.transAxes
+    ax.text(0.0, 1.17, "TR1 × SPT-3G, Fisher", transform=t, fontsize=LABEL, color=INK, ha="left", va="bottom")
+    ax.text(0.0, 1.04, "solid: one $m$ for all bins · dashed: six $m_i$", transform=t, fontsize=LABEL,
+            color=MUTED, ha="left", va="bottom")
+    ax.text(0.03, 0.80, "3×2pt", transform=t, fontsize=LABEL, color=GREYED, ha="left", va="center")
+    ax.text(0.03, 0.66, r"+ $\kappa$ crosses", transform=t, fontsize=LABEL, color=MOCK, ha="left", va="center")
 
 
 def bias(a, R, variant):
@@ -384,12 +353,12 @@ def main():
     found = variants()
     loaded = [(v[:2], load(v[2])) for v in found]
     R = axes_ranges([a for _, a in loaded])
-    req = requirement_band(json.load(open(found[0][2]))["front"])
+    scan = json.load(open(SCAN))
     print("variants:", ", ".join(f"{s}_{c}" for (s, c), _ in loaded), "| shared ranges:", R)
     for variant, a in loaded:
         print(f"── TR1 {SHEARS[variant[0]]} × {CMBS[variant[1]]}")
-        med, rob = summarize(a)
-        lens_ratio(a, med, rob, R, variant, req)
+        med, scat = summarize(a)
+        lens_ratio(a, med, scat, R, variant, scan)
         bias(a, R, variant)
         amplitude(a, R, variant)
 
