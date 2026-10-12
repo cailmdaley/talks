@@ -8,6 +8,12 @@
 .slide ul.papers > li.kp:first-child { padding-top: 0; }
 .slide ul.papers > li > .leads { flex: none; }
 .slide ul.papers > li > .leads > .who:last-child { margin-right: 0; }
+.slide ul.papers > li:not(.kp) { margin-left: 1.2em; padding: 18px 0; flex-direction: column; align-items: flex-start; gap: 10px; }
+/* swap — two paper lists in one place: the second replaces the first on a fragment */
+.slide[data-layout="points"] > .body:has(> ul.papers.swap) { display: grid; align-content: start; }
+.slide[data-layout="points"] > .body > ul.papers.swap { grid-area: 1 / 1; }
+.report .slide[data-layout="points"] > .body:has(> ul.papers.swap) { display: block; }
+.report .slide[data-layout="points"] > .body > ul.papers.swap.fade-out { display: block; margin-bottom: var(--s4); }
 
 /* kps — the key projects' names above a people roster, one per line, no bullets */
 .slide ul.kps { list-style: none; padding: 0; margin: 0; font-size: var(--t-small); }
