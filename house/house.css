@@ -942,6 +942,11 @@ html, body { background: var(--ground); }
 .slide .frame > .step-card ul { margin: 0; padding-left: 1.1em; }
 .slide .frame > .step-card li { margin: 0 0 6px; }
 .slide .frame > .step-card > p { margin: 12px 0 0; }
+/* a card's people: a wrapping row with room between portraits, rows apart */
+.slide .frame > .step-card > p:has(> .who) { display: flex; flex-wrap: wrap; gap: 16px 30px; margin-top: 22px; }
+.slide .frame > .step-card > p > .who { margin-right: 0; }
+.slide .frame > .step-card > p > .who > img,
+.slide .frame > .step-card > p > .who > .initials { width: 1.8em; height: 1.8em; }
 
 /* who — a person inline: a small round portrait (or a disc of initials) and
    the name, sized by the text around it. For crediting people beside the work
