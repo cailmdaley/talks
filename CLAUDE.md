@@ -35,7 +35,10 @@ blinded, in decks that set `"noindex": true` in `deck.json`. The rule for what c
 a quantity that carries cosmology is blinded; a non-cosmological quantity (a calibration such as the
 lens ratio γδ/κδ, which the blind moves by only a few per cent) or a null (template × data, whose
 expectation is zero whatever the cosmology) may be shown as it is. Call such a quantity
-blind-insensitive, never "unblinded". A noindex deck is unlisted, reachable only by its link like a
+blind-insensitive, never "unblinded". **Outside the bar entirely (Cail, 12 Oct 2026):** Euclid TR1
+measurements (TR1 is not a blinded release) and non-tomographic cross-spectra, e.g. a collaborator's
+κ × shear over the whole source sample against a fiducial curve. Don't hold these back; the bar is for
+cosmology inferred from blinded DR1 vectors. A noindex deck is unlisted, reachable only by its link like a
 shared Google Slides deck, so it carries no further publicity gate: contributed and in-progress material
 goes in, and Cail does the final pass before showing it.
 
