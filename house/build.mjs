@@ -514,8 +514,8 @@ function frameApps(frame, deckDir, problems, where, apps) {
   }
 }
 
-// With --web, app data is a file the runtime fetches when it mounts the app (never on
-// a small screen, which keeps the figure's fallback frames).
+// With --web, app data is a file the runtime fetches when it mounts the app (on a
+// small screen, when the app's slide is first shown).
 function appScripts(apps) {
   const data = [...apps.data].map(([k, t]) => apps.web
     ? `<script type="application/json" id="house-data-${k}" data-src="a/${k}.json"></script>`

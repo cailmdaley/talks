@@ -259,11 +259,13 @@
   // when the reader prefers reduced motion: the app crossfades instead.
   var apps = {};
   function stepOf(fig) { return fig.querySelectorAll('.fragment.visible').length; }
-  // A small screen (window.HouseSmall, set with the figures) keeps every app's
-  // fallback frames: a live app's data and drawing are what a phone cannot hold.
+  // A small screen (window.HouseSmall, set with the figures) mounts an app only
+  // when its slide is first shown, so a phone never holds an app it has not reached.
   function mountApps() {
-    if (!Reveal.isReady() || window.HouseSmall) return;
-    document.querySelectorAll('figure[data-app]').forEach(function (fig) {
+    if (!Reveal.isReady()) return;
+    var scope = window.HouseSmall ? Reveal.getCurrentSlide() : document;
+    if (!scope) return;
+    scope.querySelectorAll('figure[data-app]').forEach(function (fig) {
       var factory = apps[fig.getAttribute('data-app')];
       if (fig.houseApp || fig.houseLoading || !factory) return;
       // a copy made after mounting (reveal's print view clones each fragment
@@ -308,6 +310,7 @@
   Reveal.on('fragmentshown', appFragments);
   Reveal.on('fragmenthidden', appFragments);
   Reveal.on('slidechanged', function (e) {
+    if (window.HouseSmall) mountApps();
     if (e.previousSlide) e.previousSlide.querySelectorAll('figure.app-live').forEach(function (f) { if (f.houseApp.leave) f.houseApp.leave(); });
     e.currentSlide.querySelectorAll('figure.app-live').forEach(function (f) { f.houseApp.step(stepOf(f), false); });
   });
