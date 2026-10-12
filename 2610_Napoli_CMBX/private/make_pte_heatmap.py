@@ -109,7 +109,7 @@ def heatmap(P, out):
         sp.set_visible(False)
     for y in (5.5, 11.5):
         ax.axhline(y, color="white", lw=6)
-    fig.text(0.075, 0.985, r"$\chi^2$ PTE of each tracer $\times$ template cross-spectrum against zero",
+    fig.text(0.075, 0.985, r"$\chi^2$ PTE of each tracer $\times$ template cross-spectrum against zero; darker = smaller PTE",
              fontsize=20, color=INK, ha="left", va="top")
     fig.savefig(out, dpi=DPI, facecolor="white")
     plt.close(fig)

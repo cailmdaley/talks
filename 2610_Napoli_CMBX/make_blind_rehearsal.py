@@ -184,7 +184,6 @@ def draw(out, with_blinds, with_right, raw, back, inj, m0, sd0):
     axr.fill_between([], [], color=FILL["unblinded"], ec=INK, lw=2.6, label="unblinded mock")
     axr.legend(loc="lower right", fontsize=LABEL - 2, frameon=False, handlelength=1.6, ncol=3,
                columnspacing=1.2, borderaxespad=0.2)
-    axr.plot(TRUTH["Omega_m"], TRUTH["S8"], marker="*", ms=22, color=INK, mec="white", mew=1.4, zorder=5)
     axr.text(TRUTH["Omega_m"] - 0.0008, 0.8462, "truth", fontsize=LABEL, color=MUTED,
              ha="right", va="top", zorder=5)
     axr.set_xlim(0.292, 0.362)

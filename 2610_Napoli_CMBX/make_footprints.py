@@ -318,7 +318,7 @@ def render(panels, layers, A, path, legend_xy, height):
             (None, None, "north", A["dr1_eff_n"], MUTED)]
     for k in layers:
         c, a = COLOURS[k]
-        rows.append((tuple((1 - a) + a * np.array(to_rgb(c))), c, f"{CMB[k][0]} ∩ DR1", A[f"{k}_cap"], INK))
+        rows.append((tuple((1 - a) + a * np.array(to_rgb(c))), c, CMB[k][0], A[f"{k}_cap"], INK))
     lx, ly, rx = legend_xy
     for (fc, ec, name, area, ink), y in zip(rows, LEG_SLOTS):
         if fc is not None:

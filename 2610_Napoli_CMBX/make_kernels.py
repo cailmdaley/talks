@@ -212,7 +212,7 @@ def draw(out, with_sec, bins, z, kern, sec, smooth):
         ax_n.plot(zb, nb / nmax, color=c, lw=2.4)
     ax_n.set_ylim(0, 1.25)
     ax_n.set_yticks([])
-    ax_n.set_ylabel(r"$n(z)$")
+    ax_n.set_ylabel(r"$n(z)$, kernel")
     ax_n.text(1.72, 0.44, "Euclid source\nbins 1–6", ha="left", va="bottom", fontsize=28,
               color=COBALT, linespacing=1.0)
 
@@ -225,7 +225,7 @@ def draw(out, with_sec, bins, z, kern, sec, smooth):
     ax_w.set_yticks([])
     ax_w.set_ylabel(r"$W(z)$")
     ax_w.set_xlabel(r"redshift $z$")
-    ax_w.text(1.62, 0.16, "their shear\nlensing kernels", ha="left", va="bottom", fontsize=28,
+    ax_w.text(1.62, 0.16, "source-bin\nlensing kernels", ha="left", va="bottom", fontsize=28,
               color=COBALT, linespacing=1.0)
 
     if with_sec:
