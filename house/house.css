@@ -825,7 +825,11 @@ html, body { background: var(--ground); }
   white-space: nowrap;
   font-size: var(--t-fine);
   line-height: var(--lh-fine);
-  color: var(--muted);
+  font-weight: 600;
+  font-variant-caps: small-caps;
+  font-feature-settings: "smcp" 1, "lnum" 1;
+  letter-spacing: 0.02em;
+  color: var(--accent);
 }
 .slide[data-layout="people"] .people > p {
   flex: 0 0 100%;

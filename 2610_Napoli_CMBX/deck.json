@@ -85,20 +85,6 @@
       ]
     },
     {
-      "title": "KP5",
-      "outline": "Peculiar velocities from CMB-Euclid cross-correlation.",
-      "slides": [
-        "kp-5"
-      ]
-    },
-    {
-      "title": "Additional probes",
-      "outline": "Cross-correlations w/ AGNs, w/ Voids, FIR CIB, Cluster masses.",
-      "slides": [
-        "additional-probes"
-      ]
-    },
-    {
       "title": "Closing",
       "outline": "What CMB lensing can do for weak lensing, and the talk in four lines.",
       "slides": [
