@@ -139,6 +139,7 @@ def contours(ax, s, key, filled=True, lw=2.6, ls="-"):
 def truth_mark(ax):
     ax.axvline(TRUTH["Omega_m"], color=MUTED, lw=1.4, ls=(0, (4, 3)), zorder=0)
     ax.axhline(TRUTH["S8"], color=MUTED, lw=1.4, ls=(0, (4, 3)), zorder=0)
+    ax.plot(TRUTH["Omega_m"], TRUTH["S8"], marker="*", ms=24, color=INK, mec="white", mew=1.4, zorder=6)
 
 
 def draw(out, with_blinds, with_right, raw, back, inj, m0, sd0):

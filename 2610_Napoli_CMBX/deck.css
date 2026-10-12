@@ -19,3 +19,6 @@
 .slide ul.kps { list-style: none; padding: 0; margin: 0; font-size: var(--t-small); }
 .slide ul.kps > li { padding-left: 0; margin: 0; }
 .slide ul.kps > li::before { content: none; }
+
+/* blind — the word "blinded" in red, so a blinded result never reads as a final one */
+.slide .blind { color: #B3261E; line-height: 1; }

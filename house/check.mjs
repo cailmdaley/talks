@@ -77,8 +77,10 @@ function lintBlock(el, where, vocab, out, isDetail) {
   const schema = SCHEMA[layout];
   if (!schema) { out.errors.push(`${where}: unknown layout "${layout}" (one of ${LAYOUTS.join(', ')})`); return; }
   if (isDetail && !el.getAttribute('data-label')) out.errors.push(`${where}: detail needs data-label (the chip text)`);
-  if (el.hasAttribute('data-stack') && !(layout === 'people' && el.querySelector(':scope > div.text')))
-    out.errors.push(`${where}: data-stack goes on a people slide with a div.text`);
+  if (el.hasAttribute('data-stack') && !(['people', 'figure-text'].includes(layout) && el.querySelector(':scope > div.text')))
+    out.errors.push(`${where}: data-stack goes on a people or figure-text slide with a div.text`);
+  if (el.hasAttribute('data-stack') && layout === 'figure-text' && (el.hasAttribute('data-split') || el.hasAttribute('data-flip')))
+    out.errors.push(`${where}: a stacked figure-text takes no data-split or data-flip`);
   if (el.hasAttribute('data-cols') && !(layout === 'grid' && ['2', '3'].includes(el.getAttribute('data-cols'))))
     out.errors.push(`${where}: data-cols is 2 or 3, on a grid slide`);
   if (el.hasAttribute('data-split') && !['50', '60', '70'].includes(el.getAttribute('data-split')))
@@ -216,6 +218,8 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
   const internal = el => (el.closest('mjx-container') && el.localName !== 'mjx-container') ||
     (el.closest('svg') && el.localName !== 'svg' && el.localName !== 'text' && !el.closest('mjx-container')) ||
     (el.localName === 'img' && el.parentElement?.matches('.frame.crop')) ||
+    // a word styled inside the headline (a coloured span) is placed by the headline
+    (!!el.parentElement?.closest('h2') && getComputedStyle(el).display === 'inline') ||
     // the notes card scrolls: what is below its fold is measured for size and contrast, not place
     !!el.parentElement?.closest('.notes .scroll');
   // furniture that may sit outside the content box but must stay on the canvas

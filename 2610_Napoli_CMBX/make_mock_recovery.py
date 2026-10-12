@@ -4,7 +4,7 @@ The GLASS 6x2pt mock ensemble (10 seeds, ACT DR6 lensing mask and noise, TR1
 Euclid mask, map estimator) measured gamma_i x kappa for the six source bins.
 This is the analysis figure's shear row (lc output
 results/tr1_act/glass_6x2pt_mocks/stack_review_figures.tar, fig_cmb_crosses.png)
-redrawn at projector scale for a full-width figure slide: the six bins in one
+redrawn at projector scale for a stacked figure-text slide: the six bins in one
 row, each panel the 10-seed mean of ell C_ell against the input theory, with a
 residual strip under it. All panels share one y axis and one exponent, so
 heights compare across bins.
@@ -22,7 +22,7 @@ mock_series) from the committed recovery store, so the numbers here are the
 analysis figure's numbers.
 
 Output: images/napoli_mock_recovery_gk.png, at 2x the body of a figure slide
-less a figcaption and a .source line (1700 x 640 px).
+under a stacked text block, less a .source line (1700 x 390 px).
 
 Run in the cmbx container: app python make_mock_recovery.py
 """
@@ -51,8 +51,8 @@ INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
 COBALT, TEAL, OCHRE = "#2E417C", "#1D6C78", "#9C7414"
 BAND = "#D6DEEA"
 
-# canvas: 1700 x 640 px displayed, drawn at 2x
-W_PX, H_PX, DPI = 3400, 1280, 200
+# canvas: 1700 x 390 px displayed, drawn at 2x
+W_PX, H_PX, DPI = 3400, 780, 200
 PT = DPI / 72 / 2            # displayed px per point
 FAMILIES = [("gammaE", r"$\gamma_{i}\kappa$")]
 COLOUR = {"delta": COBALT, "gammaE": TEAL}
@@ -136,8 +136,8 @@ def draw(series, n, mean_abs):
     pad = 0.06 * (hi - lo)
 
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
-    gs = fig.add_gridspec(2, 6, height_ratios=[2.6, 1], hspace=0.06, wspace=0.10,
-                          left=0.075, right=0.995, top=0.88, bottom=0.155)
+    gs = fig.add_gridspec(2, 6, height_ratios=[2.2, 1], hspace=0.08, wspace=0.10,
+                          left=0.075, right=0.995, top=0.84, bottom=0.21)
     ax0 = axr0 = None
     for c in range(6):
         m = rows[c]
@@ -176,11 +176,11 @@ def draw(series, n, mean_abs):
             ax.yaxis.set_major_locator(MaxNLocator(3, integer=True))
             ax.set_ylabel(rf"$\ell C_\ell\;[10^{{{expo}}}]$", labelpad=6)
             axr.set_ylabel(r"$\Delta/\sigma_1$", labelpad=6)
-    fig.text(0.535, 0.005, r"$\ell$", fontsize=LABEL, color=INK, ha="center", va="bottom")
+    fig.text(0.535, 0.0, r"$\ell$", fontsize=LABEL, color=INK, ha="center", va="bottom")
     fig.align_ylabels()
 
     # key along the top, one line
-    y1 = 0.955
+    y1 = 0.94
     fig.add_artist(plt.Line2D([0.075, 0.099], [y1, y1], color=INK, lw=2.4, transform=fig.transFigure))
     fig.text(0.105, y1, "input theory", fontsize=LABEL, color=INK, ha="left", va="center")
     fig.add_artist(plt.Line2D([0.235], [y1], marker="o", ms=8, color=COLOUR[fam], mec="white",
