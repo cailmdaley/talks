@@ -1,0 +1,10 @@
+/* papers — a full-width list of planned papers: each title on one row with its
+   leads' portraits and names to its right, under a row naming the key project. */
+.slide[data-layout="points"] > .body:has(> ul.papers) { max-width: none; }
+.slide ul.papers { list-style: none; padding: 0; margin: 0; width: 100%; font-size: var(--t-small); }
+.slide ul.papers > li { display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s4); margin: 0; padding: 6px 0; border-top: 1px solid var(--rule); }
+.slide ul.papers > li.kp { justify-content: flex-start; gap: 0.3em; border-top: none; padding: 16px 0 4px; }
+.slide ul.papers > li.kp:first-child { padding-top: 0; }
+.slide ul.papers > li > .leads { flex: none; }
+.slide ul.papers > li > .leads > .who:last-child { margin-right: 0; }
