@@ -63,7 +63,7 @@ def main():
     al.set_xticklabels([f"{i+1}\n{z:.2f}" for i, z in enumerate(zs)])
     al.set_xlim(-0.3, 5.3); al.set_ylim(0.62, 1.04)
     al.set_xlabel("source bin, mean z")
-    al.set_ylabel(r"lens ratio $\mu_i$ with IA-free templates")
+    al.set_ylabel(r"$\mu_i$, fiducial without IA")
     al.set_title("IA lowers γδ for sources just behind the lenses", fontsize=LABEL, color=MUTED, loc="left", pad=14)
 
     # right: profile chi^2
@@ -76,14 +76,14 @@ def main():
     ar.plot([], [], color=GREY, lw=1.8, label="other three variants")
     import matplotlib.patches as mp
     h, l = ar.get_legend_handles_labels()
-    h.append(mp.Patch(facecolor=BAND, edgecolor=COBALT, lw=1.6)); l.append("full 5×2pt fit, ±1σ\n(blinded, cosmology free)")
+    h.append(mp.Patch(facecolor=BAND, edgecolor=COBALT, lw=1.6)); l.append("full 5×2pt fit, ±1σ\n(blinded; width indicative)")
     ar.axhline(1, color=MUTED, lw=1.0, ls=(0, (2, 3)))
     ar.text(-1.45, 1.06, r"$\Delta\chi^2 = 1$", color=MUTED, fontsize=TICK - 2, ha="left", va="bottom")
-    ar.legend(h, l, loc="upper right", fontsize=LABEL - 3, frameon=False, handlelength=1.6)
-    ar.set_xlim(-1.5, 4.4); ar.set_ylim(0, 4)
+    ar.legend(h, l, loc="center right", fontsize=LABEL - 3, frameon=False, handlelength=1.6)
+    ar.set_xlim(-1.5, 5.0); ar.set_ylim(0, 4)
     ar.set_xlabel(r"NLA amplitude $A_{\rm IA}$")
     ar.set_ylabel(r"$\Delta\chi^2$")
-    ar.set_title(r"Lens ratios alone: $A_{\rm IA} = 0.05 \pm 0.7$", fontsize=LABEL, color=MUTED, loc="left", pad=14)
+    ar.set_title(r"Lens ratios alone: $A_{\rm IA} = 0.1 \pm 0.7$", fontsize=LABEL, color=MUTED, loc="left", pad=14)
     fig.savefig(OUT, dpi=DPI)
     for v in VAR:
         p = prof[v]

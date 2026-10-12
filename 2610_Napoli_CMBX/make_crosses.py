@@ -258,7 +258,7 @@ def lens_ratio(a, med, rob, R, variant, req):
         x = bin_axis(ax, a["zs"], r"source bin, mean $z$")
         ax.set_ylim(bottom, top)
         ax.yaxis.set_major_locator(FixedLocator([v for v in np.arange(0.2, 2.6, 0.2) if bottom < v < top]))
-        ax.set_ylabel(r"lens ratio $\mu_i$ / fiducial", labelpad=8)
+        ax.set_ylabel(r"lens ratio $\mu_i$", labelpad=8)
         ax.axhline(1, color=INK, lw=1.6, ls=(0, (5, 4)), zorder=1.8)
         # the Euclid requirement on m and the n(z) mean, propagated to mu_i: a band around 1
         for xi, r in zip(x, req):
