@@ -4,8 +4,8 @@ The GLASS 6x2pt mock ensemble (10 seeds, ACT DR6 lensing mask and noise, TR1
 Euclid mask, map estimator) measured gamma_i x kappa for the six source bins.
 This is the analysis figure's shear row (lc output
 results/tr1_act/glass_6x2pt_mocks/stack_review_figures.tar, fig_cmb_crosses.png)
-redrawn at projector scale for a figure-text slide: the six bins in two rows of
-three, each panel the 10-seed mean of ell C_ell against the input theory, with a
+redrawn at projector scale for a full-width figure slide: the six bins in one
+row, each panel the 10-seed mean of ell C_ell against the input theory, with a
 residual strip under it. All panels share one y axis and one exponent, so
 heights compare across bins.
 
@@ -21,8 +21,8 @@ The arrays are read with the analysis's own loader
 mock_series) from the committed recovery store, so the numbers here are the
 analysis figure's numbers.
 
-Output: images/napoli_mock_recovery_gk.png, at 2x the figure column of a
-data-split="60" figure-text slide less a .source line (1000 x 740 px).
+Output: images/napoli_mock_recovery_gk.png, at 2x the body of a figure slide
+less a figcaption and a .source line (1700 x 640 px).
 
 Run in the cmbx container: app python make_mock_recovery.py
 """
@@ -51,8 +51,8 @@ INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
 COBALT, TEAL, OCHRE = "#2E417C", "#1D6C78", "#9C7414"
 BAND = "#D6DEEA"
 
-# canvas: 1000 x 740 px displayed, drawn at 2x
-W_PX, H_PX, DPI = 2000, 1480, 200
+# canvas: 1700 x 640 px displayed, drawn at 2x
+W_PX, H_PX, DPI = 3400, 1280, 200
 PT = DPI / 72 / 2            # displayed px per point
 FAMILIES = [("gammaE", r"$\gamma_{i}\kappa$")]
 COLOUR = {"delta": COBALT, "gammaE": TEAL}
@@ -136,64 +136,59 @@ def draw(series, n, mean_abs):
     pad = 0.06 * (hi - lo)
 
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
-    outer = fig.add_gridspec(2, 1, hspace=0.16, left=0.135, right=0.99, top=0.86, bottom=0.10)
+    gs = fig.add_gridspec(2, 6, height_ratios=[2.6, 1], hspace=0.06, wspace=0.10,
+                          left=0.075, right=0.995, top=0.88, bottom=0.155)
     ax0 = axr0 = None
-    for r in range(2):
-        inner_gs = outer[r].subgridspec(2, 3, height_ratios=[2.5, 1], hspace=0.06, wspace=0.08)
-        for c in range(3):
-            i = 3 * r + c
-            m = rows[i]
-            ax = fig.add_subplot(inner_gs[0, c], sharey=ax0)
-            axr = fig.add_subplot(inner_gs[1, c], sharex=ax, sharey=axr0)
-            if ax0 is None:
-                ax0, axr0 = ax, axr
-            ell = m["ell"]
-            ax.axhline(0, color=RULE, lw=1.2, zorder=0)
-            ax.plot(ell, m["truth"] / scale, color=INK, lw=2.4, zorder=2)
-            ax.errorbar(ell, m["mean"] / scale, yerr=m["sigma1"] / scale, fmt="o", ms=6.5,
-                        color=COLOUR[fam], ecolor=COLOUR[fam], elinewidth=1.8, capsize=0,
-                        mec="white", mew=0.8, zorder=3)
-            ax.set_ylim(min(lo - pad, -pad), hi + pad)
-            ax.text(0.95, 0.94, tag.format(i=i + 1), transform=ax.transAxes, fontsize=LABEL,
-                    color=INK, ha="right", va="top")
-            axr.axhspan(-inner, inner, color=BAND, lw=0, zorder=0)
-            axr.axhline(0, color=MUTED, lw=1.2, zorder=1)
-            axr.errorbar(ell, m["resid"], yerr=inner, fmt="o", ms=5.5, color=COLOUR[fam],
-                         elinewidth=1.5, capsize=0, mec="white", mew=0.6, zorder=3)
-            axr.set_ylim(-1.25, 1.25)
-            axr.set_yticks([-1, 1])
-            axr.yaxis.set_major_formatter(FuncFormatter(lambda v, _p: f"{v:+.0f}".replace("-", "\u2212")))
-            axr.set_xscale("log")
-            axr.set_xlim(0.8 * ell.min(), 1.25 * ell.max())
-            axr.xaxis.set_major_locator(FixedLocator(ELL_TICKS))
-            axr.xaxis.set_major_formatter(FuncFormatter(lambda v, _p: f"{int(v)}"))
-            axr.xaxis.set_minor_locator(FixedLocator(ELL_MINOR))
-            axr.xaxis.set_minor_formatter(NullFormatter())
-            plt.setp(ax.get_xticklabels(), visible=False)
-            ax.tick_params(axis="x", which="both", length=0)
-            if r == 0:
-                plt.setp(axr.get_xticklabels(), visible=False)
-            if c:
-                plt.setp(ax.get_yticklabels(), visible=False)
-                plt.setp(axr.get_yticklabels(), visible=False)
-            else:
-                ax.yaxis.set_major_locator(MaxNLocator(3, integer=True))
-                ax.set_ylabel(rf"$\ell C_\ell\;[10^{{{expo}}}]$", labelpad=6)
-                axr.set_ylabel(r"$\Delta/\sigma_1$", labelpad=6)
-            if r == 1 and c == 1:
-                axr.set_xlabel(r"$\ell$", labelpad=2)
+    for c in range(6):
+        m = rows[c]
+        ax = fig.add_subplot(gs[0, c], sharey=ax0)
+        axr = fig.add_subplot(gs[1, c], sharex=ax, sharey=axr0)
+        if ax0 is None:
+            ax0, axr0 = ax, axr
+        ell = m["ell"]
+        ax.axhline(0, color=RULE, lw=1.2, zorder=0)
+        ax.plot(ell, m["truth"] / scale, color=INK, lw=2.4, zorder=2)
+        ax.errorbar(ell, m["mean"] / scale, yerr=m["sigma1"] / scale, fmt="o", ms=6.5,
+                    color=COLOUR[fam], ecolor=COLOUR[fam], elinewidth=1.8, capsize=0,
+                    mec="white", mew=0.8, zorder=3)
+        ax.set_ylim(min(lo - pad, -pad), hi + pad)
+        ax.text(0.94, 0.95, tag.format(i=c + 1), transform=ax.transAxes, fontsize=LABEL,
+                color=INK, ha="right", va="top")
+        axr.axhspan(-inner, inner, color=BAND, lw=0, zorder=0)
+        axr.axhline(0, color=MUTED, lw=1.2, zorder=1)
+        axr.errorbar(ell, m["resid"], yerr=inner, fmt="o", ms=5.5, color=COLOUR[fam],
+                     elinewidth=1.5, capsize=0, mec="white", mew=0.6, zorder=3)
+        axr.set_ylim(-1.25, 1.25)
+        axr.set_yticks([-1, 1])
+        axr.yaxis.set_major_formatter(FuncFormatter(lambda v, _p: f"{v:+.0f}".replace("-", "\u2212")))
+        axr.set_xscale("log")
+        axr.set_xlim(0.8 * ell.min(), 1.25 * ell.max())
+        axr.xaxis.set_major_locator(FixedLocator(ELL_TICKS))
+        axr.xaxis.set_major_formatter(FuncFormatter(lambda v, _p: f"{int(v)}"))
+        axr.xaxis.set_minor_locator(FixedLocator(ELL_MINOR))
+        axr.xaxis.set_minor_formatter(NullFormatter())
+        plt.setp(ax.get_xticklabels(), visible=False)
+        ax.tick_params(axis="x", which="both", length=0)
+        if c:
+            plt.setp(ax.get_yticklabels(), visible=False)
+            plt.setp(axr.get_yticklabels(), visible=False)
+        else:
+            ax.yaxis.set_major_locator(MaxNLocator(3, integer=True))
+            ax.set_ylabel(rf"$\ell C_\ell\;[10^{{{expo}}}]$", labelpad=6)
+            axr.set_ylabel(r"$\Delta/\sigma_1$", labelpad=6)
+    fig.text(0.535, 0.005, r"$\ell$", fontsize=LABEL, color=INK, ha="center", va="bottom")
     fig.align_ylabels()
 
-    # key along the top, two lines
-    y1, y2 = 0.965, 0.915
-    fig.add_artist(plt.Line2D([0.135, 0.175], [y1, y1], color=INK, lw=2.4, transform=fig.transFigure))
-    fig.text(0.185, y1, "input theory", fontsize=LABEL, color=INK, ha="left", va="center")
-    fig.add_artist(plt.Line2D([0.43], [y1], marker="o", ms=8, color=COLOUR[fam], mec="white",
+    # key along the top, one line
+    y1 = 0.955
+    fig.add_artist(plt.Line2D([0.075, 0.099], [y1, y1], color=INK, lw=2.4, transform=fig.transFigure))
+    fig.text(0.105, y1, "input theory", fontsize=LABEL, color=INK, ha="left", va="center")
+    fig.add_artist(plt.Line2D([0.235], [y1], marker="o", ms=8, color=COLOUR[fam], mec="white",
                               transform=fig.transFigure))
-    fig.text(0.445, y1, f"mean of {n} mocks $\\pm\\,\\sigma_1$ (one realization)",
+    fig.text(0.244, y1, f"mean of {n} mocks $\\pm\\,\\sigma_1$ (one realization)",
              fontsize=LABEL, color=INK, ha="left", va="center")
-    fig.text(0.135, y2, f"strips: (mean $-$ input)$/\\sigma_1$, band $\\pm\\,${inner:.2f}$\\,\\sigma_1$",
-             fontsize=LABEL, color=MUTED, ha="left", va="center")
+    fig.text(0.995, y1, f"strips: (mean $-$ input)$/\\sigma_1$, band $\\pm\\,${inner:.2f}$\\,\\sigma_1$",
+             fontsize=LABEL, color=MUTED, ha="right", va="center")
     fig.savefig(OUT, dpi=DPI)
     plt.close(fig)
     print("wrote", os.path.normpath(OUT))

@@ -8,3 +8,8 @@
 .slide ul.papers > li.kp:first-child { padding-top: 0; }
 .slide ul.papers > li > .leads { flex: none; }
 .slide ul.papers > li > .leads > .who:last-child { margin-right: 0; }
+
+/* kps — the key projects' names above a people roster, one per line, no bullets */
+.slide ul.kps { list-style: none; padding: 0; margin: 0; font-size: var(--t-small); }
+.slide ul.kps > li { padding-left: 0; margin: 0; }
+.slide ul.kps > li::before { content: none; }

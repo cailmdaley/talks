@@ -1,16 +1,10 @@
-<section data-layout="figure-text" data-split="60">
+<section data-layout="figure">
   <h2>GLASS mocks recover the input shear × κ</h2>
   <figure>
-    <img src="images/napoli_mock_recovery_gk.png" alt="Ten-mock GLASS mean of ell C_ell for shear crossed with CMB lensing in six source bins, against the input theory, with residual strips in units of the single-realization scatter">
-    <span class="source">10 GLASS mocks · ACT DR6 noise · TR1 mask</span>
+    <figcaption>Euclid and κ from the <strong>same matter shells</strong>, <strong>production</strong> pipeline: mean |Δ| <span class="accent">0.25 σ₁</span>, as noise alone</figcaption>
+    <img src="images/napoli_mock_recovery_gk.png" alt="Ten-mock GLASS mean of ell C_ell for shear crossed with CMB lensing in six source bins, in one row, against the input theory, with residual strips in units of the single-realization scatter">
+    <span class="source">10 GLASS mocks · production masks, noise and code · ACT DR6 noise · TR1 mask</span>
   </figure>
-  <div class="text">
-    <ul class="small">
-      <li>Euclid and κ: <strong>same matter shells</strong></li>
-      <li><strong>production</strong> masks, noise, code</li>
-      <li>mean |Δ| <span class="accent">0.25 σ₁</span>, as noise alone</li>
-    </ul>
-  </div>
   <aside class="notes">
     <h3>The GLASS 6×2pt mocks</h3>
     <p>GLASS 6×2pt mocks draw lognormal matter shells and derive from the same shells the Euclid galaxy density and shear fields and the CMB-lensing convergence, so every cross-correlation in the data vector is present in the mocks. They go through the production pipeline with the data's masks and noise and check each stage of it: that the bandpowers recover the input spectra (this slide), that the Gaussian covariance matches the seed-to-seed scatter (over 10 seeds the bulk agrees, while the stiffest low-$\ell$ clustering modes scatter about 1.3 times more than the covariance allows), that the blind behaves (next slide), and that the likelihood recovers the input cosmology. They are quick to regenerate for a new footprint, n(z) or CMB noise level, which is what pipeline validation needs.</p>
