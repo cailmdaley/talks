@@ -98,6 +98,7 @@
       "title": "Backup",
       "outline": "What κ buys 3×2pt in DES Y3, and the per-bin shear × CMB-lensing amplitude behind the galaxy-bias slide.",
       "slides": [
+        "cib-extinction",
         "kappa-buys",
         "galaxy-bias",
         "gk-amplitude",

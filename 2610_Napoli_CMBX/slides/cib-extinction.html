@@ -1,0 +1,13 @@
+<section data-layout="figure">
+  <h2>κ × extinction is CIB; δ × extinction tracks the dust</h2>
+  <figure>
+    <img src="images/napoli_cib_extinction.png" alt="Left: correlation coefficient of each of six survey-property templates with the Planck GNILC CIB 545 GHz map against multipole; only extinction is clearly positive. Right: per tracer, the measured correlation with extinction, the prediction through the CIB, and the correlation with CIB-cleaned dust; the CIB route matches CMB lensing but underpredicts every galaxy bin">
+  </figure>
+  <aside class="notes">
+    <h3>Reading the figure</h3>
+    <p>Left: the correlation coefficient $r_\ell = C_\ell^{TX}/\sqrt{C_\ell^{TT} C_\ell^{XX}}$ between each VMPZ survey-property template and the Planck 2015 GNILC CIB map at 545 GHz, on the TR1 footprint, with Gaussian errors. Only the extinction template (Planck E(B−V)) is clearly positive, about 0.15–0.25 for $400 \lesssim \ell \lesssim 1500$; the other five scatter around zero, so the association is specific to the dust map.</p>
+    <p>Right: for each tracer, averaged over eight bands with $300 \le \ell \le 2000$ (equal weights, full joint Gaussian errors): the measured $r$(tracer, extinction); the prediction if extinction correlated with the tracer only through the CIB, $r$(tracer, CIB) · $r$(extinction, CIB), formed band by band; and $r$(tracer, CIB-cleaned GNILC dust). For CMB lensing the CIB route predicts the measurement (0.059 against $0.055 \pm 0.029$) and the clean dust gives nothing, so κ × extinction is CIB. For every lens bin the CIB route falls short by a factor 2–7 (excess +2.4 to +4.0σ), and the clean dust carries most of the correlation (0.03–0.065): galaxy density follows the dust itself.</p>
+    <h3>Caveats</h3>
+    <p>The prediction assumes the GNILC CIB map is the CIB; its noise and residuals dilute $r$(tracer, CIB map) and $r$(extinction, CIB map), so the CIB route is a lower bound, and some of the galaxy excess may be that. The galaxy × dust correlation is positive, while dust dimming would lower the counts; residual CIB in the GNILC dust map or a selection effect through reddening could do it, and these maps cannot tell them apart. The visibility-corrected maps (systematics slide notes) remove most of it, as a selection effect would predict, though a visibility model trained against extinction would remove it either way. Scratch analysis: results/scratch/napoli/cib_extinction; figure make_cib_extinction.py.</p>
+  </aside>
+</section>
