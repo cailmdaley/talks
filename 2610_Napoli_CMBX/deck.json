@@ -59,7 +59,7 @@
       ]
     },
     {
-      "title": "DR1-KP-CMBX-2-3",
+      "title": "KP2-3",
       "outline": "Data vectors, theory and likelihood, simulations: where the 3×2pt × CMB-lensing pipeline stands.",
       "slides": [
         "kp-3",
@@ -76,7 +76,7 @@
       ]
     },
     {
-      "title": "DR1-KP-CMBX-4",
+      "title": "KP4",
       "outline": "Hot gas in the cosmic web via TSZ cross-correlation with GC, WL and clusters.",
       "slides": [
         "kp-4",
@@ -85,7 +85,7 @@
       ]
     },
     {
-      "title": "DR1-KP-CMBX-5",
+      "title": "KP5",
       "outline": "Peculiar velocities from CMB-Euclid cross-correlation.",
       "slides": [
         "kp-5"
