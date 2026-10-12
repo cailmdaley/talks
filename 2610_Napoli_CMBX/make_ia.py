@@ -1,14 +1,15 @@
-"""Intrinsic alignments in the CMB-lensing crosses, for the Napoli CMBX talk.
+"""Intrinsic alignments and the CMB-lensing crosses, for the Napoli CMBX talk.
 
-Left: what NLA intrinsic alignments do to the lens ratio mu_i, from noiseless
-injections through the exact estimator (results/scratch/napoli/lens_ratio_response,
-response.json: TheoryVector bands at the fiducial plus A_IA, eta_IA = 0, pivot
-z = 0.62, fitted with IA-free templates).
-Right: the profile Delta chi^2(A_IA) of the gamma-delta / kappa-delta items alone
-(results/scratch/napoli/lens_ratio_ia/ia_profile_<variant>.json: one shared mu, free
-beta_j, NLA templates), for the four data variants, against the A_IA of the joint
-fit to the full blinded data vector with cosmology and lens n(z) widths free
-(results/scratch/napoli/ia_nz_fit, model M3, 0.42 +- 0.28).
+Left: how NLA intrinsic alignments enter each spectrum, as the fractional change
+(C(A_IA = 1) - C(A_IA = 0)) / C(A_IA = 0) at the ell ~ 350 band, per source bin, for the
+shear auto-spectrum (GI + II), shear x galaxy density with the lens bin of the same index
+(GI-like), and shear x CMB lensing (I kappa, linear only).
+Right: Fisher sigma(A_IA) on the TR1 x SPT-3G setup (validated bands, product Gaussian
+covariance, cosmology Omega_m and S8 free, biases, eta_IA, m_i ~ N(0, 0.01), delta-z ~
+N(0, 0.02) marginalised), with and without the CMB-lensing crosses.
+
+Both from results/scratch/napoli/ia_kappa (fisher.py: fisher.json, ia_terms.npz), computed
+on the fiducial model vector, not on data.
 
 Output: images/napoli_ia.png, 2x the figure layout's body less a .source line
 (3424 x 1446 px).  Run in the cmbx container: app python make_ia.py
@@ -25,24 +26,27 @@ from make_blind_rehearsal import setup_font  # noqa: E402
 
 SCR = "/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/napoli"
 OUT = os.path.join(HERE, "..", "images", "napoli_ia.png")
-INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
+INK, MUTED = "#111418", "#535B67"
 COBALT, TEAL, OCHRE = "#2E417C", "#1D6C78", "#9C7414"
-GREY = "#A7AFBB"
-BAND = "#D6DEEA"
-VAR = {"lensmc_spt": ("LensMC × SPT-3G", OCHRE, 3.0), "lensmc_act": ("LensMC × ACT DR6", GREY, 1.8),
-       "metacal_spt": ("MetaCal × SPT-3G", GREY, 1.8), "metacal_act": ("MetaCal × ACT DR6", GREY, 1.8)}
-FULL = (0.42, 0.28)      # ia_nz_fit validated|free|M3
-TEMPLATE_A = 0.6
+LIGHT = "#C6CEDA"
 DPI = 200
 TICK, LABEL = 21, 23
+BAND = 5  # ell ~ 350
 
 
 def main():
     setup_font()
-    resp = json.load(open(f"{SCR}/lens_ratio_response/response.json"))
+    z = np.load(f"{SCR}/ia_kappa/ia_terms.npz", allow_pickle=True)
+    fis = json.load(open(f"{SCR}/ia_kappa/fisher.json"))["combos"]
     meanz = json.load(open(f"{SCR}/crosses/arrays/mean_z.json"))
     zs = [meanz[f"l{i}"] for i in range(6)]
-    prof = {v: json.load(open(f"{SCR}/lens_ratio_ia/ia_profile_{v}.json"))["shared"] for v in VAR}
+    order = [str(o) for o in z["order"]]
+    v0, v1 = z["v0"], z["v1"]
+
+    def frac(k):
+        n = order.index(k) * 15 + BAND
+        return (v1[n] - v0[n]) / v0[n]
+
     plt.rcParams.update({
         "axes.linewidth": 1.4, "axes.edgecolor": MUTED, "xtick.color": MUTED, "ytick.color": MUTED,
         "axes.labelcolor": INK, "xtick.labelsize": TICK, "ytick.labelsize": TICK, "axes.labelsize": LABEL,
@@ -50,44 +54,50 @@ def main():
         "axes.spines.top": False, "axes.spines.right": False, "figure.facecolor": "white", "axes.facecolor": "white",
     })
     fig, (al, ar) = plt.subplots(1, 2, figsize=(3424 / DPI, 1446 / DPI), dpi=DPI,
-                                 gridspec_kw=dict(width_ratios=[1, 1.15], wspace=0.24, left=0.07, right=0.985,
+                                 gridspec_kw=dict(width_ratios=[1, 1.05], wspace=0.30, left=0.075, right=0.975,
                                                   top=0.86, bottom=0.17))
-    # left: response of mu_i to IA
+    # left: where IA enters
     x = np.arange(6)
-    al.axhline(1, color=INK, lw=1.4, ls=(0, (5, 4)), zorder=1)
-    for key, a, c in (("NLA A_IA = 0.5", 0.5, TEAL), ("NLA A_IA = 1.0", 1.0, COBALT)):
-        y = resp[key]["mu_i"]
-        al.plot(x, y, color=c, lw=2.6, marker="o", ms=11, mec="white", mew=1.6, zorder=3)
-        al.text(0.18, y[0], f"$A_{{\\rm IA}} = {a:g}$", color=c, fontsize=LABEL - 2, ha="left", va="center")
+    al.axhline(0, color=MUTED, lw=1.2, zorder=1)
+    rows = [(r"$\gamma\kappa$: I$\kappa$ only, linear in $A_{\rm IA}$", [f"kappa_l{i}" for i in range(6)], TEAL, 3.4),
+            ("γγ: GI + II", [f"l{i}_l{i}" for i in range(6)], COBALT, 2.4),
+            ("γδ, same-index lens bin", [f"g{i}_l{i}" for i in range(6)], OCHRE, 2.4)]
+    for lab, keys, c, lw in rows:
+        y = 100 * np.array([frac(k) for k in keys])
+        al.plot(x, y, color=c, lw=lw, marker="o", ms=11, mec="white", mew=1.6, zorder=3, label=lab)
     al.set_xticks(x)
-    al.set_xticklabels([f"{i+1}\n{z:.2f}" for i, z in enumerate(zs)])
-    al.set_xlim(-0.3, 5.3); al.set_ylim(0.62, 1.04)
+    al.set_xticklabels([f"{i+1}\n{zz:.2f}" for i, zz in enumerate(zs)])
+    al.set_xlim(-0.3, 5.3)
+    al.set_ylim(-31, 3)
     al.set_xlabel("source bin, mean z")
-    al.set_ylabel(r"$\mu_i$, fiducial without IA")
-    al.set_title("IA lowers γδ for sources just behind the lenses", fontsize=LABEL, color=MUTED, loc="left", pad=14)
+    al.set_ylabel(r"IA change of $C_\ell$ at $A_{\rm IA}=1$ (%)")
+    al.legend(loc="lower right", fontsize=LABEL - 3, frameon=False, handlelength=1.6)
+    al.set_title("IA enters γκ differently: one linear term, larger at high z",
+                 fontsize=LABEL, color=MUTED, loc="left", pad=14)
 
-    # right: profile chi^2
-    ar.axvspan(FULL[0] - FULL[1], FULL[0] + FULL[1], color=BAND, lw=0, zorder=0)
-    ar.axvline(FULL[0], color=COBALT, lw=2.2, zorder=1)
-    for v, (lab, c, lw) in VAR.items():
-        g, chi = np.array(prof[v]["grid"]), np.array(prof[v]["chi2"])
-        ar.plot(g, chi - chi.min(), color=c, lw=lw, zorder=3 if c == OCHRE else 2)
-    ar.plot([], [], color=OCHRE, lw=3, label="lens ratios, LensMC × SPT-3G")
-    ar.plot([], [], color=GREY, lw=1.8, label="other three variants")
-    import matplotlib.patches as mp
-    h, l = ar.get_legend_handles_labels()
-    h.append(mp.Patch(facecolor=BAND, edgecolor=COBALT, lw=1.6)); l.append("full 5×2pt fit, ±1σ\n(blinded; width indicative)")
-    ar.axhline(1, color=MUTED, lw=1.0, ls=(0, (2, 3)))
-    ar.text(-1.45, 1.06, r"$\Delta\chi^2 = 1$", color=MUTED, fontsize=TICK - 2, ha="left", va="bottom")
-    ar.legend(h, l, loc="center right", fontsize=LABEL - 3, frameon=False, handlelength=1.6)
-    ar.set_xlim(-1.5, 5.0); ar.set_ylim(0, 4)
-    ar.set_xlabel(r"NLA amplitude $A_{\rm IA}$")
-    ar.set_ylabel(r"$\Delta\chi^2$")
-    ar.set_title(r"Lens ratios alone: $A_{\rm IA} = 0.1 \pm 0.7$", fontsize=LABEL, color=MUTED, loc="left", pad=14)
+    # right: what the kappa crosses buy
+    pairs = [("γγ", "gg|m0.01", "+ γκ", "gg+gk|m0.01"),
+             ("3×2pt", "3x2pt|m0.01", "+ γκ, δκ", "5x2pt|m0.01")]
+    yb = []
+    for j, (la, ka, lb, kb) in enumerate(pairs):
+        sa, sb = fis[ka]["sigma"]["A_IA"], fis[kb]["sigma"]["A_IA"]
+        y0 = 3.2 * (1 - j)
+        ar.barh(y0 + 0.55, sa, height=0.95, color=LIGHT, edgecolor=MUTED, lw=1.2)
+        ar.barh(y0 - 0.55, sb, height=0.95, color=TEAL, edgecolor=TEAL, lw=1.2)
+        ar.text(sa + 0.012, y0 + 0.55, f"{sa:.2f}", va="center", fontsize=TICK, color=INK)
+        ar.text(sb + 0.012, y0 - 0.55, f"{sb:.2f}  (−{100 * (1 - sb / sa):.0f} %)", va="center",
+                fontsize=TICK, color=TEAL)
+        yb += [(y0 + 0.55, la), (y0 - 0.55, lb)]
+    ar.set_yticks([p for p, _ in yb], [l for _, l in yb], fontsize=LABEL - 1)
+    ar.tick_params(axis="y", length=0, colors=INK)
+    ar.spines["left"].set_visible(False)
+    ar.set_xlim(0, 0.86)
+    ar.set_xlabel(r"Fisher $\sigma(A_{\rm IA})$, TR1 × SPT-3G")
+    ar.set_title("TR1: κ adds 15 % to shear alone, 4 % to 3×2pt",
+                 fontsize=LABEL, color=MUTED, loc="left", pad=14)
     fig.savefig(OUT, dpi=DPI)
-    for v in VAR:
-        p = prof[v]
-        print(f"{v}: A_IA = {p['best']:.2f} +{p['hi']-p['best']:.2f} -{p['best']-p['lo']:.2f}")
+    for k, v in fis.items():
+        print(f"{k:18s} sigma(A_IA) = {v['sigma']['A_IA']:.3f}  sigma(S8) = {v['sigma']['S8']:.4f}")
     print("wrote", os.path.normpath(OUT))
 
 
