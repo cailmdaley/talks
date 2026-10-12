@@ -43,7 +43,7 @@ jobs:
         run: quarto render
 
       - name: Build house decks
-        run: node house/build.mjs --all --out _site
+        run: node house/build.mjs --all --out _site --web
 
       - uses: actions/upload-pages-artifact@v3
         with:

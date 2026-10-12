@@ -259,11 +259,13 @@
   // when the reader prefers reduced motion: the app crossfades instead.
   var apps = {};
   function stepOf(fig) { return fig.querySelectorAll('.fragment.visible').length; }
+  // A small screen (window.HouseSmall, set with the figures) keeps every app's
+  // fallback frames: a live app's data and drawing are what a phone cannot hold.
   function mountApps() {
-    if (!Reveal.isReady()) return;
+    if (!Reveal.isReady() || window.HouseSmall) return;
     document.querySelectorAll('figure[data-app]').forEach(function (fig) {
       var factory = apps[fig.getAttribute('data-app')];
-      if (fig.houseApp || !factory) return;
+      if (fig.houseApp || fig.houseLoading || !factory) return;
       // a copy made after mounting (reveal's print view clones each fragment
       // state) carries a frozen drawing: replace it with a live one
       fig.querySelectorAll('.app-view').forEach(function (v) { v.parentNode.removeChild(v); });
@@ -280,9 +282,16 @@
         // panel); null returns to the slide's own data-variant-axes
         axes: function (list) { vSetAxes(fig.closest('.slide'), list); },
       };
-      fig.houseApp = factory(fig, el ? JSON.parse(el.textContent) : null, ctx);
-      fig.classList.add('app-live');
-      fig.houseApp.step(stepOf(fig), false);
+      function mount(data) {
+        fig.houseApp = factory(fig, data, ctx);
+        fig.classList.add('app-live');
+        fig.houseApp.step(stepOf(fig), false);
+      }
+      var src = el && el.getAttribute('data-src');
+      if (!src) return mount(el ? JSON.parse(el.textContent) : null);
+      fig.houseLoading = true;
+      fetch(src).then(function (r) { return r.json(); }).then(mount)
+        .catch(function () { fig.houseLoading = false; });
     });
   }
   function appFragments(e) {

@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 // House deck build: a deck directory (deck.json + slides/*.html + figures) becomes
-// one self-contained index.html (reveal, fonts, figures and math inlined) and a
-// report.html that lays the same slides out as a scrolling document with their notes.
+// one index.html (reveal, fonts and math inlined) and a report.html that lays the same
+// slides out as a scrolling document with their notes. Figures are inlined too, unless
+// --web: then each is a file under <deck>/a/ that loads lazily, with a ≤1600 px copy
+// for small screens, which a phone can hold in memory where the inlined deck crashes it.
 //
-//   node house/build.mjs <deck-dir>... [--out _site]   build named decks
-//   node house/build.mjs --all [--out _site]           build every deck with a deck.json
+//   node house/build.mjs <deck-dir>... [--out _site] [--web]   build named decks
+//   node house/build.mjs --all [--out _site] [--web]           build every deck with a deck.json
 //   node house/build.mjs --listing <file.yml>          write Quarto listing items for house decks
 
 import fs from 'node:fs';
@@ -137,7 +139,7 @@ async function multiplied(im, ground) {
     img = ext === 'jpg' ? img.jpeg({ quality: 95, chromaSubsampling: '4:4:4' }) : img.png();
     await img.toFile(out);
   }
-  return `data:${im.mime};base64,${fs.readFileSync(out).toString('base64')}`;
+  return out;
 }
 
 function fontFaces() {
@@ -287,10 +289,29 @@ function addAsset(assets, im, blend) {
   return key;
 }
 
-async function resolveAssets(assets, ground) {
+// Each asset becomes what the page sets as an <img> src: a data URI, or with `web` a
+// file under <deck>/a/ ({f}) plus, for a raster wider than PHONE_W, a narrower copy ({m}).
+const PHONE_W = 1600;
+async function resolveAssets(assets, ground, web) {
   const out = new Map();
-  for (const [key, { im, blend }] of assets)
-    out.set(key, blend && ground && im.mime !== 'image/svg+xml' ? await multiplied(im, ground) : im.uri());
+  if (web) fs.mkdirSync(web, { recursive: true });
+  for (const [key, { im, blend }] of assets) {
+    const file = blend && ground && im.mime !== 'image/svg+xml' ? await multiplied(im, ground) : null;
+    const buf = file ? fs.readFileSync(file) : im.buf;
+    const mime = file ? MIME[path.extname(file)] : im.mime;
+    if (!web) { out.set(key, `data:${mime};base64,${buf.toString('base64')}`); continue; }
+    const ext = { 'image/jpeg': 'jpg', 'image/svg+xml': 'svg' }[mime] || mime.split('/')[1];
+    fs.writeFileSync(path.join(web, `${key}.${ext}`), buf);
+    const v = { f: `a/${key}.${ext}` };
+    if (mime !== 'image/svg+xml' && mime !== 'image/gif' && im.w > PHONE_W) {
+      const { default: sharp } = await import('sharp');
+      let small = sharp(buf).resize({ width: PHONE_W });
+      small = mime === 'image/jpeg' ? small.jpeg({ quality: 90 }) : small.toFormat(ext);
+      await small.toFile(path.join(web, `${key}.m.${ext}`));
+      v.m = `a/${key}.m.${ext}`;
+    }
+    out.set(key, v);
+  }
   return out;
 }
 
@@ -299,7 +320,7 @@ async function resolveAssets(assets, ground) {
 function assetScript(assets, html) {
   const used = html ? new Set([...html.matchAll(/data-asset="([0-9a-f]+)"/g)].map(m => m[1])) : null;
   const dict = JSON.stringify(Object.fromEntries([...assets].filter(([k]) => !used || used.has(k))));
-  return `<script>(function(){var A=${dict};window.HouseAssets=A;document.querySelectorAll('img[data-asset]').forEach(function(i){i.src=A[i.getAttribute('data-asset')];});})();</script>`;
+  return `<script>(function(){var A=${dict},small=window.HouseSmall=!!(window.matchMedia&&matchMedia('(max-width: 1024px), (max-height: 600px)').matches);for(var k in A)if(typeof A[k]!=='string')A[k]=(small&&A[k].m)||A[k].f;window.HouseAssets=A;document.querySelectorAll('img[data-asset]').forEach(function(i){i.loading='lazy';i.src=A[i.getAttribute('data-asset')];});})();</script>`;
 }
 
 // Text for one variant: data-variant="<variant> …" on any element of a slide shows it
@@ -493,8 +514,12 @@ function frameApps(frame, deckDir, problems, where, apps) {
   }
 }
 
+// With --web, app data is a file the runtime fetches when it mounts the app (never on
+// a small screen, which keeps the figure's fallback frames).
 function appScripts(apps) {
-  const data = [...apps.data].map(([k, t]) => `<script type="application/json" id="house-data-${k}">${t.replace(/</g, '\\u003c')}</script>`);
+  const data = [...apps.data].map(([k, t]) => apps.web
+    ? `<script type="application/json" id="house-data-${k}" data-src="a/${k}.json"></script>`
+    : `<script type="application/json" id="house-data-${k}">${t.replace(/</g, '\\u003c')}</script>`);
   const code = [...apps.code].map(([n, c]) => `<script>/* app: ${n} */\n${c.replace(/<\/script/gi, '<\\/script')}\n</script>`);
   return [...data, ...code].join('\n');
 }
@@ -789,15 +814,20 @@ ${assetScript(slides.assets, body)}
 `;
 }
 
-export async function buildDeck(dir, outRoot, { theme: themeOverride } = {}) {
+export async function buildDeck(dir, outRoot, { theme: themeOverride, web = false } = {}) {
   const deck = loadDeck(dir);
   if (themeOverride) deck.meta.theme = themeOverride;
   const typeset = await makeTypesetter(deck.meta.macros || {});
   const slides = buildSlides(deck, typeset);
   const theme = themeCss(deck);
-  slides.assets = await resolveAssets(slides.assets, themeGround(theme));
-  const mathCss = typeset.css();
   const out = path.join(outRoot, deck.name);
+  if (web) fs.rmSync(path.join(out, 'a'), { recursive: true, force: true });
+  slides.assets = await resolveAssets(slides.assets, themeGround(theme), web && path.join(out, 'a'));
+  if (web) {
+    for (const [k, t] of slides.apps.data) fs.writeFileSync(path.join(out, 'a', `${k}.json`), t);
+    slides.apps.web = true;
+  }
+  const mathCss = typeset.css();
   fs.mkdirSync(out, { recursive: true });
   const index = path.join(out, 'index.html');
   const report = path.join(out, 'report.html');
@@ -836,13 +866,14 @@ async function main(argv) {
   const li = args.indexOf('--listing');
   if (li >= 0) { listing(path.resolve(args[li + 1])); return 0; }
   const all = args.includes('--all');
+  const web = args.includes('--web');
   const dirs = all ? houseDecks() : args.filter(a => !a.startsWith('--'));
   if (all && !dirs.length) { console.log('no house decks to build'); return 0; }
-  if (!dirs.length) { console.error('usage: node house/build.mjs <deck-dir>... | --all [--out DIR] | --listing FILE'); return 2; }
+  if (!dirs.length) { console.error('usage: node house/build.mjs <deck-dir>... | --all [--out DIR] [--web] | --listing FILE'); return 2; }
   let failed = 0;
   for (const d of dirs) {
     try {
-      const r = await buildDeck(d, out);
+      const r = await buildDeck(d, out, { web });
       const kb = f => `${Math.round(fs.statSync(f).size / 1024)} kB`;
       console.log(`${r.deck.name}: ${r.slides.length} slides → ${path.relative(process.cwd(), r.index)} (${kb(r.index)}), report.html (${kb(r.report)})`);
     } catch (e) {
