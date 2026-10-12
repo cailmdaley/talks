@@ -44,6 +44,13 @@
       ]
     },
     {
+      "title": "Footprints",
+      "outline": "Euclid DR1 overlaps Planck, ACT and SPT-3G lensing.",
+      "slides": [
+        "footprint"
+      ]
+    },
+    {
       "title": "KP1: extended forecasts",
       "outline": "Fisher forecasts for Euclid 3×2pt with CMB lensing (6×2pt), from KP1: the gain is largest where Euclid alone is weakest, and CMB lensing acts as a shear calibration.",
       "slides": [
@@ -52,19 +59,12 @@
       ]
     },
     {
-      "title": "Footprints",
-      "outline": "Euclid DR1 overlaps Planck, ACT and SPT-3G lensing.",
-      "slides": [
-        "footprint"
-      ]
-    },
-    {
       "title": "DR1-KP-CMBX-2-3",
       "outline": "Data vectors, theory and likelihood, simulations: where the 3×2pt × CMB-lensing pipeline stands.",
       "slides": [
         "kp-3",
-        "pipeline",
         "kp-3-status",
+        "pipeline",
         "mocks",
         "blind-rehearsal",
         "dv-vector",
