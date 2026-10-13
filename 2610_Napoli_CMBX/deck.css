@@ -23,9 +23,6 @@
 /* blind — the word "blinded" in red, so a blinded result never reads as a final one */
 .slide .blind { color: #B3261E; line-height: 1; }
 
-/* maps — a short strip of maps above a text column */
-.slide .text > img.maps { display: block; width: 100%; max-height: 150px; object-fit: contain; mix-blend-mode: multiply; }
-
 /* lead — a ring around a lead's portrait; the slide's .source line names it */
 .slide[data-layout="people"] .people > figure.lead > img { box-shadow: 0 0 0 5px var(--ground, #fff), 0 0 0 10px var(--accent); }
 

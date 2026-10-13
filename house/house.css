@@ -597,6 +597,9 @@ html, body { background: var(--ground); }
 .slide[data-layout="figure-text"][data-split="50"] > .body { grid-template-columns: 1fr 1fr; }
 .slide[data-layout="figure-text"][data-split="70"] > .body { grid-template-columns: 7fr 3fr; }
 .slide[data-layout="figure-text"][data-flip] > .body > figure { order: 2; }
+.slide[data-layout="figure-text"][data-flip] > .body { grid-template-columns: 4fr 6fr; }
+.slide[data-layout="figure-text"][data-flip][data-split="50"] > .body { grid-template-columns: 1fr 1fr; }
+.slide[data-layout="figure-text"][data-flip][data-split="70"] > .body { grid-template-columns: 3fr 7fr; }
 /* data-stack: the text across the top, the figure filling the body under it (a wide figure, a row of panels) */
 .slide[data-layout="figure-text"][data-stack] > .body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); row-gap: var(--s4); }
 .slide[data-layout="figure-text"][data-stack] > .body > .text { order: -1; justify-content: flex-start; }
