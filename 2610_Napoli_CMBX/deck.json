@@ -79,6 +79,13 @@
       ]
     },
     {
+      "title": "CMB lensing forward modelling",
+      "outline": "A full ACT DR6 lensing forward model, the step towards Euclid WL × ACT simulation-based inference.",
+      "slides": [
+        "cmb-lensing-fm"
+      ]
+    },
+    {
       "title": "KP4",
       "outline": "Hot gas in the cosmic web via TSZ cross-correlation with GC, WL and clusters.",
       "slides": [
