@@ -1,8 +1,9 @@
 <section data-layout="figure">
-  <h2>Template contamination stays under half a σ</h2>
+  <h2>Implied contamination stays under half a σ</h2>
   <figure data-app="private/systematics.js" data-app-data="private/systematics_app.json">
     <img src="private/systematics_1.png" alt="One pair close up, source bin 6 times CMB lensing, against the extinction template: the template's cross with gamma 6 and with kappa above, each with its chi-squared PTE, and below the contamination X over sigma ab they imply, within a few tenths of sigma at every multipole">
     <img class="fragment" src="private/systematics_2.png" alt="The 90 pairs of the TR1 3x2pt plus CMB lensing data vector as a triangle of panels, each showing the contamination one template would add, in units of the pair's Gaussian error sigma ab, on a scale of plus or minus 0.75 sigma with plus or minus 0.5 sigma shaded; cells whose two template crosses both fail are outlined in orange">
+    <span class="source">The one outlined cell, δ₅δ₅ under extinction, is a clustering auto; no κ cross is flagged.</span>
   </figure>
   <aside class="notes">
     <p>Built in two steps. First one pair close up, $\gamma_6 \times \kappa$ against the extinction template: the card a click opens on the full triangle. Its top row is the template's measured cross with each of the pair's tracers, $\ell C_\ell^{\gamma_6 S}$ and $\ell C_\ell^{\kappa S}$, each with its χ² over the 15 bands against zero and PTE (full Gaussian covariance; κ diagonal only). Its bottom panel is what those two crosses imply for the pair if they were all leakage, $X_\ell^{ab} = C_\ell^{aS} C_\ell^{bS} / C_\ell^{SS}$, in units of $\sigma_{ab}$, the Gaussian error of $C_\ell^{ab}$ in the blinded data vector. Then the card shrinks into its cell and the view is the whole data vector, laid out cell for cell as on the data-vector slide.</p>
