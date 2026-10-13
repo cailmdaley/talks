@@ -28,3 +28,7 @@
 
 /* lead — a ring around a lead's portrait; the slide's .source line names it */
 .slide[data-layout="people"] .people > figure.lead > img { box-shadow: 0 0 0 5px var(--ground, #fff), 0 0 0 10px var(--accent); }
+
+/* gap — a half-line pause inside a block of names; nowrap keeps a citation whole */
+.slide .people > p > .gap { display: block; height: var(--s4, 16px); }
+.slide .nowrap { white-space: nowrap; }
