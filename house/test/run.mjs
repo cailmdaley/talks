@@ -30,7 +30,7 @@ const EXPECT = {
   cssurl: 'loads a file through url() in a style',
   longname: 'does not fit under its portrait in two lines',
   noface: 'a portrait is <figure><img',
-  stackless: 'data-stack goes on a people slide with a div.text',
+  stackless: 'data-stack goes on a people or figure-text slide with a div.text',
   loneprism: 'data-prism turns a stack',
   strayzoom: 'data-zoom goes on a later face of a <figure data-prism>',
 };
