@@ -2,9 +2,10 @@
 
 Each cell is the chi^2 probability to exceed, over the 15 bands (100 < l < 3000), of
 one tracer's cross-spectrum with one VMPZ systematics template against zero: lens
-bins delta_1..6 (full Gaussian covariance), source bins gamma_1..6 (full Gaussian
-covariance) and the CMB lensing map kappa (diagonal only), read from the materialized
-template measurements results/<universe>/tr1_systematics/<template>[_act].tar.
+bins delta_1..6 weighted by the VMPZ test visibility maps (full Gaussian covariance,
+visibility_corrected), source bins gamma_1..6 (full Gaussian covariance) and the CMB
+lensing map kappa (diagonal only), read from the materialized template measurements
+results/<universe>/tr1_systematics/<template>[_act].tar.
 Tracers are rows and templates columns, so the figure sits beside the slide's text
 (figure-text, 60 % split); the plot's title says what is drawn and it carries no
 other caption (the slide's .source line holds the details).
@@ -60,12 +61,27 @@ def setup_font():
         print("EB Garamond unavailable:", e)
 
 
+VIS = f"{CMBX}/results/scratch/napoli/visibility_check"
+
+
+def visibility_corrected(m, template):
+    """Swap the lens-bin crosses for those of delta divided by the VMPZ v1.1 test
+    visibility weight, w = (1 + WEIGHT) / <1 + WEIGHT> (results/scratch/napoli/visibility_check,
+    same templates, masks, estimator and bands; its Gaussian covariance recomputed)."""
+    gc = json.load(open(f"{VIS}/{template}.json"))["GC"]
+    for k, r in gc.items():
+        a = dict(r["after"])
+        a["sigma"] = list(np.sqrt(np.diag(np.asarray(a["covariance"]))))
+        m["GC"][k] = a
+    return m
+
+
 def ptes(universe, suffix):
     """(13 tracers, 6 templates): delta_1..6, gamma_1..6, kappa against each template."""
     P = np.zeros((13, len(T)))
     for a, (name, _) in enumerate(T):
         with tarfile.open(f"{CMBX}/results/{universe}/tr1_systematics/{name}{suffix}.tar") as t:
-            m = json.load(t.extractfile("measurement.json"))
+            m = visibility_corrected(json.load(t.extractfile("measurement.json")), name)
         j = 0
         for fam in ("GC", "WL"):
             for _, r in m[fam].items():

@@ -2,6 +2,7 @@
 
 For each systematics template S and each (shear method, CMB survey) variant whose
 template crosses are materialized (results/<universe>/tr1_systematics/<template>.tar),
+with the lens-bin crosses taken from delta weighted by the VMPZ test visibility maps,
 the contamination a template would add to each data-vector pair if its measured
 cross with each tracer were all leakage,
 
@@ -52,6 +53,21 @@ PTE_FLAG = 1e-4                      # a template cross that fails: ~1 % family-
 HARM_FLAG = 2.4                      # template power this far above its median marks a harmonic
 
 
+VIS = f"{CMBX}/results/scratch/napoli/visibility_check"
+
+
+def visibility_corrected(m, template):
+    """Swap the lens-bin crosses for those of delta divided by the VMPZ v1.1 test
+    visibility weight, w = (1 + WEIGHT) / <1 + WEIGHT> (results/scratch/napoli/visibility_check,
+    same templates, masks, estimator and bands; its Gaussian covariance recomputed)."""
+    gc = json.load(open(f"{VIS}/{template}.json"))["GC"]
+    for k, r in gc.items():
+        a = dict(r["after"])
+        a["sigma"] = list(np.sqrt(np.diag(np.asarray(a["covariance"]))))
+        m["GC"][k] = a
+    return m
+
+
 def sig(x, n=5):
     return [float(f"{v:.{n}g}") for v in np.asarray(x, float)]
 
@@ -65,7 +81,7 @@ def measurement(universe, template):
     else:
         return None
     with tarfile.open(path) as t:
-        return json.load(t.extractfile("measurement.json"))
+        return visibility_corrected(json.load(t.extractfile("measurement.json")), template)
 
 
 def crosses(m):
