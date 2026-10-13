@@ -1,4 +1,4 @@
-"""Frames for Davide Luchina's FLASK slides (contributions deck, 12 Oct), redrawn only in layout.
+"""Frames for Davide Luchina's FLASK slides and their resampling backups (contributions deck, 12 Oct), redrawn only in layout.
 
 His figures are carried unchanged at native resolution.  The spectra figures get a header
 strip with his own label ("ACT-constrained", "Planck-like (unconstrained)") in the deck's
@@ -58,6 +58,12 @@ if __name__ == "__main__":
     labelled("napoli_kp23_flask_spectra_act.jpg", "napoli_kp23_flask_spectra_act_lab.png", "ACT-constrained")
     labelled("napoli_kp23_flask_spectra_planck.jpg", "napoli_kp23_flask_spectra_planck_lab.png",
              "Planck-like (unconstrained)")
+    labelled("napoli_kp23_flask_resamp_ratio_act.jpg", "napoli_kp23_flask_resamp_ratio_act_lab.png",
+             "ACT-constrained: ratios to 400 independent realizations")
+    labelled("napoli_kp23_flask_resamp_ratio_planck.jpg", "napoli_kp23_flask_resamp_ratio_planck_lab.png",
+             "Planck-like (unconstrained): ratios to 400 independent realizations")
     for k in ("act", "planck"):
         padded(f"napoli_kp23_flask_cov_kk_{k}.jpg", f"napoli_kp23_flask_cov_{k}.jpg",
                f"napoli_kp23_flask_cov_kk_{k}_pad.png")
+        padded(f"napoli_kp23_flask_resamp_cov_kk_{k}.jpg", f"napoli_kp23_flask_resamp_cov_{k}.jpg",
+               f"napoli_kp23_flask_resamp_cov_kk_{k}_pad.png")
