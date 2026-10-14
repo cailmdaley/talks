@@ -566,6 +566,9 @@ function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, ass
     foot.innerHTML = isDetail
       ? `<span>${esc(el.getAttribute('data-label') || 'Detail')}</span><button class="close" type="button">back to slide ${number}</button>`
       : `<span>${footer}</span><span class="num">${number}</span>`;
+    // a source marked data-foot (a team credit, say) sits in the footer beside the notes button
+    const credit = isDetail ? null : frame.querySelector(':scope > .body > p.source[data-foot]');
+    if (credit) foot.insertBefore(credit, foot.querySelector('.num'));
     frame.appendChild(foot);
   }
   return frame;

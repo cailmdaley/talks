@@ -32,8 +32,7 @@
       "outline": "Who the working group is and how it is organised: its DR1 key projects and their science.",
       "slides": [
         "swg",
-        "people-other",
-        "people"
+        "people-other"
       ]
     },
     {
@@ -51,7 +50,7 @@
       ]
     },
     {
-      "title": "KP1: Euclid preparation forecasts",
+      "title": "KP1: pre-launch forecasts",
       "outline": "Fisher forecasts for Euclid 3×2pt with CMB lensing (6×2pt), from KP1: the gain is largest where Euclid alone is weakest, and CMB lensing acts as a shear calibration.",
       "slides": [
         "kp1-forecast",
@@ -62,6 +61,7 @@
       "title": "KP2-3",
       "outline": "Data vectors, theory and likelihood, simulations: where the 3×2pt × CMB-lensing pipeline stands.",
       "slides": [
+        "people",
         "kp-3",
         "kp-3-q1",
         "kp-3-status",

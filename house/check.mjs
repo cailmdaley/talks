@@ -364,6 +364,24 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
     }
   }
 
+  // the footer (the notes button, a footer credit, the number) clears the body's content
+  const foot = frame.querySelector(':scope > .foot');
+  if (foot && body && layout !== 'bleed') {
+    const leaves = [...body.querySelectorAll('*')].filter(e => (blockish(e) || e.matches('img')) && ![...e.children].some(blockish));
+    for (const f of [...foot.querySelectorAll(':scope > *, :scope > .source *')].filter(visible)) {
+      const rf = f.getBoundingClientRect();
+      const hit = leaves.find(e => { const [ox, oy] = overlap(rf, [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) ? ink(e) : e.getBoundingClientRect()); return ox > 2 && oy > 2; });
+      if (hit) { errors.push(`footer ${label(f)} overlaps ${label(hit)}`); break; }
+    }
+    // and a footer credit clears the footer's own button and number
+    const credit = foot.querySelector(':scope > .source');
+    if (credit) {
+      const own = [...foot.children].filter(c => c !== credit && visible(c));
+      const clash = [...credit.querySelectorAll('.who, .role, .sep')].flatMap(e => own.filter(o => { const [ox, oy] = overlap(e.getBoundingClientRect(), o.getBoundingClientRect()); return ox > 2 && oy > 2; }).map(o => [e, o]));
+      if (clash.length) errors.push(`footer credit ${label(clash[0][0])} overlaps ${label(clash[0][1])}`);
+    }
+  }
+
   // captions and sources stay within their figure's column
   for (const fig of frame.querySelectorAll('figure')) {
     const fr = fig.getBoundingClientRect();

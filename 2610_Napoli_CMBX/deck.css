@@ -30,11 +30,9 @@
 .slide .people > p > .gap { display: block; height: var(--s4, 16px); }
 .slide .nowrap { white-space: nowrap; }
 
-/* kp-4: the contributed text column is long, so it takes the wider share beside the team row */
-.slide[data-layout="figure-text"][data-split="50"] > .body:has(> .source.team) { grid-template-columns: 5fr 6fr; }
-.slide[data-layout="figure-text"] > .body:has(> .source.team) > .text li,
-.slide[data-layout="figure-text"] > .body:has(> .source.team) > .text li + li,
-.slide[data-layout="figure-text"] > .body:has(> .source.team) > .text ul ul { margin-top: 0.15em; margin-bottom: 0; }
-.slide .source.team > .br { flex-basis: 100%; height: 0; }
-.slide .source.team > .role { margin-right: 0.5em; }
-.slide .source.team > .role + .who { margin-left: 0; }
+/* team — the KP4 credit in the footer: leads, then the main workers, then the rest */
+.slide > .foot > .source.team .role { margin-right: 0.6em; }
+.slide > .foot > .source.team .sep { margin-right: 0.6em; }
+/* the KP4 slide's contributed text is long: tighter list spacing to clear the credit */
+.slide:has(> .foot > .source.team) > .body > .text li,
+.slide:has(> .foot > .source.team) > .body > .text ul ul { margin-top: 0.15em; margin-bottom: 0; }

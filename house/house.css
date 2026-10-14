@@ -469,6 +469,18 @@ html, body { background: var(--ground); }
   color: var(--muted);
   cursor: pointer;
 }
+/* a slide's footer credit (p.source[data-foot], moved here by the build) wraps
+   around the notes button: its last span.line sits beside the button, the lines
+   before it run the full width above. --foot-lines reserves room in the body. */
+.slide > .foot > .source {
+  position: absolute; left: 0; right: 80px; bottom: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 10px;
+  font-variant-caps: normal; letter-spacing: normal; line-height: 1.2;
+}
+.slide > .foot > .source > .line { display: flex; flex-wrap: nowrap; align-items: center; white-space: nowrap; }
+.slide > .foot > .source > .line:last-child { padding-left: var(--foot-credit-indent, 296px); }
+.slide > .foot > .source .who { margin-right: 0.6em; }
+.slide:has(> .foot > .source) > .body { margin-bottom: calc((var(--foot-lines, 2) - 1) * 52px + 24px); }
 .slide > .foot > .notes-open:hover { border-color: var(--accent); color: var(--accent); }
 .slide > .foot > .notes-open::before { content: "≡ "; }
 .reveal .slides > section > .slide.detail.notes.open { display: flex; align-items: center; justify-content: center; }
