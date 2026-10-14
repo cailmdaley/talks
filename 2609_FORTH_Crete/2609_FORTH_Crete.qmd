@@ -9,7 +9,7 @@
 title: "Scaling Scientific Labor<br>with Agentic Engineering"
 occasion: FORTH Workshop on Physics-Informed Machine Learning
 description: "Closing keynote: a tutorial-style introduction to agentic AI for scientific workflows"
-draft: true
+draft: false
 output-file: index.html
 author:
     name: Cail Daley
