@@ -367,7 +367,8 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
   // the footer (the notes button, a footer credit, the number) clears the body's content
   const foot = frame.querySelector(':scope > .foot');
   if (foot && body && layout !== 'bleed') {
-    const leaves = [...body.querySelectorAll('*')].filter(e => (blockish(e) || e.matches('img')) && ![...e.children].some(blockish));
+    // text only: an image's box can be larger than the picture it draws
+    const leaves = [...body.querySelectorAll('*')].filter(e => blockish(e) && [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()));
     for (const f of [...foot.querySelectorAll(':scope > *, :scope > .source *')].filter(visible)) {
       const rf = f.getBoundingClientRect();
       const hit = leaves.find(e => { const [ox, oy] = overlap(rf, [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) ? ink(e) : e.getBoundingClientRect()); return ox > 2 && oy > 2; });

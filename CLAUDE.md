@@ -55,17 +55,15 @@ goes in, and Cail does the final pass before showing it.
 
 ### Deployment (GitHub Pages via Actions)
 Deployment is automatic: **pushing to `main` triggers `.github/workflows/publish.yml`**, which runs
-`quarto render` on the runner and publishes `_site` as a **Pages artifact**
-(`upload-pages-artifact` → `deploy-pages`). The repo's Pages source is `build_type: workflow`
-(deploy-from-Actions), **not** deploy-from-branch.
+the house tests and `house/check.mjs --all` (any failing house deck blocks the deploy), unpacks the
+**frozen Quarto site** (release `frozen-quarto-site`: the Quarto decks and index as last rendered,
+14 Oct 2026), builds the house decks on top with `house/build.mjs --all --out _site --web`, and
+publishes `_site` as a Pages artifact. Pages source is `build_type: workflow`, not deploy-from-branch.
 
-- **Just commit source to `main`.** The Action renders everything — do **not** commit rendered HTML
-  or `_site` (gitignored). Only `.qmd` source, the `images/`/`assets/` symlinks, theme files, and any
-  figures the deck references need to be tracked.
-- **Do NOT run `quarto publish gh-pages`.** It pushes a local build to a `gh-pages` branch that Pages
-  ignores (because `build_type` is `workflow`), so it deploys nothing and just leaves orphan clutter.
-- **Drafts:** `draft: true` in a talk's front matter keeps it out of the index listing, but the Action
-  still renders it and serves it at its direct URL (`.../<talk>/<talk>.html`).
+- **Quarto decks are frozen.** CI no longer renders them; editing a `.qmd` changes nothing online.
+  To republish one, render it locally and replace its directory in the release tarball.
+- **Just commit source to `main`.** Never commit `_site` (gitignored) or rendered HTML.
+- **Do NOT run `quarto publish gh-pages`**: Pages ignores the `gh-pages` branch.
 - Live site: <https://cailmdaley.github.io/talks/>
 
 ### Clean talk URLs

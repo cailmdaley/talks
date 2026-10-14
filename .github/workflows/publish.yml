@@ -19,8 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: quarto-dev/quarto-actions/setup@v2
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -36,11 +34,12 @@ jobs:
           npm test
           node house/check.mjs --all
 
-      - name: List house decks on the index
-        run: node house/build.mjs --listing house-decks.yml
-
-      - name: Render Quarto site
-        run: quarto render
+      - name: Unpack the frozen Quarto site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download frozen-quarto-site -p frozen-quarto-site.tar.gz
+          mkdir -p _site && tar -xzf frozen-quarto-site.tar.gz -C _site && rm frozen-quarto-site.tar.gz
 
       - name: Build house decks
         run: node house/build.mjs --all --out _site --web
