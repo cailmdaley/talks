@@ -36,3 +36,5 @@
 /* the KP4 slide's contributed text is long: tighter list spacing to clear the credit */
 .slide:has(> .foot > .source.team) > .body > .text li,
 .slide:has(> .foot > .source.team) > .body > .text ul ul { margin-top: 0.15em; margin-bottom: 0; }
+.slide > .foot > .source.team .who { margin-right: 0.38em; gap: 0.2em; }
+.slide > .foot > .source.team .who > img { width: 1.35em; height: 1.35em; }
