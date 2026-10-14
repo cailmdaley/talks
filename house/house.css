@@ -610,6 +610,11 @@ html, body { background: var(--ground); }
   gap: var(--s4);
   min-width: 0;
 }
+/* a top-level source runs full width under both columns; its .who people wrap into rows */
+.slide[data-layout="figure-text"] > .body:has(> .source) { grid-template-rows: minmax(0, 1fr) auto; row-gap: var(--s3); }
+.slide[data-layout="figure-text"] > .body > .source { grid-column: 1 / -1; order: 3; margin: 0; }
+.slide[data-layout="figure-text"] > .body > .source:has(> .who) { display: flex; flex-wrap: wrap; align-items: center; row-gap: 8px; }
+.slide[data-layout="figure-text"] > .body > .source > .who:first-child { margin-left: 0.4em; }
 /* a kicker labels the block under it, so it sits with that block, not a gap away */
 .slide > .body > .text > .kicker { margin-bottom: calc(var(--s1) - var(--s4)); }
 

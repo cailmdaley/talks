@@ -31,7 +31,7 @@ const SCHEMA = {
   statement:     { head: 'h2', body: [['p', 0, 2]] },
   points:        { head: 'h2', body: [['ul', 0, 2], ['ol', 0, 2], ['p', 0, 4], ['div.eq', 0, 3], ['div.cols', 0, 1], ['pre', 0, 1], ['span.source', 0, 1], ['p.source', 0, 1]], need: 1 },
   figure:        { head: 'h2', body: [['figure', 1, 1]] },
-  'figure-text': { head: 'h2', body: [['figure', 1, 1], ['div.text', 1, 1]] },
+  'figure-text': { head: 'h2', body: [['figure', 1, 1], ['div.text', 1, 1], ['p.source', 0, 1]] },
   compare:       { head: 'h2', body: [['figure', 2, 2]] },
   grid:          { head: 'h2', body: [['figure', 3, 6]] },
   number:        { head: 'h2', body: [['div.stat', 1, 3]] },

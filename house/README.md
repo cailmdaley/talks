@@ -100,7 +100,7 @@ Above 60 words of on-screen text the checker warns: the audience reads instead o
 | `statement` | `<h2>`, up to two `<p>` | one claim, vertically centred |
 | `points` | `<h2>`, lists, `<p>`, `div.eq`, `div.cols`, `<pre>`, `.source` | a text slide |
 | `figure` | `<h2>`, one `<figure>` | one figure filling the body |
-| `figure-text` | `<h2>`, one `<figure>`, one `div.text` | figure beside labels or key numbers; `data-split="50|60|70"` is the figure's share (default 60), `data-flip` puts the text left, `data-stack` puts the text across the top and the figure under it at full width (for a wide figure or a row of panels) |
+| `figure-text` | `<h2>`, one `<figure>`, one `div.text`, optional `p.source` | figure beside labels or key numbers; `data-split="50|60|70"` is the figure's share (default 60), `data-flip` puts the text left, `data-stack` puts the text across the top and the figure under it at full width (for a wide figure or a row of panels); a top-level `p.source` runs full width under both columns (a team credit, say: `p.source` of `.who` people wraps into rows) |
 | `compare` | `<h2>`, two `<figure>` | side by side, each with a `figcaption` label |
 | `grid` | `<h2>`, three to six `<figure>` | three columns; four make a 2 × 2; `data-cols="2\|3"` sets the columns |
 | `number` | `<h2>`, one to three `div.stat` | key numbers: `<div class="stat"><span class="value">385</span><span class="label">deg² …</span></div>` |

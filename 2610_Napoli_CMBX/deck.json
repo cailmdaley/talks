@@ -51,7 +51,7 @@
       ]
     },
     {
-      "title": "KP1: extended forecasts",
+      "title": "KP1: Euclid preparation forecasts",
       "outline": "Fisher forecasts for Euclid 3×2pt with CMB lensing (6×2pt), from KP1: the gain is largest where Euclid alone is weakest, and CMB lensing acts as a shear calibration.",
       "slides": [
         "kp1-forecast",
