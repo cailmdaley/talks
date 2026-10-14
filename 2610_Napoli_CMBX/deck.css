@@ -30,10 +30,11 @@
 .slide .people > p > .gap { display: block; height: var(--s4, 16px); }
 .slide .nowrap { white-space: nowrap; }
 
-/* team — the KP4 credit in the footer: leads, then the main workers, then the rest */
-.slide > .foot > .source.team .role { margin-right: 0.6em; }
-.slide > .foot > .source.team .sep { margin-right: 0.6em; }
-.slide > .foot > .source.team .who { margin-right: 0.38em; gap: 0.2em; }
-.slide > .foot > .source.team .who > img { width: 1.35em; height: 1.35em; }
-/* the first line's main contributors sit centred in the space after the leads */
-.slide > .foot > .source.team .group { flex: 1; display: flex; align-items: center; justify-content: center; }
+/* team — the KP4 credit, full width under the intro slide's diagram and text:
+   leads, then the main contributors, then the rest, each line centred */
+.slide[data-layout="figure-text"] > .body > .source.team { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.slide .source.team > .line { display: flex; align-items: center; white-space: nowrap; }
+.slide .source.team .role, .slide .source.team .sep { margin-right: 0.6em; }
+.slide .source.team .group { display: inline-flex; align-items: center; margin-left: 0.5em; }
+/* the tSZ × shear plot carries its y-axis label at the left: centre the credit on the axes */
+[data-house-slide="kp-4"] .cell > .source { padding-left: 66px; }
