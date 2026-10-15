@@ -254,8 +254,11 @@ def draw_panel(ax, rgb, P, layers, A, title, dec_rings):
     dr1 = P.sample(A["map_dr1"])
     over(dr1, C_DR1, 1.0)
     over(edge(dr1, 2) & P.inside, C_DR1_EDGE, 1.0)
-    for k in layers:            # CMB boundaries stay visible across the opaque DR1 layer
+    fills = {k: P.sample(A[f"map_{k}"]) for k in layers}
+    for i, k in enumerate(layers):   # CMB boundaries stay visible across the opaque DR1 layer,
         over(edges[k] & dr1, OUTLINE_ON_DR1[k], 1.0)
+        for j in layers[i + 1:]:     # and each later footprint's wash dims the earlier boundaries it covers
+            over(edges[k] & dr1 & fills[j], *COLOURS[j])
 
     gl = dict(color=MUTED, lw=0.9, alpha=0.5, zorder=2)
     lab = dict(fontsize=FS_GRID, color=MUTED, zorder=5, path_effects=HALO)
