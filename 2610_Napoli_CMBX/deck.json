@@ -63,9 +63,9 @@
       "slides": [
         "people",
         "kp-3",
+        "pipeline",
         "kp-3-q1",
         "kp-3-status",
-        "pipeline",
         "kp-3-sims",
         "kp-3-sims-spectra",
         "kp-3-sims-cov",
