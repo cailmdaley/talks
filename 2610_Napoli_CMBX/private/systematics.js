@@ -180,11 +180,13 @@ House.app('systematics', function (figure, data, ctx) {
   function onDown(e) {
     if (card && !card.box.contains(e.target) && !e.target.closest('.variants')) { closeCard(); e.stopPropagation(); e.preventDefault(); }
   }
-  // the template control rides on a card, at its top right
+  // the template control rides on a card, in the gap between the cross panels and the
+  // X / sigma panel, left-aligned with that panel's axis
   function onCard(B) {
-    choice.style.left = '';
-    choice.style.right = (100 * (W - (B.x + B.w - 26)) / W) + '%';
-    choice.style.top = (100 * (B.y + 22) / H) + '%';
+    var s = B.h / DH;
+    choice.style.right = '';
+    choice.style.left = (100 * (B.x + data.choice.card[0] * s) / W) + '%';
+    choice.style.top = (100 * (B.y + data.choice.card[1] * s) / H) + '%';
   }
   // intro: the step-0 card, which is the slide's own view rather than an overlay: an opaque
   // ground, no close hint, and the keyboard and pointer stay with the deck

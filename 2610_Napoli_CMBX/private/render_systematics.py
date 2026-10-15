@@ -62,7 +62,6 @@ rdv.style_class = style_class
 INK, DATA, FRAME, MUTED = rdv.INK, rdv.DATA, rdv.FRAME, rdv.MUTED
 BAND_C = "#CDD3DC"
 FLAG = "#B4530F"   # burnt orange: the outline of a cell whose two template crosses both fail
-HARM = "#8A93A3"                          # the template's power peaks
 W, H, TR = rdv.W, rdv.H, rdv.TR
 YR = 0.75                   # every X / sigma_ab panel spans +-YR: 99.6 % of all bands inside
 PTE_FLAG = 1e-4             # as make_systematics.py: a failing template cross
@@ -116,11 +115,6 @@ def flag_cell(ax, lw):
 def flagged(per, k):
     """A pair shares a correlation with the template only if both its crosses fail."""
     return all(t in per["flag"] for t in k.split("_"))
-
-
-def harm_lines(ax, harm, lw):
-    for l in harm:
-        ax.axvline(l, color=HARM, lw=lw, ls=(0, (3, 3)), zorder=0.8)
 
 
 def flag_key(fig, kx, ky, fw, fh, fs):
@@ -192,7 +186,7 @@ def sym_axis(lo, hi):
     return (lo - pad, hi + pad), ticks
 
 
-def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, harm, glyphs):
+def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, glyphs):
     fw, fh = CROSS_W, CROSS_H
     fig = plt.figure(figsize=(fw / 72, fh / 72), dpi=72)
     fs = FS
@@ -200,7 +194,6 @@ def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, harm
     ax = rdv.axes_at(fig, 112, 82, fw - 132, fh - 128, fw, fh)
     rdv.frame(ax, ylim, ticks, tick_len=6, lw_frame=0.9)
     ax.axhline(0, color=FRAME, lw=0.9 * 0.6, alpha=0.45, zorder=1)
-    harm_lines(ax, harm, 1.0)
     rdv.errorbars(ax, ell, np.asarray(c) * f, np.asarray(s) * f, 1.2, 5.2)
     ax.tick_params(labelsize=fs, labelleft=True, labelbottom=True)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: rdv.fmt(v)))
@@ -216,7 +209,7 @@ def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, harm
     return rdv.svg_of(fig, fw, fh, glyphs)
 
 
-def xcard(ell, x, sx, a, b, tlabel, harm, chi2, glyphs):
+def xcard(ell, x, sx, a, b, tlabel, chi2, glyphs):
     fig = plt.figure(figsize=(DW / 72, DH / 72), dpi=72)
     fs = FS
     a, b = sorted((a, b), key=lambda t: (2, 0) if t == "kappa" else (0 if t[0] == "l" else 1, int(t[1:])))
@@ -229,10 +222,6 @@ def xcard(ell, x, sx, a, b, tlabel, harm, chi2, glyphs):
              fontsize=fs, va="top", ha="right", color=MUTED)
     ax = rdv.axes_at(fig, XP["x"], XP["y"], XP["w"], XP["h"], DW, DH)
     xaxis(ax, ell, tick_len=7, lw_frame=1.0, labels=True)
-    harm_lines(ax, harm, 1.4)
-    if harm:
-        fig.text(XP["x"] / DW, 1 - (XP["y"] - 40) / DH, "dashed: the template's power peaks ($\\approx 0.7^\\circ$ tiling)",
-                 color=HARM, fontsize=fs, va="top", ha="left", style="italic")
     x_points(ax, ell, x, sx, lw=1.4, ms=6.5)
     ax.tick_params(labelsize=fs, labelleft=True, labelbottom=True)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: rdv.fmt(v)))
@@ -286,14 +275,14 @@ def main():
                 cid = f"{k}|{dep((a, b), vk)}"
                 if cid not in out["xcard"][t]:
                     out["xcard"][t][cid] = xcard(ell, per["x"][k], per["sx"][k], a, b, tlabel,
-                                                 src["harmonics"][t], per["chi2"], glyphs)
+                                                 per["chi2"], glyphs)
             for tr in tracers:
                 cid = f"{tr}|{dep((tr,), vk)}"
                 if cid not in out["crossp"][t]:
                     e, ylim, ticks = ax_of[tr]
                     out["crossp"][t][cid] = cross_panel(ell, per["c"][tr], per["s"][tr], ylim, ticks, e, tr,
                                                         tlabel, per["chi2"][tr], per["coh"][tr],
-                                                        tr in per["flag"], src["harmonics"][t], glyphs)
+                                                        tr in per["flag"], glyphs)
         print(t, f"over {sum(len(v) for v in out['over'][t].values()) / 1024:.0f} kB,",
               f"cards {sum(len(v) for v in out['xcard'][t].values()) / 1024:.0f} kB,",
               f"crosses {sum(len(v) for v in out['crossp'][t].values()) / 1024:.0f} kB")
@@ -305,7 +294,7 @@ def main():
         cells[(12, c)] = rdv.key_of("kappa", b)
     out["cells"] = [dict(key=k, x=round(rdv.col_x(c), 2), y=round(rdv.row_y(r), 2), w=round(rdv.CW, 2),
                          h=round(rdv.row_h(r), 2)) for (r, c), k in sorted(cells.items())]
-    out["choice"] = dict(CHOICE)
+    out["choice"] = dict(CHOICE, card=[XP["x"], XP["y"] - 62])   # on a card: above the X / sigma panel
     out["glyphs"] = "".join(glyphs.values()).replace("xlink:href=", "href=")
     out["css"] = "".join(f".{c}{{{s}}}" for s, c in STYLES.items())
     text = json.dumps(out, separators=(",", ":"))
