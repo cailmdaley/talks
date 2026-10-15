@@ -73,7 +73,6 @@
         "blind-rehearsal",
         "dv-vector",
         "lens-ratio",
-        "systematics-overview",
         "systematics-triangle",
         "kp-3-open-goals"
       ]
@@ -105,6 +104,7 @@
       "title": "Backup",
       "outline": "What κ buys 3×2pt in DES Y3, and the per-bin shear × CMB-lensing amplitude behind the galaxy-bias slide.",
       "slides": [
+        "systematics-overview",
         "kappa-buys",
         "ia"
       ]
