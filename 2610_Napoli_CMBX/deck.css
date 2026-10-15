@@ -57,3 +57,6 @@
   line-height: 1;
   pointer-events: none;
 }
+
+/* a red highlight box, for the one row a slide is about */
+.slide .frame > mark.box.red { border-color: #B3261E; }
