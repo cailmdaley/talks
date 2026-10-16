@@ -1,0 +1,63 @@
+{
+  "title": "Back from Napoli",
+  "author": "Cail Daley",
+  "venue": "CMBX KP2-3 telecon",
+  "date": "2026-10-22",
+  "description": "The TR1 KP2-3 results shown at the Napoli WLSWG × OU-SHE meeting, and the week's takeaways for KP2-3.",
+  "footer": "Cail Daley · CMBX KP2-3 · back from Napoli · October 2026",
+  "theme": "euclid",
+  "css": "deck.css",
+  "draft": true,
+  "noindex": true,
+  "variants": {
+    "shear": {
+      "lensmc": "LensMC",
+      "metacal": "MetaCal"
+    },
+    "cmb": {
+      "spt": "SPT-3G",
+      "act": "ACT DR6"
+    }
+  },
+  "sections": [
+    {
+      "title": "Opening",
+      "outline": "A report to KP2-3 after the Napoli WLSWG × OU-SHE meeting.",
+      "slides": [
+        "title"
+      ]
+    },
+    {
+      "title": "Results shown in Napoli",
+      "outline": "The KP2-3 pipeline on GLASS mocks and on TR1 v1.1: blind rehearsal, data vector, lens ratio, template nulls, and the extinction template's CIB.",
+      "slides": [
+        "pipeline",
+        "mocks",
+        "blind-rehearsal",
+        "dv-vector",
+        "lens-ratio",
+        "systematics-overview",
+        "systematics-triangle",
+        "cib-route"
+      ]
+    },
+    {
+      "title": "Napoli takeaways",
+      "outline": "What the Napoli week means for KP2-3: 3×2pt scale cuts and baseline choices, TR1 Cycle 2 and 3, CLOE and emulators, the DR1 calendar.",
+      "slides": [
+        "napoli-scale-cuts",
+        "napoli-baseline",
+        "napoli-tr1",
+        "napoli-likelihood",
+        "napoli-timeline"
+      ]
+    },
+    {
+      "title": "Closing",
+      "outline": "The decisions the week puts in front of the group.",
+      "slides": [
+        "questions"
+      ]
+    }
+  ]
+}

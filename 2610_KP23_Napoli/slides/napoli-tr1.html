@@ -1,0 +1,31 @@
+<section data-layout="points">
+  <h2>TR1: Cycle 2 is out, Cycle 3 brings R3</h2>
+  <ul>
+    <li><strong>Cycle 2</strong> (CosmoHub): v1.1 shear, new bins, DR1 n(z)</li>
+    <li><strong>R3 shear:</strong> PSF size bias ~10× smaller; southern B-mode excess ~5σ → &lt;2σ</li>
+    <li>R3 aimed at early Nov; n(z) close-to-final end Nov, final end Feb</li>
+    <li>still moving: c-bias (decision Dec), LensMC B-modes</li>
+  </ul>
+  <p class="accent">Ours: Cycle 2 under way; Cycle 3 when it ships</p>
+  <aside class="notes">
+    <h3>What was said</h3>
+    <ul>
+      <li>Day 2: "Cycle 2 catalogues are on CosmoHub, unblinded over ~500 deg², with analysis guidelines to avoid accidental unblinding." Day 1: TR1 v2 uses the DR1 n(z) (SAS, or Tessore's nowcast kit); the CosmoHub tom_bin_id fix is pending. Our reading: same shear and rows as v1.1, new tomographic binning.</li>
+      <li>Day 1, R3: "fixed the PSF size bias, which was a few percent and varied across the sky in R2; it is now ~10× smaller", and "took the R2 harmonic-space B-mode excess in the South from ~5σ to &lt;2σ". Our TR1 shear is pre-R3.</li>
+      <li>Dates, day 1: EC-wide release aimed at end Oct / start Nov 2026 (Taylor); end Nov 2026, close-to-final n(z) for the Cycle 3 sample selection and DR1 (DR1_WLSOUTH_R3); end Feb 2027, final n(z) with confident uncertainties (Hartley). That Cycle 3 is the R3 selection is the scribe's reading of that timeline.</li>
+      <li>3×2pt splinter: the static c-bias is out (Tiger Team), final decision December 2026. CLOE splinter: LensMC B-modes are significant again with flipped sign, pending overnight runs.</li>
+    </ul>
+    <h3>n(z) and m are still moving</h3>
+    <ul>
+      <li>Working assumption (Hartley): DR1 won't do much better than Δz ~ 0.02(1+z) on the mean, 0.05(1+z) on the width. Hildebrandt (day 3): ~2 % on mean z is not good enough for DR1 cosmic shear; ~1 % or better is needed. n(z) are NO_WEIGHT only so far.</li>
+      <li>Whether n(z) stretch will be delivered was disputed in the day-3 splinter.</li>
+      <li>First DR1 m (day 2 afternoon, fresh, includes selection, preliminary): LensMC $m \approx -4.6\times10^{-2} \pm 0.4\times10^{-2}$, MetaCal $\approx -1.8\times10^{-2} \pm 0.7\times10^{-2}$. The pipeline takes a single $m$ (one σ) and $c_1, c_2$ per bin.</li>
+    </ul>
+    <h3>Where things live</h3>
+    <ul>
+      <li>Catalogues: CosmoHub. LE3 products: PIC WebDAV (wl-pipeline wiki, Data_Access). n(z) and VMPZ tile products: the internal DR1 SAS. Coverage, mixing matrices and n(z) for the candidate DR1 tile set: PIC (Tessore). Tile list: gitlab.euclid-sgs.uk/PF-LE3-WL/tile-lists. euclidlib PR #154 reads the SAS n(z) product.</li>
+    </ul>
+    <p>Our plan: move to Cycle 3 when it ships; the LensMC R2 → R3 difference doubles as a PSF-only systematics test of the κ crosses.</p>
+    <p>Low-level shear issues (c-bias, bleeding-edge mask, B-mode nulls) stay with OU-SHE and WL; we note them and act only where κ brings something in.</p>
+  </aside>
+</section>

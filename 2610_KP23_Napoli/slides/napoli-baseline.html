@@ -1,0 +1,22 @@
+<section data-layout="points">
+  <h2>The 3×2pt baseline model and priors are set</h2>
+  <ul>
+    <li>one linear bias per bin, NLA with $z$ evolution, magnification</li>
+    <li>n(z): mean shifts only</li>
+    <li>uniform cosmology priors; $n_s$ Gaussian, 10× Planck width</li>
+    <li>$m \sim \mathcal{N}(0, 0.01)$; $\log T_\mathrm{AGN} \in [7.3, 8.5]$</li>
+    <li>$\sqrt{\ell}$ binning; $\ell$ 10–3000 for now</li>
+  </ul>
+  <p class="accent">For us: same priors? Shift + stretch, or shift only? √ℓ bins?</p>
+  <aside class="notes">
+    <h3>What was said</h3>
+    <ul>
+      <li>Day 3, late session: "The baseline model is Stage-III-like (one linear bias per bin, NLA with z-evolution, magnification, n(z) mean shifts only, one massive ν fixed during scale-cut validation)". "Cosmological parameters are sampled with uniform priors, except n_s, which gets a Gaussian prior 10× the Planck width." "The most up-to-date range is log T_AGN ∈ [7.3, 8.5]." On shear bias: "leave the shear-bias prior as is" (Gaussian, σ = 0.01, called "quite pessimistic").</li>
+      <li>The same session recorded both "identical priors and sampled parameters across probes, for the joint analysis" and "sampled parameters are agreed per KP, at least at this stage"; the $S_8$-vs-$A_s$ sampling basis was unresolved. The action table adds running the CMB with the same priors for the $S_8$ tension.</li>
+      <li>Shared chain configs and scripts move from Cerberus into the CLOE GitHub organisation; whether CMBX gets a folder was not said.</li>
+      <li>CLOE splinter: "Decision: switch to sqrt binning; explore the bin number with chains". ℓ_min = 10 was validated only on unmasked Flagship; leaning to keep 10–3000, not decided.</li>
+    </ul>
+    <h3>Why it matters to KP2-3</h3>
+    <p>These are the defaults a joint κ + 3×2pt analysis inherits. Two differ from ours: our n(z) model has a shift and a stretch per bin, and our production binning (15 log bands, ℓ = 100–3000) has about three bands above ℓ = 1500, the resolution problem the √ℓ switch addresses. Scope stays as decided: we build on the 3×2pt choices and act only where κ brings something in.</p>
+  </aside>
+</section>

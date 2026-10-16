@@ -1,0 +1,62 @@
+/* papers — a full-width list of planned papers: each title on one row with its
+   leads' portraits and names to its right, under a row naming the key project. */
+.slide[data-layout="points"] > .body:has(> ul.papers) { max-width: none; }
+.slide ul.papers { list-style: none; padding: 0; margin: 0; width: 100%; font-size: var(--t-small); }
+.slide ul.papers > li { display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s4); margin: 0; padding: 6px 0; border-top: 1px solid var(--rule); }
+.slide ul.papers > li.kp { justify-content: flex-start; gap: 0.3em; border-top: none; padding: 16px 0 4px; }
+.slide ul.papers > li.kp:first-child { padding-top: 0; }
+.slide ul.papers > li > .leads { flex: none; }
+.slide ul.papers > li > .leads > .who:last-child { margin-right: 0; }
+.slide ul.papers > li:not(.kp) { margin-left: 1.2em; padding: 18px 0; flex-direction: column; align-items: flex-start; gap: 10px; }
+/* swap — two paper lists in one place: the second replaces the first on a fragment */
+.slide[data-layout="points"] > .body:has(> ul.papers.swap) { display: grid; align-content: start; }
+.slide[data-layout="points"] > .body > ul.papers.swap { grid-area: 1 / 1; }
+.report .slide[data-layout="points"] > .body:has(> ul.papers.swap) { display: block; }
+.report .slide[data-layout="points"] > .body > ul.papers.swap.fade-out { display: block; margin-bottom: var(--s4); }
+
+/* kps — the key projects' names above a people roster, one per line, no bullets */
+.slide ul.kps { list-style: none; padding: 0; margin: 0; font-size: var(--t-small); }
+.slide ul.kps > li { padding-left: 0; margin: 0; }
+.slide ul.kps > li::before { content: none; }
+
+/* blind — the word "blinded" in red, so a blinded result never reads as a final one */
+.slide .blind { color: #B3261E; line-height: 1; }
+
+/* lead — a ring around a lead's portrait; the slide's .source line names it */
+.slide[data-layout="people"] .people > figure.lead > img { box-shadow: 0 0 0 5px var(--ground, #fff), 0 0 0 10px var(--accent); }
+
+/* gap — a half-line pause inside a block of names; nowrap keeps a citation whole */
+.slide .people > p > .gap { display: block; height: var(--s4, 16px); }
+.slide .nowrap { white-space: nowrap; }
+
+/* team — the KP4 credit, full width under the intro slide's diagram and text:
+   leads, then the main contributors, then the rest, each line centred */
+.slide[data-layout="figure-text"] > .body > .source.team { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.slide .source.team > .line { display: flex; align-items: center; white-space: nowrap; }
+.slide .source.team .role, .slide .source.team .sep { margin-right: 0.6em; }
+.slide .source.team .group { display: inline-flex; align-items: center; margin-left: 0.5em; }
+/* the tSZ × shear plot carries its y-axis label at the left: centre the credit on the axes */
+[data-house-slide="kp-4"] .cell > .source { padding-left: 66px; }
+
+/* preliminary — a stamp in the footer's free middle for TR1 results the KP has not yet discussed */
+[data-preliminary] .slide:not(.detail) > .foot::after {
+  content: "Preliminary (TR1 v1.1)";
+  font-variant-caps: normal;
+  position: absolute;
+  bottom: -16px;
+  left: 660px;          /* centred in the gap between the notes button and the variant toggles */
+  transform: translateX(-50%);
+  padding: 6px 22px 8px;
+  border: 3px solid #B3261E;
+  border-radius: 6px;
+  color: #B3261E;
+  font-size: var(--t-fine);
+  background: var(--ground);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* a red highlight box, for the one row a slide is about */
+.slide .frame > mark.box.red { border-color: #B3261E; }
