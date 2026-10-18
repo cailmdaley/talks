@@ -1,0 +1,25 @@
+{
+  "title": "Euclid × SPT-3G: CMBX update",
+  "author": "Cail Daley",
+  "venue": "SPT main call",
+  "date": "2026-10-22",
+  "description": "An update from the Euclid CMBX working group to SPT-3G: the DR1 papers, the TR1 × SPT-3G data vectors, the SPT products needed, and Euclid access for SPT MoU members.",
+  "footer": "Cail Daley · Euclid CMBX × SPT-3G · SPT main call · October 2026",
+  "theme": "euclid",
+  "css": "deck.css",
+  "draft": true,
+  "noindex": true,
+  "variants": {
+    "shear": { "lensmc": "LensMC", "metacal": "MetaCal" },
+    "cmb": { "spt": "SPT-3G", "act": "ACT DR6" }
+  },
+  "sections": [
+    { "title": "Opening", "outline": "An update from the Euclid CMBX working group to SPT-3G.", "slides": ["title"] },
+    { "title": "Overlap", "outline": "Euclid DR1 overlaps Planck, ACT and SPT-3G lensing.", "slides": ["footprint"] },
+    { "title": "Papers", "outline": "The CMBX DR1 key-project papers, and the SPT × Euclid 6×2pt paper among them.", "slides": ["kp-3", "spt-paper"] },
+    { "title": "TR1 × SPT-3G", "outline": "The pipeline from catalogues to a blinded likelihood, the blinded data vector with SPT-3G, and its validation on GLASS mocks.", "slides": ["pipeline", "dv-vector", "mocks"] },
+    { "title": "From SPT", "outline": "The SPT products the analysis needs, and Euclid access for SPT MoU members.", "slides": ["spt-needs", "spt-access"] },
+    { "title": "Closing", "outline": "The update in four lines.", "slides": ["summary"] },
+    { "title": "Backup", "outline": "The blind, rehearsed on a GLASS mock.", "slides": ["blind-rehearsal"] }
+  ]
+}
