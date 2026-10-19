@@ -1,13 +1,23 @@
-<section data-layout="points">
-  <h2>The 3×2pt baseline model and priors are set</h2>
-  <ul>
-    <li>one linear bias per bin, NLA with $z$ evolution, magnification</li>
-    <li>n(z): mean shifts only</li>
-    <li>uniform cosmology priors; $n_s$ Gaussian, 10× Planck width</li>
-    <li>$m \sim \mathcal{N}(0, 0.01)$; $\log T_\mathrm{AGN} \in [7.3, 8.5]$</li>
-    <li>$\sqrt{\ell}$ binning; $\ell$ 10–3000 for now</li>
-  </ul>
-  <p class="accent">For us: same priors? Shift + stretch, or shift only? √ℓ bins?</p>
+<section data-layout="table">
+  <h2>Our TR1 priors follow the 3×2pt baseline</h2>
+  <table>
+    <tr><th></th><th>3×2pt baseline (Napoli)</th><th>KP2-3 TR1 chains</th></tr>
+    <tr><td>cosmology</td><td>uniform; $n_s \sim \mathcal{N}(0.96, 0.042)$; BBN $\omega_b$</td><td>same</td></tr>
+    <tr><td>baryons</td><td>HMcode2020, $\log T_\mathrm{AGN} \in [7.3, 8.3]$</td><td>same</td></tr>
+    <tr><td>IA, bias, $m$</td><td>NLA-$z$; linear $b$; $m \sim \mathcal{N}(0, 0.01)$</td><td>same</td></tr>
+    <tr class="hl"><td>n(z)</td><td>shifts only</td><td>shifts + stretch $\mathcal{N}(1, 0.1)$</td></tr>
+    <tr class="hl"><td>magnification</td><td>$\alpha_i$ sampled</td><td>fixed measured slopes</td></tr>
+    <tr><td>binning</td><td>$\sqrt{\ell}$, $\ell$ 10–3000</td><td>15 log bands, $\ell$ 100–3000</td></tr>
+  </table>
+  <span class="source">Splinter deck pp. 53–55, 70; the 3×2pt table is a proposal still being updated</span>
+  <aside class="detail" data-label="Cosmology priors" data-layout="figure">
+    <h2>The splinter's cosmology priors</h2>
+    <figure><img src="images/napoli_splinter_priors_cosmo.png" alt="Splinter slide: table of cosmological parameters, fiducial values and priors"><span class="source">Shared splinter deck p. 54</span></figure>
+  </aside>
+  <aside class="detail" data-label="Nuisance priors" data-layout="figure">
+    <h2>The splinter's nuisance priors</h2>
+    <figure><img src="images/napoli_splinter_priors_nuisance.png" alt="Splinter slide: table of nuisance parameters, fiducial values and priors, with 'No stretch' marked at the photo-z shifts"><span class="source">Shared splinter deck p. 55</span></figure>
+  </aside>
   <aside class="notes">
     <h3>What was said</h3>
     <ul>
@@ -16,6 +26,8 @@
       <li>Shared chain configs and scripts move from Cerberus into the CLOE GitHub organisation; whether CMBX gets a folder was not said.</li>
       <li>CLOE splinter: "Decision: switch to sqrt binning; explore the bin number with chains". ℓ_min = 10 was validated only on unmasked Flagship; leaning to keep 10–3000, not decided.</li>
     </ul>
+    <h3>Ours</h3>
+    <p>The TR1 production chain profile (<code>workflow/scripts/tr1_production_chain_config.json</code>) adopted the splinter's table after Napoli, each departure from our earlier choices kept as a named variant. Two differences remain. The n(z) stretch stays, $\mathcal{N}(1, 0.1)$, because on the v1.1 products the lens data pull the stretches to 0.6–0.8 and reject shift-only (variant <code>shift_only</code> fixes it). Magnification uses fixed measured slopes until the $\alpha$ convention is pinned. The table's $T_\mathrm{AGN}$ upper bound is 8.3; the day-3 session called [7.3, 8.5] the most up-to-date range, and we follow the table until it is updated.</p>
     <h3>Why it matters to KP2-3</h3>
     <p>These are the defaults a joint κ + 3×2pt analysis inherits. Two differ from ours: our n(z) model has a shift and a stretch per bin, and our production binning (15 log bands, ℓ = 100–3000) has about three bands above ℓ = 1500, the resolution problem the √ℓ switch addresses. Scope stays as decided: we build on the 3×2pt choices and act only where κ brings something in.</p>
   </aside>

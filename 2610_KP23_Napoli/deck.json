@@ -3,7 +3,7 @@
   "author": "Cail Daley",
   "venue": "CMBX KP2-3 telecon",
   "date": "2026-10-22",
-  "description": "The TR1 KP2-3 results shown at the Napoli WLSWG × OU-SHE meeting, and the week's takeaways for KP2-3.",
+  "description": "The Napoli WLSWG × OU-SHE week's takeaways for KP2-3, then the TR1 KP2-3 results shown there and the first blinded TR1 posteriors.",
   "footer": "Cail Daley · CMBX KP2-3 · back from Napoli · October 2026",
   "theme": "euclid",
   "css": "deck.css",
@@ -28,28 +28,28 @@
       ]
     },
     {
-      "title": "Results shown in Napoli",
-      "outline": "The KP2-3 pipeline on GLASS mocks and on TR1 v1.1: blind rehearsal, data vector, lens ratio, template nulls, and the extinction template's CIB.",
+      "title": "Napoli takeaways",
+      "outline": "What the Napoli week means for KP2-3: the DR1 calendar, TR1 Cycle 2 and 3, 3×2pt scale cuts and priors, CLOE.",
       "slides": [
-        "pipeline",
+        "napoli-timeline",
+        "napoli-tr1",
+        "napoli-scale-cuts",
+        "napoli-scale-cut-methods",
+        "napoli-baseline",
+        "napoli-likelihood"
+      ]
+    },
+    {
+      "title": "Results shown in Napoli",
+      "outline": "The KP2-3 pipeline on GLASS mocks and on TR1 v1.1: blind rehearsal, data vector, lens ratio, template nulls, the extinction template's CIB, and the first blinded posteriors.",
+      "slides": [
         "mocks",
         "blind-rehearsal",
         "dv-vector",
         "lens-ratio",
-        "systematics-overview",
         "systematics-triangle",
-        "cib-route"
-      ]
-    },
-    {
-      "title": "Napoli takeaways",
-      "outline": "What the Napoli week means for KP2-3: 3×2pt scale cuts and baseline choices, TR1 Cycle 2 and 3, CLOE and emulators, the DR1 calendar.",
-      "slides": [
-        "napoli-scale-cuts",
-        "napoli-baseline",
-        "napoli-tr1",
-        "napoli-likelihood",
-        "napoli-timeline"
+        "cib-route",
+        "chains"
       ]
     },
     {
@@ -57,6 +57,14 @@
       "outline": "The decisions the week puts in front of the group.",
       "slides": [
         "questions"
+      ]
+    },
+    {
+      "title": "Backup",
+      "outline": "The pipeline overview and the systematics-template overview.",
+      "slides": [
+        "pipeline",
+        "systematics-overview"
       ]
     }
   ]

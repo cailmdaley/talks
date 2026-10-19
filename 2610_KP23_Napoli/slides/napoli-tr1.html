@@ -1,16 +1,21 @@
 <section data-layout="points">
   <h2>TR1: Cycle 2 is out, Cycle 3 brings R3</h2>
   <ul>
-    <li><strong>Cycle 2</strong> (CosmoHub): v1.1 shear, new bins, DR1 n(z)</li>
-    <li><strong>R3 shear:</strong> PSF size bias ~10× smaller; southern B-mode excess ~5σ → &lt;2σ</li>
-    <li>R3 aimed at early Nov; n(z) close-to-final end Nov, final end Feb</li>
+    <li><strong>Cycle 2</strong> (CosmoHub): v1.1 shear, new tomographic bins, DR1 n(z)</li>
+    <li><strong>Cycle 3</strong>, R3 shear, aimed at early Nov:
+      <ul>
+        <li>PSF size bias ~10× smaller</li>
+        <li>southern B-mode excess ~5σ → &lt;2σ</li>
+      </ul>
+    </li>
+    <li>n(z): close to final end Nov, final end Feb</li>
     <li>still moving: c-bias (decision Dec), LensMC B-modes</li>
   </ul>
-  <p class="accent">Ours: Cycle 2 under way; Cycle 3 when it ships</p>
+  <p class="accent">Ours: Cycle 2 data vectors built; Cycle 3 when it ships</p>
   <aside class="notes">
     <h3>What was said</h3>
     <ul>
-      <li>Day 2: "Cycle 2 catalogues are on CosmoHub, unblinded over ~500 deg², with analysis guidelines to avoid accidental unblinding." Day 1: TR1 v2 uses the DR1 n(z) (SAS, or Tessore's nowcast kit); the CosmoHub tom_bin_id fix is pending. Our reading: same shear and rows as v1.1, new tomographic binning.</li>
+      <li>Day 2: "Cycle 2 catalogues are on CosmoHub, unblinded over ~500 deg², with analysis guidelines to avoid accidental unblinding." Day 1: TR1 v2 uses the DR1 n(z) (SAS, or Tessore's nowcast kit); the CosmoHub tom_bin_id fix is pending. Cycle 2 (CosmoHub TR1.B v2.0) is the TR1 area cut from the full DR1 photo-z production: the same v1.1 shear measurements and rows, with new tomographic binning and the DR1 n(z) (Farrens and Hartley, 14 Oct; recorded in <code>science/cmbx/data/tr1-v2-cycle2</code>). R3 is the first change to the shear measurement itself.</li>
       <li>Day 1, R3: "fixed the PSF size bias, which was a few percent and varied across the sky in R2; it is now ~10× smaller", and "took the R2 harmonic-space B-mode excess in the South from ~5σ to &lt;2σ". Our TR1 shear is pre-R3.</li>
       <li>Dates, day 1: EC-wide release aimed at end Oct / start Nov 2026 (Taylor); end Nov 2026, close-to-final n(z) for the Cycle 3 sample selection and DR1 (DR1_WLSOUTH_R3); end Feb 2027, final n(z) with confident uncertainties (Hartley). That Cycle 3 is the R3 selection is the scribe's reading of that timeline.</li>
       <li>3×2pt splinter: the static c-bias is out (Tiger Team), final decision December 2026. CLOE splinter: LensMC B-modes are significant again with flipped sign, pending overnight runs.</li>
@@ -25,7 +30,7 @@
     <ul>
       <li>Catalogues: CosmoHub. LE3 products: PIC WebDAV (wl-pipeline wiki, Data_Access). n(z) and VMPZ tile products: the internal DR1 SAS. Coverage, mixing matrices and n(z) for the candidate DR1 tile set: PIC (Tessore). Tile list: gitlab.euclid-sgs.uk/PF-LE3-WL/tile-lists. euclidlib PR #154 reads the SAS n(z) product.</li>
     </ul>
-    <p>Our plan: move to Cycle 3 when it ships; the LensMC R2 → R3 difference doubles as a PSF-only systematics test of the κ crosses.</p>
+    <p>Our Cycle 2 universe (<code>tr1_v2</code>, SPT-3G) is built through blinded data vectors and is being re-materialized. Our plan: move to Cycle 3 when it ships; the LensMC R2 → R3 difference doubles as a PSF-only systematics test of the κ crosses.</p>
     <p>Low-level shear issues (c-bias, bleeding-edge mask, B-mode nulls) stay with OU-SHE and WL; we note them and act only where κ brings something in.</p>
   </aside>
 </section>
