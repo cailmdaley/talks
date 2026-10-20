@@ -4,9 +4,11 @@ Reads results/scratch/napoli/cib_shape/cib_shape.json (made by that directory's 
 and draws, per tracer family, every tracer x extinction cross divided by its best-fit
 amplitude against the Lenz et al. (2019) CIB x extinction shape, with that shape in bold.
 
-Run: app python docs/talks/2610_Napoli_CMBX/make_cib_shape.py [--rho]
---rho draws napoli_cib_rho.png from cib_rho.json: measured r(T, extinction) against the
-parameter-free CIB-route prediction r(T, CIB) r(CIB, extinction), per band.
+Run: app python docs/talks/2610_Napoli_CMBX/make_cib_shape.py [--rho [--freq F | --slide]]
+--rho draws napoli_cib_rho.png from cib_rho_<F>.json: measured r(T, extinction) against the
+parameter-free CIB-route prediction r(T, CIB) r(CIB, extinction), per band. --rho --slide draws
+the slide's build frames (points, + CIB bands, + unweighted delta6 at 857 GHz, then 545 and 353 GHz)
+on one shared canvas.
 """
 from __future__ import annotations
 
@@ -218,19 +220,34 @@ def draw_route(data, output, tag=TAG):
     print('wrote', output)
 
 
-RHO_INPUT = ROOT / 'results/scratch/napoli/cib_shape/cib_rho.json'
+RHO_DIR = ROOT / 'results/scratch/napoli/cib_shape'
 RHO_OUTPUT = Path(HERE).parent / 'images/napoli_cib_rho.png'
+FREQS = ('857', '545', '353')
+# Build order on the slide: measured points, then the CIB prediction, then unweighted delta6;
+# the last two frames swap the CIB map's frequency.
+FRAMES = [('points', '857'), ('bands', '857'), ('full', '857'), ('full', '545'), ('full', '353')]
 # Rows read low z -> high z: density (visibility-corrected) on top, shear below.
 RHO_PANELS = [('delta1_vis', r'$\delta_1$'), ('delta5_vis', r'$\delta_5$'), ('delta6', r'$\delta_6$'),
               ('gamma1', r'$\gamma_1$'), ('gamma5', r'$\gamma_5$'), ('gamma6', r'$\gamma_6$')]
+RAW = '#B07A2A'
 
 
-def draw_rho(data, output, slide=False):
-    """slide=True: 2x the 1712x771 slide body, type sized for >= 32 px on screen, footnotes left to the slide notes."""
+def rho_input(freq):
+    return RHO_DIR / f'cib_rho_{freq}.json'
+
+
+def draw_rho(data, output, freq, slide=False, stage='full', ylim=None):
+    """One frame of the correlation-coefficient figure.
+
+    stage: 'points' (measured only), 'bands' (+ the CIB prediction), 'full' (+ unweighted delta6).
+    slide=True: 2x the 1712x771 slide body, type sized for >= 32 px on screen, footnotes left to the
+    slide notes, and the CIB frequency named in the legend. Every frame keeps the same layout, so
+    frames stack exactly."""
     style()
     if slide:
         plt.rcParams.update({'font.size': 30, 'axes.labelsize': 30, 'xtick.labelsize': 28, 'ytick.labelsize': 28})
     tick_fs, label_fs = (28, 30) if slide else (TICK, LABEL)
+    show_bands, show_raw = stage != 'points', stage == 'full'
     ell = np.asarray(data['ell'])
     w_px, h_px = (3424, 1542) if slide else (W_PX, 2000)
     fig = plt.figure(figsize=(w_px / DPI, h_px / DPI), dpi=DPI)
@@ -244,22 +261,31 @@ def draw_rho(data, output, slide=False):
                           sharey=axes[0] if axes else None, sharex=axes[0] if axes else None)
         axes.append(ax)
         ax.axhline(0, color=MUTED, lw=1)
-        series = ([('delta6_raw', '#B07A2A', 'before', -.025), ('delta6_vis', dcol, 'after', .025)]
-                  if key == 'delta6' else [(key, gcol if key.startswith('gamma') else dcol, None, 0)])
-        for name, color, tag, off in series:
+        series = ([('delta6_raw', RAW, -.025)] if show_raw else []) + [('delta6_vis', dcol, .025)] \
+            if key == 'delta6' else [(key, gcol if key.startswith('gamma') else dcol, 0)]
+        for name, color, off in series:
             b = data['bins'][name]
             p, sp = np.asarray(b['r_predicted']), np.asarray(b['sigma_predicted'])
             m, sm = np.asarray(b['r_measured']), np.asarray(b['sigma_measured'])
-            ax.fill_between(ell, p - sp, p + sp, color=color, alpha=.22, lw=0, step=None, zorder=1)
-            ax.plot(ell, p, color=color, lw=2, alpha=.9, zorder=2)
+            if show_bands:
+                ax.fill_between(ell, p - sp, p + sp, color=color, alpha=.22, lw=0, zorder=1)
+                ax.plot(ell, p, color=color, lw=2, alpha=.9, zorder=2)
             ax.errorbar(ell * 10 ** off, m, yerr=sm, fmt='o', ms=8, color=color, mec='white', mew=.8,
                         elinewidth=1.8, capsize=0, zorder=3)
         ax.set_title(label, loc='left', fontsize=label_fs + 2, color=INK, pad=6)
         if key == 'delta6':
-            ax.text(*((.2, .99, 'unweighted') if slide else (.98, .97, 'before visibility weighting')), transform=ax.transAxes, ha='left' if slide else 'right', va='top',
-                    fontsize=tick_fs, color='#B07A2A')
-            ax.text(*((.2, .84, 'visibility-weighted') if slide else (.98, .85, 'after visibility weighting')), transform=ax.transAxes, ha='left' if slide else 'right', va='top',
-                    fontsize=tick_fs, color=dcol)
+            if slide:
+                ax.text(.2, .84, 'visibility-weighted', transform=ax.transAxes, ha='left', va='top',
+                        fontsize=tick_fs, color=dcol)
+                if show_raw:
+                    ax.text(.2, .99, 'unweighted', transform=ax.transAxes, ha='left', va='top',
+                            fontsize=tick_fs, color=RAW)
+            else:
+                ax.text(.98, .85, 'after visibility weighting', transform=ax.transAxes, ha='right', va='top',
+                        fontsize=tick_fs, color=dcol)
+                if show_raw:
+                    ax.text(.98, .97, 'before visibility weighting', transform=ax.transAxes, ha='right',
+                            va='top', fontsize=tick_fs, color=RAW)
         ax.set_xscale('log')
         ax.set_xlim(95, 3200)
         ax.set_xticks(*(([100, 300, 1000], ['100', '300', '1000']) if slide else
@@ -273,27 +299,43 @@ def draw_rho(data, output, slide=False):
             ax.set_ylabel(r'$r_\ell$', labelpad=8)
         else:
             plt.setp(ax.get_yticklabels(), visible=False)
-    axes[0].set_ylim(-.12, .42 if slide else .32)
+    axes[0].set_ylim(ylim or (-.12, .42 if slide else .32))
     handles = [Line2D([], [], color=MUTED, marker='o', ls='', ms=9,
                       label=r'measured $r(\mathrm{tracer},\mathrm{ext})$' if slide else r'measured $r(T,\mathrm{ext})$'),
                plt.Rectangle((0, 0), 1, 1, color=MUTED, alpha=.35,
-                             label=(r'via the CIB: $r(\mathrm{tracer},\mathrm{CIB})\,r(\mathrm{CIB},\mathrm{ext})$'
+                             label=(rf'via the {freq} GHz CIB: $r(\mathrm{{tracer}},\mathrm{{CIB}})\,r(\mathrm{{CIB}},\mathrm{{ext}})$'
                                     if slide else
                                     r'predicted contribution from CIB × extinction, $r(T,\mathrm{CIB})\,r(\mathrm{CIB},\mathrm{ext})$'))]
-    fig.legend(handles=handles, loc='upper left', bbox_to_anchor=(.065 if slide else .07, 1.0 if slide else .995), ncol=2, frameon=False,
-               fontsize=label_fs, handletextpad=.4, columnspacing=1.6)
+    legend = fig.legend(handles=handles, loc='upper left', bbox_to_anchor=(.065 if slide else .07, 1.0 if slide else .995),
+                        ncol=2, frameon=False, fontsize=label_fs, handletextpad=.4, columnspacing=1.6)
+    if not show_bands:
+        # Keep the entry's space so the frames stack exactly; it appears with the bands.
+        legend.legend_handles[1].set_alpha(0)
+        legend.get_texts()[1].set_alpha(0)
     if not slide:
-      fig.text(.075, .065,
-             r'$r(a,b)=C^{ab}/\sqrt{C^{aa}C^{bb}}$, no free parameter. Tracer, extinction autos: total observed power; '
-             r'CIB auto: odd × even halves.', fontsize=tick_fs, color=MUTED)
-    if not slide:
-      fig.text(.075, .018,
-             r'Lenz+19 CIB 857 GHz, $N_\mathrm{HI}<2.5\times10^{20}$; $\delta$ visibility-weighted unless marked. '
-             r'Bars and bands: $1\sigma$.', fontsize=tick_fs, color=MUTED)
+        fig.text(.075, .065,
+                 r'$r(a,b)=C^{ab}/\sqrt{C^{aa}C^{bb}}$, no free parameter. Tracer, extinction autos: total observed power; '
+                 r'CIB auto: odd × even halves.', fontsize=tick_fs, color=MUTED)
+        fig.text(.075, .018,
+                 rf'Lenz+19 CIB {freq} GHz, $N_\mathrm{{HI}}<2.5\times10^{{20}}$; $\delta$ visibility-weighted unless marked. '
+                 r'Bars and bands: $1\sigma$.', fontsize=tick_fs, color=MUTED)
     output.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output, dpi=DPI)
     plt.close(fig)
     print('wrote', output)
+
+
+def rho_ylim(datas, floor=(-.12, .42)):
+    """One y-range for every frame: the Napoli range, widened if any frequency's predicted band
+    or measured point (central value) leaves it. Low-l error bars may run off the axes."""
+    lo, hi = floor
+    for data in datas:
+        for name in ('delta1_vis', 'delta5_vis', 'delta6_vis', 'delta6_raw', 'gamma1', 'gamma5', 'gamma6'):
+            b = data['bins'][name]
+            for v in ('r_measured', 'r_predicted'):
+                x = np.asarray(b[v])
+                lo, hi = min(lo, x.min() - .03), max(hi, x.max() + .1)
+    return lo, hi
 
 
 def main():
@@ -303,13 +345,21 @@ def main():
     parser.add_argument('--tag', default=TAG)
     parser.add_argument('--rho', action='store_true', help='draw the correlation-coefficient figure only')
     parser.add_argument('--rho-output', type=Path, default=RHO_OUTPUT)
-    parser.add_argument('--slide', action='store_true', help='with --rho: the slide-sized version, napoli_cib_rho_slide.png')
+    parser.add_argument('--freq', default='857', choices=FREQS, help='with --rho: the CIB map frequency')
+    parser.add_argument('--slide', action='store_true',
+                        help='with --rho: the slide-sized build frames, napoli_cib_rho_slide_<stage>_<freq>.png')
     parser.add_argument('--route-output', type=Path, default=ROUTE_OUTPUT,
                         help='second figure: amplitude through the CIB route (empty string to skip)')
     args = parser.parse_args()
     if args.rho:
-        out = args.rho_output.with_name('napoli_cib_rho_slide.png') if args.slide else args.rho_output
-        draw_rho(json.loads(RHO_INPUT.read_text()), out, slide=args.slide)
+        if not args.slide:
+            draw_rho(json.loads(rho_input(args.freq).read_text()), args.rho_output, args.freq)
+            return
+        datas = {f: json.loads(rho_input(f).read_text()) for f in FREQS}
+        ylim = rho_ylim(datas.values())
+        for stage, freq in FRAMES:
+            out = args.rho_output.with_name(f'napoli_cib_rho_slide_{stage}_{freq}.png')
+            draw_rho(datas[freq], out, freq, slide=True, stage=stage, ylim=ylim)
         return
     parser_data = json.loads(args.input.read_text())
     draw(parser_data, args.output, args.tag)
