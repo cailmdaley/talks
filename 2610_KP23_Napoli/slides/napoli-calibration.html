@@ -1,0 +1,35 @@
+<section data-layout="figure-text" data-split="50">
+  <h2>Calibration: first DR1 m, and n(z) beyond shift + stretch</h2>
+  <figure>
+    <img src="images/napoli_dassignies_nz_bias.png" alt="d'Assignies slide, DES-like calibration scenario: S8–Ωm posteriors with the true n(z) (black, centred on the truth) and with shift-and-stretch corrected n(z) (red, S8 shifted high by roughly 0.06)">
+    <span class="source">d'Assignies, Napoli day 4, p. 14 (credit T. Dumerchat)</span>
+  </figure>
+  <div class="text">
+    <ul>
+      <li><strong>m</strong>, incl. selection: <span class="nowrap">LensMC −4.6 ± 0.4 %</span>, <span class="nowrap">MetaCal −1.8 ± 0.7 %</span></li>
+      <li><strong>n(z)</strong>, ~5 % errors (DR1-like): shift + stretch misses $S_8$</li>
+      <li>no fix yet; sim realism being checked</li>
+    </ul>
+    <p class="accent">κ × δ needs the n(z) width: is shift + stretch enough?</p>
+  </div>
+  <aside class="notes">
+    <h3>Shear calibration (SHECAL, Nicolas Martinet, day 2 afternoon)</h3>
+    <ul>
+      <li>Deck p. 10: "LensMC: m = −0.046 +/− 0.004; MetaCal: m = −0.018 +/− 0.007". Preliminary, 17 MER tiles (step 1b), "with EXT-DES bypass"; TR1 v2 quality cuts except VMPZ (pp. 11–12).</li>
+      <li>From the talk (fresh that morning, includes selection): Martinet's provisional reading is ~2 % selection bias, MetaCal measurement bias ~0, and a ~2 % LensMC model bias. Not yet verified. DR1 requirement in SIM: σ<sub>m</sub> ~ 1.5 × 10⁻³ (deck).</li>
+      <li>The likelihood takes a single m (one σ) and c₁, c₂ per tomographic bin. Colour gradients add Δm ~ 2 × 10⁻³ per bin (Csizi+26). The deep-sim factor-2 gap may be folded in as a ~3 × 10⁻³ m uncertainty.</li>
+      <li>The southern calibration is blocked on reduced EXT-DES data, with no bypass possible (next slide).</li>
+      <li>Martin Kilbinger's reading at the CosmoStat group meeting (20 Oct): the requirement is on the uncertainty of m, not its value, and the sims use one PSF for both methods with no PSF error, so the quoted errors are a lower limit.</li>
+      <li>Day 3, late session: the 3×2pt prior table has $m \sim \mathcal{N}(0, 0.01)$, called "quite pessimistic"; ~0.007 was already being reported.</li>
+    </ul>
+    <h3>Redshift parametrisation (William d'Assignies, day 4; from the deck, not transcribed)</h3>
+    <ul>
+      <li>Compared shift-and-stretch (n(z) moments 1–2) with DES Y6-style n(z) modes. For cosmic shear the first mode is essentially a mean-z shift.</li>
+      <li>Forecasts with Dumerchat's calibration sims: in a KiDS-like case (sub-1 % systematic error) shifts suffice. In the "DES-like (Euclid DR1)" case, systematic error of order 5 %, "correcting the estimated n(z) by the difference in moments is not enough to recover the true cosmology, even with broad priors on shift and stretch" (p. 14). In the figure, $S_8$ moves from about 0.83 to about 0.89.</li>
+      <li>Next steps on the deck (p. 15): first check the realism of the simulation (origin of the tails problem); if confirmed, either reweight the wide sample, or go beyond moment-1 and 2 corrections, where "with the current pipeline there is no straightforward solution such as 'let's use DESY6 modes method'".</li>
+      <li>Day 3, late session: the 3×2pt baseline is shift only, no stretch (contested); one participant said LSST preparation work showed shift-only is "very, very optimistic" and that one needs to go beyond shift + width.</li>
+    </ul>
+    <h3>Why it matters to KP2-3</h3>
+    <p>κ × γ is linear in $(1+m)$, which the lens ratio checks (later slide), and it sets how the κ crosses' m prior is centred. κ × δ depends on the lens n(z) width, so the stretch is not optional there; the d'Assignies result says the stretch may not be enough at DR1 n(z) errors. The TR1 chains in this talk use shift + stretch per bin.</p>
+  </aside>
+</section>
