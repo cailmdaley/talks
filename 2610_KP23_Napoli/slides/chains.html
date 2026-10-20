@@ -1,4 +1,4 @@
-<section data-preliminary data-layout="figure-text" data-split="50" data-variant-axes="cmb">
+<section data-preliminary="very" data-layout="figure-text" data-split="50" data-variant-axes="cmb">
   <h2>First <span class="blind">blinded</span> TR1 posteriors, probe by probe</h2>
   <figure>
     <img src="images/kp23_chains_spt_1.png" data-alt='{"lensmc|act": "images/kp23_chains_act_1.png"}' alt="Blinded posterior of S8 against Omega_m from the CMB-lensing crosses alone">
@@ -12,11 +12,31 @@
       <li>full nuisance model, 44 parameters</li>
       <li>nested sampling (nautilus)</li>
     </ul>
+    <p class="small prelim">very preliminary: the full vector is not a good fit (δδ)</p>
     <p class="source">TR1 v1.1 LensMC × <span data-variant="lensmc|spt">SPT-3G</span><span data-variant="lensmc|act">ACT DR6</span></p>
   </div>
   <aside class="notes">
     <h3>What is plotted</h3>
     <p>Blinded (cmbx_dr1_a) posteriors on Euclid TR1 v1.1 LensMC × SPT-3G (the variant control switches to ACT DR6), shown at their blinded values: every run fits the same blinded data vector (an additive cosmology-shift blind on the spectra), so absolute $S_8$ and $\Omega_\mathrm{m}$ carry the blind's unknown shift while the relative positions of the probe combinations are meaningful. Contours are 68 % and 95 %. Built up as κγ + κδ (κ-only), then + γδ, then + γγ + δδ. Sampler: nautilus nested sampling on the production Cobaya model, reweighted to the production Limber integration. 44 sampled parameters: five cosmological ($\ln 10^{10}A_s$, $\omega_c$, $\omega_b$, $h$, $n_s$), $\log T_\mathrm{AGN}$, NLA $A_\mathrm{IA}$ and $\eta_\mathrm{IA}$, per-bin source and lens n(z) shift and stretch, per-bin $m$ and linear bias, on the priors of the priors slide (the 3×2pt proposal, with the n(z) stretch and fixed magnification slopes).</p>
+    <h3>Parameters and priors</h3>
+    <table>
+      <tr><th>parameter</th><th>prior</th><th>source</th></tr>
+      <tr><td>$\ln(10^{10}A_\mathrm{s})$</td><td>U(1.609, 3.664)</td><td>3×2pt proposal p. 54</td></tr>
+      <tr><td>$\omega_\mathrm{c}$</td><td>U(0.085, 0.2)</td><td>p. 54</td></tr>
+      <tr><td>$\omega_\mathrm{b}$</td><td>N(0.02200, 0.00055), BBN</td><td>p. 54</td></tr>
+      <tr><td>$h$</td><td>U(0.40, 0.91)</td><td>p. 54 ($H_0$ 40–91)</td></tr>
+      <tr><td>$n_\mathrm{s}$</td><td>N(0.96, 0.042)</td><td>p. 54 (10× Planck width)</td></tr>
+      <tr><td>$m_\nu$</td><td>fixed 0.06 eV</td><td>p. 54</td></tr>
+      <tr><td>$\log_{10}T_\mathrm{AGN}$ (HMcode2020)</td><td>U(7.3, 8.3)</td><td>pp. 55, 70; may rise to 8.5</td></tr>
+      <tr><td>NLA-z $A_\mathrm{IA}$, $\eta_\mathrm{IA}$</td><td>U(0, 3), U(0, 4); $z_0 = 0.62$</td><td>pp. 55, 70</td></tr>
+      <tr><td>lens $b_i$ (6, linear)</td><td>U(0.8, 4)</td><td>p. 55</td></tr>
+      <tr><td>lens $\Delta z_i$ (6)</td><td>N(0, σ), σ = 0.013 … 0.023</td><td>p. 55</td></tr>
+      <tr><td>source $\Delta z_i$ (6)</td><td>N(0, σ), σ = 0.014 … 0.028</td><td>p. 55</td></tr>
+      <tr><td>lens, source stretch (12)</td><td>N(1, 0.1)</td><td>departure: 3×2pt has none; the v1.1 lens data pull stretches to 0.6–0.8</td></tr>
+      <tr><td>$m_i$ (6)</td><td>N(0, 0.01)</td><td>pp. 55, 70</td></tr>
+      <tr><td>magnification $s_i$</td><td>fixed measured slopes 0.17 … 0.64</td><td>departure: 3×2pt samples α</td></tr>
+    </table>
+    <p>44 sampled: 5 cosmology + $T_\mathrm{AGN}$ + 2 IA + 24 n(z) + 6 m + 6 bias. $\sigma_8$, $S_8$, $\Omega_\mathrm{m}$ derived. Pages are the Napoli splinter deck; the full record is <code>prior_sources</code> in <code>workflow/scripts/tr1_production_chain_config.json</code>.</p>
     <h3>Numbers</h3>
     <p>Blinded $S_8$, mean ± σ. SPT-3G: κ-only 0.841 ± 0.056, κ+GL 0.767 ± 0.028, full 0.826 ± 0.012 (κ+GL 0.059 below the full mean). ACT DR6: 0.895 ± 0.069, 0.820 ± 0.035, 0.829 ± 0.013. The σ(S₈) numbers on the slide are coloured as their contours. Nested shifts in units of $\sigma_n = \sqrt{|\sigma_\mathrm{sub}^2 - \sigma_\mathrm{ref}^2|}$ are in the chains fiber.</p>
     <h3>Caveats</h3>

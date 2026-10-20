@@ -1,4 +1,4 @@
-"""KP2-3 update: blinded TR1 posteriors, kappa-only -> kappa+GL -> 3x2pt+kappa, as build frames.
+"""KP2-3 update: blinded TR1 posteriors, kappa-only -> kappa+GL -> 3x2pt -> 5x2pt (3x2pt + kappa), as build frames.
 
 Reads the nautilus posteriors (posterior_exact.npz: production-Limber reweighted) of the blinded
 TR1 v1.1 runs in /leonardo_scratch/large/userexternal/cdaley00/tr1-chains/nested/ and draws the
@@ -30,7 +30,8 @@ OUT = HERE.parent / 'images'
 INK, MUTED = '#111418', '#535B67'
 RUNS = [('kappa_only', r'$\kappa\gamma + \kappa\delta$', '#1D6C78'),
         ('kappa_gl', r'$+\ \gamma\delta$', '#9C7414'),
-        ('full_rep', r'$+\ \gamma\gamma + \delta\delta$  (3×2pt + $\kappa$)', '#2E417C')]
+        ('3x2pt_rep', r'3×2pt: $\gamma\gamma + \gamma\delta + \delta\delta$', '#6E3A8A'),
+        ('full_rep', r'5×2pt: 3×2pt + $\kappa\gamma + \kappa\delta$', '#2E417C')]
 CMB = {'spt': 'tr1', 'act': 'tr1_act'}
 W_PX, H_PX, DPI = 2054, 1542, 200
 XLIM, YLIM = (0.1, 1.4), (0.65, 1.13)
@@ -81,7 +82,7 @@ def draw(cmb):
     stats = {}
     for k in range(1, len(RUNS) + 1):
         fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
-        ax = fig.add_axes([0.15, 0.2, 0.82, 0.68])
+        ax = fig.add_axes([0.15, 0.17, 0.82, 0.62])
         handles = []
         for i, (v, label, color) in enumerate(RUNS[:k]):
             om, s8, w = load(f'{pre}_{v}')
@@ -95,8 +96,8 @@ def draw(cmb):
         ax.set_yticks([0.7, 0.8, 0.9, 1.0, 1.1])
         ax.set_xlabel(r'$\Omega_\mathrm{m}$')
         ax.set_ylabel(r'$S_8$ (blinded)', labelpad=10)
-        # Above the axes, one row, so no entry sits on a contour.
-        ax.legend(handles=handles, loc='lower left', bbox_to_anchor=(-0.02, 1.02), ncol=3, frameon=False,
+        # Above the axes, two rows, so no entry sits on a contour.
+        ax.legend(handles=handles, loc='lower left', bbox_to_anchor=(-0.02, 1.02), ncol=2, frameon=False,
                   fontsize=28, handlelength=1.2, handletextpad=0.4, columnspacing=1.2, borderaxespad=0)
         out = OUT / f'kp23_chains_{cmb}_{k}.png'
         fig.savefig(out, dpi=DPI)

@@ -9,6 +9,7 @@
     <tr class="hl"><td>magnification</td><td>$\alpha_i$ sampled</td><td>fixed measured slopes</td></tr>
     <tr><td>binning</td><td>$\sqrt{\ell}$, $\ell$ 10–3000</td><td>15 log bands, $\ell$ 100–3000</td></tr>
   </table>
+  <p class="small"><span class="accent">n(z):</span> at DR1-like n(z) errors even shift + stretch misses $S_8$ (d'Assignies) &nbsp;·&nbsp; <span class="muted">first DR1 m (SHECAL): LensMC −4.6 %, MetaCal −1.8 %</span></p>
   <span class="source">Splinter deck pp. 53–55, 70; the 3×2pt table is a proposal still being updated</span>
   <aside class="detail" data-label="Cosmology priors" data-layout="figure">
     <h2>The splinter's cosmology priors</h2>
@@ -28,6 +29,14 @@
     </ul>
     <h3>The TR1 chains in this talk</h3>
     <p>KP2-3 has not set TR1 priors. The chain profile behind the posteriors in this talk (<code>workflow/scripts/tr1_production_chain_config.json</code>) adopted most of the splinter's table after Napoli, each departure from its earlier choices kept as a named variant. Two differences remain. The n(z) stretch stays, $\mathcal{N}(1, 0.1)$, because on the v1.1 products the lens data pull the stretches to 0.6–0.8 and reject shift-only (variant <code>shift_only</code> fixes it). Magnification uses fixed measured slopes until the $\alpha$ convention is pinned. The table's $T_\mathrm{AGN}$ upper bound is 8.3; the day-3 session called [7.3, 8.5] the most up-to-date range, and the chains follow the table until it is updated.</p>
+    <h3>The n(z) line: d'Assignies, day 4 (from the deck, not transcribed)</h3>
+    <ul>
+      <li>Compared shift + stretch (n(z) moments 1–2) with DES Y6-style n(z) modes, on Dumerchat's calibration sims. KiDS-like case (sub-1 % systematic error): shifts suffice. "DES-like (Euclid DR1)" case, ~5 % systematic error: "correcting the estimated n(z) by the difference in moments is not enough to recover the true cosmology, even with broad priors on shift and stretch" (p. 14); $S_8$ moves from about 0.83 to about 0.89.</li>
+      <li>Next steps (p. 15): first check the sims' realism (origin of the tails problem); there is "no straightforward solution such as 'let's use DESY6 modes method'". Provisional, no fix on the table. The figure is the backup slide "Calibration".</li>
+      <li>Day 3, late session: one participant said LSST preparation work showed shift-only is "very, very optimistic" and that one needs to go beyond shift + width.</li>
+    </ul>
+    <h3>The m line: SHECAL, Nicolas Martinet, day 2</h3>
+    <p>Deck p. 10: "LensMC: m = −0.046 +/− 0.004; MetaCal: m = −0.018 +/− 0.007", preliminary, 17 MER tiles, including selection. The 3×2pt prior $m \sim \mathcal{N}(0, 0.01)$ is centred on zero, so these set where the κ crosses' m prior is centred, not only its width. Details in backup.</p>
     <h3>Why it matters to KP2-3</h3>
     <p>These are the defaults a joint κ + 3×2pt analysis inherits, and a starting point for KP2-3's own choice. Two differ from the chains here: their n(z) model has a shift and a stretch per bin, and their binning (15 log bands, ℓ = 100–3000) has about three bands above ℓ = 1500, the resolution problem the √ℓ switch addresses. Cail's working stance is to build on the 3×2pt choices and depart only where κ brings something in; the group has not decided.</p>
   </aside>
