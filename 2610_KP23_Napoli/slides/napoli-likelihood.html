@@ -15,14 +15,14 @@
   <aside class="notes">
     <h3>The figure</h3>
     <p>Left half of the "Final Words" slide of the CLOE-org DR1-readiness talk (day 2, 13 Oct; speaker not recorded on the deck). Source: <code>slides/27893.pdf</code>, p. 18.</p>
-    <h3>What was said</h3>
+    <h3>Sources</h3>
     <ul>
-      <li>Day 2: "cloelib: the κκ, κ×GC and κ×WL spectra are merged." A branch, feature/cmb-lensing-pseudo-cl, computes pseudo-$C_\ell$ through mixing matrices and works, "but no pipeline produces CMB-lensing mixing matrices yet". "cloelike: not yet implemented, because no CMBX data products are cloe-compatible." Still open: how to handle the κκ noise bias. cloelib v0.11 is being frozen and is "almost the DR1 pipeline".</li>
+      <li>Day 2, CLOE-org: the κκ, κ × GC and κ × WL spectra are merged into cloelib. A branch, <code>feature/cmb-lensing-pseudo-cl</code>, computes pseudo-$C_\ell$ through mixing matrices and works, but no pipeline produces CMB-lensing mixing matrices yet. cloelike has no CMBX part yet, because no CMBX data products are CLOE-compatible. Still open: how to handle the κκ noise bias. cloelib v0.11 is being frozen as almost the DR1 pipeline.</li>
       <li>Day 2: Cail pointed Raphaël Kou at the GLASS-mock full output product, and he is converting it to CLOE format.</li>
       <li>Day 3: TATT-M parameters and priors available by Christmas. Late session: TATT-M currently takes about 4× longer than NLA; emulators already exist that convert $A_s \leftrightarrow \sigma_8$ in fractions of a millisecond. DR2 session (Navarro-Gironés): chains are slow, NLA ~40 h, TATT ~142 h on the deck.</li>
       <li>Emulators: Cail spoke with Ivan Sladoljev on 14 Oct; he is keen to build emulators for CMBX. Marina Migliaccio proposed he speak at the CMBX call on 29 Oct to decide how to proceed, possibly with a group working with him directly.</li>
     </ul>
-    <h3>Why it matters to KP2-3</h3>
+    <h3>Context</h3>
     <p>The KP2-3 likelihood plan layers on CLOE and euclidlib. The CMB-lensing theory is in cloelib, and the CMBX side is ready to be tested against CMBX data products, starting with the GLASS 6×2pt mocks in CLOE format. The full-nuisance nested runs on TR1 shown later take hours to a day per vector, so a move to TATT-M without an emulator multiplies an already long run. Likelihood design is Louis and Margherita's.</p>
   </aside>
 </section>

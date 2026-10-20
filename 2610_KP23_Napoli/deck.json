@@ -30,13 +30,13 @@
     },
     {
       "title": "Napoli takeaways",
-      "outline": "What the Napoli week means for KP2-3: timelines, TR1 Cycle 2 and 3, 3×2pt scale cuts, priors and the n(z) model, CLOE and emulators.",
+      "outline": "What the Napoli week means for KP2-3: timelines and data products, 3×2pt scale cuts, priors, shear and n(z) calibration, CLOE and emulators.",
       "slides": [
         "napoli-timeline",
-        "napoli-tr1",
         "napoli-scale-cuts",
         "napoli-scale-cut-methods",
         "napoli-baseline",
+        "napoli-calibration",
         "napoli-likelihood"
       ]
     },
@@ -62,11 +62,10 @@
     },
     {
       "title": "Backup",
-      "outline": "DR2 on DES, EXT photometry in the south, shear and n(z) calibration, the pipeline overview and the systematics-template overview.",
+      "outline": "DR2 on DES, EXT photometry in the south, the pipeline overview and the systematics-template overview.",
       "slides": [
         "napoli-dr2-des",
         "napoli-ext-south",
-        "napoli-calibration",
         "pipeline",
         "systematics-overview"
       ]

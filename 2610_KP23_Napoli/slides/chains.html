@@ -12,7 +12,8 @@
       <li>full nuisance model, 44 parameters</li>
       <li>nested sampling (nautilus)</li>
     </ul>
-    <p class="small prelim">very preliminary: σ optimistic; full vector not a good fit (δδ)</p>
+    <p class="accent fragment" data-fragment-index="2">full vector: lens n(z) stretch 0.61–0.68 in bins 2–5, prior 1 ± 0.1</p>
+    <p class="small prelim">very preliminary: ad hoc priors; δδ not a good fit</p>
     <p class="source">TR1 v1.1 LensMC × <span data-variant="lensmc|spt">SPT-3G</span><span data-variant="lensmc|act">ACT DR6</span></p>
   </div>
   <aside class="notes">
@@ -47,6 +48,8 @@
       <li>The model does not fit (Caveats), so σ belongs to a model the data reject.</li>
     </ul>
     <p>The mock gate (four GLASS seeds, the same cosmology, no blind) recovers the truth within ~1σ, but four seeds cannot test whether σ is calibrated.</p>
+    <h3>The data want an n(z) stretch</h3>
+    <p>With the full vector, the lens n(z) stretches move far from their $\mathcal{N}(1, 0.1)$ prior and are measured by the data: bins 2–5 at 0.61–0.68 (posterior σ 0.03–0.05), bin 1 at 1.40 ± 0.07, bin 6 at 1.0 (SPT-3G and ACT DR6 alike; the source stretches stay prior-dominated). κ-only and κ + γδ leave them at the prior, so the pull comes from δδ. On an earlier blinded TR1 × SPT-3G product a shift-only lens model was rejected outright (best-fit χ² 778 with shifts only, 588 with the stretches freed), which is why the stretch stays despite the 3×2pt proposal's shift-only baseline. On Cycle 2 with the DR1 n(z) the lens n(z) stop narrowing.</p>
     <h3>Caveats</h3>
     <ul>
       <li>The full vector fails goodness of fit at its best fit on v1.1 ($\chi^2$ 748/605), driven by δδ: autos high, distant crosses low, the v1.1 lens n(z) pattern. On Cycle 2 with the DR1 n(z) the lens n(z) stop narrowing, the γδ band-1 excess vanishes, and a δδ excess remains in the distant crosses.</li>
