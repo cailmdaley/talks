@@ -7,10 +7,14 @@
 //   node house/build.mjs 2610_Napoli_CMBX --out /tmp/site
 //   node 2610_Napoli_CMBX/private/snapshot_systematics.cjs /tmp/site/2610_Napoli_CMBX/index.html
 //   node house/build.mjs 2610_Napoli_CMBX                  # again, with the new frames
+//
+// An optional second argument names the frames (<prefix>_1.png, ...; default
+// systematics), for a deck whose slide renders private/<prefix>_app.json.
 const path = require('path');
 const TALKS = path.resolve(__dirname, '..', '..');
 const puppeteer = require(require.resolve('puppeteer', { paths: [TALKS] }));
 const deck = path.resolve(process.argv[2]);
+const prefix = process.argv[3] || 'systematics';
 (async () => {
   const b = await puppeteer.launch({ args: ['--no-sandbox', '--allow-file-access-from-files', '--font-render-hinting=none'] });
   const p = await b.newPage();
@@ -26,7 +30,7 @@ const deck = path.resolve(process.argv[2]);
     }, k);
     await new Promise(r => setTimeout(r, 300));
     const svg = await p.$('#systematics-triangle svg.app-view');
-    const out = path.join(__dirname, `systematics_${k + 1}.png`);
+    const out = path.join(__dirname, `${prefix}_${k + 1}.png`);
     await svg.screenshot({ path: out });
     console.log('wrote', out);
   }

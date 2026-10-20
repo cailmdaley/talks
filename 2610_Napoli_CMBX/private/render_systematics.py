@@ -22,9 +22,17 @@ the CMB map, a lens bin on neither):
 Every axis is the union over the variants on disk, so the deck's toggles move only
 the points.
 
+With --even-bars, each cross panel shows l^n C_l^{aS} +- l^n sigma on its linear axis,
+the integer n (-1..4) for each template and tracer the one that makes the error bars
+most nearly equal in size across the 15 bands (least spread of log l^n sigma, pooled
+over the variants), so the eye reads every band against a bar of about one size.
+Without it the panels show l C_l. --prefix names the outputs (<prefix>_app.json); the
+report's fallback image is written only under the default prefix.
+
 Run in the cmbx container, after make_systematics.py:
-  app python private/render_systematics.py
+  app python private/render_systematics.py [--even-bars] [--prefix systematics]
 """
+import argparse
 import json
 import os
 
@@ -41,7 +49,6 @@ import render_dv_vector as rdv  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "systematics.json")
-OUT = os.path.join(HERE, "systematics_app.json")
 FALLBACK = os.path.join(HERE, "..", "..", "images", "napoli_systematics_triangle.png")
 plt.rcParams["svg.hashsalt"] = "systematics"
 
@@ -186,7 +193,19 @@ def sym_axis(lo, hi):
     return (lo - pad, hi + pad), ticks
 
 
-def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, glyphs):
+def even_power(ell, ss):
+    """The integer n in -1..4 whose l^n sigma_l is most nearly constant over the bands,
+    pooled over the variants' errors ss (each l sigma, as stored)."""
+    spread = {n: np.mean([np.std(np.log(ell ** (n - 1) * np.abs(s))) for s in ss]) for n in range(-1, 5)}
+    return min(spread, key=spread.get)
+
+
+def power_label(n, e):
+    lc = {0: r"C_\ell", 1: r"\ell C_\ell"}.get(n, rf"\ell^{{{n}}} C_\ell")
+    return rf"${lc}\;[10^{{{-e}}}]$" if e else rf"${lc}$"
+
+
+def cross_panel(ell, c, s, ylim, ticks, e, n, tracer, tlabel, chi2, coh, flag, glyphs):
     fw, fh = CROSS_W, CROSS_H
     fig = plt.figure(figsize=(fw / 72, fh / 72), dpi=72)
     fs = FS
@@ -194,11 +213,12 @@ def cross_panel(ell, c, s, ylim, ticks, e, tracer, tlabel, chi2, coh, flag, glyp
     ax = rdv.axes_at(fig, 112, 82, fw - 132, fh - 128, fw, fh)
     rdv.frame(ax, ylim, ticks, tick_len=6, lw_frame=0.9)
     ax.axhline(0, color=FRAME, lw=0.9 * 0.6, alpha=0.45, zorder=1)
-    rdv.errorbars(ax, ell, np.asarray(c) * f, np.asarray(s) * f, 1.2, 5.2)
+    g = f * ell ** (n - 1)      # c and s are stored as l C and l sigma
+    rdv.errorbars(ax, ell, np.asarray(c) * g, np.asarray(s) * g, 1.2, 5.2)
     ax.tick_params(labelsize=fs, labelleft=True, labelbottom=True)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: rdv.fmt(v)))
     ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"$10^{{{int(round(np.log10(v)))}}}$"))
-    ax.set_ylabel(rf"$\ell C_\ell\;[10^{{-{e}}}]$", fontsize=fs, labelpad=4)
+    ax.set_ylabel(power_label(n, e), fontsize=fs, labelpad=4)
     fig.text(112 / fw, 1 - 4 / fh, rf"${rdv.sym(tracer)}\times S$, {tlabel.lower()}", fontsize=fs + 2, va="top")
     fig.text(112 / fw, 1 - 42 / fh, pte_text(chi2) + (r" (diag.)" if tracer == "kappa" else ""), fontsize=fs,
              va="top", ha="left", color=FLAG if flag else MUTED, weight="bold" if flag else "normal")
@@ -237,6 +257,11 @@ def xcard(ell, x, sx, a, b, tlabel, chi2, glyphs):
 
 
 def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--even-bars", action="store_true", help="scale each cross panel by the l^n that evens its bars")
+    ap.add_argument("--prefix", default="systematics", help="output name: private/<prefix>_app.json")
+    args = ap.parse_args()
+    out_path = os.path.join(HERE, f"{args.prefix}_app.json")
     src = json.load(open(SRC))
     ell = np.asarray(src["ell"], float)
     variants = list(src["variants"])
@@ -254,19 +279,22 @@ def main():
         for tr in tracers:
             cs = [np.asarray(src["variants"][vk][t]["c"][tr]) for vk in variants]
             ss = [np.asarray(src["variants"][vk][t]["s"][tr]) for vk in variants]
+            n = even_power(ell, ss) if args.even_bars else 1
+            cs = [c * ell ** (n - 1) for c in cs]
+            ss = [s * ell ** (n - 1) for s in ss]
             m = max(np.max(np.abs(c) + s) for c, s in zip(cs, ss))
             e = int(-np.floor(np.log10(m)))
             lo = min(np.min(c - s) for c, s in zip(cs, ss)) * 10 ** e
             hi = max(np.max(c + s) for c, s in zip(cs, ss)) * 10 ** e
             ylim, ticks = sym_axis(lo, hi)
-            ax_of[tr] = (e, ylim, ticks)
+            ax_of[tr] = (e, ylim, ticks, n)
         for vk in variants:
             per = src["variants"][vk][t]
             shear, cmb = vk.split("|")
             title = f"TR1 {rdv_name(shear, cmb)}, contamination by one template"
             fig = overview(per, ell, title, "", glyphs)
             out["over"][t][vk] = rdv.svg_of(fig, W, H, glyphs)
-            if t == src["templates"][0][0] and vk == variants[0]:
+            if t == src["templates"][0][0] and vk == variants[0] and args.prefix == "systematics":
                 fig = overview(per, ell, title, f"Template: {tlabel.lower()}", {})
                 fig.savefig(FALLBACK, dpi=144, transparent=False, facecolor="white")
                 plt.close(fig)
@@ -279,10 +307,11 @@ def main():
             for tr in tracers:
                 cid = f"{tr}|{dep((tr,), vk)}"
                 if cid not in out["crossp"][t]:
-                    e, ylim, ticks = ax_of[tr]
-                    out["crossp"][t][cid] = cross_panel(ell, per["c"][tr], per["s"][tr], ylim, ticks, e, tr,
+                    e, ylim, ticks, n = ax_of[tr]
+                    out["crossp"][t][cid] = cross_panel(ell, per["c"][tr], per["s"][tr], ylim, ticks, e, n, tr,
                                                         tlabel, per["chi2"][tr], per["coh"][tr],
                                                         tr in per["flag"], glyphs)
+        print(t, "n:", " ".join(f"{tr}={ax_of[tr][3]}" for tr in tracers))
         print(t, f"over {sum(len(v) for v in out['over'][t].values()) / 1024:.0f} kB,",
               f"cards {sum(len(v) for v in out['xcard'][t].values()) / 1024:.0f} kB,",
               f"crosses {sum(len(v) for v in out['crossp'][t].values()) / 1024:.0f} kB")
@@ -298,9 +327,9 @@ def main():
     out["glyphs"] = "".join(glyphs.values()).replace("xlink:href=", "href=")
     out["css"] = "".join(f".{c}{{{s}}}" for s, c in STYLES.items())
     text = json.dumps(out, separators=(",", ":"))
-    open(OUT, "w").write(text)
-    print(f"glyphs {len(out['glyphs']) / 1024:.0f} kB; wrote {OUT} ({len(text) / 1024:.0f} kB); "
-          f"fallback {os.path.normpath(FALLBACK)}")
+    open(out_path, "w").write(text)
+    print(f"glyphs {len(out['glyphs']) / 1024:.0f} kB; wrote {out_path} ({len(text) / 1024:.0f} kB)"
+          + (f"; fallback {os.path.normpath(FALLBACK)}" if args.prefix == "systematics" else ""))
 
 
 def rdv_name(shear, cmb):
