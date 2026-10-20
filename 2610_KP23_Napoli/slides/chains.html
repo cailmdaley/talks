@@ -1,23 +1,24 @@
 <section data-preliminary data-layout="figure-text" data-variant-axes="cmb">
   <h2>First <span class="blind">blinded</span> TR1 posteriors, probe by probe</h2>
   <figure>
-    <img src="images/kp23_chains_spt_1.png" data-alt='{"lensmc|act": "images/kp23_chains_act_1.png"}' alt="Blinded posterior of Delta S8 against Delta Omega_m from the CMB-lensing crosses alone, measured from the 3x2pt plus kappa posterior mean">
-    <img class="fragment" src="images/kp23_chains_spt_2.png" data-alt='{"lensmc|act": "images/kp23_chains_act_2.png"}' alt="The same with galaxy-galaxy lensing added">
-    <img class="fragment" src="images/kp23_chains_spt_3.png" data-alt='{"lensmc|act": "images/kp23_chains_act_3.png"}' alt="The same with the full 3x2pt plus kappa vector">
+    <img src="images/kp23_chains_spt_1.png" data-alt='{"lensmc|act": "images/kp23_chains_act_1.png"}' alt="Blinded posterior of S8 against Omega_m from the CMB-lensing crosses alone">
+    <img class="fragment" data-fragment-index="1" src="images/kp23_chains_spt_2.png" data-alt='{"lensmc|act": "images/kp23_chains_act_2.png"}' alt="The same with galaxy-galaxy lensing added">
+    <img class="fragment" data-fragment-index="2" src="images/kp23_chains_spt_3.png" data-alt='{"lensmc|act": "images/kp23_chains_act_3.png"}' alt="The same with the full 3x2pt plus kappa vector">
   </figure>
   <div class="text">
     <ul>
-      <li>$\sigma(S_8)$: 0.056 → 0.028 → 0.012</li>
+      <li class="nowrap" data-variant="lensmc|spt">$\sigma(S_8)$ <span class="chain-k">0.056</span><span class="fragment" data-fragment-index="1"> → <span class="chain-gl">0.028</span></span><span class="fragment" data-fragment-index="2"> → <span class="chain-full">0.012</span></span></li>
+      <li class="nowrap" data-variant="lensmc|act">$\sigma(S_8)$ <span class="chain-k">0.069</span><span class="fragment" data-fragment-index="1"> → <span class="chain-gl">0.035</span></span><span class="fragment" data-fragment-index="2"> → <span class="chain-full">0.013</span></span></li>
       <li>full nuisance model, 44 parameters</li>
       <li>nested sampling (nautilus)</li>
     </ul>
-    <p class="source">TR1 v1.1 LensMC × SPT-3G · shifts from the 3×2pt+κ mean</p>
+    <p class="source">TR1 v1.1 LensMC × <span data-variant="lensmc|spt">SPT-3G</span><span data-variant="lensmc|act">ACT DR6</span></p>
   </div>
   <aside class="notes">
     <h3>What is plotted</h3>
-    <p>Blinded (cmbx_dr1_a) posteriors on Euclid TR1 v1.1 LensMC × SPT-3G (the variant control switches to ACT DR6), shown as shifts $\Delta S_8$, $\Delta\Omega_\mathrm{m}$ from the posterior mean of the full 3×2pt+κ vector, so no blinded absolute value appears. Contours are 68 % and 95 %. Built up as κγ + κδ (κ-only), then + γδ, then + γγ + δδ. Sampler: nautilus nested sampling on the production Cobaya model, reweighted to the production Limber integration. 44 sampled parameters: five cosmological ($\ln 10^{10}A_s$, $\omega_c$, $\omega_b$, $h$, $n_s$), $\log T_\mathrm{AGN}$, NLA $A_\mathrm{IA}$ and $\eta_\mathrm{IA}$, per-bin source and lens n(z) shift and stretch, per-bin $m$ and linear bias, on the priors of the previous slide.</p>
+    <p>Blinded (cmbx_dr1_a) posteriors on Euclid TR1 v1.1 LensMC × SPT-3G (the variant control switches to ACT DR6), shown at their blinded values: every run fits the same blinded data vector (an additive cosmology-shift blind on the spectra), so absolute $S_8$ and $\Omega_\mathrm{m}$ carry the blind's unknown shift while the relative positions of the probe combinations are meaningful. Contours are 68 % and 95 %. Built up as κγ + κδ (κ-only), then + γδ, then + γγ + δδ. Sampler: nautilus nested sampling on the production Cobaya model, reweighted to the production Limber integration. 44 sampled parameters: five cosmological ($\ln 10^{10}A_s$, $\omega_c$, $\omega_b$, $h$, $n_s$), $\log T_\mathrm{AGN}$, NLA $A_\mathrm{IA}$ and $\eta_\mathrm{IA}$, per-bin source and lens n(z) shift and stretch, per-bin $m$ and linear bias, on the priors of the priors slide (the 3×2pt proposal, with the n(z) stretch and fixed magnification slopes).</p>
     <h3>Numbers</h3>
-    <p>SPT-3G: $\sigma(S_8)$ 0.056, 0.028, 0.012; κ+GL sits $\Delta S_8 = -0.059$ below the full mean and κ-only +0.015 above. ACT DR6: $\sigma(S_8)$ 0.069, 0.035, 0.013; κ+GL −0.009, κ-only +0.066. Nested shifts in units of $\sigma_n = \sqrt{|\sigma_\mathrm{sub}^2 - \sigma_\mathrm{ref}^2|}$ are in the chains fiber.</p>
+    <p>Blinded $S_8$, mean ± σ. SPT-3G: κ-only 0.841 ± 0.056, κ+GL 0.767 ± 0.028, full 0.826 ± 0.012 (κ+GL 0.059 below the full mean). ACT DR6: 0.895 ± 0.069, 0.820 ± 0.035, 0.829 ± 0.013. The σ(S₈) numbers on the slide are coloured as their contours. Nested shifts in units of $\sigma_n = \sqrt{|\sigma_\mathrm{sub}^2 - \sigma_\mathrm{ref}^2|}$ are in the chains fiber.</p>
     <h3>Caveats</h3>
     <ul>
       <li>The full vector fails goodness of fit at its best fit on v1.1 ($\chi^2$ 748/605), driven by δδ: autos high, distant crosses low, the v1.1 lens n(z) pattern. On Cycle 2 with the DR1 n(z) the lens n(z) stop narrowing, the γδ band-1 excess vanishes, and a δδ excess remains in the distant crosses.</li>

@@ -24,12 +24,13 @@
       "title": "Opening",
       "outline": "A report to KP2-3 after the Napoli WLSWG × OU-SHE meeting.",
       "slides": [
-        "title"
+        "title",
+        "overview"
       ]
     },
     {
       "title": "Napoli takeaways",
-      "outline": "What the Napoli week means for KP2-3: the DR1 calendar, TR1 Cycle 2 and 3, 3×2pt scale cuts and priors, CLOE.",
+      "outline": "What the Napoli week means for KP2-3: timelines, TR1 Cycle 2 and 3, 3×2pt scale cuts and priors, CLOE.",
       "slides": [
         "napoli-timeline",
         "napoli-tr1",

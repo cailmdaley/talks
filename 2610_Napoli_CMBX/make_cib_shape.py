@@ -7,7 +7,7 @@ amplitude against the Lenz et al. (2019) CIB x extinction shape, with that shape
 Run: app python docs/talks/2610_Napoli_CMBX/make_cib_shape.py [--rho [--freq F | --slide]]
 --rho draws napoli_cib_rho.png from cib_rho_<F>.json: measured r(T, extinction) against the
 parameter-free CIB-route prediction r(T, CIB) r(CIB, extinction), per band. --rho --slide draws
-the slide's build frames (points, + CIB bands, + unweighted delta6 at 857 GHz, then 545 and 353 GHz)
+the slide's build frames (points, + CIB bands, + unweighted density at 857 GHz, then 545 and 353 GHz)
 on one shared canvas.
 """
 from __future__ import annotations
@@ -223,11 +223,11 @@ def draw_route(data, output, tag=TAG):
 RHO_DIR = ROOT / 'results/scratch/napoli/cib_shape'
 RHO_OUTPUT = Path(HERE).parent / 'images/napoli_cib_rho.png'
 FREQS = ('857', '545', '353')
-# Build order on the slide: measured points, then the CIB prediction, then unweighted delta6;
+# Build order on the slide: measured points, then the CIB prediction, then unweighted density;
 # the last two frames swap the CIB map's frequency.
 FRAMES = [('points', '857'), ('bands', '857'), ('full', '857'), ('full', '545'), ('full', '353')]
 # Rows read low z -> high z: density (visibility-corrected) on top, shear below.
-RHO_PANELS = [('delta1_vis', r'$\delta_1$'), ('delta5_vis', r'$\delta_5$'), ('delta6', r'$\delta_6$'),
+RHO_PANELS = [('delta1', r'$\delta_1$'), ('delta5', r'$\delta_5$'), ('delta6', r'$\delta_6$'),
               ('gamma1', r'$\gamma_1$'), ('gamma5', r'$\gamma_5$'), ('gamma6', r'$\gamma_6$')]
 RAW = '#B07A2A'
 
@@ -239,7 +239,8 @@ def rho_input(freq):
 def draw_rho(data, output, freq, slide=False, stage='full', ylim=None):
     """One frame of the correlation-coefficient figure.
 
-    stage: 'points' (measured only), 'bands' (+ the CIB prediction), 'full' (+ unweighted delta6).
+    stage: 'points' (measured only), 'bands' (+ the CIB prediction), 'full' (+ unweighted density).
+    Density panels show the visibility-weighted map, and in 'full' the unweighted one beside it.
     slide=True: 2x the 1712x771 slide body, type sized for >= 32 px on screen, footnotes left to the
     slide notes, and the CIB frequency named in the legend. Every frame keeps the same layout, so
     frames stack exactly."""
@@ -261,8 +262,10 @@ def draw_rho(data, output, freq, slide=False, stage='full', ylim=None):
                           sharey=axes[0] if axes else None, sharex=axes[0] if axes else None)
         axes.append(ax)
         ax.axhline(0, color=MUTED, lw=1)
-        series = ([('delta6_raw', RAW, -.025)] if show_raw else []) + [('delta6_vis', dcol, .025)] \
-            if key == 'delta6' else [(key, gcol if key.startswith('gamma') else dcol, 0)]
+        if key.startswith('delta'):
+            series = ([(f'{key}_raw', RAW, -.025)] if show_raw else []) + [(f'{key}_vis', dcol, .025)]
+        else:
+            series = [(key, gcol, 0)]
         for name, color, off in series:
             b = data['bins'][name]
             p, sp = np.asarray(b['r_predicted']), np.asarray(b['sigma_predicted'])
@@ -273,19 +276,13 @@ def draw_rho(data, output, freq, slide=False, stage='full', ylim=None):
             ax.errorbar(ell * 10 ** off, m, yerr=sm, fmt='o', ms=8, color=color, mec='white', mew=.8,
                         elinewidth=1.8, capsize=0, zorder=3)
         ax.set_title(label, loc='left', fontsize=label_fs + 2, color=INK, pad=6)
-        if key == 'delta6':
-            if slide:
-                ax.text(.2, .84, 'visibility-weighted', transform=ax.transAxes, ha='left', va='top',
-                        fontsize=tick_fs, color=dcol)
-                if show_raw:
-                    ax.text(.2, .99, 'unweighted', transform=ax.transAxes, ha='left', va='top',
-                            fontsize=tick_fs, color=RAW)
-            else:
-                ax.text(.98, .85, 'after visibility weighting', transform=ax.transAxes, ha='right', va='top',
-                        fontsize=tick_fs, color=dcol)
-                if show_raw:
-                    ax.text(.98, .97, 'before visibility weighting', transform=ax.transAxes, ha='right',
-                            va='top', fontsize=tick_fs, color=RAW)
+        if key == 'delta1':
+            # One key for the three density panels, top right of delta1, where its points stay low.
+            ax.text(.98, .84, 'visibility-weighted', transform=ax.transAxes, ha='right', va='top',
+                    fontsize=tick_fs, color=dcol)
+            if show_raw:
+                ax.text(.98, .99, 'unweighted', transform=ax.transAxes, ha='right', va='top',
+                        fontsize=tick_fs, color=RAW)
         ax.set_xscale('log')
         ax.set_xlim(95, 3200)
         ax.set_xticks(*(([100, 300, 1000], ['100', '300', '1000']) if slide else
@@ -330,7 +327,8 @@ def rho_ylim(datas, floor=(-.12, .42)):
     or measured point (central value) leaves it. Low-l error bars may run off the axes."""
     lo, hi = floor
     for data in datas:
-        for name in ('delta1_vis', 'delta5_vis', 'delta6_vis', 'delta6_raw', 'gamma1', 'gamma5', 'gamma6'):
+        for name in ('delta1_vis', 'delta5_vis', 'delta6_vis', 'delta1_raw', 'delta5_raw', 'delta6_raw',
+                     'gamma1', 'gamma5', 'gamma6'):
             b = data['bins'][name]
             for v in ('r_measured', 'r_predicted'):
                 x = np.asarray(b[v])

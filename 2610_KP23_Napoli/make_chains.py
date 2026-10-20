@@ -1,10 +1,10 @@
 """KP2-3 update: blinded TR1 posteriors, kappa-only -> kappa+GL -> 3x2pt+kappa, as build frames.
 
 Reads the nautilus posteriors (posterior_exact.npz: production-Limber reweighted) of the blinded
-TR1 v1.1 runs in /leonardo_scratch/large/userexternal/cdaley00/tr1-chains/nested/ and draws
-Delta S8 against Delta Omega_m, both measured from the 3x2pt+kappa posterior mean, so no blinded
-absolute value is shown. One frame per probe set added; the SPT-3G and ACT DR6 versions share
-axes. Writes images/kp23_chains_<cmb>_<k>.png.
+TR1 v1.1 runs in /leonardo_scratch/large/userexternal/cdaley00/tr1-chains/nested/ and draws the
+blinded S8 against Omega_m: every run fits the same blinded (cmbx_dr1_a) data vector, so the absolute
+values carry the blind's shift. One frame per probe set added; the SPT-3G and ACT DR6 versions share
+axes. Writes images/kp23_chains_<cmb>_<k>.png and chains_<cmb>.json (blinded mean and sigma of S8).
 
 Run: uv run --with numpy --with scipy --with matplotlib --with fonttools --with brotli python make_chains.py
 """
@@ -33,7 +33,7 @@ RUNS = [('kappa_only', r'$\kappa\gamma + \kappa\delta$', '#1D6C78'),
         ('full_rep', r'$+\ \gamma\gamma + \delta\delta$  (3×2pt + $\kappa$)', '#2E417C')]
 CMB = {'spt': 'tr1', 'act': 'tr1_act'}
 W_PX, H_PX, DPI = 2054, 1542, 200
-XLIM, YLIM = (-0.5, 0.95), (-0.17, 0.22)
+XLIM, YLIM = (0.1, 1.4), (0.65, 1.13)
 
 
 def setup_font():
@@ -78,27 +78,23 @@ def draw(cmb):
                          'ytick.major.size': 12, 'xtick.major.width': 2.4, 'ytick.major.width': 2.4,
                          'axes.spines.top': False, 'axes.spines.right': False})
     pre = CMB[cmb]
-    om0, s80, w0 = load(f'{pre}_full_rep')
-    ref = (np.average(om0, weights=w0), np.average(s80, weights=w0))
     stats = {}
     for k in range(1, len(RUNS) + 1):
         fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
         ax = fig.add_axes([0.15, 0.2, 0.82, 0.68])
-        ax.axhline(0, color=MUTED, lw=1.6, ls=(0, (4, 4)), zorder=0)
-        ax.axvline(0, color=MUTED, lw=1.6, ls=(0, (4, 4)), zorder=0)
         handles = []
         for i, (v, label, color) in enumerate(RUNS[:k]):
             om, s8, w = load(f'{pre}_{v}')
-            contour(ax, om - ref[0], s8 - ref[1], w, color, 2 + i)
+            contour(ax, om, s8, w, color, 2 + i)
             handles.append(Patch(facecolor=color, alpha=.6, edgecolor=color, label=label))
             m = np.average(s8, weights=w)
-            stats[v] = {'dS8': float(m - ref[1]), 'sigma_S8': float(np.sqrt(np.average((s8 - m) ** 2, weights=w)))}
+            stats[v] = {'S8_blinded': float(m), 'sigma_S8': float(np.sqrt(np.average((s8 - m) ** 2, weights=w)))}
         ax.set_xlim(XLIM)
         ax.set_ylim(YLIM)
-        ax.set_xticks([-0.4, 0, 0.4, 0.8])
-        ax.set_yticks([-0.1, 0, 0.1])
-        ax.set_xlabel(r'$\Delta\Omega_\mathrm{m}$')
-        ax.set_ylabel(r'$\Delta S_8$', labelpad=10)
+        ax.set_xticks([0.2, 0.6, 1.0, 1.4])
+        ax.set_yticks([0.7, 0.8, 0.9, 1.0, 1.1])
+        ax.set_xlabel(r'$\Omega_\mathrm{m}$')
+        ax.set_ylabel(r'$S_8$ (blinded)', labelpad=10)
         # Above the axes, one row, so no entry sits on a contour.
         ax.legend(handles=handles, loc='lower left', bbox_to_anchor=(-0.02, 1.02), ncol=3, frameon=False,
                   fontsize=28, handlelength=1.2, handletextpad=0.4, columnspacing=1.2, borderaxespad=0)

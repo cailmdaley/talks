@@ -1,7 +1,7 @@
 <section data-layout="table">
-  <h2>Our TR1 priors follow the 3×2pt baseline</h2>
+  <h2>Priors: the 3×2pt proposal, and what I've adopted</h2>
   <table>
-    <tr><th></th><th>3×2pt baseline (Napoli)</th><th>KP2-3 TR1 chains</th></tr>
+    <tr><th></th><th>3×2pt proposal (Napoli)</th><th>my TR1 chains</th></tr>
     <tr><td>cosmology</td><td>uniform; $n_s \sim \mathcal{N}(0.96, 0.042)$; BBN $\omega_b$</td><td>same</td></tr>
     <tr><td>baryons</td><td>HMcode2020, $\log T_\mathrm{AGN} \in [7.3, 8.3]$</td><td>same</td></tr>
     <tr><td>IA, bias, $m$</td><td>NLA-$z$; linear $b$; $m \sim \mathcal{N}(0, 0.01)$</td><td>same</td></tr>
@@ -26,9 +26,9 @@
       <li>Shared chain configs and scripts move from Cerberus into the CLOE GitHub organisation; whether CMBX gets a folder was not said.</li>
       <li>CLOE splinter: "Decision: switch to sqrt binning; explore the bin number with chains". ℓ_min = 10 was validated only on unmasked Flagship; leaning to keep 10–3000, not decided.</li>
     </ul>
-    <h3>Ours</h3>
-    <p>The TR1 production chain profile (<code>workflow/scripts/tr1_production_chain_config.json</code>) adopted the splinter's table after Napoli, each departure from our earlier choices kept as a named variant. Two differences remain. The n(z) stretch stays, $\mathcal{N}(1, 0.1)$, because on the v1.1 products the lens data pull the stretches to 0.6–0.8 and reject shift-only (variant <code>shift_only</code> fixes it). Magnification uses fixed measured slopes until the $\alpha$ convention is pinned. The table's $T_\mathrm{AGN}$ upper bound is 8.3; the day-3 session called [7.3, 8.5] the most up-to-date range, and we follow the table until it is updated.</p>
+    <h3>The TR1 chains in this talk</h3>
+    <p>KP2-3 has not set TR1 priors. The chain profile behind the posteriors in this talk (<code>workflow/scripts/tr1_production_chain_config.json</code>) adopted most of the splinter's table after Napoli, each departure from its earlier choices kept as a named variant. Two differences remain. The n(z) stretch stays, $\mathcal{N}(1, 0.1)$, because on the v1.1 products the lens data pull the stretches to 0.6–0.8 and reject shift-only (variant <code>shift_only</code> fixes it). Magnification uses fixed measured slopes until the $\alpha$ convention is pinned. The table's $T_\mathrm{AGN}$ upper bound is 8.3; the day-3 session called [7.3, 8.5] the most up-to-date range, and the chains follow the table until it is updated.</p>
     <h3>Why it matters to KP2-3</h3>
-    <p>These are the defaults a joint κ + 3×2pt analysis inherits. Two differ from ours: our n(z) model has a shift and a stretch per bin, and our production binning (15 log bands, ℓ = 100–3000) has about three bands above ℓ = 1500, the resolution problem the √ℓ switch addresses. Scope stays as decided: we build on the 3×2pt choices and act only where κ brings something in.</p>
+    <p>These are the defaults a joint κ + 3×2pt analysis inherits, and a starting point for KP2-3's own choice. Two differ from the chains here: their n(z) model has a shift and a stretch per bin, and their binning (15 log bands, ℓ = 100–3000) has about three bands above ℓ = 1500, the resolution problem the √ℓ switch addresses. Cail's working stance is to build on the 3×2pt choices and depart only where κ brings something in; the group has not decided.</p>
   </aside>
 </section>
