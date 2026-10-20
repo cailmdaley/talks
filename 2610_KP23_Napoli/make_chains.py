@@ -6,7 +6,7 @@ Delta S8 against Delta Omega_m, both measured from the 3x2pt+kappa posterior mea
 absolute value is shown. One frame per probe set added; the SPT-3G and ACT DR6 versions share
 axes. Writes images/kp23_chains_<cmb>_<k>.png.
 
-Run: uv run --with numpy --with scipy --with matplotlib --with fonttools python make_chains.py
+Run: uv run --with numpy --with scipy --with matplotlib --with fonttools --with brotli python make_chains.py
 """
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ RUNS = [('kappa_only', r'$\kappa\gamma + \kappa\delta$', '#1D6C78'),
         ('full_rep', r'$+\ \gamma\gamma + \delta\delta$  (3×2pt + $\kappa$)', '#2E417C')]
 CMB = {'spt': 'tr1', 'act': 'tr1_act'}
 W_PX, H_PX, DPI = 2054, 1542, 200
-XLIM, YLIM = (-0.5, 0.95), (-0.17, 0.19)
+XLIM, YLIM = (-0.5, 0.95), (-0.17, 0.22)
 
 
 def setup_font():
@@ -83,7 +83,7 @@ def draw(cmb):
     stats = {}
     for k in range(1, len(RUNS) + 1):
         fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
-        ax = fig.add_axes([0.15, 0.2, 0.82, 0.77])
+        ax = fig.add_axes([0.15, 0.2, 0.82, 0.68])
         ax.axhline(0, color=MUTED, lw=1.6, ls=(0, (4, 4)), zorder=0)
         ax.axvline(0, color=MUTED, lw=1.6, ls=(0, (4, 4)), zorder=0)
         handles = []
@@ -99,8 +99,9 @@ def draw(cmb):
         ax.set_yticks([-0.1, 0, 0.1])
         ax.set_xlabel(r'$\Delta\Omega_\mathrm{m}$')
         ax.set_ylabel(r'$\Delta S_8$', labelpad=10)
-        ax.legend(handles=handles, loc='upper left', frameon=False,
-                   fontsize=28, handlelength=1.2, handletextpad=0.4, labelspacing=0.15)
+        # Above the axes, one row, so no entry sits on a contour.
+        ax.legend(handles=handles, loc='lower left', bbox_to_anchor=(-0.02, 1.02), ncol=3, frameon=False,
+                  fontsize=28, handlelength=1.2, handletextpad=0.4, columnspacing=1.2, borderaxespad=0)
         out = OUT / f'kp23_chains_{cmb}_{k}.png'
         fig.savefig(out, dpi=DPI)
         plt.close(fig)
