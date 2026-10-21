@@ -1,11 +1,16 @@
 <section data-layout="figure">
-  <h2>Timelines: DR1 milestones and data products</h2>
+  <h2>Timelines: DR1 data products and the analysis</h2>
   <figure>
-    <svg viewBox="0 0 1712 790" role="img" aria-label="Timeline from October 2026 to June 2027. Milestones: DR1-Foundation 12 November; 3×2pt production run and final scale cuts December to January; unblinding and SAS freeze at the end of March, when papers go to EC review; about two months of review in April and May; public DR1 and paper submission in June 2027; internal DR2 in June 2028. Data products: TR1 Cycle 2 out now, with tom_bin_id still missing; the DR1 R3 shear catalogue reaches the EC at the end of October or start of November; n(z) close to final end of November; m bias from a first SHE-CAL run in November to final values in February; final R3 catalogues and LE3 data vectors in February 2027; final n(z) end of February.">
+    <svg viewBox="0 0 1712 790" role="img" aria-label="Timeline from October 2026 to June 2027. DR1 data products: TR1 Cycle 2 out now, with tom_bin_id still missing; reprocessed (R3) shear catalogues at the start of November; DR1-Foundation on 12 November; n(z) close to final at the end of November; final catalogues, n(z) and m bias from February into March; public DR1 in June 2027. Analysis: DR1 3×2pt and κ chains from December, when the n(z) are close to final, converging into the spring; final scale cuts over December and January; unblinding and SAS freeze at the end of March, when papers go to EC review; about two months of review; papers submitted with the public release in June; internal DR2 in June 2028.">
       <defs>
-        <marker id="timeline-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <marker id="napoli-timeline-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
           <path d="M0 0 L10 5 L0 10 z" class="fill-muted"></path>
         </marker>
+        <!-- soft edges for spans without a sharp start or end: a white-gradient mask -->
+        <linearGradient id="napoli-timeline-taper-both"><stop offset="0" stop-color="#fff" stop-opacity="0"></stop><stop offset="0.12" stop-color="#fff"></stop><stop offset="0.88" stop-color="#fff"></stop><stop offset="1" stop-color="#fff" stop-opacity="0"></stop></linearGradient>
+        <linearGradient id="napoli-timeline-taper-end"><stop offset="0" stop-color="#fff"></stop><stop offset="0.7" stop-color="#fff"></stop><stop offset="1" stop-color="#fff" stop-opacity="0"></stop></linearGradient>
+        <mask id="napoli-timeline-mask-both" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#napoli-timeline-taper-both)"></rect></mask>
+        <mask id="napoli-timeline-mask-end" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#napoli-timeline-taper-end)"></rect></mask>
       </defs>
 
       <!-- month grid: 1 Oct 2026 at x=90, 148 px per month, 1 Jul 2027 at x=1422 -->
@@ -26,53 +31,49 @@
       </g>
 
       <!-- lane headings and now: 22 Oct -->
-      <text x="90" y="46" font-size="38" font-weight="700" class="fill-accent">Milestones</text>
-      <text x="90" y="452" font-size="38" font-weight="700" class="fill-cobalt">Data products</text>
+      <text x="90" y="46" font-size="38" font-weight="700" class="fill-cobalt">DR1 data products</text>
+      <text x="90" y="452" font-size="38" font-weight="700" class="fill-accent">Analysis</text>
       <path d="M194 70 V318 M194 472 V700" class="stroke-accent fill-none" stroke-width="4" stroke-dasharray="12 8"></path>
       <text x="194" y="738" font-size="36" font-weight="700" text-anchor="middle" class="fill-accent">now</text>
 
-      <!-- step 1, now: Cycle 2 out, R3 shear on its way -->
+      <!-- step 1, now: Cycle 2 out, R3 catalogues on their way -->
       <g class="fragment">
-        <circle cx="194" cy="498" r="13" class="fill-cobalt"></circle>
-        <text x="218" y="510" font-size="38">TR1 Cycle 2 out*</text>
-        <circle cx="238" cy="562" r="13" class="fill-cobalt"></circle>
-        <text x="262" y="574" font-size="38">DR1 R3 shear catalogue to the EC</text>
+        <circle cx="194" cy="100" r="13" class="fill-cobalt"></circle>
+        <text x="218" y="112" font-size="38">TR1 Cycle 2 out*</text>
+        <circle cx="238" cy="165" r="13" class="fill-cobalt"></circle>
+        <text x="262" y="177" font-size="38">reprocessed (R3) shear catalogues</text>
         <text x="90" y="782" font-size="36" class="fill-muted">* tom_bin_id still missing: apply the PHZ cuts directly</text>
       </g>
 
-      <!-- step 2, Nov: DR1-Foundation, n(z) close to final -->
+      <!-- step 2, Nov–Dec: DR1-Foundation, n(z) close to final, chains spin up, scale cuts -->
       <g class="fragment">
-        <circle cx="292" cy="110" r="13" class="fill-accent"></circle>
-        <text x="316" y="122" font-size="38">DR1-Foundation, 12 Nov</text>
-        <circle cx="386" cy="626" r="13" class="fill-cobalt"></circle>
-        <text x="410" y="638" font-size="38">n(z) close to final</text>
-        <rect x="238" y="672" width="592" height="36" rx="10" class="fill-cobalt" opacity="0.45"></rect>
-        <text x="848" y="702" font-size="38">m bias: first run Nov, final Feb</text>
+        <circle cx="292" cy="230" r="13" class="fill-cobalt"></circle>
+        <text x="316" y="242" font-size="38">DR1-Foundation, 12 Nov</text>
+        <circle cx="386" cy="290" r="13" class="fill-cobalt"></circle>
+        <text x="410" y="302" font-size="38">n(z) close to final</text>
+        <rect x="330" y="488" width="740" height="36" rx="10" class="fill-accent" mask="url(#napoli-timeline-mask-both)"></rect>
+        <text x="1088" y="518" font-size="38">DR1 3×2pt and κ chains</text>
+        <rect x="350" y="568" width="370" height="36" rx="10" class="fill-accent" mask="url(#napoli-timeline-mask-both)"></rect>
+        <text x="738" y="598" font-size="38">final scale cuts</text>
       </g>
 
-      <!-- step 3, Dec–Feb: production run and scale cuts, final catalogues and n(z) -->
+      <!-- step 3, Feb–Mar: final catalogues, n(z) and m; unblinding -->
       <g class="fragment">
-        <rect x="386" y="256" width="296" height="40" rx="10" class="fill-accent"></rect>
-        <text x="700" y="288" font-size="38">3×2pt production run, final scale cuts</text>
-        <rect x="682" y="480" width="148" height="36" rx="10" class="fill-cobalt"></rect>
-        <text x="848" y="510" font-size="38">final R3 catalogues, LE3 data vectors</text>
-        <circle cx="830" cy="562" r="13" class="fill-cobalt"></circle>
-        <text x="854" y="574" font-size="38">final n(z)</text>
+        <rect x="738" y="272" width="278" height="36" rx="10" class="fill-cobalt" mask="url(#napoli-timeline-mask-end)"></rect>
+        <text x="1034" y="302" font-size="38">final catalogues, n(z), m bias</text>
+        <circle cx="978" cy="666" r="13" class="fill-accent"></circle>
+        <text x="954" y="678" font-size="38" text-anchor="end">end Mar: unblinding; papers to EC review</text>
       </g>
 
-      <!-- step 4, Mar–May: freeze, unblinding, review -->
+      <!-- step 4, Apr–Jun: review, public DR1, papers submitted, internal DR2 off the axis -->
       <g class="fragment">
-        <rect x="978" y="172" width="296" height="54" rx="10" class="fill-rule"></rect>
-        <text x="1126" y="211" font-size="36" text-anchor="middle">paper review</text>
-        <circle cx="978" cy="199" r="13" class="fill-accent"></circle>
-        <text x="954" y="211" font-size="38" text-anchor="end">end Mar: unblinding; papers to EC review</text>
-      </g>
-
-      <!-- step 5, Jun 2027 on: public DR1, internal DR2 off the axis -->
-      <g class="fragment">
-        <circle cx="1348" cy="110" r="13" class="fill-accent"></circle>
-        <text x="1326" y="122" font-size="38" text-anchor="end">public DR1, papers submitted</text>
-        <path d="M1424 356 H1472" class="stroke-muted fill-none" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#timeline-arrow)"></path>
+        <rect x="978" y="648" width="296" height="36" rx="10" class="fill-rule"></rect>
+        <text x="1126" y="678" font-size="36" text-anchor="middle">review</text>
+        <circle cx="1348" cy="100" r="13" class="fill-cobalt"></circle>
+        <text x="1326" y="112" font-size="38" text-anchor="end">public DR1</text>
+        <circle cx="1348" cy="586" r="13" class="fill-accent"></circle>
+        <text x="1326" y="598" font-size="38" text-anchor="end">papers submitted</text>
+        <path d="M1424 356 H1472" class="stroke-muted fill-none" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#napoli-timeline-arrow)"></path>
         <rect x="1480" y="300" width="228" height="112" rx="14" class="fill-panel stroke-rule" stroke-width="3"></rect>
         <text x="1594" y="346" font-size="36" font-weight="700" text-anchor="middle">internal DR2</text>
         <text x="1594" y="390" font-size="36" text-anchor="middle" class="fill-muted">June 2028</text>
