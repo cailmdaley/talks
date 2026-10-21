@@ -1,7 +1,7 @@
 <section data-layout="figure">
   <h2>Timelines: DR1 milestones and data products</h2>
   <figure>
-    <svg viewBox="0 0 1712 790" role="img" aria-label="Timeline from October 2026 to June 2027. Milestones: DR1-Foundation 12 November; 3×2pt production run and final scale cuts December to January; SAS freeze and unblinding end of March; ECP review from about April; public DR1 and paper submission in June 2027; internal DR2 in June 2028. Data products: TR1 Cycle 2 out now, with tom_bin_id still missing; Cycle 3 brings the reprocessed R3 shear, EC-wide release aimed at end October or start of November; n(z) close to final end of November; final R3 catalogues and LE3 data vectors in February 2027; final n(z) end of February.">
+    <svg viewBox="0 0 1712 790" role="img" aria-label="Timeline from October 2026 to June 2027. Milestones: DR1-Foundation 12 November; 3×2pt production run and final scale cuts December to January; unblinding and SAS freeze at the end of March, when papers go to EC review; about two months of review in April and May; public DR1 and paper submission in June 2027; internal DR2 in June 2028. Data products: TR1 Cycle 2 out now, with tom_bin_id still missing; the DR1 R3 shear catalogue reaches the EC at the end of October or start of November; n(z) close to final end of November; m bias from a first SHE-CAL run in November to final values in February; final R3 catalogues and LE3 data vectors in February 2027; final n(z) end of February.">
       <defs>
         <marker id="timeline-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
           <path d="M0 0 L10 5 L0 10 z" class="fill-muted"></path>
@@ -33,10 +33,10 @@
 
       <!-- step 1, now: Cycle 2 out, R3 shear on its way -->
       <g class="fragment">
-        <circle cx="194" cy="506" r="13" class="fill-cobalt"></circle>
-        <text x="218" y="518" font-size="38">TR1 Cycle 2 out*</text>
-        <circle cx="238" cy="586" r="13" class="fill-cobalt"></circle>
-        <text x="262" y="598" font-size="38">Cycle 3: reprocessed (R3) shear</text>
+        <circle cx="194" cy="498" r="13" class="fill-cobalt"></circle>
+        <text x="218" y="510" font-size="38">TR1 Cycle 2 out*</text>
+        <circle cx="238" cy="562" r="13" class="fill-cobalt"></circle>
+        <text x="262" y="574" font-size="38">DR1 R3 shear catalogue to the EC</text>
         <text x="90" y="782" font-size="36" class="fill-muted">* tom_bin_id still missing: apply the PHZ cuts directly</text>
       </g>
 
@@ -44,26 +44,28 @@
       <g class="fragment">
         <circle cx="292" cy="110" r="13" class="fill-accent"></circle>
         <text x="316" y="122" font-size="38">DR1-Foundation, 12 Nov</text>
-        <circle cx="386" cy="666" r="13" class="fill-cobalt"></circle>
-        <text x="410" y="678" font-size="38">n(z) close to final</text>
+        <circle cx="386" cy="626" r="13" class="fill-cobalt"></circle>
+        <text x="410" y="638" font-size="38">n(z) close to final</text>
+        <rect x="238" y="672" width="592" height="36" rx="10" class="fill-cobalt" opacity="0.45"></rect>
+        <text x="848" y="702" font-size="38">m bias: first run Nov, final Feb</text>
       </g>
 
       <!-- step 3, Dec–Feb: production run and scale cuts, final catalogues and n(z) -->
       <g class="fragment">
         <rect x="386" y="256" width="296" height="40" rx="10" class="fill-accent"></rect>
         <text x="700" y="288" font-size="38">3×2pt production run, final scale cuts</text>
-        <rect x="682" y="488" width="148" height="36" rx="10" class="fill-cobalt"></rect>
-        <text x="848" y="518" font-size="38">final R3 catalogues, LE3 data vectors</text>
-        <circle cx="830" cy="586" r="13" class="fill-cobalt"></circle>
-        <text x="854" y="598" font-size="38">final n(z)</text>
+        <rect x="682" y="480" width="148" height="36" rx="10" class="fill-cobalt"></rect>
+        <text x="848" y="510" font-size="38">final R3 catalogues, LE3 data vectors</text>
+        <circle cx="830" cy="562" r="13" class="fill-cobalt"></circle>
+        <text x="854" y="574" font-size="38">final n(z)</text>
       </g>
 
       <!-- step 4, Mar–May: freeze, unblinding, review -->
       <g class="fragment">
         <rect x="978" y="172" width="296" height="54" rx="10" class="fill-rule"></rect>
-        <text x="1126" y="211" font-size="36" text-anchor="middle">ECP review</text>
+        <text x="1126" y="211" font-size="36" text-anchor="middle">paper review</text>
         <circle cx="978" cy="199" r="13" class="fill-accent"></circle>
-        <text x="954" y="211" font-size="38" text-anchor="end">end Mar: SAS freeze, unblinding</text>
+        <text x="954" y="211" font-size="38" text-anchor="end">end Mar: unblinding; papers to EC review</text>
       </g>
 
       <!-- step 5, Jun 2027 on: public DR1, internal DR2 off the axis -->
@@ -86,12 +88,14 @@
       <li>Day 3 roadmap: Nov 2026, validate the blinding shifts and the first SHE-CAL m; Dec, full (non-final) chains on blinded DR1; Jan 2027, final scale cuts; Feb, final R3 catalogues and LE3 data vectors; Mar, unblinding; June, release.</li>
       <li>The 3×2pt splinter plans a full DR1 production run for end Nov / early Dec, taking about a week; day 2 puts the final scale cuts in Dec–Jan.</li>
       <li>DR2 session: EC-internal DR2 in June 2028, public in June 2029; no WL LE3 before internal DR2; the first DR2 shear is likely MetaCal-only.</li>
+      <li>Papers: drafts go into ECP review at about the end of March, so that the ~2 months of review end by the June release, and are submitted on release day. They go in even if numbers may still shift: the DR1-Foundation strong-lensing papers were written ahead with TBD numbers, and only a final update was needed (day 1, release-papers discussion).</li>
     </ul>
     <h3>Data products</h3>
     <ul>
       <li>TR1 Cycle 2 (CosmoHub TR1.B v2.0) is the TR1 area cut from the full DR1 photo-z production: the same v1.1 shear measurements, with new tomographic binning and the DR1 n(z) (Farrens and Hartley, 14 Oct). Catalogues are on CosmoHub, unblinded over ~500 deg², with analysis guidelines to avoid accidental unblinding (day 2). The CosmoHub <code>tom_bin_id</code> fix is still pending, so the PHZ bin cuts have to be applied directly.</li>
       <li>R3 reprocessing (Andy Taylor, OU-SHE, day 1) ran Jun–Aug 2026 and completed in September, with a limited release to the WL-SWG, the B-mode Tiger Team and the KPs for 2-pt validation; the EC-wide release is aimed at end Oct / start Nov 2026. R3 is the first change to the shear measurement itself: the PSF size bias, a few per cent and varying across the sky in R2, is about 10× smaller, and the southern harmonic-space B-mode excess goes from ~5σ to below 2σ. Reading Cycle 3 as the R3 selection follows from the day-1 timeline. The TR1 shear in the results shown here is pre-R3.</li>
       <li>n(z) (Hartley, day 1): close to final at end Nov 2026 for the Cycle 3 selection and DR1 (DR1_WLSOUTH_R3); final, with confident uncertainties, at end Feb 2027. The working assumption is that DR1 won't do much better than Δz ~ 0.02(1+z) on the mean and 0.05(1+z) on the width; Hildebrandt (day 3) put ~2 % on mean z as not good enough for DR1 cosmic shear, needing ~1 % or better. The n(z) are NO_WEIGHT only so far, and whether a stretch will be delivered was disputed in the day-3 splinter.</li>
+      <li>m bias: the first DR1 SHE-CAL run came in at Napoli (calibration slide); the DR1 m-bias correction lands November to February (day 2) and comes with the final calibrated catalogues in February. No separate final-m date was given.</li>
       <li>Still moving: the static c-bias is out (Tiger Team), with a final decision in December 2026 (3×2pt splinter); LensMC B-modes came back significant with flipped sign, pending further runs (CLOE splinter).</li>
     </ul>
     <h3>Where things live</h3>
