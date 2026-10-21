@@ -21,6 +21,7 @@ const HOUSE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.dirname(HOUSE);
 const NM = path.join(REPO, 'node_modules');
 const CACHE = path.join(NM, '.cache', 'house');
+const SITE = 'https://cailmdaley.github.io/talks';
 
 export const LAYOUTS = [
   'title', 'section', 'statement', 'points', 'figure', 'figure-text',
@@ -727,6 +728,26 @@ function deckCss(deck) {
   return extra && fs.existsSync(extra) ? read(extra) : '';
 }
 
+// The link preview: chat apps and social sites read these tags when a deck's URL is
+// shared, and need the image as an absolute URL. The image is deck.json's "preview"
+// (a path in the deck), else the theme's house/themes/<theme>.preview.png, copied
+// beside index.html as preview.png.
+function previewSource(deck) {
+  if (deck.meta.preview) return path.join(deck.dir, deck.meta.preview);
+  const p = path.join(HOUSE, 'themes', `${deck.meta.theme || 'house'}.preview.png`);
+  return fs.existsSync(p) ? p : null;
+}
+
+function openGraph(deck) {
+  const url = `${SITE}/${deck.name}/`;
+  const tags = [
+    ['og:type', 'website'], ['og:url', url],
+    ['og:title', deck.meta.title], ['og:description', deck.meta.description || ''],
+  ];
+  if (previewSource(deck)) tags.push(['og:image', `${url}preview.png`], ['twitter:card', 'summary_large_image']);
+  return tags.map(([k, v]) => `<meta ${k.startsWith('og:') ? 'property' : 'name'}="${k}" content="${esc(v)}">`).join('\n');
+}
+
 function deckHTML(deck, slides, mathCss, theme) {
   const sections = slides.map(s => `<section ${s.sectionAttrs}>
 ${s.frame}
@@ -740,6 +761,7 @@ ${s.notesFrame}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(deck.meta.title)}</title>
 ${deck.meta.noindex ? '<meta name="robots" content="noindex">\n' : ''}<meta name="description" content="${esc(deck.meta.description || '')}">
+${openGraph(deck)}
 <style>${fontFaces()}</style>
 <style>${read(path.join(NM, 'reveal.js/dist/reveal.css'))}</style>
 <style>${read(path.join(HOUSE, 'house.css'))}</style>
@@ -835,6 +857,8 @@ export async function buildDeck(dir, outRoot, { theme: themeOverride, web = fals
   const index = path.join(out, 'index.html');
   const report = path.join(out, 'report.html');
   fs.writeFileSync(index, deckHTML(deck, slides, mathCss, theme));
+  const preview = previewSource(deck);
+  if (preview) fs.copyFileSync(preview, path.join(out, 'preview.png'));
   fs.writeFileSync(report, reportHTML(deck, slides, mathCss, theme));
   return { deck, slides, index, report };
 }
