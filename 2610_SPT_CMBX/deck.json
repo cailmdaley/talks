@@ -40,12 +40,13 @@
     },
     {
       "title": "The TR1 analysis",
-      "outline": "The pipeline, its validation on GLASS mocks, Muir-style blinding, the blinded TR1 × SPT-3G data vector, what SPT-3G adds over ACT DR6, and the first blinded posteriors.",
+      "outline": "The pipeline, its validation on GLASS mocks, Muir-style blinding, the blinded TR1 × SPT-3G data vector and its systematics-template crosses, what SPT-3G adds over ACT DR6, and the first blinded posteriors.",
       "slides": [
         "pipeline",
         "mocks",
         "blind-rehearsal",
         "dv-vector",
+        "systematics-triangle",
         "spt-vs-act",
         "chains"
       ]
@@ -68,17 +69,17 @@
       ]
     },
     {
-      "title": "Looking forward",
-      "outline": "Euclid DR2 will overlap well with SPT-3G.",
+      "title": "Looking forward and summary",
+      "outline": "Euclid DR2 will overlap well with SPT-3G; the talk in five lines.",
       "slides": [
-        "dr2"
+        "dr2",
+        "summary"
       ]
     },
     {
       "title": "Backup",
-      "outline": "The talk in five lines, and the FLASK mean spectra.",
+      "outline": "The FLASK mean spectra.",
       "slides": [
-        "summary",
         "kp-3-sims-spectra"
       ]
     }
