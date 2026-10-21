@@ -76,3 +76,7 @@
   font-size: var(--t-fine); line-height: 1.3; }
 .slide .notyet > strong { display: block; color: #B3261E; }
 .slide .text:has(> .notyet) > ul { max-width: 1380px; }
+
+/* overleaf — the paper's Overleaf link beside its lead on the papers list */
+.slide ul.papers .leads > a.overleaf { display: inline-flex; align-items: center; gap: 0.3em; margin-left: 1.2em; }
+.slide ul.papers .leads > a.overleaf > img { height: 1.3em; width: auto; border-radius: 0; box-shadow: none; }

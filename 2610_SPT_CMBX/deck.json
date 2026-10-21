@@ -3,7 +3,7 @@
   "author": "Cail Daley",
   "venue": "SPT lensing analysis call",
   "date": "2026-10-22",
-  "description": "The SPT × Euclid 6×2pt key-project paper for SPT-3G: the overlap, the TR1 analysis, first blinded posteriors, the covariance plans, open questions, the SPT products needed and Euclid external-collaborator access.",
+  "description": "The SPT × Euclid 6×2pt key-project paper for SPT-3G: the overlap, the TR1 analysis and first blinded posteriors, the covariance plans and the data products needed from SPT, open questions, Euclid external-collaborator access, and DR2.",
   "footer": "Cail Daley · Euclid × SPT-3G 6×2pt · October 2026",
   "theme": "euclid",
   "css": "deck.css",
@@ -29,57 +29,55 @@
     },
     {
       "title": "SPT × Euclid",
-      "outline": "The overlap with Euclid, the DR1 timeline, the CMBX KP2-3 papers and the SPT × Euclid paper among them, and what SPT-3G adds over ACT DR6.",
+      "outline": "The overlap with Euclid, the DR1 timeline, the CMBX key projects and the KP2-3 papers, the SPT × Euclid paper among them.",
       "slides": [
         "footprint",
         "timeline",
-        "kp-3",
-        "spt-paper",
-        "spt-vs-act"
+        "kp-leads",
+        "kp-3"
       ]
     },
     {
       "title": "The TR1 analysis",
-      "outline": "The pipeline, its validation on GLASS mocks, the blind, the blinded TR1 × SPT-3G data vector and the first blinded posteriors.",
+      "outline": "The pipeline, its validation on GLASS mocks, Muir-style blinding, the blinded TR1 × SPT-3G data vector, what SPT-3G adds over ACT DR6, and the first blinded posteriors.",
       "slides": [
         "pipeline",
         "mocks",
         "blind-rehearsal",
         "dv-vector",
+        "spt-vs-act",
         "chains"
       ]
     },
     {
       "title": "The covariance plans",
-      "outline": "The FLASK mock covariance, not yet in the pipeline, and the two routes to put SPT-3G in it.",
+      "outline": "The FLASK mock covariance, not yet in the pipeline; the ways to put SPT-3G and the other CMB surveys in it; the FLASK covariance itself; and the data products needed from SPT.",
       "slides": [
         "kp-3-sims",
+        "cov-routes",
         "kp-3-sims-cov",
-        "cov-routes"
+        "spt-needs"
       ]
     },
     {
-      "title": "Towards DR1 and DR2",
-      "outline": "What the analysis needs from SPT, the open scope, combining CMB surveys, the DR2 overlap with SPT-3G, and how to take part.",
+      "title": "Taking part",
+      "outline": "The open questions, and Euclid external-collaborator status.",
       "slides": [
-        "spt-needs",
-        "scope",
-        "act-spt",
-        "dr2",
-        "spt-access"
+        "scope"
       ]
     },
     {
-      "title": "Closing",
-      "outline": "The talk in four lines.",
+      "title": "Looking forward",
+      "outline": "Euclid DR2 will overlap well with SPT-3G.",
       "slides": [
-        "summary"
+        "dr2"
       ]
     },
     {
       "title": "Backup",
-      "outline": "The FLASK mean spectra.",
+      "outline": "The talk in five lines, and the FLASK mean spectra.",
       "slides": [
+        "summary",
         "kp-3-sims-spectra"
       ]
     }

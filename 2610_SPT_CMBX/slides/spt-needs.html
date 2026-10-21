@@ -1,12 +1,14 @@
 <section data-layout="points">
-  <h2>What the analysis needs from SPT</h2>
+  <h2>Data products needed from SPT</h2>
   <ul>
     <li><strong class="accent">First:</strong> mock lensing reconstructions with their input κ</li>
-    <li>Lensing noise curves: N0, N1</li>
+    <li>Lensing noise curves (RDN0, N1)</li>
+    <li>The response, for the cosmology and systematics modelling</li>
     <li>Mean fields</li>
   </ul>
-  <p class="small muted">The mocks feed the mock-based covariance; the noise curves and mean fields, the theory and the noise model.</p>
+  <p class="small muted">These products would feed the mock-based covariance efforts.</p>
   <aside class="notes">
+  <p>The response: the D1 lensing analysis (SPT-3G D1: CMB lensing reconstruction and cosmology, sec. 4, "Debiasing and normalization") divides the released κ map by the Monte-Carlo-corrected response, about 20 % of which is mode loss from the filtering. So the map needs no further normalization for the crosses. The response is still needed to model how the normalization changes with cosmology away from the fiducial, and to propagate the temperature and polarization calibration and beam uncertainties, which the D1 likelihood treats through changes in the response.</p>
   <h3>Why the mocks come first</h3>
   <p>The Euclid side holds the SPT-3G Main winter lensing maps for each estimator and one simulated reconstruction per estimator. With the input κ and the matched reconstruction for each simulation, the SPT block of the mock-based covariance can be built on the constrained route of the covariance slides, and input minus reconstruction gives noise realizations that carry the real reconstruction's structure, for the GLASS validation mocks too. Until then the CMB-lensing noise in the mocks and the covariance is a stopgap: the observed κκ minus theory. A transfer of about 500 input + reconstruction pairs is tracked in Euclid Redmine issue #35882.</p>
   <h3>Also useful</h3>
