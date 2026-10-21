@@ -69,3 +69,10 @@
 .slide .chain-gl { color: #7F5E10; }  /* the contour gold, darkened to 4.5:1 for text */
 .slide .chain-full { color: #2E417C; }
 .slide .chain-3x2 { color: #6E3A8A; }
+
+/* notyet — a red-bordered box in a slide's free top-right space, for work not yet in the pipeline */
+.slide .notyet { position: absolute; top: 230px; right: 104px; width: 330px; margin: 0;
+  padding: 18px 22px; border: 4px solid #B3261E; border-radius: 10px; background: var(--ground);
+  font-size: var(--t-fine); line-height: 1.3; }
+.slide .notyet > strong { display: block; color: #B3261E; }
+.slide .text:has(> .notyet) > ul { max-width: 1380px; }

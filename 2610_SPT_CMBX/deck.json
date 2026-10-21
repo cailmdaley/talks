@@ -3,7 +3,7 @@
   "author": "Cail Daley",
   "venue": "SPT lensing analysis call",
   "date": "2026-10-22",
-  "description": "The SPT × Euclid 6×2pt key-project paper for SPT-3G: the TR1 analysis, the covariance plan, first blinded posteriors, open problems, the SPT products needed and Euclid external-collaborator access.",
+  "description": "The SPT × Euclid 6×2pt key-project paper for SPT-3G: the overlap, the TR1 analysis, first blinded posteriors, the covariance plans, open problems, the SPT products needed and Euclid external-collaborator access.",
   "footer": "Cail Daley · Euclid × SPT-3G 6×2pt · October 2026",
   "theme": "euclid",
   "css": "deck.css",
@@ -29,28 +29,29 @@
     },
     {
       "title": "SPT × Euclid",
-      "outline": "The DR1 timeline, the CMBX KP2-3 papers and the SPT × Euclid paper among them, the overlap with Euclid, and what SPT-3G adds over ACT DR6.",
+      "outline": "The overlap with Euclid, the DR1 timeline, the CMBX KP2-3 papers and the SPT × Euclid paper among them, and what SPT-3G adds over ACT DR6.",
       "slides": [
+        "footprint",
         "timeline",
         "kp-3",
         "spt-paper",
-        "footprint",
         "spt-vs-act"
       ]
     },
     {
       "title": "The TR1 analysis",
-      "outline": "The pipeline, its validation on GLASS mocks, the blind and the blinded TR1 × SPT-3G data vector.",
+      "outline": "The pipeline, its validation on GLASS mocks, the blind, the blinded TR1 × SPT-3G data vector and the first blinded posteriors.",
       "slides": [
         "pipeline",
         "mocks",
         "blind-rehearsal",
-        "dv-vector"
+        "dv-vector",
+        "chains"
       ]
     },
     {
-      "title": "Covariance",
-      "outline": "The FLASK mock covariance and the two routes to put SPT-3G in it.",
+      "title": "The covariance plans",
+      "outline": "The FLASK mock covariance, not yet in the pipeline, and the two routes to put SPT-3G in it.",
       "slides": [
         "kp-3-sims",
         "kp-3-sims-cov",
@@ -58,15 +59,8 @@
       ]
     },
     {
-      "title": "First results",
-      "outline": "The first blinded TR1 posteriors, probe by probe, with SPT-3G and ACT DR6.",
-      "slides": [
-        "chains"
-      ]
-    },
-    {
       "title": "Towards DR1 and DR2",
-      "outline": "What the analysis needs from SPT, the open scope, combining CMB surveys, DR2 in the DES area, and how to take part.",
+      "outline": "What the analysis needs from SPT, the open scope, combining CMB surveys, the DR2 overlap with SPT-3G, and how to take part.",
       "slides": [
         "spt-needs",
         "scope",

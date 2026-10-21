@@ -8,7 +8,7 @@ Five PNGs with an identical frame, written to the shared images/ pool:
   spt_footprint_2_planck.png      + Planck PR4
   spt_footprint_3_act.png         + ACT DR6
   spt_footprint_4_spt_main.png    + SPT-3G Main
-  spt_footprint_5_spt_summer.png  + SPT-3G Summer (the summer-a and summer-b fields)
+  spt_footprint_5_spt_summer.png  + SPT-3G Summer (the summer-a and summer-b fields) outside Main
 The slide stacks them, so each step adds exactly one layer. Both panels are polar
 Lambert azimuthal equal-area views at one scale and one central RA. The south panel is
 framed on DR1 south and both SPT fields, so every frame shares it.
@@ -25,6 +25,10 @@ DR1's and TR1's own, and each CMB footprint's overlap with DR1 (DR1 effcov summe
 pixels where the CMB mask is > 0, with effcov upgraded from NSIDE 1024 to the mask's 2048
 by giving each child its parent's value). The CMB footprints are drawn where the mask is
 > 0.5. The maps are drawn at NSIDE 512.
+
+SPT-3G Summer counts only where it lies outside Main (Summer > 0 and Main = 0), both as drawn
+and in its areas, so the Main and Summer areas add up to the area of the two together. Its
+areas are the union's less Main's, which is exact for the masks > 0 rule.
 
 The script also prints the areas the frames do not show: SPT-3G Main and Summer together
 with DR1, Main ∩ Summer, each CMB footprint with TR1 (effective, TR1 effcov summed over
@@ -440,6 +444,18 @@ def south_mask():
     return _SOUTH
 
 
+def summer_outside_main(A):
+    """Restrict SPT-3G Summer to where Main is zero: the drawn map, and its effective areas as
+    the union's (Main or Summer > 0) less Main's."""
+    A = dict(A)
+    A["summer_full_cap"], A["summer_full_tr1"] = A["summer_cap"], A["summer_tr1"]
+    A["map_summer"] = A["map_summer"] & ~A["b512_spt"]
+    A["b512_summer"] = A["b512_summer"] & ~A["b512_spt"]
+    for k in ("cap", "cap_geom", "tr1", "tr1_geom", "rr2"):
+        A[f"summer_{k}"] = A[f"sptboth_{k}"] - A[f"spt_{k}"]
+    return A
+
+
 def report(A):
     f = {k: float(v) for k, v in A.items() if np.ndim(v) == 0}
     print(f"DR1 effective {f['dr1_eff']:.1f} deg² (south {f['dr1_eff_s']:.1f}, north {f['dr1_eff_n']:.1f}); "
@@ -453,7 +469,8 @@ def report(A):
         print(f"{k}: {area}∩DR1 effective {f[k + '_cap']:.1f} geometric {f[k + '_cap_geom']:.1f} | "
               f"∩TR1 effective {f[k + '_tr1']:.1f} geometric {f[k + '_tr1_geom']:.1f} | "
               f"∩RR2-photo {f[k + '_rr2']:.1f} deg²", flush=True)
-    print(f"Main ∩ Summer (masks > 0) {f['main_summer']:.1f} deg²; ∩TR1 effective: Main ∩ ACT "
+    print(f"Summer as a whole ∩DR1 effective {f['summer_full_cap']:.1f}, ∩TR1 {f['summer_full_tr1']:.1f}; "
+          f"Main ∩ Summer (masks > 0) {f['main_summer']:.1f} deg²; ∩TR1 effective: Main ∩ ACT "
           f"{f['spt_tr1_act']:.1f}, (Main ∪ Summer) ∩ ACT {f['sptboth_tr1_act']:.1f}; "
           f"RR2-photo ∩ Main ∩ ACT {f['spt_act_rr2']:.1f} deg²")
 
@@ -472,6 +489,7 @@ def main():
         A = measure(COVERAGE[args.coverage])
         if args.cache:
             np.savez(args.cache, **A)
+    A = summer_outside_main(A)
     report(A)
 
     setup_font()
