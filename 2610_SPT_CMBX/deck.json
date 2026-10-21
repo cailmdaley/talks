@@ -63,13 +63,14 @@
       ]
     },
     {
-      "title": "Towards DR1",
-      "outline": "The timeline, what the analysis needs from SPT, the open scope, combining CMB surveys, and how to take part.",
+      "title": "Towards DR1 and DR2",
+      "outline": "The timeline, what the analysis needs from SPT, the open scope, combining CMB surveys, DR2 in the DES area, and how to take part.",
       "slides": [
         "timeline",
         "spt-needs",
         "scope",
         "act-spt",
+        "dr2",
         "spt-access"
       ]
     },
