@@ -29,8 +29,10 @@
     },
     {
       "title": "SPT × Euclid",
-      "outline": "The paper, the overlap with Euclid DR1, and what SPT-3G adds over ACT DR6.",
+      "outline": "The DR1 timeline, the CMBX KP2-3 papers and the SPT × Euclid paper among them, the overlap with Euclid, and what SPT-3G adds over ACT DR6.",
       "slides": [
+        "timeline",
+        "kp-3",
         "spt-paper",
         "footprint",
         "spt-vs-act"
@@ -64,9 +66,8 @@
     },
     {
       "title": "Towards DR1 and DR2",
-      "outline": "The timeline, what the analysis needs from SPT, the open scope, combining CMB surveys, DR2 in the DES area, and how to take part.",
+      "outline": "What the analysis needs from SPT, the open scope, combining CMB surveys, DR2 in the DES area, and how to take part.",
       "slides": [
-        "timeline",
         "spt-needs",
         "scope",
         "act-spt",
@@ -83,9 +84,8 @@
     },
     {
       "title": "Backup",
-      "outline": "The CMBX KP2-3 paper list and the FLASK mean spectra.",
+      "outline": "The FLASK mean spectra.",
       "slides": [
-        "kp-3",
         "kp-3-sims-spectra"
       ]
     }
