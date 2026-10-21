@@ -1,9 +1,13 @@
-"""SPT-3G vs ACT DR6: per-bandpower error-bar ratio sigma_ACT / sigma_SPT on the TR1 kappa crosses.
+"""SPT-3G vs ACT DR6: per-bandpower error-bar ratio sigma_ACT / sigma_SPT on the kappa crosses, TR1 and DR1.
 
 Reads the Napoli data-vector export (2610_Napoli_CMBX/private/dv_vector.json, LensMC variants), whose
 sig is sigma_G, the square root of the diagonal of each survey's full NaMaster Gaussian covariance, for
 the 12 kappa crosses (6 shear bins, 6 lens bins) in 15 bandpowers from ell = 100 to 3000. Only error
 bars enter, so the figure carries no measured amplitude and is blind-independent.
+
+The twelve crosses give the same ratio to within a few per cent (the CMB-lensing noise sets it), so one
+line is drawn: their mean. The DR1 line projects it with sigma proportional to A^-1/2 for each survey's
+overlap with Euclid: ratio_DR1 = ratio_TR1 * sqrt((A_ACT,TR1 / A_ACT,DR1) * (A_SPT,DR1 / A_SPT,TR1)).
 Writes images/spt_sigma_ratio.png.
 
 Run: uv run --with numpy --with matplotlib --with fonttools --with brotli python make_sigma_ratio.py
@@ -27,8 +31,11 @@ HERE = Path(__file__).resolve().parent
 DV = HERE.parent / '2610_Napoli_CMBX/private/dv_vector.json'
 OUT = HERE.parent / 'images/spt_sigma_ratio.png'
 INK, MUTED = '#111418', '#535B67'
-SHEAR, DENSITY, SHADE = '#2E417C', '#9C7414', '#1D6C78'
+SHADE = '#1D6C78'
 W_PX, H_PX, DPI = 2054, 1542, 200
+# overlaps with Euclid, deg²: TR1 from the RR2 photometric footprint (NSIDE 512), DR1 effective (VMPZ R2 valid tiles)
+AREA = {'tr1': {'act': 345.0, 'spt': 149.0}, 'dr1': {'act': 1069.0, 'spt': 353.0}}
+TR1_C, DR1_C = '#2E417C', '#B3261E'
 
 
 def setup_font():
@@ -57,12 +64,16 @@ def main():
     ax.text(125, 2.55, 'SPT-3G tighter', color=SHADE, fontsize=30, va='center')
     ax.text(125, 0.72, 'ACT DR6 tighter', color=MUTED, fontsize=30, va='center')
     ax.axhline(1, color=MUTED, lw=2.4, zorder=1)
-    ratios = {}
+    ratios = []
     for k in keys:
         ell = np.array(spt[k]['ell'])
-        r = np.array(act[k]['sig']) / np.array(spt[k]['sig'])
-        ratios[k] = r
-        ax.plot(ell, r, color=SHEAR if k.startswith('kappa_l') else DENSITY, lw=2.4, alpha=0.75, marker='o', ms=7, zorder=2)
+        ratios.append(np.array(act[k]['sig']) / np.array(spt[k]['sig']))
+    r = np.array(ratios)
+    tr1 = r.mean(0)
+    scale = np.sqrt(AREA['tr1']['act'] / AREA['dr1']['act'] * AREA['dr1']['spt'] / AREA['tr1']['spt'])
+    dr1 = tr1 * scale
+    ax.plot(ell, tr1, color=TR1_C, lw=4, marker='o', ms=9, zorder=3)
+    ax.plot(ell, dr1, color=DR1_C, lw=4, marker='o', ms=9, ls='--', zorder=3)
     ax.set_xscale('log')
     ax.set_xlim(100, 3000)
     ax.set_ylim(0.6, 2.8)
@@ -71,16 +82,17 @@ def main():
     ax.set_yticks([1, 1.5, 2, 2.5])
     ax.set_xlabel(r'$\ell$')
     ax.set_ylabel(r'$\sigma_\mathrm{ACT}\,/\,\sigma_\mathrm{SPT}$', labelpad=10)
-    ax.legend(handles=[Line2D([], [], color=SHEAR, lw=4, label=r'$\gamma\kappa$, 6 source bins'),
-                       Line2D([], [], color=DENSITY, lw=4, label=r'$\delta\kappa$, 6 lens bins')],
+    ax.legend(handles=[Line2D([], [], color=TR1_C, lw=4, marker='o', ms=9, label='TR1, measured'),
+                       Line2D([], [], color=DR1_C, lw=4, marker='o', ms=9, ls='--', label='DR1, area-scaled')],
               loc='lower left', bbox_to_anchor=(-0.02, 1.0), ncol=2, frameon=False, fontsize=28,
-              handlelength=1.4, borderaxespad=0)
+              handlelength=1.8, borderaxespad=0)
     fig.savefig(OUT, dpi=DPI)
     print('wrote', OUT)
-    r = np.array(list(ratios.values()))
     print('ell', np.round(ell).astype(int).tolist())
-    print('min', np.round(r.min(0), 2).tolist())
-    print('max', np.round(r.max(0), 2).tolist())
+    print('spread across the 12 crosses (max-min)/mean', np.round(((r.max(0) - r.min(0)) / tr1).max(), 3))
+    print('scale', round(float(scale), 3))
+    print('tr1', np.round(tr1, 2).tolist())
+    print('dr1', np.round(dr1, 2).tolist())
 
 
 if __name__ == '__main__':
