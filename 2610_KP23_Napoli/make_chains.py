@@ -30,7 +30,7 @@ OUT = HERE.parent / 'images'
 INK, MUTED = '#111418', '#535B67'
 RUNS = [('kappa_only', r'$\kappa\gamma + \kappa\delta$', '#1D6C78'),
         ('kappa_gl', r'$+\ \gamma\delta$', '#9C7414'),
-        ('3x2pt_rep', r'3×2pt: $\gamma\gamma + \gamma\delta + \delta\delta$', '#6E3A8A'),
+        ('3x2pt_rw', r'3×2pt: $\gamma\gamma + \gamma\delta + \delta\delta$', '#6E3A8A'),
         ('full_rep', r'5×2pt: 3×2pt + $\kappa\gamma + \kappa\delta$', '#2E417C')]
 CMB = {'spt': 'tr1', 'act': 'tr1_act'}
 W_PX, H_PX, DPI = 2054, 1542, 200
