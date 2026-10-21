@@ -29,9 +29,10 @@
     },
     {
       "title": "SPT × Euclid",
-      "outline": "The overlap with Euclid, the DR1 timeline, the CMBX key projects and the KP2-3 papers, the SPT × Euclid paper among them.",
+      "outline": "The overlap with Euclid, the Euclid–SPT MoU project, the DR1 timeline, the CMBX key projects and the KP2-3 papers, the SPT × Euclid paper among them.",
       "slides": [
         "footprint",
+        "mou",
         "timeline",
         "kp-leads",
         "kp-3"

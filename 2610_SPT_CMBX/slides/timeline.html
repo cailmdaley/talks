@@ -1,76 +1,77 @@
 <section data-layout="figure">
-  <h2>Timeline to the June 2027 release</h2>
+  <h2>Timeline to the Euclid DR1 release</h2>
   <figure>
-    <svg viewBox="0 0 1712 760" role="img" aria-label="Timeline from October 2026 to June 2027, built up in four steps. DR1 data products: the reprocessed R3 shear catalogues reach the Euclid Consortium in early November; DR1-Foundation on 12 November; n(z) close to final at the end of November; the final catalogues, n(z) and m bias in February into March; unblinding at the end of March; public DR1 in June 2027. SPT times Euclid analysis: blinded TR1 chains now; DR1 chains from early December, converging through March; Euclid internal review in April and May; submission in June 2027.">
+    <svg viewBox="0 0 1712 760" role="img" aria-label="Timeline from October 2026 to June 2027, built up in four steps. SPT times Euclid analysis: blinded TR1 chains now; DR1 chains from early December, ramping up through March; Euclid internal review in April and May; submission in June 2027. DR1 data products: the DR1 shear catalogues reach the Euclid Consortium in early November; DR1-Foundation on 12 November; n(z) close to final at the end of November; the final catalogues, n(z) and m bias in February into March; unblinding at the end of March; public DR1 in June 2027.">
       <defs>
         <!-- tapers for bars without a sharp start or end: masks in the bar's own box -->
-        <linearGradient id="tl-taper-both"><stop offset="0" stop-color="#fff" stop-opacity="0"></stop><stop offset="0.12" stop-color="#fff"></stop><stop offset="0.88" stop-color="#fff"></stop><stop offset="1" stop-color="#fff" stop-opacity="0"></stop></linearGradient>
+        <linearGradient id="tl-taper-ramp"><stop offset="0" stop-color="#fff" stop-opacity="0.08"></stop><stop offset="1" stop-color="#fff"></stop></linearGradient>
         <linearGradient id="tl-taper-end"><stop offset="0" stop-color="#fff"></stop><stop offset="0.7" stop-color="#fff"></stop><stop offset="1" stop-color="#fff" stop-opacity="0"></stop></linearGradient>
-        <mask id="tl-mask-both" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#tl-taper-both)"></rect></mask>
+        <mask id="tl-mask-ramp" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#tl-taper-ramp)"></rect></mask>
         <mask id="tl-mask-end" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#tl-taper-end)"></rect></mask>
       </defs>
 
-      <!-- month grid: 1 Oct 2026 at x=90, 148 px per month, 1 Jul 2027 at x=1422 -->
+      <!-- month grid: 1 Oct 2026 at x=90, 179 px per month, 1 Jul 2027 at x=1701 -->
       <g class="stroke-rule" stroke-width="2">
-        <path d="M90 70 V700"></path><path d="M238 70 V700"></path><path d="M386 70 V700"></path>
-        <path d="M534 70 V700"></path><path d="M682 70 V700"></path><path d="M830 70 V700"></path>
-        <path d="M978 70 V700"></path><path d="M1126 70 V700"></path><path d="M1274 70 V700"></path>
-        <path d="M1422 70 V700"></path>
+        <path d="M90 70 V700"></path><path d="M269 70 V700"></path><path d="M448 70 V700"></path>
+        <path d="M627 70 V700"></path><path d="M806 70 V700"></path><path d="M985 70 V700"></path>
+        <path d="M1164 70 V700"></path><path d="M1343 70 V700"></path><path d="M1522 70 V700"></path>
+        <path d="M1701 70 V700"></path>
       </g>
-      <rect x="90" y="352" width="1332" height="62" class="fill-panel stroke-rule" stroke-width="3"></rect>
-      <path d="M534 342 V424" class="stroke-ink" stroke-width="4"></path>
+      <rect x="90" y="352" width="1611" height="62" class="fill-panel stroke-rule" stroke-width="3"></rect>
+      <path d="M627 342 V424" class="stroke-ink" stroke-width="4"></path>
       <g font-size="36" text-anchor="middle" class="fill-muted">
-        <text x="164" y="396">Oct 2026</text><text x="312" y="396">Nov</text><text x="460" y="396">Dec</text>
-        <text x="608" y="396">Jan 2027</text><text x="756" y="396">Feb</text><text x="904" y="396">Mar</text>
-        <text x="1052" y="396">Apr</text><text x="1200" y="396">May</text><text x="1348" y="396">Jun</text>
+        <text x="180" y="396">Oct 2026</text><text x="358" y="396">Nov</text><text x="537" y="396">Dec</text>
+        <text x="716" y="396">Jan 2027</text><text x="895" y="396">Feb</text><text x="1074" y="396">Mar</text>
+        <text x="1253" y="396">Apr</text><text x="1432" y="396">May</text><text x="1611" y="396">Jun</text>
       </g>
       <text x="90" y="46" font-size="38" font-weight="700" class="fill-accent">DR1 data products</text>
       <text x="90" y="466" font-size="38" font-weight="700" class="fill-cobalt">SPT × Euclid analysis</text>
-      <path d="M194 70 V345 M194 486 V700" class="stroke-accent fill-none" stroke-width="4" stroke-dasharray="12 8"></path>
-      <text x="194" y="740" font-size="36" font-weight="700" text-anchor="middle" class="fill-accent">now</text>
+      <path d="M211 70 V345 M211 486 V700" class="stroke-accent fill-none" stroke-width="4" stroke-dasharray="12 8"></path>
+      <text x="211" y="740" font-size="36" font-weight="700" text-anchor="middle" class="fill-accent">now</text>
 
-      <!-- step 1, now: reprocessed catalogues on their way, TR1 chains -->
+      <!-- step 1, now: TR1 chains -->
       <g class="fragment">
-        <circle cx="238" cy="170" r="13" class="fill-accent"></circle>
-        <text x="262" y="182" font-size="38">reprocessed (R3) shear catalogues</text>
-        <circle cx="194" cy="506" r="13" class="fill-cobalt"></circle>
-        <text x="218" y="518" font-size="38">blinded TR1 chains</text>
+        <circle cx="211" cy="506" r="13" class="fill-cobalt"></circle>
+        <text x="235" y="518" font-size="38">blinded TR1 chains</text>
       </g>
 
-      <!-- step 2, Nov–Dec: DR1-Foundation, n(z) close to final, DR1 chains spin up -->
+      <!-- step 2, Nov–Dec: DR1 catalogues, DR1-Foundation, n(z) close to final, DR1 chains spin up -->
       <g class="fragment">
-        <circle cx="292" cy="100" r="13" class="fill-accent"></circle>
-        <text x="316" y="112" font-size="38">DR1-Foundation, 12 Nov</text>
-        <text x="362" y="252" font-size="38" text-anchor="end">n(z)</text>
-        <circle cx="386" cy="240" r="13" class="fill-accent"></circle>
-        <text x="410" y="252" font-size="38">close to final</text>
-        <rect x="330" y="554" width="710" height="36" rx="10" class="fill-cobalt" mask="url(#tl-mask-both)"></rect>
-        <text x="1058" y="584" font-size="38">DR1 chains, blinded</text>
+        <circle cx="269" cy="170" r="13" class="fill-accent"></circle>
+        <text x="293" y="182" font-size="38">DR1 shear catalogues</text>
+        <circle cx="335" cy="100" r="13" class="fill-accent"></circle>
+        <text x="359" y="112" font-size="38">DR1-Foundation, 12 Nov</text>
+        <text x="424" y="252" font-size="38" text-anchor="end">n(z)</text>
+        <circle cx="448" cy="240" r="13" class="fill-accent"></circle>
+        <text x="472" y="252" font-size="38">close to final</text>
+        <rect x="430" y="554" width="570" height="36" rx="10" class="fill-cobalt" mask="url(#tl-mask-ramp)"></rect>
+        <text x="1018" y="584" font-size="38">DR1 chains, blinded</text>
       </g>
 
       <!-- step 3, Feb–Mar: final products, unblinding -->
       <g class="fragment">
-        <rect x="682" y="222" width="278" height="36" rx="10" class="fill-accent" mask="url(#tl-mask-end)"></rect>
-        <text x="978" y="252" font-size="38">final catalogues, n(z), m bias</text>
-        <circle cx="978" cy="310" r="13" class="fill-accent"></circle>
-        <text x="954" y="322" font-size="38" text-anchor="end">unblinding, end of March</text>
+        <rect x="806" y="222" width="304" height="36" rx="10" class="fill-accent" mask="url(#tl-mask-end)"></rect>
+        <text x="1128" y="252" font-size="38">final catalogues, n(z), m bias</text>
+        <circle cx="985" cy="310" r="13" class="fill-accent"></circle>
+        <text x="961" y="322" font-size="38" text-anchor="end">unblinding, end of March</text>
       </g>
 
       <!-- step 4, Apr–Jun: review, release, submission -->
       <g class="fragment">
-        <rect x="978" y="620" width="296" height="36" rx="10" class="fill-rule"></rect>
-        <text x="960" y="650" font-size="38" text-anchor="end">Euclid internal review</text>
-        <circle cx="1348" cy="100" r="13" class="fill-accent"></circle>
-        <text x="1324" y="112" font-size="38" text-anchor="end">public DR1</text>
-        <circle cx="1348" cy="506" r="13" class="fill-cobalt"></circle>
-        <text x="1324" y="518" font-size="38" text-anchor="end">submission</text>
+        <rect x="985" y="620" width="358" height="36" rx="10" class="fill-rule"></rect>
+        <text x="967" y="650" font-size="38" text-anchor="end">Euclid internal review</text>
+        <circle cx="1611" cy="100" r="13" class="fill-accent"></circle>
+        <text x="1587" y="112" font-size="38" text-anchor="end">public DR1</text>
+        <circle cx="1611" cy="506" r="13" class="fill-cobalt"></circle>
+        <text x="1587" y="518" font-size="38" text-anchor="end">submission</text>
       </g>
     </svg>
     <span class="source">Euclid DR1 plan as presented at the Euclid WL-SWG meeting, Napoli, October 2026</span>
   </figure>
   <aside class="notes">
-  <p>The top lane is the DR1 data products, from the Napoli meeting. The reprocessed (R3) DR1 shear catalogues reach the whole Euclid Consortium at the end of October or start of November; R3 has a much smaller PSF-size bias than R2, and the catalogues stay blinded until the end of March like every DR1 shear product. DR1-Foundation is released on 12 November 2026. The n(z) are close to final at the end of November. The final calibrated catalogues, with the final multiplicative shear bias m from SHE-CAL (first run in November), and the final n(z) arrive in February, with the n(z) at the end of February when the products freeze; the bar fades into March because the dates are soft. The two-point measurements are unblinded by the end of March, and the public DR1 release is in June 2027.</p>
-  <p>The bottom lane is this paper's plan. Blinded TR1 chains exist now (shown later in this talk). The DR1 chains start as soon as the n(z) are close to final, around the start of December, and run on the blinded DR1 data until they converge on the final products in February and March; the bar fades in and out because neither end is a fixed date. Papers go into the Euclid Consortium's internal (ECP) review at about the end of March, so that the roughly two months of review end by the June release, and are submitted on release day. They go in even if numbers may still shift: the DR1-Foundation strong-lensing papers were written ahead with TBD numbers and needed only a final update. The SPT products listed later in the talk are needed for the covariance, so they come before the final chains.</p>
+  <p>The slide opens on where the analysis is now, the blinded TR1 chains, and builds up from there.</p>
+  <p>The top lane is the DR1 data products, from the Napoli meeting. The DR1 shear catalogues (the R3 reprocessing, with a much smaller PSF-size bias than R2) reach the whole Euclid Consortium at the end of October or start of November, blinded until the end of March like every DR1 shear product. DR1-Foundation is released on 12 November 2026. The n(z) are close to final at the end of November. The final calibrated catalogues, with the final multiplicative shear bias m from SHE-CAL (first run in November), and the final n(z) arrive in February, with the n(z) at the end of February when the products freeze; the bar fades into March because the dates are soft. The two-point measurements are unblinded by the end of March, and the public DR1 release is in June 2027.</p>
+  <p>The bottom lane is this paper's plan. The DR1 chains start as soon as the n(z) are close to final, around the start of December, and run on the blinded DR1 data, ramping up as the products firm up until they converge on the final products in February and March. Papers go into the Euclid Consortium's internal (ECP) review at about the end of March, so that the roughly two months of review end by the June release, and are submitted on release day. They go in even if numbers may still shift: the DR1-Foundation strong-lensing papers were written ahead with TBD numbers and needed only a final update. The SPT products listed later in the talk are needed for the covariance, so they come before the final chains.</p>
   <p>Sources: Napoli day 1 (DR1 timeline, release papers, ECP review timing: about two months), day 2 (3×2pt pipeline group's DR1 timeline, m bias November to February) and day 3 (roadmap: full non-final chains on blinded DR1 in December).</p>
   </aside>
 </section>
