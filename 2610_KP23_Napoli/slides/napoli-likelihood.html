@@ -1,5 +1,5 @@
 <section data-layout="figure-text">
-  <h2>CLOE is ready for CMBX; the chains need emulators</h2>
+  <h2>CLOE is ready for CMBX; chains ready for emulators?</h2>
   <figure>
     <img src="images/napoli_cloe_final_words.png" alt="CLOE-org slide: cloelib v0.11 is the (almost) DR1 theory pipeline, feature freeze; ready for joint analyses with other KPs, CMB lensing already in cloelib; grid of observables in cloelib including CMB lensing">
     <span class="source">CLOE-org, Napoli day 2</span>
@@ -7,9 +7,10 @@
   <div class="text">
     <ul>
       <li>κκ, κ × GC, κ × WL in cloelib</li>
+      <li>on PyPI: cloelib 0.11, cloelike 0.3</li>
       <li>GLASS mocks going into CLOE format</li>
       <li>open: κκ noise bias, mixing matrices</li>
-      <li>TATT-M ~4× NLA cost: emulators</li>
+      <li>TATT-M ~4× NLA cost</li>
     </ul>
   </div>
   <aside class="notes">
@@ -17,7 +18,7 @@
     <p>Left half of the "Final Words" slide of the CLOE-org DR1-readiness talk (day 2, 13 Oct; speaker not recorded on the deck). Source: <code>slides/27893.pdf</code>, p. 18.</p>
     <h3>Sources</h3>
     <ul>
-      <li>Day 2, CLOE-org: the κκ, κ × GC and κ × WL spectra are merged into cloelib. A branch, <code>feature/cmb-lensing-pseudo-cl</code>, computes pseudo-$C_\ell$ through mixing matrices and works, but no pipeline produces CMB-lensing mixing matrices yet. cloelike has no CMBX part yet, because no CMBX data products are CLOE-compatible. Still open: how to handle the κκ noise bias. cloelib v0.11 is being frozen as almost the DR1 pipeline.</li>
+      <li>Day 2, CLOE-org: the κκ, κ × GC and κ × WL spectra are merged into cloelib. A branch, <code>feature/cmb-lensing-pseudo-cl</code>, computes pseudo-$C_\ell$ through mixing matrices and works, but no pipeline produces CMB-lensing mixing matrices yet. cloelike has no CMBX part yet, because no CMBX data products are CLOE-compatible. Still open: how to handle the κκ noise bias. cloelib v0.11 is being frozen as almost the DR1 pipeline. cloelib 0.11 and cloelike 0.3 are now released on PyPI (checked 21 Oct).</li>
       <li>Day 2: Cail pointed Raphaël Kou at the GLASS-mock full output product, and he is converting it to CLOE format.</li>
       <li>Day 3: TATT-M parameters and priors available by Christmas. Late session: TATT-M currently takes about 4× longer than NLA; emulators already exist that convert $A_s \leftrightarrow \sigma_8$ in fractions of a millisecond. DR2 session (Navarro-Gironés): chains are slow, NLA ~40 h, TATT ~142 h on the deck.</li>
       <li>Emulators: Cail spoke with Ivan Sladoljev on 14 Oct; he is keen to build emulators for CMBX. Marina Migliaccio proposed he speak at the CMBX call on 29 Oct to decide how to proceed, possibly with a group working with him directly.</li>

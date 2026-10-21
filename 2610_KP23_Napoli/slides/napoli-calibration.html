@@ -9,6 +9,7 @@
       <li><strong>m</strong>, incl. selection: <span class="nowrap">LensMC −4.6 ± 0.4 %</span>, <span class="nowrap">MetaCal −1.8 ± 0.7 %</span></li>
       <li><strong>n(z)</strong>, ~5 % errors (DR1-like): shift + stretch misses $S_8$</li>
       <li>no fix yet; sim realism being checked</li>
+      <li><strong>B-modes</strong> on R3 not settled: MetaCal North up to ~5σ; real and harmonic space disagree</li>
     </ul>
   </div>
   <aside class="notes">
@@ -20,6 +21,13 @@
       <li>The southern calibration is blocked on reduced EXT-DES data, with no bypass possible (backup slide "EXT photometry in the south").</li>
       <li>Martin Kilbinger's reading at the CosmoStat group meeting (20 Oct): the requirement is on the uncertainty of m, not its value, and the sims use one PSF for both methods with no PSF error, so the quoted errors are a lower limit.</li>
       <li>The 3×2pt prior table has $m \sim \mathcal{N}(0, 0.01)$, considered pessimistic in the day-3 session, where ~0.007 was already being reported. Centred on zero, it is far from the SHECAL LensMC value, so the numbers above bear on where an m prior is centred, not only on its width.</li>
+    </ul>
+    <h3>R3 B-modes (B-mode Tiger Team Slack, read 21 Oct)</h3>
+    <ul>
+      <li>Harmonic space (Ruiz Zapatero, 19 Oct, "everything in" masks): LensMC passes in both hemispheres, with both the SGS and the latest time-dependent c-bias correction (≤ 1.9σ with the simulation covariance at ℓ<sub>max</sub> 2000). MetaCal fails in the North: 3.5σ at ℓ<sub>max</sub> 1000 and 4.9σ at 2000 with the simulation covariance, 1.1–1.5σ with jackknife; 2.1–2.4σ North + South. The two covariances differ by 2–3×, so the σ depends on which is used.</li>
+      <li>Tessore (20 Oct): the MetaCal North E-mode amplitude is ~1.5× the other three (LensMC N/S, MetaCal S), and the North B-mode shows a J-shaped bias. Under investigation.</li>
+      <li>Real space (COSEBIs, Angus Wright, shown in the Napoli splinter slides): the opposite verdict, LensMC failing and MetaCal passing. Congedo (19 Oct): real and harmonic space give opposite results on the same data, which points to the estimators. Wright's early run was also hit by duplicated per-exposure rows and NaN corrected ellipticities (12 Oct).</li>
+      <li>Splitting the time-dependent c-bias correction by hemisphere takes the LensMC North B-mode from 1.85σ to 0.96σ (Ruiz Zapatero, 15 Oct). Congedo reports LensMC star–galaxy separation under-performing across DR1, worse near the LMC (Redmine #36646).</li>
     </ul>
     <h3>Redshift parametrisation (William d'Assignies, day 4)</h3>
     <ul>
