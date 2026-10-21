@@ -1,0 +1,30 @@
+<section data-layout="points">
+  <h2>Two ways to put SPT-3G in the mock covariance</h2>
+  <div class="cols">
+    <div>
+      <p><strong class="accent">Constrained on SPT sims</strong></p>
+      <ul>
+        <li>Euclid fields drawn around SPT's input κ</li>
+        <li>SPT's own reconstructions</li>
+        <li>most realistic κ noise</li>
+      </ul>
+    </div>
+    <div>
+      <p><strong class="cobalt">SPT-like, unconstrained</strong></p>
+      <ul>
+        <li>log-normal κ, own quadratic estimator</li>
+        <li>SPT-, ACT-, Planck-like on the same skies</li>
+        <li>a first cross-covariance</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">
+  <p>The FLASK covariance of the previous slides can include SPT-3G in two ways, the same two it already uses for ACT DR6 (constrained) and Planck (Planck-like).</p>
+  <h3>Constrained on the existing SPT simulations</h3>
+  <p>The log-normal Euclid fields are drawn conditioned on the input κ of SPT's own lensing simulations, and the CMB-lensing field in each realization is SPT's reconstruction of that simulation. The reconstruction noise then carries everything the real pipeline does (observing strategy, filtering, masking, mean field, noise biases), so this is the most realistic route for the SPT block. It needs the input κ and the matched reconstructions of SPT's simulations.</p>
+  <h3>SPT-like, unconstrained</h3>
+  <p>Fully log-normal skies, with the CMB lensing reconstructed by a quadratic estimator run on simulated CMB with SPT-3G-like noise and beam. Running the estimator with SPT-, ACT- and Planck-like settings on the same skies gives a rudimentary cross-covariance between the three CMB surveys, which the constrained route cannot give unless the surveys' simulations share their inputs.</p>
+  <p>The two routes can be combined: see the slide on combining surveys.</p>
+  <p>Covariance workstream: Davide Luchina with Carlo Baccigalupi, Matteo Calabrese, Melita Carbone, Sandeep Haridasu and Pauline Vielzeuf (KP2-3).</p>
+  </aside>
+</section>

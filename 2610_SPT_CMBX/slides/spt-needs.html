@@ -1,26 +1,20 @@
 <section data-layout="points">
-  <h2>What we need from SPT</h2>
+  <h2>What the analysis needs from SPT</h2>
   <ul>
-    <li>Noise bias: N0 (and the RDN0 recipe), N1, per estimator</li>
-    <li>Input and reconstructed κ for each simulation, matched</li>
-    <li>Mean field, masks, normalisation, transfer, L-range</li>
-    <li>Simulation cosmology, indexing and location</li>
-    <li>Bigger ask: reconstruct on the ACT / Planck input sims</li>
+    <li><strong class="accent">First:</strong> mock lensing reconstructions with their input κ</li>
+    <li>Lensing noise curves: N0, N1</li>
+    <li>Mean fields</li>
   </ul>
+  <p class="small muted">The mocks feed the mock-based covariance; the noise curves and mean fields, the theory and the noise model.</p>
   <aside class="notes">
-  <h3>Why</h3>
-  <p>Today the Euclid side holds the SPT-3G Main winter lensing maps for each estimator and one simulated reconstruction per estimator, with no noise curve. The CMB-lensing noise in our mocks and covariance is therefore a stopgap: the observed κκ minus theory. With input and reconstructed κ for each simulation, input minus reconstruction gives noise realizations that carry the real reconstruction's structure, for the GLASS validation mocks and for Davide Luchina's FLASK numerical covariance (KP2-3), which he will extend to SPT given these products. The transfer of about 500 input + reconstruction pairs is tracked in Euclid Redmine issue #35882.</p>
-  <h3>The list</h3>
+  <h3>Why the mocks come first</h3>
+  <p>The Euclid side holds the SPT-3G Main winter lensing maps for each estimator and one simulated reconstruction per estimator. With the input κ and the matched reconstruction for each simulation, the SPT block of the mock-based covariance can be built on the constrained route of the covariance slides, and input minus reconstruction gives noise realizations that carry the real reconstruction's structure, for the GLASS validation mocks too. Until then the CMB-lensing noise in the mocks and the covariance is a stopgap: the observed κκ minus theory. A transfer of about 500 input + reconstruction pairs is tracked in Euclid Redmine issue #35882.</p>
+  <h3>Also useful</h3>
   <ul>
-  <li>Noise-bias curves: N0, and RDN0 curves or recipe for the data; N1; for each estimator variant used.</li>
-  <li>Input κ for each simulation, realization-matched to the reconstructed κ for each simulation.</li>
-  <li>Mean field, or confirmation that the released maps and simulations are mean-field subtracted, and on which subset.</li>
-  <li>Analysis and apodized masks, and the normalisation convention of the released κ; response and any Monte-Carlo correction, transfer function, L-range used.</li>
-  <li>Simulation fiducial cosmology, needed to calibrate lognormal simulations.</li>
-  <li>Realization count and indexing, and where the simulations live.</li>
-  <li>The data κ map variants, and κκ bandpowers with covariance if κκ is to be included.</li>
+  <li>N0 (and the RDN0 recipe for the data) and N1, for each estimator variant used.</li>
+  <li>The mean field, or confirmation of how the released maps and simulations are mean-field subtracted.</li>
+  <li>Masks, the normalisation convention of the released κ, any Monte-Carlo correction, transfer function and L-range used.</li>
+  <li>The simulations' fiducial cosmology, realization count and indexing.</li>
   </ul>
-  <h3>The bigger ask</h3>
-  <p>If SPT ran its reconstruction on the same input simulations as ACT DR6 and Planck PR4, the SPT × ACT × Planck × Euclid cross-covariances would follow from matched seeds.</p>
   </aside>
 </section>

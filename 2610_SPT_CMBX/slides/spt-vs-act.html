@@ -1,0 +1,20 @@
+<section data-layout="figure-text" data-split="60">
+  <h2>SPT-3G is tighter than ACT DR6 above $\ell \approx 200$</h2>
+  <figure>
+    <img src="images/spt_sigma_ratio.png" alt="Ratio of the ACT DR6 to SPT-3G per-bandpower error bar for the twelve TR1 CMB-lensing cross-spectra, against multipole: just below one under ell of 200, rising to about 1.5 by ell of 500 and 2.4 at ell of 2700">
+  </figure>
+  <div class="text">
+    <ul>
+      <li>×1.5 from $\ell \approx 500$, ×2.4 at $\ell \approx 2700$</li>
+      <li>on 149 deg² of TR1, against ACT's 345</li>
+      <li>κ-only $\sigma(S_8)$: 0.056 vs 0.069</li>
+    </ul>
+    <p class="source">Euclid TR1 v1.1 LensMC; SPT-3G Main GMV; ACT DR6 baseline</p>
+  </div>
+  <aside class="notes">
+    <p>The ratio of error bars, $\sigma_\mathrm{ACT}/\sigma_\mathrm{SPT}$, for each of the twelve CMB-lensing cross-spectra in the TR1 5×2pt data vector: shear in six source bins × κ (blue) and galaxy density in six lens bins × κ (gold), in the 15 NaMaster bandpowers from $\ell = 100$ to 3000. Each σ is the square root of the diagonal of that survey's full NaMaster Gaussian covariance, the error bars of the data-vector slide. Only error bars enter, so the figure carries no measured amplitude.</p>
+    <p>ACT DR6 is tighter by up to about 10 % in the lowest three bandpowers ($\ell \lesssim 180$), where its larger overlap with TR1 gives it more modes. From $\ell \approx 200$ SPT-3G is tighter: by about 1.4 at $\ell \approx 350$, 1.5 from $\ell \approx 550$ to 1400, 2.0 at $\ell \approx 2150$ and 2.4 at $\ell \approx 2700$, where the depth and resolution of the Main field dominate. The twelve curves nearly coincide because the CMB-lensing noise, not the Euclid tracer, sets the ratio.</p>
+    <p>Overlaps are TR1 areas from the RR2 photometric footprint at NSIDE 512: 149 deg² with SPT-3G Main (121 deg² of it also inside ACT DR6) and 345 deg² with ACT DR6. The κ-only $\sigma(S_8)$ values are the blinded TR1 posteriors of the results slide (κγ + κδ alone, full nuisance model); the same comparison was made at the June summer meeting on the earlier binning, with a crossover near $\ell \approx 200$ as here.</p>
+    <p>Figure: <code>2610_SPT_CMBX/make_sigma_ratio.py</code>, from the export behind the data-vector slide.</p>
+  </aside>
+</section>

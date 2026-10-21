@@ -58,5 +58,14 @@
   pointer-events: none;
 }
 
+[data-preliminary="very"] .slide:not(.detail) > .foot::after { content: "Very preliminary (TR1 v1.1)"; }
+.slide .prelim { color: #B3261E; }
+
 /* a red highlight box, for the one row a slide is about */
 .slide .frame > mark.box.red { border-color: #B3261E; }
+
+/* chain colours — the posteriors slide's numbers, coloured as their contours (make_chains.py RUNS) */
+.slide .chain-k { color: #1D6C78; }
+.slide .chain-gl { color: #7F5E10; }  /* the contour gold, darkened to 4.5:1 for text */
+.slide .chain-full { color: #2E417C; }
+.slide .chain-3x2 { color: #6E3A8A; }

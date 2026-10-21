@@ -1,0 +1,31 @@
+<section data-layout="people" data-stack>
+  <h2>KP2-3: Simulations and covariance</h2>
+  <div class="text">
+    <ul class="small">
+      <li>log-normal, full-sky Euclid 3×2pt fields correlated with $\kappa_{\rm CMB}$,<br>calibrated on DEMNUni-COV</li>
+      <li>constrained on the CMB collaborations' κ simulations,<br>or with their own lensing reconstruction</li>
+      <li>NaMaster spectra on every sky →<br>covariance on the DR1, DR1×CMB and CMB footprints</li>
+      <li>400 ACT-constrained + 400 Planck-like realizations; Planck-constrained next</li>
+      <li>builds on Vielzeuf et al. (in review): N-body-calibrated log-normal 6×2pt covariances</li>
+    </ul>
+  </div>
+  <div class="people">
+    <figure><img src="images/collaborators/davide-luchina-hires.jpg" alt="Davide Luchina"><figcaption>Davide Luchina</figcaption></figure>
+    <figure><img src="images/collaborators/carlo-baccigalupi-hires.jpg" alt="Carlo Baccigalupi"><figcaption>Carlo Baccigalupi</figcaption></figure>
+    <figure><img src="images/collaborators/matteo-calabrese.jpg" alt="Matteo Calabrese"><figcaption>Matteo Calabrese</figcaption></figure>
+    <figure><img src="images/collaborators/melita-carbone.jpg" alt="Melita Carbone"><figcaption>Melita Carbone</figcaption></figure>
+    <figure><img src="images/collaborators/sandeep-haridasu.jpg" alt="Sandeep Haridasu"><figcaption>Sandeep Haridasu</figcaption></figure>
+    <figure><img src="images/collaborators/pauline-vielzeuf.jpg" alt="Pauline Vielzeuf"><figcaption>Pauline Vielzeuf</figcaption></figure>
+  </div>
+  <aside class="notes">
+    <p>The method paper: Vielzeuf, Haridasu, Calabrese, Cuozzo, Carbone, Baccigalupi, Legrand, Fabbian, "Euclid: N-body-calibrated log-normal covariances for Euclid 6×2pt cross-correlations with CMB lensing" (internal draft 17 Sep 2026, Euclid PUB 741775, in review). It targets DR3 with Simons Observatory-like lensing reconstruction: 2500 FLASK log-normal realisations calibrated on DEMNUni-Cov, plus 1000 Gaussian ones for comparison, with constrained ISW–RS. Non-Gaussian effects are modest for the κκ auto-covariance but significant for the full Euclid × CMB covariance, especially for crosses with κ at high ℓ. Davide's DR1 simulations follow that framework.</p>
+    <p>Mirrored from the contributions deck (Davide Luchina's slide, 12 Oct, edited by 21:14Z). The bullets on the slide condense his text; his slide in full, verbatim:</p>
+    <h3>DR1-KP-CMBX-2-3: Simulations and Covariance</h3>
+    <p>Luchina, Baccigalupi, Calabrese, Carbone, Haridasu, Vielzeuf</p>
+    <ul>
+      <li>Following the draft from pre-launch Vielzeuf+: we begin by simulating logNormal, full-sky, mocks of Euclid 3×2 fields correlated with KCMB; marginal distribution calibrated through the DEMNUni-COV simulations. Also possible to constrain logNormal 3×2 fields, anchored to gaussian simulations of KCMB from CMB-collaborations. (3×2) have magnification bias and intrinsic alignment, together with Poisson sampling of galaxies. Concerning KCMB it is possible to either perform lensing reconstruction (if using the fully logNormal mocks) or use the reconstructed KCMB fields from CMB-collaborations (matching their sims). The final covariance is then obtained by computing spectra (with NaMaster) for each simulated sky, and for each field combination on the appropriate footprint (DR1 / DR1×CMB / CMB). Currently investigating “resampling” of mock skies to increase the sample size.</li>
+      <li>Current results: 400 realizations constrained on ACT gaussian KCMB simulations &amp; 400 fully logNormal realizations with a Planck-like configuration for lensing reconstruction. Soon to be added: constraint realizations on Planck simulations.</li>
+      <li>Parameters: nside=4096, [4.1, 4.1, 4.2, 4.3, 4.4, 4.6] gal/arcmin2 , (23,42) μK noise levels in (T,P) and 7’ beam for Planck-like CMB. Output binned in 20 log-spaced ℓ bins in the range [10, 3000].</li>
+    </ul>
+  </aside>
+</section>
