@@ -422,9 +422,8 @@ def layout(A):
     half = sr[2] // 2
     cmb_slots = [(sr[0] + c * half + (60 if c else 0), sr[0] + (c + 1) * half - (60 if not c else 8),
                   y0 + dy) for dy in CMB_ROWS for c in (0, 1)]
-    # the Euclid key: its last row (TR1) level with the CMB grid's last row, unless that would
-    # bring it up against the north panel
-    ey = max(cmb_slots[-1][2] - EUC_SLOTS[-1], nr[1] + nr[3] + gap + ROW_HALF)
+    # the Euclid key: directly under the north panel
+    ey = nr[1] + nr[3] + gap + ROW_HALF
     height = max(cmb_slots[-1][2], ey + EUC_SLOTS[-1]) + ROW_HALF + 16
     print(f"RA0 {ra0} / {ra0 + 180}  south {sr}  north {nr}  CMB key y {y0}  Euclid key y {ey}  "
           f"height {height}", flush=True)
