@@ -33,8 +33,8 @@ OUT = HERE.parent / 'images/spt_sigma_ratio.png'
 INK, MUTED = '#111418', '#535B67'
 SHADE = '#1D6C78'
 W_PX, H_PX, DPI = 2054, 1542, 200
-# overlaps with Euclid, deg²: TR1 from the RR2 photometric footprint (NSIDE 512), DR1 effective (VMPZ R2 valid tiles)
-AREA = {'tr1': {'act': 345.0, 'spt': 149.0}, 'dr1': {'act': 1069.0, 'spt': 353.0}}
+# effective overlaps with Euclid, deg²: TR1 WL coverage (the analysis footprint) and DR1 VMPZ R2 valid tiles (make_footprints.py)
+AREA = {'tr1': {'act': 222.4, 'spt': 130.3}, 'dr1': {'act': 1069.4, 'spt': 353.2}}
 TR1_C, DR1_C = '#2E417C', '#B3261E'
 
 
@@ -62,7 +62,7 @@ def main():
     ax = fig.add_axes([0.14, 0.17, 0.80, 0.70])
     ax.axhspan(1, 2.8, color=SHADE, alpha=0.08, lw=0, zorder=0)
     ax.text(125, 2.55, 'SPT-3G tighter', color=SHADE, fontsize=30, va='center')
-    ax.text(125, 0.72, 'ACT DR6 tighter', color=MUTED, fontsize=30, va='center')
+    ax.text(125, 0.57, 'ACT DR6 tighter', color=MUTED, fontsize=30, va='center')
     ax.axhline(1, color=MUTED, lw=2.4, zorder=1)
     ratios = []
     for k in keys:
@@ -76,7 +76,7 @@ def main():
     ax.plot(ell, dr1, color=DR1_C, lw=4, marker='o', ms=9, ls='--', zorder=3)
     ax.set_xscale('log')
     ax.set_xlim(100, 3000)
-    ax.set_ylim(0.6, 2.8)
+    ax.set_ylim(0.48, 2.8)
     ax.set_xticks([100, 200, 500, 1000, 2000, 3000])
     ax.set_xticklabels(['100', '200', '500', '1000', '2000', '3000'])
     ax.set_yticks([1, 1.5, 2, 2.5])
