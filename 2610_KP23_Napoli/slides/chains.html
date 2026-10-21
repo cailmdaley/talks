@@ -3,23 +3,22 @@
   <figure>
     <img src="images/kp23_chains_spt_1.png" data-alt='{"lensmc|act": "images/kp23_chains_act_1.png"}' alt="Blinded posterior of S8 against Omega_m from the CMB-lensing crosses alone">
     <img class="fragment" data-fragment-index="1" src="images/kp23_chains_spt_2.png" data-alt='{"lensmc|act": "images/kp23_chains_act_2.png"}' alt="The same with galaxy-galaxy lensing added">
-    <img class="fragment" data-fragment-index="2" src="images/kp23_chains_spt_3.png" data-alt='{"lensmc|act": "images/kp23_chains_act_3.png"}' alt="The same with the Euclid-only 3x2pt vector">
-    <img class="fragment" data-fragment-index="3" src="images/kp23_chains_spt_4.png" data-alt='{"lensmc|act": "images/kp23_chains_act_4.png"}' alt="The same with the full 3x2pt plus kappa vector">
+    <img class="fragment" data-fragment-index="2" src="images/kp23_chains_spt_3.png" data-alt='{"lensmc|act": "images/kp23_chains_act_3.png"}' alt="The same with the full 3x2pt plus kappa vector">
   </figure>
   <div class="text">
     <ul>
-      <li class="nowrap" data-variant="lensmc|spt">$\sigma(S_8)$ <span class="chain-k">0.056</span><span class="fragment" data-fragment-index="1"> → <span class="chain-gl">0.028</span></span><span class="fragment" data-fragment-index="2"> → <span class="chain-3x2">0.012</span></span><span class="fragment" data-fragment-index="3"> → <span class="chain-full">0.012</span></span></li>
-      <li class="nowrap" data-variant="lensmc|act">$\sigma(S_8)$ <span class="chain-k">0.069</span><span class="fragment" data-fragment-index="1"> → <span class="chain-gl">0.035</span></span><span class="fragment" data-fragment-index="2"> → <span class="chain-3x2">0.013</span></span><span class="fragment" data-fragment-index="3"> → <span class="chain-full">0.013</span></span></li>
+      <li class="nowrap" data-variant="lensmc|spt">$\sigma(S_8)$ <span class="chain-k">0.056</span><span class="fragment" data-fragment-index="1"> → <span class="chain-gl">0.028</span></span><span class="fragment" data-fragment-index="2"> → <span class="chain-full">0.012</span></span></li>
+      <li class="nowrap" data-variant="lensmc|act">$\sigma(S_8)$ <span class="chain-k">0.069</span><span class="fragment" data-fragment-index="1"> → <span class="chain-gl">0.035</span></span><span class="fragment" data-fragment-index="2"> → <span class="chain-full">0.013</span></span></li>
       <li>full nuisance model, 44 parameters</li>
       <li>nested sampling (nautilus)</li>
     </ul>
     <p class="small prelim">σ very optimistic: ad hoc priors; δδ not a good fit</p>
-    <p class="fine accent fragment" data-fragment-index="3">lens n(z) stretch 0.61–0.68 in bins 2–5, prior 1 ± 0.1</p>
+    <p class="fine accent fragment" data-fragment-index="2">lens n(z) stretch 0.61–0.68 in bins 2–5, prior 1 ± 0.1</p>
     <p class="source">TR1 v1.1 LensMC × <span data-variant="lensmc|spt">SPT-3G</span><span data-variant="lensmc|act">ACT DR6</span></p>
   </div>
   <aside class="notes">
     <h3>What is plotted</h3>
-    <p>Blinded (cmbx_dr1_a) posteriors on Euclid TR1 v1.1 LensMC × SPT-3G (the variant control switches to ACT DR6), shown at their blinded values: every run fits the same blinded data vector (an additive cosmology-shift blind on the spectra), so absolute $S_8$ and $\Omega_\mathrm{m}$ carry the blind's unknown shift while the relative positions of the probe combinations are meaningful. Contours are 68 % and 95 %. Built up as κγ + κδ (κ-only), then + γδ, then Euclid-only 3×2pt (γγ + γδ + δδ), then 5×2pt (3×2pt + κγ + κδ). The 3×2pt frame is not its own chain: it reweights the 5×2pt samples by dividing out the κ-cross likelihood (effective sample size about 1000 for SPT-3G, 2000 for ACT DR6), so it cannot be wider than the 5×2pt run explored. Its σ(S8) equals the 5×2pt one to two digits; at this precision the κ crosses add little to 3×2pt. Sampler: nautilus nested sampling on the production Cobaya model, reweighted to the production Limber integration. 44 sampled parameters: five cosmological ($\ln 10^{10}A_s$, $\omega_c$, $\omega_b$, $h$, $n_s$), $\log T_\mathrm{AGN}$, NLA $A_\mathrm{IA}$ and $\eta_\mathrm{IA}$, per-bin source and lens n(z) shift and stretch, per-bin $m$ and linear bias, on the priors of the priors slide (the 3×2pt proposal, with the n(z) stretch and fixed magnification slopes).</p>
+    <p>Blinded (cmbx_dr1_a) posteriors on Euclid TR1 v1.1 LensMC × SPT-3G (the variant control switches to ACT DR6), shown at their blinded values: every run fits the same blinded data vector (an additive cosmology-shift blind on the spectra), so absolute $S_8$ and $\Omega_\mathrm{m}$ carry the blind's unknown shift while the relative positions of the probe combinations are meaningful. Contours are 68 % and 95 %. Built up as κγ + κδ (κ-only), then + γδ, then + γγ + δδ. Sampler: nautilus nested sampling on the production Cobaya model, reweighted to the production Limber integration. 44 sampled parameters: five cosmological ($\ln 10^{10}A_s$, $\omega_c$, $\omega_b$, $h$, $n_s$), $\log T_\mathrm{AGN}$, NLA $A_\mathrm{IA}$ and $\eta_\mathrm{IA}$, per-bin source and lens n(z) shift and stretch, per-bin $m$ and linear bias, on the priors of the priors slide (the 3×2pt proposal, with the n(z) stretch and fixed magnification slopes).</p>
     <h3>Parameters and priors</h3>
     <table>
       <tr><th>parameter</th><th>prior</th><th>source</th></tr>
@@ -40,7 +39,7 @@
     </table>
     <p>44 sampled: 5 cosmology + $T_\mathrm{AGN}$ + 2 IA + 24 n(z) + 6 m + 6 bias. $\sigma_8$, $S_8$, $\Omega_\mathrm{m}$ derived. Pages are the Napoli splinter deck; the full record is <code>prior_sources</code> in <code>workflow/scripts/tr1_production_chain_config.json</code>.</p>
     <h3>Numbers</h3>
-    <p>Blinded $S_8$, mean ± σ. SPT-3G: κ-only 0.841 ± 0.056, κ+GL 0.767 ± 0.028, full 0.826 ± 0.012 (κ+GL 0.059 below the full mean). ACT DR6: 0.895 ± 0.069, 0.820 ± 0.035, 0.829 ± 0.013. 3×2pt (reweighted): SPT-3G 0.827 ± 0.012, ACT DR6 0.829 ± 0.013. The σ(S₈) numbers on the slide are coloured as their contours. Nested shifts in units of $\sigma_n = \sqrt{|\sigma_\mathrm{sub}^2 - \sigma_\mathrm{ref}^2|}$ are in the chains fiber.</p>
+    <p>Blinded $S_8$, mean ± σ. SPT-3G: κ-only 0.841 ± 0.056, κ+GL 0.767 ± 0.028, full 0.826 ± 0.012 (κ+GL 0.059 below the full mean). ACT DR6: 0.895 ± 0.069, 0.820 ± 0.035, 0.829 ± 0.013. The σ(S₈) numbers on the slide are coloured as their contours. Nested shifts in units of $\sigma_n = \sqrt{|\sigma_\mathrm{sub}^2 - \sigma_\mathrm{ref}^2|}$ are in the chains fiber.</p>
     <h3>Why σ(S8) = 0.012 is optimistic</h3>
     <p>Three plausible sources, each to be fixed before the full rerun on Cycle 2: scale cuts, n(z) priors, and missing covariance terms.</p>
     <p>For scale: DES Y3 3×2pt gives $S_8 = 0.776 \pm 0.017$ and DES Y3 × SPT/Planck 6×2pt $0.792 \pm 0.012$, on a footprint of nearly 5000 deg² (arXiv:2206.10824, Table 1 and §2). TR1's WL area is a few hundred deg² (258 deg² binary-occupied), with several times DES's source density.</p>
@@ -58,6 +57,6 @@
       <li>The full-vector runs use a repartitioned proposal; validated on κ+GL, $S_8$ is exact and $\Omega_\mathrm{m}$ comes out about 8 % narrow, so the full contours' $\Omega_\mathrm{m}$ upper side may be short.</li>
       <li>Exploratory runs outside lc; production chains on Cycle 2 (tr1_v2) go through lc next.</li>
     </ul>
-    <p>Figure: <code>2610_KP23_Napoli/make_chains.py</code>; runs <code>tr1-chains/nested/{tr1,tr1_act}_{kappa_only,kappa_gl,3x2pt_rw,full_rep}</code>.</p>
+    <p>Figure: <code>2610_KP23_Napoli/make_chains.py</code>; runs <code>tr1-chains/nested/{tr1,tr1_act}_{kappa_only,kappa_gl,full_rep}</code>.</p>
   </aside>
 </section>
