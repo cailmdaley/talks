@@ -1,0 +1,14 @@
+<section data-preliminary="exploratory" data-layout="points">
+  <h2>CSFD's galaxy null is partly by construction</h2>
+  <ul>
+    <li>SFD: χ² = 27.7–72.5 for 15 bands, $r \approx +0.03$ to $+0.06$</li>
+    <li>CSFD: χ² = 6.1–15.9, PTE 0.39–0.98; +2.7σ offset in bin 1</li>
+    <li>CSFD's template is built from WISE galaxies on TR1's sky: the null is partly by construction</li>
+    <li>Independent evidence: CIB route, κ cross</li>
+  </ul>
+  <p class="source">Gaussian NaMaster covariance, zero reference · bands below $\ell = 100$ not used</p>
+  <aside class="notes">
+    <p>Chiang (2023) builds CSFD's extragalactic template from 180 WISE density maps (CatWISE2020 and WISE×SuperCOSMOS, z ≈ 0–3), so its sky and redshifts overlap TR1's lens sample (0.2 &lt; z &lt; 1.0). Suppressing galaxy-correlated structure is the reconstruction's objective, and the paper itself treats stacks on its own training samples as a sanity check, not a validation (§4.2). Euclid objects were not named as inputs and no object-by-object overlap with WISE was tested, so a Euclid null is not guaranteed algebraically; it is a transfer check of Chiang's correction. The same holds for the strong negative CSFD − SFD correlation, which is the removed component and is negative in all 90 bin × band points. The CIB-route test (slide 5) and the κ cross (slide 6) rest on tracers that no galaxy survey built.</p>
+    <p>Full numbers, sources and further caveats are in the notes of the previous slide.</p>
+  </aside>
+</section>

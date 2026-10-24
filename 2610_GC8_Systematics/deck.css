@@ -17,7 +17,7 @@
   pointer-events: none;
 }
 
-[data-preliminary="exploratory"] .slide:not(.detail) > .foot::after { content: "Exploratory"; }
+[data-preliminary="exploratory"] .slide:not(.detail) > .foot::after { content: "Exploratory · Cycle 2 (tr1_v2)"; }
 
 /* a red highlight box, for the one row a slide is about */
 .slide .frame > mark.box.red { border-color: #B3261E; }

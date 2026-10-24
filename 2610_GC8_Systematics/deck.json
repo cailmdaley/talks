@@ -33,7 +33,7 @@
     {
       "title": "Dust maps carry LSS",
       "outline": "The extinction template correlates positively with every tracer; the CIB route reproduces it; SFD carries the same CIB, which CSFD removes.",
-      "slides": ["extinction-pulls", "cib-route", "sfd-csfd-kappa", "sfd-csfd-gc"]
+      "slides": ["extinction-pulls", "cib-route", "sfd-csfd-kappa", "sfd-csfd-gc", "sfd-csfd-gc-caveat"]
     },
     {
       "title": "Closing",
