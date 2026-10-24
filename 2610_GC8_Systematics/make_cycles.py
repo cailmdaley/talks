@@ -230,6 +230,20 @@ def heatmap(cycle):
     if have:
         for a, (name, _, _) in enumerate(TEMPLATES):
             print(f'  {name:15s} ' + ' '.join(f'{p:.2g}' for p in P[:, a]))
+            for k in TRACERS:
+                cross, cov = data[name][k]
+                pulls = cross / np.sqrt(np.diag(cov))
+                j = int(np.argmax(np.abs(pulls)))
+                q, p = chi2(cross, cov)
+                if cycle == 'c1':
+                    ell = np.asarray(_c1_measurement(name)['GC']['g0']['ell'])
+                elif (C2_DIR / 'gaussian_null_family.tar').exists():
+                    with tarfile.open(C2_DIR / 'gaussian_null_family.tar') as tar:
+                        ell = np.asarray(json.load(tar.extractfile('summary.json'))['ell'])
+                else:
+                    with tarfile.open(C2_DIR / f'{name}.tar') as tar:
+                        ell = np.asarray(json.load(tar.extractfile('measurement.json'))['nulls'][k]['ell'])
+                print(f'    {k}: chi2={q:.5f}/15 PTE={p:.8g}; worst band={j}, ell={ell[j]:.2f}, Gaussian pull={pulls[j]:+.4f}')
     return P
 
 
@@ -313,10 +327,12 @@ def cib_ylim():
                 continue
             for name in ('delta1_vis', 'delta5_vis', 'delta6_vis', 'delta1_raw', 'delta5_raw',
                          'delta6_raw', 'gamma1', 'gamma5', 'gamma6'):
+                if name not in d['bins']:
+                    continue  # Cycle 2 has no coverage-only delta arm.
                 b = d['bins'][name]
-                for v in ('r_measured', 'r_predicted'):
-                    a = np.asarray(b[v])
-                    lo, hi = min(lo, a.min() - .03), max(hi, a.max() + .1)
+                for v, err in (('r_measured', 'sigma_measured'), ('r_predicted', 'sigma_predicted')):
+                    a, s = np.asarray(b[v]), np.asarray(b[err])
+                    lo, hi = min(lo, (a - s).min() - .03), max(hi, (a + s).max() + .04)
     return lo, hi
 
 
@@ -332,7 +348,7 @@ def cib_frame(cycle, stage, freq, ylim):
     out = IMAGES / f'gc8_cib_rho_{stage}_{freq}_{cycle}.png'
     plt.rcParams.update({'font.size': 30, 'axes.labelsize': 30, 'xtick.labelsize': 28,
                          'ytick.labelsize': 28})
-    show_bands, show_raw = stage != 'points', stage == 'full'
+    show_bands, show_raw = stage != 'points', stage == 'full' and cycle == 'c1'
     fig = plt.figure(figsize=(3424 / DPI, 1542 / DPI), dpi=DPI)
     x0, y0, w, h, gx, gy = .06, .15, .29, .31, .027, .08
     axes = []
@@ -357,7 +373,8 @@ def cib_frame(cycle, stage, freq, ylim):
                             elinewidth=1.8, capsize=0, zorder=3)
         ax.set_title(label, loc='left', fontsize=34, color=INK, pad=6)
         if key == 'delta1':
-            ax.text(.98, .84, 'visibility-weighted', transform=ax.transAxes, ha='right', va='top',
+            ax.text(.98, .84, 'visibility-weighted' if cycle == 'c1' else 'visibility-corrected',
+                    transform=ax.transAxes, ha='right', va='top',
                     fontsize=28, color=DCOL)
             ax.text(.98, .99, 'unweighted', transform=ax.transAxes, ha='right', va='top',
                     fontsize=28, color=RAW, alpha=1 if show_raw else 0)
@@ -395,7 +412,8 @@ def cib_frame(cycle, stage, freq, ylim):
         worst = 0.0
         for name in ('delta1_vis', 'delta5_vis', 'delta6_vis', 'delta1_raw', 'delta5_raw', 'delta6_raw',
                      'gamma1', 'gamma5', 'gamma6'):
-            worst = max(worst, float(np.abs(np.asarray(data['bins'][name]['r_predicted'])).max()))
+            if name in data['bins']:
+                worst = max(worst, float(np.abs(np.asarray(data['bins'][name]['r_predicted'])).max()))
         print(f'  {freq}: max |rho| predicted {worst:.3f}; Gaussian auto-term factor there '
               f'{(1 - worst ** 2) / np.sqrt(1 + worst ** 2):.4f}')
 
