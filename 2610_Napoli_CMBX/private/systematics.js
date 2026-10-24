@@ -61,6 +61,7 @@ House.app('systematics', function (figure, data, ctx) {
 
   // the variant parts a pair or a tracer depends on, as in the renderer's ids
   var dep = function (tracers, vk) {
+    if (vk.indexOf('cycle2|') === 0) return vk; // every Cycle-2 tracer changes
     var p = vk.split('|');
     var s = tracers.some(function (t) { return t[0] === 'l'; }) ? p[0] : '-';
     var c = tracers.indexOf('kappa') >= 0 ? p[1] : '-';

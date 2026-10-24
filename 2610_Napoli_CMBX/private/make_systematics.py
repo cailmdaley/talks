@@ -32,8 +32,12 @@ g0..g5 (lens bins), l0..l5 (source bins) and kappa.
 Run in the cmbx container, after make_dv_vector.py:
   app python private/make_systematics.py
 """
+import argparse
+import csv
+import io
 import json
 import os
+import pickle
 import tarfile
 
 import numpy as np
@@ -122,7 +126,10 @@ def harmonics(auto):
 
 def xell(c, auto, a, b):
     css = np.asarray(auto["cl"])
-    sss = css * np.sqrt(2 / (auto["fsky_support"] * (EDGES[1:] ** 2 - EDGES[:-1] ** 2)))
+    # Cycle 2 conditions on the delivered fixed template: no Knox error.
+    # Preserve the explicitly labelled legacy Cycle-1 auto term.
+    sss = (css * np.sqrt(2 / (auto["fsky_support"] * (EDGES[1:] ** 2 - EDGES[:-1] ** 2)))
+           if "fsky_support" in auto else np.zeros_like(css))
     ca, sa, _ = c[a]
     cb, sb, _ = c[b]
     x = ca * cb / css
@@ -133,7 +140,72 @@ def xell(c, auto, a, b):
     return x, np.sqrt(var)
 
 
+def cycle2_inputs():
+    """Read canonical Cycle-2 nulls, fixed template autos and Gaussian DV errors."""
+    root = f"{CMBX}/results/tr1_v2"
+    paths = [f"{root}/systematics/{t}.tar" for t, _ in TEMPLATES]
+    family = f"{root}/systematics/gaussian_null_family.tar"
+    if not all(os.path.exists(p) for p in paths + [family]):
+        print("Cycle 2: waiting for family and all six per-template archives")
+        return None
+    with tarfile.open(family) as tar:
+        summary = json.load(tar.extractfile('summary.json'))
+        joint = np.load(io.BytesIO(tar.extractfile('joint.npz').read()))
+        obs, cov = joint['observed'], joint['covariance']
+    ell = np.asarray(summary['ell'])
+    assert len(ell) == 15
+    with tarfile.open(f"{root}/likelihood_product/likelihood_input.tar") as tar:
+        member = next(m for m in tar.getmembers() if m.name.endswith('.pkl') and not m.name.endswith('_dndz.pkl'))
+        dv = pickle.load(tar.extractfile(member))
+    assert dv['metadata']['covariance']['method'] == 'namaster_gaussian'
+    assert dv['metadata']['covariance']['full'] is True
+    C = np.asarray(dv['cov_all'])
+    pairs, cursor = {}, 0
+    for key, row in dv['cls'].items():
+        n = len(row['cl'])
+        assert n == 15 and np.allclose(row['leff'], ell)
+        pairs[key] = dict(t=key.split('_'), ell=ell, sig=np.sqrt(np.diag(C)[cursor:cursor+n]))
+        cursor += n
+    assert C.shape == (cursor, cursor)
+    per = {}
+    for (template, _), path in zip(TEMPLATES, paths):
+        with tarfile.open(path) as tar:
+            m = json.load(tar.extractfile('measurement.json'))
+            rows = list(csv.DictReader(io.StringIO(tar.extractfile('contamination.csv').read().decode())))
+        auto_rows = rows[:15]
+        assert np.allclose([float(r['ell']) for r in auto_rows], ell)
+        css = np.asarray([float(r['c_extinction_extinction']) for r in auto_rows])
+        assert np.all(css > 0)
+        for offset in range(0, len(rows), 15):
+            assert np.allclose([float(r['c_extinction_extinction']) for r in rows[offset:offset+15]], css)
+        c, qs, cohs = {}, {}, {}
+        for tracer in ['kappa'] + [f'g{i}' for i in range(6)] + [f'l{i}' for i in range(6)]:
+            idx = summary['test_names'].index(f"{m['template']}/{tracer}")
+            y, block = obs[idx], cov[idx*15:(idx+1)*15, idx*15:(idx+1)*15]
+            assert np.allclose(m['nulls'][tracer]['cross'], y)
+            sigma = np.sqrt(np.diag(block))
+            c[tracer] = y, sigma, ell
+            qs[tracer] = float(y @ np.linalg.solve(block, y))
+            corr = block/np.outer(sigma, sigma)
+            ri = np.linalg.solve(corr, np.ones(15))
+            cohs[tracer] = float(ri @ (y/sigma) / np.sqrt(ri.sum()))
+        x, sx = {}, {}
+        for key, pair in pairs.items():
+            xv, sv = xell(c, dict(cl=css), *pair['t'])
+            x[key], sx[key] = sig(xv/pair['sig'], 4), sig(sv/pair['sig'], 4)
+        per[template] = dict(x=x, sx=sx, c={k:sig(ell*v[0]) for k,v in c.items()},
+                             s={k:sig(ell*v[1]) for k,v in c.items()}, chi2=qs, coh=cohs,
+                             flag=sorted(k for k,q in qs.items() if stats.chi2.sf(q,15)<PTE_FLAG))
+        worst = max((abs(v), key, i, v, sx[key][i]) for key, vals in x.items() for i,v in enumerate(vals))
+        print(f'Cycle 2 {template}: worst |X/sigma_G|={worst[0]:.5g}, pair={worst[1]}, ell={ell[worst[2]]:.2f}, signed={worst[3]:+.5g} +/- {worst[4]:.5g}; fixed-template conditional propagated Gaussian cross errors')
+    return per, ell
+
+
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--cycle2', action='store_true')
+    parser.add_argument('--output', default=OUT)
+    args = parser.parse_args()
     dv = json.load(open(DV))
     autos = json.load(open(AUTOS))
     out = dict(templates=[list(t) for t in TEMPLATES], variants={}, ell=None, blind=dv["blind"],
@@ -176,9 +248,16 @@ def main():
             print(f"{vk} ({universe}): only {sorted(per)} measured, left out until all six land")
         else:
             print(f"{vk} ({universe}): no template crosses yet, left out")
+    if args.cycle2:
+        got = cycle2_inputs()
+        if got is not None:
+            per, ell = got
+            assert np.allclose(out['ell'], ell, rtol=1e-3)
+            out['variants']['cycle2|spt2'] = per
+            out['cycle2_error_contract'] = 'Fixed template auto; Gaussian null cross errors propagated independently; cross-cross covariance omitted. No Knox term.'
     text = json.dumps(out, separators=(",", ":"))
-    open(OUT, "w").write(text)
-    print(f"wrote {OUT} ({len(text) / 1024:.0f} kB)")
+    open(args.output, "w").write(text)
+    print(f"wrote {args.output} ({len(text) / 1024:.0f} kB)")
 
 
 if __name__ == "__main__":

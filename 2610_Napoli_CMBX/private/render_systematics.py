@@ -84,6 +84,8 @@ CHOICE = dict(x=885.0, y=250.0)   # the template control, right of the gamma_6 r
 
 def dep(tracers, vk):
     """The variant parts a set of tracers depends on, as the id suffix."""
+    if vk.startswith('cycle2|'):
+        return vk  # Cycle-2 GC and kappa also differ, not just the WL method.
     shear, cmb = vk.split("|")
     s = shear if any(t[0] == "l" for t in tracers) else "-"
     c = cmb if "kappa" in tracers else "-"
@@ -260,9 +262,10 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--even-bars", action="store_true", help="scale each cross panel by the l^n that evens its bars")
     ap.add_argument("--prefix", default="systematics", help="output name: private/<prefix>_app.json")
+    ap.add_argument('--source', default=SRC, help='input data JSON (both cycles for common axes)')
     args = ap.parse_args()
     out_path = os.path.join(HERE, f"{args.prefix}_app.json")
-    src = json.load(open(SRC))
+    src = json.load(open(args.source))
     ell = np.asarray(src["ell"], float)
     variants = list(src["variants"])
     assert variants, "no variant has all six template crosses"
@@ -333,6 +336,8 @@ def main():
 
 
 def rdv_name(shear, cmb):
+    if shear == 'cycle2':
+        return 'Cycle 2 LensMC $\\times$ SPT-3G'
     return {"lensmc": "LensMC", "metacal": "MetaCal"}[shear] + " $\\times$ " + {"spt": "SPT-3G", "act": "ACT DR6"}[cmb]
 
 
