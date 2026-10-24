@@ -1,0 +1,19 @@
+<section data-layout="closing">
+  <h2>Summary</h2>
+  <ol>
+    <li>No template moves the data vector beyond ~0.4 σ (Cycle 1)</li>
+    <li>The Planck E(B−V) template carries LSS, through the CIB</li>
+    <li>SFD carries it too; CSFD is null against κ</li>
+    <li>Regressing δ on a far-IR dust map removes clustering</li>
+    <li>Is extinction an input to the visibility maps?</li>
+    <li>Cycle 2 (DR1 R2 templates, tr1_v2) to follow</li>
+  </ol>
+  <p class="contact">Cail Daley · CEA Paris-Saclay</p>
+  <aside class="notes">
+    <p>Six VMPZ templates crossed with TR1 density, shear and CMB lensing (Cycle 1, TR1 v1.1): shear and κ are clean against every template; with the visibility weights, density fails only against extinction in lens bin 5. Where the implied contamination is resolved, no template moves any band of the data vector by more than about 0.4 of its Gaussian error σ_G (<code>…/six-template-scorecard</code>).</p>
+    <p>The extinction template, documented as Planck E(B−V), correlates positively with every tracer, rising with ℓ and with redshift, which dust obscuration cannot do. The CIB route reproduces the high-signal crosses with no free parameter, best with the 857 GHz CIB (<code>…/extinction-template-carries-lss</code>, <code>…/lenz-cib-route</code>). S. Chiarenza (DESI) finds the same CIB in SFD against CMB lensing, and none in CSFD (<code>…/sfd-cib-csfd</code>).</p>
+    <p>The consequence for galaxy clustering: a weight, regression or deprojection built on a far-infrared dust-emission map (SFD, the Planck E(B−V) map behind the VMPZ template) also removes the clustering that the map's CIB traces. A CIB-corrected map (CSFD), an HI-based map, or stellar reddening avoids it. If extinction is one of the visibility model's five unnamed SOM inputs, the visibility weights do this by construction; the CIB-route test shows them removing more of the CIB-carried correlation than predicted in lens bin 6 (measured/predicted 0.22 ± 0.16, PTE 0.013 at 857 GHz), which fits that reading (inferred, not tested).</p>
+    <p>Cycle 2: the same tests on the DR1 R2 templates and the tr1_v2 (Cycle 2) selection are integrated in the pipeline and requested to run; no Cycle 2 result is shown here.</p>
+    <p>Sources: the fibers under <code>science/cmbx/methodology/systematics/tr1-systematics-crosses</code>.</p>
+  </aside>
+</section>

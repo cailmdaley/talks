@@ -1,0 +1,23 @@
+/* stamp — the footer's free middle names the data cycle of a result slide; "exploratory" marks a talk-only analysis */
+[data-preliminary] .slide:not(.detail) > .foot::after {
+  content: "Preliminary · Cycle 1 (TR1 v1.1)";
+  font-variant-caps: normal;
+  position: absolute;
+  bottom: -16px;
+  left: 660px;          /* centred in the gap between the notes button and the variant toggles */
+  transform: translateX(-50%);
+  padding: 6px 22px 8px;
+  border: 3px solid #B3261E;
+  border-radius: 6px;
+  color: #B3261E;
+  font-size: var(--t-fine);
+  background: var(--ground);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  pointer-events: none;
+}
+
+[data-preliminary="exploratory"] .slide:not(.detail) > .foot::after { content: "Exploratory"; }
+
+/* a red highlight box, for the one row a slide is about */
+.slide .frame > mark.box.red { border-color: #B3261E; }

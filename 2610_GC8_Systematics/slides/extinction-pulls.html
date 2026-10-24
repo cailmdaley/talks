@@ -1,0 +1,29 @@
+<section data-preliminary data-layout="figure-text" data-stack>
+  <h2>Every tracer correlates with extinction</h2>
+  <figure>
+    <img src="images/gc8_extinction_pulls.png" alt="Three panels of the cross-spectrum with the VMPZ extinction template divided by its Gaussian error, against multipole from 100 to 3000: six density bins, rising from about zero at ell 100 to 2 to 4 sigma above ell 1000; six shear bins scattering around zero to plus 2, the highest-redshift bins leaning positive; SPT-3G CMB lensing leaning positive">
+    <span class="source">TR1 v1.1 δ without visibility weights, LensMC γ, SPT-3G κ × VMPZ extinction; 15 bands, $100 \lt \ell \lt 3000$</span>
+  </figure>
+  <div class="text">
+    <p>Obscuration would lower counts (δ × E &lt; 0) and leave γ and κ untouched.</p>
+  </div>
+  <aside class="notes">
+    <h3>What is plotted</h3>
+    <p>Each TR1 tracer crossed with the VMPZ <code>GALACTICEXTINCTION_VIS</code> template, documented as built from the Planck E(B−V) map, band by band, as the cross-spectrum divided by its Gaussian (NaMaster) error: six lens bins δ<sub>i</sub> (here the density maps without the visibility weights, which the previous two slides use), six LensMC source bins γ<sub>i</sub> (E-modes), and SPT-3G CMB lensing κ. Shaded: ±1 and ±2σ. Same estimator, masks and 15 logarithmic bands as the null tests on the earlier slides.</p>
+    <h3>The numbers (χ² over 15 bands, full Gaussian covariance; κ diagonal only)</h3>
+    <ul>
+      <li>δ₁ to δ₆: χ²/15 = 22.9, 45.0, 36.1, 70.4, 79.7, 67.7; the coherent pull Σ pull/√15 is +2.8, +4.8, +4.3, +5.8, +6.5, +5.8.</li>
+      <li>γ₁ to γ₄: 7.6 to 13.7 (coherent +0.2 to +1.5); γ₅, γ₆: 18.9, 19.6 (coherent +3.3, +3.6).</li>
+      <li>κ: 19.9 (coherent +2.9), with the diagonal of the covariance only.</li>
+      <li>Over all 180 δ and γ bands the mean pull is +0.87, and 23 bands exceed 2σ against 8 expected.</li>
+    </ul>
+    <p>The six δ bins share one template, so their significances are correlated, not six independent detections.</p>
+    <h3>Reading</h3>
+    <p>Dust obscuration would lower galaxy counts where E(B−V) is high, a <em>negative</em> δ × E, and could not correlate with shear or with a CMB lensing map at all. Instead every tracer is positive, the δ signal grows with ℓ and is weakest in the lowest-redshift lens bin, and the shear signal appears only in the highest-redshift source bins, which large-scale structure at z ≈ 1–2 lenses most. That is the signature of large-scale structure in the template: far-infrared dust-emission maps carry the cosmic infrared background (CIB) from star-forming galaxies at z ≈ 1–3, which trace the same structure as the Euclid samples. The next slide tests this directly. For κ alone, Galactic dust leaking into the SPT-3G lensing reconstruction would also give a positive κ × dust; it cannot explain the δ and γ rows.</p>
+    <h3>With the visibility weights</h3>
+    <p>Weighting δ by the VMPZ test visibility maps (the version on the first slide) removes most of this: extinction in lens bins 2, 3, 4 and 6 goes to PTE 0.12–0.97, and only δ₅ × extinction remains (PTE $9\times10^{-8}$). If extinction is among the visibility model's inputs, the weights remove the CIB-carried correlation by construction, along with the clustering it traces (inferred; the five SOM inputs are not named in the headers).</p>
+    <h3>Deprojection</h3>
+    <p>Deprojecting this template from δ changes the δδ bandpowers little (Q₂C = 0.007–0.046, at most 0.2σ per band), but in the direction of the CIB-correlated modes: it subtracts real clustering.</p>
+    <p>Source: lc output <code>results/tr1/tr1_systematics/extinction_vis.tar</code> (Cycle 1, LensMC, SPT-3G winter GMV); finding <code>science/cmbx/methodology/systematics/tr1-systematics-crosses/extinction-template-carries-lss</code>; visibility weights from <code>…/visibility-corrected-delta</code>. Figure: <code>2610_GC8_Systematics/make_extinction_pulls.py</code>.</p>
+  </aside>
+</section>

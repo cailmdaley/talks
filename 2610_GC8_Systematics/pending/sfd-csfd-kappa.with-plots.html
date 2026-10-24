@@ -1,0 +1,27 @@
+<section data-layout="figure-text" data-stack>
+  <h2>SFD's CIB part correlates with CMB lensing</h2>
+  <figure>
+    <img src="images/chiarenza_sfd_csfd_kappa_r.png" alt="Two panels, Planck PR4 and ACT DR6 CMB lensing, of the correlation coefficient with kappa against multipole up to 750, for four maps: the difference D, from minus 0.5 or minus 0.6 at low ell rising towards minus 0.1; LSS, its mirror image; SFD, slightly positive; CSFD, on zero; a grey band of plus or minus one over root N modes">
+    <span class="source">S. Chiarenza (DESI) · SFD, CSFD (Chiang 2023) × Planck PR4 and ACT DR6 κ</span>
+  </figure>
+  <div class="text">
+    <p>CSFD = SFD − LSS, an extragalactic template; D = CSFD − SFD</p>
+  </div>
+  <aside class="notes">
+    <h3>Contributed</h3>
+    <p>Figure and context from Sofia Chiarenza (DESI), shared with Cail on 22 October 2026. The text here is a paraphrase of what she said; the plots are hers, unchanged.</p>
+    <figure><img src="images/chiarenza_sfd_csfd_cl.png" alt="Angular power spectra of SFD, CSFD and their difference D against multipole: SFD and CSFD overlap completely; D lies about three orders of magnitude lower"><span class="source">S. Chiarenza (DESI): auto-spectra of SFD, CSFD and D</span></figure>
+    <h3>The maps</h3>
+    <p>SFD (Schlegel, Finkbeiner &amp; Davis 1998) is the standard E(B−V) reddening map, built from IRAS 100 μm emission with a DIRBE temperature correction. Like any far-infrared emission map it also carries the cosmic infrared background. CSFD (Chiang 2023, “corrected SFD”) removes that extragalactic part: it reconstructs a CIB/LSS template by cross-correlating with galaxy tracers and subtracts it. Her “LSS” is that template, so CSFD − SFD = −LSS.</p>
+    <h3>What the plot shows</h3>
+    <p>The correlation coefficient $r_\ell$ of each map with CMB lensing κ, for Planck PR4 (left) and ACT DR6 (right). D and LSS are mirror images, about ±0.48 (PR4) and ±0.60 (ACT DR6) at ℓ ≈ 20–50, falling to about ±0.1 at ℓ ≈ 400–700. SFD sits slightly positive (about +0.02 to +0.04, ACT DR6 more so), at the edge of the ±1/√N<sub>modes</sub> band; CSFD sits on zero. κ was not used to build the LSS template, so this correlation is an independent check on it.</p>
+    <p>In power (figure at the top of these notes), SFD and CSFD are indistinguishable: D sits about three decades below, so the CIB part is about 3 % of SFD in amplitude. It is small per mode, but it is large-scale structure, and it adds up over many bands, which is what the TR1 extinction crosses on the previous slides see.</p>
+    <h3>Her caveats</h3>
+    <ul>
+      <li>CSFD cannot be guaranteed 100 % CIB-free, because the correction interpolates between measured bands; she expects the residuals to be very small.</li>
+      <li>HI maps trace dust with much less CIB and make a useful cross-check, though not a definitive one, since the dust-to-gas ratio varies.</li>
+      <li>DESI spectroscopic samples correct SFD with stellar reddening; the photometric samples cannot, which is why she is testing this now. On DESI mocks, swapping dust maps changed little, but the mocks contain no CIB, so they cannot show signal loss.</li>
+    </ul>
+    <p>Recorded in <code>science/cmbx/methodology/systematics/tr1-systematics-crosses/sfd-cib-csfd</code>.</p>
+  </aside>
+</section>
