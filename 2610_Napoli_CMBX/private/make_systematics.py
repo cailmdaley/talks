@@ -140,6 +140,27 @@ def xell(c, auto, a, b):
     return x, np.sqrt(var)
 
 
+def summarize(per, ell, label):
+    """Name the worst nominal and resolved bands; never let an aggregate hide one."""
+    all_bands = []
+    resolved = []
+    for template, data in per.items():
+        for pair, values in data['x'].items():
+            for i, value in enumerate(values):
+                sigma = data['sx'][pair][i]
+                row = (abs(value), template, pair, float(ell[i]), value, sigma)
+                all_bands.append(row)
+                if abs(value) > 2 * sigma:
+                    resolved.append(row)
+    for kind, rows in [('nominal', all_bands), ('resolved |X|>2sigma_X', resolved)]:
+        if rows:
+            _, template, pair, l, value, sigma = max(rows)
+            print(f'{label}: worst {kind}: {template} {pair} ell={l:.2f}, X/sigma_G={value:+.5g} +/- {sigma:.5g}')
+        else:
+            print(f'{label}: no {kind} bands')
+    print(f'{label}: {sum(row[0] <= .75 for row in all_bands)}/{len(all_bands)} nominal bands inside +/-0.75sigma_G; {len(resolved)} resolved bands')
+
+
 def cycle2_inputs():
     """Read canonical Cycle-2 nulls, fixed template autos and Gaussian DV errors."""
     root = f"{CMBX}/results/tr1_v2"
@@ -198,6 +219,7 @@ def cycle2_inputs():
                              flag=sorted(k for k,q in qs.items() if stats.chi2.sf(q,15)<PTE_FLAG))
         worst = max((abs(v), key, i, v, sx[key][i]) for key, vals in x.items() for i,v in enumerate(vals))
         print(f'Cycle 2 {template}: worst |X/sigma_G|={worst[0]:.5g}, pair={worst[1]}, ell={ell[worst[2]]:.2f}, signed={worst[3]:+.5g} +/- {worst[4]:.5g}; fixed-template conditional propagated Gaussian cross errors')
+    summarize(per, ell, 'Cycle 2')
     return per, ell
 
 
@@ -242,6 +264,7 @@ def main():
             out["variants"][vk] = per
             worst = max((abs(v), t, k) for t, d in per.items() for k, xs in d["x"].items() for v in xs)
             print(f"{vk} ({universe}): 6 templates; largest nominal |X/sigma_G| {worst[0]:.2f} ({worst[1]}, {worst[2]})")
+            summarize(per, ell, vk)
             for t, d in per.items():
                 print(f"   {t:15s} flagged: {' '.join(d['flag']) or '-'}")
         elif per:
