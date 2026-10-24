@@ -201,24 +201,24 @@ def heatmap(cycle):
         'calm', [(0, '#FFFFFF'), (1.3 / 6, '#FBF6EA'), (2.0 / 6, '#F1DFB8'), (3.2 / 6, '#D9A85A'),
                  (4.6 / 6, '#A8542B'), (1, '#7A2318')])
     fig = plt.figure(figsize=(10.0, 7.6), dpi=DPI)
-    ax = fig.add_axes([0.075, 0.015, 0.915, 0.80])
+    ax = fig.add_axes([0.085, 0.015, 0.905, 0.79])
     Z = np.clip(-np.log10(np.maximum(np.nan_to_num(P, nan=1.0), 1e-300)), 0, 6)
     ax.imshow(Z, cmap=cmap, vmin=0, vmax=6, aspect='auto')
     if have:
         for (i, j), p in np.ndenumerate(P):
             z = Z[i, j]
-            ax.text(j, i, fmt(p), ha='center', va='center', fontsize=16.5,
+            ax.text(j, i, fmt(p), ha='center', va='center', fontsize=23,
                     color='white' if z > 4.0 else (INK if z > 1.3 else MUTED))
-    ax.set_yticks(range(13), ROW_LABELS, fontsize=20)
+    ax.set_yticks(range(13), ROW_LABELS, fontsize=26)
     ax.xaxis.tick_top()
-    ax.set_xticks(range(len(TEMPLATES)), [t[2] for t in TEMPLATES], fontsize=18, linespacing=0.95)
+    ax.set_xticks(range(len(TEMPLATES)), [t[2] for t in TEMPLATES], fontsize=23, linespacing=0.95)
     ax.tick_params(length=0, colors=INK, pad=6)
     for sp in ax.spines.values():
         sp.set_visible(False)
     for y in (5.5, 11.5):
         ax.axhline(y, color='white' if have else RULE, lw=6 if have else 2)
-    fig.text(0.075, 0.985, r'$\chi^2$ PTE of each tracer $\times$ template cross-spectrum against zero; '
-             r'darker = smaller PTE', fontsize=20, color=INK, ha='left', va='top')
+    fig.text(0.075, 0.985, r'$\chi^2$ PTE against zero; darker = smaller', fontsize=24, color=INK,
+             ha='left', va='top')
     if not have:
         missing = [n for n, v in data.items() if v is None]
         pending_note(fig, 'tr1_v2 systematics.gaussian_null_family\nnot yet materialized',
