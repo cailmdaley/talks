@@ -1,6 +1,6 @@
-/* stamp — the footer's free middle names the data cycle of a result slide; "exploratory" marks a talk-only analysis */
+/* stamp — the footer's free middle marks a result slide preliminary; the Cycle toggle and the source line name its data cycle; "exploratory" marks a talk-only Cycle-2 analysis, which has no toggle */
 [data-preliminary] .slide:not(.detail) > .foot::after {
-  content: "Preliminary · Cycle 1 (TR1 v1.1)";
+  content: "Preliminary";
   font-variant-caps: normal;
   position: absolute;
   bottom: -16px;

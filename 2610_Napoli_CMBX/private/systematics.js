@@ -15,6 +15,10 @@
 // axes the view depends on follow the step and the card. A do-nothing Web Animation is
 // the clock, so finishing it (as the house checker does) lands the step.
 // Data: private/systematics_app.json.
+// A deck whose variant axes differ from the data's (shear|cmb) maps its own keys onto the
+// data's with data-app-variants='{"c1": "lensmc|spt", "c2": null}' on the figure; a key mapped
+// to null shows the figure's data-app-pending text in place of the drawing, and the view then
+// keeps the slide's own variant axes.
 House.app('systematics', function (figure, data, ctx) {
   'use strict';
   var NS = 'http://www.w3.org/2000/svg';
@@ -70,7 +74,10 @@ House.app('systematics', function (figure, data, ctx) {
   };
 
   // ── the template control: the house control, inside the figure ───────────
+  var remap = null;
+  try { remap = JSON.parse(figure.getAttribute('data-app-variants') || 'null'); } catch (e) { remap = null; }
   var tpl = data.templates[0][0], vk = data.variants[0];
+  if (remap) Object.keys(remap).some(function (k) { if (remap[k]) { vk = remap[k]; return true; } return false; });
   var choice = document.createElement('div');
   choice.className = 'variants app-choice';
   choice.setAttribute('role', 'group');
@@ -169,7 +176,7 @@ House.app('systematics', function (figure, data, ctx) {
 
   // the variant axes the view on screen depends on
   function axesFor() {
-    if (!ctx.axes) return;
+    if (!ctx.axes || remap) return;
     if (card) ctx.axes(axesOf(card.key.split('_')));
     else ctx.axes(null);
   }
@@ -247,7 +254,31 @@ House.app('systematics', function (figure, data, ctx) {
     if (open) openCard(open, true, intro);
   }
   function setTemplate(t) { if (t === tpl) return; tpl = t; markChoice(); redraw(); }
-  function use(k) { if (k === vk || data.variants.indexOf(k) < 0) return; vk = k; redraw(); }
+  var pendingEl = null;
+  function showPending(on) {
+    if (on && !pendingEl) {
+      pendingEl = document.createElement('div');
+      pendingEl.className = 'app-pending';
+      pendingEl.textContent = figure.getAttribute('data-app-pending') || 'Pending';
+      pendingEl.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;' +
+        'text-align:center;padding:0 12%;font-size:56px;line-height:1.3;color:var(--ink);background:var(--ground);';
+      frameEl.appendChild(pendingEl);
+    }
+    if (pendingEl) pendingEl.style.display = on ? 'flex' : 'none';
+    svg.style.visibility = on ? 'hidden' : '';
+    choice.style.visibility = on ? 'hidden' : '';
+  }
+  function use(k) {
+    if (remap) {
+      if (!(k in remap)) return;
+      if (remap[k] === null) { if (card && !card.intro) closeCard(); showPending(true); return; }
+      showPending(false);
+      k = remap[k];
+    }
+    if (k === vk || data.variants.indexOf(k) < 0) return;
+    vk = k;
+    redraw();
+  }
 
   // ── steps ───────────────────────────────────────────────────────────────
   function step(k, animate) {
@@ -277,7 +308,7 @@ House.app('systematics', function (figure, data, ctx) {
   draw();
   land(0);
   state = 0;
-  if (ctx.variants) ctx.variants(data.variants, use);
+  if (ctx.variants) ctx.variants(remap ? Object.keys(remap) : data.variants, use);
   return {
     step: step,
     leave: function () { if (card && !card.intro) closeCard(); },

@@ -3,42 +3,50 @@
   "author": "Cail Daley",
   "venue": "Euclid GC-8 call",
   "date": "2026-10-28",
-  "description": "TR1 galaxy clustering, shear and CMB lensing crossed with the VMPZ systematics templates; the extinction template carries LSS through the CIB, and what that means for dust maps in GC weights.",
+  "description": "TR1 galaxy clustering, shear and CMB lensing crossed with the VMPZ systematics templates in Cycle 1 and Cycle 2; the extinction template carries LSS through the CIB, and what that means for dust maps in galaxy-clustering weights.",
   "footer": "Cail Daley · GC-8 · systematics cross-correlations · October 2026",
   "theme": "euclid",
   "css": "deck.css",
   "draft": true,
   "noindex": true,
   "variants": {
-    "shear": {
-      "lensmc": "LensMC",
-      "metacal": "MetaCal"
-    },
-    "cmb": {
-      "spt": "SPT-3G",
-      "act": "ACT DR6"
+    "cycle": {
+      "c1": "Cycle 1",
+      "c2": "Cycle 2"
     }
   },
   "sections": [
     {
       "title": "Opening",
       "outline": "An update for galaxy clustering on validation with systematics-template cross-correlations.",
-      "slides": ["title"]
+      "slides": [
+        "title"
+      ]
     },
     {
       "title": "Template nulls",
-      "outline": "Six VMPZ templates crossed with TR1 density, shear and CMB lensing (Cycle 1), and the contamination they imply for the data vector.",
-      "slides": ["systematics-overview", "systematics-triangle"]
+      "outline": "Six VMPZ templates crossed with TR1 density, shear and CMB lensing, and the contamination they imply for the data vector; a toggle switches Cycle 1 and Cycle 2.",
+      "slides": [
+        "systematics-overview",
+        "systematics-triangle"
+      ]
     },
     {
       "title": "Dust maps carry LSS",
-      "outline": "The extinction template correlates positively with every tracer; the CIB route reproduces it; SFD carries the same CIB, which CSFD removes.",
-      "slides": ["extinction-pulls", "cib-route", "sfd-csfd-kappa", "sfd-csfd-gc", "sfd-csfd-gc-caveat"]
+      "outline": "The extinction template correlates positively with every tracer; the CIB route reproduces it; SFD correlates with the lens bins too, and CSFD's galaxy null is partly by construction.",
+      "slides": [
+        "extinction-pulls",
+        "cib-route",
+        "sfd-csfd-gc",
+        "sfd-csfd-gc-caveat"
+      ]
     },
     {
       "title": "Closing",
       "outline": "What this means for galaxy-clustering weights, and where Cycle 2 stands.",
-      "slides": ["summary"]
+      "slides": [
+        "summary"
+      ]
     }
   ]
 }
