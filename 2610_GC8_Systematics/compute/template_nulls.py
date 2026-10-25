@@ -159,7 +159,7 @@ def run_b(cycle):
  out=BASE/'shear-b';out.mkdir(parents=True,exist_ok=True)
  f,args=fields(cycle,out);f={n:v for n,v in f.items() if n.startswith('l')};ts,p=templates(cycle,out)
  bins,_=sp.make_bins(100,3000,nells=15,spacing='log',field_lmax=6143)
- result=dict(cycle=cycle,exploratory=True,inputs=receipt([p,Path(args.gc_pkl),Path(args.wl_tar),Path(__file__),ROOT/'workflow/scripts/systematics_cycle2.py',Path(sp.__file__)]+([FP] if cycle==1 else [])),null_wick='TT x raw shear-shear only; template-shear Wick spectra zero',B_component='cov_raw.reshape(nband,2,nband,2)[:,1,:,1][science,science]',n_iter=1 if cycle==1 else 0,tests={})
+ result=dict(cycle=cycle,exploratory=True,runtime_identity=blocks.runtime_identity(),inputs=receipt([p,Path(args.gc_pkl),Path(args.wl_tar),Path(__file__),ROOT/'workflow/scripts/systematics_cycle2.py',ROOT/'workflow/scripts/tr1_systematics.py',ROOT/'workflow/scripts/wl_mask_weights.py',Path(sp.__file__)]+([FP] if cycle==1 else [])),reference_archives=receipt([ROOT/f'results/tr1/tr1_systematics/{name}.tar' for name in NAMES] if cycle==1 else [ROOT/'results/tr1_v2/systematics/gaussian_null_family.tar']),null_wick='TT x raw shear-shear only; template-shear Wick spectra zero',B_component='cov_raw.reshape(nband,2,nband,2)[:,1,:,1][science,science]',n_iter=1 if cycle==1 else 0,tests={})
  for (stem,pmap,pmask),template in zip(ts,NAMES):
   cache=legacy_cache(cycle,out,template)
   mask=np.load(pmask).astype(bool)

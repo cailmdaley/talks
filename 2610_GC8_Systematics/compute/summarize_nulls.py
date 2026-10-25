@@ -17,10 +17,13 @@ def a_report():
   if not key.startswith('c1_rewindowed/'):continue
   name=key.split('/')[1];comp='E' if name.startswith('l') else 'scalar';z=r[comp];old=r['archived_C1'];new=r['archived_C2'];w=z['worst_band']
   lines.append(f"| {label(name)} | {fmt(old)} | {fmt(z)} | {fmt(new)} | {z['sigma'][-1]/old['sigma'][-1]:.3f} | {max(abs(np.array(r['delta_cross_over_original_sigma']))):.3f} | {w['ell']:.1f}; {w['signed_gaussian_pull']:+.2f} |")
- lines+=['','C1 archived covariance retains observed template-data Wick spectra; controlled reruns condition these spectra to zero, as C2 does.','For kappa the table uses the full archived band covariance, rather than the old deck diagonal-only statistic.','','## Visibility-corrected C1 density with matched mask weights','','| Bin | Rewindowed chi2; PTE | Worst ell; Gaussian pull |','|---|---:|---:|']
+ lines+=['','C1 archived covariance retains observed template-data Wick spectra; controlled reruns condition these spectra to zero, as C2 does.','For kappa the table uses the full archived band covariance, rather than the old deck diagonal-only statistic.','','## Visibility-corrected C1 density with matched mask weights','','| Bin | C1 original window chi2; PTE | C1 rewindowed chi2; PTE | C2 archived chi2; PTE | Rewindowed worst ell; Gaussian pull |','|---|---:|---:|---:|---:|']
  for key,r in j['tests'].items():
   if key.startswith('c1_vis_rewindowed/'):
-   z=r['scalar'];w=z['worst_band'];lines.append(f"| {label(key.split('/')[1])} | {fmt(z)} | {w['ell']:.1f}; {w['signed_gaussian_pull']:+.2f} |")
+   z=r['scalar'];w=z['worst_band'];name=key.split('/')[1]
+   orig=j['tests'].get('c1_vis_original/'+name,{}).get('scalar')
+   c2=j['tests']['c1_rewindowed/'+name]['archived_C2']
+   lines.append(f"| {label(name)} | {fmt(orig) if orig else 'pending'} | {fmt(z)} | {fmt(c2)} | {w['ell']:.1f}; {w['signed_gaussian_pull']:+.2f} |")
  lines+=['',j.get('visibility_definition','Visibility tests not complete.'),'','Exact band vectors, full covariance matrices, signed pulls, inputs and hashes are in `crosses.json`.']
  (p.parent/'null-table.md').write_text('\n'.join(lines)+'\n')
 
