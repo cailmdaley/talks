@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 from matplotlib import font_manager
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.patches import Rectangle
+from matplotlib.lines import Line2D
 import numpy as np
 from scipy.stats import chi2
 
@@ -36,7 +37,7 @@ TRACERS = [f'g{i}' for i in range(6)] + [f'l{i}' for i in range(6)] + ['kappa']
 LABELS = ([rf'$\delta_{i}$' for i in range(1, 7)] +
           [rf'$\gamma_{{E{i}}}$' for i in range(1, 7)] + [r'$\kappa$'])
 INK, MUTED, RULE = '#111418', '#535B67', '#C6CEDA'
-COLORS = ['#799fc9', '#628dbb', '#4c7bac', '#35649c', '#234979', '#102e53']
+COLORS = [plt.colormaps['plasma'](x) for x in np.linspace(.1, .9, 6)]
 DPI = 200
 
 
@@ -193,8 +194,15 @@ def rho_figures():
             ax.set_title(title, loc='left', fontsize=32)
             ax.set_xticks([100, 1000, 3000], ['100', '1000', '3000'])
         axes[0].set_ylabel(r'$\rho_\ell$')
-        handles, labs = axes[0].get_legend_handles_labels()
-        fig.legend(handles, labs, ncol=6, loc='upper center', frameon=False, fontsize=32)
+        # Plain marker handles align reliably with labels; keep the whole row inside the canvas.
+        handles = [Line2D([], [], marker='o', linestyle='none', color=color, markersize=9)
+                   for color in COLORS]
+        legend = fig.legend(handles, [f'bin {i+1}' for i in range(6)], ncol=6,
+                            loc='upper center', bbox_to_anchor=(.5, .985), frameon=False,
+                            fontsize=25, columnspacing=1.0, handletextpad=.35, handlelength=1)
+        fig.canvas.draw()
+        assert fig.bbox.contains(*legend.get_window_extent().get_points()[0])
+        assert fig.bbox.contains(*legend.get_window_extent().get_points()[1])
         save(fig, f'spectra_{c}')
         fig, ax = summary_axes()
         for i, k in enumerate(TRACERS):
@@ -243,6 +251,11 @@ def leakage():
         axes[0].plot(low['ell'], np.where(y>0,y,np.nan), '--o', color=color, lw=2.5, ms=4, label=f'{c.upper()} low-only')
     axes[0].set(xscale='log', yscale='log', xlabel=r'Multipole $\ell$', ylabel=r'$C_\ell^{TT}\;[\mathrm{mag}^2]$')
     axes[0].set_yticks([1e-11, 1e-9, 1e-7, 1e-5])
+    # Both low-only first bands nearly coincide; the next band is negative (not log-plottable).
+    axes[0].annotate('Low-only first band\n(both windows)',
+                     xy=(low['ell'][0], low['tests']['c2_low']['values'][0]),
+                     xytext=(190, 2e-6), fontsize=21, color=INK,
+                     arrowprops={'arrowstyle': '->', 'color': MUTED, 'lw': 1.2})
     axes[0].legend(frameon=False, fontsize=25, ncol=2, loc='lower left', bbox_to_anchor=(0, 1.04), columnspacing=.8, handlelength=1.2)
     keys = ['kappa'] + [f'g{i}' for i in range(6)]
     for j, (label, color) in enumerate([('C1 original', '#a8542b'), ('C1 rewindowed', '#23776d'), ('C2', '#234979')]):

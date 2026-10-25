@@ -1,16 +1,18 @@
 <section data-preliminary data-layout="figure-text" data-split="70" data-variant-axes="cycle">
 <h2>Extinction correlates positively with every tracer</h2>
 <figure><img src="images/gc8r2_spectra_c1.png" data-alt='{"c2|lensmc|spt":"images/gc8r2_spectra_c2.png"}' alt="Extinction correlation spectra for density, shear E and kappa, on shared cycle axes with Gaussian error bars."><img class=fragment src="images/gc8r2_means_c1.png" data-alt='{"c2|lensmc|spt":"images/gc8r2_means_c2.png"}' alt="Full-range GLS mean correlation and Gaussian error for all thirteen tracers."><span class="source"><span data-variant="c1|lensmc|spt c1|lensmc|act c1|metacal|spt c1|metacal|act">Cycle 1</span><span data-variant="c2|lensmc|spt c2|lensmc|act c2|metacal|spt c2|metacal|act">Cycle 2</span> · density without visibility correction · LensMC · SPT-3G</span></figure>
-<div class="text"><p class="small">$\rho_\ell\equiv C_\ell^{XT}/\sqrt{C_\ell^{XX}C_\ell^{TT}}$</p>
+<div class="text"><p class="small">$\rho_\ell\equiv C_\ell^{XT}/\sqrt{C_\ell^{XX,\mathrm{th}}C_\ell^{TT}}$</p>
 <ul><li>Obscuration predicts $\delta\times E\lt0$; the mean is positive</li>
-<li>Stronger toward high redshift</li>
-<li>Also in $\gamma_E$ and $\kappa$, not $\gamma_B$: LSS in the template</li></ul></div>
+<li>Positive means need not reject zero</li>
+<li>High-$z$ $\gamma_E$ and $\kappa$ support LSS; no extinction B failure</li></ul></div>
 <aside class="notes"><p>The first frame shows every band and its Gaussian error; the second compresses the same full range, $100\lt\ell\lt3000$, into a GLS constant-rho mean with its error.
 Density is without visibility correction in both cycles; shear is LensMC E, kappa is SPT-3G.
 Positive means are not a claim that every band is positive, or that every tracer rejects zero.
-The redshift trend is broad, not strictly monotonic; low-redshift shear is noisy, especially in Cycle 1.</p>
-<p>In these exploratory figures, $C^{XX}$ is the release-specific fiducial signal model averaged over exact integer science bins, not a measured noisy auto.
-$C^{TT}$ is measured template power.
+There is no monotonic-redshift claim: Cycle-1 density bin 6 is below bin 5.
+Cycle-1 low-redshift shear means are mostly within one or two Gaussian errors of zero; high-redshift shear and kappa carry the clearer support.</p>
+<p>In these exploratory figures, $C_\ell^{XX,\mathrm{th}}$ is the release-specific fiducial tracer signal model, with no shot, shape or reconstruction noise, averaged uniformly over exact integer science bins.
+It is neither an observed total auto nor the exact masked-auto bandpower-window average.
+$C_\ell^{TT}$ is the measured template auto; for CIB comparisons it is the odd-ring × even-ring spectrum with the cached interpolation transfer correction.
 The normalization is held fixed in the error propagation; the errors are the full Gaussian cross blocks divided by the normalization outer product.
 This is a model-normalized signal-correlation estimate; it avoids clipping negative noise-subtracted shear autos.
 It is not bounded to lie within [-1,1] in a noisy realization.

@@ -7,7 +7,7 @@
 <li>Gaussian covariance<br>PTEs not mock-calibrated</li>
 <li>Extinction fails hardest</li>
 <li>No extinction B-mode failure</li>
-<li>$\delta_1$ retains a depth signature</li>
+<li>Depth templates touch the low-$z$ density bins</li>
 </ul></div>
 <aside class="notes">
 <p>Each cell is the zero-null chi-squared PTE for one complete 15-band cross-spectrum, using its full within-test Gaussian NaMaster covariance block.
@@ -20,7 +20,8 @@ LensMC has no B-template PTE below 0.05 in either cycle.
 Cycle-2 MetaCal has one marginal B failure, zodiacal light in bin 1 (PTE 0.0260), but no extinction B failure.
 Its extinction E failures are in bins 1, 4, 5 and 6 (PTE 0.000312, 0.0000248, $1.96\times10^{-15}$, $1.63\times10^{-38}$), reproducing the LensMC pattern.
 Not every E-mode bin fails: Cycle-2 LensMC E bins 2/3 have PTE about 0.18/0.09.</p>
-<p>Depth means exposures/noise: the Cycle-2 density-bin-1 PTEs are 0.00216/0.00313.
+<p>Depth means exposures/noise, not a uniquely bin-1 effect.
+Cycle-1 bins 2/3 are more discrepant than bin 1 for these templates; Cycle 2 singles out bin 1 (exposures/noise PTEs 0.00216/0.00313).
 The heatmap exposes other marginal cells as well; depth is not the only non-extinction marginal rejection.</p>
 <p>The kappa test uses the full delivered CMB mask for the kappa field and template support for the template field.
 Restricting kappa to the common footprint changes extinction chi-squared from 57.7 to 53.0 (SPT), and 32.6 to 31.2 (ACT), still nonzero.
