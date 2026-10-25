@@ -152,6 +152,17 @@ def summarize(per, ell, label):
                 all_bands.append(row)
                 if abs(value) > 2 * sigma:
                     resolved.append(row)
+    for template in per:
+        bands = [r for r in all_bands if r[1] == template]
+        measured = [r for r in resolved if r[1] == template]
+        for kind, rows in [('nominal', bands), ('resolved', measured)]:
+            if rows:
+                _, _, pair, l, value, sigma = max(rows)
+                print(f'{label} {template}: {kind} {pair} ell={l:.2f}: {value:+.8g} +/- {sigma:.8g}')
+            else:
+                print(f'{label} {template}: no {kind} bands')
+        count = sum(r[0] <= .75 for r in bands)
+        print(f'{label} {template}: {count}/{len(bands)} ({100*count/len(bands):.6f}%) inside +/-0.75sigma_G')
     for kind, rows in [('nominal', all_bands), ('resolved |X|>2sigma_X', resolved)]:
         if rows:
             _, template, pair, l, value, sigma = max(rows)
@@ -159,6 +170,29 @@ def summarize(per, ell, label):
         else:
             print(f'{label}: no {kind} bands')
     print(f'{label}: {sum(row[0] <= .75 for row in all_bands)}/{len(all_bands)} nominal bands inside +/-0.75sigma_G; {len(resolved)} resolved bands')
+
+
+def template_auto(rows, template, ell):
+    """The delivered effects writer uses extinction-named columns for ALL templates.
+
+    Prefer a template-specific column if supplied by a future writer; otherwise
+    read the legacy generic column from this template's own archive, never reuse
+    extinction's auto. Check every tracer's repeated bands, not just the first.
+    """
+    stem = template.removesuffix('_vis').removesuffix('_gaia')
+    column = f'c_{stem}_{stem}'
+    if column not in rows[0]:
+        column = 'c_extinction_extinction'
+    n = len(ell)
+    assert len(rows) == 12 * n
+    css = np.asarray([float(r[column]) for r in rows[:n]])
+    assert np.all(np.isfinite(css) & (css > 0))
+    for offset in range(0, len(rows), n):
+        chunk = rows[offset:offset+n]
+        np.testing.assert_allclose([float(r['ell']) for r in chunk], ell, rtol=1e-12, atol=0)
+        np.testing.assert_allclose([float(r[column]) for r in chunk], css, rtol=1e-12, atol=0)
+    print(f'Cycle 2 {template}: auto column {column}; 12 repeated band grids agree')
+    return css
 
 
 def cycle2_inputs():
@@ -182,10 +216,16 @@ def cycle2_inputs():
     assert dv['metadata']['covariance']['full'] is True
     C = np.asarray(dv['cov_all'])
     pairs, cursor = {}, 0
+    assert dv['metadata']['covariance']['order_data'] == list(dv['cls'])
+    for tracer in {t for key in dv['cls'] for t in key.split('_')}:
+        assert dv['metadata']['fields'][tracer]['sha256'] == summary['field_windows'][tracer]['sha256']
     for key, row in dv['cls'].items():
         n = len(row['cl'])
         assert n == 15 and np.allclose(row['leff'], ell)
-        pairs[key] = dict(t=key.split('_'), ell=ell, sig=np.sqrt(np.diag(C)[cursor:cursor+n]))
+        sigma = np.sqrt(np.diag(C)[cursor:cursor+n])
+        np.testing.assert_allclose(sigma, np.sqrt(np.diag(row['cov'])), rtol=1e-12, atol=0)
+        assert np.all(np.isfinite(sigma) & (sigma > 0))
+        pairs[key] = dict(t=key.split('_'), ell=ell, sig=sigma)
         cursor += n
     assert C.shape == (cursor, cursor)
     per = {}
@@ -193,17 +233,21 @@ def cycle2_inputs():
         with tarfile.open(path) as tar:
             m = json.load(tar.extractfile('measurement.json'))
             rows = list(csv.DictReader(io.StringIO(tar.extractfile('contamination.csv').read().decode())))
-        auto_rows = rows[:15]
-        assert np.allclose([float(r['ell']) for r in auto_rows], ell)
-        css = np.asarray([float(r['c_extinction_extinction']) for r in auto_rows])
-        assert np.all(css > 0)
-        for offset in range(0, len(rows), 15):
-            assert np.allclose([float(r['c_extinction_extinction']) for r in rows[offset:offset+15]], css)
+        css = template_auto(rows, template, ell)
+        for tracer, window in m['field_windows'].items():
+            name = m['template'] if tracer == 'y' else tracer
+            assert window['sha256'] == summary['field_windows'][name]['sha256']
+        for row in rows:
+            tracer = ('g' if row['tracer'] == 'gc' else 'l') + str(int(row['bin']) - 1)
+            i = int(np.argmin(abs(ell - float(row['ell']))))
+            for column, name in [('c_tracer_extinction', tracer), ('c_kappa_extinction', 'kappa')]:
+                np.testing.assert_allclose(float(row[column]), m['nulls'][name]['cross'][i], rtol=1e-10, atol=0)
         c, qs, cohs = {}, {}, {}
         for tracer in ['kappa'] + [f'g{i}' for i in range(6)] + [f'l{i}' for i in range(6)]:
             idx = summary['test_names'].index(f"{m['template']}/{tracer}")
             y, block = obs[idx], cov[idx*15:(idx+1)*15, idx*15:(idx+1)*15]
-            assert np.allclose(m['nulls'][tracer]['cross'], y)
+            np.testing.assert_allclose(m['nulls'][tracer]['cross'], y, rtol=1e-12, atol=0)
+            np.testing.assert_allclose(m['nulls'][tracer]['ell'], ell, rtol=1e-12, atol=0)
             sigma = np.sqrt(np.diag(block))
             c[tracer] = y, sigma, ell
             qs[tracer] = float(y @ np.linalg.solve(block, y))
@@ -213,7 +257,7 @@ def cycle2_inputs():
         x, sx = {}, {}
         for key, pair in pairs.items():
             xv, sv = xell(c, dict(cl=css), *pair['t'])
-            x[key], sx[key] = sig(xv/pair['sig'], 4), sig(sv/pair['sig'], 4)
+            x[key], sx[key] = sig(xv/pair['sig'], 9), sig(sv/pair['sig'], 9)
         per[template] = dict(x=x, sx=sx, c={k:sig(ell*v[0]) for k,v in c.items()},
                              s={k:sig(ell*v[1]) for k,v in c.items()}, chi2=qs, coh=cohs,
                              flag=sorted(k for k,q in qs.items() if stats.chi2.sf(q,15)<PTE_FLAG))

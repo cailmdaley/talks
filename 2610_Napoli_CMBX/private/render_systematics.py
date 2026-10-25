@@ -70,7 +70,7 @@ INK, DATA, FRAME, MUTED = rdv.INK, rdv.DATA, rdv.FRAME, rdv.MUTED
 BAND_C = "#CDD3DC"
 FLAG = "#B4530F"   # burnt orange: the outline of a cell whose two template crosses both fail
 W, H, TR = rdv.W, rdv.H, rdv.TR
-YR = 0.75                   # every X / sigma_ab panel spans +-YR: 99.6 % of all bands inside
+YR = 0.75                   # shared display range; fractions depend on the cycle
 PTE_FLAG = 1e-4             # as make_systematics.py: a failing template cross
 BAND = 0.5                  # the shaded reference band, +-BAND sigma_ab
 DW, DH = rdv.DW, rdv.DH     # the card
@@ -207,7 +207,7 @@ def power_label(n, e):
     return rf"${lc}\;[10^{{{-e}}}]$" if e else rf"${lc}$"
 
 
-def cross_panel(ell, c, s, ylim, ticks, e, n, tracer, tlabel, chi2, coh, flag, glyphs):
+def cross_panel(ell, c, s, ylim, ticks, e, n, tracer, tlabel, chi2, coh, flag, glyphs, *, kappa_diagonal=True):
     fw, fh = CROSS_W, CROSS_H
     fig = plt.figure(figsize=(fw / 72, fh / 72), dpi=72)
     fs = FS
@@ -222,7 +222,7 @@ def cross_panel(ell, c, s, ylim, ticks, e, n, tracer, tlabel, chi2, coh, flag, g
     ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"$10^{{{int(round(np.log10(v)))}}}$"))
     ax.set_ylabel(power_label(n, e), fontsize=fs, labelpad=4)
     fig.text(112 / fw, 1 - 4 / fh, rf"${rdv.sym(tracer)}\times S$, {tlabel.lower()}", fontsize=fs + 2, va="top")
-    fig.text(112 / fw, 1 - 42 / fh, pte_text(chi2) + (r" (diag.)" if tracer == "kappa" else ""), fontsize=fs,
+    fig.text(112 / fw, 1 - 42 / fh, pte_text(chi2) + (r" (diag.)" if tracer == "kappa" and kappa_diagonal else ""), fontsize=fs,
              va="top", ha="left", color=FLAG if flag else MUTED, weight="bold" if flag else "normal")
     if flag:
         for sp in ax.spines.values():
@@ -313,7 +313,8 @@ def main():
                     e, ylim, ticks, n = ax_of[tr]
                     out["crossp"][t][cid] = cross_panel(ell, per["c"][tr], per["s"][tr], ylim, ticks, e, n, tr,
                                                         tlabel, per["chi2"][tr], per["coh"][tr],
-                                                        tr in per["flag"], glyphs)
+                                                        tr in per["flag"], glyphs,
+                                                        kappa_diagonal=not vk.startswith('cycle2|'))
         print(t, "n:", " ".join(f"{tr}={ax_of[tr][3]}" for tr in tracers))
         print(t, f"over {sum(len(v) for v in out['over'][t].values()) / 1024:.0f} kB,",
               f"cards {sum(len(v) for v in out['xcard'][t].values()) / 1024:.0f} kB,",
