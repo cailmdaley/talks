@@ -51,6 +51,10 @@ def main():
         d=reweight_wl_bin(meta[f'bin{i}'],'outer:pixel')
         _,fields=s.map2cls(wl={f'bin{i}':d},skipped_pairs=[('l0','l0')],covariance=None,return_fields=True,outdir=str(out),outfile=f'fields_bin{i}.pkl',**c2.map_options(args))
         sf=fields['l0'];ss=nmt.get_iNKA_cell(sf,sf)
+        noise_spectra,amplitude=s.coupled_shear_noise(d,sf.get_mask(),6143,nside=2048)
+        floor=float(amplitude/np.mean(sf.get_mask()**2))
+        rows[i-1]['metacal_map_noise_check']=dict(coupled_white_amplitude=float(amplitude),inka_white_floor=floor,raw_inka_EE_2500_3000_over_floor=float(np.mean(ss[0,2500:3001])/floor),raw_inka_BB_2500_3000_over_floor=float(np.mean(ss[3,2500:3001])/floor),interpretation='Raw iNKA signal plus noise; no beam deconvolution, E includes lensing; B floor check, not a null PTE')
+        (out/'noise_check.json').write_text(json.dumps(rows,indent=2)+'\n')
         for stem,(values,support) in templates.items():
             dest=out/f'{stem}_bin{i}.json'
             if dest.exists():continue
