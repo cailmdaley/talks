@@ -9,7 +9,8 @@ def fraction(model,target,c):
  return float(model@precision_target/norm)
 
 def main():
- out=BASE/'window-leakage/c2-falsification';out.mkdir(parents=True,exist_ok=True)
+ strict='--strict' in sys.argv
+ out=BASE/('window-leakage/c2-falsification-strict' if strict else 'window-leakage/c2-falsification');out.mkdir(parents=True,exist_ok=True)
  args=options(2,out);g,w=c2.canonical_maps(args,out/'maps')
  kr=ROOT/'results/tr1_v2/survey/kappa.json';mr=ROOT/'results/tr1_v2/map_products/pair_apodized_masks.json'
  km=json.loads(kr.read_text());ms=json.loads(mr.read_text());kp=Path(km['map']['path']);mp=Path(ms['root'])/next(x['path'] for x in ms['files'] if x['path'].endswith('_apod_mask.fits'))
@@ -33,7 +34,9 @@ def main():
  if model_residual>1e-7:raise ValueError('Full-sky parent reconstruction fails delivered-template identity')
  alms=hp.map2alm(native,lmax=99,iter=3)
  low=hp.alm2map(alms,2048,lmax=99);del dust,native,alms
- low-=np.mean(low[mask]);high=total-low
+ # In strict mode assign the original footprint-mean subtraction entirely to
+ # the low component. Recentring the high-pass map would reintroduce ell=0.
+ low-=offset if strict else np.mean(low[mask]);high=total-low
  window=nmt.mask_apodization(mask.astype(float),.15,apotype='C2')
  lo=sp.make_field(low,window,lmax=6143,lmax_mask=6143,n_iter=0)
  hi=sp.make_field(high,window,lmax=6143,lmax_mask=6143,n_iter=0)
@@ -41,7 +44,7 @@ def main():
  del low,high,total,window;gc.collect()
  bins,_=sp.make_bins(100,3000,nells=15,spacing='log',field_lmax=6143);sl=sp.science_slice(bins);ell=bins.get_effective_ells()[sl];sel=np.flatnonzero(ell>965)
  cache=legacy_cache(2,out,'extinction_vis')
- result=dict(exploratory=True,mock_calibrated=False,runtime_identity=blocks.runtime_identity(),inputs=receipt([bundlepath,Path(args.gc_pkl),Path(args.wl_tar),kr,mr,kp,mp,parent,ROOT/'results/tr1_v2/systematics/gaussian_null_family.tar',Path(__file__),Path(sp.__file__)]),ell=ell.tolist(),high_ell_indices=sel.tolist(),native_template_model_max_centered_residual=model_residual,filter='Full-sky VMPZ extinction reconstructed from Planck EBV with exact nearest-parent Galactic lookup at equatorial NSIDE2048 pixel centres and float32 2.108 conversion. Equatorial alms ell<=99, then low map mean-centered over exact C2 support; high map = delivered C2 prepared extinction minus low map. Both use original C2 mask, taper, and n_iter=0. No zero-padded regional filtering.',coherent_amplitude='A = observed^T C_original^-1 filtered / (observed^T C_original^-1 observed), on ell>965; descriptive signed projection fraction onto the measured shape, not an independent fitted-model significance.',tests={})
+ result=dict(exploratory=True,mock_calibrated=False,runtime_identity=blocks.runtime_identity(),inputs=receipt([bundlepath,Path(args.gc_pkl),Path(args.wl_tar),kr,mr,kp,mp,parent,ROOT/'results/tr1_v2/systematics/gaussian_null_family.tar',Path(__file__),Path(sp.__file__)]),ell=ell.tolist(),high_ell_indices=sel.tolist(),strict_highpass=strict,mean_policy='Original total-template mean assigned entirely to low component; high component not re-centred.' if strict else 'Both components independently footprint-mean-centred; high component therefore includes a constant subtraction.',native_template_model_max_centered_residual=model_residual,filter='Full-sky VMPZ extinction reconstructed from Planck EBV with exact nearest-parent Galactic lookup at equatorial NSIDE2048 pixel centres and float32 2.108 conversion. Equatorial alms ell<=99, then low map mean-centered over exact C2 support; high map = delivered C2 prepared extinction minus low map. Both use original C2 mask, taper, and n_iter=0. No zero-padded regional filtering.',coherent_amplitude='A = observed^T C_original^-1 filtered / (observed^T C_original^-1 observed), on ell>965; descriptive signed projection fraction onto the measured shape, not an independent fitted-model significance.',tests={})
  for name,b in f.items():
   path=out/f'{name}.json'
   if path.exists():r=json.loads(path.read_text())
