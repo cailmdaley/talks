@@ -16,7 +16,10 @@ Its fragmented support and taper topology amplify leakage.
 Common source values are identical; the left curves use the respective support means.</p>
 <p>The right panel uses full 15-band Gaussian chi-squared divided by 15.
 Density is visibility-corrected in all three arms, kappa is SPT.
-Only the template window changes in the middle arm; tracer maps/windows remain C1.
+The original C1 density arm uses the matched original-window controls c1_vis_original/g0–g5, including the same visibility mask weights as c1_vis_rewindowed/g0–g5.
+Their chi-squared values are 19.285, 19.076, 7.834, 15.737, 57.721 and 17.235 before division by 15.
+Only the template window changes between these two density arms; tracer maps/windows remain C1.
+The archived visibility-check crosses are not used for this arm because they omit the matched visibility mask weights.
 C1's original full-block kappa chi-squared is 20.064; the rewindowed value is 55.442; C2 is 57.666.
 The archived original uses observed template-data Wick terms; the rewindowed arm sets them to zero, as Cycle 2 does.
 Matched original-window controls change Gaussian errors by only a few per cent, compared with the roughly tenfold window effect.
@@ -29,5 +32,6 @@ Low-only contributions remain non-negligible against the original Gaussian error
 The test rules out explaining the entire correlation by ell≤99 leakage; it does not establish a clean small-scale origin.
 The main-slide shorthand “high-ell signal” denotes measured bands, not the true source multipoles.</p>
 <p>Sources: results/scratch/gc8/window-leakage/{auto,lowell,crosses}.json, c2-falsification-strict/summary.json and HEADLINE.md.
-Original C1 kappa is read from extinction_vis.tar; middle-arm rows are c1_rewindowed/kappa and c1_vis_rewindowed/g0–g5; C2 uses production_null in rho.json.</p>
+Original C1 kappa is read from extinction_vis.tar; original density uses c1_vis_original/g0–g5 in crosses.json.
+Middle-arm rows are c1_rewindowed/kappa and c1_vis_rewindowed/g0–g5; C2 uses production_null in rho.json.</p>
 </aside></section>

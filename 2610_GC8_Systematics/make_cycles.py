@@ -262,11 +262,14 @@ def leakage():
         vals=[]
         for k in keys:
             if j==0:
-                path = ROOT / 'results/tr1/tr1_systematics/extinction_vis.tar'
-                m=archive(path)
-                d=m['template_kappa'] if k=='kappa' else read(ROOT/'results/scratch/napoli/visibility_check/extinction_vis.json')['GC'][k]['after']
-                c=np.array(d['cross']); cov=np.array(d['covariance'])
-                val=float(c@np.linalg.solve(cov,c))
+                if k == 'kappa':
+                    m = archive(ROOT / 'results/tr1/tr1_systematics/extinction_vis.tar')
+                    d = m['template_kappa']
+                    c = np.array(d['cross']); cov = np.array(d['covariance'])
+                    val = float(c @ np.linalg.solve(cov, c))
+                else:
+                    # Match visibility weights to the rewindowed arm: only the template window changes.
+                    val = crosses['tests'][f'c1_vis_original/{k}']['scalar']['chi2']
             elif j==1:
                 key=f'c1_rewindowed/{k}' if k=='kappa' else f'c1_vis_rewindowed/{k}'
                 d=crosses['tests'][key]
