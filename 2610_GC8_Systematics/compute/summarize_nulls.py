@@ -28,13 +28,16 @@ def a_report():
  (p.parent/'null-table.md').write_text('\n'.join(lines)+'\n')
 
 def b_report():
- heat=dict(templates=['extinction_vis','exposures_vis','noise_vis','psf_vis','zodiacal_vis','stars_gaia'],bins=list(range(1,7)),cycles={},exploratory=True,statistic='15-band full-block Gaussian chi2, zero template-shear Wick cross; uncalibrated marginal PTE')
+ heat=dict(templates=['extinction_vis','exposures_vis','noise_vis','psf_vis','zodiacal_vis','stars_gaia'],bins=list(range(1,7)),cycles={},exploratory=True,expected_tests_per_cycle=36,bands_per_test=15,matrix_axes='template, bin',statistic='15-band full-block Gaussian chi2, zero template-shear Wick cross; uncalibrated marginal PTE')
  lines=['# LensMC shear E/B template nulls','','Each PTE uses its own full 15-by-15 NaMaster Gaussian covariance.','B uses the B-B block of the raw spin-0 by spin-2 covariance, not the E covariance.','Template-shear Wick spectra are set to zero in both cycles.','These are uncalibrated marginal Gaussian PTEs; 36 tests per component per cycle are not independent.']
  for cycle in [1,2]:
   p=BASE/f'shear-b/cycle{cycle}.json'
   if not p.exists():continue
   j=json.loads(p.read_text());rows={}
-  lines+=['',f'## Cycle {cycle}','','| Template | Bin | E chi2; PTE | B chi2; PTE | B worst ell; pull |','|---|---:|---:|---:|---:|']
+  bestkey,best=min(j['tests'].items(),key=lambda pair:pair[1]['B']['pte'])
+  peakkey,peak=max(j['tests'].items(),key=lambda pair:abs(pair[1]['B']['worst_band']['signed_gaussian_pull']))
+  nfail=sum(r['B']['pte']<.05 for r in j['tests'].values());wp=peak['B']['worst_band']
+  lines+=['',f'## Cycle {cycle}','',f"{len(j['tests'])}/36 tests complete; {nfail} B tests have marginal PTE<0.05.",f"Smallest B PTE is {bestkey}: chi2/15={best['B']['chi2']:.5g}, PTE={best['B']['pte']:.5g}.",f"The largest single B residual is {peakkey}, ell={wp['ell']:.1f}: {wp['signed_gaussian_pull']:+.4g} Gaussian errors.",'','| Template | Bin | E chi2; PTE | B chi2; PTE | B worst ell; pull |','|---|---:|---:|---:|---:|']
   for key,r in j['tests'].items():
    name,b=key.split('/');i=int(b[1:]);w=r['B']['worst_band']
    rows[key]=r
@@ -50,6 +53,7 @@ def b_report():
     z=r[comp]
     if z['pte']<.05:
      w=z['worst_band'];lines.append(f"| {key} | {comp} | {z['pte']:.3g} | {w['ell']:.1f} | {w['signed_gaussian_pull']:+.2f} |")
+ heat['complete']=len(heat['cycles'])==2 and all(len(v['tests'])==36 for v in heat['cycles'].values())
  (BASE/'shear-b/heatmap.json').write_text(json.dumps(heat,indent=2)+'\n')
  (BASE/'shear-b/report.md').write_text('\n'.join(lines)+'\n')
 if __name__=='__main__':a_report();b_report()
