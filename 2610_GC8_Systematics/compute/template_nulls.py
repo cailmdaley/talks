@@ -40,7 +40,7 @@ def templates(cycle,out):
  m=json.loads((dest/'bundle/manifest.json').read_text())
  return [(t['stem'],dest/'bundle'/t['map'],dest/'bundle'/t['mask']) for t in m['templates']],path
 
-def fields(cycle,out,kappa=False,visibility=False):
+def fields(cycle,out,kappa=False,visibility=False,shear_only=False):
  args=options(cycle,out);dest=out/f'maps{cycle}';dest.mkdir(parents=True,exist_ok=True)
  if cycle==2:g,w=c2.canonical_maps(args,dest)
  else:
@@ -54,6 +54,7 @@ def fields(cycle,out,kappa=False,visibility=False):
    assert np.array_equal(g[f'bin{i}']['ipix'],d['ipix'])
    g[f'bin{i}']=dict(g[f'bin{i}'],weights=d['w'])
   w=None
+ if shear_only:g=None
  opts=base._common_map_options(args)
  opts.update(n_iter=1 if cycle==1 else 0)
  if cycle==1:opts['extra_masks']={'footprint':np.asarray(hp.read_map(FP,dtype=float))>0}
@@ -74,6 +75,12 @@ def legacy_cache(cycle,out,template):
    for p in src.glob('*.fits'):
     q=cache/sub/p.name
     if not q.exists():q.symlink_to(p.resolve())
+  if cycle==1:
+   extra=BASE/'window-leakage/workspace1'/sub
+   if extra.exists():
+    for p in extra.glob('*.fits'):
+     q=cache/sub/p.name
+     if not q.exists():q.symlink_to(p.resolve())
  return cache
 
 def native_c2(a,b):
@@ -157,7 +164,7 @@ def run_a():
 
 def run_b(cycle):
  out=BASE/'shear-b';out.mkdir(parents=True,exist_ok=True)
- f,args=fields(cycle,out);f={n:v for n,v in f.items() if n.startswith('l')};ts,p=templates(cycle,out)
+ f,args=fields(cycle,out,shear_only=True);f={n:v for n,v in f.items() if n.startswith('l')};ts,p=templates(cycle,out)
  bins,_=sp.make_bins(100,3000,nells=15,spacing='log',field_lmax=6143)
  result=dict(cycle=cycle,exploratory=True,runtime_identity=blocks.runtime_identity(),inputs=receipt([p,Path(args.gc_pkl),Path(args.wl_tar),Path(__file__),ROOT/'workflow/scripts/systematics_cycle2.py',ROOT/'workflow/scripts/tr1_systematics.py',ROOT/'workflow/scripts/wl_mask_weights.py',Path(sp.__file__)]+([FP] if cycle==1 else [])),reference_archives=receipt([ROOT/f'results/tr1/tr1_systematics/{name}.tar' for name in NAMES] if cycle==1 else [ROOT/'results/tr1_v2/systematics/gaussian_null_family.tar']),null_wick='TT x raw shear-shear only; template-shear Wick spectra zero',B_component='cov_raw.reshape(nband,2,nband,2)[:,1,:,1][science,science]',n_iter=1 if cycle==1 else 0,tests={})
  for (stem,pmap,pmask),template in zip(ts,NAMES):
