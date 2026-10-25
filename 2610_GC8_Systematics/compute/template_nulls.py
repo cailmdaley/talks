@@ -59,7 +59,7 @@ def fields(cycle,out,kappa=False,visibility=False):
  if cycle==1:opts['extra_masks']={'footprint':np.asarray(hp.read_map(FP,dtype=float))>0}
  names=[f'g{i}' for i in range(6)] + ([f'l{i}' for i in range(6)] if w is not None else []) + (['kappa'] if kappa else [])
  if kappa:opts['kappa']=dict(map=str(KMAP),mask=str(KMASK),aposcale=.15)
- _,f=sp.map2cls(gc=g,wl=w,covariance=None,skipped_pairs=list(itertools.combinations_with_replacement(names,2)),return_fields=True,blind='none',pol_conv='COSMO' if cycle==1 else 'EUCLID',outdir=str(dest),outfile='fields.pkl',**opts)
+ _,f=sp.map2cls(gc=g,wl=w,covariance=None,skipped_pairs=list(itertools.product(names,repeat=2)),return_fields=True,blind='none',pol_conv='COSMO' if cycle==1 else 'EUCLID',outdir=str(dest),outfile='fields.pkl',**opts)
  del g,w;gc.collect()
  return f,args
 
