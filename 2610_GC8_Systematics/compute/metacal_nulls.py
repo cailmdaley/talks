@@ -43,7 +43,7 @@ def main():
     (out/'HEADLINE.md').write_text('# Exploratory Cycle-2 MetaCal\n\nMaps built with production corrected ellipticity, weights, TR1 quality selection and coverage support.\nNoise floor ratios MetaCal/LensMC: '+', '.join(f"{r['white_noise_ratio']:.3f}" for r in rows)+'.\nNulls still running; no mock-calibrated claim.\n')
     print('NOISE CHECK',rows,flush=True)
     bundle=ROOT/'results/tr1_v2/systematics/template_bundle.tar'
-    inputs=[digest(p) for p in [catalog,coverage,mapsfile,lens_tar,bundle,Path(__file__),ROOT/'workflow/scripts/build_wl_map.py',ROOT/'code/dr1_cmbx/src/dr1_cmbx/eDR1data/maps.py',ROOT/'code/dr1_cmbx/src/dr1_cmbx/eDR1data/spectra.py']]
+    inputs=[digest(p) for p in [catalog,coverage,mapsfile,lens_tar,bundle,Path(__file__),ROOT/'workflow/scripts/build_wl_map.py',ROOT/'code/dr1_cmbx/src/dr1_cmbx/eDR1data/maps.py',ROOT/'code/dr1_cmbx/src/dr1_cmbx/eDR1data/selection.yaml',ROOT/'code/dr1_cmbx/src/dr1_cmbx/eDR1data/tiles_no_bad_aocs_tr1.json',ROOT/'workflow/scripts/wl_mask_weights.py',ROOT/'workflow/scripts/systematics_cycle2.py',ROOT/'code/dr1_cmbx/src/dr1_cmbx/eDR1data/spectra.py']]
     args=SimpleNamespace(nside=2048,lmin=100,lmax=3000,nbins=15,field_lmax=6143,aposcale=0.15,work_dir=out,workspace_cache=out/'workspaces')
     templates=c2.read_bundle(bundle,out/'bundle_extract',2048)
     bins,_=s.make_bins(100,3000,nells=15,spacing='log',field_lmax=6143);sl=s.science_slice(bins);ell=bins.get_effective_ells()[sl]
