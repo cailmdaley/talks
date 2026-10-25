@@ -1,0 +1,30 @@
+<section data-preliminary data-layout="figure-text" data-stack>
+<h2>Cycle 1's template window hid the high-$\ell$ signal</h2>
+<figure><img src="images/gc8r2_window.png" alt="Left: total and low-ell-only extinction auto power through two windows. Right: chi-squared per band for original C1, C1 with C2 template window, and C2.">
+<span class="source">Cycles 1 and 2 · low-only: $\ell\leq99$ · exploratory</span></figure>
+<div class="text"><p class="small">Same dust values · C1 errors inflated $\sim10\times$ · rewindowed C1 fails too<br>High-pass retains 80–120% of the coherent signal</p></div>
+<aside class="notes">
+<p>The left solid curves show the extinction auto bandpowers through the original C1/C2 windows; dashed curves (labelled low-only) inject only physical Planck modes with $\ell\leq99$ before masking.
+The injection has no true science-band power, so its recovered high-ell power directly demonstrates leakage.
+One negative low-only deconvolved band at ell 140.5 in each window is omitted on the logarithmic ordinate; it is not replaced by an artificial floor.</p>
+<p>At ell 2695.5, C1 preparation with the C2 window reduces the auto by 40.90, reproducing C2; changing iterations alone is negligible.
+C1 was already C2-type apodized over 0.15 degrees, not unapodized.
+Its fragmented support and taper topology amplify leakage.
+Common source values are identical; the left curves use the respective support means.</p>
+<p>The right panel uses full 15-band Gaussian chi-squared divided by 15.
+Density is visibility-corrected in all three arms, kappa is SPT.
+Only the template window changes in the middle arm; tracer maps/windows remain C1.
+C1's original full-block kappa chi-squared is 20.064; the rewindowed value is 55.442; C2 is 57.666.
+The archived original uses observed template-data Wick terms; the rewindowed arm sets them to zero, as Cycle 2 does.
+Matched original-window controls change Gaussian errors by only a few per cent, compared with the roughly tenfold window effect.
+The high-ell errors fall to about 0.094 of the original-window controls.
+The crosses change too: this is not only an error rescaling.</p>
+<p>The strict high-pass split keeps ell≥100 before masking and does not re-centre the high component.
+Its projection onto the original five-band ell&gt;965 cross shape is 0.794–1.195 across thirteen tracers.
+This is the rounded 80–120% statement, not a retained-power fraction or an independent significance.
+Low-only contributions remain non-negligible against the original Gaussian errors, and can cancel high-only contributions.
+The test rules out explaining the entire correlation by ell≤99 leakage; it does not establish a clean small-scale origin.
+The main-slide shorthand “high-ell signal” denotes measured bands, not the true source multipoles.</p>
+<p>Sources: results/scratch/gc8/window-leakage/{auto,lowell,crosses}.json, c2-falsification-strict/summary.json and HEADLINE.md.
+Original C1 kappa is read from extinction_vis.tar; middle-arm rows are c1_rewindowed/kappa and c1_vis_rewindowed/g0–g5; C2 uses production_null in rho.json.</p>
+</aside></section>

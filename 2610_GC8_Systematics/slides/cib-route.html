@@ -1,60 +1,20 @@
-<section data-preliminary data-layout="figure">
-  <h2><span data-variant="c1">Extinction crosses follow the CIB, closest at 857 GHz</span><span data-variant="c2">Cycle 2 extinction crosses follow the 857 GHz CIB</span></h2>
-  <figure>
-    <img src="images/gc8_cib_rho_points_857_c1.png" data-alt='{"c2": "images/gc8_cib_rho_points_857_c2.png"}' alt="Six panels of the correlation coefficient rho ell between a tracer and the extinction template against multipole, for density bins 1, 5 and 6 (visibility-weighted) and shear bins 1, 5 and 6: measured points only">
-    <img class="fragment" src="images/gc8_cib_rho_bands_857_c1.png" data-alt='{"c2": "images/gc8_cib_rho_bands_857_c2.png"}' alt="The same panels with, for each tracer, the band predicted from its and the extinction map's correlation with the Lenz 2019 857 GHz CIB map">
-    <img class="fragment" src="images/gc8_cib_rho_full_857_c1.png" data-alt='{"c2": "images/gc8_cib_rho_full_857_c2.png"}' alt="Cycle 1 adds the unweighted density maps in bins 1, 5 and 6; Cycle 2 retains its visibility-corrected maps, with no coverage-only arm">
-    <img class="fragment" src="images/gc8_cib_rho_full_545_c1.png" data-alt='{"c2": "images/gc8_cib_rho_full_545_c2.png"}' alt="The same with the prediction from the 545 GHz CIB map">
-    <img class="fragment" src="images/gc8_cib_rho_full_353_c1.png" data-alt='{"c2": "images/gc8_cib_rho_full_353_c2.png"}' alt="The same with the prediction from the 353 GHz CIB map">
-    <span class="source"><span data-variant="c1">Cycle 1: TR1 v1.1 LensMC, VMPZ extinction</span><span data-variant="c2">Cycle 2: tr1_v2 LensMC, DR1 R2 extinction</span> · Lenz+19 CIB 857, 545, 353 GHz · Gaussian errors · 15 bands, $100 \lt \ell \lt 3000$</span>
-  </figure>
-  <aside class="notes">
-    <h3>The question</h3>
-    <p>In Napoli the systematics slide flagged $\delta_5 \times$ extinction as the one failing template null after visibility weighting, and the summary asked whether it is CIB in the template: the Planck $E(B-V)$ extinction map is built from dust emission, and dust-emission maps carry some cosmic infrared background, which traces the same large-scale structure as the Euclid galaxies. This is the test made to answer it.</p>
-    <h3>The test</h3>
-    <p>If the extinction map is dust plus a CIB leak, $\mathrm{ext} = \mathrm{dust} + \epsilon\,\mathrm{CIB}$, with the dust uncorrelated with the tracers, then band by band the correlation coefficient of a tracer $T$ with extinction is fixed by two others: $\rho_\ell(T,\mathrm{ext}) = \rho_\ell(T,\mathrm{CIB})\;\rho_\ell(\mathrm{CIB},\mathrm{ext})$, with $\rho_\ell(a,b) = C_\ell^{ab}/\sqrt{C_\ell^{aa}C_\ell^{bb}}$. Nothing is fitted. The CIB is the Lenz, Doré &amp; Lagache (2019) 857 GHz map on its $N_\mathrm{HI} \lt 2.5\times10^{20}\,\mathrm{cm^{-2}}$ mask (73 % of the Cycle-1 extinction-cross support; 76 % in Cycle 2); its auto-spectrum is from odd $\times$ even halves, so it carries no noise bias. Tracer and extinction autos are total observed power, so $\rho_\ell$ is the observed correlation, not a signal-only one. Same masks, estimator and 15 bands as the template null tests.</p>
-    <h3>Error bars: Gaussian</h3>
-    <p>Each measured point's bar is the NaMaster Gaussian error of the cross, $\sigma_\mathrm{G}(C_\ell^{T,\mathrm{ext}})$, the square root of the diagonal of its full Gaussian covariance, divided by the fixed $\sqrt{C_\ell^{TT}C_\ell^{ee}}$. For Gaussian fields the full propagation, which lets the two autos fluctuate with the cross, gives $\sigma(\hat\rho_\ell) = (1-\rho_\ell^2)/\sqrt{\nu_\ell}$ against $\sqrt{1+\rho_\ell^2}/\sqrt{\nu_\ell}$ with the autos fixed ($\nu_\ell$ the effective number of modes), a ratio $(1-\rho_\ell^2)/\sqrt{1+\rho_\ell^2}$. At the predicted $|\rho_\ell| \le 0.17$ (857 GHz; $\le 0.12$ at 545, $\le 0.09$ at 353) that ratio is 0.955–1, and above 0.985 wherever $|\rho_\ell| \le 0.1$, which is almost every band. So the bars are the Gaussian error of $\rho_\ell$ to within 5 %, on the conservative side. The predicted band's width is the Gaussian errors of $C^{T,\mathrm{CIB}}$, $C^{\mathrm{CIB},\mathrm{ext}}$ and $C^{\mathrm{CIB},\mathrm{CIB}}$ in quadrature. Earlier versions of this figure labelled the same quantity $r$.</p>
-    <h3>The build</h3>
-    <p>Measured points first (density bins visibility-weighted), then the prediction from the 857 GHz CIB map, then the unweighted density maps beside the weighted ones in all three density panels; the last two clicks swap the prediction to the 545 and 353 GHz maps. The measured points do not change between frequencies.</p>
-    <h3>What it shows at 857 GHz (Cycle 1)</h3>
-    <p>The prediction reproduces the high-signal-to-noise visibility-weighted density and shear crosses, $\delta_5$ included, the one that failed its null test after visibility weighting. Summarised as measured/predicted (an inverse-variance projection with the measured errors, not part of the test) and the $\chi^2$ PTE over 15 bands with the diagonal Gaussian errors: visibility-weighted $\delta_5$ 1.26 ± 0.21 (0.80), $\delta_2$ 0.98 (0.92), $\delta_1$ 0.97 (0.94); $\gamma_6$ 0.82 ± 0.24 (0.97), $\gamma_5$ 0.90 ± 0.29 (0.92); unweighted $\delta_1$ 1.03 ± 0.38 (0.86), unweighted $\delta_6$ 0.87 ± 0.15 (0.52). $\gamma_1$ sits on a near-zero prediction. Unweighted $\delta_5$ sits above the prediction at 1.41 ± 0.20 (PTE 0.46), as do unweighted $\delta_2$ and $\delta_4$, off the slide (1.80 ± 0.34, 1.65 ± 0.25): an excess consistent with selection in the coverage-only maps (inferred). The exception is visibility-weighted $\delta_6$: 0.22 ± 0.16, PTE 0.013. The weighting removes most of the CIB-carried correlation that the unweighted map keeps, plausibly because extinction is among the visibility model's five undocumented inputs (inferred, not tested). Its worst band, $-3.4\sigma$ at $\ell \approx 550$, is not from the weighting: the unweighted $\delta_6$ dips in the same band ($-2.8\sigma$). Across the three frequencies that band stays at $-3.0$ to $-3.4\sigma$ weighted and $-2.3$ to $-2.8\sigma$ unweighted. $\delta_3$ and $\delta_4$ weighted sit low too (0.31 ± 0.30, 0.53 ± 0.27; $2.3\sigma$ and $1.7\sigma$ below 1).</p>
-    <p>So the extinction-template crosses are consistent with being tracer $\times$ CIB carried by the extinction map, which is a statement about the template, not about the Euclid shear or density. The CIB correlation grows with redshift: the predicted $\rho_\ell$ over $\ell$ = 300–2000 goes 0.03 → 0.06 → 0.09 for $\delta_1$, $\delta_5$ and unweighted $\delta_6$, and 0.003 → 0.05 → 0.06 for $\gamma_1$, $\gamma_5$, $\gamma_6$.</p>
-    <h3>545 and 353 GHz (Cycle 1)</h3>
-    <p>The lower-frequency maps predict less: for the high-signal-to-noise bins ($\delta_5$, $\delta_6$, $\gamma_5$, $\gamma_6$) 0.73–0.77× the 857 GHz prediction at 545 and 0.59–0.72× at 353 (lower bins span 0.64–0.83 and 0.47–0.72), so measured/predicted rises. $\delta_5$ goes 1.26 ± 0.21 → 1.63 ± 0.27 → 1.89 ± 0.32 (857 → 545 → 353), unweighted $\delta_6$ 0.87 → 1.13 → 1.29, $\gamma_6$ 0.82 → 1.09 → 1.13. The PTEs stay acceptable except in unweighted $\delta_4$, which goes 0.083 → 0.009 → 0.001 (worst band $\ell \approx 1090$, $+3.4\sigma$ at 353), and unweighted $\delta_5$ at 353 (0.042, $+2.8\sigma$ at $\ell \approx 1090$). So the CIB in the extinction map correlates with the Euclid tracers the way the 857 GHz CIB does. That fits the template: the Planck 2013 $E(B-V)$ is built from dust radiance, which the 857 GHz and IRAS 100 μm data dominate.</p>
-    <p>The drop is larger than the decoherence of the CIB between frequencies would give alone: Lenz's published spectra give a squared coherence with 857 GHz of 0.91 at 545 and 0.80 at 353 ($\ell$ = 300–2000). The rest comes from the tracers: their correlation with the CIB, $\rho_\ell(T,\mathrm{CIB})$, falls by 20–30 % from 857 to 545 GHz (about 20 % in the high-redshift bins, up to 40 % in the low ones), as expected if lower-frequency CIB comes from higher redshift than the Euclid samples (inferred).</p>
-    <p>The 353 GHz map carries no primary CMB to bias this: its odd $\times$ even auto-spectrum matches Lenz's published 353 $\times$ 353 spectrum as closely as the 857 one does (within 10–30 % at $\ell$ = 150–1700, no band more than $2\sigma$ off), where primary CMB would be about $10^3$ times the CIB.</p>
-    <h3>Caveats</h3>
-    <ul>
-      <li>The PTEs are conservative: they use the diagonal of each Gaussian covariance and ignore the measured–predicted covariance (shared tracer noise and sky), and most sit high (0.8–0.98), as expected.</li>
-      <li>The template-cross estimator leaks the $\ell \lt 100$ modes of steep-spectrum maps into the science bands (a GNILC dust map cut to $\ell \le 99$ shows order-unity apparent power at $\ell$ = 550–2700). Template crosses stay valid as nulls, but the $\ell$ of a detection and a dust/CIB split read off single bands wait on closing that low-$\ell$ response.</li>
-      <li>On its own the shape of a tracer $\times$ extinction cross cannot separate CIB from dust ($\Delta\chi^2 \le 3$ per bin); the correlation-coefficient test is what discriminates.</li>
-      <li>The ratios share maps across bins and frequencies, so they are correlated, and their errors omit the prediction's own uncertainty.</li>
-      <li>Checks behind it: the 857/545 GHz ratio of CIB $\times$ extinction (1.9–2.2) matches the CIB SED (1.95), not dust (3.06); the Lenz 857 odd $\times$ even auto reproduces the published spectrum to about 10 % for $\ell$ = 150–1700 on the TR1 footprint.</li>
-    </ul>
-    <h3>Cycle 2</h3>
-    <p>The scratch rerun uses the tr1_v2 density maps (visibility-corrected at source), LensMC coverage-support shear maps with the canonical outer:pixel window, and the DR1 R2 extinction template from the Cycle-2 bundle.
-    The Lenz maps, $N_\mathrm{HI}$ mask, beam and interpolation-transfer correction are the same as in Cycle 1; the old fragmented GC footprint is not imposed on the Cycle-2 shear maps.
-    Measured extinction crosses and tracer autos were recomputed from these maps, independently of the running null family.
-    There is no coverage-only Cycle-2 arm: the third build step adds nothing in that toggle state.</p>
-    <p>At 857 GHz all 12 tracer tests have diagonal-Gaussian PTEs between 0.30 and 0.99.
-    For the six displayed bins, measured/predicted ± the measured-only projection error (PTE) is $\delta_1$ 1.36 ± 0.10 (0.30), $\delta_5$ 0.98 ± 0.07 (0.99), $\delta_6$ 0.93 ± 0.06 (0.48), $\gamma_1$ 1.50 ± 0.28 (0.88), $\gamma_5$ 0.99 ± 0.09 (0.93), and $\gamma_6$ 1.06 ± 0.06 (0.59).
-    Those projection errors omit prediction uncertainty; the band-by-band test includes it.
-    The worst point across all 12 bins is off this six-panel figure: $\gamma_4$, $\ell=438.5$, measured $\rho=-0.0558\pm0.0493$ against predicted $+0.0748\pm0.0228$, a $-2.40\sigma$ residual using the two Gaussian errors in quadrature.
-    Among the displayed bins the worst is $\delta_1$ at $\ell=2695.5$, $+2.38\sigma$.</p>
-    <p>The Cycle-1 visibility-weighted $\delta_6$ suppression does not persist: measured/predicted changes from 0.22 ± 0.16 (PTE 0.013) to 0.93 ± 0.06 (0.48).
-    Its old $\ell\simeq550$ dip is now only $-0.88\sigma$ relative to the 857 GHz prediction.
-    This compares different selections, templates and map windows; it does not isolate the cause of the change.</p>
-    <p>The lower-frequency routes underpredict more strongly.
-    At 545 GHz $\delta_1$ gives $\chi^2=48.39/15$, PTE $2.20\times10^{-5}$, and $\gamma_6$ PTE 0.0126.
-    The worst point over every bin and frequency is $\delta_1$ at $\ell=2695.5$ and 545 GHz: measured $0.10694\pm0.01153$, predicted $0.03789\pm0.01042$, residual $+4.44\sigma$.
-    It sits within a positive high-$\ell$ residual trend (the preceding three bands are $+2.49$, $+2.63$, $+2.33\sigma$), not a lone spike hidden by the total statistic.
-    At 353 GHz $\delta_1$ gives PTE 0.00974 and a worst $+3.36\sigma$ point at $\ell=1364.5$; $\delta_6$ and $\gamma_6$ have PTE 0.0239 and 0.0214.
-    These are diagonal-Gaussian comparisons with measured–predicted covariance omitted, not calibrated family significances.
-    The displayed 857 GHz prediction peaks at $|\rho|=0.123$, for a Gaussian auto-propagation factor of at least 0.977.</p>
-    <p>Receipts: <code>results/scratch/gc8/cib_shape_c2/cib_rho_{857,545,353}.json</code> and <code>run.log</code>.
-    Reproducer: <code>2610_GC8_Systematics/compute_cib_cycle2.py</code>, run through <code>app</code> on dedicated allocation 62135907 (released after completion).
-    This is a scratch diagnostic, not an lc output.</p>
-    <p>Scratch analysis, not a pipeline output: <code>results/scratch/napoli/cib_shape/</code> (compute.py, cib_rho_{857,545,353}.json); finding <code>…/tr1-systematics-crosses/lenz-cib-route</code>; frames from <code>2610_GC8_Systematics/make_cycles.py cib</code>.</p>
-  </aside>
+<section data-preliminary data-layout="figure-text" data-split="70" data-variant-axes="cycle">
+<h2>The 857 GHz CIB predicts the extinction correlation</h2>
+<figure><img src="images/gc8r2_route_c1.png" data-alt='{"c2|lensmc|spt":"images/gc8r2_route_c2.png"}' alt="Two panels compare measured and CIB-route predicted density extinction means, without and with visibility correction."><span class="source"><span data-variant="c1|lensmc|spt c1|lensmc|act c1|metacal|spt c1|metacal|act">Cycle 1</span><span data-variant="c2|lensmc|spt c2|lensmc|act c2|metacal|spt c2|metacal|act">Cycle 2</span> · Lenz et al. 2019 · 857 GHz only</span></figure>
+<div class="text"><p class="small">$\bar\rho_{\rm pred}=\overline{\rho(\delta,I)\,\rho(I,E)}$<br>$I$: 857 GHz CIB</p>
+<ul><li>The CIB predicts a positive extinction cross</li>
+<li>Visibility weighting can suppress it</li>
+<li>Removing this component removes clustering</li></ul></div>
+<aside class="notes"><p>The prediction is a bandwise product, compressed with exactly the same weights as the measured extinction mean; it is not the product of two separately compressed means.
+Only the Lenz 857 GHz CIB map is used.
+All bars are propagated from Gaussian NaMaster blocks with fixed signal normalizations; the prediction includes its CIB-auto uncertainty but omits covariance among its ingredients and with the measurement.
+No difference significance is claimed.</p>
+<p>Cycle 2: corrected bins 2–6 track the prediction closely, while bin 1 retains an excess: measured 0.0903 ± 0.0063 versus predicted 0.0639 ± 0.0039.
+Cycle 1: visibility weighting drives bins 3, 4 and 6 below the simple prediction, so a blanket equality in both cycles would be false.
+For bin 6, without correction the means are 0.0687 ± 0.0092 versus 0.0646 ± 0.0053; with correction they are 0.0161 ± 0.0091 versus 0.0600 ± 0.0051.
+Cycle-1 bins 2–5 without correction also have excesses; the simple one-CIB-component model is not exact.</p>
+<p>In a simplified linear regression, subtracting a template component correlated with LSS subtracts clustering.
+The observed comparisons do not identify the visibility model's actual input set or quantify a science-vector bias.
+Cycle-2 raw removes correction on supported pixels only; it does not restore visibility-excluded area.</p>
+<p>Source: results/scratch/gc8/rho/rho.json, cib_route and matching rows, all six density bins, raw/vis for both cycles; HEADLINE.md gives the tabulated means.</p></aside>
 </section>

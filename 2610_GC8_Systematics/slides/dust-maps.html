@@ -1,0 +1,21 @@
+<section data-preliminary data-layout="figure-text" data-split="70" data-variant-axes="cycle">
+<h2>VMPZ is Planck13 reddening; CSFD passes the tracer nulls</h2>
+<figure><img src="images/gc8r2_dust_c2.png" alt="Cycle-2 thirteen-tracer means for VMPZ extinction, SFD and CSFD, with Gaussian error bars."><span class="source">Cycle 2 · exploratory · Gaussian NaMaster errors</span></figure>
+<div class="text"><ul><li>VMPZ = $2.108\times$ Planck R1.20 $E(B-V)$</li>
+<li>Identical values in both cycles</li>
+<li>SFD: $\bar\rho\approx0.04$–$0.06$ in density</li>
+<li>CSFD: all 13 spectrum nulls pass</li></ul></div>
+<aside class="notes"><p>This comparison exists only for Cycle 2; no Cycle-1 dust-map comparison is implied.
+The means and errors use full-range GLS compression, visibility-corrected density, LensMC E and SPT kappa, with the same fixed fiducial-signal normalization as slide 3.</p>
+<p>The provenance audit identifies the source as Planck 2013 thermal-dust-model R1.20 EBV, converted to VIS extinction in magnitudes as $3.1\times0.68=2.108$.
+Every original source value is identical in the two cycles on the audited common pixels; coverage and window preparation changed, not the dust values.
+Source: private felt gc8-systematics-update/extinction-provenance/findings.md and stats.json.</p>
+<p>All thirteen CSFD full-spectrum zero-null PTEs exceed 0.27.
+That does not make every GLS mean consistent with zero at one or two errors: for example density bin 1 has mean 0.0182 ± 0.0070, while its full-spectrum null passes.
+The headline refers to the spectrum nulls, not an assertion of exactly zero LSS.
+SFD density means span 0.0414–0.0575, apart from rounding.</p>
+<p>CSFD's LSS template uses WISE galaxies, constrained by spectroscopic galaxy/quasar correlations.
+A galaxy null is partly by construction; it is not independent certification that all cosmological signal is preserved.
+Compare alternative dust templates individually, not as simultaneous regressors.
+Source: results/scratch/gc8/rho/rho.json, c2/{vmpz,sfd,csfd} rows; rho/HEADLINE.md; Chiang (2023), arXiv:2306.03926.</p></aside>
+</section>

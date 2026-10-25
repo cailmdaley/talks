@@ -4,7 +4,7 @@
   "venue": "Euclid GC-8 call",
   "date": "2026-10-28",
   "description": "TR1 galaxy clustering, shear and CMB lensing crossed with the VMPZ systematics templates in Cycle 1 and Cycle 2; the extinction template carries LSS through the CIB, and what that means for dust maps in galaxy-clustering weights.",
-  "footer": "Cail Daley · GC-8 · systematics cross-correlations · October 2026",
+  "footer": "Cail Daley \u00b7 GC-8 \u00b7 systematics cross-correlations \u00b7 October 2026",
   "theme": "euclid",
   "css": "deck.css",
   "draft": true,
@@ -13,39 +13,49 @@
     "cycle": {
       "c1": "Cycle 1",
       "c2": "Cycle 2"
+    },
+    "shear": {
+      "lensmc": "LensMC",
+      "metacal": "MetaCal"
+    },
+    "cmb": {
+      "spt": "SPT-3G",
+      "act": "ACT DR6"
     }
   },
   "sections": [
     {
       "title": "Opening",
-      "outline": "An update for galaxy clustering on validation with systematics-template cross-correlations.",
+      "outline": "Preliminary TR1 validation.",
       "slides": [
         "title"
       ]
     },
     {
-      "title": "Template nulls",
-      "outline": "Six VMPZ templates crossed with TR1 density, shear and CMB lensing, and the contamination they imply for the data vector; a toggle switches Cycle 1 and Cycle 2.",
+      "title": "Template fidelity",
+      "outline": "Null tests, the LSS signature, its CIB prediction and dust alternatives.",
       "slides": [
         "systematics-overview",
-        "systematics-triangle"
-      ]
-    },
-    {
-      "title": "Dust maps carry LSS",
-      "outline": "The extinction template correlates positively with every tracer; the CIB route reproduces it; SFD correlates with the lens bins too, and CSFD's galaxy null is partly by construction.",
-      "slides": [
-        "extinction-pulls",
+        "extinction-lss",
         "cib-route",
-        "sfd-csfd-gc",
-        "sfd-csfd-gc-caveat"
+        "dust-maps",
+        "window-leakage",
+        "literature"
       ]
     },
     {
       "title": "Closing",
-      "outline": "What this means for galaxy-clustering weights, and where Cycle 2 stands.",
+      "outline": "Implications for weights and the next tests.",
       "slides": [
         "summary"
+      ]
+    },
+    {
+      "title": "Backup",
+      "outline": "Conditional contamination proxy and CSFD training dependence.",
+      "slides": [
+        "systematics-triangle",
+        "sfd-csfd-gc-caveat"
       ]
     }
   ]
