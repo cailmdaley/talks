@@ -253,7 +253,7 @@ RANGE_COLORS = ['#A9BCD6', '#5A7BB0', '#1E3566']
 RANGE_LABELS = [r'$100<\ell<311$', r'$311<\ell<965$', r'$965<\ell<3000$']
 
 
-def extinction(cycle, ylim=(-4.2, 10.2)):
+def extinction(cycle, ylim=(-4.2, 18.2)):
     """Each tracer x extinction cross as a signed coherent amplitude in Gaussian sigma, in three
     l-ranges, tracers grouped by class and ordered by redshift within each class."""
     delta = 'raw' if cycle == 'c1' else 'vis'
