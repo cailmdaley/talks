@@ -21,15 +21,15 @@ def finish(ax):ax.axhline(0,color='#535B67',lw=1,zorder=0);ax.grid(axis='y',alph
 def point(ax,xx,r,**kw):
     if r:ax.errorbar(xx,r['mean_rho'],yerr=r['mean_rho_error'],capsize=4,elinewidth=1.8,ms=8,**kw)
 
-def a():
-    entries=[get(c,'vmpz',k) for c in ['c1','c2'] for k in keys]
+def a(dust='vmpz'):
+    entries=[get(c,'vmpz',k) for c in ['c1','c2'] for k in keys]+[get('c2',d,k) for d in ['sfd','csfd'] for k in keys]
     ymin=min(min(np.array(r['rho'])-np.array(r['sigma_rho'])) for r in entries if r);ymax=max(max(np.array(r['rho'])+np.array(r['sigma_rho'])) for r in entries if r)
-    for c in ['c1','c2']:
+    for c in (['c1','c2'] if dust=='vmpz' else ['c2']):
         fig,axes=plt.subplots(1,3,figsize=(18,6.2),sharex=True,sharey=True,gridspec_kw={'wspace':.16})
         for ax,group,lab in zip(axes,[keys[:6],keys[6:12],keys[12:]],[r'$\delta$',r'$\gamma_E$',r'$\kappa_{\rm SPT}$']):
             finish(ax)
             for i,k in enumerate(group):
-                r=get(c,'vmpz',k)
+                r=get(c,dust,k)
                 if not r:continue
                 ax.errorbar(np.array(r['ell'])*(1+(i-2.5)*.006),r['rho'],yerr=r['sigma_rho'],color=colors[i] if len(group)>1 else '#3B4E85',fmt='o-',ms=3.5,lw=1,elinewidth=1.1,capsize=2,alpha=.9)
             ax.set_xscale('log');ax.set_xlabel(r'$\ell$');ax.set_xlim(100,3000);ax.set_ylim(ymin-.02,ymax+.02);ax.text(.07,.92,lab,transform=ax.transAxes,fontsize=31)
@@ -38,7 +38,7 @@ def a():
             ticks=ax.get_xticklabels();ticks[0].set_ha('left');ticks[-1].set_ha('right')
         axes[0].set_ylabel(r'$\rho_\ell$')
         fig.legend([Line2D([],[],marker='o',color=colors[i],lw=1) for i in range(6)],[f'Bin {i+1}' for i in range(6)],ncol=6,loc='upper center',bbox_to_anchor=(.5,1.07),frameon=False)
-        save(fig,f'A_spectra_{c}.png')
+        save(fig,f'A_spectra_{c}.png' if dust=='vmpz' else f'A_spectra_{dust}_{c}.png')
 
 def b1():
     fig,ax=plt.subplots(figsize=(17,6));finish(ax)
@@ -94,4 +94,4 @@ def route_spectra():
             axes[0,0].legend(frameon=False,fontsize=19,loc='lower left')
             save(fig,f'route_spectra_{c}_{state}.png')
 
-if __name__=='__main__':a();b1();b2();b2('cib857');b3();route();route_spectra()
+if __name__=='__main__':a();a('sfd');a('csfd');b1();b2();b2('cib857');b3();route();route_spectra()
