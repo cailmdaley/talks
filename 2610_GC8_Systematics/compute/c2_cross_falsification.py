@@ -15,7 +15,7 @@ def main():
  km=json.loads(kr.read_text());ms=json.loads(mr.read_text());kp=Path(km['map']['path']);mp=Path(ms['root'])/next(x['path'] for x in ms['files'] if x['path'].endswith('_apod_mask.fits'))
  names=['kappa']+[f'g{i}' for i in range(6)]+[f'l{i}' for i in range(6)]
  print('Building C2 fields',time.ctime(),flush=True)
- _,f=sp.map2cls(gc=g,wl=w,kappa=dict(map=str(kp),mask=str(mp)),covariance=None,skipped_pairs=list(itertools.product(names,repeat=2)),return_fields=True,blind='none',outdir=str(out/'fields'),outfile='fields.pkl',**c2.map_options(args))
+ _,f=sp.map2cls(gc=g,wl=w,kappa=dict(map=str(kp),mask=str(mp)),covariance=None,skipped_pairs=list(itertools.product(names,repeat=2)),return_fields=True,outdir=str(out/'fields'),outfile='fields.pkl',**c2.map_options(args))
  del g,w;gc.collect()
  ts,bundlepath=templates(2,out);_,pmap,pmask=ts[0];total=np.load(pmap);mask=np.load(pmask).astype(bool)
  parent=Path('/leonardo_work/EUHPC_E07_074/cdaley00/tmp/extinction-provenance/HFI_CompMap_ThermalDustModel_2048_R1.20.fits')
