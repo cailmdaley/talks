@@ -1,5 +1,5 @@
-/* Keep the opening covariance warning in plain sentence case on one line. */
-.slide[data-layout="title"] .covariance-caveat {
+/* Keep acknowledgements readable without competing with the title. */
+.slide[data-layout="title"] .acknowledgements {
   font-size: var(--t-fine);
   font-variant-caps: normal;
   font-feature-settings: normal;

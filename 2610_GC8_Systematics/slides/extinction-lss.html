@@ -1,9 +1,14 @@
 <section data-layout="figure-text" data-stack data-variant-axes="cycle">
-<h2>CIB predicts much of the measured $\bar\rho$</h2>
-<div class="text"><p class="small">$\rho_\ell=C_\ell^{XT}/\sqrt{C_\ell^{XX,\mathrm{th}}C_\ell^{TT}}$; $\bar\rho$ = Gaussian GLS mean.</p></div>
-<figure><img src="images/gc8r4_rho_c1_0.png" data-alt='{"c2|lensmc|spt|e": "images/gc8r4_rho_c2_0.png"}' alt="Measured rho bar without density visibility correction."><img class="fragment" src="images/gc8r4_rho_c1_1.png" data-alt='{"c2|lensmc|spt|e": "images/gc8r4_rho_c2_1.png"}' alt="Measured rho bar plus open-marker CIB predictions for density and shear E."><img class="fragment" src="images/gc8r4_rho_c1_2.png" data-alt='{"c2|lensmc|spt|e": "images/gc8r4_rho_c2_2.png"}' alt="Measured rho bar and predictions with density visibility correction."><span class="source">TR1 Cycle 1 / Cycle 2 · LensMC E · SPT-3G · prediction for δ and γE only</span></figure>
-<aside class="notes"><p>The frames show measured means without visibility correction, add the CIB prediction, then apply density visibility correction. All compress the same full range, $100\lt\ell\lt3000$, into a GLS constant-rho mean with its error.
-Density switches from without to with visibility correction in both cycles; shear is LensMC E, kappa is SPT-3G.
+<h2>The CIB route predicts tracer–extinction $\bar\rho$</h2>
+<div class="text"><p class="small">If the template’s LSS enters only through CIB:<br>$\bar\rho(X,\mathrm{ext})\approx\bar\rho(X,\mathrm{CIB})\,\bar\rho(\mathrm{CIB},\mathrm{ext})$</p><p class="fine">δ1 lies above the CIB prediction.</p></div>
+<figure><img src="images/gc8r5_rho_c1.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_c2.png"}' alt="Measured GLS mean rho and open-marker CIB-predicted tracer–extinction rho for density and shear E in both cycles; no kappa prediction exists."><span class="source">TR1 Cycle 1 / Cycle 2 · LensMC E · SPT-3G · Gaussian errors</span></figure>
+<aside class="notes"><p>The points show density without visibility correction, LensMC shear E and SPT-3G kappa in both cycles.
+All compress the same full range, $100\lt\ell\lt3000$, into a GLS constant-rho mean with its error.
+The definition is $\rho_\ell=C_\ell^{XT}/\sqrt{C_\ell^{XX,\mathrm{th}}C_\ell^{TT}}$.
+The slide's product of averaged coefficients is a schematic reduction, not the exact compression: the plotted prediction is the bandwise product averaged with the measured GLS weights, which need not equal the product of separate averages.
+It predicts tracer–extinction from tracer–CIB and CIB–extinction, without using the tracer–extinction cross in the prediction amplitude; it does use the measured extinction auto and GLS weights.
+The density-bin-1 excess is descriptive in both cycles, not a quantified prediction-residual significance.
+Only the cycle toggle is active because matched MetaCal/ACT rho normalizations and route predictions have not been saved.
 Positive means are not a claim that every band is positive, or that every tracer rejects zero.
 There is no monotonic-redshift claim: Cycle-1 density bin 6 is below bin 5.
 Cycle-1 low-redshift shear means are mostly within one or two Gaussian errors of zero; high-redshift shear and kappa carry the clearer support.</p>

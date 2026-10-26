@@ -1,5 +1,5 @@
 {
-  "title": "Systematics-template cross-correlations",
+  "title": "CIB contamination in Galactic extinction maps",
   "author": "Cail Daley",
   "venue": "Euclid GC-8 call",
   "date": "2026-10-28",
@@ -37,12 +37,14 @@
     },
     {
       "title": "Template fidelity",
-      "outline": "Nulls, CIB, the cycle shift and dust alternatives.",
+      "outline": "The VMPZ map, its tracer crosses, the CIB route and alternatives.",
       "slides": [
-        "systematics-overview",
+        "vmpz-map",
+        "extinction-sigma",
         "extinction-lss",
-        "cycle-ladder",
-        "dust-maps"
+        "dust-maps",
+        "dust-rho",
+        "summary"
       ]
     },
     {
@@ -50,13 +52,12 @@
       "outline": "Bandpowers, window leakage, literature and caveats.",
       "slides": [
         "window-leakage",
-        "literature",
-        "summary",
+        "systematics-overview",
         "cib-route",
-        "systematics-triangle",
         "sfd-csfd-gc-caveat",
-        "gnilc-bands",
-        "extinction-bands"
+        "extinction-bands",
+        "shear-b",
+        "literature"
       ]
     }
   ]

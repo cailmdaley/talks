@@ -1,18 +1,26 @@
 <section data-layout="closing">
-<h2>Keep LSS out of the templates used for GC weights</h2>
+<h2>Keep CIB out of the GC visibility input</h2>
 <ol>
-<li>Extinction carries CIB-correlated LSS in both cycles</li>
-<li>Keep Planck-based reddening out of GC weights; compare CSFD or none</li>
-<li>Question for VMPZ: does the visibility model use this map?</li>
-<li>Depth templates touch low-$z$ density; no extinction B-mode failure</li>
-<li>Next: mock-calibrated PTEs and effects on the data vector</li>
+<li>The VMPZ / Planck extinction map contains CIB.</li>
+<li>Correcting clustering against it removes some real LSS.</li>
+<li>Proposal: use CSFD to construct the visibilities.</li>
+<li>Proposal: switch VMPZ extinction maps to CSFD for DR2.</li>
+<li>DES / DESI have studied this deeply; HI maps are another option. Input welcome.</li>
 </ol>
 <p class="contact">Cail Daley · CEA Paris-Saclay</p>
-<aside class="notes"><p>The proposed weighting comparison follows the template-fidelity evidence, not an assumption that genuine Galactic extinction has no selection effect.
-A different diagnostic template cannot undo a catalogue's dereddening or selection history.
-The VMPZ visibility input set and fitted extinction weight have not been established by the map provenance audit; the question remains open.</p>
-<p>Depth is not the only marginal non-extinction cell; see the full heatmap.
-LensMC B passes every template test in both cycles; MetaCal has a marginal zodiacal-bin-1 exception, not an extinction pattern.
-Next steps are null-PTE calibration against matched GLASS simulations, followed by recovery tests for weights/deprojection with both Galactic-selection and correlated-CIB injections.
-Quote bandpower changes against the science vector's Gaussian covariance and inspect worst bands, not only a global statistic.</p>
-</aside></section>
+<aside class="notes"><p>The template carries CIB-correlated large-scale structure, supported by density, shear E and CMB-lensing crosses and the 857-GHz CIB route.
+Any nonzero correction fitted against that extragalactic component removes some real structure; this is a mechanism, not a measured cosmological-parameter bias.
+The loss depends on the fitted correction and selection; these slides do not establish its size in the production science vector.
+A template swap cannot undo photometry or selection already corrected upstream.</p>
+<p>The immediate proposal is to change the dust input to the offline GC visibility construction, then rerun controlled data-vector and mock-recovery checks.
+The delivered VMPZ InfoMaps are frozen for DR1; the separate proposal for DR2 is to replace the systematic extinction-map input with CSFD, subject to VMPZ and GC review.
+Source for the operational distinction: the 26 October discussion with Sam Farrens, recorded in gc8-systematics-update/meetings/2026-10-26-1532-sam-vmpz-csfd.</p>
+<p>DES Y6 adopted CSFD after screening dust templates against ACT kappa and high-redshift shear (arXiv:2601.14484, section III A).
+DESI uses HI information and excludes a CIB-bearing SFD residual from the BGS/LRG imaging weights (arXiv:2411.12020, section 6).
+Those analyses are more developed than this TR1 diagnostic; input on alternative dust tracers and validation is welcome.
+Details and citations are in the literature backup and gc8-systematics-update/literature-cib-dust.md.</p>
+<p>All quoted errors and PTEs use Gaussian NaMaster blocks, never Knox diagonals.
+These covariances are provisional and not mock-calibrated; GLASS null-PTE calibration follows the talk.
+Fixed fiducial normalizations omit denominator scatter, and shared-map cross-cycle covariance is unavailable.
+No cross-cycle difference significance is claimed.</p></aside>
+</section>
