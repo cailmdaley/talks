@@ -19,5 +19,14 @@
 
 [data-preliminary="exploratory"] .slide:not(.detail) > .foot::after { content: "Exploratory · Cycle 2 (tr1_v2)"; }
 
+/* Keep the opening covariance warning in plain sentence case on one line. */
+.slide[data-layout="title"] .covariance-caveat {
+  font-size: var(--t-fine);
+  font-variant-caps: normal;
+  font-feature-settings: normal;
+  letter-spacing: 0;
+  margin-top: var(--s3);
+}
+
 /* a red highlight box, for the one row a slide is about */
 .slide .frame > mark.box.red { border-color: #B3261E; }

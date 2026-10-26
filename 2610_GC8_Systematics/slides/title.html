@@ -2,6 +2,7 @@
 <h1>Systematics-template cross-correlations</h1>
 <p class="subtitle">Preliminary status: TR1 Cycle 1 → Cycle 2</p>
 <p class="byline">Cail Daley</p>
+<p class="affil covariance-caveat">Covariances are provisional: Gaussian NaMaster, not yet mock-calibrated.</p>
 <p class="venue">Euclid GC-8 call</p>
 <p class="date">28 October 2026</p>
 <aside class="notes">
@@ -13,6 +14,12 @@ Cycle 1 uses TR1 v1.1 products and legacy windows; Cycle 2 uses the tr1_v2 selec
 Cycle 1 density visibility weighting is applied after map-making; Cycle 2 correction is built into the maps.
 The raw Cycle-2 comparison removes visibility corrections on the already-supported catalogue pixels, without restoring excluded pixels.
 This is a release comparison, not a controlled change of dust map.</p>
-<p>The new shear-B, MetaCal, ACT-window, rho and window controls are exploratory talk-only measurements.
+<p>Verified LensMC input changes: Cycle 1 is catTR1v1p1_WL_260623 (TR1 v1.1); Cycle 2 is catTR1v2_localbins_WL_261016, with locally reconstructed bins and inherited LensMC shears according to the release declaration.
+Both archived map recipes use the same South WL coverage file and weights-in-mask policy at NSIDE 2048, but the binned maps and weights differ: per-bin support is 319.28–319.68 square degrees in Cycle 1 versus 319.24–319.72 in Cycle 2; bin-6 total shear weight rises by 6.90 percent.
+These nearly equal areas do not imply identical source selections or shear weights.
+Sources: astra.yaml data_release/shear_method; data/releases/tr1_v2.yaml; results/{tr1,tr1_v2}/map_products/.wl_shear_maps_coverage.manifest.json; exploratory rho/shear_input_audit.json.
+The dominant template-window effect on the cross errors is tested separately on slide 6; these input differences are not a causal attribution of the cycle change.</p>
+<p>GLASS calibration of the null PTEs is planned after the talk; the Gaussian covariances are not yet trusted as a calibrated significance scale.
+The new shear-B, MetaCal, ACT-window, rho and window controls are exploratory talk-only measurements.
 They do not replace the production data vector.</p>
 </aside></section>

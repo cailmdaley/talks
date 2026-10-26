@@ -52,10 +52,11 @@
     },
     {
       "title": "Backup",
-      "outline": "Conditional contamination proxy and CSFD training dependence.",
+      "outline": "Conditional contamination proxy, CSFD training dependence and GNILC bands.",
       "slides": [
         "systematics-triangle",
-        "sfd-csfd-gc-caveat"
+        "sfd-csfd-gc-caveat",
+        "gnilc-bands"
       ]
     }
   ]

@@ -1,0 +1,13 @@
+<section data-preliminary data-layout="figure" data-variant-axes="cycle">
+<h2>GNILC retains band-dependent tracer correlations</h2>
+<figure><img src="images/gc8r3_gnilc_spectra_c2.png" alt="All GNILC 545 GHz dust cross-correlation bandpowers for six density bins, six LensMC E bins and SPT kappa, with Gaussian errors."><span class="source">Cycle 2 only · exploratory · delivered GNILC 545 GHz dust · Gaussian, not mock-calibrated</span></figure>
+<aside class="notes"><p>These are the fifteen individual bands behind the GNILC means on slide 5, with visibility-corrected density, LensMC E and SPT kappa.
+The full 15 by 15 Gaussian block determines each spectrum-null statistic; a compressed mean alone can conceal scale-dependent departures.
+The fiducial tracer signal and measured GNILC template auto are held fixed in the rho errors, as for the other dust templates.
+Source: results/scratch/gc8/rho/rho_four_dust.json, c2/gnilc rows; gnilc_verification.json; HEADLINE.md.
+The five full-spectrum failures at Gaussian PTE below 0.05 are density bins 1 (0.04262), 4 (0.02266), 5 (0.01086), 6 (0.00003874), and shear E6 (0.0002788).
+Their worst individual bands are respectively ell=2695.5 (+2.36 Gaussian errors), 2695.5 (+2.14), 2148 (+2.83), 1087.5 (+3.06), and 2148 (+3.33).
+The high-redshift density spectra retain a positive high-ell component across several bands; these are not isolated enormous spikes.
+Kappa has PTE 0.8209, and no individual GNILC band exceeds 3.34 Gaussian errors in absolute value.
+The delivered-map beam and spatially adaptive smoothing remain in these spectra; this is not a precision matched-beam comparison or a mock-calibrated detection claim.</p></aside>
+</section>

@@ -1,12 +1,25 @@
-<section data-preliminary data-layout="figure-text" data-split="70" data-variant-axes="cycle">
-<h2>VMPZ is Planck13 reddening; CSFD passes the tracer nulls</h2>
-<figure><img src="images/gc8r2_dust_c2.png" alt="Cycle-2 thirteen-tracer means for VMPZ extinction, SFD and CSFD, with Gaussian error bars."><span class="source">Cycle 2 · exploratory · Gaussian NaMaster errors</span></figure>
-<div class="text"><ul><li>VMPZ = $2.108\times$ Planck R1.20 $E(B-V)$</li>
-<li>Identical values in both cycles</li>
-<li>SFD: $\bar\rho\approx0.04$–$0.06$ in density</li>
-<li>CSFD: all 13 spectrum nulls pass</li></ul></div>
+<section data-preliminary data-layout="figure" data-variant-axes="cycle">
+<h2>Four dust maps; CSFD passes all 13 tracer nulls</h2>
+<figure><img src="images/gc8r3_dust_footprint_c2.png" alt="VMPZ Planck13, SFD, CSFD and GNILC 545 GHz on the same Cycle-2 footprint, equatorial grid, median-subtracted and divided by each map's pixel rms."><img class="fragment" src="images/gc8r3_B3_dust_maps_c2.png" alt="Cycle-2 thirteen-tracer GLS mean rho for VMPZ, SFD, CSFD and GNILC, with full-block Gaussian errors."><span class="source">Cycle 2 · exploratory · Gaussian · arXiv:2601.14484, 2411.12020, 1808.03294</span></figure>
 <aside class="notes"><p>This comparison exists only for Cycle 2; no Cycle-1 dust-map comparison is implied.
-The means and errors use full-range GLS compression, visibility-corrected density, LensMC E and SPT kappa, with the same fixed fiducial-signal normalization as slide 3.</p>
+The means and errors use full-range GLS compression, visibility-corrected density, LensMC E and SPT kappa, with the same fixed fiducial-signal normalization as slide 3.
+The first frame puts all four maps on one equatorial plate-carree grid and exactly the same union GC/WL support, after subtracting each footprint median and dividing by its pixel rms.
+The common colour scale is clipped for readability; the map panels are not beam-matched.
+Their similar Galactic structure hides the small extragalactic imprint, so the second frame is the quantitative centrepiece.</p>
+<p>The GNILC input is the delivered Planck R2.00 Dust-GNILC-F545 intensity map (MJy/sr), not the separate CIB-GNILC product.
+No GNILC reddening or optical-depth model was found in the local Planck inputs.
+No conversion to E(B-V) is needed: rho is invariant under a positive multiplicative template calibration.
+The Galactic-to-equatorial rotation, template support, density weights and Gaussian cross-block policy match the SFD/CSFD path.
+The saved SFD theory normalization is reused exactly; a regenerated shear archive has identical numerical bin arrays to the saved snapshot (only provenance differs).</p>
+<p>GNILC uses component separation to suppress CIB, but this is not a guarantee of zero residual LSS.
+The recorded prediction was weaker correlations than VMPZ/SFD, without necessarily reaching CSFD-like nulls; that is the descriptive result.
+Five of thirteen GNILC spectrum nulls have Gaussian PTE below 0.05: density bins 1, 4, 5, 6 and shear E bin 6.
+Kappa passes (PTE 0.8209).
+The largest individual GNILC pull is shear E6 at ell=2148, +3.33 Gaussian errors; the bandpower backup shows the residuals.
+It has nominal 5-arcmin resolution with spatially adaptive smoothing where dust is weak, as described in Planck intermediate results XLVIII (arXiv:1605.09387).
+A uniform 5-arcmin Gaussian alone transmits about 0.18 in amplitude at ell=3000, so the resolution is not negligible.
+We retain the delivered beam/interpolation response in both cross and measured template auto, exactly as for SFD/CSFD: it cancels in ideal narrow-band rho, but not exactly with mask coupling, broad bands or spatially varying smoothing.
+Noise or residual CIB in the template auto can dilute rho; these are exploratory delivered-map comparisons, not a matched-beam precision ranking.</p>
 <p>The provenance audit identifies the source as Planck 2013 thermal-dust-model R1.20 EBV, converted to VIS extinction in magnitudes as $3.1\times0.68=2.108$.
 Every original source value is identical in the two cycles on the audited common pixels; coverage and window preparation changed, not the dust values.
 Source: private felt gc8-systematics-update/extinction-provenance/findings.md and stats.json.</p>
@@ -17,5 +30,7 @@ SFD density means span 0.0414–0.0575, apart from rounding.</p>
 <p>CSFD's LSS template uses WISE galaxies, constrained by spectroscopic galaxy/quasar correlations.
 A galaxy null is partly by construction; it is not independent certification that all cosmological signal is preserved.
 Compare alternative dust templates individually, not as simultaneous regressors.
-Source: results/scratch/gc8/rho/rho.json, c2/{vmpz,sfd,csfd} rows; rho/HEADLINE.md; Chiang (2023), arXiv:2306.03926.</p></aside>
+Source: results/scratch/gc8/rho/rho_four_dust.json, c2/{vmpz,sfd,csfd,gnilc} rows; rho/HEADLINE.md; Chiang (2023), arXiv:2306.03926.
+The next literature slide connects this test to DES Y6 adopting CSFD (arXiv:2601.14484), DESI using HI and excluding CIB-bearing SFD residuals from BGS/LRG weights (arXiv:2411.12020), and Chiang and Menard's IR-map LSS detections (arXiv:1808.03294).
+Chiang and Menard found that GNILC reduced, rather than eliminated, the extragalactic imprint.</p></aside>
 </section>
