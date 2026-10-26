@@ -43,7 +43,12 @@ def rho():
   fig.text(.11,.85,('With' if state=='vis' else 'Without')+' density visibility correction · LensMC · SPT-3G',fontsize=25)
   save(fig,f'ladder_{state}')
 def dust_rho():
- d=st.read(R/'rho_four_dust.json');fig,ax=axes();ax.set_ylim(-.03,.225)
+ d=st.read(R/'rho_four_dust.json');fig,ax=axes()
+ plotted=[d['rows'][f'c2/{t}/{k}/'+('vis' if k[0]=='g' else 'native')] for t in ['vmpz','sfd','csfd','gnilc'] for k in st.TRACERS]
+ lo=min(v['mean_rho']-v['mean_rho_error'] for v in plotted);hi=max(v['mean_rho']+v['mean_rho_error'] for v in plotted)
+ pad=.06*(hi-lo);ax.set_ylim(lo-pad,hi+pad)
+ assert all(ax.get_ylim()[0] < v['mean_rho']-v['mean_rho_error'] and v['mean_rho']+v['mean_rho_error'] < ax.get_ylim()[1] for v in plotted)
+ print('Dust rho range including 1-sigma:',lo,hi,'; axis:',ax.get_ylim())
  for j,(t,color,marker,label) in enumerate([('vmpz','#234979','o','VMPZ / Planck13'),('sfd','#a8542b','s','SFD'),('csfd','#23776d','^','CSFD'),('gnilc','#9751a5','D','GNILC 545 GHz')]):
   for start,end in [(0,6),(6,12),(12,13)]:
    vals=[d['rows'][f'c2/{t}/{k}/'+('vis' if k[0]=='g' else 'native')] for k in st.TRACERS[start:end]]
@@ -57,15 +62,16 @@ def maps():
  sfd=np.load(st.SCRATCH/'sfd.npy',mmap_mode='r');ref=np.asarray(sfd[pix]);ref=ref-ref.mean();rms=ref.std()
  fig,axes=plt.subplots(1,4,figsize=(17,7),sharex=True,sharey=True);fig.subplots_adjust(left=.065,right=.985,bottom=.29,top=.84,wspace=.09);stats={}
  residual=None
- for ax,t,label in zip(axes,['sfd','vmpz','csfd','gnilc'],['SFD','(Planck13 − a·SFD)/a','CSFD − SFD','(GNILC − a·SFD)/a']):
+ for ax,t,label in zip(axes,['sfd','vmpz','csfd','gnilc'],['SFD','(Planck13 − a·SFD)/a','10 × (CSFD − SFD)','(GNILC − a·SFD)/a']):
   p=R/'gnilc.npy' if t=='gnilc' else st.SCRATCH/f'{t}.npy';m=np.load(p,mmap_mode='r');v=np.asarray(m[pix]);v=v-v.mean()
   scale=1. if t in ['sfd','csfd'] else float(ref@v/(ref@ref));res=v if t=='sfd' else v-scale*ref
   img=(m[ip]-np.asarray(m[pix]).mean())/rms
   if t!='sfd':img-=scale*(sfd[ip]-np.asarray(sfd[pix]).mean())/rms
   if t not in ['sfd','csfd']:img/=scale;res/=scale
   img[~support[ip]]=np.nan
-  im=ax.imshow(img,origin='lower',extent=bounds,cmap='RdBu_r',vmin=-2.5,vmax=2.5,aspect='auto');ax.set_title(label,fontsize=25);ax.set_xlabel('RA [deg]',fontsize=25);ax.tick_params(labelsize=23)
-  stats[t]=dict(scale=scale,residual_over_sfd_rms=float(res.std()/rms),pearson_with_sfd=float(np.corrcoef(v,ref)[0,1]))
+  display_gain=10. if t=='csfd' else 1.
+  im=ax.imshow(img*display_gain,origin='lower',extent=bounds,cmap='RdBu_r',vmin=-2.5,vmax=2.5,aspect='auto');ax.set_title(label,fontsize=25);ax.set_xlabel('RA [deg]',fontsize=25);ax.tick_params(labelsize=23)
+  stats[t]=dict(scale=scale,display_gain=display_gain,residual_over_sfd_rms=float(res.std()/rms),pearson_with_sfd=float(np.corrcoef(v,ref)[0,1]))
   if t=='csfd':residual=res
  axes[0].set_ylabel('Dec [deg]',fontsize=25);cax=fig.add_axes([.26,.14,.48,.025]);cb=fig.colorbar(im,cax=cax,orientation='horizontal');cb.set_label('SFD reference and calibrated residuals / SFD rms',fontsize=25);cb.ax.tick_params(labelsize=23);save(fig,'dust_residuals')
  # Quick pixel check (not harmonic rho, not a null significance).
@@ -78,4 +84,5 @@ def maps():
 if __name__=='__main__':
  st.setup_font()
  if 'maps' in sys.argv:maps()
+ elif 'dust' in sys.argv:dust_rho()
  else:st.heatmaps();rho();dust_rho()
