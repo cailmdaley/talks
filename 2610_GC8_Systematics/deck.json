@@ -37,22 +37,21 @@
     },
     {
       "title": "Template fidelity",
-      "outline": "The VMPZ map, its tracer crosses, the Cycle-1 window, extinction ρ̄ with and without visibility, and alternative dust maps.",
+      "outline": "Dust in galaxy counts, Euclid × dust, alternative dust maps, extinction ρ̄ with and without visibility, and CSFD.",
       "slides": [
         "vmpz-map",
         "extinction-sigma",
-        "window-c1",
-        "extinction-tracers",
         "dust-maps",
+        "extinction-tracers",
         "dust-rho",
         "summary"
       ]
     },
     {
       "title": "Backup",
-      "outline": "The CSFD caveat and how DES, DESI and Chiang & Ménard screened dust maps.",
+      "outline": "The Cycle-1 window, the CIB route, the CSFD caveat and literature.",
       "slides": [
-        "window-leakage",
+        "window-cycles",
         "cib-route",
         "sfd-csfd-gc-caveat",
         "literature"

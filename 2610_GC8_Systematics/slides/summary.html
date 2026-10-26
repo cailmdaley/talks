@@ -5,15 +5,15 @@
 <li>Correcting clustering against it removes some real LSS.</li>
 <li>Proposal: use CSFD to construct the visibilities (a swap of input maps).</li>
 <li>Proposal: switch VMPZ extinction maps to CSFD for DR2.</li>
-<li>DES / DESI have studied this in depth; HI maps are alternatives.</li>
+<li>DES and DESI have tackled this:<br>DES Y6 (Weaverdyck+ 2026) · DESI DR1 (Ross+ 2025) · DESI LRGs (Zhou+ 2023)</li>
 </ol>
 <p class="contact">Thank you! Thoughts?</p>
 <aside class="notes">
 <ul class="skim">
-<li><strong>1–2</strong> — the template carries CIB-correlated LSS (slides 3–5); any correction fitted against that component removes real structure. The size of the loss in the science vector is not yet measured.</li>
+<li><strong>1–2</strong> — the template carries CIB-correlated LSS (slides 3–6); any correction fitted against that component removes real structure. The size of the loss in the science vector is not yet measured.</li>
 <li><strong>3</strong> — DR1: change the dust input to the offline GC visibility construction, then rerun data-vector and mock-recovery checks.</li>
 <li><strong>4</strong> — DR2: the VMPZ InfoMaps are frozen for DR1, so replacing them with CSFD is a DR2 request.</li>
-<li><strong>5</strong> — DES Y6 adopted CSFD; DESI uses HI and drops the CIB-bearing SFD residual.</li>
+<li><strong>5</strong> — DES Y6 screened dust templates against ACT κ and high-z shear and adopted CSFD (arXiv:2601.14484); DESI DR1 uses HI for BGS/LRG dust weights and drops the CIB-bearing SFD residual (arXiv:2411.12020); Zhou et al. release LRG weights without E(B−V) because CIB in SFD removes real LSS (arXiv:2309.06443).</li>
 </ul>
 <details><summary>The mechanism, and its limits</summary>
 <p>Supported by density, shear E and CMB-lensing crosses and the 857 GHz CIB route.

@@ -1,9 +1,9 @@
 <section data-layout="figure-text" data-flip data-split="60" data-variant-axes="cycle">
-<h2>VMPZ extinction is the Planck 2013 dust map</h2>
+<h2>Galactic dust messes with galaxy counts</h2>
 <div class="text"><ul class="small">
-<li>Planck 2013 dust map:<br>A<sub>VIS</sub> = 2.108 E(B−V)</li>
-<li>Same values in both cycles</li>
-<li>Input to the GC visibility maps</li>
+<li>VMPZ extinction: Planck 2013 dust map<br>$A_\mathrm{VIS}=2.108\,E(B{-}V)$</li>
+<li>Fluxes: dereddened magnitudes</li>
+<li>Visibility maps: no residual correlation of counts with dust</li>
 </ul><span class="fragment" data-set-variant="cycle:c2"></span></div>
 <figure class="plain"><img src="images/gc8r5_map_c1.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_map_c2.png"}' alt="Absolute VIS extinction on the prepared Cycle-1 support; masked regions are white. The Cycle-2 toggle changes support, not the common dust values."></figure>
 <aside class="notes">
@@ -11,6 +11,7 @@
 <li><strong>The map</strong> — VIS-band extinction $A_\mathrm{VIS}$ in magnitudes on the TR1 South footprint; white is outside the prepared support.</li>
 <li><strong>Planck 2013</strong> — the EBV column of the Planck 2013 thermal-dust model (file HFI_CompMap_ThermalDustModel_2048_R1.20; “R1.20” is just the file’s release tag).</li>
 <li><strong>2.108</strong> — $A_\mathrm{VIS}$ = $R_V$ × ($A_\mathrm{VIS}/A_V$) × E(B−V) = 3.1 × 0.68 × E(B−V).</li>
+<li><strong>Two corrections</strong> — dust dims and reddens galaxies, so the photometry is dereddened, and the GC visibility map then removes any residual dependence of the galaxy counts on dust. That second step assumes the dust map holds no large-scale structure.</li>
 <li><strong>Space</strong> — the next step switches the map to Cycle 2: the support changes, the dust values do not.</li>
 </ul>
 <details><summary>Where 2.108 comes from</summary>
@@ -19,6 +20,9 @@ $R_V$ = $A_V$/E(B−V) = 3.1 is the standard Milky-Way total-to-selective ratio,
 The VMPZ generator then scales to the Euclid VIS band with $a_\mathrm{VIS}$ = $A_\mathrm{VIS}/A_V$ = 0.68.
 So $A_\mathrm{VIS}$ = 3.1 × 0.68 × E(B−V) = 2.108 E(B−V), in magnitudes. It is one global constant: the map’s spatial structure is entirely Planck’s.</p>
 <p class="source">gc8-systematics-update/extinction-provenance/vmpz-extinction-generator-0.12.1.py, lines 93–128; fiber methodology/systematics/tr1-systematics-crosses/vmpz-extinction-is-planck-r120.</p>
+</details>
+<details><summary>Which map the photometry used</summary>
+<p>Which dust map the MER/PHZ dereddening used is not yet confirmed (open question from the 26 October discussion with Sam Farrens). If it is also Planck R1.20, CIB could modulate the selection through the fluxes as well. The visibility map is built offline, so its dust input can be changed for DR1.</p>
 </details>
 <details><summary>How the map is sampled</summary>
 <p>The OU-VMPZ-ID GalacticExtinction InfoMap samples the Galactic-coordinate Planck parent (Planck Collaboration XI 2014; nominal 5-arcmin resolution) at each equatorial tile-pixel centre by nearest-parent-pixel lookup, without additional smoothing or interpolation.</p>

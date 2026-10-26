@@ -1,13 +1,13 @@
 <section data-layout="figure-text" data-stack data-variant-axes="cycle">
 <h2>Correlating extinction with Euclid tracers</h2>
 <div class="text"><p class="small">$\displaystyle\rho_\ell^{X,\mathrm{ext}}=\frac{C_\ell^{X\,\mathrm{ext}}}{\sqrt{C_\ell^{XX,\mathrm{th}}\,C_\ell^{\mathrm{ext\,ext}}}},\qquad \bar\rho_{X,\mathrm{ext}}:\ \text{GLS mean over } 100\lt\ell\lt3000$</p></div>
-<figure><img src="images/gc8r5_rho_vis_empty.png" alt="Empty axes: one column per tracer, density bins, shear E bins and kappa."><img class="fragment" data-fragment-index="1" src="images/gc8r5_rho_vis_c1.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_vis_c2.png"}' alt="GLS mean correlation of each tracer with extinction: visibility-corrected density bins, shear E bins and kappa."><span class="fragment" data-fragment-index="2" data-set-variant="cycle:c2"></span><img class="fragment" data-fragment-index="3" src="images/gc8r5_rho_vis_c1_raw.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_vis_c2_raw.png"}' alt="The same, adding the density bins before visibility correction in orange."></figure>
+<figure><img src="images/gc8r5_rho_vis_c1.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_vis_c2.png"}' alt="GLS mean correlation of each tracer with extinction: visibility-corrected density bins, shear E bins and kappa."><span class="fragment" data-fragment-index="1" data-set-variant="cycle:c2"></span><img class="fragment" data-fragment-index="2" src="images/gc8r5_rho_vis_c1_raw.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_vis_c2_raw.png"}' alt="The same, adding the density bins before visibility correction in orange."></figure>
 <aside class="notes">
 <ul class="skim">
 <li><strong>$\bar\rho_{X,\mathrm{ext}}$</strong> — each tracer’s correlation coefficient with the extinction map: the cross normalized by the tracer’s theory signal and the template’s measured auto, GLS-averaged over $100\lt\ell\lt3000$.</li>
 <li><strong>Navy</strong> — δ with visibility correction; γE and κ carry no visibility weights. Nearly all positive; κ cannot be obscured by dust, so this is LSS in the map.</li>
-<li><strong>Cycle 2</strong> (next step) — every tracer correlates at ρ̄ ≈ 0.05–0.17.</li>
-<li><strong>Orange</strong> (last step) — δ before visibility correction. In Cycle 2 the correction moves ρ̄ by ≲ 1σ (δ2: 0.096 → 0.086); toggle to Cycle 1, where it removes most of it (δ4: 0.072 → 0.015, δ6: 0.069 → 0.016).</li>
+<li><strong>Cycle 2</strong> (space) — every tracer correlates at ρ̄ ≈ 0.05–0.17.</li>
+<li><strong>Orange</strong> (space) — δ before visibility correction. In Cycle 2 the correction moves ρ̄ by ≲ 1σ (δ2: 0.096 → 0.086); toggle to Cycle 1, where it removes most of it (δ4: 0.072 → 0.015, δ6: 0.069 → 0.016).</li>
 </ul>
 <details><summary>How $\bar\rho$ is computed</summary>
 <p>All points compress the same range, $100\lt\ell\lt3000$, into a GLS constant-ρ mean with its error, using the full Gaussian cross blocks divided by the normalization outer product.
