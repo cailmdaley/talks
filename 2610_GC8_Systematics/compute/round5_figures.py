@@ -8,7 +8,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 R=st.SCRATCH/'rho'; W=st.SCRATCH/'window-leakage'
-BAND_COLORS=['#42218b','#2b6cb0','#23776d','#b56513','#b13b5b','#6a3b1f']
+BAND_COLORS=[plt.get_cmap('plasma')(x) for x in np.linspace(0,.82,6)]  # bin 1 (low z) → bin 6 (high z)
+KAPPA_COLOR='#23776d'
+RHO_LABEL=r'$\bar\rho_{X,\,\rm ext}\quad(100<\ell<3000)$'
 def save(fig,name):
  fig.savefig(st.IMAGES/f'gc8r5_{name}.png',dpi=170,facecolor='white');plt.close(fig)
 def bands():
@@ -31,29 +33,31 @@ def bands():
     allrows[f'{cy}_{sh}_{cm}']=rows
  lim=max(float(np.max(np.abs(np.asarray(v.get('cross',v.get('values'))) / np.sqrt(np.diag(v.get('covariance_cross',v.get('covariance'))))))) for rows in allrows.values() for v in rows)+1.4
  for key,rows in allrows.items():
-  fig,axes=plt.subplots(1,3,figsize=(18,7),sharex=True,sharey=True);fig.subplots_adjust(left=.075,right=.985,top=.84,bottom=.17,wspace=.13)
+  fig,axes=plt.subplots(1,3,figsize=(18,7),sharex=True,sharey=True);fig.subplots_adjust(left=.075,right=.985,top=.80,bottom=.17,wspace=.13)
   for ax,ids,label in zip(axes,[range(6),range(6,12),range(12,13)],[r'$\delta$',r'$\gamma_E$',r'$\kappa$']):
    ax.axhspan(-1,1,color='#edf0f4');ax.axhline(0,color=st.MUTED,lw=1)
    for j,i in enumerate(ids):
     v=rows[i];c=np.asarray(v.get('cross',v.get('values')));cov=np.asarray(v.get('covariance_cross',v.get('covariance')));y=c/np.sqrt(np.diag(cov))
-    ax.errorbar(np.asarray(v['ell'])*(1+(j-2.5)*.008),y,yerr=np.ones(15),fmt='o-',color=BAND_COLORS[j] if i<12 else '#23776d',ms=4,lw=1.1,capsize=2,elinewidth=.8)
-   ax.set_xscale('log');ax.set_xlim(100,3000);ax.set_ylim(-lim,lim);ax.set_xticks([100,300,1000,3000],['100','300','1000','3000']);ax.get_xticklabels()[0].set_ha('left');ax.get_xticklabels()[-1].set_ha('right');ax.tick_params(labelsize=24);ax.set_xlabel(r'$\ell$',fontsize=30);ax.set_title(label,fontsize=32)
+    ax.errorbar(np.asarray(v['ell'])*(1+(j-2.5)*.008),y,yerr=np.ones(15),fmt='o-',color=BAND_COLORS[j] if i<12 else KAPPA_COLOR,ms=4,lw=1.1,capsize=2,elinewidth=.8)
+   ax.set_xscale('log');ax.set_xlim(100,3000);ax.set_ylim(-lim,lim);ax.set_xticks([100,300,1000,3000],['100','300','1000','3000']);ax.get_xticklabels()[0].set_ha('left');ax.get_xticklabels()[-1].set_ha('right');ax.tick_params(labelsize=24);ax.set_xlabel(r'$\ell$',fontsize=30);ax.set_title(label,fontsize=34,loc='left')
   axes[0].set_ylabel(r'$C_\ell^{X\,ext}/\sigma_\ell^{\rm Gaussian}$',fontsize=30)
-  fig.legend([Line2D([],[],color=BAND_COLORS[i],marker='o',lw=1) for i in range(6)],[f'Bin {i+1}' for i in range(6)],ncol=6,frameon=False,loc='upper center',fontsize=24)
+  fig.legend([Line2D([],[],color=BAND_COLORS[i],marker='o',lw=1) for i in range(6)],['Bin 1 (low $z$)']+[f'Bin {i+1}' for i in range(1,5)]+['Bin 6 (high $z$)'],ncol=6,frameon=False,loc='upper center',bbox_to_anchor=(.5,1.0),fontsize=24,handletextpad=.4,columnspacing=1.6)
   save(fig,'bands_'+key)
  print('band sigma limits',lim)
 def rho():
  import round4_figures as r4
  d=st.read(R/'rho.json');l=st.read(R/'ladder.json');routes={**d['cib_route'],**l['cib_route_shear']}
  for cy in ['c1','c2']:
-  fig,ax=r4.axes();fig.set_size_inches(17,5.7);fig.subplots_adjust(left=.08,right=.99,bottom=.17,top=.84)
-  for i,k in enumerate(st.TRACERS):
-   v=st.row(d,cy,k);ax.errorbar(i-.10,v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=r4.C[i],capsize=4,ms=9)
-   p=routes.get(f'{cy}/{k}/'+('raw' if k[0]=='g' else 'native'))
-   if p:ax.errorbar(i+.12,p['mean_rho_pred'],yerr=p['mean_rho_pred_error'],fmt='o',mfc='white',color=r4.C[i],capsize=4,ms=9)
-  ax.legend(handles=[Line2D([],[],marker='o',ls='none',color='black',label='Measured'),Line2D([],[],marker='o',mfc='white',color='black',ls='none',label='CIB-predicted (δ, γE)')],loc='upper left',bbox_to_anchor=(0,1.25),ncol=2,frameon=False,fontsize=26)
-  save(fig,'rho_'+cy)
- d=st.read(R/'rho_four_dust.json');fig,ax=r4.axes();entries=[]
+  for pred in [False,True]:
+   fig,ax=r4.axes();fig.set_size_inches(17,5.7);fig.subplots_adjust(left=.08,right=.99,bottom=.17,top=.84);ax.set_ylabel(RHO_LABEL,fontsize=29)
+   for i,k in enumerate(st.TRACERS):
+    v=st.row(d,cy,k);ax.errorbar(i-.10,v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=r4.C[i],capsize=4,ms=9)
+    p=routes.get(f'{cy}/{k}/'+('raw' if k[0]=='g' else 'native'))
+    if p and pred:ax.errorbar(i+.12,p['mean_rho_pred'],yerr=p['mean_rho_pred_error'],fmt='o',mfc='white',color=r4.C[i],capsize=4,ms=9)
+   hs=[Line2D([],[],marker='o',ls='none',color='black',label='Measured')]+([Line2D([],[],marker='o',mfc='white',color='black',ls='none',label='CIB-predicted (δ, γE)')] if pred else [])
+   ax.legend(handles=hs,loc='upper left',bbox_to_anchor=(0,1.25),ncol=2,frameon=False,fontsize=26)
+   save(fig,'rho_'+cy+('_pred' if pred else ''))
+ d=st.read(R/'rho_four_dust.json');fig,ax=r4.axes();ax.set_ylabel(RHO_LABEL,fontsize=29);entries=[]
  for j,(t,col,m,lab) in enumerate([('vmpz','#234979','o','VMPZ / Planck13'),('sfd','#a8542b','s','SFD'),('csfd','#23776d','^','CSFD')]):
   for a,b in [(0,6),(6,12),(12,13)]:
    vals=[d['rows'][f'c2/{t}/{k}/'+('vis' if k[0]=='g' else 'native')] for k in st.TRACERS[a:b]];entries+=vals

@@ -1,18 +1,30 @@
 <section data-layout="figure">
 <h2>Alternative extinction maps on the TR1 sky</h2>
-<figure class="plain"><img src="images/gc8r5_dust_maps.png" alt="Cycle-2 VMPZ in absolute E(B−V), calibrated VMPZ minus SFD residual and CSFD minus SFD residual on the same TR1 South grid, with individual colourbars in E(B−V) magnitudes."><span class="source">Planck 2013 XI (2014) · SFD: Schlegel, Finkbeiner &amp; Davis (1998) · CSFD: Chiang (2023), arXiv:2306.03926</span></figure>
-<aside class="notes"><p>All three maps use the Cycle-2 prepared support and the same equatorial TR1 South projection as the first map slide.
-The absolute Planck13 panel is the prepared A_VIS map with its monopole restored, divided by 2.108 to recover physical E(B−V).
-For the middle residual only, a local affine fit A_VIS = a·SFD+b converts Planck to SFD calibration: (A_VIS−b)/a − SFD.
-The final panel is CSFD−SFD with no fitted scale or intercept; both public maps are on the original SFD calibration, without the Schlafly–Finkbeiner 0.86 rescaling.
-The panels therefore all have reddening units, but the absolute Planck map retains its physical calibration while the middle panel removes the local calibration/zero-point difference before comparison.
-This is not a literal native-unit A_VIS−SFD subtraction.</p>
-<p>Every panel has its own labelled colourbar: absolute E(B−V) 0–0.085 mag, Planck residual ±0.006 mag, CSFD residual ±0.002 mag.
-The CSFD residual stretch is three times tighter; its smaller amplitude must be read from the colourbar, not the colour saturation.
-White is outside the prepared support; saturated tails are marked by colourbar extensions.
-No beam matching is applied, so residuals include sampling and resolution differences.
-The negative CSFD−SFD field is the removed LSS correction; its correlation with density was checked in round 4 (unweighted pixel Pearson −0.154 to −0.124), not a harmonic significance.</p>
-<p>Sources: actual prepared template_bundle.tar arrays; scratch/gc8/{sfd,csfd}.npy, produced by the public-dust rotation pipeline; scratch/gc8/round5-map-receipt.json for affine coefficients and projection; rho/residual_map_stats.json for the prior pixel check.
-References: Planck Collaboration XI (2014), the Planck 2013 thermal-dust model; Schlegel, Finkbeiner &amp; Davis (1998), SFD; Chiang (2023), arXiv:2306.03926, CSFD.
-The correlations on the following slide, rather than visual map cleanliness, test the residual extragalactic imprint.</p></aside>
+<figure class="plain"><img src="images/gc8r5_dust_maps.png" alt="Cycle-2 VMPZ in absolute E(B−V), calibrated VMPZ minus SFD residual and CSFD minus SFD residual on the same TR1 South grid, with individual colourbars in E(B−V) magnitudes."><mark class="box fragment" data-box="73 9 26.5 52" data-label="CIB!!"></mark><span class="source">Planck 2013 XI (2014) · SFD: Schlegel, Finkbeiner &amp; Davis (1998) · CSFD: Chiang (2023), arXiv:2306.03926</span></figure>
+<aside class="notes">
+<ul class="skim">
+<li><strong>Left</strong> — the VMPZ (Planck 2013) map in E(B−V).</li>
+<li><strong>Middle</strong> — VMPZ minus SFD, after fitting out their calibration difference: what Planck sees that SFD does not.</li>
+<li><strong>Right</strong> — CSFD minus SFD: the extragalactic (CIB) correction Chiang (2023) removes from SFD. This is the LSS SFD carries.</li>
+<li><strong>Colourbars</strong> — each panel has its own; the right one is three times tighter than the middle.</li>
+</ul>
+<details><summary>How each panel is made</summary>
+<p>All three use the Cycle-2 prepared support and the same equatorial TR1 South projection as slide 2.
+Left: the prepared $A_\mathrm{VIS}$ map with its monopole restored, divided by 2.108 to recover E(B−V).
+Middle: a local affine fit $A_\mathrm{VIS}$ = a·SFD + b converts Planck to SFD calibration, then ($A_\mathrm{VIS}$ − b)/a − SFD. This is not a literal native-unit subtraction.
+Right: CSFD − SFD with no fitted scale or intercept; both public maps are on the original SFD calibration, without the Schlafly–Finkbeiner 0.86 rescaling.
+No beam matching is applied, so residuals include sampling and resolution differences.</p>
+</details>
+<details><summary>Colour stretches</summary>
+<p>Absolute E(B−V) 0–0.085 mag; Planck residual ±0.006 mag; CSFD residual ±0.002 mag. White is outside the prepared support; saturated tails are marked by colourbar extensions.</p>
+</details>
+<details><summary>Is the CSFD correction really LSS?</summary>
+<p>The negative CSFD − SFD field is the removed LSS correction; its unweighted pixel Pearson correlation with Cycle-2 density is −0.154 to −0.124 across bins (round 4), not a harmonic significance.
+The correlations on the next slide, not visual cleanliness, test the residual extragalactic imprint.</p>
+</details>
+<details><summary>Sources</summary>
+<p>Prepared template_bundle.tar arrays; scratch/gc8/{sfd,csfd}.npy from the public-dust rotation pipeline; scratch/gc8/round5-map-receipt.json (affine coefficients, projection); rho/residual_map_stats.json.
+Planck Collaboration XI (2014); Schlegel, Finkbeiner &amp; Davis (1998); Chiang (2023), arXiv:2306.03926.</p>
+</details>
+</aside>
 </section>

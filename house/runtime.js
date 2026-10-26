@@ -452,6 +452,33 @@
   Reveal.on('ready', mountVariants);
   Reveal.on('pdf-ready', mountVariants);
 
+  // A fragment with data-set-variant="axis:option" switches the deck's variant
+  // when it is shown (so the next keypress flips the slide's control) and puts
+  // the previous choice back when it is hidden again or its slide is left.
+  var vStepped = null;           // { slide, axis, prev } while a step's choice is on
+  function vStepRestore() {
+    if (!vStepped) return;
+    var s = vStepped; vStepped = null;
+    House.setVariant(s.axis, s.prev);
+  }
+  function vStepApply(el) {
+    var spec = el && el.getAttribute('data-set-variant');
+    if (!spec || printing()) return;
+    var ao = spec.split(':');
+    if (!vStepped) vStepped = { slide: Reveal.getCurrentSlide(), axis: ao[0], prev: vState[ao[0]] };
+    House.setVariant(ao[0], ao[1]);
+  }
+  Reveal.on('fragmentshown', function (e) { vStepApply(e.fragment); });
+  Reveal.on('fragmenthidden', function (e) {
+    if (e.fragment && e.fragment.hasAttribute('data-set-variant')) vStepRestore();
+  });
+  Reveal.on('slidechanged', function (e) {
+    if (vStepped && e.currentSlide !== vStepped.slide) vStepRestore();
+    // arriving on a slide past its step (going back, or by link) applies it
+    var shown = e.currentSlide.querySelectorAll('.fragment.visible[data-set-variant]');
+    if (shown.length) vStepApply(shown[shown.length - 1]);
+  });
+
   // Hooks for the checker, for scripted capture and for app scripts.
   window.House = {
     open: open, close: function () { close(); }, settle: settle,

@@ -1,24 +1,40 @@
 <section data-layout="figure-text" data-flip data-split="60" data-variant-axes="cycle">
 <h2>VMPZ extinction is the Planck 2013 dust map</h2>
 <div class="text"><ul class="small">
-<li>Planck R1.20 E(B−V) × 3.1 a<sub>λ</sub><br>VIS: A<sub>VIS</sub> = 2.108 E(B−V)</li>
+<li>Planck 2013 thermal-dust E(B−V) map</li>
+<li>Converted to VIS extinction:<br>A<sub>VIS</sub> = 2.108 E(B−V)</li>
 <li>Identical in both cycles where both have data</li>
 <li>Feeds the GC visibility (decontamination) maps</li>
-</ul></div>
+</ul><span class="fragment" data-set-variant="cycle:c2"></span></div>
 <figure class="plain"><img src="images/gc8r5_map_c1.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_map_c2.png"}' alt="Absolute VIS extinction on the prepared Cycle-1 support; masked regions are white. The Cycle-2 toggle changes support, not the common dust values."><span class="source">TR1 Cycle 1 / Cycle 2 · white = masked</span></figure>
-<aside class="notes"><p>The OU-VMPZ-ID GalacticExtinction InfoMap uses the EBV column of HFI_CompMap_ThermalDustModel_2048_R1.20.fits, the Planck 2013 thermal-dust model (Planck Collaboration XI, 2014).
-The generator uses R_V=3.1 and VIS a=0.68, hence A_VIS=2.108 E(B−V), in magnitudes.
-It samples the Galactic parent at each equatorial tile-pixel centre by nearest-parent-pixel lookup, without additional smoothing or interpolation; the parent has nominal 5-arcmin resolution.
-Source: felt methodology/systematics/tr1-systematics-crosses/vmpz-extinction-is-planck-r120; gc8-systematics-update/extinction-provenance/findings.md and vmpz-extinction-generator-0.12.1.py, lines 93–128.</p>
-<p>The figure reads the actual NSIDE-2048 prepared arrays and masks from results/{tr1/tr1_systematics,tr1_v2/systematics}/template_bundle.tar, extracted in scratch/gc8/window-leakage/bundle{1,2}.
-Only the support-dependent removed monopole is restored using the audit's exact common-source mean; fluctuations and support are unchanged.
-Both states use the same TR1 South equatorial projection and absolute 0–0.18 mag stretch, with the upper tail saturated and marked by the colourbar extension.
-White means absent from the prepared support, not zero extinction.
-Cycle 2 fills many Cycle-1 gaps, but neither support contains the other: the audit finds 45,295 C1-only and 77,613 C2-only pixels.
-The 314,258 common source pixels are exactly identical; small restored-bundle differences are float32 roundoff.
-The maps therefore show prepared analysis support, not a claim that all white pixels are absent in the original all-sky parent.</p>
-<p>These templates feed the offline GC visibility maps.
-The delivered VMPZ extinction InfoMaps are frozen for DR1; changing the offline visibility input is a separate proposal.
-See gc8-systematics-update/meetings/2026-10-26-1532-sam-vmpz-csfd.
-Figure calibration and projection receipt: results/scratch/gc8/round5-map-receipt.json.</p></aside>
+<aside class="notes">
+<ul class="skim">
+<li><strong>The map</strong> — VIS-band extinction $A_\mathrm{VIS}$ in magnitudes on the TR1 South footprint; white is outside the prepared support.</li>
+<li><strong>Planck 2013</strong> — the EBV column of the Planck 2013 thermal-dust model (file HFI_CompMap_ThermalDustModel_2048_R1.20; “R1.20” is just the file’s release tag).</li>
+<li><strong>2.108</strong> — $A_\mathrm{VIS}$ = $R_V$ × ($A_\mathrm{VIS}/A_V$) × E(B−V) = 3.1 × 0.68 × E(B−V).</li>
+<li><strong>Space</strong> — the next step switches the map to Cycle 2: the support changes, the dust values do not.</li>
+</ul>
+<details><summary>Where 2.108 comes from</summary>
+<p>E(B−V) is a reddening: the colour excess between the B and V bands. Turning it into an extinction in a given band takes two factors.
+$R_V$ = $A_V$/E(B−V) = 3.1 is the standard Milky-Way total-to-selective ratio, giving the V-band extinction.
+The VMPZ generator then scales to the Euclid VIS band with $a_\mathrm{VIS}$ = $A_\mathrm{VIS}/A_V$ = 0.68.
+So $A_\mathrm{VIS}$ = 3.1 × 0.68 × E(B−V) = 2.108 E(B−V), in magnitudes. It is one global constant: the map’s spatial structure is entirely Planck’s.</p>
+<p class="source">gc8-systematics-update/extinction-provenance/vmpz-extinction-generator-0.12.1.py, lines 93–128; fiber methodology/systematics/tr1-systematics-crosses/vmpz-extinction-is-planck-r120.</p>
+</details>
+<details><summary>How the map is sampled</summary>
+<p>The OU-VMPZ-ID GalacticExtinction InfoMap samples the Galactic-coordinate Planck parent (Planck Collaboration XI 2014; nominal 5-arcmin resolution) at each equatorial tile-pixel centre by nearest-parent-pixel lookup, without additional smoothing or interpolation.</p>
+</details>
+<details><summary>Cycle 1 vs Cycle 2 support</summary>
+<p>The figure reads the NSIDE-2048 prepared arrays and masks from results/{tr1/tr1_systematics,tr1_v2/systematics}/template_bundle.tar.
+Only the support-dependent removed monopole is restored, using the audit’s exact common-source mean; fluctuations and support are unchanged.
+Both states share the TR1 South equatorial projection and an absolute 0–0.18 mag stretch (upper tail saturated, marked by the colourbar extension).
+Cycle 2 fills many Cycle-1 gaps, but neither support contains the other: 45,295 C1-only and 77,613 C2-only pixels.
+The 314,258 common pixels are exactly identical; small restored-bundle differences are float32 roundoff.
+White means absent from the prepared support, not zero extinction.</p>
+<p class="source">Receipt: results/scratch/gc8/round5-map-receipt.json.</p>
+</details>
+<details><summary>Why it matters for GC</summary>
+<p>These templates feed the offline GC visibility maps. The delivered VMPZ extinction InfoMaps are frozen for DR1; changing the offline visibility input is a separate proposal (discussion with Sam Farrens, 26 Oct: gc8-systematics-update/meetings/2026-10-26-1532-sam-vmpz-csfd).</p>
+</details>
+</aside>
 </section>

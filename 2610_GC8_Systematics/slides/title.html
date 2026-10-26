@@ -2,24 +2,31 @@
 <h1>CIB contamination in Galactic extinction maps</h1>
 <p class="subtitle">TR1 Cycle 1 → Cycle 2</p>
 <p class="byline">Cail Daley</p>
-<p class="affil acknowledgements">Thanks to Sofia Chiarenza, Giulio Fabbian, Alex Hall and Stefano Camera for discussions.</p>
+<p class="affil acknowledgements">Thanks to Sofia Chiarenza, Giulio Fabbian, Calum Murray, Alex Hall and Stefano Camera for discussions.</p>
 <p class="venue">Euclid GC-8 call</p>
 <p class="date">28 October 2026</p>
 <aside class="notes">
-<p>A preliminary CMBX KP2-3 template-fidelity test using OU-VMPZ survey-property maps, TR1 density, LensMC/MetaCal shear and SPT-3G/ACT DR6 CMB lensing.
-TR1 is not a blinded release.
-Template crosses do not by themselves establish contamination of the science vector.</p>
-<p>Cycle 1 is the default throughout.
-Cycle 1 uses TR1 v1.1 products and legacy windows; Cycle 2 uses the tr1_v2 selection and DR1 R2 products.
-Cycle 1 density visibility weighting is applied after map-making; Cycle 2 correction is built into the maps.
+<ul class="skim">
+<li><strong>What this is</strong> — a preliminary CMBX KP2-3 test: TR1 density, shear and CMB lensing crossed with the OU-VMPZ extinction map.</li>
+<li><strong>Cycles</strong> — Cycle 1 is the default on every slide; the toggle in the corner switches to Cycle 2 where it exists.</li>
+<li><strong>Errors</strong> — every σ is from the Gaussian NaMaster covariance, not mock-calibrated. TR1 is not a blinded release.</li>
+<li><strong>Scope</strong> — template crosses test the template, not contamination of the science vector.</li>
+</ul>
+<details><summary>What changed between Cycle 1 and Cycle 2</summary>
+<p>Cycle 1 uses TR1 v1.1 products and legacy windows; Cycle 2 uses the tr1_v2 selection and DR1 R2 products.
+Cycle-1 density visibility weighting is applied after map-making; the Cycle-2 correction is built into the maps.
 The raw Cycle-2 comparison removes visibility corrections on the already-supported catalogue pixels, without restoring excluded pixels.
 This is a release comparison, not a controlled change of dust map.</p>
-<p>Verified LensMC input changes: Cycle 1 is catTR1v1p1_WL_260623 (TR1 v1.1); Cycle 2 is catTR1v2_localbins_WL_261016, with locally reconstructed bins and inherited LensMC shears according to the release declaration.
-Both archived map recipes use the same South WL coverage file and weights-in-mask policy at NSIDE 2048, but the binned maps and weights differ: per-bin support is 319.28–319.68 square degrees in Cycle 1 versus 319.24–319.72 in Cycle 2; bin-6 total shear weight rises by 6.90 percent.
-These nearly equal areas do not imply identical source selections or shear weights.
-Sources: astra.yaml data_release/shear_method; data/releases/tr1_v2.yaml; results/{tr1,tr1_v2}/map_products/.wl_shear_maps_coverage.manifest.json; exploratory rho/shear_input_audit.json.
-The dominant template-window effect on the cross errors is tested separately in the cycle ladder; these input differences are not a causal attribution of the cycle change.</p>
+</details>
+<details><summary>Shear inputs per cycle</summary>
+<p>Cycle 1 is catTR1v1p1_WL_260623 (TR1 v1.1); Cycle 2 is catTR1v2_localbins_WL_261016, with locally reconstructed bins and inherited LensMC shears according to the release declaration.
+Both archived map recipes use the same South WL coverage file and weights-in-mask policy at NSIDE 2048, but the binned maps and weights differ: per-bin support is 319.28–319.68 deg² in Cycle 1 versus 319.24–319.72 in Cycle 2; bin-6 total shear weight rises by 6.90 per cent.
+Nearly equal areas do not imply identical source selections or shear weights.
+The dominant template-window effect on the cross errors is tested separately in the cycle ladder (backup B1); these input differences are not a causal attribution of the cycle change.</p>
+<p class="source">astra.yaml data_release/shear_method; data/releases/tr1_v2.yaml; results/{tr1,tr1_v2}/map_products/.wl_shear_maps_coverage.manifest.json; rho/shear_input_audit.json.</p>
+</details>
+<details><summary>Status of the measurements</summary>
 <p>GLASS calibration of the null PTEs is planned after the talk; the Gaussian covariances are not yet trusted as a calibrated significance scale.
-The new shear-B, MetaCal, ACT-window, rho and window controls are exploratory talk-only measurements.
-They do not replace the production data vector.</p>
+The shear-B, MetaCal, ACT-window, ρ and window controls are exploratory talk-only measurements and do not replace the production data vector.</p>
+</details>
 </aside></section>

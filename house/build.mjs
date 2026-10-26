@@ -796,7 +796,7 @@ function reportHTML(deck, slides, mathCss, theme) {
     }
     body += `<article id="${esc(s.name)}">
 <div class="viewport">${s.frame}</div>
-${s.notes.trim() ? `<div class="prose">${s.notes}</div>` : ''}
+${s.notes.trim() ? `<div class="prose">${s.notes.replace(/<details(?![^>]*\bopen\b)/g, '<details open')}</div>` : ''}
 ${s.details.map(d => `<div class="detail-copy"><p class="label">${esc(d.label)}</p><div class="viewport">${d.frame.replace('class="slide detail"', 'class="slide detail open"')}</div></div>`).join('\n')}
 </article>`;
   }

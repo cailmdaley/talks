@@ -5,22 +5,33 @@
 <li>Correcting clustering against it removes some real LSS.</li>
 <li>Proposal: use CSFD to construct the visibilities (a swap of input maps).</li>
 <li>Proposal: switch VMPZ extinction maps to CSFD for DR2.</li>
-<li>DES / DESI have studied this deeply; HI maps are alternatives. Input welcome.</li>
+<li>DES / DESI have studied this in depth; HI maps are alternatives.</li>
 </ol>
-<p class="contact">Cail Daley · CEA Paris-Saclay</p>
-<aside class="notes"><p>The template carries CIB-correlated large-scale structure, supported by density, shear E and CMB-lensing crosses and the 857-GHz CIB route.
-Any nonzero correction fitted against that extragalactic component removes some real structure; this is a mechanism, not a measured cosmological-parameter bias.
-The loss depends on the fitted correction and selection; these slides do not establish its size in the production science vector.
-A template swap cannot undo photometry or selection already corrected upstream.</p>
-<p>The immediate proposal is to change the dust input to the offline GC visibility construction, then rerun controlled data-vector and mock-recovery checks.
-The delivered VMPZ InfoMaps are frozen for DR1; the separate proposal for DR2 is to replace the systematic extinction-map input with CSFD, subject to VMPZ and GC review.
-Source for the operational distinction: the 26 October discussion with Sam Farrens, recorded in gc8-systematics-update/meetings/2026-10-26-1532-sam-vmpz-csfd.</p>
-<p>DES Y6 adopted CSFD after screening dust templates against ACT kappa and high-redshift shear (arXiv:2601.14484, section III A).
+<p class="contact">Thoughts?</p>
+<aside class="notes">
+<ul class="skim">
+<li><strong>1–2</strong> — the template carries CIB-correlated LSS (slides 3–4); any correction fitted against that component removes real structure. The size of the loss in the science vector is not yet measured.</li>
+<li><strong>3</strong> — DR1: change the dust input to the offline GC visibility construction, then rerun data-vector and mock-recovery checks.</li>
+<li><strong>4</strong> — DR2: the VMPZ InfoMaps are frozen for DR1, so replacing them with CSFD is a DR2 request.</li>
+<li><strong>5</strong> — DES Y6 adopted CSFD; DESI uses HI and drops the CIB-bearing SFD residual.</li>
+</ul>
+<details><summary>The mechanism, and its limits</summary>
+<p>Supported by density, shear E and CMB-lensing crosses and the 857 GHz CIB route.
+Any nonzero correction fitted against the extragalactic component removes some real structure; this is a mechanism, not a measured cosmological-parameter bias.
+The loss depends on the fitted correction and selection. A template swap cannot undo photometry or selection already corrected upstream.</p>
+</details>
+<details><summary>DR1 vs DR2</summary>
+<p>The delivered VMPZ InfoMaps are frozen for DR1; GC corrects through the offline visibility map, so the DR1 remedy is keeping LSS out of the map it uses.
+A request to VMPZ needs a GC-8 justification and must land before the end-February 2027 freeze. Source: discussion with Sam Farrens, 26 October (gc8-systematics-update/meetings/2026-10-26-1532-sam-vmpz-csfd).</p>
+</details>
+<details><summary>DES and DESI</summary>
+<p>DES Y6 adopted CSFD after screening dust templates against ACT κ and high-redshift shear (arXiv:2601.14484, section III A).
 DESI uses HI information and excludes a CIB-bearing SFD residual from the BGS/LRG imaging weights (arXiv:2411.12020, section 6).
-Those analyses are more developed than this TR1 diagnostic; input on alternative dust tracers and validation is welcome.
-Details and citations are in the literature backup and gc8-systematics-update/literature-cib-dust.md.</p>
-<p>All quoted errors and PTEs use Gaussian NaMaster blocks, never Knox diagonals.
-These covariances are provisional and not mock-calibrated; GLASS null-PTE calibration follows the talk.
-Fixed fiducial normalizations omit denominator scatter, and shared-map cross-cycle covariance is unavailable.
-No cross-cycle difference significance is claimed.</p></aside>
+Those analyses are more developed than this TR1 diagnostic. Details: literature backup and gc8-systematics-update/literature-cib-dust.md.</p>
+</details>
+<details><summary>Errors</summary>
+<p>All quoted errors and PTEs use Gaussian NaMaster blocks, never Knox diagonals. They are provisional and not mock-calibrated; GLASS null-PTE calibration follows the talk.
+Fixed fiducial normalizations omit denominator scatter, and shared-map cross-cycle covariance is unavailable, so no cross-cycle difference significance is claimed.</p>
+</details>
+</aside>
 </section>

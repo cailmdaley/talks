@@ -529,6 +529,23 @@ html, body { background: var(--ground); }
 }
 .slide.detail.notes .scroll > * + * { margin-top: 0.7em; }
 .slide.detail.notes .scroll h3 { font-size: var(--t-small); font-weight: 700; margin-top: 1.1em; }
+/* skim first, depth on click: a notes card may open with a short ul.skim (one
+   line per thing on the slide) and put the rest in <details>, one per topic,
+   whose <summary> names it. Everything in the card is set at the fine size
+   so the skim fits on the first screen. The report prints every <details> open. */
+.slide.detail.notes .scroll:has(> .skim, > details) { font-size: var(--t-fine); }
+.slide.detail.notes .scroll .skim { list-style: none; padding-left: 0; }
+.slide.detail.notes .scroll .skim > li + li { margin-top: 0.35em; }
+.slide.detail.notes .scroll .skim strong { color: var(--accent); }
+.slide.detail.notes .scroll details { border-top: 2px solid var(--rule); padding-top: 0.45em; }
+.slide.detail.notes .scroll details:last-of-type { border-bottom: 2px solid var(--rule); padding-bottom: 0.45em; }
+.slide.detail.notes .scroll details + details { margin-top: 0; }
+.slide.detail.notes .scroll summary { cursor: pointer; font-weight: 700; list-style: none; }
+.slide.detail.notes .scroll summary::-webkit-details-marker { display: none; }
+.slide.detail.notes .scroll summary::before { content: "▸"; display: inline-block; width: 1.1em; color: var(--muted); transition: transform 0.15s; }
+.slide.detail.notes .scroll details[open] > summary::before { transform: rotate(90deg); }
+.slide.detail.notes .scroll details > :not(summary) { margin: 0.5em 0 0.3em 1.1em; }
+.slide.detail.notes .scroll details > ul { padding-left: 1.1em; }
 .slide.detail.notes .scroll ul { padding-left: 1.1em; }
 .slide.detail.notes .scroll figure { margin: var(--s3) 0; }
 /* a figure in the notes scrolls with the prose: its cell sizes from its width, not

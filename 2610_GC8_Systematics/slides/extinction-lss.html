@@ -1,31 +1,35 @@
 <section data-layout="figure-text" data-stack data-variant-axes="cycle">
-<h2>The CIB route predicts tracer–extinction $\bar\rho$</h2>
-<div class="text"><p class="small">If the template’s LSS enters only through CIB:<br>$\bar\rho(X,\mathrm{ext})\approx\bar\rho(X,\mathrm{CIB})\,\bar\rho(\mathrm{CIB},\mathrm{ext})$</p></div>
-<figure><img src="images/gc8r5_rho_c1.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_c2.png"}' alt="Measured GLS mean rho and open-marker CIB-predicted tracer–extinction rho for density and shear E in both cycles; no kappa prediction exists."><span class="source">TR1 Cycle 1 / Cycle 2 · raw δ · LensMC E · SPT-3G · Gaussian errors</span></figure>
-<aside class="notes"><p>The points show density without visibility correction, LensMC shear E and SPT-3G kappa in both cycles.
-All compress the same full range, $100\lt\ell\lt3000$, into a GLS constant-rho mean with its error.
-The definition is $\rho_\ell=C_\ell^{XT}/\sqrt{C_\ell^{XX,\mathrm{th}}C_\ell^{TT}}$.
-The slide's product of averaged coefficients is a schematic reduction, not the exact compression: the plotted prediction is the bandwise product averaged with the measured GLS weights, which need not equal the product of separate averages.
-It predicts tracer–extinction from tracer–CIB and CIB–extinction, without using the tracer–extinction cross in the prediction amplitude; it does use the measured extinction auto and GLS weights.
-The density-bin-1 excess is descriptive, not a quantified prediction-residual significance.
-Cycle-1 δ2–δ5 also lie above the CIB prediction; why remains open, because the window/theory ladder explains the cycle shift rather than decomposing the measured-minus-CIB residual.
-Only the cycle toggle is active because matched MetaCal/ACT rho normalizations and route predictions have not been saved.
-Positive means are not a claim that every band is positive, or that every tracer rejects zero.
-There is no monotonic-redshift claim: Cycle-1 density bin 6 is below bin 5.
-Cycle-1 low-redshift shear means are mostly within one or two Gaussian errors of zero; high-redshift shear and kappa carry the clearer support.</p>
-<p>In these exploratory figures, $C_\ell^{XX,\mathrm{th}}$ is the release-specific fiducial tracer signal model, with no shot, shape or reconstruction noise, averaged uniformly over exact integer science bins.
-It is neither an observed total auto nor the exact masked-auto bandpower-window average.
-$C_\ell^{TT}$ is the measured template auto; for CIB comparisons it is the odd-ring × even-ring spectrum with the cached interpolation transfer correction.
-The normalization is held fixed in the error propagation; the errors are the full Gaussian cross blocks divided by the normalization outer product.
-This is a model-normalized signal-correlation estimate; it avoids clipping negative noise-subtracted shear autos.
-It is not bounded to lie within [-1,1] in a noisy realization.
-No denominator uncertainty is included.
-The GLS mean is a descriptive compression, not a fitted physical constant-rho model.</p>
-<p>Extinction cannot directly obscure a CMB-lensing reconstruction; the joint sign, high-redshift shear and CIB-route comparison support the LSS interpretation.
-This does not rule out real Galactic selection effects or CMB reconstruction foreground response.
-B-mode evidence is from the backup scorecard, not a rho normalization for B.</p>
-<p>Source: results/scratch/gc8/rho/rho.json, rows c1/c2/vmpz/*/raw for density and */native for E/kappa.
-The Cycle-1 and Cycle-2 panel limits are shared, and include every plotted one-error bar.
-The plotted rho definition and XX normalization details are stated here.</p></aside>
-<aside class="notes"><p>Prediction is $\bar\rho_{\mathrm{pred}}=\langle\rho(X,I)\rho(I,T)\rangle$ with the exact measured GLS weights. I is Lenz 857 GHz CIB; its auto is odd × even with interpolation transfer correction. Saved CIB crosses provide all six shear E bins in both cycles, added here by compute/rho_ladder.py. No CMB-kappa × CIB cross is saved; the product key kappa_y in 857_extinction means CIB × extinction, not CMB lensing. No kappa prediction is displayed. Input cross-covariances and denominator scatter are omitted, so no prediction-residual significance is claimed.</p></aside>
+<h2>The CIB route predicts the extinction correlation</h2>
+<div class="text"><p class="small">$\bar\rho_{X,\mathrm{ext}}$: correlation of tracer $X$ with extinction, $100\lt\ell\lt3000$</p>
+<p class="small fragment">If extinction carries LSS only through CIB: $\;\bar\rho_{X,\mathrm{ext}}\approx\bar\rho_{X,\mathrm{CIB}}\,\bar\rho_{\mathrm{CIB},\mathrm{ext}}$</p></div>
+<figure><img src="images/gc8r5_rho_c1.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_c2.png"}' alt="Measured GLS mean correlation of each tracer with extinction, density and shear E bins and kappa."><img class="fragment" src="images/gc8r5_rho_c1_pred.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_c2_pred.png"}' alt="The same, with open-marker CIB-predicted correlations for density and shear E; no kappa prediction exists."><span class="source">TR1 Cycle 1 / Cycle 2 · raw δ · LensMC E · SPT-3G · Gaussian errors</span></figure>
+<aside class="notes">
+<ul class="skim">
+<li><strong>$\bar\rho_{X,\mathrm{ext}}$</strong> — each tracer’s correlation coefficient with the extinction map, $\rho_\ell=C_\ell^{X\,\mathrm{ext}}/\sqrt{C_\ell^{XX,\mathrm{th}}C_\ell^{\mathrm{ext\,ext}}}$, GLS-averaged over $100\lt\ell\lt3000$.</li>
+<li><strong>Filled points</strong> — measured. Nearly all positive; κ cannot be obscured by dust, so this is LSS in the map.</li>
+<li><strong>Open points</strong> (next step) — predicted from tracer × CIB-857 and CIB × extinction alone, never using tracer × extinction.</li>
+<li><strong>Read</strong> — in Cycle 2 the prediction tracks δ2–δ6 and every shear bin, with δ1 above it; in Cycle 1, δ2–δ5 sit above it (open question).</li>
+</ul>
+<details><summary>How $\bar\rho$ is computed</summary>
+<p>All points compress the same range, $100\lt\ell\lt3000$, into a GLS constant-ρ mean with its error, using the full Gaussian cross blocks divided by the normalization outer product.
+$C_\ell^{XX,\mathrm{th}}$ is the release-specific fiducial tracer signal model (no shot, shape or reconstruction noise), averaged uniformly over the science bins; $C_\ell^{\mathrm{ext\,ext}}$ is the measured template auto.
+This model-normalized estimate avoids clipping negative noise-subtracted shear autos; it is not bounded to [−1, 1] in a noisy realization, and the denominator’s uncertainty is not propagated.
+The GLS mean is a descriptive compression, not a fitted physical model.</p>
+</details>
+<details><summary>How the CIB prediction is computed</summary>
+<p>$\bar\rho_{\mathrm{pred}}=\langle\rho_{X,\mathrm{CIB}}\,\rho_{\mathrm{CIB},\mathrm{ext}}\rangle$, the bandwise product averaged with the measured GLS weights (the slide’s product of averages is a schematic of this).
+CIB is the Lenz et al. 857 GHz map; its auto is the odd-ring × even-ring spectrum with the cached interpolation transfer correction.
+Saved CIB crosses cover density and all six shear E bins in both cycles (compute/rho_ladder.py). No CMB-κ × CIB cross is saved, so there is no κ prediction.
+Input cross-covariances and denominator scatter are omitted, so no prediction-residual significance is claimed.</p>
+</details>
+<details><summary>What the comparison does and does not show</summary>
+<p>The density-bin-1 excess is descriptive. Cycle-1 δ2–δ5 also lie above the prediction; why remains open.
+There is no monotonic-redshift claim: Cycle-1 density bin 6 is below bin 5. Cycle-1 low-z shear means are mostly within one or two Gaussian errors of zero; high-z shear and κ carry the clearer support.
+Extinction cannot directly obscure a CMB-lensing reconstruction; the joint sign, high-z shear and CIB-route comparison support the LSS interpretation. This does not rule out real Galactic selection effects or CMB reconstruction foreground response.
+Only the cycle toggle is active: matched MetaCal/ACT ρ normalizations and route predictions have not been saved.</p>
+</details>
+<details><summary>Sources</summary>
+<p>results/scratch/gc8/rho/rho.json, rows c1/c2/vmpz/*/raw for density and */native for E/κ; rho/ladder.json for the shear CIB route. Both cycles share panel limits, which include every plotted error bar.</p>
+</details>
+</aside>
 </section>

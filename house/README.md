@@ -64,7 +64,7 @@ A slide file holds exactly one `<section>` with a `data-layout`, a headline, its
 </section>
 ```
 
-The headline is a claim, one line. **The notes are public**: there are no speaker notes. The build turns each slide's `aside.notes` into its *Sources & notes* card, which the audience or the speaker opens from the button at the left of the footer (or `N`), and the report prints them under the slide. Write them for a reader: what is plotted, sources, caveats, the detail that does not fit on the slide; prose, with `<h3>` subheads, lists, links, maths and `<figure>`s as needed. The card scrolls, so length is free. They are where small explanatory text goes instead of shrinking it onto the slide. Math is TeX between `$…$`, `\(…\)`, `$$…$$` or `\[…\]`, typeset to SVG at build time; a TeX error fails the build and names the slide. An expression must sit in one run of text (no tags inside it); write a literal dollar as `\$`. Put punctuation that follows inline math inside it (`$b_i,$`), or the line may break before it.
+The headline is a claim, one line. **The notes are public**: there are no speaker notes. The build turns each slide's `aside.notes` into its *Sources & notes* card, which the audience or the speaker opens from the button at the left of the footer (or `N`), and the report prints them under the slide. Write them for a reader: what is plotted, sources, caveats, the detail that does not fit on the slide; prose, with `<h3>` subheads, lists, links, maths and `<figure>`s as needed. The card scrolls, so length is free. For a card that reads at a skim, open with `<ul class="skim">` (one line per thing on the slide, led by a `<strong>` naming it) and put the depth in `<details><summary>Topic</summary>…</details>` blocks, which the audience opens on click; such a card is set at the fine size, and the report prints every `<details>` open. Subscripts in the card are written as maths (`$A_V$`), since an HTML `<sub>` at the fine size falls below the floor. They are where small explanatory text goes instead of shrinking it onto the slide. Math is TeX between `$…$`, `\(…\)`, `$$…$$` or `\[…\]`, typeset to SVG at build time; a TeX error fails the build and names the slide. An expression must sit in one run of text (no tags inside it); write a literal dollar as `\$`. Put punctuation that follows inline math inside it (`$b_i,$`), or the line may break before it.
 
 ## The canvas and its budget
 
@@ -150,6 +150,7 @@ A `<figure>` holds an optional `<figcaption>` (a one-line label above), one imag
 - `.accent`, `.muted`, `.teal`, `.cobalt` — colour emphasis. `.small`, `.fine` — the two smaller sizes, for secondary lines.
 - `<div class="cols">` — two or more equal columns inside a `points` body; a column that is a `<div>` stacks its blocks (a label over its list).
 - `<pre><code>` — code in the mono face at the fine size.
+- A fragment with `data-set-variant="axis:option"` (an empty `<span class="fragment">` in the slide's text, say) switches the deck's variant when its step is reached, so a keypress flips the slide's control; stepping back or leaving the slide puts the previous choice back.
 - Fragments are reveal's: `class="fragment"` on any element, with reveal's variants (`fade-in-then-out`, `semi-fade-out`, …).
 
 ## Depth on demand
