@@ -21,42 +21,42 @@
     "cmb": {
       "spt": "SPT-3G",
       "act": "ACT DR6"
+    },
+    "mode": {
+      "e": "Shear E",
+      "b": "Shear B"
     }
   },
   "sections": [
     {
       "title": "Opening",
-      "outline": "Preliminary TR1 validation.",
+      "outline": "TR1 Cycle 1 \u2192 Cycle 2.",
       "slides": [
         "title"
       ]
     },
     {
       "title": "Template fidelity",
-      "outline": "Null tests, the LSS signature, its CIB prediction and dust alternatives.",
+      "outline": "Nulls, CIB, the cycle shift and dust alternatives.",
       "slides": [
         "systematics-overview",
         "extinction-lss",
-        "cib-route",
-        "dust-maps",
-        "window-leakage",
-        "literature"
-      ]
-    },
-    {
-      "title": "Closing",
-      "outline": "Implications for weights and the next tests.",
-      "slides": [
-        "summary"
+        "cycle-ladder",
+        "dust-maps"
       ]
     },
     {
       "title": "Backup",
-      "outline": "Conditional contamination proxy, CSFD training dependence and GNILC bands.",
+      "outline": "Bandpowers, window leakage, literature and caveats.",
       "slides": [
+        "window-leakage",
+        "literature",
+        "summary",
+        "cib-route",
         "systematics-triangle",
         "sfd-csfd-gc-caveat",
-        "gnilc-bands"
+        "gnilc-bands",
+        "extinction-bands"
       ]
     }
   ]

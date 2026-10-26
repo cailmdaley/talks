@@ -1,6 +1,6 @@
 <section data-layout="title">
 <h1>Systematics-template cross-correlations</h1>
-<p class="subtitle">Preliminary status: TR1 Cycle 1 → Cycle 2</p>
+<p class="subtitle">TR1 Cycle 1 → Cycle 2</p>
 <p class="byline">Cail Daley</p>
 <p class="affil covariance-caveat">Covariances are provisional: Gaussian NaMaster, not yet mock-calibrated.</p>
 <p class="venue">Euclid GC-8 call</p>
@@ -18,7 +18,7 @@ This is a release comparison, not a controlled change of dust map.</p>
 Both archived map recipes use the same South WL coverage file and weights-in-mask policy at NSIDE 2048, but the binned maps and weights differ: per-bin support is 319.28–319.68 square degrees in Cycle 1 versus 319.24–319.72 in Cycle 2; bin-6 total shear weight rises by 6.90 percent.
 These nearly equal areas do not imply identical source selections or shear weights.
 Sources: astra.yaml data_release/shear_method; data/releases/tr1_v2.yaml; results/{tr1,tr1_v2}/map_products/.wl_shear_maps_coverage.manifest.json; exploratory rho/shear_input_audit.json.
-The dominant template-window effect on the cross errors is tested separately on slide 6; these input differences are not a causal attribution of the cycle change.</p>
+The dominant template-window effect on the cross errors is tested separately in the cycle ladder; these input differences are not a causal attribution of the cycle change.</p>
 <p>GLASS calibration of the null PTEs is planned after the talk; the Gaussian covariances are not yet trusted as a calibrated significance scale.
 The new shear-B, MetaCal, ACT-window, rho and window controls are exploratory talk-only measurements.
 They do not replace the production data vector.</p>

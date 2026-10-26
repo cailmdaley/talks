@@ -125,33 +125,33 @@ def heatmaps():
                             P[18, col] = qtest(fam[f'{stem}/kappa'])
                         else:
                             P[18, col] = qtest(read(SCRATCH / f'kappa_common/tr1_v2_act/{stem}_full.json'))
-                fig, ax = plt.subplots(figsize=(10, 8.1))
-                fig.subplots_adjust(left=.12, right=.99, top=.88, bottom=.02)
-                Z = np.clip(-np.log10(np.maximum(P, 1e-300)), 0, 6)
-                cmap = LinearSegmentedColormap.from_list('pte', ['#ffffff', '#f1dfb8', '#d9a85a', '#7a2318'])
-                ax.imshow(Z, cmap=cmap, vmin=0, vmax=6, aspect='auto')
-                for (i, j), p in np.ndenumerate(P):
-                    if np.isnan(p):
-                        ax.add_patch(Rectangle((j-.5, i-.5), 1, 1, facecolor='#f3f5f8', edgecolor=RULE, hatch='///'))
-                        text = 'not run'
-                    else:
-                        text = (f'{p:.2f}' if p >= .01 else (r'$<10^{-6}$' if p < 1e-6 else f'{p:.0e}'))
-                    ax.text(j, i, text, ha='center', va='center', fontsize=28,
-                            color='white' if np.isfinite(p) and p < 1e-4 else INK)
-                labels = LABELS[:12] + [rf'$\gamma_{{B{i}}}$' for i in range(1, 7)] + LABELS[-1:]
-                ax.set_yticks(range(19), labels, fontsize=28)
-                ax.set_xticks(range(6), [t[2] for t in TEMPLATES], fontsize=23)
-                ax.xaxis.tick_top()
-                ax.tick_params(length=0)
-                for y in (5.5, 11.5, 17.5):
-                    ax.axhline(y, color=RULE, lw=2)
-                for sp in ax.spines.values():
-                    sp.set_visible(False)
-                fig.text(.12, .985, r'$\chi^2$ PTE vs zero · darker = smaller', va='top', fontsize=25)
-                save(fig, f'heatmap_{cycle}_{shear}_{cmb}')
-                print(cycle, shear, cmb, 'B minimum', np.nanmin(P[12:18]) if np.isfinite(P[12:18]).any() else 'missing')
-                print('  PTE rows:', P.tolist())
-
+                full = P.copy()
+                for mode in ('e', 'b'):
+                    P = full[list(range(6)) + list(range(6,12) if mode=='e' else range(12,18)) + [18]]
+                    fig, ax = plt.subplots(figsize=(12, 7.7))
+                    fig.subplots_adjust(left=.12, right=.99, top=.88, bottom=.02)
+                    Z = np.clip(-np.log10(np.maximum(P, 1e-300)), 0, 6)
+                    cmap = LinearSegmentedColormap.from_list('pte', ['#ffffff', '#f1dfb8', '#d9a85a', '#7a2318'])
+                    ax.imshow(Z, cmap=cmap, vmin=0, vmax=6, aspect='auto')
+                    for (i, j), p in np.ndenumerate(P):
+                        if np.isnan(p):
+                            ax.add_patch(Rectangle((j-.5, i-.5), 1, 1, facecolor='#f3f5f8', edgecolor=RULE, hatch='///'))
+                            text = 'not run'
+                        else:
+                            text = (f'{p:.2f}' if p >= .01 else (r'$<10^{-6}$' if p < 1e-6 else f'{p:.0e}'))
+                        ax.text(j, i, text, ha='center', va='center', fontsize=28,
+                                color='white' if np.isfinite(p) and p < 1e-4 else INK)
+                    labels = LABELS[:6] + ([rf'$\gamma_{{B{i}}}$' for i in range(1, 7)] if mode=='b' else LABELS[6:12]) + LABELS[-1:]
+                    ax.set_yticks(range(13), labels, fontsize=28)
+                    ax.set_xticks(range(6), [t[2] for t in TEMPLATES], fontsize=23)
+                    ax.xaxis.tick_top()
+                    ax.tick_params(length=0)
+                    for y in (5.5, 11.5):
+                        ax.axhline(y, color=RULE, lw=2)
+                    for sp in ax.spines.values():
+                        sp.set_visible(False)
+                    fig.text(.12, .985, r'$\chi^2$ PTE vs zero · darker = smaller', va='top', fontsize=25)
+                    save(fig, f'heatmap_{cycle}_{shear}_{cmb}_{mode}')
 
 def row(r, cycle, tracer, template='vmpz', visibility='raw'):
     stage = visibility if tracer.startswith('g') else 'native'

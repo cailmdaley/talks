@@ -1,11 +1,9 @@
-<section data-preliminary data-layout="figure-text" data-split="70" data-variant-axes="cycle">
-<h2>Extinction correlates positively with every tracer</h2>
-<figure><img src="images/gc8r2_spectra_c1.png" data-alt='{"c2|lensmc|spt":"images/gc8r2_spectra_c2.png"}' alt="Extinction correlation spectra for density, shear E and kappa, on shared cycle axes with Gaussian error bars."><img class=fragment src="images/gc8r2_means_c1.png" data-alt='{"c2|lensmc|spt":"images/gc8r2_means_c2.png"}' alt="Full-range GLS mean correlation and Gaussian error for all thirteen tracers."><span class="source"><span data-variant="c1|lensmc|spt c1|lensmc|act c1|metacal|spt c1|metacal|act">Cycle 1</span><span data-variant="c2|lensmc|spt c2|lensmc|act c2|metacal|spt c2|metacal|act">Cycle 2</span> · density without visibility correction · LensMC · SPT-3G</span></figure>
-<div class="text"><p class="small">$\rho_\ell\equiv C_\ell^{XT}/\sqrt{C_\ell^{XX,\mathrm{th}}C_\ell^{TT}}$</p>
-<ul><li>Obscuration predicts $\delta\times E\lt0$; the mean is positive</li>
-<li>High-$z$ $\gamma_E$ and $\kappa$ support LSS; no extinction B failure</li></ul></div>
-<aside class="notes"><p>The first frame shows every band and its Gaussian error; the second compresses the same full range, $100\lt\ell\lt3000$, into a GLS constant-rho mean with its error.
-Density is without visibility correction in both cycles; shear is LensMC E, kappa is SPT-3G.
+<section data-layout="figure-text" data-stack data-variant-axes="cycle">
+<h2>CIB predicts much of the measured $\bar\rho$</h2>
+<div class="text"><p class="small">$\rho_\ell=C_\ell^{XT}/\sqrt{C_\ell^{XX,\mathrm{th}}C_\ell^{TT}}$; $\bar\rho$ = Gaussian GLS mean.</p></div>
+<figure><img src="images/gc8r4_rho_c1_0.png" data-alt='{"c2|lensmc|spt|e": "images/gc8r4_rho_c2_0.png"}' alt="Measured rho bar without density visibility correction."><img class="fragment" src="images/gc8r4_rho_c1_1.png" data-alt='{"c2|lensmc|spt|e": "images/gc8r4_rho_c2_1.png"}' alt="Measured rho bar plus open-marker CIB predictions for density and shear E."><img class="fragment" src="images/gc8r4_rho_c1_2.png" data-alt='{"c2|lensmc|spt|e": "images/gc8r4_rho_c2_2.png"}' alt="Measured rho bar and predictions with density visibility correction."><span class="source">TR1 Cycle 1 / Cycle 2 · LensMC E · SPT-3G · prediction for δ and γE only</span></figure>
+<aside class="notes"><p>The frames show measured means without visibility correction, add the CIB prediction, then apply density visibility correction. All compress the same full range, $100\lt\ell\lt3000$, into a GLS constant-rho mean with its error.
+Density switches from without to with visibility correction in both cycles; shear is LensMC E, kappa is SPT-3G.
 Positive means are not a claim that every band is positive, or that every tracer rejects zero.
 There is no monotonic-redshift claim: Cycle-1 density bin 6 is below bin 5.
 Cycle-1 low-redshift shear means are mostly within one or two Gaussian errors of zero; high-redshift shear and kappa carry the clearer support.</p>
@@ -23,4 +21,5 @@ B-mode evidence is from the preceding scorecard, not a rho normalization for B.<
 <p>Source: results/scratch/gc8/rho/rho.json, rows c1/c2/vmpz/*/raw for density and */native for E/kappa.
 The Cycle-1 and Cycle-2 panel limits are shared, and include every plotted one-error bar.
 First appearance of rho is defined on the slide; XX normalization details are stated here.</p></aside>
+<aside class="notes"><p>Prediction is $\bar\rho_{\mathrm{pred}}=\langle\rho(X,I)\rho(I,T)\rangle$ with the exact measured GLS weights. I is Lenz 857 GHz CIB; its auto is odd × even with interpolation transfer correction. Saved CIB crosses provide all six shear E bins in both cycles, added here by compute/rho_ladder.py. No CMB-kappa × CIB cross is saved; the product key kappa_y in 857_extinction means CIB × extinction, not CMB lensing. No kappa prediction is displayed. Input cross-covariances and denominator scatter are omitted, so no prediction-residual significance is claimed.</p></aside>
 </section>
