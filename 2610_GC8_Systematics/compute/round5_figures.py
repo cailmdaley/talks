@@ -93,6 +93,40 @@ def window():
   hs=[Line2D([],[],color=col,marker='o',lw=2.2,label=lab) for _,col,lab in cyc[:n]]
   fig.legend(handles=hs,loc='upper center',ncol=2,frameon=False,fontsize=27)
   save(fig,f'window_step{n}')
+def window_c1():
+ """Main-deck window slide: Cycle 1 on its own template window vs Cycle-1 data on the Cycle-2 template window."""
+ d=st.read(R/'rho.json');a=st.read(W/'auto.json');fig,axes=plt.subplots(1,2,figsize=(18,7));fig.subplots_adjust(left=.085,right=.985,bottom=.17,top=.84,wspace=.25)
+ axes[0].plot(a['ell'],a['tests']['c1_original']['values'],'o-',color='#234979',label='Cycle 1')
+ v=st.row(d,'c1','g5');ell=np.asarray(v['ell']);ok=ell>300;axes[1].errorbar(ell[ok],(1e6*ell*np.asarray(v['cross']))[ok],yerr=(1e6*ell*np.sqrt(np.diag(v['covariance_cross'])))[ok],fmt='o-',color='#234979',capsize=3)
+ v=st.read(W/'c1_rewindowed_g5.json')['scalar'];ell=np.asarray(v['ell']);ok=ell>300;axes[1].errorbar(ell[ok],(1e6*ell*np.asarray(v['values']))[ok],yerr=(1e6*ell*np.sqrt(np.diag(v['covariance'])))[ok],fmt='s--',color='#23776d',capsize=3)
+ axes[0].plot(a['ell'],a['tests']['c1prep_c2window']['values'],'s--',color='#23776d',label='Cycle 1, Cycle-2 window')
+ axes[0].set_yscale('log');axes[0].set_ylabel(r'$C_\ell^{ext\,ext}$ [mag$^2$]',fontsize=29);axes[0].set_title('Extinction auto',fontsize=29)
+ axes[1].set_ylabel(r'$\ell C_\ell^{ext\,\delta_6}$ [$10^{-6}$ mag]',fontsize=29);axes[1].set_title(r'Extinction × raw $\delta_6$ · $\ell>300$',fontsize=29);axes[1].axhline(0,color=st.MUTED,lw=1)
+ for ax in axes:
+  ax.set_xscale('log');ax.set_xlabel(r'$\ell$',fontsize=30);ax.set_xticks([100,300,1000,3000],['100','300','1000','3000']);ax.tick_params(labelsize=24)
+ axes[1].set_xlim(320,3000);axes[1].set_xticks([400,1000,3000],['400','1000','3000'])
+ from matplotlib.ticker import NullFormatter
+ axes[1].xaxis.set_minor_formatter(NullFormatter());axes[1].get_xticklabels()[-1].set_ha('right')
+ fig.legend(*axes[0].get_legend_handles_labels(),loc='upper center',ncol=2,frameon=False,fontsize=27);save(fig,'window_c1')
+def rho_vis():
+ """Slide-5 ρ̄ steps: visibility-corrected δ (with native γE, κ) per cycle, then Cycle 2 with δ before correction added."""
+ import round4_figures as r4
+ d=st.read(R/'rho.json');AFTER,BEFORE='#234979','#d0702c'
+ vals=[st.row(d,cy,k,visibility=vs) for cy in ['c1','c2'] for vs in ['vis','raw'] for k in st.TRACERS]
+ lo=min(v['mean_rho']-v['mean_rho_error'] for v in vals);hi=max(v['mean_rho']+v['mean_rho_error'] for v in vals)
+ fig,ax=r4.axes();fig.set_size_inches(17,5.7);fig.subplots_adjust(left=.08,right=.99,bottom=.17,top=.84);ax.set_ylabel(RHO_LABEL,fontsize=29);ax.set_ylim(lo-.015,hi+.015);save(fig,'rho_vis_empty')
+ for cy,raw in [("c1",False),("c2",False),("c1",True),("c2",True)]:
+  fig,ax=r4.axes();fig.set_size_inches(17,5.7);fig.subplots_adjust(left=.08,right=.99,bottom=.17,top=.84);ax.set_ylabel(RHO_LABEL,fontsize=29);ax.set_ylim(lo-.015,hi+.015)
+  for i,k in enumerate(st.TRACERS):
+   v=st.row(d,cy,k,visibility='vis');ax.errorbar(i-(.09 if raw and i<6 else 0),v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=AFTER,capsize=4,ms=9)
+   if raw and i<6:
+    v=st.row(d,cy,k,visibility='raw');ax.errorbar(i+.09,v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=BEFORE,capsize=4,ms=9)
+  hs=[Line2D([],[],marker='o',ls='none',color=AFTER,label='With visibility correction')]+([Line2D([],[],marker='o',ls='none',color=BEFORE,label='Before visibility correction')] if raw else [])
+  ax.legend(handles=hs,loc='upper left',bbox_to_anchor=(0,1.25),ncol=2,frameon=False,fontsize=26)
+  save(fig,f'rho_vis_{cy}'+('_raw' if raw else ''))
+ for cy in ['c1','c2']:
+  for k in st.TRACERS[:6]:
+   a,b=st.row(d,cy,k,visibility='vis'),st.row(d,cy,k,visibility='raw');print(cy,k,'vis %.4f±%.4f raw %.4f±%.4f'%(a['mean_rho'],a['mean_rho_error'],b['mean_rho'],b['mean_rho_error']))
 def maps():
  import healpy as hp
  # Read prepared bundle arrays, preserving their distinct supports. Restore only
@@ -122,4 +156,5 @@ def maps():
 if __name__=='__main__':
  st.setup_font()
  if 'maps' in sys.argv:maps()
- else:bands();rho();window()
+ elif "r8" in sys.argv:window_c1();rho_vis()
+ else:bands();rho();window();window_c1();rho_vis()
