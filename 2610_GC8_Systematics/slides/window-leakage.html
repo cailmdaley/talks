@@ -1,26 +1,27 @@
-<section data-layout="figure-text" data-stack>
-<h2>Cycle 1's fragmented window leaks dust power to high $\ell$</h2>
-<div class="text"><p class="small">Same map: on the Cycle-2 window, Cycle 1's κ $\bar\rho$ rises 0.082 → 0.150 (Cycle 2: 0.171).</p></div>
-<figure><img src="images/gc8r5_window.png" alt="Extinction auto and extinction times raw density bin 6 on absolute axes, overplotting Cycle 1, Cycle 2 and C1 with the C2 template window. C1's original high-ell auto and cross errors are inflated."><span class="source">Cycles 1 and 2 overplotted · cross errors: Gaussian </span></figure>
-<aside class="notes"><p>The same extinction source values under different template windows give different measured high-ell power.
-C1's fragmented support leaks low-ell dust power into high measured bands; its template auto is 40.9 times the rewindowed auto in the highest band.
-The low-only injection control in window-leakage/lowell.json establishes leakage directly; this plot shows the effect on the saved data instead of the window power.
-Both original windows are C2-type apodized over 0.15 degrees.
-The effect is not just a change of error bars: the crosses and template denominator also change.</p>
-<p>The left panel is the deconvolved extinction auto (mag²), not an arbitrary rescaling.
-The right panel shows ell times the raw density-bin-6 cross (mag), with marginal Gaussian error bars on absolute axes.
-It shows ell times the cross on a linear ordinate, restricted to ell&gt;300 to avoid the low-ell noise dominating the comparison.
-The horizontal axis remains logarithmic, and every selected point and Gaussian error bar is retained; no division by errors is applied.
-C1-original, C1 with the C2 template window, and C2 are all overplotted.
-Sources: results/scratch/gc8/window-leakage/auto.json, c1_rewindowed_g5.json, and rho/rho.json c1/c2/vmpz/g5/raw.</p>
-<p>The controlled direction actually measured is C1 tracer data with the C2 template window, not C2 tracer data with the C1 window.
-The files named c2prep_c1window retain C1 tracer maps and change template preparation; they are not evidence for the latter direction.
-No new reverse-direction spectrum was computed for this revision.
-The saved ladder gives κ 0.0815 ± 0.0251 → 0.1504 ± 0.0238 → 0.1712 ± 0.0267.
-For raw δ6, C1-rewindowed is 0.1702; matching C2's theory normalization gives 0.1364, equal to C2's 0.1364.
-The κ window shift accounts for 77% of the cycle rise.
-This does not establish a bias in cosmology or the science vector.</p>
-<p>Rewindowed Gaussian blocks use zero template-data Wick, while the original rho blocks use observed Wick.
-No shared-map cross-cycle covariance is saved, so the closeness of rewindowed and C2 means is descriptive, not a covariance-aware residual significance.
-Full interpretation, ordered decomposition and normalization changes: results/scratch/gc8/rho/{ladder.json,LADDER.md}; felt methodology/systematics/tr1-systematics-crosses/{c1-template-window-hid-highell,c1-rho-biased-low}.</p></aside>
+<section data-layout="figure">
+<h2>Cycle 1's window leaks dust power to high $\ell$</h2>
+<figure><img src="images/gc8r5_window_step1.png" alt="Cycle 1 extinction auto as ell squared C_ell on a linear axis, rising at high ell, and its cross with raw density bin 6 as ell squared C_ell with a plus-minus one sigma band."><img class="fragment" src="images/gc8r5_window_step2.png" alt="The same with Cycle 2 added: its extinction auto falls steadily with ell and its cross band is much narrower above ell of 1000."></figure>
+<aside class="notes">
+<ul class="skim">
+<li><strong>Left</strong> — the extinction map’s own power, $\ell^2C_\ell$, on its Cycle-1 and Cycle-2 windows. Same dust values; different masks.</li>
+<li><strong>Cycle 1</strong> — its fragmented window leaks low-ℓ dust power into high ℓ, so the auto turns up instead of falling.</li>
+<li><strong>Right</strong> — extinction × raw δ6, $\ell^2C_\ell$ with ±1σ Gaussian bands. The cross error scales with $\sqrt{C^{\rm ext\,ext}C^{\delta\delta}}$, so less template power means a tighter Cycle-2 band at high ℓ.</li>
+<li><strong>Consequence</strong> — Cycle 1 hid the high-ℓ signal; put on the Cycle-2 window, Cycle 1’s κ $\bar\rho$ rises 0.082 → 0.150 (Cycle 2: 0.171).</li>
+</ul>
+<details><summary>How we know it is leakage</summary>
+<p>A low-ℓ-only injection through each window (window-leakage/lowell.json) reproduces the high-ℓ excess directly. The Cycle-1 template auto is 40.9 times the rewindowed auto in the highest band. Both original windows are apodized over 0.15°.
+Cycle-1 data put on the Cycle-2 template window (c1_rewindowed_g5.json) recovers the Cycle-2 behaviour; that control is not plotted, to keep the slide to the two cycles.</p>
+</details>
+<details><summary>The cycle ladder</summary>
+<p>κ $\bar\rho$: 0.0815 ± 0.0251 (C1) → 0.1504 ± 0.0238 (C1 rewindowed) → 0.1712 ± 0.0267 (C2); the window shift accounts for 77% of the rise. For raw δ6, C1 rewindowed gives 0.1702; with C2's theory normalization 0.1364, equal to C2's 0.1364.
+The change is not only error bars: the crosses and the template denominator also move. This does not establish a bias in the science vector.</p>
+</details>
+<details><summary>What is plotted</summary>
+<p>Left: deconvolved extinction auto (mag²) times $\ell^2$, linear ordinate, log ℓ. Right: $\ell^2$ times the raw δ6 cross (mag) for $\ell\gt300$ (lower ℓ is noise-dominated), with the marginal Gaussian error as a band; nothing is divided by errors and no point is dropped above ℓ = 300.
+Rewindowed blocks use zero template-data Wick, the original ρ blocks observed Wick. No shared-map cross-cycle covariance exists, so the closeness of rewindowed and C2 means is descriptive.</p>
+</details>
+<details><summary>Sources</summary>
+<p>results/scratch/gc8/window-leakage/{auto.json,c1_rewindowed_g5.json,lowell.json}; rho/rho.json c1/c2/vmpz/g5/raw; rho/{ladder.json,LADDER.md}; fibers methodology/systematics/tr1-systematics-crosses/{c1-template-window-hid-highell,c1-rho-biased-low}.</p>
+</details>
+</aside>
 </section>

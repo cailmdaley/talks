@@ -1,14 +1,17 @@
 <section data-layout="points">
 <h2>CSFD's galaxy null is partly by construction</h2>
-<ul><li>CSFD subtracts an LSS template built from WISE galaxies</li>
-<li>A galaxy null checks transfer; it does not independently prove signal preservation</li>
-<li>Compare dust-map alternatives one at a time</li>
-<li>Use independent stellar/HI maps and mock recovery to test the correction</li></ul>
-<p class="source">Chiang 2023 · arXiv:2306.03926 §§3–5 · Cycle-2 comparison on slide 5</p>
-<aside class="notes"><p>CSFD uses WISE density templates and an AKARI point-source template, constrained by SDSS galaxy/quasar tomographic correlations.
-Euclid was not an explicitly named training set; its null is not guaranteed algebraically, and no object-level overlap was tested here.
-The construction nevertheless suppresses galaxy-correlated structure by design.
-The independent CIB route and shear/kappa tests therefore matter.</p>
-<p>CSFD corrects SFD's reconstructed CIB, not every dust calibration/selection error, and it is not a direct correction for the different Planck R1.20 map.
-All thirteen Cycle-2 CSFD spectrum nulls pass; some compressed means are nonzero, as explained on slide 5.
-References: Chiang 2023 §§3.1, 3.5, 4.2, 5.1–5.2; DES Y6 Appendix A.</p></aside></section>
+<ul><li>CSFD removes an LSS template built from WISE galaxies</li>
+<li>So a null against galaxies is expected, and can't by itself show CSFD keeps all real signal</li>
+<li>Test it independently: shear and κ crosses, stellar/HI dust maps, mock recovery</li></ul>
+<p class="source">Chiang 2023, arXiv:2306.03926 §§3–5</p>
+<aside class="notes">
+<ul class="skim">
+<li><strong>Construction</strong> — CSFD uses WISE density templates and an AKARI point-source template, constrained by SDSS galaxy/quasar tomographic correlations.</li>
+<li><strong>Why it matters</strong> — a galaxy-density null against CSFD is partly built in, so the shear, κ and CIB-route tests carry the independent weight.</li>
+</ul>
+<details><summary>Details</summary>
+<p>Euclid was not an explicitly named training set; the null is not guaranteed algebraically, and no object-level overlap was tested here. The construction nevertheless suppresses galaxy-correlated structure by design.
+All thirteen Cycle-2 CSFD spectrum nulls pass; some compressed means are nonzero (slide 7).
+References: Chiang 2023 §§3.1, 3.5, 4.2, 5.1–5.2; DES Y6 Appendix A.</p>
+</details>
+</aside></section>

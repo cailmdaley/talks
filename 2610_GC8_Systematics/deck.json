@@ -4,7 +4,7 @@
   "venue": "Euclid GC-8 call",
   "date": "2026-10-28",
   "description": "TR1 galaxy clustering, shear and CMB lensing crossed with the VMPZ systematics templates in Cycle 1 and Cycle 2; the extinction template carries LSS through the CIB, and what that means for dust maps in galaxy-clustering weights.",
-  "footer": "Cail Daley \u00b7 GC-8 \u00b7 systematics cross-correlations \u00b7 October 2026",
+  "footer": "Cail Daley · GC-8 · systematics cross-correlations · October 2026",
   "theme": "euclid",
   "css": "deck.css",
   "draft": true,
@@ -30,17 +30,18 @@
   "sections": [
     {
       "title": "Opening",
-      "outline": "TR1 Cycle 1 \u2192 Cycle 2.",
+      "outline": "TR1 Cycle 1 → Cycle 2.",
       "slides": [
         "title"
       ]
     },
     {
       "title": "Template fidelity",
-      "outline": "The VMPZ map, its tracer crosses, the CIB route and alternatives.",
+      "outline": "The VMPZ map, its tracer crosses, the Cycle-1 window, the CIB route and alternative dust maps.",
       "slides": [
         "vmpz-map",
         "extinction-sigma",
+        "window-leakage",
         "extinction-lss",
         "dust-maps",
         "dust-rho",
@@ -49,14 +50,9 @@
     },
     {
       "title": "Backup",
-      "outline": "Bandpowers, window leakage, literature and caveats.",
+      "outline": "The CSFD caveat and how DES, DESI and Chiang & Ménard screened dust maps.",
       "slides": [
-        "window-leakage",
-        "systematics-overview",
-        "cib-route",
         "sfd-csfd-gc-caveat",
-        "extinction-bands",
-        "shear-b",
         "literature"
       ]
     }
