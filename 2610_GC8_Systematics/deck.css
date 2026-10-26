@@ -7,5 +7,8 @@
   margin-top: var(--s3);
 }
 
+/* The runtime already marks axes unused by this slide; omit their controls. */
+.slide .variants .seg.idle { display: none; }
+
 /* a red highlight box, for the one row a slide is about */
 .slide .frame > mark.box.red { border-color: #B3261E; }

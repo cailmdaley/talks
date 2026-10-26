@@ -46,13 +46,13 @@ def rho():
  import round4_figures as r4
  d=st.read(R/'rho.json');l=st.read(R/'ladder.json');routes={**d['cib_route'],**l['cib_route_shear']}
  for cy in ['c1','c2']:
-  fig,ax=r4.axes()
+  fig,ax=r4.axes();fig.set_size_inches(17,5.7);fig.subplots_adjust(left=.08,right=.99,bottom=.17,top=.84)
   for i,k in enumerate(st.TRACERS):
    v=st.row(d,cy,k);ax.errorbar(i-.10,v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=r4.C[i],capsize=4,ms=9)
    p=routes.get(f'{cy}/{k}/'+('raw' if k[0]=='g' else 'native'))
    if p:ax.errorbar(i+.12,p['mean_rho_pred'],yerr=p['mean_rho_pred_error'],fmt='o',mfc='white',color=r4.C[i],capsize=4,ms=9)
   ax.legend(handles=[Line2D([],[],marker='o',ls='none',color='black',label='Measured'),Line2D([],[],marker='o',mfc='white',color='black',ls='none',label='CIB-predicted (δ, γE)')],loc='upper left',bbox_to_anchor=(0,1.25),ncol=2,frameon=False,fontsize=26)
-  fig.text(.11,.85,'Without density visibility correction · LensMC · SPT-3G',fontsize=25);save(fig,'rho_'+cy)
+  save(fig,'rho_'+cy)
  d=st.read(R/'rho_four_dust.json');fig,ax=r4.axes();entries=[]
  for j,(t,col,m,lab) in enumerate([('vmpz','#234979','o','VMPZ / Planck13'),('sfd','#a8542b','s','SFD'),('csfd','#23776d','^','CSFD')]):
   for a,b in [(0,6),(6,12),(12,13)]:
@@ -64,14 +64,17 @@ def window():
  d=st.read(R/'rho.json');a=st.read(W/'auto.json');fig,axes=plt.subplots(1,2,figsize=(18,7));fig.subplots_adjust(left=.085,right=.985,bottom=.17,top=.84,wspace=.25)
  for cy,col,lab in [('c1','#234979','Cycle 1'),('c2','#a8542b','Cycle 2')]:
   axes[0].plot(a['ell'],a['tests'][cy+'_original']['values'],'o-',color=col,label=lab)
-  v=st.row(d,cy,'g5');axes[1].errorbar(v['ell'],v['cross'],yerr=np.sqrt(np.diag(v['covariance_cross'])),fmt='o-',color=col,capsize=3,label=lab)
+  v=st.row(d,cy,'g5');ell=np.asarray(v['ell']);ok=ell>300;axes[1].errorbar(ell[ok],(ell*np.asarray(v['cross']))[ok],yerr=(ell*np.sqrt(np.diag(v['covariance_cross'])))[ok],fmt='o-',color=col,capsize=3,label=lab)
  axes[0].set_yscale('log');axes[0].set_ylabel(r'$C_\ell^{ext\,ext}$ [mag$^2$]',fontsize=29);axes[0].set_title('Extinction auto · respective windows',fontsize=29)
- axes[1].set_yscale('symlog',linthresh=1e-11);axes[1].set_ylabel(r'$C_\ell^{ext\,\delta_6}$ [mag]',fontsize=29);axes[1].set_title('Extinction × raw density bin 6',fontsize=29);axes[1].axhline(0,color=st.MUTED,lw=1)
+ axes[1].set_ylabel(r'$\ell C_\ell^{ext\,\delta_6}$ [mag]',fontsize=29);axes[1].set_title(r'Extinction × raw $\delta_6$ · $\ell>300$',fontsize=29);axes[1].axhline(0,color=st.MUTED,lw=1)
  # A controlled rewindowing arm makes the data-level comparison interpretable.
- v=st.read(W/'c1_rewindowed_g5.json')['scalar'];axes[1].errorbar(v['ell'],v['values'],yerr=np.sqrt(np.diag(v['covariance'])),fmt='s--',color='#23776d',capsize=3,label='C1 + C2 template window')
- axes[0].plot(a['ell'],a['tests']['c1prep_c2window']['values'],'s--',color='#23776d',label='C1 + C2 template window')
+ v=st.read(W/'c1_rewindowed_g5.json')['scalar'];ell=np.asarray(v['ell']);ok=ell>300;axes[1].errorbar(ell[ok],(ell*np.asarray(v['values']))[ok],yerr=(ell*np.sqrt(np.diag(v['covariance'])))[ok],fmt='s--',color='#23776d',capsize=3,label='Cycle 1 data, Cycle 2 window')
+ axes[0].plot(a['ell'],a['tests']['c1prep_c2window']['values'],'s--',color='#23776d',label='Cycle 1 data, Cycle 2 window')
  for ax in axes:
   ax.set_xscale('log');ax.set_xlabel(r'$\ell$');ax.set_xticks([100,300,1000,3000],['100','300','1000','3000']);ax.tick_params(labelsize=24)
+ axes[1].set_xlim(320,3000);axes[1].set_xticks([400,1000,3000],['400','1000','3000'])
+ from matplotlib.ticker import NullFormatter
+ axes[1].xaxis.set_minor_formatter(NullFormatter());axes[1].get_xticklabels()[-1].set_ha('right')
  fig.legend(*axes[0].get_legend_handles_labels(),loc='upper center',ncol=3,frameon=False,fontsize=25);save(fig,'window')
 def maps():
  import healpy as hp
@@ -86,7 +89,7 @@ def maps():
  cmap=plt.get_cmap('magma').copy();cmap.set_bad('white');rmap=plt.get_cmap('RdBu_r').copy();rmap.set_bad('white')
  for i in range(2):
   img=np.asarray(arrays[i][ip],dtype=float)+offsets[i];img[~masks[i][ip]]=np.nan
-  fig,ax=plt.subplots(figsize=(9,8));fig.subplots_adjust(left=.14,right=.96,bottom=.20,top=.92);im=ax.imshow(img,origin='lower',extent=bounds,cmap=cmap,vmin=0,vmax=.18,aspect='auto');ax.set_title(f'Cycle {i+1} · prepared support',fontsize=27);ax.set_xlabel('RA [deg]',fontsize=27);ax.set_ylabel('Dec [deg]',fontsize=27);ax.tick_params(labelsize=24)
+  fig,ax=plt.subplots(figsize=(9,8));fig.subplots_adjust(left=.14,right=.96,bottom=.20,top=.92);im=ax.imshow(img,origin='lower',extent=bounds,cmap=cmap,vmin=0,vmax=.18,aspect='auto');ax.set_title(f'Cycle {i+1}',fontsize=27);ax.set_xlabel('RA [deg]',fontsize=27);ax.set_ylabel('Dec [deg]',fontsize=27);ax.tick_params(labelsize=24)
   cb=fig.colorbar(im,ax=ax,orientation='horizontal',pad=.16,fraction=.055,extend='max');cb.set_label(r'$A_{\rm VIS}$ [mag]',fontsize=27);cb.ax.tick_params(labelsize=23);save(fig,f'map_c{i+1}')
  # Matched E(B-V) units, with an affine local SFD calibration for Planck.
  support=masks[1];pix=np.flatnonzero(support);sfd=np.load(st.SCRATCH/'sfd.npy',mmap_mode='r');csfd=np.load(st.SCRATCH/'csfd.npy',mmap_mode='r');ref=np.asarray(sfd[pix]);v=np.asarray(arrays[1][pix])+offsets[1];slope=float((ref-ref.mean())@(v-v.mean())/np.sum((ref-ref.mean())**2));intercept=float(v.mean()-slope*ref.mean())
@@ -95,7 +98,9 @@ def maps():
  fig,axes=plt.subplots(1,3,figsize=(18,7.7),sharex=True,sharey=True);fig.subplots_adjust(left=.07,right=.985,bottom=.29,top=.86,wspace=.14)
  for ax,img,title,cm,lo,hi in zip(axes,[absolute,residual,cres],['VMPZ / Planck13','VMPZ − SFD (calibrated)','CSFD − SFD'],[cmap,rmap,rmap],[0,-.006,-.002],[.085,.006,.002]):
   img=np.asarray(img,dtype=float);img[~support[ip]]=np.nan;im=ax.imshow(img,origin='lower',extent=bounds,cmap=cm,vmin=lo,vmax=hi,aspect='auto');ax.set_title(title,fontsize=26);ax.set_xlabel('RA [deg]',fontsize=26);ax.tick_params(labelsize=23);cb=fig.colorbar(im,ax=ax,orientation='horizontal',pad=.21,fraction=.05,extend='both');cb.set_label('E(B−V) [mag]',fontsize=25);cb.ax.tick_params(labelsize=22)
- axes[0].set_ylabel('Dec [deg]',fontsize=26);save(fig,'dust_maps')
+ axes[0].set_ylabel('Dec [deg]',fontsize=26)
+ # Trim unused canvas below the colourbars, preserving all map/axis content.
+ fig.savefig(st.IMAGES/'gc8r5_dust_maps.png',dpi=170,facecolor='white',bbox_inches='tight',pad_inches=.12);plt.close(fig)
  receipt=dict(offsets_mag=offsets,bounds=bounds,absolute_AVIS_stretch=[0,.18],calibration=dict(slope_AVIS_per_SFD=slope,intercept_AVIS=intercept,VMPZ_absolute='AVIS / 2.108',residual='(AVIS - intercept) / slope - SFD',CSFD='CSFD - SFD; original SFD calibration'),residual_stretches_EBV=[[-.006,.006],[-.002,.002]],support_pixels=[int(x.sum()) for x in masks],common_pixels=int(common.sum()))
  (st.SCRATCH/'round5-map-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print(receipt)
 if __name__=='__main__':

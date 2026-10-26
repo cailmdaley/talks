@@ -2,10 +2,10 @@
 <h2>VMPZ extinction is the Planck 2013 dust map</h2>
 <div class="text"><ul class="small">
 <li>Planck R1.20 E(B−V) × 3.1 a<sub>λ</sub><br>VIS: A<sub>VIS</sub> = 2.108 E(B−V)</li>
-<li>Sampled per tile, no extra smoothing; identical on common pixels in both cycles</li>
+<li>Identical in both cycles where both have data</li>
 <li>Feeds the GC visibility (decontamination) maps</li>
 </ul></div>
-<figure class="plain"><img src="images/gc8r5_map_c1.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_map_c2.png"}' alt="Absolute VIS extinction on the prepared Cycle-1 support; masked regions are white. The Cycle-2 toggle changes support, not the common dust values."><span class="source">TR1 Cycle 1 / Cycle 2 · white = no prepared support</span></figure>
+<figure class="plain"><img src="images/gc8r5_map_c1.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_map_c2.png"}' alt="Absolute VIS extinction on the prepared Cycle-1 support; masked regions are white. The Cycle-2 toggle changes support, not the common dust values."><span class="source">TR1 Cycle 1 / Cycle 2 · white = masked</span></figure>
 <aside class="notes"><p>The OU-VMPZ-ID GalacticExtinction InfoMap uses the EBV column of HFI_CompMap_ThermalDustModel_2048_R1.20.fits, the Planck 2013 thermal-dust model (Planck Collaboration XI, 2014).
 The generator uses R_V=3.1 and VIS a=0.68, hence A_VIS=2.108 E(B−V), in magnitudes.
 It samples the Galactic parent at each equatorial tile-pixel centre by nearest-parent-pixel lookup, without additional smoothing or interpolation; the parent has nominal 5-arcmin resolution.

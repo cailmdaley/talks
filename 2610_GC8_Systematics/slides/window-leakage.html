@@ -1,15 +1,16 @@
 <section data-layout="figure-text" data-stack>
-<h2>The window changes the measured dust power</h2>
-<div class="text"><p class="small">C1 on the C2 template window raises κ $\bar\rho$: 0.082 → 0.150 (C2: 0.171).</p></div>
-<figure><img src="images/gc8r5_window.png" alt="Extinction auto and extinction times raw density bin 6 on absolute axes, overplotting Cycle 1, Cycle 2 and C1 with the C2 template window. C1's original high-ell auto and cross errors are inflated."><span class="source">Cycles 1 and 2 overplotted · cross errors: Gaussian · right axis: signed log</span></figure>
+<h2>Cycle 1's fragmented window leaks dust power to high $\ell$</h2>
+<div class="text"><p class="small">Same map: on the Cycle-2 window, Cycle 1's κ $\bar\rho$ rises 0.082 → 0.150 (Cycle 2: 0.171).</p></div>
+<figure><img src="images/gc8r5_window.png" alt="Extinction auto and extinction times raw density bin 6 on absolute axes, overplotting Cycle 1, Cycle 2 and C1 with the C2 template window. C1's original high-ell auto and cross errors are inflated."><span class="source">Cycles 1 and 2 overplotted · cross errors: Gaussian </span></figure>
 <aside class="notes"><p>The same extinction source values under different template windows give different measured high-ell power.
 C1's fragmented support leaks low-ell dust power into high measured bands; its template auto is 40.9 times the rewindowed auto in the highest band.
 The low-only injection control in window-leakage/lowell.json establishes leakage directly; this plot shows the effect on the saved data instead of the window power.
 Both original windows are C2-type apodized over 0.15 degrees.
 The effect is not just a change of error bars: the crosses and template denominator also change.</p>
 <p>The left panel is the deconvolved extinction auto (mag²), not an arbitrary rescaling.
-The right panel shows the raw density-bin-6 cross (mag), with marginal Gaussian error bars on absolute axes.
-It uses a signed logarithmic scale with linear threshold 1e-11 to retain negative bands and all error bars; the points are not divided by their errors.
+The right panel shows ell times the raw density-bin-6 cross (mag), with marginal Gaussian error bars on absolute axes.
+It shows ell times the cross on a linear ordinate, restricted to ell&gt;300 to avoid the low-ell noise dominating the comparison.
+The horizontal axis remains logarithmic, and every selected point and Gaussian error bar is retained; no division by errors is applied.
 C1-original, C1 with the C2 template window, and C2 are all overplotted.
 Sources: results/scratch/gc8/window-leakage/auto.json, c1_rewindowed_g5.json, and rho/rho.json c1/c2/vmpz/g5/raw.</p>
 <p>The controlled direction actually measured is C1 tracer data with the C2 template window, not C2 tracer data with the C1 window.
