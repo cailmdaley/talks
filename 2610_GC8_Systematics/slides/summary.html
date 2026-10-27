@@ -3,15 +3,15 @@
 <ol>
 <li>The VMPZ / Planck extinction map contains CIB.</li>
 <li>Correcting clustering against it removes some real LSS.</li>
-<li>Proposal: use CSFD to construct the visibilities (a swap of input maps).</li>
+<li>Proposal: build the visibilities from CSFD (swap it in, don’t add it).</li>
 <li>Proposal: switch VMPZ extinction maps to CSFD for DR2.</li>
-<li>DES and DESI have tackled this:<br>DES Y6 (Weaverdyck+ 2026) · DESI DR1 (Ross+ 2025) · DESI LRGs (Zhou+ 2023)</li>
+<li>DES Y6 (Weaverdyck+ 2026) and DESI (Ross+ 2025, Zhou+ 2023) have tackled this; Sofia Chiarenza is testing it for DESI and has thought about it far more deeply than I have.</li>
 </ol>
 <p class="contact">Thank you! Thoughts?</p>
 <aside class="notes">
 <ul class="skim">
 <li><strong>1–2</strong> — the template carries CIB-correlated LSS (slides 3–6); any correction fitted against that component removes real structure. The size of the loss in the science vector is not yet measured.</li>
-<li><strong>3</strong> — DR1: change the dust input to the offline GC visibility construction, then rerun data-vector and mock-recovery checks.</li>
+<li><strong>3</strong> — DR1: change the dust input to the offline GC visibility construction, then rerun data-vector and mock-recovery checks. Swap, don’t add: CSFD − SFD is an LSS map (r ≈ −0.2 to −0.5 with DESI galaxies, Sofia), so a fit with both removes real LSS.</li>
 <li><strong>4</strong> — DR2: the VMPZ InfoMaps are frozen for DR1, so replacing them with CSFD is a DR2 request.</li>
 <li><strong>5</strong> — DES Y6 screened dust templates against ACT κ and high-z shear and adopted CSFD (arXiv:2601.14484); DESI DR1 uses HI for BGS/LRG dust weights and drops the CIB-bearing SFD residual (arXiv:2411.12020); Zhou et al. release LRG weights without E(B−V) because CIB in SFD removes real LSS (arXiv:2309.06443).</li>
 </ul>
@@ -28,6 +28,11 @@ A request to VMPZ needs a GC-8 justification and must land before the end-Februa
 <p>DES Y6 adopted CSFD after screening dust templates against ACT κ and high-redshift shear (arXiv:2601.14484, section III A).
 DESI uses HI information and excludes a CIB-bearing SFD residual from the BGS/LRG imaging weights (arXiv:2411.12020, section 6).
 Those analyses are more developed than this TR1 diagnostic. Details: literature backup and gc8-systematics-update/literature-cib-dust.md.</p>
+</details>
+<details><summary>Sofia Chiarenza's DESI tests (Slack DM, 22–26 Oct)</summary>
+<p>CSFD correlates with the Lenz 857 GHz CIB much less than SFD. Across DESI photo and spec BGS/LRG/QSO samples, measured r(δ_g, SFD) is ~0.03–0.07 and follows the CIB route r(δ_g, CIB)·r(CIB, SFD), as ours does; CSFD sits near zero. Same story for Planck PR4 and ACT DR6 κ.
+D = CSFD − SFD correlates with DESI galaxies at r ≈ −0.2 to −0.5, between the CIB-route and full-projection models, moving toward the CIB route at higher z: Chiang 2023 reconstructs D from low-z galaxies, so this is by construction (our CSFD caveat backup).
+Size of the loss in DESI: their regression removes at most ~1% of κg (EBV_DIFF carries −SFD's CIB); for gg the map choice matters only at ℓ ≲ 10. Either map alone is fine for DESI; using both lets the regression fit D and remove LSS from κg. Her mocks carry no CIB, so they can't show signal loss.</p>
 </details>
 <details><summary>Errors</summary>
 <p>All quoted errors and PTEs use Gaussian NaMaster blocks, never Knox diagonals. They are provisional and not mock-calibrated; GLASS null-PTE calibration follows the talk.
