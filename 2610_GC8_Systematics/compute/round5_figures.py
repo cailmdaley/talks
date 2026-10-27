@@ -7,7 +7,8 @@ import make_cycles as st
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-R=st.SCRATCH/'rho'; W=st.SCRATCH/'window-leakage'
+NB=st.SCRATCH/'newbins'  # Cycle 2 on the 26 Oct official-bin catalogues; C1 rows carried unchanged
+R=NB/'rho'; W=st.SCRATCH/'window-leakage'  # template support identical across bin versions, so the template autos carry over
 BAND_COLORS=[plt.get_cmap('plasma')(x) for x in np.linspace(0,.82,6)]  # bin 1 (low z) → bin 6 (high z)
 KAPPA_COLOR='#23776d'
 RHO_LABEL=r'$\bar\rho_{X,\,\rm ext}$'
@@ -28,8 +29,8 @@ def bands():
      rows=[st.row(d,cy,f'g{i}',visibility='raw') for i in range(6)]+[m['WL'][f'l{i}'] for i in range(6)]+[m['template_kappa']]
     else:
      rows=[st.row(d,cy,f'g{i}',visibility='raw') for i in range(6)]
-     rows += [st.row(d,cy,f'l{i}') if sh=='lensmc' else {**st.read(st.SCRATCH/f'metacal/GALACTICEXTINCTION_VIS_bin{i+1}.json')['components']['E'],'ell':st.row(d,cy,f'l{i}')['ell']} for i in range(6)]
-     rows += [st.row(d,cy,'kappa') if cm=='spt' else st.read(st.SCRATCH/'kappa_common/tr1_v2_act/GALACTICEXTINCTION_VIS_full.json')]
+     rows += [st.row(d,cy,f'l{i}') if sh=='lensmc' else {**st.read(NB/f'metacal/GALACTICEXTINCTION_VIS_bin{i+1}.json')['components']['E'],'ell':st.row(d,cy,f'l{i}')['ell']} for i in range(6)]
+     rows += [st.row(d,cy,'kappa') if cm=='spt' else st.read(NB/'kappa_common/tr1_v2_act/GALACTICEXTINCTION_VIS_full.json')]
     allrows[f'{cy}_{sh}_{cm}']=rows
  lim=max(float(np.max(np.abs(np.asarray(v.get('cross',v.get('values'))) / np.sqrt(np.diag(v.get('covariance_cross',v.get('covariance'))))))) for rows in allrows.values() for v in rows)+1.4
  for key,rows in allrows.items():

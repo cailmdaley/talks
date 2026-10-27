@@ -7,7 +7,7 @@
 <li><strong>$\bar\rho_{X,\mathrm{ext}}$</strong> — each tracer’s correlation coefficient with the extinction map: the cross normalized by the tracer’s theory signal and the template’s measured auto, GLS-averaged over $100\lt\ell\lt3000$.</li>
 <li><strong>Navy</strong> — δ with visibility correction; γE and κ carry no visibility weights. Nearly all positive; κ cannot be obscured by dust, so this is LSS in the map.</li>
 <li><strong>Cycle 2</strong> (space) — every tracer correlates at ρ̄ ≈ 0.05–0.17.</li>
-<li><strong>Orange</strong> (space) — δ before visibility correction. In Cycle 2 the correction moves ρ̄ by ≲ 1σ (δ2: 0.096 → 0.086); toggle to Cycle 1, where it removes most of it (δ4: 0.072 → 0.015, δ6: 0.069 → 0.016).</li>
+<li><strong>Orange</strong> (space) — δ before visibility correction. In Cycle 2 the correction moves ρ̄ by ≲ 1σ (δ2: 0.099 → 0.089); toggle to Cycle 1, where it removes most of it (δ4: 0.072 → 0.015, δ6: 0.069 → 0.016).</li>
 </ul>
 <details><summary>How $\bar\rho$ is computed</summary>
 <p>All points compress the same range, $100\lt\ell\lt3000$, into a GLS constant-ρ mean with its error, using the full Gaussian cross blocks divided by the normalization outer product.
@@ -17,9 +17,9 @@ The GLS mean is a descriptive compression, not a fitted physical model.</p>
 </details>
 <details><summary>Visibility correction, both cycles</summary>
 <p>δ ρ̄ with → before visibility correction. Cycle 1: δ1 0.021 → 0.023, δ2 0.027 → 0.048, δ3 0.006 → 0.051, δ4 0.015 → 0.072, δ5 0.076 → 0.087, δ6 0.016 → 0.069 (errors 0.007–0.010).
-Cycle 2: δ1 0.090 → 0.093, δ2 0.086 → 0.096, δ3 0.090 → 0.097, δ4 0.106 → 0.111, δ5 0.125 → 0.130, δ6 0.134 → 0.136 (errors 0.006–0.009).
+Cycle 2: δ1 0.089 → 0.092, δ2 0.089 → 0.099, δ3 0.090 → 0.097, δ4 0.106 → 0.110, δ5 0.125 → 0.130, δ6 0.131 → 0.134 (errors 0.006–0.008).
 The with/without pairs share maps, so their difference is not compared against the plotted marginal errors as if independent. Cycle 1's visibility map absorbs the extinction-correlated part of δ; Cycle 2's barely changes it.
-Cycle-2 rows here are the pre-26 October bins; the official-bin rerun is in progress.</p>
+Cycle-2 rows use the 26 October TR1 v2 catalogues with the official tomographic bins.</p>
 </details>
 <details><summary>What the comparison does and does not show</summary>
 <p>There is no monotonic-redshift claim. Cycle-1 low-z shear means are mostly within one or two Gaussian errors of zero; high-z shear and κ carry the clearer support.
@@ -27,7 +27,7 @@ Extinction cannot directly obscure a CMB-lensing reconstruction; the joint sign 
 Only the cycle toggle is active: matched MetaCal/ACT ρ normalizations have not been saved.</p>
 </details>
 <details><summary>Sources</summary>
-<p>results/scratch/gc8/rho/rho.json, rows {c1,c2}/vmpz/g*/{vis,raw}, */native for E and κ. All four panels share limits, which include every plotted error bar. Figures: compute/round5_figures.py rho_vis.</p>
+<p>results/scratch/gc8/rho/newbins/rho/rho.json, rows {c1,c2}/vmpz/g*/{vis,raw}, */native for E and κ. All four panels share limits, which include every plotted error bar. Figures: compute/round5_figures.py rho_vis.</p>
 </details>
 </aside>
 </section>

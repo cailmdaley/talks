@@ -5,14 +5,14 @@
 <ul class="skim">
 <li><strong>Left</strong> — the extinction map’s own power on each cycle’s template window. Same dust values; above ℓ ≈ 500 Cycle 1 keeps far more power: its fragmented window leaks low-ℓ dust power into high ℓ.</li>
 <li><strong>Right</strong> — extinction × raw δ6, $\ell C_\ell$ with Gaussian errors. Cycle 1’s leaked template power inflates its high-ℓ errors and hides the signal.</li>
-<li><strong>Consequence</strong> — Cycle 1 data put on the Cycle-2 window (not plotted) behave like Cycle 2: κ $\bar\rho$ 0.082 → 0.150 (Cycle 2: 0.171).</li>
+<li><strong>Consequence</strong> — Cycle 1 data put on the Cycle-2 window (not plotted) behave like Cycle 2: κ $\bar\rho$ 0.082 → 0.150 (Cycle 2: 0.182).</li>
 </ul>
 <details><summary>How we know it is leakage</summary>
 <p>A low-ℓ-only injection through each window (window-leakage/lowell.json) reproduces the high-ℓ excess directly. The Cycle-1 template auto is 40.9 times the rewindowed auto in the highest band. Both original windows are apodized over 0.15°.
 The rewindowing control (c1_rewindowed_g5.json) puts Cycle-1 tracer data on the Cycle-2 template window; the reverse direction was not computed.</p>
 </details>
 <details><summary>The cycle ladder</summary>
-<p>κ $\bar\rho$: 0.0815 ± 0.0251 (C1) → 0.1504 ± 0.0238 (C1 rewindowed) → 0.1712 ± 0.0267 (C2); the window shift accounts for 77% of the rise. For raw δ6, C1 rewindowed gives 0.1702; with C2's theory normalization 0.1364, equal to C2's 0.1364.
+<p>κ $\bar\rho$: 0.0815 ± 0.0251 (C1) → 0.1504 ± 0.0238 (C1 rewindowed) → 0.1815 ± 0.0278 (C2); the window shift accounts for 69% of the rise.
 The change is not only error bars: the crosses and the template denominator also move. This does not establish a bias in the science vector.</p>
 </details>
 <details><summary>What is plotted</summary>
@@ -20,7 +20,7 @@ The change is not only error bars: the crosses and the template denominator also
 Rewindowed blocks use zero template-data Wick, the original ρ blocks observed Wick. No shared-map cross-cycle covariance is saved, so the cycle difference has no significance attached.</p>
 </details>
 <details><summary>Sources</summary>
-<p>results/scratch/gc8/window-leakage/{auto.json,c1_rewindowed_g5.json,lowell.json}; rho/rho.json {c1,c2}/vmpz/g5/raw; rho/{ladder.json,LADDER.md}; fibers methodology/systematics/tr1-systematics-crosses/{c1-template-window-hid-highell,c1-rho-biased-low}.</p>
+<p>results/scratch/gc8/window-leakage/{auto.json,c1_rewindowed_g5.json,lowell.json}; newbins/rho/rho.json {c1,c2}/vmpz/g5/raw; newbins/rho/{ladder.json,LADDER.md}; fibers methodology/systematics/tr1-systematics-crosses/{c1-template-window-hid-highell,c1-rho-biased-low}.</p>
 </details>
 </aside>
 </section>
