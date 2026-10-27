@@ -33,6 +33,7 @@ ell_eff are asserted equal before it is applied.
 Run in the cmbx container:
   app python private/make_dv_vector.py
 """
+import argparse
 import json
 import os
 import pickle
@@ -176,6 +177,75 @@ def load_universe(universe, index):
     return pairs
 
 
+CYCLE2 = {("lensmc", "spt"): ("tr1_v2", "tr1"), ("lensmc", "act"): ("tr1_v2_act", "tr1_act")}
+
+
+def load_cycle2(root, universe, earlier, index):
+    """One Cycle-2 universe from the lc likelihood_input under root: data and sigma_G from it,
+    its field windows asserted equal to the official-bin null family's in the main checkout.
+    The windowed fiducial and fit mask come from the same root's datavector_vs_theory when its
+    data equal the likelihood_input's band for band; otherwise from the earlier (Cycle-1) run
+    of the same CMB survey on the same bands, with the validated cut from the export's bounds.
+    Returns (pairs, fiducial source) or None when the likelihood_input is not there."""
+    base = f"{root}/results/{universe}/likelihood_product"
+    like, dvt = f"{base}/likelihood_input.tar", f"{base}/datavector_vs_theory.tar"
+    if not os.path.exists(like):
+        print(f"Cycle 2 {universe}: no likelihood_input under {root}, left out")
+        return None
+    with tarfile.open(like) as tar:
+        member = next(m for m in tar.getmembers()
+                      if m.name.endswith(".pkl") and not m.name.endswith("_dndz.pkl"))
+        payload = pickle.load(tar.extractfile(member))
+    assert BLIND in json.dumps(payload["metadata"].get("blind"), default=str), universe
+    assert payload["metadata"]["covariance"]["method"] == "namaster_gaussian"
+    assert payload["metadata"]["covariance"]["full"] is True
+    with tarfile.open(f"{CMBX}/results/{universe}/systematics/gaussian_null_family.tar") as tar:
+        windows = json.load(tar.extractfile("summary.json"))["field_windows"]
+    for tracer in {t for k in payload["cls"] for t in k.split("_")}:
+        assert payload["metadata"]["fields"][tracer]["sha256"] == windows[tracer]["sha256"], \
+            f"{universe} {tracer}: likelihood_input windows are not the official-bin ones"
+    recs, why = None, "no datavector_vs_theory"
+    if os.path.exists(dvt):
+        try:
+            with tarfile.open(dvt) as tar:
+                record = json.load(tar.extractfile("check.json"))
+            cand = {r["spectrum"]: r for r in record["spectra"]}
+            same = all(np.allclose(payload["cls"][k]["cl"], cand[k]["data"], rtol=1e-12, atol=0)
+                       for k in payload["cls"])
+            recs, why = (cand, "") if same else (None, "datavector_vs_theory is from other data")
+        except (OSError, tarfile.TarError, KeyError) as e:
+            why = f"datavector_vs_theory unreadable ({e!r})"
+    cov = np.asarray(payload["cov_all"])
+    pairs, cursor = {}, 0
+    for k in payload["cls"]:
+        n = len(payload["cls"][k]["cl"])
+        idx = np.arange(cursor, cursor + n)
+        cursor += n
+        ell = np.asarray(payload["cls"][k]["leff"], float)
+        sigma = np.sqrt(np.diag(cov)[idx])
+        assert np.allclose(sigma, np.sqrt(np.diag(payload["cls"][k]["cov"])), rtol=1e-12, atol=0)
+        ref = index["pairs"][k]
+        lo, hi = ref["fit_bounds_validated"]
+        fit = (ell >= lo) & (ell <= hi)
+        assert int(fit.sum()) == ref["n_fit_validated"], (universe, k)
+        if recs is not None:
+            rec = recs[k]
+            assert np.allclose(ell, rec["ell_eff"]) and rec["covariance_indices"] == idx.tolist()
+            assert np.allclose(sigma, rec["sigma_gaussian"], rtol=1e-12, atol=0)
+            assert np.array_equal(fit, np.asarray(rec["fit_mask"], bool)), (universe, k)
+            theory, family = np.asarray(rec["theory_binned"], float), rec["family"]
+        else:
+            assert np.allclose(ell, earlier[k]["ell"], rtol=1e-3), (universe, k)
+            theory, family = earlier[k]["theory"], earlier[k]["family"]
+        pairs[k] = dict(family=family, ell=ell, data=np.asarray(payload["cls"][k]["cl"], float),
+                        sigma=sigma, theory=theory, fit=fit)
+    assert cov.shape == (cursor, cursor) and set(pairs) == set(index["order"])
+    source = "cycle2" if recs is not None else "cycle1"
+    print(f"Cycle 2 {universe}: {len(pairs)} pairs, {cursor} bands, blinded {BLIND}; fiducial "
+          + ("from its datavector_vs_theory" if recs is not None else f"from the Cycle-1 run ({why})"))
+    return pairs, source
+
+
 def packed(pairs):
     return {k: {"t": tracers(k), "family": p["family"], "ell": sig(p["ell"], 5),
                 "cl": sig(p["data"]), "sig": sig(p["sigma"]), "th": sig(p["theory"]),
@@ -184,6 +254,32 @@ def packed(pairs):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--cycle2-root", help="a checkout whose results/tr1_v2{,_act}/likelihood_product "
+                                          "holds the Cycle-2 likelihood products; writes Cycle 2 alone")
+    ap.add_argument("--output", default=OUT)
+    args = ap.parse_args()
+    if args.cycle2_root:
+        # the earlier run is the one on the slide (private/dv_vector.json); the cut bounds are the export's
+        index = json.load(open(INDEX))
+        shown = json.load(open(OUT))["variants"]
+        earlier = {u: {k: dict(ell=np.asarray(p["ell"]), theory=np.asarray(p["th"]), family=p["family"])
+                       for k, p in shown[vk].items()}
+                   for vk, u in [("lensmc|spt", "tr1"), ("lensmc|act", "tr1_act")]}
+        variants, sources = {}, {}
+        for (shear, cmb), (universe, c1) in CYCLE2.items():
+            got = load_cycle2(args.cycle2_root, universe, earlier[c1], index)
+            if got is not None:
+                variants[f"{shear}|{cmb}"], sources[f"{shear}|{cmb}"] = packed(got[0]), got[1]
+        out = {"blind": BLIND, "release": "TR1 Cycle 2", "source": f"{args.cycle2_root} tr1_v2 likelihood products",
+               "fiducial_source": sources,
+               "fiducial_label": "fiducial model" if set(sources.values()) == {"cycle2"} else "fiducial (Cycle-1 run)",
+               "cut": "validated linear-bias cut, the export's per-pair ell bounds",
+               "shears": SHEARS, "cmbs": CMBS, "variants": variants}
+        text = json.dumps(out, separators=(",", ":"))
+        open(args.output, "w").write(text)
+        print(f"wrote {args.output} ({len(text) / 1024:.0f} kB); fiducial sources {sources}")
+        return
     pairs, index = load()
     variants = {"lensmc|spt": packed(pairs)}
     for (shear, cmb), universe in UNIVERSES.items():
@@ -202,8 +298,8 @@ def main():
         "variants": variants,
     }
     text = json.dumps(out, separators=(",", ":"))
-    open(OUT, "w").write(text)
-    print(f"wrote {OUT} ({len(text) / 1024:.0f} kB)")
+    open(args.output, "w").write(text)
+    print(f"wrote {args.output} ({len(text) / 1024:.0f} kB)")
 
 
 if __name__ == "__main__":

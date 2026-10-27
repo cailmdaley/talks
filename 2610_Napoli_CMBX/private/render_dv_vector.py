@@ -26,6 +26,7 @@ the close-up and the detail cards label them. Residual strips span +-3 sigma wit
 Run in the cmbx container, after make_dv_vector.py:
   app python private/render_dv_vector.py
 """
+import argparse
 import io
 import json
 import os
@@ -41,6 +42,7 @@ from matplotlib.ticker import FixedLocator, LogLocator, NullFormatter, NullLocat
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "dv_vector.json")
+FID_LABEL = "fiducial model"   # the data JSON's fiducial_label, when it has one
 OUT = os.path.join(HERE, "dv_vector_app.json")
 
 # ── style: a paper figure ───────────────────────────────────────────────────
@@ -228,7 +230,7 @@ def key(fig, x, y, fs, fw, fh):
     ax.plot([8 * u], [0.5], "o", color=DATA, ms=3.2 * u, mew=0)
     ax.text(20 * u, 0.5, r"blinded data $\pm\,\sigma$", va="center", fontsize=fs)
     ax.plot([175 * u, 205 * u], [0.5, 0.5], color=INK, lw=0.9 * u)
-    ax.text(213 * u, 0.5, "fiducial model", va="center", fontsize=fs)
+    ax.text(213 * u, 0.5, FID_LABEL, va="center", fontsize=fs)
 
 
 # ── SVG plumbing ────────────────────────────────────────────────────────────
@@ -442,7 +444,14 @@ def detail(pairs, k, a, b, glyphs, axis):
 
 
 def main():
-    src = json.load(open(SRC))
+    global FID_LABEL
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--source", default=SRC, help="data JSON from make_dv_vector.py")
+    ap.add_argument("--output", default=OUT)
+    args = ap.parse_args()
+    src = json.load(open(args.source))
+    FID_LABEL = src.get("fiducial_label", FID_LABEL)
+    release = src.get("release", "TR1")
     out = dict(blind=src["blind"], shears=src["shears"], cmbs=src["cmbs"], world=dict(w=W, h=H),
                detail=dict(w=DW, h=DH), views=VIEWS,
                near=dict(x=V0X, y=VY, s=S_CLOSE, w=NEAR_W, h=H), variants={})
@@ -450,7 +459,7 @@ def main():
     cells, segs, axes = segments(list(src["variants"].values()))
     for vk, pairs in src["variants"].items():
         shear, cmb = vk.split("|")
-        title = f"TR1 {src['shears'][shear]} $\\times$ {src['cmbs'][cmb]}, blinded"
+        title = f"{release} {src['shears'][shear]} $\\times$ {src['cmbs'][cmb]}, blinded"
         lay = dict(over=overview(pairs, title, glyphs, segs), near=near(pairs, title, glyphs, segs))
         det = {}
         for (r, c), k in cells.items():
@@ -465,8 +474,8 @@ def main():
     out["glyphs"] = "".join(glyphs.values()).replace("xlink:href=", "href=")
     out["css"] = "".join(f".{c}{{{s}}}" for s, c in STYLES.items())
     text = json.dumps(out, separators=(",", ":"))
-    open(OUT, "w").write(text)
-    print(f"glyphs {len(out['glyphs']) / 1024:.0f} kB; wrote {OUT} ({len(text) / 1024:.0f} kB)")
+    open(args.output, "w").write(text)
+    print(f"glyphs {len(out['glyphs']) / 1024:.0f} kB; wrote {args.output} ({len(text) / 1024:.0f} kB)")
 
 
 if __name__ == "__main__":
