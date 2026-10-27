@@ -1,13 +1,14 @@
 <section data-layout="figure-text" data-stack data-variant-axes="cycle">
 <h2>Correlating extinction with Euclid tracers</h2>
-<div class="text"><p class="small">$\displaystyle\rho_\ell^{X,\mathrm{ext}}=\frac{C_\ell^{X\,\mathrm{ext}}}{\sqrt{C_\ell^{XX,\mathrm{th}}\,C_\ell^{\mathrm{ext\,ext}}}},\qquad \bar\rho_{X,\mathrm{ext}}:\ \text{GLS mean over } 100\lt\ell\lt3000$</p></div>
-<figure><img src="images/gc8r5_rho_vis_c1.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_vis_c2.png"}' alt="GLS mean correlation of each tracer with extinction: visibility-corrected density bins, shear E bins and kappa."><span class="fragment" data-fragment-index="1" data-set-variant="cycle:c2"></span><img class="fragment" data-fragment-index="2" src="images/gc8r5_rho_vis_c1_raw.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_vis_c2_raw.png"}' alt="The same, adding the density bins before visibility correction in orange."></figure>
+<div class="text"><p class="small">$\displaystyle\rho_\ell^{X,\mathrm{ext}}=\frac{C_\ell^{X\,\mathrm{ext}}}{\sqrt{C_\ell^{XX,\mathrm{th}}\,C_\ell^{\mathrm{ext\,ext}}}},\qquad \bar\rho_{X,\mathrm{ext}}:\ \text{GLS mean over } 100\lt\ell\lt3000$</p>
+<p class="small fragment" data-fragment-index="2">If extinction carries LSS only through CIB: $\;\bar\rho_{X,\mathrm{ext}}\approx\bar\rho_{X,\mathrm{CIB}}\,\bar\rho_{\mathrm{CIB},\mathrm{ext}}$</p></div>
+<figure><img src="images/gc8r5_rho_route_c1_1.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_route_c2_1.png"}' alt="GLS mean correlation of each tracer with extinction: visibility-corrected density bins, shear E bins and kappa."><span class="fragment" data-fragment-index="1" data-set-variant="cycle:c2"></span><img class="fragment" data-fragment-index="2" src="images/gc8r5_rho_route_c1_2.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_route_c2_2.png"}' alt="The same, adding open-marker CIB-predicted correlations for density and shear E; no kappa prediction exists."><img class="fragment" data-fragment-index="3" src="images/gc8r5_rho_route_c1_3.png" data-alt='{"c2|lensmc|spt|e":"images/gc8r5_rho_route_c2_3.png"}' alt="The same, adding the density bins before visibility correction in orange."></figure>
 <aside class="notes">
 <ul class="skim">
 <li><strong>$\bar\rho_{X,\mathrm{ext}}$</strong> — each tracer’s correlation coefficient with the extinction map: the cross normalized by the tracer’s theory signal and the template’s measured auto, GLS-averaged over $100\lt\ell\lt3000$.</li>
-<li><strong>Navy</strong> — δ with visibility correction; γE and κ carry no visibility weights. Nearly all positive; κ cannot be obscured by dust, so this is LSS in the map.</li>
-<li><strong>Cycle 2</strong> (space) — every tracer correlates at ρ̄ ≈ 0.05–0.17.</li>
-<li><strong>Orange</strong> (space) — δ before visibility correction. In Cycle 2 the correction moves ρ̄ by ≲ 1σ (δ2: 0.099 → 0.089); toggle to Cycle 1, where it removes most of it (δ4: 0.072 → 0.015, δ6: 0.069 → 0.016).</li>
+<li><strong>Solid blue</strong> — measured: δ with visibility correction; γE and κ carry no visibility weights. Nearly all positive; κ cannot be obscured by dust, so this is LSS in the map. Space flips to Cycle 2: every tracer at ρ̄ ≈ 0.05–0.18.</li>
+<li><strong>Open blue</strong> (space) — predicted from tracer × CIB-857 and CIB × extinction alone, never using tracer × extinction. Cycle 2: tracks δ2–δ6 and γE2–γE6; δ1 and γE1 sit above it. Cycle 1: visibility-corrected δ3, δ4, δ6 fall well below it (δ4 0.015 vs 0.036, δ6 0.016 vs 0.060).</li>
+<li><strong>Orange</strong> (space) — δ before visibility correction. Cycle 2: the correction moves ρ̄ by ≲ 1σ (δ2 0.099 → 0.089). Cycle 1: it removes most of it (δ4 0.072 → 0.015, δ6 0.069 → 0.016), more than the CIB route accounts for.</li>
 </ul>
 <details><summary>How $\bar\rho$ is computed</summary>
 <p>All points compress the same range, $100\lt\ell\lt3000$, into a GLS constant-ρ mean with its error, using the full Gaussian cross blocks divided by the normalization outer product.
@@ -15,19 +16,24 @@ $C_\ell^{XX,\mathrm{th}}$ is the release-specific fiducial tracer signal model (
 This model-normalized estimate avoids clipping negative noise-subtracted shear autos; it is not bounded to [−1, 1] in a noisy realization, and the denominator’s uncertainty is not propagated.
 The GLS mean is a descriptive compression, not a fitted physical model.</p>
 </details>
+<details><summary>How the CIB prediction is computed</summary>
+<p>$\bar\rho_{\mathrm{pred}}=\langle\rho_{X,\mathrm{CIB}}\,\rho_{\mathrm{CIB},\mathrm{ext}}\rangle$, the bandwise product averaged with the measured GLS weights (the slide’s product of averages is a schematic of this).
+For δ the prediction uses the visibility-corrected δ × CIB, matching the solid points. CIB is the Lenz et al. 857 GHz map; its auto is the odd-ring × even-ring spectrum with the cached interpolation transfer correction.
+No CMB-κ × CIB cross is saved, so there is no κ prediction. Input cross-covariances and denominator scatter are omitted, so no prediction-residual significance is claimed.</p>
+</details>
 <details><summary>Visibility correction, both cycles</summary>
 <p>δ ρ̄ with → before visibility correction. Cycle 1: δ1 0.021 → 0.023, δ2 0.027 → 0.048, δ3 0.006 → 0.051, δ4 0.015 → 0.072, δ5 0.076 → 0.087, δ6 0.016 → 0.069 (errors 0.007–0.010).
 Cycle 2: δ1 0.089 → 0.092, δ2 0.089 → 0.099, δ3 0.090 → 0.097, δ4 0.106 → 0.110, δ5 0.125 → 0.130, δ6 0.131 → 0.134 (errors 0.006–0.008).
-The with/without pairs share maps, so their difference is not compared against the plotted marginal errors as if independent. Cycle 1's visibility map absorbs the extinction-correlated part of δ; Cycle 2's barely changes it.
+The with/without pairs share maps, so their difference is not compared against the plotted marginal errors as if independent. Cycle 1's visibility map absorbs the extinction-correlated part of δ, beyond what the CIB route predicts; Cycle 2's barely changes it.
 Cycle-2 rows use the 26 October TR1 v2 catalogues with the official tomographic bins.</p>
 </details>
 <details><summary>What the comparison does and does not show</summary>
-<p>There is no monotonic-redshift claim. Cycle-1 low-z shear means are mostly within one or two Gaussian errors of zero; high-z shear and κ carry the clearer support.
-Extinction cannot directly obscure a CMB-lensing reconstruction; the joint sign and the high-z shear support the LSS interpretation (the CIB route, backup, makes it quantitative). This does not rule out real Galactic selection effects or CMB reconstruction foreground response.
-Only the cycle toggle is active: matched MetaCal/ACT ρ normalizations have not been saved.</p>
+<p>The δ1/γE1 excess in Cycle 2 is descriptive. There is no monotonic-redshift claim; Cycle-1 low-z shear means are mostly within one or two Gaussian errors of zero, and high-z shear and κ carry the clearer support.
+Extinction cannot directly obscure a CMB-lensing reconstruction; the joint sign, high-z shear and CIB-route comparison support the LSS interpretation. This does not rule out real Galactic selection effects or CMB reconstruction foreground response.
+Only the cycle toggle is active: matched MetaCal/ACT ρ normalizations and route predictions have not been saved.</p>
 </details>
 <details><summary>Sources</summary>
-<p>results/scratch/gc8/rho/newbins/rho/rho.json, rows {c1,c2}/vmpz/g*/{vis,raw}, */native for E and κ. All four panels share limits, which include every plotted error bar. Figures: compute/round5_figures.py rho_vis.</p>
+<p>results/scratch/gc8/newbins/rho/rho.json, rows {c1,c2}/vmpz/g*/{vis,raw}, */native for E and κ, cib_route {c1,c2}/g*/vis; newbins/rho/ladder.json for the shear CIB route. All six panels share limits, which include every plotted error bar. Figures: compute/round5_figures.py r10 (rho_route).</p>
 </details>
 </aside>
 </section>

@@ -49,10 +49,9 @@
     },
     {
       "title": "Backup",
-      "outline": "The Cycle-1 window, the CIB route, the CSFD caveat and literature.",
+      "outline": "The Cycle-1 window, the CSFD caveat and literature.",
       "slides": [
         "window-cycles",
-        "cib-route",
         "sfd-csfd-gc-caveat",
         "literature"
       ]

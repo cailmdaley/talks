@@ -126,6 +126,34 @@ def rho_vis():
  for cy in ['c1','c2']:
   for k in st.TRACERS[:6]:
    a,b=st.row(d,cy,k,visibility='vis'),st.row(d,cy,k,visibility='raw');print(cy,k,'vis %.4f±%.4f raw %.4f±%.4f'%(a['mean_rho'],a['mean_rho_error'],b['mean_rho'],b['mean_rho_error']))
+def rho_route():
+ """Slide-5 ρ̄ layers, per cycle: measured (δ with visibility correction, native γE and κ), + CIB-route prediction, + δ before visibility correction. Positions and limits are fixed across every frame."""
+ import round4_figures as r4
+ d=st.read(R/'rho.json');l=st.read(R/'ladder.json');routes={**d['cib_route'],**l['cib_route_shear']}
+ BLUE,ORANGE='#234979','#d0702c'
+ def meas(cy,k,vs='vis'):return st.row(d,cy,k,visibility=vs) if k[0]=='g' else st.row(d,cy,k)
+ def pred(cy,k):return routes.get(f'{cy}/{k}/'+('vis' if k[0]=='g' else 'native'))
+ vals=[]
+ for cy in ['c1','c2']:
+  for k in st.TRACERS:
+   v=meas(cy,k);vals.append((v['mean_rho'],v['mean_rho_error']))
+   p=pred(cy,k)
+   if p:vals.append((p['mean_rho_pred'],p['mean_rho_pred_error']))
+   if k[0]=='g':v=meas(cy,k,'raw');vals.append((v['mean_rho'],v['mean_rho_error']))
+ lo=min(a-b for a,b in vals);hi=max(a+b for a,b in vals)
+ for cy in ['c1','c2']:
+  for n in [1,2,3]:
+   fig,ax=r4.axes();fig.set_size_inches(17,5.7);fig.subplots_adjust(left=.08,right=.99,bottom=.17,top=.84);ax.set_ylabel(RHO_LABEL,fontsize=29);ax.set_ylim(lo-.015,hi+.015)
+   for i,k in enumerate(st.TRACERS):
+    g=k[0]=='g';p=pred(cy,k);x=(-.14,0,.14) if g else ((-.07,.07,0) if p else (0,0,0))
+    v=meas(cy,k);ax.errorbar(i+x[0],v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=BLUE,capsize=4,ms=9)
+    if n>=2 and p:ax.errorbar(i+x[1],p['mean_rho_pred'],yerr=p['mean_rho_pred_error'],fmt='o',mfc='white',mew=2,color=BLUE,capsize=4,ms=9)
+    if n>=3 and g:v=meas(cy,k,'raw');ax.errorbar(i+x[2],v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=ORANGE,capsize=4,ms=9)
+   hs=[Line2D([],[],marker='o',ls='none',color=BLUE,label='Measured')]
+   if n>=2:hs.append(Line2D([],[],marker='o',ls='none',mfc='white',mew=2,color=BLUE,label='CIB-predicted'))
+   if n>=3:hs.append(Line2D([],[],marker='o',ls='none',color=ORANGE,label='δ before visibility correction'))
+   ax.legend(handles=hs,loc='upper left',bbox_to_anchor=(0,1.25),ncol=3,frameon=False,fontsize=26)
+   save(fig,f'rho_route_{cy}_{n}')
 def maps():
  import healpy as hp
  # Read prepared bundle arrays, preserving their distinct supports. Restore only
@@ -156,4 +184,5 @@ if __name__=='__main__':
  st.setup_font()
  if 'maps' in sys.argv:maps()
  elif "r8" in sys.argv:window_cycles();rho_vis()
+ elif "r10" in sys.argv:rho_route()
  else:bands();rho();window();window_cycles();rho_vis()
