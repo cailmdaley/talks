@@ -39,7 +39,7 @@
         <rect x="18" y="320" width="380" height="220" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
         <text x="42" y="390" font-size="40" font-weight="700">CMB lensing κ</text>
         <text x="42" y="442" font-size="32">Planck PR4, ACT DR6</text>
-        <text x="42" y="486" font-size="32">SPT-3G Main</text>
+        <text x="42" y="486" font-size="32">SPT-3G Main, PH-GMV</text>
 
         <rect x="18" y="608" width="380" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
         <text x="42" y="660" font-size="40" font-weight="700">Systematics maps</text>
@@ -124,7 +124,7 @@
   <aside class="notes">
     <p>The KP2-3 pipeline end to end, built up one workstream at a time; each step's card gives the workstream's scope and its people, carried over from the Barcelona KP2-3 update by Legrand, Lembo and Fabbian, and the last step shows the whole pipeline.</p>
     <h3>Data vectors and systematics</h3>
-    <p>Euclid TR1 shear and positions are pixelised into maps with their masks and redshift distributions; the CMB-lensing inputs are the Planck PR4, ACT DR6 and SPT-3G Main convergence maps. NaMaster pseudo-$C_\ell$ turns them into bandpowers for all six families: the three Euclid 3×2pt spectra (left column) and the three involving CMB lensing (right column). The same estimator crosses the data with systematics maps, the templates carried by Euclid's VMPs (extinction, exposures, noise, PSF, zodiacal light, stars) and external CMB foreground maps, which gives the null tests and validation of the data vectors.</p>
+    <p>Euclid TR1 shear and positions are pixelised into maps with their masks and redshift distributions; the CMB-lensing inputs are the Planck PR4, ACT DR6 and SPT-3G Main convergence maps. The SPT-3G baseline is the bias- and profile-hardened GMV reconstruction (kGMVbhTTprf), which suppresses the tSZ and foreground bias a temperature-based reconstruction imprints on crosses with large-scale-structure tracers; plain GMV and polarization-only are the variants. Cycle-1 products (TR1 v1.1) used plain GMV. NaMaster pseudo-$C_\ell$ turns them into bandpowers for all six families: the three Euclid 3×2pt spectra (left column) and the three involving CMB lensing (right column). The same estimator crosses the data with systematics maps, the templates carried by Euclid's VMPs (extinction, exposures, noise, PSF, zodiacal light, stars) and external CMB foreground maps, which gives the null tests and validation of the data vectors.</p>
     <h3>Simulations and covariance</h3>
     <p>GLASS and FLASK lognormal mocks on the TR1 footprint with the delivered n(z) run through the same NaMaster step as the data. GLASS validates the pipeline (the mocks slide); FLASK, calibrated on DEMNUni N-body simulations, gives the numerical covariance. The covariance the pipeline uses now is analytic and Gaussian, in NaMaster's improved narrow-kernel approximation (iNKA), and covers every block including the cross-blocks between families.</p>
     <h3>Theory and likelihood, and the blind</h3>

@@ -195,8 +195,11 @@ def template_auto(rows, template, ell):
     return css
 
 
-def cycle2_inputs():
-    """Read canonical Cycle-2 nulls, fixed template autos and Gaussian DV errors."""
+def cycle2_inputs(likelihood_input):
+    """Read canonical Cycle-2 nulls, fixed template autos and Gaussian DV errors.
+
+    The nulls and template crosses come from the root's results/tr1_v2/systematics;
+    sigma_G from likelihood_input, whose field windows must hash to the null family's."""
     root = f"{CMBX}/results/tr1_v2"
     paths = [f"{root}/systematics/{t}.tar" for t, _ in TEMPLATES]
     family = f"{root}/systematics/gaussian_null_family.tar"
@@ -209,7 +212,8 @@ def cycle2_inputs():
         obs, cov = joint['observed'], joint['covariance']
     ell = np.asarray(summary['ell'])
     assert len(ell) == 15
-    with tarfile.open(f"{root}/likelihood_product/likelihood_input.tar") as tar:
+    print(f"Cycle 2: sigma_G from {likelihood_input}")
+    with tarfile.open(likelihood_input) as tar:
         member = next(m for m in tar.getmembers() if m.name.endswith('.pkl') and not m.name.endswith('_dndz.pkl'))
         dv = pickle.load(tar.extractfile(member))
     assert dv['metadata']['covariance']['method'] == 'namaster_gaussian'
@@ -270,6 +274,9 @@ def cycle2_inputs():
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--cycle2', action='store_true')
+    parser.add_argument('--likelihood-input', default=f"{CMBX}/results/tr1_v2/likelihood_product/likelihood_input.tar",
+                        help="the Cycle-2 SPT likelihood_input.tar that supplies sigma_G")
+    parser.add_argument('--only-cycle2', action='store_true', help="write the Cycle-2 variant alone")
     parser.add_argument('--output', default=OUT)
     args = parser.parse_args()
     dv = json.load(open(DV))
@@ -277,7 +284,7 @@ def main():
     out = dict(templates=[list(t) for t in TEMPLATES], variants={}, ell=None, blind=dv["blind"],
                harmonics={t: harmonics(autos[t]) for t, _ in TEMPLATES})
     print("harmonics:", out["harmonics"])
-    for vk, universe in UNIVERSES.items():
+    for vk, universe in ({} if args.only_cycle2 else UNIVERSES).items():
         if vk not in dv["variants"]:
             print(f"{vk}: no data vector, left out")
             continue
@@ -316,9 +323,11 @@ def main():
         else:
             print(f"{vk} ({universe}): no template crosses yet, left out")
     if args.cycle2:
-        got = cycle2_inputs()
+        got = cycle2_inputs(args.likelihood_input)
         if got is not None:
             per, ell = got
+            if out['ell'] is None:
+                out['ell'] = sig(ell, 5)
             assert np.allclose(out['ell'], ell, rtol=1e-3)
             out['variants']['cycle2|spt2'] = per
             out['cycle2_error_contract'] = 'Fixed template auto; Gaussian null cross errors propagated independently; cross-cross covariance omitted. No Knox term.'
