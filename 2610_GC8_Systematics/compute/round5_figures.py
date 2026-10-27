@@ -55,7 +55,7 @@ def rho():
     v=st.row(d,cy,k);ax.errorbar(i-.06,v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=r4.C[i],capsize=4,ms=9)
     p=routes.get(f'{cy}/{k}/'+('raw' if k[0]=='g' else 'native'))
     if p and pred:ax.errorbar(i+.06,p['mean_rho_pred'],yerr=p['mean_rho_pred_error'],fmt='o',mfc='white',color=r4.C[i],capsize=4,ms=9)
-   hs=[Line2D([],[],marker='o',ls='none',color='black',label='Measured')]+([Line2D([],[],marker='o',mfc='white',color='black',ls='none',label='CIB-predicted (δ, γE)')] if pred else [])
+   hs=[Line2D([],[],marker='o',ls='none',color='black',label='Measured')]+([Line2D([],[],marker='o',mfc='white',color='black',ls='none',label=r'CIB-predicted ($\delta$, $\gamma_{\rm E}$)')] if pred else [])
    ax.legend(handles=hs,loc='upper left',bbox_to_anchor=(0,1.25),ncol=2,frameon=False,fontsize=26)
    save(fig,'rho_'+cy+('_pred' if pred else ''))
  d=st.read(R/'rho_four_dust.json');fig,ax=r4.axes();ax.set_ylabel(RHO_LABEL,fontsize=29);entries=[]
@@ -101,7 +101,7 @@ def window_cycles():
   axes[0].plot(a['ell'],a['tests'][cy+'_original']['values'],'o-',color=col,label=lab)
   v=st.row(d,cy,'g5');ell=np.asarray(v['ell']);ok=ell>300;axes[1].errorbar(ell[ok],(1e6*ell*np.asarray(v['cross']))[ok],yerr=(1e6*ell*np.sqrt(np.diag(v['covariance_cross'])))[ok],fmt='o-',color=col,capsize=3)
  axes[0].set_yscale('log');axes[0].set_ylabel(r'$C_\ell^{ext\,ext}$ [mag$^2$]',fontsize=29);axes[0].set_title('Extinction auto',fontsize=29)
- axes[1].set_ylabel(r'$\ell C_\ell^{ext\,\delta_6}$ [$10^{-6}$ mag]',fontsize=29);axes[1].set_title(r'Extinction × raw $\delta_6$ · $\ell>300$',fontsize=29);axes[1].axhline(0,color=st.MUTED,lw=1)
+ axes[1].set_ylabel(r'$\ell C_\ell^{ext\,\delta_6}$ [$10^{-6}$ mag]',fontsize=29);axes[1].set_title(r'Extinction $\times$ raw $\delta_6$, $\ell>300$',fontsize=29);axes[1].axhline(0,color=st.MUTED,lw=1)
  for ax in axes:
   ax.set_xscale('log');ax.set_xlabel(r'$\ell$',fontsize=30);ax.set_xticks([100,300,1000,3000],['100','300','1000','3000']);ax.tick_params(labelsize=24)
  axes[1].set_xlim(320,3000);axes[1].set_xticks([400,1000,3000],['400','1000','3000'])
@@ -145,13 +145,13 @@ def rho_route():
   for n in [1,2,3]:
    fig,ax=r4.axes();fig.set_size_inches(17,5.7);fig.subplots_adjust(left=.08,right=.99,bottom=.17,top=.84);ax.set_ylabel(RHO_LABEL,fontsize=29);ax.set_ylim(lo-.015,hi+.015)
    for i,k in enumerate(st.TRACERS):
-    g=k[0]=='g';p=pred(cy,k);x=(-.14,0,.14) if g else ((-.07,.07,0) if p else (0,0,0))
+    g=k[0]=='g';p=pred(cy,k);x=(0,.14,-.14) if g else ((-.07,.07,0) if p else (0,0,0))  # (measured, predicted, before visibility)
     v=meas(cy,k);ax.errorbar(i+x[0],v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=BLUE,capsize=4,ms=9)
     if n>=2 and p:ax.errorbar(i+x[1],p['mean_rho_pred'],yerr=p['mean_rho_pred_error'],fmt='o',mfc='white',mew=2,color=BLUE,capsize=4,ms=9)
     if n>=3 and g:v=meas(cy,k,'raw');ax.errorbar(i+x[2],v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=ORANGE,capsize=4,ms=9)
    hs=[Line2D([],[],marker='o',ls='none',color=BLUE,label='Measured')]
    if n>=2:hs.append(Line2D([],[],marker='o',ls='none',mfc='white',mew=2,color=BLUE,label='CIB-predicted'))
-   if n>=3:hs.append(Line2D([],[],marker='o',ls='none',color=ORANGE,label='δ before visibility correction'))
+   if n>=3:hs.append(Line2D([],[],marker='o',ls='none',color=ORANGE,label=r'$\delta$ before visibility correction'))
    ax.legend(handles=hs,loc='upper left',bbox_to_anchor=(0,1.25),ncol=3,frameon=False,fontsize=26)
    save(fig,f'rho_route_{cy}_{n}')
 def maps():
@@ -174,8 +174,8 @@ def maps():
  absolute=(arrays[1][ip]+offsets[1])/2.108
  residual=((arrays[1][ip]+offsets[1]-intercept)/slope-sfd[ip]);cres=csfd[ip]-sfd[ip]
  fig,axes=plt.subplots(1,3,figsize=(18,7.7),sharex=True,sharey=True);fig.subplots_adjust(left=.07,right=.985,bottom=.29,top=.86,wspace=.14)
- for ax,img,title,cm,lo,hi in zip(axes,[absolute,residual,cres],['VMPZ (Planck 2013)','VMPZ − SFD','CSFD − SFD'],[cmap,rmap,rmap],[0,-.006,-.002],[.085,.006,.002]):
-  img=np.asarray(img,dtype=float);img[~support[ip]]=np.nan;im=ax.imshow(img,origin='lower',extent=bounds,cmap=cm,vmin=lo,vmax=hi,aspect='auto');ax.set_title(title,fontsize=28);ax.set_axis_off();cb=fig.colorbar(im,ax=ax,orientation='horizontal',pad=.03,fraction=.05,extend='both');cb.set_label('E(B−V) [mag]',fontsize=25);cb.ax.tick_params(labelsize=22)
+ for ax,img,title,cm,lo,hi in zip(axes,[absolute,residual,cres],['VMPZ (Planck 2013)',r'VMPZ $-$ SFD',r'CSFD $-$ SFD'],[cmap,rmap,rmap],[0,-.006,-.002],[.085,.006,.002]):
+  img=np.asarray(img,dtype=float);img[~support[ip]]=np.nan;im=ax.imshow(img,origin='lower',extent=bounds,cmap=cm,vmin=lo,vmax=hi,aspect='auto');ax.set_title(title,fontsize=28);ax.set_axis_off();cb=fig.colorbar(im,ax=ax,orientation='horizontal',pad=.03,fraction=.05,extend='both');cb.set_label(r'$E(B-V)$ [mag]',fontsize=25);cb.ax.tick_params(labelsize=22)
  # Trim unused canvas below the colourbars, preserving all map/axis content.
  fig.savefig(st.IMAGES/'gc8r5_dust_maps.png',dpi=170,facecolor='white',bbox_inches='tight',pad_inches=.12);plt.close(fig)
  receipt=dict(offsets_mag=offsets,bounds=bounds,absolute_AVIS_stretch=[0,.18],calibration=dict(slope_AVIS_per_SFD=slope,intercept_AVIS=intercept,VMPZ_absolute='AVIS / 2.108',residual='(AVIS - intercept) / slope - SFD',CSFD='CSFD - SFD; original SFD calibration'),residual_stretches_EBV=[[-.006,.006],[-.002,.002]],support_pixels=[int(x.sum()) for x in masks],common_pixels=int(common.sum()))

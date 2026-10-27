@@ -28,6 +28,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 IMAGES = HERE.parent / 'images'
 SCRATCH = ROOT / 'results/scratch/gc8'
+NB = SCRATCH / 'newbins'  # Cycle 2 on the 26 Oct official-bin catalogues
 TEMPLATES = [('extinction_vis', 'GALACTICEXTINCTION_VIS', 'Extinction'),
              ('exposures_vis', 'EXPOSURES_VIS', 'Exposures'),
              ('noise_vis', 'NOISE_VIS', 'Noise'), ('psf_vis', 'PSF_VIS', 'PSF'),
@@ -90,7 +91,7 @@ def family():
 
 def heatmaps():
     fam = family()
-    b = {c: read(SCRATCH / f'shear-b/cycle{c}.json')['tests'] for c in (1, 2)}
+    b = {1: read(SCRATCH / 'shear-b/cycle1.json')['tests'], 2: read(NB / 'shear-b/cycle2.json')['tests']}
     for cycle in ('c1', 'c2'):
         for shear in ('lensmc', 'metacal'):
             for cmb in ('spt', 'act'):
@@ -118,13 +119,13 @@ def heatmaps():
                                 P[i+6, col] = qtest(fam[f'{stem}/l{i}'])
                                 P[i+12, col] = qtest(b[2][f'{name}/l{i}']['B'])
                             else:
-                                m = read(SCRATCH / f'metacal/{stem}_bin{i+1}.json')['components']
+                                m = read(NB / f'metacal/{stem}_bin{i+1}.json')['components']
                                 for comp, offset in [('E', 6), ('B', 12)]:
                                     P[i+offset, col] = qtest(m[comp])
                         if cmb == 'spt':
                             P[18, col] = qtest(fam[f'{stem}/kappa'])
                         else:
-                            P[18, col] = qtest(read(SCRATCH / f'kappa_common/tr1_v2_act/{stem}_full.json'))
+                            P[18, col] = qtest(read(NB / f'kappa_common/tr1_v2_act/{stem}_full.json'))
                 full = P.copy()
                 for mode in ('e', 'b'):
                     P = full[list(range(6)) + list(range(6,12) if mode=='e' else range(12,18)) + [18]]
@@ -138,7 +139,7 @@ def heatmaps():
                             ax.add_patch(Rectangle((j-.5, i-.5), 1, 1, facecolor='#f3f5f8', edgecolor=RULE, hatch='///'))
                             text = 'not run'
                         else:
-                            text = (f'{p:.2f}' if p >= .01 else (r'$<10^{-6}$' if p < 1e-6 else f'{p:.0e}'))
+                            text = (f'{p:.2f}' if p >= .01 else (r'$<10^{-6}$' if p < 1e-6 else (lambda m, e: rf'${m}\times10^{{{e}}}$')(*f'{p:.0e}'.split('e'))))
                         ax.text(j, i, text, ha='center', va='center', fontsize=28,
                                 color='white' if np.isfinite(p) and p < 1e-4 else INK)
                     labels = LABELS[:6] + ([rf'$\gamma_{{B{i}}}$' for i in range(1, 7)] if mode=='b' else LABELS[6:12]) + LABELS[-1:]
@@ -150,7 +151,7 @@ def heatmaps():
                         ax.axhline(y, color=RULE, lw=2)
                     for sp in ax.spines.values():
                         sp.set_visible(False)
-                    fig.text(.12, .985, r'$\chi^2$ PTE vs zero · darker = smaller', va='top', fontsize=25)
+                    fig.text(.12, .985, r'$\chi^2$ PTE vs zero, darker = smaller', va='top', fontsize=25)
                     save(fig, f'heatmap_{cycle}_{shear}_{cmb}_{mode}')
 
 def row(r, cycle, tracer, template='vmpz', visibility='raw'):

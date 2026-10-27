@@ -1,0 +1,24 @@
+<section data-layout="figure" data-variant-axes="cycle shear cmb mode">
+<h2>Extinction carries the clearest E-mode signal</h2>
+<figure><img src="images/gc8r2_heatmap_c1_lensmc_spt_e.png" data-alt='{"c1|lensmc|spt|b": "images/gc8r2_heatmap_c1_lensmc_spt_b.png", "c1|lensmc|act|e": "images/gc8r2_heatmap_c1_lensmc_act_e.png", "c1|lensmc|act|b": "images/gc8r2_heatmap_c1_lensmc_act_b.png", "c1|metacal|spt|e": "images/gc8r2_heatmap_c1_metacal_spt_e.png", "c1|metacal|spt|b": "images/gc8r2_heatmap_c1_metacal_spt_b.png", "c1|metacal|act|e": "images/gc8r2_heatmap_c1_metacal_act_e.png", "c1|metacal|act|b": "images/gc8r2_heatmap_c1_metacal_act_b.png", "c2|lensmc|spt|e": "images/gc8r2_heatmap_c2_lensmc_spt_e.png", "c2|lensmc|spt|b": "images/gc8r2_heatmap_c2_lensmc_spt_b.png", "c2|lensmc|act|e": "images/gc8r2_heatmap_c2_lensmc_act_e.png", "c2|lensmc|act|b": "images/gc8r2_heatmap_c2_lensmc_act_b.png", "c2|metacal|spt|e": "images/gc8r2_heatmap_c2_metacal_spt_e.png", "c2|metacal|spt|b": "images/gc8r2_heatmap_c2_metacal_spt_b.png", "c2|metacal|act|e": "images/gc8r2_heatmap_c2_metacal_act_e.png", "c2|metacal|act|b": "images/gc8r2_heatmap_c2_metacal_act_b.png"}' alt="Thirteen tracer rows crossed with six templates; shear E or B selected by toggle. Hatched means not run.">
+<span class="source">TR1 Cycle 1 / Cycle 2 (official bins) · Gaussian PTEs, not mock-calibrated</span></figure>
+<aside class="notes">
+<ul class="skim">
+<li><strong>Cells</strong> — zero-null $\chi^2$ PTE of one 15-band cross-spectrum (tracer × template), with its full Gaussian NaMaster block. Darker = smaller; below $10^{-6}$ saturates.</li>
+<li><strong>Extinction</strong> fails in every δ bin, γE4–γE6 and κ, in both cycles: the LSS it carries.</li>
+<li><strong>Depth</strong> (exposures, noise, PSF) flags δ1 in Cycle 2: PTE $3\times10^{-4}$, $1.5\times10^{-3}$, $6.5\times10^{-4}$.</li>
+<li><strong>Shear B</strong> (toggle) is clean: LensMC min 0.079 (extinction × γB6); Cycle-2 MetaCal has one marginal cell, zodiacal × γB1 0.027.</li>
+</ul>
+<details><summary>Reading the table</summary>
+<p>These are correlated marginal tests, not family significances; with 78 cells per variant a few PTEs below 0.05 are expected by chance. The density rows use visibility-corrected maps and do not change with the shear or CMB toggle. Cycle-1 MetaCal B crosses were not run and are hatched.
+Cycle-2 extinction E: LensMC bins 1–6 PTE $7\times10^{-4}$, 0.19, 0.09, $3\times10^{-8}$, $5\times10^{-21}$, $10^{-57}$; MetaCal $3.2\times10^{-4}$, 0.34, 0.20, $2.2\times10^{-5}$, $2.1\times10^{-15}$, $1.9\times10^{-38}$. E fails and B passes, which is what LSS in the template predicts.</p>
+</details>
+<details><summary>κ and footprint</summary>
+<p>The κ test uses the full delivered CMB mask for κ and the template support for the template. On the pre-26-Oct bins, restricting κ to the common footprint moved extinction χ² 57.7 → 53.0 (SPT) and 32.6 → 31.2 (ACT), still nonzero; that control has not been rerun on the official bins.</p>
+</details>
+<details><summary>Sources</summary>
+<p>Cycle 1: results/{tr1,tr1_act,tr1_metacal,tr1_act_metacal}/tr1_systematics/*.tar; results/scratch/napoli/visibility_check/*.json; results/scratch/gc8/shear-b/cycle1.json.
+Cycle 2 (26 Oct official bins): results/tr1_v2/systematics/gaussian_null_family.tar (c0610b7); results/scratch/gc8/newbins/{shear-b/cycle2.json, metacal/*_bin*.json, kappa_common/tr1_v2_act/*_full.json}. Figures: make_cycles.py heatmaps().</p>
+</details>
+</aside>
+</section>

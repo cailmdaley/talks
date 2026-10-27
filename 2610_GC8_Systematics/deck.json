@@ -49,8 +49,9 @@
     },
     {
       "title": "Backup",
-      "outline": "The Cycle-1 window, the CSFD caveat and literature.",
+      "outline": "The PTE table, the Cycle-1 window, the CSFD caveat and literature.",
       "slides": [
+        "systematics-overview",
         "window-cycles",
         "sfd-csfd-gc-caveat",
         "literature"
