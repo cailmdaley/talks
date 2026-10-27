@@ -6,6 +6,7 @@
 #   bash 2610_SPT_CMBX/make_triangle.sh <path>/results/tr1_v2/likelihood_product/likelihood_input.tar
 # then rebuild the deck and run private/snapshot_systematics.cjs with prefix systematics_spt.
 set -euo pipefail
+source ~/loom/shell-functions.sh   # app: the cmbx container
 cd "$(dirname "$0")/private"
 app python make_systematics.py --cycle2 --only-cycle2 --likelihood-input "$1" --output systematics_spt.json
 app python render_systematics.py --even-bars --source systematics_spt.json --prefix systematics_spt
