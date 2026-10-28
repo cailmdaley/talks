@@ -1,71 +1,74 @@
 <section data-layout="figure">
   <h2>Timeline to the Euclid DR1 release</h2>
   <figure>
-    <svg viewBox="0 0 1712 760" role="img" aria-label="Timeline from October 2026 to June 2027, built up in four steps. SPT times Euclid analysis: TR1 chains now; DR1 chains from early December, ramping up through March; Euclid internal review in April and May; submission in June 2027. DR1 data products: the DR1 shear catalogues reach the Euclid Consortium in early November; DR1-Foundation on 12 November; n(z) close to final at the end of November; the final catalogues, n(z) and m bias in February into March; unblinding at the end of March; public DR1 in June 2027.">
+    <svg viewBox="0 0 1712 760" role="img" aria-label="Timeline to the Euclid DR1 release. Left of the now line, in hand: the full TR1 product suite, the DR1 clustering catalogues and the TR1 chains. Then, in three steps: DR1 shear catalogues during November, DR1-Foundation on 12 November, n(z) close to final at the end of November and DR1 chains ramping up from December; the final selection, n(z) and m bias in February into March and unblinding at the end of March; Euclid internal review in April and May, public DR1 and submission in June 2027.">
       <defs>
         <!-- tapers for bars without a sharp start or end: masks in the bar's own box -->
         <linearGradient id="tl-taper-ramp"><stop offset="0" stop-color="#fff" stop-opacity="0.08"></stop><stop offset="1" stop-color="#fff"></stop></linearGradient>
         <linearGradient id="tl-taper-end"><stop offset="0" stop-color="#fff"></stop><stop offset="0.75" stop-color="#fff"></stop><stop offset="1" stop-color="#fff" stop-opacity="0"></stop></linearGradient>
+        <linearGradient id="tl-taper-both"><stop offset="0" stop-color="#fff" stop-opacity="0"></stop><stop offset="0.3" stop-color="#fff"></stop><stop offset="0.7" stop-color="#fff"></stop><stop offset="1" stop-color="#fff" stop-opacity="0"></stop></linearGradient>
         <mask id="tl-mask-ramp" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#tl-taper-ramp)"></rect></mask>
         <mask id="tl-mask-end" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#tl-taper-end)"></rect></mask>
+        <mask id="tl-mask-both" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#tl-taper-both)"></rect></mask>
       </defs>
 
-      <!-- month grid: 1 Oct 2026 at x=90, 179 px per month, 1 Jul 2027 at x=1701 -->
+      <!-- left of x=520: what is in hand now. Right: months, 1 Nov 2026 at x=520, 147.6 px per month, 1 Jul 2027 at x=1701 -->
       <g class="stroke-rule" stroke-width="2">
-        <path d="M90 70 V700"></path><path d="M269 70 V700"></path><path d="M448 70 V700"></path>
-        <path d="M627 70 V700"></path><path d="M806 70 V700"></path><path d="M985 70 V700"></path>
-        <path d="M1164 70 V700"></path><path d="M1343 70 V700"></path><path d="M1522 70 V700"></path>
-        <path d="M1701 70 V700"></path>
+        <path d="M668 70 V700"></path><path d="M815 70 V700"></path><path d="M963 70 V700"></path>
+        <path d="M1111 70 V700"></path><path d="M1258 70 V700"></path><path d="M1406 70 V700"></path>
+        <path d="M1553 70 V700"></path><path d="M1701 70 V700"></path>
       </g>
       <rect x="90" y="352" width="1611" height="62" class="fill-panel stroke-rule" stroke-width="3"></rect>
-      <path d="M627 342 V424" class="stroke-ink" stroke-width="4"></path>
+      <path d="M815 342 V424" class="stroke-ink" stroke-width="4"></path>
+      <text x="305" y="396" font-size="36" font-style="italic" text-anchor="middle" class="fill-muted">in hand</text>
       <g font-size="36" text-anchor="middle" class="fill-muted">
-        <text x="180" y="396">Oct 2026</text><text x="358" y="396">Nov</text><text x="537" y="396">Dec</text>
-        <text x="716" y="396">Jan 2027</text><text x="895" y="396">Feb</text><text x="1074" y="396">Mar</text>
-        <text x="1253" y="396">Apr</text><text x="1432" y="396">May</text><text x="1611" y="396">Jun</text>
+        <text x="594" y="396">Nov</text><text x="741" y="396">Dec</text><text x="889" y="396">Jan</text>
+        <text x="1037" y="396">Feb</text><text x="1184" y="396">Mar</text><text x="1332" y="396">Apr</text>
+        <text x="1480" y="396">May</text><text x="1627" y="396">Jun</text>
       </g>
-      <text x="90" y="46" font-size="38" font-weight="700" class="fill-accent">DR1 data products</text>
+      <text x="90" y="46" font-size="38" font-weight="700" class="fill-accent">Euclid data products</text>
       <text x="90" y="466" font-size="38" font-weight="700" class="fill-cobalt">SPT × Euclid analysis</text>
-      <path d="M211 70 V345 M211 486 V700" class="stroke-accent fill-none" stroke-width="4" stroke-dasharray="12 8"></path>
-      <text x="211" y="740" font-size="36" font-weight="700" text-anchor="middle" class="fill-accent">now</text>
+      <path d="M520 70 V345 M520 486 V700" class="stroke-accent fill-none" stroke-width="4" stroke-dasharray="12 8"></path>
+      <text x="520" y="740" font-size="36" font-weight="700" text-anchor="middle" class="fill-accent">now</text>
 
-      <!-- step 1, now: TR1 chains -->
+      <!-- in hand -->
+      <circle cx="120" cy="110" r="13" class="fill-accent"></circle>
+      <text x="144" y="122" font-size="38">TR1 full suite</text>
+      <circle cx="120" cy="190" r="13" class="fill-accent"></circle>
+      <text x="144" y="202" font-size="38">DR1 clustering</text>
+      <circle cx="120" cy="506" r="13" class="fill-cobalt"></circle>
+      <text x="144" y="518" font-size="38">TR1 chains</text>
+
+      <!-- step 1, Nov–Dec: DR1 shear sometime in November, DR1-Foundation, n(z) close to final, DR1 chains spin up -->
       <g class="fragment">
-        <circle cx="211" cy="506" r="13" class="fill-cobalt"></circle>
-        <text x="235" y="518" font-size="38">TR1 chains</text>
+        <circle cx="574" cy="100" r="13" class="fill-accent"></circle>
+        <text x="598" y="112" font-size="38">DR1-Foundation, 12 Nov</text>
+        <rect x="526" y="152" width="150" height="36" rx="10" class="fill-accent" mask="url(#tl-mask-both)"></rect>
+        <text x="690" y="182" font-size="38">DR1 shear</text>
+        <text x="644" y="252" font-size="38" text-anchor="end">n(z)</text>
+        <circle cx="668" cy="240" r="13" class="fill-accent"></circle>
+        <text x="692" y="252" font-size="38">close to final</text>
+        <rect x="650" y="554" width="485" height="36" rx="10" class="fill-cobalt" mask="url(#tl-mask-ramp)"></rect>
+        <text x="1153" y="584" font-size="38">DR1 chains</text>
       </g>
 
-      <!-- step 2, Nov–Dec: DR1 catalogues, DR1-Foundation, n(z) close to final, DR1 chains spin up -->
+      <!-- step 2, Feb–Mar: final products, unblinding -->
       <g class="fragment">
-        <circle cx="269" cy="170" r="13" class="fill-accent"></circle>
-        <text x="293" y="182" font-size="38">DR1 shear catalogues</text>
-        <circle cx="335" cy="100" r="13" class="fill-accent"></circle>
-        <text x="359" y="112" font-size="38">DR1-Foundation, 12 Nov</text>
-        <text x="424" y="252" font-size="38" text-anchor="end">n(z)</text>
-        <circle cx="448" cy="240" r="13" class="fill-accent"></circle>
-        <text x="472" y="252" font-size="38">close to final</text>
-        <rect x="430" y="554" width="570" height="36" rx="10" class="fill-cobalt" mask="url(#tl-mask-ramp)"></rect>
-        <text x="1018" y="584" font-size="38">DR1 chains</text>
+        <rect x="963" y="222" width="200" height="36" rx="10" class="fill-accent" mask="url(#tl-mask-end)"></rect>
+        <text x="1181" y="252" font-size="38">final selection, n(z), m bias</text>
+        <circle cx="1252" cy="310" r="13" class="fill-accent"></circle>
+        <text x="1228" y="322" font-size="38" text-anchor="end">unblinding, end of March</text>
       </g>
 
-      <!-- step 3, Feb–Mar: final products, unblinding -->
+      <!-- step 3, Apr–Jun: review, release, submission -->
       <g class="fragment">
-        <rect x="806" y="222" width="230" height="36" rx="10" class="fill-accent" mask="url(#tl-mask-end)"></rect>
-        <text x="1054" y="252" font-size="38">final catalogues, n(z), m bias</text>
-        <circle cx="985" cy="310" r="13" class="fill-accent"></circle>
-        <text x="961" y="322" font-size="38" text-anchor="end">unblinding, end of March</text>
-      </g>
-
-      <!-- step 4, Apr–Jun: review, release, submission -->
-      <g class="fragment">
-        <rect x="985" y="620" width="358" height="36" rx="10" class="fill-rule"></rect>
-        <text x="967" y="650" font-size="38" text-anchor="end">Euclid internal review</text>
-        <path d="M1349 638 H1611 V522" class="stroke-muted fill-none" stroke-width="4" stroke-dasharray="10 8"></path>
-        <text x="1477" y="618" font-size="34" text-anchor="middle" class="fill-muted">buffer</text>
-        <circle cx="1611" cy="100" r="13" class="fill-accent"></circle>
-        <text x="1587" y="112" font-size="38" text-anchor="end">public DR1</text>
-        <circle cx="1611" cy="506" r="13" class="fill-cobalt"></circle>
-        <text x="1587" y="518" font-size="38" text-anchor="end">submission</text>
+        <rect x="1258" y="620" width="295" height="36" rx="10" class="fill-rule"></rect>
+        <text x="1240" y="650" font-size="38" text-anchor="end">Euclid internal review</text>
+        <path d="M1559 638 H1627 V522" class="stroke-muted fill-none" stroke-width="4" stroke-dasharray="10 8"></path>
+        <circle cx="1627" cy="100" r="13" class="fill-accent"></circle>
+        <text x="1603" y="112" font-size="38" text-anchor="end">public DR1</text>
+        <circle cx="1627" cy="506" r="13" class="fill-cobalt"></circle>
+        <text x="1603" y="518" font-size="38" text-anchor="end">submission</text>
       </g>
     </svg>
     <span class="source">Euclid DR1 plan as presented at the Euclid WL-SWG meeting, Napoli, October 2026</span>

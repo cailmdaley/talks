@@ -1,20 +1,32 @@
 <section data-layout="figure-text" data-split="60">
   <h2>SPT-3G is tighter than ACT DR6 at small scales</h2>
   <figure>
-    <img src="images/spt_sigma_ratio.png" alt="Ratio of the ACT DR6 to SPT-3G per-bandpower error bar in the CMB-lensing crosses against multipole, measured on TR1 and scaled to the DR1 overlaps: crossing one at ell of about 200 on TR1 and 330 on DR1, then rising to 2.4 and 1.8 at ell of 2700">
+    <img src="images/spt_sigma_ratio.png" alt="Ratio of the ACT DR6 to SPT-3G per-bandpower error bar in the CMB-lensing crosses against multipole, measured on TR1 and scaled to the DR1 overlaps: crossing one at ell of about 220 on TR1, near one from 550 to 1700 on DR1, and rising to 2.2 and 1.6 at ell of 2700">
   </figure>
   <div class="text">
     <ul>
-      <li>TR1: SPT-3G tighter from $\ell \approx 200$, ×2.4 at 2700</li>
-      <li>DR1: from $\ell \approx 330$, ×1.8 at 2700</li>
-      <li>ACT gains more of DR1: 1069 deg², against 353</li>
+      <li>TR1: from $\ell \approx 220$,<br>×2.2 at $\ell \approx 2700$</li>
+      <li>DR1: on par to $\ell \approx 1700$,<br>×1.6 at $\ell \approx 2700$</li>
+      <li>ACT gains more of DR1:<br>1069 deg² against 353</li>
     </ul>
-    <p class="source">TR1 Cycle 1 (v1.1) LensMC; SPT-3G Main plain GMV; ACT DR6 baseline</p>
+    <p class="source">Cycle 2 · PH-GMV against baseline κ</p>
   </div>
   <aside class="notes">
-    <p>The ratio of error bars, $\sigma_\mathrm{ACT}/\sigma_\mathrm{SPT}$, in the CMB-lensing cross-spectra, in the 15 NaMaster bandpowers from $\ell = 100$ to 3000. On TR1 it is measured: each σ is the square root of the diagonal of that survey's full NaMaster Gaussian covariance, the error bars of the data-vector slide. The twelve crosses (shear in six source bins × κ, galaxy density in six lens bins × κ) give the same ratio to within a few per cent, at most 10 % apart in one low-$\ell$ bandpower, because the CMB-lensing noise rather than the Euclid tracer sets it; the solid line is their mean. Only error bars enter, so the figure carries no measured amplitude.</p>
-    <p>The dashed DR1 line scales the TR1 ratio by the overlap areas, with σ ∝ (area)$^{-1/2}$ for each survey: ratio$_\mathrm{DR1}$ = ratio$_\mathrm{TR1}\times\sqrt{(A^\mathrm{TR1}_\mathrm{ACT}/A^\mathrm{DR1}_\mathrm{ACT})(A^\mathrm{DR1}_\mathrm{SPT}/A^\mathrm{TR1}_\mathrm{SPT})} = 0.751\times$ ratio$_\mathrm{TR1}$. ACT DR6 gains more of DR1 than SPT-3G Main does: its effective overlap grows from 222 to 1069 deg², against 130 to 353 deg² for SPT-3G Main (effective areas: the TR1 weak-lensing coverage the data vectors are measured on, and the DR1 VMPZ coverage of the footprint slide). The scaling assumes the same noise per mode and ignores mode coupling. It uses SPT-3G Main alone: the Summer fields add 751 deg² of DR1 overlap outside Main (Main and Summer together 1104 deg², more than ACT DR6), at higher lensing noise than Main, so they are not in this projection.</p>
-    <p>ACT DR6 is tighter at the largest scales, where its larger overlap gives more modes: by up to about 7 % below $\ell \approx 180$ on TR1, and by about 30 % below $\ell \approx 250$ on DR1, where the crossover moves from $\ell \approx 200$ to about 330. Above it SPT-3G is tighter, by about 1.5 (TR1) and 1.1–1.2 (DR1) from $\ell \approx 550$ to 1700, and 2.4 (TR1) and 1.8 (DR1) at $\ell \approx 2700$, where the depth and resolution of the Main field dominate. On TR1 the κ-only blinded posteriors of the results slide give $\sigma(S_8)$ 0.056 with SPT-3G and 0.069 with ACT DR6.</p>
-    <p>Figure: <code>2610_SPT_CMBX/make_sigma_ratio.py</code>, from the export behind the data-vector slide.</p>
+    <ul class="skim">
+      <li><strong>The curve</strong> — $\sigma_\mathrm{ACT}/\sigma_\mathrm{SPT}$ per bandpower in the CMB-lensing crosses; above 1, SPT-3G's error bar is smaller.</li>
+      <li><strong>Solid</strong> — measured on TR1: SPT-3G is tighter from $\ell \approx 220$, by 1.3–1.4 from $\ell \approx 550$ to 1700 and 2.2 at $\ell \approx 2700$.</li>
+      <li><strong>Dashed</strong> — scaled to the DR1 overlaps: ACT DR6 gains more area, so the two are even from $\ell \approx 550$ to 1700 and SPT-3G is 1.6× tighter at $\ell \approx 2700$.</li>
+      <li><strong>Only error bars</strong> enter: the figure carries no measured amplitude.</li>
+    </ul>
+    <details><summary>What is plotted</summary>
+    <p>Each σ is the square root of the diagonal of that survey's full NaMaster Gaussian covariance, the error bars of the data-vector slide, in the 15 bandpowers from $\ell = 100$ to 3000. The twelve crosses (shear in six source bins × κ, galaxy density in six lens bins × κ) give nearly the same ratio, because the CMB-lensing noise rather than the Euclid tracer sets it; the solid line is their mean.</p>
+    <p>The dashed line scales the TR1 ratio by the overlap areas, with σ ∝ (area)$^{-1/2}$ for each survey: ratio$_\mathrm{DR1}$ = ratio$_\mathrm{TR1}\times\sqrt{(A^\mathrm{TR1}_\mathrm{ACT}/A^\mathrm{DR1}_\mathrm{ACT})(A^\mathrm{DR1}_\mathrm{SPT}/A^\mathrm{TR1}_\mathrm{SPT})} = 0.751\times$ ratio$_\mathrm{TR1}$. ACT DR6's effective overlap grows from 222 to 1069 deg², SPT-3G Main's from 130 to 353 deg² (TR1 weak-lensing coverage and DR1 VMPZ coverage, as on the footprint slide). The scaling assumes the same noise per mode and ignores mode coupling. It uses SPT-3G Main alone: the Summer fields add 751 deg² of DR1 overlap outside Main (Main and Summer together 1104 deg², more than ACT DR6), at higher lensing noise, and are not in this projection.</p>
+    </details>
+    <details><summary>Against the Cycle-1 version</summary>
+    <p>The Cycle-1 version of this figure (plain GMV) had SPT-3G 2.4× tighter at $\ell \approx 2700$ on TR1 and 1.8× projected to DR1. The Cycle-2 baseline is the bias- and profile-hardened GMV reconstruction, which trades some reconstruction noise for robustness to foreground biases, so a smaller ratio is expected (inferred, not separated from the Cycle-2 footprint change). With κ alone, the blinded TR1 posteriors give σ($S_8$) 0.052 with SPT-3G and 0.058 with ACT DR6.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>σ from the Cycle-2 TR1 likelihood inputs of both surveys (the data-vector slide's export, dv_vector_spt.json). Figure: 2610_SPT_CMBX/make_sigma_ratio.py.</p>
+    </details>
   </aside>
 </section>

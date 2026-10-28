@@ -359,11 +359,14 @@ def overview(pairs, title, glyphs, segs):
         text_at(fig, col_x(c) + CW / 2, row_y(12) + KH + 6, f"${sym(t)}$", W, H, ha="center",
                 va="top", fontsize=fs_name)
     x0 = col_x(3) + 30
-    text_at(fig, x0, T0 + 4, title, W, H, ha="left", va="top", fontsize=fs_name + 3)
+    dy = 0
+    if title:
+        text_at(fig, x0, T0 + 4, title, W, H, ha="left", va="top", fontsize=fs_name + 3)
+        dy = 34
     nb = sum(len(p["ell"]) for p in pairs.values())
-    text_at(fig, x0, T0 + 38, rf"$\ell C_\ell$ of 90 spectra, {nb} bandpowers", W, H,
+    text_at(fig, x0, T0 + 4 + dy, rf"$\ell C_\ell$ of 90 spectra, {nb} bandpowers", W, H,
             ha="left", va="top", fontsize=fs_name - 2, color=MUTED)
-    key(fig, x0, T0 + 78, fs_name - 2, W, H)
+    key(fig, x0, T0 + 44 + dy, fs_name - 2, W, H)
     return svg_of(fig, W, H, glyphs)
 
 
@@ -404,8 +407,9 @@ def near(pairs, title, glyphs, segs):
                 fontsize=fs + 2)
         # title and key at the top of this half's view
         left = nx(col_x(6 * h))
-        text_at(fig, left, 40, title, fw, fh, ha="left", va="top", fontsize=fs + 3)
-        key(fig, left, 96, fs - 1, fw, fh)
+        if title:
+            text_at(fig, left, 40, title, fw, fh, ha="left", va="top", fontsize=fs + 3)
+        key(fig, left, 96 if title else 48, fs - 1, fw, fh)
     return svg_of(fig, fw, fh, glyphs)
 
 
@@ -448,6 +452,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--source", default=SRC, help="data JSON from make_dv_vector.py")
     ap.add_argument("--output", default=OUT)
+    ap.add_argument("--no-title", action="store_true",
+                    help="omit the release/shear/CMB title line (the slide states them)")
     args = ap.parse_args()
     src = json.load(open(args.source))
     labels = src.get("fiducial_label", FID_LABEL)
@@ -460,7 +466,7 @@ def main():
     for vk, pairs in src["variants"].items():
         shear, cmb = vk.split("|")
         FID_LABEL = labels.get(vk, "fiducial model") if isinstance(labels, dict) else labels
-        title = f"{release} {src['shears'][shear]} $\\times$ {src['cmbs'][cmb]}, blinded"
+        title = "" if args.no_title else f"{release} {src['shears'][shear]} $\\times$ {src['cmbs'][cmb]}, blinded"
         lay = dict(over=overview(pairs, title, glyphs, segs), near=near(pairs, title, glyphs, segs))
         det = {}
         for (r, c), k in cells.items():

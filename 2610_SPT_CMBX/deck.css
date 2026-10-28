@@ -58,8 +58,8 @@
   pointer-events: none;
 }
 
-[data-preliminary="very"] .slide:not(.detail) > .foot::after { content: "Very preliminary (TR1 Cycle 1)"; }
-[data-preliminary="cycle2"] .slide:not(.detail) > .foot::after { content: "Preliminary (TR1 Cycle 2)"; }
+[data-preliminary="very"] .slide:not(.detail) > .foot::after { content: "Very preliminary"; }
+[data-preliminary="cycle2"] .slide:not(.detail) > .foot::after { content: "Preliminary"; }
 .slide .prelim { color: #B3261E; }
 
 /* a red highlight box, for the one row a slide is about */

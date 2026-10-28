@@ -3,7 +3,7 @@
   "author": "Cail Daley",
   "venue": "SPT lensing analysis call",
   "date": "2026-10-29",
-  "description": "The SPT × Euclid 6×2pt key-project paper for SPT-3G: the overlap, the TR1 analysis and first blinded posteriors, the covariance plans and the data products needed from SPT, open questions, Euclid external-collaborator access, and DR2.",
+  "description": "The SPT × Euclid 6×2pt key-project paper for SPT-3G: the overlap, the MoU project and timeline, the KP2-3 pipeline and its mock covariance plans, the blinded TR1 data vector and first posteriors, where SPT-3G is tighter than ACT DR6, DR2, and how to take part through Euclid external-collaborator status.",
   "footer": "Cail Daley · Euclid × SPT-3G 6×2pt · October 2026",
   "theme": "euclid",
   "css": "deck.css",
@@ -29,35 +29,34 @@
     },
     {
       "title": "SPT × Euclid",
-      "outline": "The overlap with Euclid, the Euclid–SPT MoU project, the DR1 timeline, the CMBX key projects and the KP2-3 papers, the SPT × Euclid paper among them.",
+      "outline": "The overlap with Euclid, the Euclid–SPT MoU project, the DR1 timeline, the CMBX key projects, the KP2-3 papers and the pipeline they share.",
       "slides": [
         "footprint",
         "mou",
         "timeline",
         "kp-leads",
-        "kp-3"
+        "kp-3",
+        "pipeline"
       ]
     },
     {
-      "title": "The TR1 analysis and where it goes",
-      "outline": "The pipeline, its validation on GLASS mocks, Muir-style blinding, the blinded TR1 × SPT-3G data vector, the first blinded posteriors, where SPT-3G is tighter than ACT DR6, and Euclid DR2's overlap with SPT-3G.",
+      "title": "Simulations and covariance",
+      "outline": "The FLASK mock covariance, not yet in the pipeline; its ACT and Planck-like matrices; two ways to put SPT-3G in it.",
       "slides": [
-        "pipeline",
+        "kp-3-sims",
+        "kp-3-sims-cov",
+        "cov-routes"
+      ]
+    },
+    {
+      "title": "TR1 × SPT-3G",
+      "outline": "Pipeline validation on GLASS mocks, the blinded TR1 data vector, the first blinded posteriors, where SPT-3G is tighter than ACT DR6, and Euclid DR2's overlap with SPT-3G.",
+      "slides": [
         "mocks",
-        "blind-rehearsal",
         "dv-vector",
         "chains",
         "spt-vs-act",
         "dr2"
-      ]
-    },
-    {
-      "title": "The covariance plans",
-      "outline": "The FLASK mock covariance, not yet in the pipeline; the ways to put SPT-3G and the other CMB surveys in it; the FLASK covariance itself.",
-      "slides": [
-        "kp-3-sims",
-        "cov-routes",
-        "kp-3-sims-cov"
       ]
     },
     {
@@ -76,8 +75,9 @@
     },
     {
       "title": "Backup",
-      "outline": "The data products needed from SPT, the systematics-template crosses, and the FLASK mean spectra.",
+      "outline": "The blinding rehearsal on a mock, the data products needed from SPT, the systematics-template crosses, and the FLASK mean spectra.",
       "slides": [
+        "blind-rehearsal",
         "spt-needs",
         "systematics-triangle",
         "kp-3-sims-spectra"
