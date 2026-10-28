@@ -39,26 +39,25 @@
       ]
     },
     {
-      "title": "The TR1 analysis",
-      "outline": "The pipeline, its validation on GLASS mocks, Muir-style blinding, the blinded TR1 × SPT-3G data vector and its systematics-template crosses, what SPT-3G adds over ACT DR6, and the first blinded posteriors.",
+      "title": "The TR1 analysis and where it goes",
+      "outline": "The pipeline, its validation on GLASS mocks, Muir-style blinding, the blinded TR1 × SPT-3G data vector, the first blinded posteriors, where SPT-3G is tighter than ACT DR6, and Euclid DR2's overlap with SPT-3G.",
       "slides": [
         "pipeline",
         "mocks",
         "blind-rehearsal",
         "dv-vector",
-        "systematics-triangle",
+        "chains",
         "spt-vs-act",
-        "chains"
+        "dr2"
       ]
     },
     {
       "title": "The covariance plans",
-      "outline": "The FLASK mock covariance, not yet in the pipeline; the ways to put SPT-3G and the other CMB surveys in it; the FLASK covariance itself; and the data products needed from SPT.",
+      "outline": "The FLASK mock covariance, not yet in the pipeline; the ways to put SPT-3G and the other CMB surveys in it; the FLASK covariance itself.",
       "slides": [
         "kp-3-sims",
         "cov-routes",
-        "kp-3-sims-cov",
-        "spt-needs"
+        "kp-3-sims-cov"
       ]
     },
     {
@@ -69,17 +68,18 @@
       ]
     },
     {
-      "title": "Looking forward and summary",
-      "outline": "Euclid DR2 will overlap well with SPT-3G; the talk in five lines.",
+      "title": "Summary",
+      "outline": "The talk in five lines.",
       "slides": [
-        "dr2",
         "summary"
       ]
     },
     {
       "title": "Backup",
-      "outline": "The FLASK mean spectra.",
+      "outline": "The data products needed from SPT, the systematics-template crosses, and the FLASK mean spectra.",
       "slides": [
+        "spt-needs",
+        "systematics-triangle",
         "kp-3-sims-spectra"
       ]
     }
