@@ -8,16 +8,29 @@
     <img class="fragment" src="images/spt_footprint_5_spt_summer.png" alt="Euclid DR1 and TR1 with the Planck PR4, ACT DR6, SPT-3G Main and SPT-3G Summer lensing masks, Summer drawn only outside Main">
   </figure>
   <aside class="notes">
-    <p>Sources: the Euclid DR1 effective coverage (VMPZ R2, August 2025) and the TR1 weak-lensing coverage; the CMB areas are effective overlaps with DR1.</p>
-    <p>The blue regions are the Euclid DR1 effective coverage: the DR1_R2 VMPZ weak-lensing effective-coverage map (August 2025), restricted to the 8389 tiles LE3-WL lists as valid for DR1 (of 8964 wide-survey tiles), seen around the south (left) and north (right) celestial poles. Each pixel holds the fraction of it that is effectively covered; the map needs VIS, NIR and ground-based bands together, so it is smaller than the area with VIS mosaics. The blue is drawn wherever the coverage is above zero. The map holds only wide-survey tiles, so all of it is shown: the two main regions plus the smaller fields around the north ecliptic pole and near the SPT field.</p>
-    <p>Every number on the slide is an effective area, the sum of coverage fraction times pixel area. DR1 covers 1589 deg², 1229 in the south and 360 in the north. The CMB lensing footprints arrive one at a time, and the legend gives each one's effective overlap with DR1: Planck PR4 1504 deg², nearly all of DR1 in both hemispheres; ACT DR6 (baseline lensing mask) 1069 deg², all in the south; SPT-3G Main, the 1500 deg² winter field, 353 deg² on the southern side of the DR1 south region, partly inside ACT; SPT-3G Summer, counted only outside Main, 751 deg². The north is seen by Planck alone.</p>
-    <p>Both panels are Lambert azimuthal equal-area projections centred on their pole, at the same scale, so drawn areas compare directly. Both have north up and east left, as on the sky, and share one vertical great circle (RA 30° above the south pole, RA 210° below the north pole), so RA increases to the left in both. Where a CMB mask boundary crosses DR1, its outline is drawn over the blue in that survey's colour; outlines follow only each mask's outer boundary, and holes smaller than 10 deg², such as point-source cuts, are not outlined.</p>
+    <ul class="skim">
+      <li><strong>Blue</strong> — the Euclid DR1 effective coverage around the south (left) and north (right) celestial poles; the dark region is TR1, where every data vector in this talk is measured.</li>
+      <li><strong>Steps</strong> — the CMB-lensing footprints arrive one at a time; the legend gives each one's effective overlap with DR1 in deg².</li>
+      <li><strong>Projection</strong> — equal-area at one scale in both panels, so drawn areas compare directly; north up, east left, as on the sky.</li>
+      <li><strong>Last step</strong> — SPT-3G Summer, drawn only outside Main; the lensing map analysed here is Main alone.</li>
+    </ul>
+    <details><summary>What is plotted</summary>
+    <p>The blue is the DR1_R2 VMPZ weak-lensing effective-coverage map (August 2025), restricted to the 8389 tiles LE3-WL lists as valid for DR1 (of 8964 wide-survey tiles). Each pixel holds the fraction of it that is effectively covered; the map needs VIS, NIR and ground-based bands together, so it is smaller than the area with VIS mosaics. The blue is drawn wherever the coverage is above zero. The map holds only wide-survey tiles, so all of it is shown: the two main regions plus the smaller fields around the north ecliptic pole and near the SPT field.</p>
+    <p>Both panels are Lambert azimuthal equal-area projections centred on their pole, at the same scale. Both have north up and east left and share one vertical great circle (RA 30° above the south pole, RA 210° below the north pole), so RA increases to the left in both. Where a CMB mask boundary crosses DR1, its outline is drawn over the blue in that survey's colour; outlines follow only each mask's outer boundary, and holes smaller than 10 deg², such as point-source cuts, are not outlined.</p>
     <p>Conventions: the drawn CMB footprints are mask pixels above 0.5 at the mask's native NSIDE 2048. An overlap sums the DR1 coverage fraction over pixels where the CMB mask is above zero, with the NSIDE 1024 coverage map upgraded to 2048. The maps are drawn at NSIDE 512.</p>
-      <p>On all 8964 R2 tiles the effective areas would be 1647 deg² for Euclid and 1559, 1094 and 369 deg² for the overlaps with Planck, ACT and SPT-3G Main; the valid-tile restriction costs about 4 %.</p>
-  <h3>SPT-3G Summer</h3>
-  <p>The last frame adds the SPT-3G Summer fields (summer-a and summer-b, the apodised boundary mask, 1812 deg² above 0.5), drawn and counted only where Main's mask is zero, so that the two SPT-3G areas add: 751 deg² of effective overlap with DR1 outside Main, more than twice Main's 353. Main and Summer together overlap DR1 by 1104 deg², more than ACT DR6's 1069. Summer as a whole, its apodised edge inside Main included, would be 814 deg². The lensing map used in this analysis is from Main alone.</p>
-  <h3>TR1, the data analysed now</h3>
-  <p>The dark region is Euclid TR1, the release the data vectors in this talk are measured on: its weak-lensing effective coverage, 286 deg², all inside DR1. Its effective overlap is 130 deg² with SPT-3G Main, 222 deg² with ACT DR6 (105 deg² with both) and 151 deg² with SPT-3G Summer outside Main; 281 of its 286 deg² lie inside Main or Summer, and all of the part ACT DR6 sees is also seen by SPT-3G.</p>
-  <p>Figure: <code>2610_SPT_CMBX/make_footprints.py</code>, adapted from the Napoli footprint script; TR1 coverage <code>inputs/euclid/masks/tr1_wl_coverage_south_nside2048.fits</code>.</p>
+    </details>
+    <details><summary>Numbers</summary>
+    <p>Every number on the slide is an effective area, the sum of coverage fraction times pixel area. DR1 covers 1589 deg², 1229 in the south and 360 in the north. Effective overlaps with DR1: Planck PR4 1504 deg², nearly all of DR1 in both hemispheres; ACT DR6 (baseline lensing mask) 1069 deg², all in the south; SPT-3G Main, the 1500 deg² winter field, 353 deg² on the southern side of the DR1 south region, partly inside ACT; SPT-3G Summer, counted only outside Main, 751 deg². The north is seen by Planck alone.</p>
+    <p>On all 8964 R2 tiles the effective areas would be 1647 deg² for Euclid and 1559, 1094 and 369 deg² for the overlaps with Planck, ACT and SPT-3G Main; the valid-tile restriction costs about 4 %.</p>
+    </details>
+    <details><summary>SPT-3G Summer</summary>
+    <p>The last frame adds the SPT-3G Summer fields (summer-a and summer-b, the apodised boundary mask, 1812 deg² above 0.5), drawn and counted only where Main's mask is zero, so that the two SPT-3G areas add: 751 deg² of effective overlap with DR1 outside Main, more than twice Main's 353. Main and Summer together overlap DR1 by 1104 deg², more than ACT DR6's 1069. Summer as a whole, its apodised edge inside Main included, would be 814 deg². The lensing map used in this analysis is from Main alone.</p>
+    </details>
+    <details><summary>TR1</summary>
+    <p>The dark region is Euclid TR1's weak-lensing effective coverage, 286 deg², all inside DR1. Its effective overlap is 130 deg² with SPT-3G Main, 222 deg² with ACT DR6 (105 deg² with both) and 151 deg² with SPT-3G Summer outside Main; 281 of its 286 deg² lie inside Main or Summer, and all of the part ACT DR6 sees is also seen by SPT-3G.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>Euclid DR1 effective coverage: DR1_R2 VMPZ (August 2025), valid-tile list from LE3-WL. TR1 coverage: inputs/euclid/masks/tr1_wl_coverage_south_nside2048.fits. Figure: 2610_SPT_CMBX/make_footprints.py, adapted from the Napoli footprint script.</p>
+    </details>
   </aside>
 </section>

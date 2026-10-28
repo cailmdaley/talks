@@ -23,18 +23,27 @@
     <li>SPT-constrained mocks for the SPT block, SPT-like for the crosses; best, SPT reconstructions of the ACT and Planck input sims</li>
   </ul>
   <aside class="notes">
-  <p>The FLASK covariance (previous slide, and its matrices on the next) can include SPT-3G in two ways, the same two it already uses for ACT DR6 (constrained) and Planck (Planck-like).</p>
-  <h3>Constrained on the existing SPT simulations</h3>
-  <p>The log-normal Euclid fields are drawn conditioned on the input κ of SPT's own lensing simulations, and the CMB-lensing field in each realization is SPT's reconstruction of that simulation. The reconstruction noise then carries everything the real pipeline does (observing strategy, filtering, masking, mean field, noise biases), so this is the most realistic route for the SPT block. It needs the input κ and the matched reconstructions of SPT's simulations.</p>
-  <h3>SPT-like, unconstrained</h3>
-  <p>Fully log-normal skies, with the CMB lensing reconstructed by a quadratic estimator run on simulated CMB with SPT-3G-like noise and beam. Running the estimator with SPT-, ACT- and Planck-like settings on the same skies gives a rudimentary cross-covariance between the three CMB surveys, which the constrained route cannot give unless the surveys' simulations share their inputs.</p>
-  <h3>Combining CMB surveys</h3>
-  <p>The three CMB-lensing surveys overlap on the sky, so their κ reconstructions share signal and partly share CMB and foregrounds. A joint SPT + ACT + Planck × Euclid analysis needs their cross-covariance, which neither survey's simulations give alone.</p>
-  <ul>
-  <li><strong>Rudimentary.</strong> On the unconstrained (SPT-like) route of the covariance slides, run the quadratic estimator with SPT-, ACT- and Planck-like noise, beam and masks on the same simulated skies: the realizations then share their inputs by construction.</li>
-  <li><strong>Hybrid.</strong> Use the realizations constrained on SPT's own simulations for the SPT block, where realism matters most (observing strategy, filtering), and the unconstrained SPT-like ones for the blocks between surveys.</li>
-  <li><strong>Best.</strong> If SPT ran its reconstruction on the same input simulations as ACT DR6 and Planck PR4, the cross-covariances would follow from matched seeds with each survey's real pipeline.</li>
-  </ul>
+    <ul class="skim">
+      <li><strong>Two routes</strong> — the same two the FLASK covariance already uses: constrained, as for ACT DR6, and unconstrained, as for the Planck-like set.</li>
+      <li><strong>Constrained</strong> needs SPT's simulated input κ with the matched reconstructions (backup: data products needed from SPT).</li>
+      <li><strong>Bottom</strong> — combining CMB surveys needs their cross-covariance, which neither survey's simulations give alone; three options below.</li>
+    </ul>
+    <details><summary>Constrained on the existing SPT simulations</summary>
+    <p>The log-normal Euclid fields are drawn conditioned on the input κ of SPT's own lensing simulations, and the CMB-lensing field in each realization is SPT's reconstruction of that simulation. The reconstruction noise then carries everything the real pipeline does (observing strategy, filtering, masking, mean field, noise biases), so this is the most realistic route for the SPT block. It needs the input κ and the matched reconstructions of SPT's simulations.</p>
+    </details>
+    <details><summary>SPT-like, unconstrained</summary>
+    <p>Fully log-normal skies, with the CMB lensing reconstructed by a quadratic estimator run on simulated CMB with SPT-3G-like noise and beam. Running the estimator with SPT-, ACT- and Planck-like settings on the same skies gives a rudimentary cross-covariance between the three CMB surveys, which the constrained route cannot give unless the surveys' simulations share their inputs.</p>
+    </details>
+    <details><summary>Combining CMB surveys</summary>
+    <p>The three CMB-lensing surveys overlap on the sky, so their κ reconstructions share signal and partly share CMB and foregrounds. A joint SPT + ACT + Planck × Euclid analysis needs their cross-covariance.</p>
+    <ul>
+      <li><strong>Rudimentary.</strong> On the unconstrained (SPT-like) route, run the quadratic estimator with SPT-, ACT- and Planck-like noise, beam and masks on the same simulated skies: the realizations then share their inputs by construction.</li>
+      <li><strong>Hybrid.</strong> Use the realizations constrained on SPT's own simulations for the SPT block, where realism matters most (observing strategy, filtering), and the unconstrained SPT-like ones for the blocks between surveys.</li>
+      <li><strong>Best.</strong> If SPT ran its reconstruction on the same input simulations as ACT DR6 and Planck PR4, the cross-covariances would follow from matched seeds with each survey's real pipeline.</li>
+    </ul>
+    </details>
+    <details><summary>Sources</summary>
     <p>Covariance workstream: Davide Luchina with Carlo Baccigalupi, Matteo Calabrese, Melita Carbone, Sandeep Haridasu and Pauline Vielzeuf (KP2-3).</p>
+    </details>
   </aside>
 </section>
