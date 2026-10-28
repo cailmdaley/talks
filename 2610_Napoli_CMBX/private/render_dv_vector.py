@@ -450,7 +450,7 @@ def main():
     ap.add_argument("--output", default=OUT)
     args = ap.parse_args()
     src = json.load(open(args.source))
-    FID_LABEL = src.get("fiducial_label", FID_LABEL)
+    labels = src.get("fiducial_label", FID_LABEL)
     release = src.get("release", "TR1")
     out = dict(blind=src["blind"], shears=src["shears"], cmbs=src["cmbs"], world=dict(w=W, h=H),
                detail=dict(w=DW, h=DH), views=VIEWS,
@@ -459,6 +459,7 @@ def main():
     cells, segs, axes = segments(list(src["variants"].values()))
     for vk, pairs in src["variants"].items():
         shear, cmb = vk.split("|")
+        FID_LABEL = labels.get(vk, "fiducial model") if isinstance(labels, dict) else labels
         title = f"{release} {src['shears'][shear]} $\\times$ {src['cmbs'][cmb]}, blinded"
         lay = dict(over=overview(pairs, title, glyphs, segs), near=near(pairs, title, glyphs, segs))
         det = {}

@@ -216,7 +216,7 @@ def load_cycle2(root, universe, earlier, index):
         except (OSError, tarfile.TarError, KeyError) as e:
             why = f"datavector_vs_theory unreadable ({e!r})"
     cov = np.asarray(payload["cov_all"])
-    pairs, cursor = {}, 0
+    pairs, cursor, ratios = {}, 0, []
     for k in payload["cls"]:
         n = len(payload["cls"][k]["cl"])
         idx = np.arange(cursor, cursor + n)
@@ -231,8 +231,12 @@ def load_cycle2(root, universe, earlier, index):
         if recs is not None:
             rec = recs[k]
             assert np.allclose(ell, rec["ell_eff"]) and rec["covariance_indices"] == idx.tolist()
-            assert np.allclose(sigma, rec["sigma_gaussian"], rtol=1e-12, atol=0)
-            assert np.array_equal(fit, np.asarray(rec["fit_mask"], bool)), (universe, k)
+            # the dvt quotes σ from likelihood_input_ssc (theory-fiducial Gaussian + SSC);
+            # the slide shows σ_G of the data-derived Gaussian covariance, so only report the ratio
+            ratios.append(np.asarray(rec["sigma_gaussian"], float) / sigma)
+            # the production cut is k_max-based at the run's own fiducial, so it can differ
+            # from the Cycle-1 validated bounds by a band; the slide draws the production one
+            fit = np.asarray(rec["fit_mask"], bool)
             theory, family = np.asarray(rec["theory_binned"], float), rec["family"]
         else:
             assert np.allclose(ell, earlier[k]["ell"], rtol=1e-3), (universe, k)
@@ -241,6 +245,9 @@ def load_cycle2(root, universe, earlier, index):
                         sigma=sigma, theory=theory, fit=fit)
     assert cov.shape == (cursor, cursor) and set(pairs) == set(index["order"])
     source = "cycle2" if recs is not None else "cycle1"
+    if ratios:
+        r = np.concatenate(ratios)
+        print(f"  {universe}: dvt sigma (Gaussian+SSC, theory fiducial) / sigma_G = {r.min():.2f}-{r.max():.2f}, median {np.median(r):.3f}")
     print(f"Cycle 2 {universe}: {len(pairs)} pairs, {cursor} bands, blinded {BLIND}; fiducial "
           + ("from its datavector_vs_theory" if recs is not None else f"from the Cycle-1 run ({why})"))
     return pairs, source
@@ -273,8 +280,11 @@ def main():
                 variants[f"{shear}|{cmb}"], sources[f"{shear}|{cmb}"] = packed(got[0]), got[1]
         out = {"blind": BLIND, "release": "TR1 Cycle 2", "source": f"{args.cycle2_root} tr1_v2 likelihood products",
                "fiducial_source": sources,
-               "fiducial_label": "fiducial model" if set(sources.values()) == {"cycle2"} else "fiducial (Cycle-1 run)",
-               "cut": "validated linear-bias cut, the export's per-pair ell bounds",
+               "fiducial_label": {vk: "fiducial model" if src == "cycle2" else "fiducial (Cycle-1 run)"
+                                  for vk, src in sources.items()},
+               "cut": {vk: "production linear-bias cut of its datavector_vs_theory" if src == "cycle2"
+                       else "validated linear-bias cut, the Cycle-1 export's per-pair ell bounds"
+                       for vk, src in sources.items()},
                "shears": SHEARS, "cmbs": CMBS, "variants": variants}
         text = json.dumps(out, separators=(",", ":"))
         open(args.output, "w").write(text)
