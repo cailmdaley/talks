@@ -1,6 +1,6 @@
 """SPT-3G vs ACT DR6: per-bandpower error-bar ratio sigma_ACT / sigma_SPT on the kappa crosses, TR1 and DR1.
 
-Reads the Napoli data-vector export (2610_Napoli_CMBX/private/dv_vector.json, LensMC variants), whose
+Reads the Napoli data-vector export (2610_Napoli_CMBX/private/dv_vector_spt.json, Cycle-2 LensMC variants), whose
 sig is sigma_G, the square root of the diagonal of each survey's full NaMaster Gaussian covariance, for
 the 12 kappa crosses (6 shear bins, 6 lens bins) in 15 bandpowers from ell = 100 to 3000. Only error
 bars enter, so the figure carries no measured amplitude and is blind-independent.
@@ -28,12 +28,14 @@ from matplotlib.lines import Line2D
 import numpy as np
 
 HERE = Path(__file__).resolve().parent
-DV = HERE.parent / '2610_Napoli_CMBX/private/dv_vector.json'
+DV = HERE.parent / '2610_Napoli_CMBX/private/dv_vector_spt.json'
 OUT = HERE.parent / 'images/spt_sigma_ratio.png'
 INK, MUTED = '#111418', '#535B67'
 SHADE = '#1D6C78'
 W_PX, H_PX, DPI = 2054, 1542, 200
-# effective overlaps with Euclid, deg²: TR1 WL coverage (the analysis footprint) and DR1 VMPZ R2 valid tiles (make_footprints.py)
+# Effective mask>0 overlaps: TR1 WL coverage and DR1 VMPZ R2 valid tiles
+# (make_footprints.py). The Cycle-2 118/201 deg² numbers are shear-mask
+# overlaps, not this footprint definition; no matching new measurement is recorded.
 AREA = {'tr1': {'act': 222.4, 'spt': 130.3}, 'dr1': {'act': 1069.4, 'spt': 353.2}}
 TR1_C, DR1_C = '#2E417C', '#B3261E'
 
@@ -62,7 +64,7 @@ def main():
     ax = fig.add_axes([0.14, 0.17, 0.80, 0.70])
     ax.axhspan(1, 2.8, color=SHADE, alpha=0.08, lw=0, zorder=0)
     ax.text(125, 2.55, 'SPT-3G tighter', color=SHADE, fontsize=30, va='center')
-    ax.text(125, 0.57, 'ACT DR6 tighter', color=MUTED, fontsize=30, va='center')
+    ax.text(650, 0.65, 'ACT DR6 tighter', color=MUTED, fontsize=30, va='center')
     ax.axhline(1, color=MUTED, lw=2.4, zorder=1)
     ratios = []
     for k in keys:
@@ -93,6 +95,16 @@ def main():
     print('scale', round(float(scale), 3))
     print('tr1', np.round(tr1, 2).tolist())
     print('dr1', np.round(dr1, 2).tolist())
+    for name, curve in [('TR1', tr1), ('DR1', dr1)]:
+        crossings = np.flatnonzero((curve[:-1] < 1) & (curve[1:] >= 1))
+        if len(crossings):
+            i = crossings[0]
+            cross = np.exp(np.interp(1, curve[i:i+2], np.log(ell[i:i+2])))
+            cross_text = f'{cross:.1f}'
+        else:
+            cross_text = 'no upward crossing in sampled range'
+        mid = (ell >= 550) & (ell <= 1712)
+        print(f'{name}: crossover ell={cross_text}; ell=550–1712 ratio={curve[mid].min():.3f}–{curve[mid].max():.3f}; ell={ell[-1]:.1f} ratio={curve[-1]:.3f}')
 
 
 if __name__ == '__main__':
