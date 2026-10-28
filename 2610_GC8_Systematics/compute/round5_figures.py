@@ -145,7 +145,7 @@ def rho_route():
   for n in [1,2,3]:
    fig,ax=r4.axes();fig.set_size_inches(17,5.7);fig.subplots_adjust(left=.08,right=.99,bottom=.17,top=.84);ax.set_ylabel(RHO_LABEL,fontsize=29);ax.set_ylim(lo-.015,hi+.015)
    for i,k in enumerate(st.TRACERS):
-    g=k[0]=='g';p=pred(cy,k);x=(0,.14,-.14) if g else ((-.07,.07,0) if p else (0,0,0))  # (measured, predicted, before visibility)
+    g=k[0]=='g';p=pred(cy,k);x=(0,.14,-.14)  # (measured, predicted, before visibility): fixed slots in every frame
     v=meas(cy,k);ax.errorbar(i+x[0],v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=BLUE,capsize=4,ms=9)
     if n>=2 and p:ax.errorbar(i+x[1],p['mean_rho_pred'],yerr=p['mean_rho_pred_error'],fmt='o',mfc='white',mew=2,color=BLUE,capsize=4,ms=9)
     if n>=3 and g:v=meas(cy,k,'raw');ax.errorbar(i+x[2],v['mean_rho'],yerr=v['mean_rho_error'],fmt='o',color=ORANGE,capsize=4,ms=9)
