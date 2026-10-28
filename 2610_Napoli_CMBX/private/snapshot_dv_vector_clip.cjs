@@ -1,7 +1,7 @@
 // Static frames of a dv-vector slide (fallback stack): the live SVG at each rest
 // state, on white at twice the displayed size, cut from a page screenshot clipped
-// to the svg.app-view box (element screenshots grab the wrong region on the
-// cineca headless shell).
+// to the svg.app-view box. captureBeyondViewport stays off: with it on, the
+// headless shell re-lays the page out and the clip lands on other slides.
 //
 //   node house/build.mjs 2610_SPT_CMBX --out $TMPDIR/site
 //   node 2610_Napoli_CMBX/private/snapshot_dv_vector_clip.cjs $TMPDIR/site/2610_SPT_CMBX/index.html dv_vector_spt
@@ -19,18 +19,22 @@ const stem = process.argv[3] || 'dv_vector';
   await p.waitForSelector('figure.app-live svg.app-view', { timeout: 120000 });
   await p.addStyleTag({ content: 'html, body, .reveal, .reveal .slides, .reveal section, .slide { background: #FFFFFF !important; } .slide > .variants { display: none !important; }' });
   for (let k = 0; k < 3; k++) {
-    await p.evaluate(k => {
-      const i = Reveal.getIndices(document.getElementById('dv-vector'));
-      Reveal.slide(i.h, 0, k - 1);
+    const at = await p.evaluate(async k => {
+      const sec = document.getElementById('dv-vector');
+      const i = Reveal.getIndices(sec);
+      Reveal.slide(i.h, i.v, k - 1);
+      for (let t = 0; t < 100 && Reveal.getCurrentSlide() !== sec; t++) await new Promise(r => setTimeout(r, 100));
       document.getAnimations().forEach(a => a.finish());
+      return { id: Reveal.getCurrentSlide().id, f: Reveal.getIndices().f };
     }, k);
-    await new Promise(r => setTimeout(r, 1200));
+    if (at.id !== 'dv-vector' || at.f !== k - 1) throw new Error(`landed on ${JSON.stringify(at)}, wanted dv-vector f=${k - 1}`);
+    await new Promise(r => setTimeout(r, 1500));
     const box = await p.evaluate(() => {
       const r = document.querySelector('#dv-vector figure.app-live svg.app-view').getBoundingClientRect();
       return { x: r.x, y: r.y, width: r.width, height: r.height };
     });
     const out = path.join(__dirname, `${stem}_${k + 1}.png`);
-    await p.screenshot({ path: out, clip: box });
+    await p.screenshot({ path: out, clip: box, captureBeyondViewport: false });
     console.log('wrote', out, JSON.stringify(box));
   }
   await b.close();
