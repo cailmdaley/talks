@@ -30,6 +30,9 @@ checked against each other and stamped with the same blind. Their validated cut 
 SPT export's per-pair ell bounds: the cut depends only on the lens bins (k_max chi at
 each lens bin's mean redshift), so it carries over to any CMB map, and the bands'
 ell_eff are asserted equal before it is applied.
+A MetaCal variant on Cycle 2 has no reference run of its own: it borrows the LensMC universe on
+the same CMB map (BORROWED), whose n(z), lens and kappa windows it is asserted to share, so the
+curve differs from its own only through the shear windows.
 Run in the cmbx container:
   app python private/make_dv_vector.py
 """
@@ -253,6 +256,58 @@ def load_cycle2(root, universe, earlier, index):
     return pairs, source
 
 
+# a Cycle-2 shear-method variant with no reference run of its own -> the LensMC universe on the same
+# CMB map whose reference curve and production cut it borrows (same n(z), lens and kappa windows)
+BORROWED = {("metacal", "act"): ("tr1_v2_act_metacal", "tr1_v2_act")}
+
+
+def load_borrowed(root, universe, ref_universe, ref_pairs):
+    """A Cycle-2 universe that differs from ref_universe only in its shear catalogue: data and
+    sigma_G from its own likelihood_input; reference curve and production cut from ref_pairs
+    (ref_universe's datavector_vs_theory). Asserted: same blind, same n(z) file, same pairs and
+    bands, lens and kappa field windows equal to the reference's (only the shear ones differ).
+    None when its likelihood_input is not there."""
+    base, ref = f"{root}/results/{universe}/likelihood_product", f"{root}/results/{ref_universe}/likelihood_product"
+    like = f"{base}/likelihood_input.tar"
+    if not os.path.exists(like):
+        print(f"Cycle 2 {universe}: no likelihood_input under {root}, left out")
+        return None
+    def payload_of(path):
+        with tarfile.open(path) as tar:
+            member = next(m for m in tar.getmembers()
+                          if m.name.endswith(".pkl") and not m.name.endswith("_dndz.pkl"))
+            return pickle.load(tar.extractfile(member))
+    payload, refload = payload_of(like), payload_of(f"{ref}/likelihood_input.tar")
+    assert BLIND in json.dumps(payload["metadata"].get("blind"), default=str), universe
+    assert payload["metadata"]["covariance"]["method"] == "namaster_gaussian"
+    assert payload["metadata"]["covariance"]["full"] is True
+    assert open(f"{base}/likelihood_dndz.pkl", "rb").read() == open(f"{ref}/likelihood_dndz.pkl", "rb").read(), \
+        f"{universe}: n(z) differs from {ref_universe}'s, its reference curve does not carry over"
+    fields, reff = payload["metadata"]["fields"], refload["metadata"]["fields"]
+    shear = sorted(t for t in fields if t.startswith("l"))
+    for t in fields:
+        if t not in shear:
+            assert fields[t]["sha256"] == reff[t]["sha256"], f"{universe} {t}: window differs from {ref_universe}'s"
+    assert list(payload["cls"]) == list(refload["cls"]) and set(payload["cls"]) == set(ref_pairs)
+    cov = np.asarray(payload["cov_all"])
+    pairs, cursor = {}, 0
+    for k in payload["cls"]:
+        n = len(payload["cls"][k]["cl"])
+        idx = np.arange(cursor, cursor + n)
+        cursor += n
+        ell = np.asarray(payload["cls"][k]["leff"], float)
+        assert np.allclose(ell, ref_pairs[k]["ell"], rtol=1e-3), (universe, k)
+        sigma = np.sqrt(np.diag(cov)[idx])
+        assert np.allclose(sigma, np.sqrt(np.diag(payload["cls"][k]["cov"])), rtol=1e-12, atol=0)
+        r = ref_pairs[k]
+        pairs[k] = dict(family=r["family"], ell=ell, data=np.asarray(payload["cls"][k]["cl"], float),
+                        sigma=sigma, theory=r["theory"], fit=r["fit"])
+    assert cov.shape == (cursor, cursor)
+    print(f"Cycle 2 {universe}: {len(pairs)} pairs, {cursor} bands, blinded {BLIND}; shear windows "
+          f"{', '.join(shear)} its own, reference curve and cut from {ref_universe}")
+    return pairs
+
+
 def packed(pairs):
     return {k: {"t": tracers(k), "family": p["family"], "ell": sig(p["ell"], 5),
                 "cl": sig(p["data"]), "sig": sig(p["sigma"]), "th": sig(p["theory"]),
@@ -273,16 +328,26 @@ def main():
         earlier = {u: {k: dict(ell=np.asarray(p["ell"]), theory=np.asarray(p["th"]), family=p["family"])
                        for k, p in shown[vk].items()}
                    for vk, u in [("lensmc|spt", "tr1"), ("lensmc|act", "tr1_act")]}
-        variants, sources = {}, {}
+        variants, sources, loaded = {}, {}, {}
         for (shear, cmb), (universe, c1) in CYCLE2.items():
             got = load_cycle2(args.cycle2_root, universe, earlier[c1], index)
             if got is not None:
+                loaded[universe] = got[0]
                 variants[f"{shear}|{cmb}"], sources[f"{shear}|{cmb}"] = packed(got[0]), got[1]
+        for (shear, cmb), (universe, ref) in BORROWED.items():
+            if sources.get(f"lensmc|{cmb}") != "cycle2":
+                continue
+            got = load_borrowed(args.cycle2_root, universe, ref, loaded[ref])
+            if got is not None:
+                variants[f"{shear}|{cmb}"], sources[f"{shear}|{cmb}"] = packed(got), f"borrowed:{ref}"
         out = {"blind": BLIND, "release": "TR1 Cycle 2", "source": f"{args.cycle2_root} tr1_v2 likelihood products",
                "fiducial_source": sources,
-               "fiducial_label": {vk: "fiducial model" if src == "cycle2" else "fiducial (Cycle-1 run)"
+               "fiducial_label": {vk: "fiducial model" if src == "cycle2"
+                                  else "fiducial model (LensMC windows)" if src.startswith("borrowed:")
+                                  else "fiducial (Cycle-1 run)"
                                   for vk, src in sources.items()},
                "cut": {vk: "production linear-bias cut of its datavector_vs_theory" if src == "cycle2"
+                       else f"production linear-bias cut of {src[9:]}'s datavector_vs_theory" if src.startswith("borrowed:")
                        else "validated linear-bias cut, the Cycle-1 export's per-pair ell bounds"
                        for vk, src in sources.items()},
                "shears": SHEARS, "cmbs": CMBS, "variants": variants}

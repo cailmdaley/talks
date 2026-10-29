@@ -4,14 +4,15 @@
     <img src="private/dv_vector_spt_1.png" alt="Blinded TR1 shear cross SPT-3G CMB lensing bandpowers in six source bins: the source-bin half of the CMB lensing row">
     <img class="fragment" src="private/dv_vector_spt_2.png" alt="The same row panned to TR1 galaxy density cross SPT-3G CMB lensing in six lens bins">
     <img class="fragment" src="private/dv_vector_spt_3.png" alt="All 90 spectra of the blinded TR1 by SPT-3G 3x2pt plus CMB lensing data vector as a triangle of small panels, the CMB lensing row at its base">
-    <span class="source">Cycle 2, official bins · <span data-variant="lensmc|spt">Main field, PH-GMV κ</span><span data-variant="lensmc|act">baseline κ</span></span>
+    <span class="source">Cycle 2, official bins · <span data-variant="lensmc|spt">Main field, PH-GMV κ</span><span data-variant="lensmc|act">baseline κ</span><span data-variant="metacal|act">baseline κ · MetaCal ≈ 1.07 × LensMC per shear field, flat across source bins; neither carries a shear calibration</span></span>
   </figure>
   <aside class="notes">
     <ul class="skim">
       <li><strong>Steps</strong> — one row of the data vector, the crosses with SPT-3G κ: shear × κ in six source bins, then panned to galaxy density × κ in six lens bins, then pulled back to all 90 spectra with that row at the base.</li>
       <li><strong>Black curve</strong> — a fixed Planck 2018 reference through the bandpower windows, not a fit; the strip under each panel is $(\text{data} - \text{reference})/\sigma_G$ over $\pm 3$, shaded at $\pm 1$, a triangle on its edge marking a band beyond it.</li>
       <li><strong>5×2pt</strong> — the κ auto-spectrum, the sixth family, is not in this vector.</li>
-      <li><strong>Controls</strong> — a click on any panel opens it in detail (Escape closes); the variant control at the bottom right switches SPT-3G and ACT DR6, here and on every slide with both versions; MetaCal is shown dashed and stays inactive until its Cycle-2 products, in preparation, land.</li>
+      <li><strong>Controls</strong> — a click on any panel opens it in detail (Escape closes); the variant control at the bottom right switches SPT-3G and ACT DR6, here and on every slide with both versions; MetaCal opens with ACT DR6 (Cycle 2, landed 29 Oct); MetaCal × SPT-3G is still computing its covariance and stays dashed.</li>
+      <li><strong>MetaCal</strong> — against LensMC on the same ACT map, MetaCal shear runs about 7% high per shear field, flat across the six source bins: γκ and γδ ≈ 1.07, γγ ≈ 1.15 ≈ 1.07². No response or $m$ correction is applied to either, as in Cycle 1. Same sign as SHE-CAL's preliminary DR1 $m$ difference, larger in size.</li>
     </ul>
     <details><summary>What is plotted</summary>
     <p>Euclid TR1 v2 LensMC shear and galaxy density on the official tomographic bins (26 Oct catalogues), crossed with the SPT-3G Main winter CMB lensing map, bias- and profile-hardened GMV (PH-GMV, kGMVbhTTprf), or with the ACT DR6 baseline map. NaMaster bandpowers, $\ell C_\ell$ in 15 bands from $\ell = 100$ to 3000. Error bars are $\sigma_G$, the square root of the diagonal of the full NaMaster Gaussian covariance, data-derived; data and $\sigma_G$ are the rerun5 likelihood input (27 Oct), blinded (cmbx_dr1_a). The covariance the chains use (theory-fiducial Gaussian plus super-sample) has σ 0.88–1.64× $\sigma_G$, median 1.05, widest in the lowest bands.</p>
@@ -23,11 +24,15 @@
     <p>The two γκ crosses share most of their sky: of the 118 deg² where SPT-3G overlaps TR1 shear, 95 also lie under ACT DR6 (ACT ∩ TR1 is 201 deg²), so sample variance explains only part of the γκ difference, and a κ-side cause (SPT-3G normalization or transfer) is worth a look. The κ responses measured so far (ACT about 0.92 on TR1, SPT-3G about 0.95 from mask power alone) do not account for it. The test that separates them is γκ on the common 95 deg² with both maps.</p>
     <p>These amplitudes are blinded data against a fixed reference with no intrinsic alignments and placeholder biases, so they carry the blind's unknown cosmology shift and the missing IA; they say nothing about cosmology.</p>
     </details>
+    <details><summary>MetaCal × ACT DR6</summary>
+    <p>The MetaCal variant is the tr1_v2_act_metacal likelihood input (29 Oct), blinded (cmbx_dr1_a): the same n(z), lens and κ windows as LensMC × ACT DR6, only the shear catalogue and its windows differ. It has no reference run of its own yet, so its curve and cut are LensMC × ACT's (the curve differs from its own only through the shear windows). Fitting MetaCal against LensMC band by band with the shared reference as template, the amplitude ratio is 1.07 for γκ and γδ (medians over pairs) and 1.15 for γγ, i.e. 1.07² — a coherent shear amplitude, flat across source bins, with no isolated outlier band. Per band it is +0.1σ_G (γκ), +0.4σ_G (γδ) and +0.8σ_G (γγ) on average.</p>
+    <p>Neither shear method carries a multiplicative calibration here, matching Cycle 1. SHE-CAL's preliminary DR1 $m$ (LensMC −4.6%, MetaCal −1.8%) predicts MetaCal high by about 3%: same sign, smaller. A MetaCal-sample n(z) that differs under the shared tomographic n(z) is the other candidate. MetaCal's $\sigma_G$ is 1.1–1.2× LensMC's for γκ and γδ and about 1.4× for γγ: its shape noise $\sigma_\varepsilon$ is 0.45–0.51 against 0.36–0.38.</p>
+    </details>
     <details><summary>Against Cycle 1</summary>
     <p>The blinded data barely move between cycles. The shear errors are unchanged too: shear noise and $\sigma_G$ agree with the Cycle-1 product to 0.94–1.01 in every shear auto, and both cycles pass the B-mode null. The clustering errors grow, following the data: the measured galaxy auto-spectra are 1.17× (first lens bin) to 1.35–1.6× (last) Cycle 1's, and the Gaussian covariance is built from the measured spectra. The Cycle-1 amplitude pattern, δδ autos high (1.0 to 1.7) and non-adjacent crosses low (0.4 to 0.6), which pointed at too much inter-bin n(z) tail overlap, is absent on the official Cycle-2 bins and n(z).</p>
     </details>
     <details><summary>Sources</summary>
-    <p>Data and $\sigma_G$: the Cycle-2 rerun5 TR1 likelihood input (27 Oct), blinded (cmbx_dr1_a). Reference curve: that run's datavector_vs_theory (28 Oct). App and frames: 2610_SPT_CMBX/private/dv_vector.js with dv_vector_spt_app.json.</p>
+    <p>Data and $\sigma_G$: the Cycle-2 rerun5 TR1 likelihood input (27 Oct), blinded (cmbx_dr1_a). Reference curve: that run's datavector_vs_theory (28 Oct). MetaCal: the tr1_v2_act_metacal likelihood input (29 Oct). App and frames: 2610_SPT_CMBX/private/dv_vector.js with dv_vector_spt_app.json.</p>
     </details>
   </aside>
 </section>
