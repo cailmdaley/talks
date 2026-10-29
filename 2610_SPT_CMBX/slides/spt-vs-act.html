@@ -1,12 +1,12 @@
 <section data-layout="figure-text" data-split="60">
   <h2>SPT-3G is tighter than ACT DR6 at small scales</h2>
   <figure>
-    <img src="images/spt_sigma_ratio.png" alt="Ratio of the ACT DR6 to SPT-3G per-bandpower error bar in the CMB-lensing crosses against multipole, measured on TR1 and scaled to the DR1 overlaps: crossing one at ell of about 220 on TR1, near one from 550 to 1700 on DR1, and rising to 2.2 and 1.6 at ell of 2700">
+    <img src="images/spt_sigma_ratio.png" alt="Ratio of the ACT DR6 to SPT-3G per-bandpower error bar in the CMB-lensing crosses against multipole, measured on TR1 and scaled to the DR1 overlaps: crossing one at ell of about 200 on TR1; on DR1 near one from 500 to 1700, below one under ell of about 300, and above one at the two smallest-scale bands">
   </figure>
   <div class="text">
     <ul>
-      <li>TR1: from $\ell \approx 220$,<br>×2.2 at $\ell \approx 2700$</li>
-      <li>DR1: on par to $\ell \approx 1700$,<br>×1.6 at $\ell \approx 2700$</li>
+      <li>TR1: tighter from $\ell \approx 200$</li>
+      <li>DR1: mostly comparable;<br>ACT tighter below $\ell \approx 300$</li>
       <li>ACT gains more of DR1:<br>1069 deg² against 353</li>
     </ul>
     <p class="source">Cycle 2 · PH-GMV against baseline κ</p>
@@ -23,7 +23,7 @@
     <p>The dashed line scales the TR1 ratio by the overlap areas, with σ ∝ (area)$^{-1/2}$ for each survey: ratio$_\mathrm{DR1}$ = ratio$_\mathrm{TR1}\times\sqrt{(A^\mathrm{TR1}_\mathrm{ACT}/A^\mathrm{DR1}_\mathrm{ACT})(A^\mathrm{DR1}_\mathrm{SPT}/A^\mathrm{TR1}_\mathrm{SPT})} = 0.751\times$ ratio$_\mathrm{TR1}$. ACT DR6's effective overlap grows from 222 to 1069 deg², SPT-3G Main's from 130 to 353 deg² (TR1 weak-lensing coverage and DR1 VMPZ coverage, as on the footprint slide). The scaling assumes the same noise per mode and ignores mode coupling. It uses SPT-3G Main alone: the Summer fields add 751 deg² of DR1 overlap outside Main (Main and Summer together 1104 deg², more than ACT DR6), at higher lensing noise, and are not in this projection.</p>
     </details>
     <details><summary>Against the Cycle-1 version</summary>
-    <p>The Cycle-1 version of this figure (plain GMV) had SPT-3G 2.4× tighter at $\ell \approx 2700$ on TR1 and 1.8× projected to DR1. The Cycle-2 baseline is the bias- and profile-hardened GMV reconstruction, which trades some reconstruction noise for robustness to foreground biases, so a smaller ratio is expected (inferred, not separated from the Cycle-2 footprint change). With κ alone, the blinded TR1 posteriors give σ($S_8$) 0.052 with SPT-3G and 0.058 with ACT DR6.</p>
+    <p>The ratio is about 12% lower than in the Cycle-1 version at every ℓ (TR1 at $\ell \approx 2700$: 2.4 then, 2.2 now; DR1: 1.8 then, 1.6 now). The SPT-3G map did not change: both cycles use the bias- and profile-hardened GMV reconstruction (the Cycle-1 product's manifest records spt_estimator gmvbhttprf). The ACT DR6 covariance did: Cycle 2 models ACT's κ noise locally, from its spatially varying noise variance calibrated on 400 ACT simulations, and SPT-3G has no such calibration yet. On the galaxy-density × κ crosses, ACT's σ is unchanged between cycles while SPT-3G's grew by 12%, following the larger Cycle-2 galaxy auto-spectra; the shear × κ crosses shrank for both, ACT's more (×0.70 against ×0.80). So the shift sits on the ACT side of the comparison (inferred from that decomposition, not run as a controlled test). An SPT-3G local-noise calibration would put the two on the same footing. With κ alone, the blinded TR1 posteriors give σ($S_8$) 0.052 with SPT-3G and 0.058 with ACT DR6.</p>
     </details>
     <details><summary>Sources</summary>
     <p>σ from the Cycle-2 TR1 likelihood inputs of both surveys (the data-vector slide's export, dv_vector_spt.json). Figure: 2610_SPT_CMBX/make_sigma_ratio.py.</p>
