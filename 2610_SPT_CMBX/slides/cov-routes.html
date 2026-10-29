@@ -4,8 +4,7 @@
     <div>
       <p><strong class="accent">Constrained on SPT sims</strong></p>
       <ul>
-        <li>Euclid fields drawn around SPT's input κ</li>
-        <li>SPT's own reconstructions</li>
+        <li>Euclid fields constrained on SPT input κ</li>
         <li>most realistic κ noise</li>
       </ul>
     </div>
@@ -14,19 +13,18 @@
       <ul>
         <li>log-normal κ, own quadratic estimator</li>
         <li>SPT-, ACT-, Planck-like<br>on the same skies</li>
-        <li>a first cross-covariance</li>
+        <li>a first cross-covariance between CMB surveys</li>
       </ul>
     </div>
   </div>
-  <ul class="small">
-    <li>Combining CMB surveys needs their cross-covariance</li>
+  <ul>
     <li>SPT-constrained mocks for the SPT block, SPT-like for the crosses;<br>best, SPT reconstructions of the ACT and Planck input sims</li>
   </ul>
   <aside class="notes">
     <ul class="skim">
       <li><strong>Two routes</strong> — the same two the FLASK covariance already uses: constrained, as for ACT DR6, and unconstrained, as for the Planck-like set.</li>
       <li><strong>Constrained</strong> needs SPT's simulated input κ with the matched reconstructions (backup: data products needed from SPT).</li>
-      <li><strong>Bottom</strong> — combining CMB surveys needs their cross-covariance, which neither survey's simulations give alone; three options below.</li>
+      <li><strong>Bottom</strong> — combining CMB surveys needs their cross-covariance, which neither survey's simulations give alone: the hybrid plan, and the best option (details below).</li>
     </ul>
     <details><summary>Constrained on the existing SPT simulations</summary>
     <p>The log-normal Euclid fields are drawn conditioned on the input κ of SPT's own lensing simulations, and the CMB-lensing field in each realization is SPT's reconstruction of that simulation. The reconstruction noise then carries everything the real pipeline does (observing strategy, filtering, masking, mean field, noise biases), so this is the most realistic route for the SPT block. It needs the input κ and the matched reconstructions of SPT's simulations.</p>
