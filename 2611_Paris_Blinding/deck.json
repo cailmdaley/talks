@@ -1,0 +1,16 @@
+{
+  "title": "Blinding in Euclid DR1",
+  "author": "Cail Daley",
+  "venue": "Euclid CMBX SWG meeting, Paris",
+  "date": "2026-11-17",
+  "description": "Opening slides for the CMBX SWG blinding session: how the Euclid groups blind DR1, what the blindspot tool does, how large a blind should be, and how CMBX can check its data vectors against other groups' while each is blinded separately.",
+  "footer": "Euclid CMBX SWG · Blinding session · Paris · November 2026",
+  "theme": "euclid",
+  "draft": true,
+  "noindex": true,
+  "sections": [
+    { "title": "Opening", "outline": "The session and its two questions.", "slides": ["title"] },
+    { "title": "Landscape", "outline": "Who blinds what in Euclid DR1, the policy of separate blinds, and the blindspot tool.", "slides": ["landscape", "policy", "blindspot"] },
+    { "title": "Questions", "outline": "How big the blind should be, and how to compare blinded data vectors across groups.", "slides": ["size", "consistency"] }
+  ]
+}

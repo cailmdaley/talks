@@ -1,0 +1,34 @@
+<section data-layout="table">
+  <h2>Every group blinds the 2-point level, separately</h2>
+  <table>
+    <tr><th>group</th><th>blinds</th><th>shift drawn in</th><th>status</th></tr>
+    <tr><td>WL / 3×2pt</td><td>$C_\ell$, $\xi$, COSEBIs</td><td>$\Omega_c$, $A_s$, from a WL chain</td><td>TR1 C1, C2 blinded</td></tr>
+    <tr><td>GC spectro</td><td>$P_\ell$, $\xi_\ell$, pre/post-rec</td><td>$\omega_c$, $w_0$, $w_a$, $h$; ~2σ DR1</td><td>DR1 IT1, IT2 blinded</td></tr>
+    <tr><td>Clusters</td><td>the posterior</td><td>random, stored unreadable</td><td>plan (2025)</td></tr>
+    <tr class="hl"><td>CMBX 6×2pt</td><td>all spectra, at write</td><td>$\Omega_\mathrm{m}$ ±0.1, $S_8$ ±0.075</td><td>TR1 blind drawn</td></tr>
+  </table>
+  <span class="source">Not blinded by the SGS: cross-correlations, catalogues, n(z), shear calibration</span>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Method</strong> — every row except clusters uses the Muir et al. (2020) data-vector shift: theory at a hidden cosmology minus theory at the fiducial, added to the measurement.</li>
+      <li><strong>WL / 3×2pt</strong> — JC-1 generates shift files; OU-LE3 applies one after the LE3 pipelines run, and only BLINDED-tagged products reach the SAS.</li>
+      <li><strong>GC spectro</strong> — runs its own shifts through the cloe-org blindspot notebooks; the broad-band amplitude is deliberately left unblinded.</li>
+      <li><strong>Clusters</strong> — shift the posterior before saving it, DES-style.</li>
+      <li><strong>CMBX</strong> — a self-blind of the whole 6×2pt vector, applied when each spectrum is written, so no unblinded spectrum reaches disk.</li>
+      <li><strong>Bottom line</strong> — the official pipeline does not blind cross-correlations; nothing blinds the CMB-lensing crosses unless CMBX does.</li>
+    </ul>
+    <details><summary>WL / 3×2pt</summary>
+    <p>Flow from Redmine issue #25766 (3×2pt pipeline): SWG shift vectors, LE3 pipelines run as normal, a post-processing step applies the selected shift and tags the product BLINDED or UNBLINDED (in the data model since v10). The OU-LE3 Blinding Pipeline v1.0 passed the CCB in September 2026 (#36017). JC-1 delivered TR1 Cycle 1 shifts for $C_\ell$, $\xi$ and COSEBIs (#33161, resolved November 2025); blinded TR1 C1 products followed (#33337, April 2026) and TR1 C2 WL power spectra were blinded on 7 October 2026 (#35269). The JC-1 blinding deck (WL/SHE meeting, Marseille 2025, DMSF 26503) lists what is not blinded: "cross-correlations, 3-point statistics, catalog level, non-primary probes". n(z) is not blinded (WL-pipeline minutes, 2024).</p>
+    <p>The photometric shift cosmologies in blindspot's prototype notebook are 100 points drawn from a weak-lensing chain's posterior in $(\Omega_c, A_s)$, other parameters fixed. Whether the official TR1/DR1 3×2pt shifts used that notebook is not recorded in the repo.</p>
+    </details>
+    <details><summary>GC spectroscopic</summary>
+    <p>Blinded: the auto $\xi_\ell$ and $P_\ell$ multipoles and the 2D functions, before and after reconstruction; "no blinding on cross-correlation statistics" (Redmine BlindingGC). DR1 IT1 (#35938): 200 cosmologies uniform in $\omega_c$, $w_0$, $w_a$, kept only if the BAO and RSD parameters move by about 2σ of the expected DR1 errors. DR1 IT2 (#36596): $\omega_c$ ±0.0123, $w_0$ ±0.75, $w_a$ ±2.25, $h$ ±0.1, with per-bin 2σ tolerances. GC-1 is drafting written unblinding guidelines.</p>
+    </details>
+    <details><summary>Clusters</summary>
+    <p>CL-SWG Blinding Strategy page (v4, March 2025): run MCMC on unblinded data and shift the posterior before saving, with the shift parameters in a non-human-readable file. The page notes the con itself: the analysis team could unblind deliberately.</p>
+    </details>
+    <details><summary>CMBX</summary>
+    <p>Proposal: Redmine issue #31813 in dr1-kp-cmbx-3. A cosmology-shift blind over the full 6×2pt vector, drawn uniformly within ±0.1 in $\Omega_\mathrm{m}$ and ±0.075 in $S_8$ of Planck 2018 from a public list of 100 cosmologies, the chosen index sealed. Code: dr1_cmbx MR !9. Validation criteria and the unblinding procedure are open (#33511, #33512).</p>
+    </details>
+  </aside>
+</section>

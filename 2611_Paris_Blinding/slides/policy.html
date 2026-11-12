@@ -1,0 +1,28 @@
+<section data-layout="points">
+  <h2>Euclid policy: separate blinds, by design</h2>
+  <ul>
+    <li>One blind per key project; shared only inside a joint analysis</li>
+    <li>JC-1: “3×2pt and CMBX have inconsistent shifts”</li>
+    <li>Unblinding: requested by KP leads, decided by the SCG</li>
+    <li>DR1 cosmology unblinding aimed at April–May 2027</li>
+  </ul>
+  <p><strong class="accent">So CMBX blinds in-house</strong>, and comparing blinded vectors across groups is the open problem</p>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Separate blinds</strong> — "The actual blinding realization is different for each project. Unless a project explicitly involves a joint probe analysis, comparing results, even if based on the same data, should be avoided. By keeping the blinds separate, projects can unblind independently." (Redmine BlindingWL, v2, November 2023.)</li>
+      <li><strong>JC-1 matrix</strong> — in JC-1's blinding deck (Marseille 2025, DMSF 26503) each column (a key project) has one consistent shift and each row (an observable) has different shifts across projects; "3x2pt and CMBX have inconsistent shifts".</li>
+      <li><strong>Unblinding</strong> — "decided by the Euclid Science Coordination Group after being requested by the relevant key project leads" (consortium blinding-strategy draft, DMSF 19229). "The 3x2pt analysis cannot unblind before the individual probes" (BlindingWL).</li>
+      <li><strong>Timing</strong> — LE3 coordination minutes, 30 September 2026. For CMBX: everything running by end of February, blinded data early April, chains and papers by end of May, unblinded rerun about a month later (Theory WG, CMBX telecon 12 November).</li>
+      <li><strong>Conclusion</strong> — no group plans to share its blind with CMBX (also Guada Cañas-Herrera, WL-SWG meeting, Napoli, October 2026), so CMBX's blind is its own.</li>
+    </ul>
+    <details><summary>What this does to cross-group checks</summary>
+    <p>The γγ, δγ and δδ spectra in the CMBX 6×2pt vector are the same statistics as the official 3×2pt ones, measured on the same galaxies. With different shifts, the two blinded copies differ by the difference of two hidden shifts, so a direct comparison is not meaningful while blinded. That is intended: it keeps each project's cosmology hidden from the other's. The cost is that a disagreement in measurement (masks, weights, estimator) cannot be told from a difference in blinds.</p>
+    </details>
+    <details><summary>The other side of the trade-off</summary>
+    <p>A shared shift preserves every relation between probes, so the combined vector stays one consistent cosmology. But the shift cancels in any cross-probe comparison: whether CMB lensing and 3×2pt agree on $S_8$ would then be visible while nominally blind. Whichever is chosen, a cross-probe consistency claim made after unblinding is protected only if the blinds were independent.</p>
+    </details>
+    <details><summary>Other inputs</summary>
+    <p>Garage Days, March 2025: CMBX "will need both GC and WL data vectors to be blinded consistently"; the SGS floated a joint DataSetRelease, or giving unblinded vectors to the SWG. Neither was agreed. Giulio Fabbian (CMBX telecon, 5 November 2026): shared infrastructure rather than a shared shift, keeping 6×2pt versus 3×2pt consistency testable.</p>
+    </details>
+  </aside>
+</section>
