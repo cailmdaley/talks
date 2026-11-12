@@ -1,0 +1,19 @@
+<section data-layout="figure">
+  <h2>CLOE is cheaper; its projection sets the floor</h2>
+  <figure>
+    <img src="images/paris26_cloe_cost.png" alt="Left: core-seconds per likelihood evaluation for eDR1like+CCL, CLOE+CAMB, CLOE+emulator, CLOE projection only and the JAX explorer. Right: hours per full chain on one node for the explore-and-reweight path with each target and for native nautilus chains on CLOE (estimated)">
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Left</strong> — core-seconds per full-vector evaluation on a Leonardo DCGP node (Sapphire Rapids). CLOE + CAMB 22.6 s and CLOE + emulator 8.0 s: medians of 6 prior draws on one core. Projection only (a nuisance-only step, $P(k)$ not recomputed) 5.3 s, the floor for any CLOE evaluation. eDR1like + CCL about 32 s, from the exact reweighting of the production chain (111 workers on 112 cores). JAX explorer about 0.25 core-s per point, batched.</li>
+      <li><strong>Right</strong> — wall time of one full chain on one node. Solid: measured, the JAX exploration (20–25 min) plus the exact reweighting of 8 500 (data) to 18 700 (mock) points; the range spans the two arms. Hatched: estimated, not run. The emulator as reweighting target is projected from its per-evaluation cost; a nautilus chain sampling CLOE directly needs about 200 000–250 000 evaluations, so 4–5 h with the emulator and 11–14 h with CAMB, assuming perfect parallel efficiency.</li>
+      <li><strong>Why only 3×</strong> — the Theory WG quotes about 200× for its emulator against CAMB; in this 651-band vector CLOElib's angular projection then dominates the cost.</li>
+    </ul>
+    <details><summary>Emulator accuracy</summary>
+    <p>CLOElib's CosmoPower-JAX HMCode-2020 emulator (the Theory WG network) agrees with CLOE + CAMB to 0.006σ per band at five of the six draws and 0.042σ at the sixth. The GLASS mocks use dark-matter-only HMCode-2020, which the emulators do not provide, so the emulator is compared at the theory level on the data configuration, not in a chain.</p>
+    </details>
+    <details><summary>The reference that never converged</summary>
+    <p>The earlier dr1_cmbx reference, Cobaya with the eDR1like spline likelihood, did not converge on the full vector in more than 17 h on four nodes; it converged on κ-only and κ + galaxy–lensing vectors. That is why the comparison uses the explore-and-reweight path for both likelihoods.</p>
+    </details>
+  </aside>
+</section>

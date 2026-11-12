@@ -1,0 +1,23 @@
+<section data-layout="points">
+  <h2>Same chain, two exact likelihoods</h2>
+  <ul>
+    <li>TR1 5×2pt: 90 pairs, 651 bands, no κκ</li>
+    <li>Identical data, Gaussian + SSC covariance, priors, cuts</li>
+    <li>eDR1like + CCL against CLOElib 0.11 + CLOElike 0.3</li>
+    <li>GLASS mock (seed 3004) and blinded TR1 × SPT-3G</li>
+    <li>JAX explorer, then reweighted to each exact likelihood</li>
+  </ul>
+  <p><strong class="accent">Not a native CLOE sampler run</strong>: CLOE scores every posterior point</p>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Vector</strong> — shear × shear, shear × positions, positions × positions, κ × shear and κ × positions after scale cuts. κκ is excluded because CLOElike has no CMB-lensing likelihood yet.</li>
+      <li><strong>Inputs</strong> — covariance, priors and cuts are the same files, checked by SHA256: the production Gaussian + SSC covariance, the DR1-document nuisance priors, 37 sampled parameters on the mock and 38 on data ($T_\mathrm{AGN}$ also sampled).</li>
+      <li><strong>dr1_cmbx</strong> — eDR1like with CCL theory and CAMB HMCode-2020 $P(k)$.</li>
+      <li><strong>CLOE</strong> — CLOElib v0.11 theory (CAMB background and HMCode-2020 $P(k)$) scored by the CLOElike v0.3 Gaussian likelihood. One change: CLOElib extrapolates $\log P(k)$ beyond its $k$ table with a cubic, which is not grid-convergent in the top shear × shear band; a power law is used instead (worst band 0.34σ → 0.02σ), to be proposed upstream.</li>
+      <li><strong>Sampler</strong> — nautilus with 2000 live points explores a fast JAX emulation of the theory; every posterior point is then importance-reweighted to the exact likelihood. The two chains use different random seeds, so their difference includes Monte Carlo noise.</li>
+    </ul>
+    <details><summary>Theory parity before the chains</summary>
+    <p>The two theory vectors were compared point by point at the fiducial and at 12 prior draws: the largest band difference is 0.067σ on the data configuration and 0.008σ on the mock, in units of the Gaussian bandpower error.</p>
+    </details>
+  </aside>
+</section>

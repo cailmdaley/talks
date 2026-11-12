@@ -1,0 +1,26 @@
+<section data-layout="figure">
+  <h2>Posteriors agree to Monte Carlo precision</h2>
+  <figure>
+    <img src="images/paris26_cloe_posterior_shifts.png" alt="Shift of every parameter mean, CLOE minus eDR1like, in posterior sigma, grouped by parameter family, for the GLASS mock and the blinded TR1 data; and S8–Omega_m contours of both chains on the mock">
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Left</strong> — shift of every parameter mean, CLOE minus eDR1like, in units of the eDR1like posterior σ, grouped by parameter family (cosmology includes the derived $S_8$, $\sigma_8$, $\Omega_\mathrm{m}$). Teal: GLASS mock; blue: blinded TR1. Shaded: 1σ and 2σ of the weight-only Monte Carlo error of the difference, about 0.024σ for every parameter.</li>
+      <li><strong>Right</strong> — 68 % and 95 % contours of $S_8$ and $\Omega_\mathrm{m}$ on the GLASS mock, each axis standardized to the eDR1like mean and σ.</li>
+      <li><strong>Reading</strong> — the shifts scatter around zero with the spread of Monte Carlo noise and no pattern across families.</li>
+    </ul>
+    <details><summary>Numbers</summary>
+    <table>
+      <tr><th></th><th>GLASS mock</th><th>TR1 (blinded)</th></tr>
+      <tr><td>$S_8$ shift</td><td>−0.006σ</td><td>−0.011σ</td></tr>
+      <tr><td>$\Omega_\mathrm{m}$ shift</td><td>−0.023σ</td><td>+0.006σ</td></tr>
+      <tr><td>largest shift</td><td>0.044σ ($m$, source bin 2)</td><td>0.054σ ($\Delta z$, lens bin 0)</td></tr>
+      <tr><td>width ratio</td><td>0.97–1.04</td><td>0.96–1.05</td></tr>
+      <tr><td>ESS, eDR1like / CLOE</td><td>3547 / 3458</td><td>3519 / 3369</td></tr>
+    </table>
+    </details>
+    <details><summary>A second, noise-free check</summary>
+    <p>Over each posterior, the fast JAX likelihood differs from the exact one by a $\log L$ standard deviation of 0.03–0.04 for eDR1like and 0.01–0.02 for CLOE. Both exact likelihoods are measured against the same fast one, so their own difference scatters by at most about 0.06 in $\log L$ across the posterior (inferred from these two numbers, not evaluated directly).</p>
+    </details>
+  </aside>
+</section>

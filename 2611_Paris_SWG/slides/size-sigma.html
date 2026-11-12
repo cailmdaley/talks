@@ -1,0 +1,21 @@
+<section data-layout="number">
+  <h2>In units of σ, the CMBX blind is large</h2>
+  <div class="stat"><span class="value">±0.075</span><span class="label">CMBX $S_8$ envelope today</span></div>
+  <div class="stat"><span class="value">0.016</span><span class="label">σ($S_8$), blinded TR1 chain</span></div>
+  <div class="stat"><span class="value">≈0.02</span><span class="label">2σ($S_8$), DR1, scaled from TR1</span></div>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>The comparison</strong> — the other groups size their blind in units of the expected posterior σ; CMBX uses a fixed envelope. Converting ours to σ units makes the two comparable.</li>
+      <li><strong>±0.075</strong> — half-width of the uniform $S_8$ envelope of the CMBX self-blind (Redmine #31813), drawn around Planck 2018.</li>
+      <li><strong>0.016</strong> — posterior width of $S_8$ in the blinded TR1 chain on the full vector (κ crosses and 3×2pt, SPT-3G κ). A width, not a value: the blind moves the posterior's centre, not its width, to first order.</li>
+      <li><strong>≈0.02</strong> — an estimate, not a computation: TR1 is about 30 % of the DR1 area, so σ($S_8$) for DR1 is roughly $0.016\sqrt{0.3} \approx 0.009$–$0.010$, and 2σ about 0.02. The CMBX envelope is then three to four times the ~2σ the other groups use.</li>
+      <li><strong>With κκ</strong> — adding the CMB-lensing auto-spectrum tightens σ($S_8$) substantially, so a 2σ blind sized on 6×2pt + κκ would be smaller still.</li>
+    </ul>
+    <details><summary>How to make it a number rather than an estimate</summary>
+    <p>The GLASS mock chains of the CMBX pipeline (20 seeds on the TR1 footprint) give the posterior width directly; a DR1-footprint forecast run through the same chain would give the DR1 σ that a σ-based envelope needs. JC-1 and JC-2 draw their shifts from mock posteriors of the probe being blinded, which puts the shift in σ units by construction.</p>
+    </details>
+    <details><summary>TR1 versus DR1</summary>
+    <p>A blind sized for DR1 is about 1.8σ of TR1. Whether TR1 needs a strong blind at all is open: the 3×2pt pipeline call of 13 November had "Plans for unblind analysis on TR1 South" on its agenda (outcome not known when these slides were made).</p>
+    </details>
+  </aside>
+</section>

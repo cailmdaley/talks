@@ -1,0 +1,23 @@
+<section data-layout="points">
+  <h2>Open choices for the κ blocks</h2>
+  <ul>
+    <li>~400 realizations are too noisy to invert directly</li>
+    <li><strong>Shrinkage</strong> to an analytic target: target lacks reconstruction</li>
+    <li><strong>Jackknife</strong>: biased, even delete-two (DES)</li>
+    <li><strong>Own sims</strong> with reconstruction: a very large set</li>
+    <li>JC-1: run synthetic chains jointly with the covariance group</li>
+  </ul>
+  <p><strong class="accent">Ask:</strong> reconstructions on sims for every CMB field, and how many by February?</p>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Too noisy</strong> — the options are those listed at the CMBX telecon of 5 November 2026 (Davide Luchina's covariance update and the discussion after it).</li>
+      <li><strong>Shrinkage</strong> — toward an analytic target; the analytic target does not know the reconstruction noise, which is the term the simulations are needed for.</li>
+      <li><strong>Jackknife</strong> — biased even with delete-two, as found in DES.</li>
+      <li><strong>Own simulations</strong> — with reconstruction run on each; needs a very large set.</li>
+      <li><strong>Joint synthetic chains</strong> — the JC-1 voice at that telecon: the 6×2pt and covariance groups must run synthetic chains together; JC-1's flagship paper is asked to include primary CMB and possibly κκ without the crosses, so coordinating here helps.</li>
+    </ul>
+    <details><summary>A hybrid, as one option</summary>
+    <p>Keep the analytic Gaussian + SSC covariance where it is validated (the 3×2pt blocks, against the GLASS ensemble) and use simulations only to calibrate the κ-reconstruction terms of the κ blocks, which need far fewer realizations than inverting the full matrix. This is a suggestion for discussion, not a group decision.</p>
+    </details>
+  </aside>
+</section>
