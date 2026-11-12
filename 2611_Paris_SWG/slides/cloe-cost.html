@@ -5,7 +5,7 @@
   </figure>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>Left</strong> — core-seconds per full-vector evaluation on a Leonardo DCGP node (Sapphire Rapids). CLOE + CAMB 22.6 s and CLOE + emulator 8.0 s: medians of 6 prior draws on one core. Projection only (a nuisance-only step, $P(k)$ not recomputed) 5.3 s, the floor for any CLOE evaluation. eDR1like + CCL about 32 s, from the exact reweighting of the production chain (111 workers on 112 cores). JAX explorer about 0.25 core-s per point, batched.</li>
+      <li><strong>Left</strong> — core-seconds per full-vector evaluation on a Leonardo DCGP node (Sapphire Rapids). CLOE + CAMB 22.6 s and CLOE + emulator 8.0 s: medians over 5 prior draws on one core (the first of 6 excluded as warm-up). Projection only (a nuisance-only step, $P(k)$ not recomputed) 5.3 s, the floor for any CLOE evaluation. eDR1like + CCL about 32 s, from the exact reweighting of the production chain (111 workers on 112 cores). JAX explorer about 0.25 core-s per point, batched.</li>
       <li><strong>Right</strong> — wall time of one full chain on one node. Solid: measured, the JAX exploration (20–25 min) plus the exact reweighting of 8 500 (data) to 18 700 (mock) points; the range spans the two arms. Hatched: estimated, not run. The emulator as reweighting target is projected from its per-evaluation cost; a nautilus chain sampling CLOE directly needs about 200 000–250 000 evaluations, so 4–5 h with the emulator and 11–14 h with CAMB, assuming perfect parallel efficiency.</li>
       <li><strong>Why only 3×</strong> — the Theory WG quotes about 200× for its emulator against CAMB; in this 651-band vector CLOElib's angular projection then dominates the cost.</li>
     </ul>

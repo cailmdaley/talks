@@ -77,7 +77,8 @@ def new_fig(**kw):
 
 
 FAMILIES = [
-    ("cosmology", lambda p: p in ("logA", "omch2", "ombh2", "h", "n_s", "S8", "sigma8", "Omega_m")),
+    ("cosmology", lambda p: p in ("logA", "omch2", "ombh2", "h", "n_s", "S8", "sigma8", "Omega_m")
+                  or p.startswith("HMCode")),
     ("intrinsic alignment", lambda p: p in ("A_IA", "eta_IA")),
     (r"$\Delta z$, sources", lambda p: p.startswith("delta_z_L")),
     (r"$\Delta z$, lenses", lambda p: p.startswith("delta_z_G")),
