@@ -1,48 +1,35 @@
 <section data-layout="table">
   <h2>Every group blinds the 2-point level, separately</h2>
   <table>
-    <tr><th>group</th><th>blinds</th><th>shift drawn in</th><th>status</th></tr>
-    <tr><td>WL / 3×2pt</td><td>$C_\ell$, $\xi$, COSEBIs</td><td>$\Omega_c$, $A_s$, from a WL chain</td><td>TR1 C1, C2 blinded</td></tr>
-    <tr><td>GC spectro</td><td>$P_\ell$, $\xi_\ell$, pre/post-rec</td><td>$\omega_c$, $w_0$, $w_a$, $h$; ~2σ DR1</td><td>DR1 IT1, IT2 blinded</td></tr>
-    <tr><td>Clusters</td><td>the posterior</td><td>random, stored unreadable</td><td>plan (2025)</td></tr>
-    <tr class="hl"><td>CMBX 6×2pt</td><td>all spectra, at write</td><td>$\Omega_\mathrm{m}$ ±0.1, $S_8$ ±0.075</td><td>TR1 blind drawn</td></tr>
+    <tr><th>group</th><th>shifts</th><th>drawn from</th><th>status</th></tr>
+    <tr><td>WL / 3×2pt</td><td>$\Omega_c$, $A_s$</td><td>mock WL posterior</td><td>JC-2 decides 24 Nov</td></tr>
+    <tr><td>GC spectro</td><td>$\omega_c$, $w_0$, $w_a$, $h$</td><td>uniform, ≲2σ DR1</td><td>IT2 blinded</td></tr>
+    <tr><td>Clusters</td><td>the posterior</td><td>random, unreadable</td><td>planned</td></tr>
+    <tr class="hl"><td>CMBX 6×2pt</td><td>$\Omega_\mathrm{m}$, $S_8$</td><td>uniform, ±0.1, ±0.075</td><td>TR1 blind drawn</td></tr>
   </table>
-  <p>One blind per key project, shared only inside a joint analysis<br>Unblinding is requested by KP leads and decided by the SCG</p>
+  <p>Separate blinds per key project, GC spectro and 3×2pt included<br>KP leads request unblinding; the SCG decides</p>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>Method</strong> — every row except clusters uses the Muir et al. (2020) data-vector shift: theory at a hidden cosmology minus theory at the fiducial, added to the measurement.</li>
-      <li><strong>WL / 3×2pt</strong> — JC-1 generates shift files; OU-LE3 applies one after the LE3 pipelines run, and only BLINDED-tagged products reach the SAS.</li>
-      <li><strong>GC spectro</strong> — runs its own shifts through the cloe-org blindspot notebooks; the broad-band amplitude is deliberately left unblinded.</li>
-      <li><strong>Clusters</strong> — shift the posterior before saving it, DES-style.</li>
-      <li><strong>CMBX</strong> — a self-blind of the whole 6×2pt vector, applied when each spectrum is written, so no unblinded spectrum reaches disk.</li>
-      <li><strong>Bottom line</strong> — the official pipeline does not blind cross-correlations, catalogues, n(z) or the shear calibration; nothing blinds the CMB-lensing crosses unless CMBX does.</li>
-      <li><strong>Separate blinds</strong> — "The actual blinding realization is different for each project. Unless a project explicitly involves a joint probe analysis, comparing results, even if based on the same data, should be avoided. By keeping the blinds separate, projects can unblind independently." (Redmine BlindingWL, v2, November 2023.)</li>
-      <li><strong>JC-1 matrix</strong> — in JC-1's blinding deck (Marseille 2025, DMSF 26503) each column (a key project) has one consistent shift and each row (an observable) has different shifts across projects; "3x2pt and CMBX have inconsistent shifts".</li>
-      <li><strong>Unblinding</strong> — "decided by the Euclid Science Coordination Group after being requested by the relevant key project leads" (consortium blinding-strategy draft, DMSF 19229). "The 3x2pt analysis cannot unblind before the individual probes" (BlindingWL).</li>
-      <li><strong>Timing</strong> — LE3 coordination minutes, 30 September 2026. For CMBX: everything running by end of February, blinded data early April, chains and papers by end of May, unblinded rerun about a month later (Theory WG, CMBX telecon 12 November).</li>
-      <li><strong>Conclusion</strong> — no group plans to share its blind with CMBX (also Guada Cañas-Herrera, WL-SWG meeting, Napoli, October 2026), so CMBX's blind is its own.</li>
+      <li><strong>Method</strong> — every row except clusters adds theory at a hidden cosmology minus theory at a reference to the measured statistics (Muir et al. 2020).</li>
+      <li><strong>What is blinded</strong> — 3×2pt: $C_\ell$, $\xi$ and COSEBIs for shear, positions and their cross. GC spectro: $P_\ell$ and $\xi_\ell$, before and after reconstruction. CMBX: every spectrum of the 6×2pt vector, when it is written. Clusters: the posterior.</li>
+      <li><strong>Drawn from</strong> — how the hidden cosmology is chosen. 3×2pt has not fixed this yet (next slide); GC spectro rejects draws that move the BAO or RSD parameters by more than 2× the DR1 tolerance.</li>
+      <li><strong>GC spectro versus 3×2pt</strong> — same tool (blindspot, on cloelib) and same formula, different parameters, distribution, reference and seed. GC spectro does not shift the amplitude.</li>
+      <li><strong>Not blinded by the official pipeline</strong> — cross-correlations, catalogues, n(z), shear calibration. Nothing blinds the CMB-lensing crosses unless CMBX does.</li>
     </ul>
     <details><summary>WL / 3×2pt</summary>
-    <p>Flow from Redmine issue #25766 (3×2pt pipeline): SWG shift vectors, LE3 pipelines run as normal, a post-processing step applies the selected shift and tags the product BLINDED or UNBLINDED (in the data model since v10). The OU-LE3 Blinding Pipeline v1.0 passed the CCB in September 2026 (#36017). JC-1 delivered TR1 Cycle 1 shifts for $C_\ell$, $\xi$ and COSEBIs (#33161, resolved November 2025); blinded TR1 C1 products followed (#33337, April 2026) and TR1 C2 WL power spectra were blinded on 7 October 2026 (#35269). The JC-1 blinding deck (WL/SHE meeting, Marseille 2025, DMSF 26503) lists what is not blinded: "cross-correlations, 3-point statistics, catalog level, non-primary probes". n(z) is not blinded (WL-pipeline minutes, 2024).</p>
-    <p>The photometric shift cosmologies in blindspot's prototype notebook are 100 points drawn from a weak-lensing chain's posterior in $(\Omega_c, A_s)$, other parameters fixed. Whether the official TR1/DR1 3×2pt shifts used that notebook is not recorded in the repo.</p>
+    <p>The shifts are the blindspot photometric notebook's: 100 points in $(\Omega_c, A_s)$, the rest of the cosmology at the reference, each turned into a shift with cloelib. The prototype draws them from a mock weak-lensing chain's posterior; a 2×2pt-posterior variant and uniform sampling as GC does are also on the table (Felicitas Keil, 10 November; Martin Crocce, 13 November, #dr1-photometric-inference-and-modelling). JC-2 validates the shifts on noiseless synthetic DR1 vectors (nowcast v2, South) and decides at its 24 November telecon (Alessio Spurio Mancini, #dr1-kp-jc-2, 11 November). LE3 then applies the selected shift after its WL production run, which starts the week of 23 November ("Blinding CCB (delivery of shifts) and run", Samuel Farrens, #sgs-ou-le3-wl, 10 November). Earlier: TR1 Cycle 1 shifts delivered (#33161), C1 blinded (#33337), C2 WL power spectra blinded 7 October 2026 (#35269).</p>
     </details>
     <details><summary>GC spectroscopic</summary>
-    <p>Blinded: the auto $\xi_\ell$ and $P_\ell$ multipoles and the 2D functions, before and after reconstruction; "no blinding on cross-correlation statistics" (Redmine BlindingGC). DR1 IT1 (#35938): 200 cosmologies uniform in $\omega_c$, $w_0$, $w_a$, kept only if the BAO and RSD parameters move by about 2σ of the expected DR1 errors. DR1 IT2 (#36596): $\omega_c$ ±0.0123, $w_0$ ±0.75, $w_a$ ±2.25, $h$ ±0.1, with per-bin 2σ tolerances. GC-1 is drafting written unblinding guidelines.</p>
+    <p>DR1 IT2 (Redmine #36596; GC-SWG telecon slides 49–50): 200 draws uniform within $\omega_\mathrm{cdm}$ ±0.0123, $w_0$ ±0.75, $w_a$ ±2.25, $h$ ±0.1, with $w_0 + w_a < 0$, around flat ΛCDM with $\Omega_\mathrm{m} = 0.319$, $h = 0.67$, $\sigma_8 = 0.83$. A draw is rejected if in any redshift bin $|\alpha_\parallel - 1|$, $|\alpha_\perp - 1|$ or $|\Delta f\sigma_{12}|$ exceeds twice the DR1 tolerance. The bias and growth rate are rescaled by $\sigma_{12}^\mathrm{blind}/\sigma_{12}^\mathrm{fid}$, so the broad-band amplitude stays unblinded. The shifts now come from a script port of the blindspot notebook (open blindspot PR #45).</p>
     </details>
     <details><summary>Clusters</summary>
-    <p>CL-SWG Blinding Strategy page (v4, March 2025): run MCMC on unblinded data and shift the posterior before saving, with the shift parameters in a non-human-readable file. The page notes the con itself: the analysis team could unblind deliberately.</p>
+    <p>CL-SWG Blinding Strategy page (v4, March 2025): run MCMC on unblinded data and shift the posterior before saving, with the shift in a non-human-readable file.</p>
     </details>
     <details><summary>CMBX</summary>
-    <p>Proposal: Redmine issue #31813 in dr1-kp-cmbx-3. A cosmology-shift blind over the full 6×2pt vector, drawn uniformly within ±0.1 in $\Omega_\mathrm{m}$ and ±0.075 in $S_8$ of Planck 2018 from a public list of 100 cosmologies, the chosen index sealed. Code: dr1_cmbx MR !9. Validation criteria and the unblinding procedure are open (#33511, #33512).</p>
+    <p>Redmine #31813 in dr1-kp-cmbx-3: a cosmology-shift blind of the full 6×2pt vector, drawn uniformly within ±0.1 in $\Omega_\mathrm{m}$ and ±0.075 in $S_8$ of Planck 2018, the chosen index sealed. Code: dr1_cmbx MR !9. Validation criteria and the unblinding procedure are open (#33511, #33512).</p>
     </details>
-    <details><summary>What this does to cross-group checks</summary>
-    <p>The γγ, δγ and δδ spectra in the CMBX 6×2pt vector are the same statistics as the official 3×2pt ones, measured on the same galaxies. With different shifts, the two blinded copies differ by the difference of two hidden shifts, so a direct comparison is not meaningful while blinded. That is intended: it keeps each project's cosmology hidden from the other's. The cost is that a disagreement in measurement (masks, weights, estimator) cannot be told from a difference in blinds.</p>
-    </details>
-    <details><summary>The other side of the trade-off</summary>
-    <p>A shared shift preserves every relation between probes, so the combined vector stays one consistent cosmology. But the shift cancels in any cross-probe comparison: whether CMB lensing and 3×2pt agree on $S_8$ would then be visible while nominally blind. Whichever is chosen, a cross-probe consistency claim made after unblinding is protected only if the blinds were independent.</p>
-    </details>
-    <details><summary>Other inputs</summary>
-    <p>Garage Days, March 2025: CMBX "will need both GC and WL data vectors to be blinded consistently"; the SGS floated a joint DataSetRelease, or giving unblinded vectors to the SWG. Neither was agreed. Giulio Fabbian (CMBX telecon, 5 November 2026): shared infrastructure rather than a shared shift, keeping 6×2pt versus 3×2pt consistency testable.</p>
+    <details><summary>Policy</summary>
+    <p>"The actual blinding realization is different for each project. Unless a project explicitly involves a joint probe analysis, comparing results, even if based on the same data, should be avoided." (Redmine BlindingWL, v2, November 2023.) JC-1's blinding deck (Marseille 2025, DMSF 26503): "3x2pt and GCsp-2pts have inconsistent shifts always" and "3x2pt and CMBX have inconsistent shifts". Unblinding is "decided by the Euclid Science Coordination Group after being requested by the relevant key project leads" (DMSF 19229); "The 3x2pt analysis cannot unblind before the individual probes" (BlindingWL). The 3×2pt TR1 analysis plan (31 October 2025) adds: "GC-SWG, TH-SWG, CMBX-SWG, and CG-SWG can potentially unblind WL-SWG. JC-1 provides a natural discussion forum for cross-SWG cosmology activities."</p>
     </details>
   </aside>
 </section>

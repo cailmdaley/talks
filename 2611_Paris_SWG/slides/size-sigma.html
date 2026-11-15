@@ -1,21 +1,33 @@
-<section data-layout="number">
-  <h2>The CMBX blind is large in units of σ</h2>
-  <div class="stat"><span class="value">±0.075</span><span class="label">CMBX $S_8$ envelope today</span></div>
-  <div class="stat"><span class="value">0.016</span><span class="label">σ($S_8$), blinded TR1 chain</span></div>
-  <div class="stat"><span class="value">≈0.02</span><span class="label">2σ($S_8$), DR1, scaled from TR1</span></div>
+<section data-layout="figure-text" data-split="50">
+  <h2>A shift sized on one probe can over-blind another</h2>
+  <figure>
+    <img src="images/paris_keil_fs2_2x2pt_blinding.png" alt="Corner plot of Flagship-2 weak-lensing and 2×2pt posteriors, unblinded and blinded; the blinded 2×2pt posterior (red) sits far from the others and is very narrow">
+    <span class="source">F. Keil, JC-2 blinding-test call, 5 Nov</span>
+  </figure>
+  <div class="text">
+    <p>Flagship-2 test: a draw 1σ from the WL best fit</p>
+    <ul>
+      <li>WL recovers it</li>
+      <li>2×2pt: several σ, too narrow, hits the prior</li>
+    </ul>
+    <p><strong class="accent">For CMBX:</strong> σ of the crosses, or with κκ?</p>
+  </div>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>The comparison</strong> — the other groups size their blind in units of the expected posterior σ; CMBX uses a fixed envelope. Converting ours to σ units makes the two comparable.</li>
-      <li><strong>±0.075</strong> — half-width of the uniform $S_8$ envelope of the CMBX self-blind (Redmine #31813), drawn around Planck 2018.</li>
-      <li><strong>0.016</strong> — posterior width of $S_8$ in the blinded TR1 chain on the full vector (κ crosses and 3×2pt, SPT-3G κ). A width, not a value: the blind moves the posterior's centre, not its width, to first order, unless the draw sits near the envelope edge (see the previous slide's notes).</li>
-      <li><strong>≈0.02</strong> — an estimate, not a computation: TR1 is about 30 % of the DR1 area, so σ($S_8$) for DR1 is roughly $0.016\sqrt{0.3} \approx 0.009$, and 2σ about 0.018–0.02. The CMBX envelope is then three to four times the ~2σ the other groups use.</li>
-      <li><strong>With κκ</strong> — adding the CMB-lensing auto-spectrum is expected to tighten σ($S_8$) substantially (not computed), so a 2σ blind sized on 6×2pt + κκ would be smaller still.</li>
+      <li><strong>The plot</strong> — Felicitas Keil's FS2 test (slide 33 of the 5 November "3x2pt modelling slides"). Black: WL posterior. Orange and purple: 2×2pt, unblinded, with CosmoSIS and cloelike. Red: 2×2pt with the shift added. It is a test on simulation, not a blinded data result.</li>
+      <li><strong>WL</strong> — the same shift on cosmic shear was recovered: $S_8$ moved by 103 % of the injected shift, $\Omega_\mathrm{m}$ by 79 % (slide 32).</li>
+      <li><strong>2×2pt</strong> — "Blinded in the correct direction / Much too strongly / Error becomes small / Hitting the prior". Keil's reading: "The chosen point is 1σ from the WL best-fit / Multiple σ from the 2x2pt best-fit / This is strongly exacerbated in the blinding."</li>
+      <li><strong>Next</strong> — Keil is rerunning 2×2pt with a shift drawn from a 2×2pt posterior (10 November). JC-2 decides on 24 November.</li>
+      <li><strong>For CMBX</strong> — if the shift is drawn from a posterior, whose posterior sets the size: 6×2pt, or 6×2pt with κκ, which is tighter.</li>
     </ul>
-    <details><summary>How to make it a number rather than an estimate</summary>
-    <p>The GLASS mock chains of the CMBX pipeline (20 seeds on the TR1 footprint) give the posterior width directly; a DR1-footprint forecast run through the same chain would give the DR1 σ that a σ-based envelope needs. JC-1 and JC-2 draw their shifts from mock posteriors of the probe being blinded, which puts the shift in σ units by construction.</p>
+    <details><summary>CMBX in units of σ</summary>
+    <p>The CMBX envelope today is ±0.075 in $S_8$. The blinded TR1 chain on the full vector (κ crosses and 3×2pt, SPT-3G κ) has posterior width σ($S_8$) ≈ 0.016. TR1 is about 30 % of DR1, so DR1 σ($S_8$) ≈ 0.009 and 2σ ≈ 0.02 (an estimate, not computed): the current envelope is three to four times the ~2σ other groups aim for. Adding κκ is expected to tighten σ further (not computed). The CMBX GLASS mock chains can give the DR1 posterior directly.</p>
     </details>
-    <details><summary>TR1 versus DR1</summary>
-    <p>A blind of 2σ of DR1 (≈0.0175–0.02) is about 1.1–1.25σ of TR1. Whether TR1 needs a strong blind at all is open: the 3×2pt pipeline call of 13 November had "Plans for unblind analysis on TR1 South" on its agenda (outcome not known when these slides were made).</p>
+    <details><summary>Why too large is a problem</summary>
+    <p>The shift is computed at fixed nuisances, so it is exact only to first order (Muir et al. 2020, App. A). On a CMBX GLASS mock, a blind at 82 % of the $\Omega_\mathrm{m}$ envelope narrowed the $\Omega_\mathrm{m}$ posterior threefold; a blind at 44 % translated cleanly. The 2×2pt failure above is the same effect.</p>
+    </details>
+    <details><summary>Why too small is a problem</summary>
+    <p>If the envelope is about the size of the $S_8$ tension, a blinded offset reads as "that is probably the tension", and that reading leaks into analysis choices.</p>
     </details>
   </aside>
 </section>

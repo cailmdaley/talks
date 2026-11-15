@@ -1,20 +1,20 @@
 <section data-layout="points">
   <h2>Should κκ be blinded with the crosses?</h2>
   <ul>
-    <li><strong>For</strong>: one shift on every spectrum keeps the likelihood self-consistent</li>
-    <li>Shifted crosses against an unshifted κκ: the tension points to the shift</li>
-    <li><strong>But</strong>: ACT DR6 and SPT-3G κκ constraints are public</li>
-    <li>Blinding κκ hides the combination, not κκ alone</li>
+    <li><strong>For</strong>: one shift on every spectrum keeps the likelihood consistent</li>
+    <li>An unshifted κκ would point to the shift's direction</li>
+    <li><strong>But</strong>: ACT DR6 and SPT-3G κκ results are public</li>
+    <li>In blindspot, κκ needs theory past $z = 3$</li>
   </ul>
-  <p><strong class="accent">And for sizing:</strong> σ of the crosses, or of crosses + κκ?</p>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>Self-consistency</strong> — the CMBX self-blind applies one cosmology shift (theory at the blind cosmology minus theory at the fiducial) to every spectrum it writes. If κκ entered unshifted, the blinded crosses and the true κκ would pull toward different cosmologies, and the direction of that internal tension would reveal the direction of the shift.</li>
-      <li><strong>Residual leak</strong> — the ACT DR6 and SPT-3G κκ likelihoods and their κκ-only constraints are public, so the κκ-only answer stays known whatever we do. What blinding κκ protects is the joint constraint; the discipline that remains is not reading κκ-only results against the blinded crosses.</li>
-      <li><strong>Sizing</strong> — κκ is expected to tighten σ($S_8$) substantially (not computed), so the choice of whose σ sets the envelope (crosses, or crosses + κκ) changes its size. JC-2's 2×2pt test shows what happens when a shift is large in units of the tighter probe's σ: the posterior is blinded "much too strongly" and hits the prior.</li>
+      <li><strong>Consistency</strong> — the CMBX blind applies one cosmology shift to every spectrum it writes. If κκ entered unshifted, the blinded crosses and the true κκ would pull toward different cosmologies, and the direction of that internal tension would reveal the direction of the shift.</li>
+      <li><strong>Public κκ</strong> — the ACT DR6 and SPT-3G κκ likelihoods and their κκ-only constraints are public, so the κκ-only answer stays known whatever CMBX does. Blinding κκ hides the joint constraint; the remaining discipline is not reading κκ-only results against the blinded crosses.</li>
+      <li><strong>blindspot</strong> — the κ crosses only need theory where the galaxies are (to $z = 3$, the notebook's grid); κκ needs the lensing kernel to last scattering, beyond the HMcode2020 emulator's redshift range, so a κκ shift needs another matter power spectrum route at high redshift.</li>
+      <li><strong>Sizing</strong> — whether κκ is in the posterior that sizes the blind is the question on the previous slide.</li>
     </ul>
     <details><summary>Related decision</summary>
-    <p>How κκ enters the likelihood at all is open: at the CMBX telecon of 5 November Davide Luchina proposed, and the group leaned toward, keeping the external κκ likelihood and conditioning the rest of the likelihood and covariance on it, with a decision wanted by the end of November. A blind of κκ has to fit whichever form is chosen.</p>
+    <p>How κκ enters the likelihood at all is open: Davide Luchina (CMBX telecon, 5 November; #dr1-kp-cmbx-3_2, 7 November) argued that using an external κκ likelihood needs the conditional factorised Gaussian form, not just dropping the covariance block. A blind of κκ has to fit whichever form is chosen.</p>
     </details>
   </aside>
 </section>

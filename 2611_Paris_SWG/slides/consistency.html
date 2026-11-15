@@ -2,27 +2,27 @@
   <h2>Comparing with other groups while blinded</h2>
   <table>
     <tr><th>route</th><th>gives</th><th>costs</th></tr>
-    <tr><td>hold both shifts</td><td>direct comparison</td><td>JC-1 shares its index: against policy</td></tr>
-    <tr><td>same mocks, both codes</td><td>codes agree; no blind</td><td>misses data-only choices</td></tr>
-    <tr><td>key holder compares</td><td>a PTE on shared spectra</td><td>a trusted party, test fixed first</td></tr>
-    <tr><td>joint blind by the SGS</td><td>our 6×2pt consistent in itself</td><td>SGS must blind crosses; not agreed</td></tr>
-    <tr><td>after unblinding</td><td>direct comparison</td><td>~1 month before papers</td></tr>
+    <tr><td>hold both shifts</td><td>direct comparison</td><td>against policy</td></tr>
+    <tr><td>same mocks, both codes</td><td>code agreement</td><td>misses data-only choices</td></tr>
+    <tr><td>key holder compares</td><td>a PTE, shared spectra</td><td>a trusted party</td></tr>
+    <tr><td>joint blind by the SGS</td><td>self-consistent 6×2pt</td><td>not agreed</td></tr>
+    <tr><td>after unblinding</td><td>direct comparison</td><td>~1 month left</td></tr>
   </table>
-  <span class="source">Which do we ask JC-1 and OU-LE3 for?</span>
+  <span class="source">A shared blinding method does not remove the problem.</span>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>The problem</strong> — the γγ, δγ and δδ spectra in the CMBX 6×2pt vector are the official 3×2pt statistics measured on the same galaxies, but blinded with a different shift. A difference between the two blinded copies mixes real measurement differences with the difference of two hidden shifts.</li>
-      <li><strong>Hold both shifts</strong> — if CMBX knew the 3×2pt blinding cosmology, it could move one vector onto the other's blind and compare. JC-1 keeps it separate by policy, and knowing it would also reveal what 3×2pt is meant not to see.</li>
-      <li><strong>Same mocks</strong> — run the official LE3 measurement and ours on the same simulated catalogue and masks. Most disagreements in practice come from code, masks and weights, and this tests them with no blind at all. It cannot test choices made only on data.</li>
+      <li><strong>The problem</strong> — the γγ, δγ and δδ spectra in the CMBX 6×2pt vector are the official 3×2pt statistics measured on the same galaxies, but blinded with a different draw. A difference between the two blinded copies mixes real measurement differences with the difference of two hidden shifts. Using blindspot for CMBX shifts would not change that.</li>
+      <li><strong>Hold both shifts</strong> — if CMBX knew the 3×2pt draw, it could move one vector onto the other's blind and compare. Policy keeps the draws separate, and knowing it would reveal what 3×2pt is meant not to see.</li>
+      <li><strong>Same mocks</strong> — run the official LE3 measurement and the CMBX one on the same simulated catalogue and masks. It tests code, masks and weights with no blind; it cannot test choices made only on data.</li>
       <li><strong>Key holder</strong> — a proposal, not in any Euclid document: someone who can see both unblinded vectors computes the χ² of their difference on the shared spectra with a test fixed in advance, and returns only the PTE. It reveals agreement, not cosmology.</li>
-      <li><strong>Joint blind</strong> — Giulio's second route: send the specification of the crosses to the SGS and receive a blinded vector. The SGS floated a joint DataSetRelease (Garage Days, March 2025); not agreed. It would make the 6×2pt vector consistent in itself, not consistent with the official 3×2pt.</li>
+      <li><strong>Joint blind</strong> — send the specification of the crosses to the SGS and receive a blinded 6×2pt vector. In December 2025 Samuel Farrens offered this, given a ΔCℓ file including the CMBX spectra (Margherita Lembo, CMBX–cloe-org chat); it was not taken further. It makes the 6×2pt vector consistent in itself, not consistent with the official 3×2pt.</li>
       <li><strong>After unblinding</strong> — blinded data early April 2027, unblinded rerun about a month later.</li>
     </ul>
-    <details><summary>Measuring 3×2pt ourselves</summary>
-    <p>Giulio's first route: measure the 3×2pt statistics from the Level 3 inputs, which are not blinded (catalogues, n(z)), and apply our own shift to the whole 6×2pt vector. This is what the CMBX self-blind does now. It keeps the 6×2pt vector consistent in itself; comparing its 3×2pt blocks with the official ones then needs one of the routes in the table.</p>
+    <details><summary>Measuring 3×2pt in-house</summary>
+    <p>Giulio Fabbian's first route: measure the 3×2pt statistics from the Level 3 inputs, which are not blinded (catalogues, n(z)), and apply one shift to the whole 6×2pt vector. This is what the CMBX self-blind does now. Comparing its 3×2pt blocks with the official ones then needs one of the routes in the table.</p>
     </details>
     <details><summary>Whether the comparison should be blind at all</summary>
-    <p>A blind exists to hide the answer to a question the analysis could be tempted to steer. Agreement of the shared spectra between two codes is a measurement question; agreement on $S_8$ between CMB lensing and 3×2pt is a cosmology question. The key-holder and same-mocks routes test the first without revealing the second.</p>
+    <p>Agreement of the shared spectra between two codes is a measurement question; agreement on $S_8$ between CMB lensing and 3×2pt is a cosmology question. The key-holder and same-mocks routes test the first without revealing the second. The 3×2pt TR1 analysis plan names CMBX among the groups that "can potentially unblind WL-SWG" and points to JC-1 as the forum.</p>
     </details>
   </aside>
 </section>
