@@ -1,33 +1,33 @@
 <section data-layout="points">
-  <h2>blindspot generates the shifts with CLOE</h2>
+  <h2>blindspot makes the 3×2pt shifts for every statistic</h2>
   <ul>
-    <li>Muir shift with CLOElib theory, Euclid LE3 FITS via euclidlib</li>
-    <li>In production for GC spectro; photometric notebook a prototype</li>
-    <li>Four notebooks, no package, tests or releases; public seeds</li>
-    <li>No κ tracer yet; CLOElib now has one (<code>CMBLensingTracer</code>)</li>
+    <li>Shift = cloelib theory at the drawn point − at the reference</li>
+    <li>One draw gives $C_\ell$, $\xi$ and COSEBIs</li>
+    <li>Tracers: shear and positions; no κ yet</li>
+    <li>GC spectro: same formula, its own script and draws</li>
   </ul>
-  <p><strong class="accent">For CMBX:</strong> as CMBX moves to CLOE, its shifts could use the same theory code as the 3×2pt ones</p>
+  <p><strong class="accent">Validation:</strong> recover an injected shift on synthetic DR1 vectors, posterior width unchanged</p>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>Repository</strong> — cloe-org/blindspot (private), "A blinding pipeline for cosmological Euclid analyses"; 95 commits from 15 October 2025 to 14 October 2026; maintained by Guada Cañas-Herrera, with the GC-spectro work led by Chiara Moretti and Andrea Pezzotta.</li>
-      <li><strong>Method</strong> — shift = theory(blinding cosmology) − theory(fiducial), added to the measurement, with nuisances fixed at their fiducial values. Photometric: CLOElib's CAMB background and HMcode2020 emulator. Spectroscopic: CLOElib with COMET, and BAOFit for post-reconstruction.</li>
-      <li><strong>Maturity</strong> — the logic lives in four notebooks with hard-coded paths. Open PR #45 (10 November 2026) ports the spectroscopic DR1 notebook to a YAML-driven script and fixes bugs that changed the shifts. A CI issue has been open since November 2025.</li>
-      <li><strong>κ</strong> — the photometric notebook's tracers are positions and shear only, on a redshift grid to $z = 3$. CLOElib's observables/cmb.py provides a CMB-lensing tracer.</li>
-      <li><strong>CMBX</strong> — decided at the 12 November telecon to move its main inference path to pure CLOE.</li>
+      <li><strong>All statistics</strong> — Martin Crocce (13 November) asked that the blindspot notebook produce the shift vectors for every photometric statistic, with the baseline galaxy bias, other nuisances at zero, the nowcast South n(z), and full-area unbinned $C_\ell$ from which each statistic is built. Felicitas Keil and Guadalupe Cañas Herrera regenerate them by 17 November.</li>
+      <li><strong>κ</strong> — the notebook builds only shear and position tracers; cloelib v0.11 has a CMB-lensing tracer (<em>CMBLensingTracer</em> in observables/cmb.py) that it does not use.</li>
+      <li><strong>Validation</strong> — for each of $C_\ell$, real space and COSEBIs, and each of 1×, 2× and 3×2pt: a chain on the noiseless synthetic vector, the same chain with one shift added, and the recovered shift compared to the injected one. Baseline chains 17 November, recovery and the decision at JC-2 on 24 November.</li>
+      <li><strong>GC spectro</strong> — ported the spectroscopic notebook to a parallel, YAML-configured script (about 5 minutes against 2.5 hours); the photometric side is still the notebook.</li>
     </ul>
-    <details><summary>Keys</summary>
-    <p>A blinding cosmology is a public seed (photometric 0, spectroscopic 42) plus an index into the list of 100 or 200 draws, so anyone with the repository and the index can regenerate it. Choosing and holding the index is done outside the repository; for WL/3×2pt the OU-LE3 operations team holds it.</p>
+    <details><summary>Quotes</summary>
+    <p>Martin Crocce, #dr1-photometric-inference-and-modelling, 13 November 2026: "is it ok with you running the blinding notebook to produce shift vectors for all statistics ? If yes, what needs to be done is to update the blindspot notebook to the baseline galaxy bias values … We can set other nuisance to 0 i think. We need to update to the latests n(z)'s for pos and shear (using only south) … We need to produce full area unbinned Cl's. We can sample parameters as you have been doing so far. Otherwise we can reproduce what GC is doing (slide 50, sampling uniform priors)."</p>
+    <p>Alessio Spurio Mancini, #dr1-kp-jc-2, 11 November 2026: "A pass is a recovered shift consistent with the injected one and a posterior of unchanged width."</p>
     </details>
-    <details><summary>What CMBX would add to use it</summary>
+    <details><summary>Repository</summary>
+    <p>cloe-org/blindspot (private to cloe-org members), main at bf6bcf9 (14 October 2026). Four notebooks, no package, tests or releases. The photometric notebook draws 100 points in $(\Omega_c, A_s)$ with seed 0 around $\Omega_c = 0.27$, $A_s = 2.1\times10^{-9}$, $H_0 = 67$, and computes theory with CAMB and the HMcode2020 emulator on a redshift grid to $z = 3$. The FS2 version is on branch 41; the spectroscopic script is PR #45. The selected index is kept outside the repository, so the repository alone does not reveal the shift.</p>
+    </details>
+    <details><summary>What a CMBX shift with blindspot would need</summary>
     <ul>
-      <li>A κ tracer in the shift loop: κ×shear, κ×galaxy and, if blinded, κκ.</li>
-      <li>Theory to the CMB last-scattering surface; the CLOE emulators are trained to $z = 5$, beyond which CLOElib extrapolates.</li>
-      <li>Our NaMaster mixing matrices, and an LE3 key convention for κ spectra.</li>
-      <li>The parameters to shift: photometric uses $(\Omega_c, A_s)$, spectroscopic DR1 $(\omega_c, w_0, w_a, h)$, CMBX today $(\Omega_\mathrm{m}, S_8)$.</li>
+      <li>The cloelib CMB-lensing tracer in the shift loop, for κ×shear and κ×positions. Their integrands vanish beyond the galaxy kernels, so the redshift grid to 3 suffices (inference, not tested).</li>
+      <li>For κκ, theory to the last-scattering surface, past the HMcode2020 emulator's redshift range.</li>
+      <li>CMBX's own bandpower windows and CMB-lensing transfer applied to the unbinned shift, as dr1_cmbx's blinding module already does with its own theory.</li>
+      <li>Its own draw: blindspot gives the same parameters, distribution and theory code as 3×2pt, not 3×2pt's hidden point.</li>
     </ul>
-    </details>
-    <details><summary>What adopting would buy, and what it would not</summary>
-    <p>All three tools in view (blindspot, LSST DESC's Smokescreen, the CMBX module in dr1_cmbx !9) implement the same arithmetic. The difference that matters is the theory code: the same blinding cosmology passed through two theory codes gives two slightly different shifts on the same galaxy field, which would matter for any comparison made in blinded space. Computing CMBX shifts with CLOElib removes that. It does not by itself give CMBX the 3×2pt blinding cosmology, which the policy keeps separate. Source: blindspot main at commit bf6bcf9 (14 October 2026); CLOElib origin/main.</p>
     </details>
   </aside>
 </section>
