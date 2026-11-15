@@ -1,0 +1,4 @@
+{
+  "title": "Live page fixture", "author": "house test", "date": "2026-11-15", "footer": "fixture", "draft": true,
+  "sections": [{ "title": "Pages", "outline": "A live page loads only in the interactive deck.", "slides": ["plain", "page"] }]
+}

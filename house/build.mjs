@@ -463,6 +463,25 @@ function frameFigures(frame, deckDir, problems, where, assets, variants) {
     }
     moveMarks(fig, box, problems, where);
   }
+  // Live pages load only in the interactive deck; their posters work offline.
+  for (const iframe of [...frame.querySelectorAll('figure > iframe')]) {
+    const poster = iframe.getAttribute('data-poster') || '';
+    const file = path.resolve(deckDir, poster);
+    if (!poster || !fs.existsSync(file)) { problems.push(`${where}: <iframe> needs a data-poster image`); continue; }
+    let im;
+    try { im = loadImage(file); } catch (e) { problems.push(`${where}: ${poster}: ${e.message}`); continue; }
+    iframe.setAttribute('data-page-src', iframe.getAttribute('src') || '');
+    iframe.removeAttribute('src');
+    iframe.removeAttribute('data-poster');
+    const fig = iframe.parentElement;
+    const box = wrapInFrame(fig, iframe, im.w / im.h);
+    const img = frame.ownerDocument.createElement('img');
+    img.setAttribute('data-asset', addAsset(assets, im, false));
+    img.setAttribute('data-src-path', poster);
+    img.setAttribute('alt', iframe.getAttribute('title') || 'Live page poster');
+    box.insertBefore(img, iframe);
+    moveMarks(fig, box, problems, where);
+  }
 }
 
 // people: the build gathers the portrait blocks into .roster (the size
@@ -824,7 +843,7 @@ ${s.details.map(d => `<div class="detail-copy"><p class="label">${esc(d.label)}<
 </article>`;
   }
   // The written talk shows posters, without loading the clips.
-  if (body.includes('<video')) {
+  if (body.includes('<video') || body.includes('<iframe')) {
     const doc = parseFragment(body);
     for (const video of doc.querySelectorAll('video')) {
       const img = doc.createElement('img');
@@ -832,6 +851,7 @@ ${s.details.map(d => `<div class="detail-copy"><p class="label">${esc(d.label)}<
       img.setAttribute('alt', 'Video poster');
       video.replaceWith(img);
     }
+    for (const iframe of doc.querySelectorAll('iframe')) iframe.remove();
     body = doc.body.innerHTML;
   }
   return `<!doctype html>

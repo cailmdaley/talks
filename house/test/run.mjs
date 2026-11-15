@@ -33,6 +33,7 @@ const EXPECT = {
   stackless: 'data-stack goes on a people or figure-text slide with a div.text',
   loneprism: 'data-prism turns a stack',
   strayzoom: 'data-zoom goes on a later face of a <figure data-prism>',
+  loosepage: 'a <iframe> belongs directly inside a <figure>',
 };
 const SVG_OFF = 'text "far right" is clipped by the canvas';
 
@@ -70,6 +71,7 @@ for (const needle of [
   'slides/noposter.html: <video src="images/house_test_video.mp4"> needs a poster image',
   'slides/missingvideo.html: missing video images/no_such_video.mp4',
   'slides/badvideo.html: images/house_test_video.jpg: unsupported video type (mp4 or webm)',
+  'slides/pageposter.html: <iframe> needs a data-poster image',
 ]) ok(fail.stderr.includes(needle), `build refuses: ${needle}`);
 
 // Variants: the deck passes the checker, and in a browser the control swaps the image,
@@ -210,6 +212,60 @@ ok(videoCheck.status === 0, `video fixture passes (${videoCheck.stdout.trim().sp
       ok(await page.evaluate(web => !document.querySelector('video') && document.querySelector('figure img').src.includes(web ? '/a/' : 'data:image/jpeg;base64,'), web), 'report shows a poster, not a video');
       const report = fs.readFileSync(built.report, 'utf8');
       ok(!report.includes('video/mp4') && !report.includes('.mp4'), 'report carries no clip assets');
+      await page.close();
+    }
+  } finally {
+    await browser.close();
+    fs.rmSync(out, { recursive: true, force: true });
+  }
+}
+
+// Live pages never load in static outputs, and load only once in the live deck.
+const pageDir = path.join(HERE, 'page');
+const pageCheck = run(pageDir);
+ok(pageCheck.status === 0, `live page fixture passes (${pageCheck.stdout.trim().split('\n').pop()})`);
+{
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const { buildDeck } = await import('../build.mjs');
+  const { default: puppeteer } = await import('puppeteer');
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'house-page-'));
+  const built = await buildDeck(pageDir, out);
+  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--allow-file-access-from-files'] });
+  try {
+    for (const mode of ['live', 'checker', 'print', 'print-media', 'report']) {
+      const page = await browser.newPage();
+      let requests = 0;
+      await page.setRequestInterception(true);
+      page.on('request', request => {
+        if (request.url().startsWith('https:')) {
+          requests++;
+          request.respond({ status: 200, contentType: 'text/html', body: '<h1>Live app</h1>' });
+        } else request.continue();
+      });
+      if (mode === 'checker') await page.evaluateOnNewDocument(() => { window.HousePosterOnly = true; });
+      if (mode === 'print-media') await page.emulateMediaType('print');
+      await page.goto('file://' + (mode === 'report' ? built.report : built.index) + (mode === 'print' ? '?print-pdf' : ''));
+      if (mode !== 'report') await page.waitForFunction(() => Reveal.isReady());
+      ok(requests === 0, `${mode}: no page request on opening`);
+      if (mode === 'live') {
+        ok(await page.evaluate(() => {
+          const iframe = document.querySelector('iframe');
+          return !iframe.hasAttribute('src') && getComputedStyle(iframe).display === 'none' &&
+            iframe.parentElement.style.getPropertyValue('--ar') === '1.77778' &&
+            iframe.previousElementSibling.src.startsWith('data:image/jpeg;base64,');
+        }), 'live page starts behind an inlined, poster-sized frame');
+        const loaded = page.waitForResponse('https://example.invalid/');
+        await page.evaluate(() => Reveal.slide(1));
+        await loaded;
+        ok(requests === 1, 'visiting the slide loads the live page once');
+        await page.evaluate(() => { Reveal.slide(0); Reveal.slide(1); });
+        ok(requests === 1 && await page.evaluate(() => document.querySelector('iframe').getAttribute('src') === 'https://example.invalid/'), 'the page stays loaded across visits');
+      } else {
+        if (mode !== 'report') await page.evaluate(() => Reveal.slide(1));
+        ok(requests === 0 && await page.evaluate(() => [...document.querySelectorAll('iframe')].every(f => !f.hasAttribute('src'))), `${mode}: visiting the page slide keeps the network unloaded`);
+        ok(await page.evaluate(() => !!document.querySelector('figure img[src^="data:image/jpeg"]')), `${mode}: the poster is present`);
+      }
       await page.close();
     }
   } finally {
