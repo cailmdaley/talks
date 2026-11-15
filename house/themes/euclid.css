@@ -85,6 +85,15 @@
   color: #FFFFFF;
 }
 .theme-euclid .slide[data-layout="section"] > .body { margin-top: 8px; }
+/* the band sits clear of the logo; an optional `span.by` in the headline (who, where) is set in
+   small caps at the band's lower right */
+.theme-euclid .slide[data-layout="section"] { padding-bottom: 60px; }
+.theme-euclid .slide[data-layout="section"] > h2 { position: relative; }
+.theme-euclid .slide[data-layout="section"] > h2 > .by {
+  position: absolute; right: var(--pad-x); bottom: 22px;
+  font-size: var(--t-small); font-weight: 400; line-height: 1;
+  font-variant-caps: small-caps; letter-spacing: 0.06em;
+}
 
 .theme-euclid .slide[data-layout="quote"] blockquote { border-left-color: var(--band); }
 .theme-euclid .slide[data-layout="closing"] ol > li::before { font-weight: 700; }
