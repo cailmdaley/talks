@@ -1,0 +1,32 @@
+<section data-preliminary="cycle2" data-layout="figure">
+  <h2>Five templates are clean; extinction carries the CIB</h2>
+  <figure data-app="private/systematics.js" data-app-data="private/systematics_spt_app.json" data-app-variants='{"lensmc|spt": "cycle2|spt2", "lensmc|act": null, "metacal|spt": null, "metacal|act": null}' data-app-pending="Cycle 2 so far: LensMC × SPT-3G">
+    <img src="private/systematics_spt_1.png" alt="One pair close up, source bin 6 times CMB lensing, against the extinction template: the template\'s cross with gamma 6 and with kappa above, both failing their chi-squared null, and below the contamination X over sigma ab they would imply if they were all leakage, up to about 0.4 sigma at high multipoles">
+    <img class="fragment" src="private/systematics_spt_2.png" alt="The 90 pairs of the TR1 Cycle 2 3x2pt plus CMB lensing data vector as a triangle of panels, each showing the contamination one template would add, in units of the pair\'s Gaussian error sigma ab, on a scale of plus or minus 0.75 sigma with plus or minus 0.5 sigma shaded; for extinction, the cells pairing lens bins, kappa and the highest source bins are outlined in orange, their template crosses failing">
+    <span class="source">TR1 Cycle 2, official bins · LensMC × SPT-3G Main PH-GMV</span>
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>First step</strong> — one pair close up, $\gamma_6 \times \kappa$ against extinction, the card a click opens on the triangle: above, the template's cross with each tracer and its null χ²; below, the contamination $X_\ell^{ab}$ the pair would pick up if both crosses were pure leakage, in units of $\sigma_{ab}$.</li>
+      <li><strong>Second step</strong> — all 90 pairs on a scale of $\pm 0.75\,\sigma_{ab}$, $\pm 0.5\,\sigma_{ab}$ shaded; a click on a cell opens its close-up card.</li>
+      <li><strong>Orange outline</strong> — both template crosses behind the cell fail (each PTE below 10⁻⁴).</li>
+      <li><strong>Variants</strong> — Cycle 2 has only LensMC × SPT-3G so far; the other buttons say so.</li>
+    </ul>
+    <details><summary>What is plotted</summary>
+    <p>Euclid TR1 v2 on the official tomographic bins (26 Oct catalogues), LensMC, crossed with the SPT-3G Main bias- and profile-hardened GMV κ. Template crosses are the production results/tr1_v2/systematics archives; $\sigma_{ab}$ is the full NaMaster Gaussian covariance of the blinded Cycle-2 likelihood input (rerun5, 27 Oct). The builder checks that the two share the same field windows, hash for hash. MetaCal and ACT DR6 are not on Cycle 2 in this figure yet.</p>
+    <p>The close-up's top row is the template's measured cross with each of the pair's tracers, $C_\ell^{\gamma_6 S}$ and $C_\ell^{\kappa S}$, each scaled by the power of ℓ that evens its error bars, with its χ² over the 15 bands against zero and PTE (full Gaussian covariance of the null family). Its bottom panel is $X_\ell^{ab} = C_\ell^{aS} C_\ell^{bS}/C_\ell^{SS}$ in units of the pair's Gaussian error $\sigma_{ab}$.</p>
+    </details>
+    <details><summary>The five instrumental templates</summary>
+    <p>Exposures, noise, PSF, zodiacal light and Gaia stars: no template cross fails (PTE above 10⁻⁴ everywhere), and over 5 × 1350 bands only three are resolved (|X| above twice its error), the largest $0.19\,\sigma_{ab}$. PSF shows edge triangles at ℓ ≈ 349 and 690: the template's own power dips about a hundredfold there, between its tiling harmonics, so X and its error both blow up ($\sigma_X \approx 12$ and $2\,\sigma_{ab}$); none of those bands is resolved.</p>
+    </details>
+    <details><summary>Extinction is not a null</summary>
+    <p>The VMPZ extinction template is the Planck 2013 thermal-dust E(B−V) (R1.20), a far-infrared map that carries the cosmic infrared background. Its cross fails with every lens bin (χ² 154–311 on 15 bands), with SPT κ (59) and with the three highest source bins (65, 133, 313), rising with ℓ and positive. Dust obscuration would lower the counts and leave shear and κ alone; a positive cross with δ, κ and high-z shear is large-scale structure in the template. So X here is an upper bound on a contamination the data do not show, not an estimate of one: 257 bands resolved, up to $0.9\,\sigma_{ab}$ in lens × high-z pairs at ℓ ≳ 2000. The template must not be deprojected; it would remove real clustering. GC-8 (28 Oct) carries the detail and the proposals for a dust map with less CIB.</p>
+    </details>
+    <details><summary>Caveats</summary>
+    <p>The PTEs are not calibrated on mocks yet (about a hundred correlated crosses per template), so the orange threshold is a guide. The errors on X propagate the two crosses' Gaussian errors with the template auto held fixed; the cross-cross covariance is left out.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>Figure: 2610_SPT_CMBX/make_triangle.sh (make_systematics.py --cycle2 --only-cycle2, render_systematics.py --even-bars).</p>
+    </details>
+  </aside>
+</section>

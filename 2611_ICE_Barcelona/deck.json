@@ -1,0 +1,24 @@
+{
+  "title": "Weak lensing catalogues and cosmology with UNIONS, Euclid and SPT",
+  "author": "Cail Daley",
+  "venue": "ICE-CSIC seminar, Barcelona",
+  "date": "2026-11-25",
+  "description": "How large weak-lensing analyses are done today, through Euclid × SPT-3G CMB lensing and UNIONS cosmic shear, and where simulation pipelines take them.",
+  "footer": "Cail Daley · ICE-CSIC · November 2026",
+  "theme": "house",
+  "css": "deck.css",
+  "draft": true,
+  "noindex": true,
+  "variants": {
+    "shear": { "lensmc": "LensMC", "metacal": "MetaCal" },
+    "cmb": { "spt": "SPT-3G", "act": "ACT DR6" }
+  },
+  "sections": [
+    { "title": "Opening", "outline": "Weak lensing catalogues and cosmology with UNIONS, Euclid and SPT.",
+      "slides": ["title"] },
+    { "title": "Euclid × SPT-3G", "outline": "Euclid shear and clustering crossed with SPT-3G CMB lensing: the overlap, the pipeline and its mocks, the blinded TR1 data vector, the lens ratio as a check on shear calibration, blinded posteriors against ACT DR6, and where SPT-3G is tighter.",
+      "slides": ["euclid-spt", "why-kappa", "footprint", "pipeline", "mocks", "dv-vector", "lens-ratio", "chains", "spt-vs-act", "dr2"] },
+    { "title": "Backup", "outline": "The blinding rehearsal on a mock, the systematics-template crosses, the FLASK covariance, and Marco Gatti's ACT DR6 forward model.",
+      "slides": ["blind-rehearsal", "systematics-triangle", "kp-3-sims-cov", "cmb-lensing-fm"] }
+  ]
+}

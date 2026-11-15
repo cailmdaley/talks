@@ -1,0 +1,38 @@
+<section data-preliminary="cycle2" data-layout="figure-text" data-split="60">
+  <h2><span class="blind">Blinded</span> TR1: SPT-3G and ACT DR6 agree on 5×2pt</h2>
+  <figure>
+    <img src="images/ice_chains_spt_act_1.png" alt="Blinded S8 against Omega_m from the CMB-lensing crosses alone, SPT-3G filled and ACT DR6 outlined">
+    <img class="fragment" data-fragment-index="1" src="images/ice_chains_spt_act_2.png" alt="The same with galaxy-galaxy lensing added: the SPT-3G contour sits below the ACT DR6 one">
+    <img class="fragment" data-fragment-index="2" src="images/ice_chains_spt_act_3.png" alt="The full 5x2pt vector: the SPT-3G and ACT DR6 contours coincide">
+  </figure>
+  <div class="text">
+    <span class="kicker">$\sigma(S_8)$, SPT-3G · ACT DR6</span>
+    <ul>
+      <li>κ crosses: 0.047 · 0.053</li>
+      <li class="fragment" data-fragment-index="1">+ GGL: 0.031 · 0.034</li>
+      <li class="fragment" data-fragment-index="2">5×2pt: 0.017 · 0.016</li>
+      <li class="fragment" data-fragment-index="2">κ legs: SPT-3G 0.07 lower</li>
+    </ul>
+  </div>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Contours</strong> — blinded $S_8$ against $\Omega_\mathrm{m}$, 68 % and 95 %; SPT-3G filled, ACT DR6 outlined (its 95 % contour dashed). Each step replaces the last: the κ crosses alone ($\kappa\gamma + \kappa\delta$), then with galaxy–galaxy lensing ($+\gamma\delta$), then the full 5×2pt vector.</li>
+      <li><strong>Blinded</strong> — every chain fits a blinded data vector, so absolute positions carry the blind's unknown shift; the comparison between the two CMB maps is meaningful.</li>
+      <li><strong>The κ legs</strong> — with κ alone and with GGL, SPT-3G sits about 0.07 below ACT DR6 in $S_8$; once the galaxy-only spectra enter, the two agree to 0.004.</li>
+      <li><strong>Same galaxies</strong> — both runs use the same Euclid TR1 catalogues; only the CMB-lensing map, its footprint and its noise differ.</li>
+    </ul>
+    <details><summary>Numbers</summary>
+    <p>Blinded $S_8$, mean ± σ. SPT-3G (bias- and profile-hardened GMV): κ crosses 0.822 ± 0.047, + GGL 0.770 ± 0.031, 5×2pt 0.782 ± 0.017. ACT DR6: 0.901 ± 0.053, 0.841 ± 0.034, 0.786 ± 0.016. $\Omega_\mathrm{m}$ in the full vector: 0.301 ± 0.040 and 0.296 ± 0.041.</p>
+    </details>
+    <details><summary>How big is the κ split?</summary>
+    <p>On 20 GLASS mocks that share their galaxies between the two CMB footprints, the SPT−ACT difference in the κ + GGL $S_8$ scatters by 0.038, so the data's 0.071 would be about 1.9σ. Those mocks carry no CMB-lensing reconstruction noise, so the yardstick is too narrow and 1.9σ overstates the split; mocks conditioned on the experiments' own reconstruction simulations are the fix in progress.</p>
+    <p>It is not a temperature foreground in the SPT-3G map: the polarization-only and temperature-hardened SPT-3G reconstructions give κ + GGL $S_8$ of 0.774 ± 0.038 and 0.759 ± 0.037, against 0.770 ± 0.031 for the baseline, none moving toward ACT DR6. Open causes: the different TR1 sub-areas under each CMB footprint, the cross response near the ACT mask edge, and the absence of CMB-side nuisance parameters in the likelihood.</p>
+    </details>
+    <details><summary>The model</summary>
+    <p>Euclid TR1 Cycle 2 (official tomographic bins, DR1 n(z)), Gaussian + super-sample covariance, theory from CLOE with its emulators through a JAX adapter (checked against CLOE to below $10^{-3}\sigma$ per band and on the posteriors), nested sampling with nautilus. The priors on the nuisance parameters are placeholders with a cited source for each width; the scale cuts are an engineering profile until the Euclid 3×2pt group fixes its own.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>Production chains of the tr1_v2 (SPT-3G) and tr1_v2_act (ACT DR6) universes, 15 November 2026. Figure: 2611_ICE_Barcelona/make_chains_spt_act.py, summary in chains_spt_act.json.</p>
+    </details>
+  </aside>
+</section>
