@@ -189,7 +189,7 @@ def main():
     # the two charts are drawn clean; only the footprint map is sketched
     plt.rcParams["path.sketch"] = None
     # noise per band
-    ax = fig.add_axes([0.50, 0.30, 0.2, 0.55])
+    ax = fig.add_axes([0.60, 0.28, 0.30, 0.58])
     noise(ax)
     ax.set_xticks([1000, 2000, 3000, 4000], ["1000", "", "3000", ""])
     ax.set_yticks([10, 100], ["10", "100"])
@@ -203,16 +203,6 @@ def main():
     ax.text(3950, 60, "220", color=OCHRE, fontsize=SMALL, ha="right", va="center")
     ax.text(3950, 3.0, "150", color=ACCENT, fontsize=SMALL, ha="right", va="center")
     ax.text(2500, 3.0, "95", color=TEAL, fontsize=SMALL, ha="right", va="center")
-
-    # reconstruction-noise check
-    ax = fig.add_axes([0.78, 0.30, 0.2, 0.55])
-    check(ax)
-    ax.set_xticks([100, 1000], ["100", "1000"])
-    ax.set_yticks([0.8, 1.0, 1.2, 1.4])
-    ax.minorticks_off()
-    ax.set_xlabel("$L$", labelpad=0)
-    ax.set_title("pol-only $\\sigma_\\mathrm{D1}\\,/\\,\\sigma_\\mathrm{model}$", fontsize=TXT, color=INK,
-                 loc="left", pad=10)
 
     out = os.path.join(IMG, "paris26_cov_spt_public_sketch.png")
     fig.savefig(out, dpi=DPI)

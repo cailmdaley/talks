@@ -1,9 +1,9 @@
 {
-  "title": "Blinding, CLOE and covariance",
+  "title": "SPT covariance, blinding and CLOE",
   "author": "Cail Daley",
   "venue": "Euclid CMBX SWG meeting, Paris",
   "date": "2026-11-18",
-  "description": "Slides for the Paris CMBX SWG meeting: how the Euclid groups blind DR1 and what CMBX has to decide, the CLOE versus dr1_cmbx likelihood comparison on TR1 chains, and what CMBX needs for its covariance.",
+  "description": "Slides for the Paris CMBX SWG meeting: what the SPT × Euclid analysis needs for its covariance, how the Euclid groups blind DR1 and a proposal for the CMBX blind, and the CLOE versus dr1_cmbx likelihood comparison on TR1 chains.",
   "footer": "Euclid CMBX SWG · Paris · 17–18 November 2026",
   "theme": "euclid",
   "draft": true,
@@ -18,14 +18,12 @@
       ]
     },
     {
-      "title": "Covariance needs",
-      "outline": "What CMBX uses now, which covariance blocks it needs from whom, public inputs for SPT-like mocks, and questions for the covariance effort.",
+      "title": "SPT covariance",
+      "outline": "What the SPT × Euclid analysis needs from the covariance effort: inputs for SPT-like mocks, constrained realizations on SPT's simulations, and the output wanted.",
       "slides": [
         "covariance",
-        "cov-now",
-        "cov-needs",
         "cov-spt-public",
-        "cov-questions"
+        "cov-spt-constrained"
       ]
     },
     {

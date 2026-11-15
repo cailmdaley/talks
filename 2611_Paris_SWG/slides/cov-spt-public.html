@@ -1,30 +1,31 @@
 <section data-layout="figure-text" data-stack>
-  <h2>SPT-like mocks can start from public inputs</h2>
+  <h2>SPT-like mocks: inputs from public sources</h2>
   <figure>
-    <img src="images/paris26_cov_spt_public_sketch.png" alt="Sketch of the SPT-3G Main, Summer A and Summer B footprints over the Euclid DR1 footprint with overlap areas, the per-band noise curves, and the ratio of public D1 lensing errors to the model's">
+    <img src="images/paris26_cov_spt_public_sketch.png" alt="The SPT-3G Main, Summer A and Summer B footprints over the Euclid DR1 footprint with overlap areas in square degrees, and the noise curve of each band in temperature and polarization">
     <span class="source">Leonardo: /leonardo_work/EUHPC_E07_074/cmbx/inputs/spt/public_covariance_package (README.md)</span>
   </figure>
   <div class="text">
   <ul>
-    <li>Masks: SPT-3G Main, Summer A and B, $N_\mathrm{side} = 2048$</li>
-    <li>Noise per band, temperature and polarization, each entry cited</li>
-    <li>Public D1 release: survey masks, 500 noise maps per band</li>
-    <li>Check: pol-only $N_L^{\kappa\kappa}$ within 10 % of the public D1 errors</li>
+    <li>A generic quadratic estimator, run by the covariance team</li>
+    <li>Masks: SPT-3G Main, Summer A and B</li>
+    <li>Noise levels per band, temperature and polarization</li>
+    <li>Noise maps: 500 per band in the public D1 release</li>
+    <li>Unconstrained, so any number can be made</li>
   </ul>
   </div>
   <aside class="notes">
     <ul class="skim">
       <li><strong>What it is for</strong> — a generic quadratic-estimator κ reconstruction on simulated CMB with SPT-3G's footprint and noise, so that covariance mocks for the κ blocks can start before SPT's own reconstructions can be shared. Every number comes from a public paper or data release; nothing derives from internal SPT products.</li>
       <li><strong>Masks</strong> — RA/Dec boxes from the published field boundaries, HEALPix $N_\mathrm{side} = 2048$, RING, equatorial, binary and apodized. Overlap with the observed DR1 footprint: Main 423 deg², Summer A 948 deg², Summer B 137 deg²; Summer C has none and is left out.</li>
-      <li><strong>Noise</strong> — white level, atmospheric knee and slope, and beam per band (95, 150, 220 GHz), with beam-deconvolved noise curves and a model reconstruction noise. Summer polarization noise and Summer beams are proxies, labelled as such in the table.</li>
+      <li><strong>Noise</strong> — white level, atmospheric knee and slope, and beam per band (95, 150, 220 GHz), with beam-deconvolved noise curves. Summer polarization noise and Summer beams are proxies, labelled as such in the table.</li>
       <li><strong>Public D1 release</strong> — the SPT-3G D1 Main-field release has the survey pixel masks and 500 sign-flip noise realizations per band; for Main-field mocks these are better than the package's boxes and noise model.</li>
-      <li><strong>Check</strong> — a flat-sky quadratic estimator on the noise model reproduces the public D1 polarization-only lensing bandpower errors within 10 % for $150 &lt; L &lt; 1300$. The temperature-plus-polarization estimator also needs temperature foreground power (a Poisson term closes a gap of up to 2× at high $L$).</li>
+      <li><strong>Any number</strong> — these mocks are not conditioned on an experiment's own simulated reconstructions, so their number is not limited by how many simulations SPT has.</li>
     </ul>
     <details><summary>How this differs from constrained realizations</summary>
     <p>Constrained realizations on SPT's own lensing reconstructions of its simulations carry the real estimator, filtering and masks, and there are as many as SPT has simulations. The public route needs none of SPT's products and is not limited in number.</p>
     </details>
     <details><summary>The sketch</summary>
-    <p>Drawn from the package's own files by make_cov_figures.py in the deck directory, in a hand-drawn style. <strong>Left:</strong> the Main, Summer A and Summer B box masks (ochre) over the observed Euclid DR1 wide footprint (blue: the union of DR1_R1 and DR1_R2 MER VIS tiles, 2341 deg², not an analysis mask), in an equal-area view about the south celestial pole; outlines are lightly smoothed, and the numbers are each field's overlap in deg², recomputed from the same maps. <strong>Middle:</strong> the beam-deconvolved noise model of the D1 Main field per band, temperature solid and polarization dashed. <strong>Right:</strong> public D1 polarization-only lensing bandpower errors over the errors the noise model predicts; the band is ±10 %.</p>
+    <p>Drawn from the package's own files by make_cov_figures.py in the deck directory, in a hand-drawn style. <strong>Left:</strong> the Main, Summer A and Summer B box masks (ochre) over the observed Euclid DR1 wide footprint (blue: the union of DR1_R1 and DR1_R2 MER VIS tiles, 2341 deg², not an analysis mask), in an equal-area view about the south celestial pole; outlines are lightly smoothed, and the numbers are each field's overlap in deg², recomputed from the same maps. <strong>Right:</strong> the beam-deconvolved noise model of the D1 Main field per band, temperature solid and polarization dashed.</p>
     </details>
     <details><summary>Sources</summary>
     <p>SPT-3G D1 maps release (Quan et al. 2026, arXiv:2603.20163); Camphuis et al. 2025 (arXiv:2506.20707) for noise levels; SPT-3G D1 quadratic-estimator lensing (arXiv:2608.31136) and its public likelihood data; the Summer two-year temperature lensing paper (arXiv:2607.05784); Prabhu et al. 2024 (arXiv:2403.17925) for the noise knees.</p>

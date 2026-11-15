@@ -1,0 +1,20 @@
+<section data-layout="points">
+  <h2>Constrained realizations on SPT's simulations</h2>
+  <ul>
+    <li>Inputs: the same footprints, and SPT's κ reconstructions of its simulations</li>
+    <li>SPT has 350–400 simulations, winter and summer fields</li>
+    <li>Sharing them waits on Euclid status for SPT's external collaborators</li>
+  </ul>
+  <p><strong class="accent">Output wanted:</strong> covariances for the κ crosses, calibrated the same way as the ACT and Planck ones</p>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>What it is</strong> — mock Euclid fields conditioned on the κ of each SPT simulation, paired with SPT's own lensing reconstruction of that simulation, so the mocks carry SPT's real estimator, filtering, masks and reconstruction noise.</li>
+      <li><strong>Inputs</strong> — the footprints of the previous slide, and SPT's lensing reconstructions of its 350–400 simulations for the winter (Main) and summer fields.</li>
+      <li><strong>Status</strong> — SPT cannot share these products until its external collaborators have Euclid status; the request was circulated on 9 November 2026.</li>
+      <li><strong>Output</strong> — covariances for κ × shear and κ × positions with SPT-3G, calibrated in the same way as those built on the ACT and Planck simulations, where about 400 constrained realizations exist.</li>
+    </ul>
+    <details><summary>From the CMBX telecon of 5 November 2026</summary>
+    <p>About 400 realizations were judged too noisy to invert directly. The candidates raised there were shrinkage toward an analytic target (which lacks the reconstruction noise), a jackknife (biased even with delete-two, as found in DES), and a much larger set of own simulations with reconstruction run on each. JC-1's view at that telecon: the 6×2pt and covariance groups should run synthetic chains together.</p>
+    </details>
+  </aside>
+</section>
