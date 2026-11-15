@@ -1,5 +1,5 @@
 <section data-preliminary="cycle2" data-layout="figure">
-  <h2>Five templates are clean; extinction carries the CIB</h2>
+  <h2>Template null tests: extinction carries the CIB</h2>
   <figure data-app="private/systematics.js" data-app-data="private/systematics_spt_app.json" data-app-variants='{"lensmc|spt": "cycle2|spt2", "lensmc|act": null, "metacal|spt": null, "metacal|act": null}' data-app-pending="Cycle 2 so far: LensMC × SPT-3G">
     <img src="private/systematics_spt_1.png" alt="One pair close up, source bin 6 times CMB lensing, against the extinction template: the template\'s cross with gamma 6 and with kappa above, both failing their chi-squared null, and below the contamination X over sigma ab they would imply if they were all leakage, up to about 0.4 sigma at high multipoles">
     <img class="fragment" src="private/systematics_spt_2.png" alt="The 90 pairs of the TR1 Cycle 2 3x2pt plus CMB lensing data vector as a triangle of panels, each showing the contamination one template would add, in units of the pair\'s Gaussian error sigma ab, on a scale of plus or minus 0.75 sigma with plus or minus 0.5 sigma shaded; for extinction, the cells pairing lens bins, kappa and the highest source bins are outlined in orange, their template crosses failing">
@@ -23,7 +23,7 @@
     <p>The VMPZ extinction template is the Planck 2013 thermal-dust E(B−V) (R1.20), a far-infrared map that carries the cosmic infrared background. Its cross fails with every lens bin (χ² 154–311 on 15 bands), with SPT κ (59) and with the three highest source bins (65, 133, 313), rising with ℓ and positive. Dust obscuration would lower the counts and leave shear and κ alone; a positive cross with δ, κ and high-z shear is large-scale structure in the template. So X here is an upper bound on a contamination the data do not show, not an estimate of one: 257 bands resolved, up to $0.9\,\sigma_{ab}$ in lens × high-z pairs at ℓ ≳ 2000. The template must not be deprojected; it would remove real clustering. GC-8 (28 Oct) carries the detail and the proposals for a dust map with less CIB.</p>
     </details>
     <details><summary>Caveats</summary>
-    <p>The PTEs are not calibrated on mocks yet (about a hundred correlated crosses per template), so the orange threshold is a guide. The errors on X propagate the two crosses' Gaussian errors with the template auto held fixed; the cross-cross covariance is left out.</p>
+    <p>This is the October diagnostic with Gaussian errors, so the orange threshold is a guide. The mock-calibrated null analysis that followed (1 November) found galaxy density × exposure and noise-depth templates outside every mock seed in several bins, while shear and SPT-3G κ pass. The errors on X propagate the two crosses' Gaussian errors with the template auto held fixed; the cross-cross covariance is left out.</p>
     </details>
     <details><summary>Sources</summary>
     <p>Figure: 2610_SPT_CMBX/make_triangle.sh (make_systematics.py --cycle2 --only-cycle2, render_systematics.py --even-bars).</p>

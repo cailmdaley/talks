@@ -255,12 +255,13 @@ ok(pageCheck.status === 0, `live page fixture passes (${pageCheck.stdout.trim().
             iframe.parentElement.style.getPropertyValue('--ar') === '1.77778' &&
             iframe.previousElementSibling.src.startsWith('data:image/jpeg;base64,');
         }), 'live page starts behind an inlined, poster-sized frame');
-        const loaded = page.waitForResponse('https://example.invalid/');
         await page.evaluate(() => Reveal.slide(1));
-        await loaded;
-        ok(requests === 1, 'visiting the slide loads the live page once');
+        await page.waitForFunction(() => document.querySelector('iframe').getAttribute('src') === 'https://example.invalid/');
+        await new Promise(r => setTimeout(r, 300));
+        ok(requests === 2, 'visiting the slide probes the host, then loads the live page once');
         await page.evaluate(() => { Reveal.slide(0); Reveal.slide(1); });
-        ok(requests === 1 && await page.evaluate(() => document.querySelector('iframe').getAttribute('src') === 'https://example.invalid/'), 'the page stays loaded across visits');
+        await new Promise(r => setTimeout(r, 300));
+        ok(requests === 2 && await page.evaluate(() => document.querySelector('iframe').getAttribute('src') === 'https://example.invalid/'), 'the page stays loaded across visits');
       } else {
         if (mode !== 'report') await page.evaluate(() => Reveal.slide(1));
         ok(requests === 0 && await page.evaluate(() => [...document.querySelectorAll('iframe')].every(f => !f.hasAttribute('src'))), `${mode}: visiting the page slide keeps the network unloaded`);
@@ -268,6 +269,16 @@ ok(pageCheck.status === 0, `live page fixture passes (${pageCheck.stdout.trim().
       }
       await page.close();
     }
+    // an unreachable host leaves the poster up rather than an error page
+    const page = await browser.newPage();
+    await page.setRequestInterception(true);
+    page.on('request', request => request.url().startsWith('https:') ? request.abort('namenotresolved') : request.continue());
+    await page.goto('file://' + built.index);
+    await page.waitForFunction(() => Reveal.isReady());
+    await page.evaluate(() => Reveal.slide(1));
+    await new Promise(r => setTimeout(r, 500));
+    ok(await page.evaluate(() => { const f = document.querySelector('iframe'); return !f.hasAttribute('src') && getComputedStyle(f).display === 'none'; }), 'live: an unreachable host keeps the poster');
+    await page.close();
   } finally {
     await browser.close();
     fs.rmSync(out, { recursive: true, force: true });

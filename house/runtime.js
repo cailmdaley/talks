@@ -78,8 +78,14 @@
   function loadPages() {
     if (window.HousePosterOnly || (Reveal.isPrintView && Reveal.isPrintView()) || window.matchMedia('print').matches) return;
     var cur = Reveal.getCurrentSlide();
-    if (cur) cur.querySelectorAll('iframe[data-page-src]:not([src])').forEach(function (iframe) {
-      iframe.src = iframe.getAttribute('data-page-src');
+    // The page replaces the poster only once its host answers, so an unreachable host
+    // leaves the poster up instead of the browser's error page.
+    if (cur) cur.querySelectorAll('iframe[data-page-src]:not([src]):not([data-probing])').forEach(function (iframe) {
+      var url = iframe.getAttribute('data-page-src');
+      iframe.setAttribute('data-probing', '');
+      fetch(url, { mode: 'no-cors', cache: 'no-store' })
+        .then(function () { iframe.src = url; })
+        .catch(function () { iframe.removeAttribute('data-probing'); });
     });
   }
   Reveal.on('ready', loadPages);
