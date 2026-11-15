@@ -3,7 +3,7 @@
   <table>
     <tr><th></th><th>3×2pt</th><th>mine today</th><th>proposed</th></tr>
     <tr><td>parameters</td><td>$\Omega_c$, $A_s$</td><td>$\Omega_\mathrm{m}$, $S_8$</td><td>$\Omega_c$, $A_s$</td></tr>
-    <tr><td>drawn from</td><td>mock posterior</td><td>uniform box</td><td>as 3×2pt</td></tr>
+    <tr><td>drawn from</td><td>mock posterior</td><td>uniform box</td><td>a nowcast posterior</td></tr>
     <tr><td>reference</td><td>survey fiducial</td><td>Planck 2018</td><td>survey fiducial</td></tr>
     <tr><td>theory, tool</td><td>cloelib, blindspot</td><td>dr1_cmbx</td><td>cloelib + κ, blindspot</td></tr>
     <tr><td>hidden point</td><td>JC-1, LE3</td><td>sealed CMBX index</td><td>separate CMBX draw</td></tr>
@@ -11,7 +11,7 @@
   <span class="source">A proposal, not a decision. JC-2 fixes its distribution on 24 Nov.</span>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>The proposal</strong> — my working stance: CMBX shifts the same parameters as the WL/3×2pt blind, drawn the same way, and computes the shifts with blindspot on cloelib. The draw stays separate, as Euclid policy requires.</li>
+      <li><strong>The proposal</strong> — my working stance: CMBX shifts the same parameters as the WL/3×2pt blind, drawn the same way, and computes the shifts with blindspot on cloelib. The draw stays separate, as Euclid policy requires. Drawing from a posterior before the data exist means a posterior on synthetic data, so the CMBX draw would come from a chain on the DR1 nowcast vectors, as the 3×2pt validation uses.</li>
       <li><strong>3×2pt column</strong> — the blindspot photometric notebook as JC-2 is validating it (previous slides). Its distribution is still open: a mock WL posterior, a posterior of the probe being blinded, or uniform priors.</li>
       <li><strong>CMBX today</strong> — Redmine #31813, dr1_cmbx MR !9: uniform within ±0.1 in $\Omega_\mathrm{m}$ and ±0.075 in $S_8$ of Planck 2018, added to every spectrum when it is written.</li>
       <li><strong>What would change</strong> — the parametrisation, the distribution, the reference cosmology and the theory code. The mechanics stay: an additive theory difference applied at write time, a sealed choice.</li>

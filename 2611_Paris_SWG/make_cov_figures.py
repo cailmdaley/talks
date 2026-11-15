@@ -186,6 +186,8 @@ def main():
     ax.text(0.98, -1.0, "Euclid DR1", color=COBALT, fontsize=TXT, ha="center", va="center", zorder=6)
     ax.text(0.98, -1.13, "overlap, deg²", color=INK, fontsize=SMALL, ha="center", va="center", zorder=6)
 
+    # the two charts are drawn clean; only the footprint map is sketched
+    plt.rcParams["path.sketch"] = None
     # noise per band
     ax = fig.add_axes([0.50, 0.30, 0.2, 0.55])
     noise(ax)

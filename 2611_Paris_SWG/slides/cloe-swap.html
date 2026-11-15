@@ -8,7 +8,7 @@
       <li><strong>Left</strong> — what the two chains share: data vector, covariance, priors, scale cuts and sampler, the same files checked by SHA256.</li>
       <li><strong>Right</strong> — the swapped box, piece by piece. dr1_cmbx: eDR1like with CCL theory (CCL background and Limber projection, CAMB HMCode-2020 $P(k)$). CLOE: CLOElib v0.11 theory (CAMB background and HMCode-2020 $P(k)$, CLOElib projection) scored by the CLOElike v0.3 Gaussian likelihood.</li>
       <li><strong>Data</strong> — two configurations: the GLASS mock (seed 3004) and blinded TR1 × SPT-3G.</li>
-      <li><strong>Sampler</strong> — not a native CLOE sampler run: nautilus with 2000 live points explores a fast JAX emulation of the theory, and every posterior point is then importance-reweighted to the exact likelihood, so CLOE scores every posterior point.</li>
+      <li><strong>Sampler</strong> — nautilus nested sampling with 2000 live points, the same settings for both.</li>
     </ul>
     <details><summary>Inputs</summary>
     <p>The production Gaussian + SSC covariance and the DR1-document nuisance priors; 37 sampled parameters on the mock and 38 on data ($T_\mathrm{AGN}$ also sampled). The GLASS mocks use dark-matter-only HMCode-2020, the data configuration HMCode-2020 with feedback.</p>
@@ -20,7 +20,7 @@
     <p>The two theory vectors were compared point by point at the fiducial and at 12 prior draws: the largest band difference is 0.067σ on the data configuration and 0.008σ on the mock, in units of the Gaussian bandpower error.</p>
     </details>
     <details><summary>Monte Carlo noise</summary>
-    <p>The two chains use different random seeds, so their difference includes Monte Carlo noise. These chains predate the JAX version of CLOE that production now samples directly (after the cost slide); there the reweighting is only a check.</p>
+    <p>The two chains use different random seeds, so their difference includes Monte Carlo noise. For speed, both chains were sampled on a fast JAX approximation of the theory and every posterior point was then weighted by its exact likelihood, eDR1like or CLOE; the posteriors compared are the exact ones.</p>
     </details>
     <details><summary>Sources</summary>
     <p>felt fibers cmbx/likelihood/cloe-baseline and cmbx/likelihood/cloe-vs-dr1-cmbx-posterior-and; dr1_cmbx eDR1like theory_ccl.py, cloe_backend.py, cloe_likelihood.py. Drawing: make_cloe_sketches.py.</p>

@@ -198,18 +198,17 @@ def fig_truth_bias():
 
 def fig_cost():
     t = json.load(open(os.path.join(FIBER, "timing-summary.json")))
-    mock = json.load(open(os.path.join(FIBER, "posterior-mock-summary.json")))
-    data = json.load(open(os.path.join(FIBER, "posterior-data-summary.json")))
     fig = new_fig()
+    JAX_C = "#B5523B"
     # left: core-seconds per full-vector evaluation
     ax = fig.add_axes([0.205, 0.15, 0.25, 0.78])
-    rows = [("eDR1like + CCL", 32.0, REF_C), ("CLOE + CAMB", t["camb_median_s"], CLOE_C),
-            ("CLOE + emulator", t["cpj_median_s"], TEAL),
-            ("CLOE projection", t["points"]["active_nuisance"]["cpj_s"], "#8A929E"),
-            ("JAX explorer", 0.25, ACCENT)]
-    for i, (lab, v, c) in enumerate(rows):
+    rows = [("eDR1like + CCL", 32.0, REF_C, "32 s"), ("CLOE + CAMB", t["camb_median_s"], CLOE_C, None),
+            ("CLOE + emulator", t["cpj_median_s"], TEAL, None),
+            ("CLOE projection", t["points"]["active_nuisance"]["cpj_s"], "#8A929E", None),
+            ("CLOE in JAX", 0.45, JAX_C, "≤ 0.45 s")]
+    for i, (lab, v, c, txt) in enumerate(rows):
         ax.barh(i, v, color=c, height=0.62)
-        ax.text(v * 1.25, i, f"{v:.3g} s", va="center", fontsize=TICK, color=INK)
+        ax.text(v * 1.25, i, txt or f"{v:.3g} s", va="center", fontsize=TICK, color=INK)
     ax.set_yticks(range(len(rows)), [r[0] for r in rows])
     ax.tick_params(axis="y", length=0, labelsize=TICK, labelcolor=INK)
     ax.set_xscale("log")
@@ -217,24 +216,19 @@ def fig_cost():
     ax.set_ylim(len(rows) - 0.5, -0.5)
     ax.set_xlabel("core-seconds per evaluation")
     ax.set_title("one likelihood evaluation", fontsize=LABEL, color=INK, loc="left")
-    # right: full chain wall time on one node, hours
+    # right: wall time of one full chain on one node, hours
     ax = fig.add_axes([0.70, 0.15, 0.24, 0.78])
-    h = lambda s: s / 3600  # noqa: E731
-    fast = [("explore + eDR1like", [h(data["reference_clock"]["stage_sum_min"] * 60), h(mock["reference_clock"]["stage_sum_min"] * 60)], REF_C, False),
-            ("explore + CLOE/CAMB", [h(data["target_clock"]["stage_sum_min"] * 60), h(mock["target_clock"]["stage_sum_min"] * 60)], CLOE_C, False),
-            ("explore + CLOE/emu", [35 / 60, 43 / 60], TEAL, True),
-            ("nautilus, CLOE/emu", [4, 5], TEAL, True),
-            ("nautilus, CLOE/CAMB", [11, 14], CLOE_C, True)]
-    for i, (lab, (lo, hi), c, est) in enumerate(fast):
+    chains = [("CLOE + CAMB", 11, 14, CLOE_C, True, "11–14 h"), ("CLOE + emulator", 4, 5, TEAL, True, "4–5 h"),
+              ("CLOE in JAX", 0.54, 0.54, JAX_C, False, "32 min")]
+    for i, (lab, lo, hi, c, est, txt) in enumerate(chains):
         ax.barh(i, hi, color="white" if est else c, edgecolor=c, hatch="//" if est else None, lw=2, height=0.62)
-        txt = f"{lo:.1f}–{hi:.1f} h" if hi < 3 else f"{lo:.0f}–{hi:.0f} h"
         ax.text(hi * 1.2, i, txt, va="center", fontsize=TICK, color=INK)
-    ax.set_yticks(range(len(fast)), [f[0] for f in fast])
+    ax.set_yticks(range(len(chains)), [c[0] for c in chains])
     ax.tick_params(axis="y", length=0, labelsize=TICK, labelcolor=INK)
     ax.set_xscale("log")
     ax.set_xlim(0.3, 60)
     ax.set_xticks([0.5, 1, 3, 10, 30], ["0.5", "1", "3", "10", "30"])
-    ax.set_ylim(len(fast) - 0.5, -0.5)
+    ax.set_ylim(len(chains) - 0.5, -0.5)
     ax.set_xlabel("hours on one node; hatched: estimated")
     ax.set_title("one full chain", fontsize=LABEL, color=INK, loc="left")
     fig.savefig(os.path.join(IMG, "paris26_cloe_cost.png"), dpi=DPI)

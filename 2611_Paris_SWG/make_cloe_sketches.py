@@ -1,17 +1,16 @@
 """Hand-sketched diagrams of the CLOE segment of the Paris CMBX SWG deck.
 
-Four drawings, each at 2x the slide's figure box (3424 x 1542 px), on white (the build
+Three drawings, each at 2x the slide's figure box (3424 x 1542 px), on white (the build
 multiplies white into the theme ground):
 
   paris26_sketch_anatomy.png   the three levels of a chain: sampler, likelihood, theory
   paris26_sketch_swap.png      eDR1like + CCL against CLOE: what is shared, what is swapped
   paris26_sketch_jax.png       plain CLOE against CLOE with its slow pieces in JAX
-  paris26_sketch_chain.png     where one chain's wall time goes, before and after
 
 Every number drawn is quoted, with its source, in the notes card of the slide that shows it.
 Lines are drawn twice with smooth random wobble and fills are layered translucent washes, so
 the figures look sketched; the random seed is fixed, so a redraw is identical. Lettering is
-Patrick Hand (SIL Open Font License, private/fonts/), with EB Garamond for the Greek letters.
+EB Garamond, the deck's own face.
 
 Run in the cmbx container: app python make_cloe_sketches.py
 """
@@ -39,6 +38,9 @@ W, H, DPI = 3424, 1542, 200
 # Text sizes in pt. At 200 dpi a point is 2.78 px of the PNG, shown at half size on the slide,
 # so 1 pt = 1.39 px displayed: 24 pt is 33 px, the floor being 32.
 SMALL, BODY, HEAD, TITLE = 27, 31, 37, 45
+# How sketched the drawing looks: line weight, wobble amplitude and wash strength, as fractions
+# of the kit's nominal values.
+LINE, WOBBLE, WASH = 0.5, 0.4, 0.35
 
 
 # --------------------------------------------------------------------------- #
@@ -62,15 +64,13 @@ def _ttf(src, family, tmp):
 
 def setup_font():
     tmp = tempfile.mkdtemp()
-    fams = [_ttf(os.path.join(FONTS, "patrick-hand-latin-400-normal.woff2"), "Hand Sketch", tmp),
-            _ttf(os.path.join(FONTS, "patrick-hand-latin-ext-400-normal.woff2"), "Hand Sketch Ext", tmp),
-            _ttf(os.path.join(GARAMOND, "eb-garamond-greek-wght-normal.woff2"), "Garamond Greek", tmp),
-            _ttf(os.path.join(GARAMOND, "eb-garamond-latin-wght-normal.woff2"), "Garamond Latin", tmp),
-            _ttf(os.path.join(GARAMOND, "eb-garamond-latin-ext-wght-normal.woff2"), "Garamond Ext", tmp)]
+    fams = [_ttf(os.path.join(GARAMOND, "eb-garamond-latin-wght-normal.woff2"), "Garamond Latin", tmp),
+            _ttf(os.path.join(GARAMOND, "eb-garamond-latin-ext-wght-normal.woff2"), "Garamond Ext", tmp),
+            _ttf(os.path.join(GARAMOND, "eb-garamond-greek-wght-normal.woff2"), "Garamond Greek", tmp)]
     plt.rcParams["font.family"] = fams
     plt.rcParams["mathtext.fontset"] = "custom"
     for k in ("rm", "it", "bf"):
-        plt.rcParams[f"mathtext.{k}"] = "Hand Sketch"
+        plt.rcParams[f"mathtext.{k}"] = "Garamond Latin"
     plt.rcParams["mathtext.fallback"] = "stix"
 
 
@@ -120,6 +120,7 @@ class Sketch:
     # -- strokes ---------------------------------------------------------- #
     def stroke(self, pts, color=INK, lw=3.0, amp=3.0, passes=2, alpha=1.0, z=3, overshoot=0.0):
         pts = self._dense(pts)
+        lw, amp, overshoot = lw * LINE, amp * WOBBLE, overshoot * WOBBLE
         if overshoot:
             a, b = pts[1] - pts[0], pts[-1] - pts[-2]
             pts = np.vstack([pts[0] - a / np.hypot(*a) * self.rng.uniform(0, overshoot), pts,
@@ -167,6 +168,7 @@ class Sketch:
 
     def wash(self, x, y, w, h, color, alpha=0.5, r=30, spread=10, layers=3):
         """Watercolour: translucent layers with independently wobbling edges, so edges pool."""
+        alpha, spread = alpha * WASH, spread * WOBBLE
         base = self._dense(np.vstack([self.rounded(x, y, w, h, r), self.rounded(x, y, w, h, r)[:1]]), step=18)
         c = base.mean(0)
         for _ in range(layers):
@@ -188,7 +190,7 @@ class Sketch:
     def text(self, x, y, s, size=BODY, color=INK, ha="center", va="center", bold=False, z=5, **kw):
         return self.ax.text(x, y, s, fontsize=size, color=color, ha=ha, va=va, zorder=z,
                             path_effects=[patheffects.withStroke(linewidth=1.1, foreground=color)] if bold else None,
-                            rotation=kw.pop("rotation", self.rng.uniform(-0.6, 0.6)),
+                            rotation=kw.pop("rotation", 0),
                             **kw)
 
     def underline(self, x0, x1, y, color=INK, lw=3.0):
@@ -304,7 +306,7 @@ def swap():
     items = [("data vector", "GLASS mock and blinded TR1"),
              ("covariance", "Gaussian + SSC"),
              ("priors and scale cuts", "DR1-document priors"),
-             ("sampler: nautilus", "on a JAX explorer; each point\nreweighted to the exact one")]
+             ("sampler", "nautilus nested sampling")]
     y = 1180
     for head, sub in items:
         s.line((x0 + 50, y + 4), (x0 + 72, y - 18), color=TEAL, lw=4, amp=1, passes=1)
@@ -403,67 +405,12 @@ def jax():
     s.save("paris26_sketch_jax.png")
 
 
-def chain():
-    s = Sketch(53)
-    x0, x1, m1 = 900, 3230, 120.0           # minutes 0..120 across the drawing
-    X = lambda m: x0 + (x1 - x0) * m / m1
-    rh = 170
-
-    def bar(m_a, m_b, y, color, alpha=0.6, edge=True):
-        s.wash(X(m_a), y - rh / 2, X(m_b) - X(m_a), rh, color, alpha=alpha, r=14, spread=6)
-        if edge:
-            s.box(X(m_a), y - rh / 2, X(m_b) - X(m_a), rh, color=color, lw=2.6, r=14)
-
-    # axis
-    ya = 150
-    s.line((X(0), ya), (X(120), ya), color=MUTED, lw=2.6, amp=1.5)
-    for m in (0, 30, 60, 90, 120):
-        s.line((X(m), ya - 18), (X(m), ya + 18), color=MUTED, lw=2.4, amp=0.5, passes=1)
-        s.text(X(m), ya - 70, f"{m} min" if m == 120 else f"{m}", size=SMALL, color=MUTED)
-
-    # CLOE + emulator sampled directly: estimated, off the scale
-    y = 1270
-    s.text(60, y + 40, "CLOE + emulator,", size=BODY, ha="left")
-    s.text(60, y - 45, "sampled directly", size=BODY, ha="left")
-    s.wash(X(0), y - rh / 2, X(112) - X(0), rh, MUTED, alpha=0.22, r=14, spread=6)
-    for k in np.arange(X(0) + 30, X(112), 55):
-        s.line((k, y - rh / 2 + 10), (k + 60, y + rh / 2 - 10), color=MUTED, lw=1.8, amp=0.6, passes=1, alpha=0.6)
-    s.arrow((X(100), y), (X(122), y), color=INK, bow=0.0)
-    s.text(X(56), y, "4–5 h, estimated", size=HEAD, bold=True, color=INK,
-           bbox=dict(boxstyle="round,pad=0.25", fc=tint(MUTED, 0.9), ec="none"))
-
-    # the explore-and-reweight path of the comparison chains
-    y = 830
-    s.text(60, y + 40, "JAX explorer +", size=BODY, ha="left")
-    s.text(60, y - 45, "exact reweight", size=BODY, ha="left")
-    bar(0, 22, y, TEAL, alpha=0.55)
-    bar(22, 72, y, OCHRE, alpha=0.6)
-    s.wash(X(72), y - rh / 2, X(114) - X(72), rh, OCHRE, alpha=0.25, r=14, spread=10)
-    s.text(X(11), y, "explore", size=SMALL)
-    s.text(X(47), y, "exact reweight", size=BODY)
-    s.text(X(93), y + rh / 2 + 55, "1.2–1.9 h", size=HEAD, bold=True, color=OCHRE)
-
-    # CLOE in JAX, no reweight
-    y = 420
-    s.text(60, y + 40, "CLOE in JAX,", size=BODY, ha="left", color=CORAL)
-    s.text(60, y - 45, "no reweight", size=BODY, ha="left", color=CORAL)
-    bar(0, 16.4, y, CORAL, alpha=0.6)
-    bar(16.4, 32.3, y, COBALT, alpha=0.4)
-    s.text(X(8.2), y + rh / 2 + 55, "likelihood", size=SMALL, color=CORAL)
-    s.text(X(24.4), y + rh / 2 + 55, "nautilus", size=SMALL, color=COBALT)
-    s.text(X(8.2), y, "16", size=BODY, bold=True)
-    s.text(X(24.4), y, "16", size=BODY, bold=True)
-    s.text(X(34), y, "32 min", size=HEAD, bold=True, color=CORAL, ha="left")
-    s.text(X(52), y - 10, "247 000 points, in 247 calls of 1000", size=SMALL, color=MUTED, ha="left")
-    s.save("paris26_sketch_chain.png")
-
 
 def main():
     setup_font()
     anatomy()
     swap()
     jax()
-    chain()
 
 
 if __name__ == "__main__":
