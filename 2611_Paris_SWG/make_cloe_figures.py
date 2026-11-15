@@ -132,7 +132,9 @@ def fig_posteriors():
     ax.set_ylim(len(FAMILIES) - 0.5, -1.15)
     ax.set_xlim(-0.08, 0.08)
     ax.set_xticks([-0.06, -0.03, 0, 0.03, 0.06], ["−0.06", "−0.03", "0", "0.03", "0.06"])
-    ax.set_xlabel(r"CLOE − eDR1like, posterior mean / $\sigma$")
+    ax.set_xlabel(r"shift of each parameter's mean, CLOE − eDR1like, in $\sigma$")
+    ax.text(-0.02, -0.85, "parameter family", transform=ax.get_yaxis_transform(), color=MUTED,
+            fontsize=TICK, ha="right", va="center")
     ax.tick_params(axis="y", length=0, labelsize=LABEL, labelcolor=INK)
     ax.spines["left"].set_visible(False)
     ax.plot([-0.077], [-0.85], "o", ms=11, color=MOCK_C, mec="white")
