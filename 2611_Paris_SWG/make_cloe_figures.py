@@ -173,23 +173,24 @@ def fig_truth_bias():
     ax.axvline(0, color=MUTED, lw=1.4)
     for i, (p, _) in enumerate(params):
         r = b[p]
-        ax.errorbar(r["ensemble_mean"], i + 0.25, xerr=r["ensemble_mean_se"], fmt="s", ms=13, color="#8A929E",
+        # one chain: the posterior mean with its own 1 sigma, which is 1 in these units
+        ax.errorbar(r["edr1like_ccl"], i - 0.22, xerr=1, fmt="o", ms=15, color=REF_C, capsize=6, lw=2.4, mew=2.4)
+        ax.errorbar(r["cloe"], i, xerr=1, fmt="D", ms=13, color=CLOE_C, capsize=6, lw=2.4, mew=2.4)
+        # mean over the 20 seeds with its standard error
+        ax.errorbar(r["ensemble_mean"], i + 0.24, xerr=r["ensemble_mean_se"], fmt="s", ms=13, color="#8A929E",
                     capsize=6, lw=2.4, mew=2.4)
-        ax.plot(r["noiseless"], i + 0.25, "x", ms=16, mew=3, color=MUTED)
-        ax.plot(r["edr1like_ccl"], i - 0.12, "o", ms=15, color=REF_C)
-        ax.plot(r["cloe"], i - 0.22, "D", ms=13, color=CLOE_C)
     ax.set_yticks(range(len(params)), [l for _, l in params])
     ax.tick_params(axis="y", length=0, labelsize=LABEL + 6, labelcolor=INK)
     ax.spines["left"].set_visible(False)
     ax.set_ylim(len(params) - 0.5, -0.6)
-    ax.set_xlim(-1, 1)
-    ax.set_xlabel(r"(posterior mean − GLASS truth) / $\sigma$")
-    hs = [plt.Line2D([], [], ls="", marker="o", ms=15, color=REF_C),
-          plt.Line2D([], [], ls="", marker="D", ms=13, color=CLOE_C),
-          plt.Line2D([], [], ls="", marker="s", ms=13, color="#8A929E"),
-          plt.Line2D([], [], ls="", marker="x", ms=16, mew=3, color=MUTED)]
-    fig.legend(hs, ["seed 3004, eDR1like + CCL", "seed 3004, CLOE", "20 seeds, eDR1like\n(mean ± s.e.)",
-                    "noiseless mock, eDR1like"],
+    ax.set_xlim(-1.8, 1.8)
+    ax.set_xticks([-1.5, -1, -0.5, 0, 0.5, 1, 1.5], ["−1.5", "−1", "−0.5", "0", "0.5", "1", "1.5"])
+    ax.set_xlabel(r"(posterior mean − GLASS truth) / posterior $\sigma$")
+    hs = [plt.Line2D([], [], ls="-", lw=2.4, marker="o", ms=15, color=REF_C),
+          plt.Line2D([], [], ls="-", lw=2.4, marker="D", ms=13, color=CLOE_C),
+          plt.Line2D([], [], ls="-", lw=2.4, marker="s", ms=13, color="#8A929E")]
+    fig.legend(hs, ["one mock, eDR1like + CCL\n(± posterior σ)", "the same mock, CLOE\n(± posterior σ)",
+                    "mean of 20 mocks, eDR1like\n(± standard error)"],
                loc="center left", bbox_to_anchor=(0.665, 0.55), frameon=False, labelspacing=1.3,
                fontsize=LABEL)
     fig.savefig(os.path.join(IMG, "paris26_cloe_truth_bias.png"), dpi=DPI)

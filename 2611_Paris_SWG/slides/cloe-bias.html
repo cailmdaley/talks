@@ -1,15 +1,18 @@
 <section data-layout="figure">
-  <h2>Same bias against the GLASS truth</h2>
+  <h2>Both likelihoods recover the GLASS truth equally</h2>
   <figure>
-    <img src="images/paris26_cloe_truth_bias.png" alt="Posterior mean minus GLASS input truth in posterior sigma for S8, Omega_m and sigma8: seed 3004 with eDR1like and CLOE, the 20-seed ensemble mean, and a noiseless mock">
+    <img src="images/paris26_cloe_truth_bias.png" alt="Posterior mean minus GLASS input truth in units of the posterior sigma, for S8, Omega_m and sigma8: one mock with eDR1like and with CLOE, each with its one-sigma posterior width, and the mean of 20 mocks with its standard error">
   </figure>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>Plotted</strong> — posterior mean minus the GLASS input value, in units of the posterior σ, for seed 3004 with each likelihood; grey squares: mean over 20 GLASS seeds of the production (eDR1like) chain with its standard error; crosses: a chain on the noiseless mock.</li>
-      <li><strong>$S_8$</strong> — −0.11σ (eDR1like), −0.12σ (CLOE); ensemble −0.04 ± 0.19σ.</li>
-      <li><strong>$\Omega_\mathrm{m}$, $\sigma_8$</strong> — +0.51σ / +0.50σ and −0.49σ / −0.47σ, the same for both and matching the ensemble (+0.55 ± 0.17σ, −0.57 ± 0.18σ). They lie along the $\Omega_\mathrm{m}$–$\sigma_8$ degeneracy, and the ensemble study reads them as a projection effect of the marginal posterior, not a theory bias.</li>
-      <li><strong>Noiseless mock</strong> — shown for context; its $S_8$ offset (−0.49σ) is larger than seed 3004's or the ensemble's, and the sources do not explain it.</li>
-      <li><strong>Coverage</strong> — over the 20 seeds, the 68 % / 95 % $S_8$ intervals contain the truth in 80 % / 100 % of cases.</li>
+      <li><strong>Black and ochre</strong> — one GLASS mock (seed 3004) run with each likelihood: posterior mean minus the input value, with the posterior's own 1σ as the bar (1 in these units). The two agree to 0.02σ in every parameter shown.</li>
+      <li><strong>Grey</strong> — the mean of that offset over 20 GLASS mocks run with eDR1like, with its standard error. It says where a typical mock lands, so the single mock sitting on it is expected, not a coincidence.</li>
+      <li><strong>$S_8$</strong> — recovered: −0.11σ (eDR1like) and −0.12σ (CLOE) on the one mock, −0.04 ± 0.19σ over the 20.</li>
+      <li><strong>$\Omega_\mathrm{m}$, $\sigma_8$</strong> — the 20-mock means are +0.55 ± 0.17σ and −0.57 ± 0.18σ, so the marginal means do sit half a σ from the truth, in opposite directions along the $\Omega_\mathrm{m}$–$\sigma_8$ degeneracy. The ensemble study reads this as a projection effect of marginalising a curved posterior, not a theory error; it is the same with both likelihoods (+0.51σ / +0.50σ and −0.49σ / −0.47σ on the one mock).</li>
+      <li><strong>Coverage</strong> — over the 20 mocks, the 68 % / 95 % $S_8$ intervals contain the truth in 80 % / 100 % of cases.</li>
     </ul>
+    <details><summary>Not plotted</summary>
+    <p>A chain on the noiseless mock (eDR1like) sits at −0.49σ in $S_8$, +0.24σ in $\Omega_\mathrm{m}$ and −0.30σ in $\sigma_8$. Its $S_8$ offset is larger than the 20-mock mean and is not explained by the sources used here.</p>
+    </details>
   </aside>
 </section>
