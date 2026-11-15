@@ -58,9 +58,11 @@
 
   Reveal.on('slidechanged', close);
 
-  // Videos restart on entry and pause when their slide is left.
+  // Videos restart on entry and pause when their slide is left; a poster-only
+  // render (checker, PDF export, print) never plays them, so the poster shows.
   function syncVideos() {
-    var cur = Reveal.getCurrentSlide();
+    var still = window.HousePosterOnly || (Reveal.isPrintView && Reveal.isPrintView()) || window.matchMedia('print').matches;
+    var cur = still ? null : Reveal.getCurrentSlide();
     document.querySelectorAll('.reveal video').forEach(function (v) {
       if (cur && cur.contains(v)) {
         v.currentTime = 0;
