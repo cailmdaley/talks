@@ -18,6 +18,17 @@
       ]
     },
     {
+      "title": "Covariance needs",
+      "outline": "What CMBX uses now, which covariance blocks it needs from whom, public inputs for SPT-like mocks, and questions for the covariance effort.",
+      "slides": [
+        "covariance",
+        "cov-now",
+        "cov-needs",
+        "cov-spt-public",
+        "cov-questions"
+      ]
+    },
+    {
       "title": "Blinding",
       "outline": "What the other Euclid groups are doing, how CMBX chooses its blind, and how to compare with other groups while blinded.",
       "slides": [
@@ -44,17 +55,6 @@
         "cloe-jax-pieces",
         "cloe-chain-time",
         "cloe-next"
-      ]
-    },
-    {
-      "title": "Covariance needs",
-      "outline": "What CMBX uses now, which covariance blocks it needs from whom, public inputs for SPT-like mocks, and questions for the covariance effort.",
-      "slides": [
-        "covariance",
-        "cov-now",
-        "cov-needs",
-        "cov-spt-public",
-        "cov-questions"
       ]
     }
   ]
