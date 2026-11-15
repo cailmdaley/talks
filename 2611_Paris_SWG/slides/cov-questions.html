@@ -1,23 +1,33 @@
 <section data-layout="points">
-  <h2>Open choices for the κ blocks</h2>
+  <h2>Inputs and questions for the κ blocks</h2>
   <ul>
-    <li>~400 realizations are too noisy to invert directly</li>
-    <li><strong>Shrinkage</strong> to an analytic target: target lacks reconstruction</li>
-    <li><strong>Jackknife</strong>: biased, even delete-two (DES)</li>
-    <li><strong>Own sims</strong> with reconstruction: a very large set</li>
-    <li>JC-1: run synthetic chains jointly with the covariance group</li>
+    <li>~400 constrained realizations: too noisy to invert directly</li>
+    <li>SPT-like mocks are unconstrained, so any number can be made</li>
+    <li>Mock χ² per band can test any covariance delivered</li>
   </ul>
-  <p><strong class="accent">Ask:</strong> reconstructions on sims for every CMB field, and how many by February?</p>
+  <p><strong class="accent">Questions</strong></p>
+  <ul>
+    <li>Which estimate for the κ crosses, and how many mocks does it need?</li>
+    <li>Reconstructions on sims for every CMB field: how many by February?</li>
+  </ul>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>Too noisy</strong> — the options are those listed at the CMBX telecon of 5 November 2026 (Davide Luchina's covariance update and the discussion after it).</li>
-      <li><strong>Shrinkage</strong> — toward an analytic target; the analytic target does not know the reconstruction noise, which is the term the simulations are needed for.</li>
-      <li><strong>Jackknife</strong> — biased even with delete-two, as found in DES.</li>
-      <li><strong>Own simulations</strong> — with reconstruction run on each; needs a very large set.</li>
-      <li><strong>Joint synthetic chains</strong> — the JC-1 voice at that telecon: the 6×2pt and covariance groups must run synthetic chains together; JC-1's flagship paper is asked to include primary CMB and possibly κκ without the crosses, so coordinating here helps.</li>
+      <li><strong>Too noisy</strong> — about 400 constrained realizations exist on the ACT and Planck simulations; at the CMBX telecon of 5 November 2026 they were judged too noisy to invert directly.</li>
+      <li><strong>SPT-like mocks</strong> — a constrained realization is conditioned on one of an experiment's own simulated κ reconstructions, so there can be no more of them than the experiment has simulations. The SPT-like mocks of the previous slide run a generic quadratic estimator on CMB simulated from public footprints and noise, with no such conditioning, so as many realizations can be made as a covariance estimate needs.</li>
+      <li><strong>Mock χ²</strong> — the check shown on the slide about the current covariance: χ² per band of mock data vectors against a covariance. It can be rerun on any covariance the effort delivers.</li>
+      <li><strong>Questions</strong> — for the people building the covariance; the candidate estimates raised on 5 November are below.</li>
     </ul>
-    <details><summary>A hybrid, as one option</summary>
-    <p>Keep the analytic Gaussian + SSC covariance where it is validated (the 3×2pt blocks, against the GLASS ensemble) and use simulations only to calibrate the κ-reconstruction terms of the κ blocks, which need far fewer realizations than inverting the full matrix. This is a suggestion for discussion, not a group decision.</p>
+    <details><summary>Candidates raised at the 5 November telecon</summary>
+    <p>From Davide Luchina's covariance update and the discussion after it:</p>
+    <ul>
+      <li><strong>Shrinkage</strong> toward an analytic target; the analytic target does not know the reconstruction noise, which is the term the simulations are needed for.</li>
+      <li><strong>Jackknife</strong>: biased even with delete-two, as found in DES.</li>
+      <li><strong>Own simulations</strong> with reconstruction run on each: needs a very large set.</li>
+    </ul>
+    <p>The JC-1 voice at that telecon stressed that the 6×2pt and covariance groups must run synthetic chains together; JC-1's flagship paper is asked to include primary CMB and possibly κκ without the crosses, so coordinating here helps.</p>
+    </details>
+    <details><summary>What the SPT-like mocks do not carry</summary>
+    <p>Their statistics are SPT-3G-like, but they are not SPT's own reconstructions. Covariance work that needs the actual SPT reconstruction (its response, mean field, and noise realizations correlated with the data) requires the SPT collaboration's own simulations, which SPT cannot share until its external collaborators have Euclid status.</p>
     </details>
   </aside>
 </section>
