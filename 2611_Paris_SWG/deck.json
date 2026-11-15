@@ -19,7 +19,7 @@
     },
     {
       "title": "Blinding",
-      "outline": "Who blinds what in Euclid DR1, how large the CMBX blind should be, whether κκ is blinded, comparing blinded vectors across groups, and questions for the room.",
+      "outline": "What the other Euclid groups are doing, how CMBX chooses its blind, and how to compare with other groups while blinded.",
       "slides": [
         "blinding",
         "landscape",
@@ -48,7 +48,7 @@
     },
     {
       "title": "Covariance needs",
-      "outline": "What CMBX uses now, which covariance blocks it needs from whom, and the open choices.",
+      "outline": "What CMBX uses now, which covariance blocks it needs from whom, public inputs for SPT-like mocks, and questions for the covariance effort.",
       "slides": [
         "covariance",
         "cov-now",
