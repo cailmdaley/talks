@@ -135,7 +135,7 @@ function lintBlock(el, where, vocab, out, isDetail) {
   }
   for (const fig of el.querySelectorAll('figure')) {
     if (fig.parentElement?.classList.contains('people')) continue;
-    const visuals = [...fig.children].filter(c => c.localName === 'img' || c.localName === 'svg' || c.classList.contains('placeholder'));
+    const visuals = [...fig.children].filter(c => c.localName === 'img' || c.localName === 'video' || c.localName === 'iframe' || c.localName === 'svg' || c.classList.contains('placeholder'));
     // a stack: several <img>, every one after the first a fragment, drawn over the first
     const stack = visuals.length > 1 && visuals.every((c, i) => c.localName === 'img' && (i === 0) !== c.classList.contains('fragment'));
     if (fig.hasAttribute('data-prism') && !stack) out.errors.push(`${where}: data-prism turns a stack; its <figure> needs two or more <img>s, every one after the first a fragment`);
@@ -143,7 +143,7 @@ function lintBlock(el, where, vocab, out, isDetail) {
       if (c.hasAttribute('data-zoom') && !(fig.hasAttribute('data-prism') && stack && i > 0))
         out.errors.push(`${where}: data-zoom goes on a later face of a <figure data-prism>`);
     });
-    if (visuals.length !== 1 && !stack) out.errors.push(`${where}: a <figure> holds exactly one <img>, inline <svg> or .placeholder, or a stack of <img>s whose later ones are fragments (has ${visuals.length})`);
+    if (visuals.length !== 1 && !stack) out.errors.push(`${where}: a <figure> holds exactly one <img>, <video>, <iframe>, inline <svg> or .placeholder, or a stack of <img>s whose later ones are fragments (has ${visuals.length})`);
   }
   for (const d of [el, ...el.querySelectorAll('*')]) {
     if (d.localName === 'aside' && d !== el && d.classList.contains('detail') && d.parentElement === el) continue;
@@ -159,9 +159,10 @@ function lintBlock(el, where, vocab, out, isDetail) {
     if (d.localName === 'section' && d !== el) out.errors.push(`${where}: nested <section>; decks are strictly linear (use an <aside class="detail">)`);
     if (d.localName === 'mark' && d.parentElement?.localName !== 'figure') out.errors.push(`${where}: <mark> highlights belong directly inside a <figure>`);
     if (d.localName === 'mark' && !d.hasAttribute('data-box')) out.errors.push(`${where}: <mark> needs data-box="x y w h"`);
+    if (['video', 'iframe'].includes(d.localName) && d.parentElement?.localName !== 'figure') out.errors.push(`${where}: a <${d.localName}> belongs directly inside a <figure>`);
     if (d.localName === 'img' && !d.hasAttribute('alt')) out.warnings.push(`${where}: <img src="${d.getAttribute('src')}"> has no alt text`);
-    if (['font', 'center', 'script', 'style', 'link', 'iframe', 'object', 'embed', 'video', 'audio', 'source', 'image', 'use', 'foreignobject'].includes(d.localName))
-      out.errors.push(`${where}: <${d.localName}> is not supported in a slide (the build inlines only <img> and inline <svg> drawing)`);
+    if (['font', 'center', 'script', 'style', 'link', 'object', 'embed', 'audio', 'source', 'image', 'use', 'foreignobject'].includes(d.localName))
+      out.errors.push(`${where}: <${d.localName}> is not supported in a slide (the build inlines <img>, posters for <video> and <iframe> in a figure, and inline <svg> drawing)`);
   }
 }
 
@@ -433,8 +434,19 @@ async function render(deck, built, outDir, { steps, only }) {
   page.on('pageerror', e => pageErrors.push(String(e)));
   // the deck must work offline: anything fetched from the network is an error
   page.on('request', r => { if (!/^(data:|file:|about:|blob:)/.test(r.url())) pageErrors.push(`network request to ${r.url().slice(0, 80)} (decks must be self-contained)`); });
+  await page.evaluateOnNewDocument(() => { window.HousePosterOnly = true; });
   await page.goto(pathToFileURL(built.index).href, { waitUntil: 'load', timeout: 120000 });
   await page.evaluate(async () => { await document.fonts.ready; await new Promise(r => Reveal.isReady() ? r() : Reveal.on('ready', r)); });
+  // Measure and screenshot posters, not a frame chosen by playback timing.
+  await page.evaluate(() => {
+    for (const video of document.querySelectorAll('video')) {
+      video.pause();
+      const img = document.createElement('img');
+      img.src = video.poster;
+      img.alt = 'Video poster';
+      video.replaceWith(img);
+    }
+  });
   // measure settled states: no transitions or animations
   await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; animation: none !important; }' });
   page.on('requestfailed', r => pageErrors.push(`failed to load ${r.url().slice(0, 80)} (${r.failure()?.errorText})`));

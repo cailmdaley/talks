@@ -33,6 +33,7 @@ const EXPECT = {
   stackless: 'data-stack goes on a people or figure-text slide with a div.text',
   loneprism: 'data-prism turns a stack',
   strayzoom: 'data-zoom goes on a later face of a <figure data-prism>',
+  loosepage: 'a <iframe> belongs directly inside a <figure>',
 };
 const SVG_OFF = 'text "far right" is clipped by the canvas';
 
@@ -67,6 +68,10 @@ for (const needle of [
   'slides/badzoom.html: images/napoli_footprint_2_planck.png: data-zoom needs "x y w h"',
   'slides/badapp.html: missing app script private/nowhere.js',
   'slides/badalt.html: images/napoli_footprint_1_dr1.png: data-alt needs "variants" in deck.json',
+  'slides/noposter.html: <video src="images/house_test_video.mp4"> needs a poster image',
+  'slides/missingvideo.html: missing video images/no_such_video.mp4',
+  'slides/badvideo.html: images/house_test_video.jpg: unsupported video type (mp4 or webm)',
+  'slides/pageposter.html: <iframe> needs a data-poster image',
 ]) ok(fail.stderr.includes(needle), `build refuses: ${needle}`);
 
 // Variants: the deck passes the checker, and in a browser the control swaps the image,
@@ -144,6 +149,129 @@ ok(acheck.status === 0, `axes fixture passes (${acheck.stdout.trim().split('\n')
     ok(await page.evaluate(() => House.variant()) === 'y|b', 'a click on the live axis keeps the idle axis\'s choice');
     ok(await src() !== s0, 'the CMB-only slide shows b with its idle axis at the default (it has x|b only)');
   } finally { await browser.close(); }
+}
+
+// Video assets work offline and on the web; the report and checker show posters.
+const videoDir = path.join(HERE, 'video');
+const videoCheck = run(videoDir);
+ok(videoCheck.status === 0, `video fixture passes (${videoCheck.stdout.trim().split('\n').pop()})`);
+{
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const { buildDeck } = await import('../build.mjs');
+  const { default: puppeteer } = await import('puppeteer');
+  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--allow-file-access-from-files'] });
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'house-video-'));
+  try {
+    for (const web of [false, true]) {
+      const built = await buildDeck(videoDir, out, { web });
+      const page = await browser.newPage();
+      await page.goto('file://' + built.index);
+      await page.waitForFunction(() => window.Reveal && Reveal.isReady());
+      const assets = await page.evaluate(() => {
+        const [loop, once] = document.querySelectorAll('video');
+        return { src: loop.getAttribute('src'), poster: loop.getAttribute('poster'),
+          loop: loop.loop, once: once.loop, muted: loop.muted,
+          ar: loop.parentElement.style.getPropertyValue('--ar'),
+          unique: Object.keys(HouseAssets).length };
+      });
+      ok(assets.src.startsWith(web ? 'a/' : 'data:video/mp4;base64,'), `video asset resolves (${web ? 'web' : 'offline'})`);
+      ok(assets.poster.startsWith(web ? 'a/' : 'data:image/jpeg;base64,') && assets.ar === '1.77778', 'poster resolves and sizes the frame');
+      ok(assets.loop && !assets.once && assets.muted && assets.unique === 3, 'clips are muted, loop unless data-once, and share assets');
+      const bytes = url => web ? fs.readFileSync(path.join(path.dirname(built.index), url)) : Buffer.from(url.split(',')[1], 'base64');
+      ok(bytes(assets.poster).equals(fs.readFileSync(path.join(videoDir, 'images/house_test_video.jpg'))) &&
+        bytes(assets.src).equals(fs.readFileSync(path.join(videoDir, 'images/house_test_video.mp4'))), 'video and poster keep their original bytes, without ground blending');
+      await page.evaluate(() => Reveal.slide(1));
+      await page.waitForFunction(() => {
+        const video = document.querySelectorAll('video')[1];
+        return !video.paused && video.currentTime > 0;
+      });
+      ok(true, 'WebM decodes and plays on entry');
+      await page.evaluate(() => Reveal.slide(2));
+      ok(await page.evaluate(() => [...document.querySelectorAll('video')].every(v => v.paused)), 'real playback pauses on leaving the slide');
+      // Stub media playback so restart calls are tested even in browsers without H.264.
+      await page.evaluate(() => {
+        for (const video of document.querySelectorAll('video')) {
+          video.pause();
+          video.play = function () { this.dataset.played = Number(this.dataset.played || 0) + 1; return Promise.resolve(); };
+          video.pause = function () { this.dataset.paused = 'yes'; };
+        }
+        Reveal.slide(2);
+        Reveal.slide(0);
+      });
+      ok(await page.evaluate(() => {
+        const [loop, once] = document.querySelectorAll('video');
+        return loop.dataset.played === '1' && loop.currentTime === 0 && once.dataset.paused === 'yes';
+      }), 'entering a slide restarts its clip and pauses the others');
+      await page.evaluate(() => Reveal.slide(1));
+      ok(await page.evaluate(() => {
+        const [loop, once] = document.querySelectorAll('video');
+        return loop.dataset.paused === 'yes' && once.dataset.played === '1';
+      }), 'leaving a slide pauses its clip');
+      await page.goto('file://' + built.report);
+      ok(await page.evaluate(web => !document.querySelector('video') && document.querySelector('figure img').src.includes(web ? '/a/' : 'data:image/jpeg;base64,'), web), 'report shows a poster, not a video');
+      const report = fs.readFileSync(built.report, 'utf8');
+      ok(!report.includes('video/mp4') && !report.includes('.mp4'), 'report carries no clip assets');
+      await page.close();
+    }
+  } finally {
+    await browser.close();
+    fs.rmSync(out, { recursive: true, force: true });
+  }
+}
+
+// Live pages never load in static outputs, and load only once in the live deck.
+const pageDir = path.join(HERE, 'page');
+const pageCheck = run(pageDir);
+ok(pageCheck.status === 0, `live page fixture passes (${pageCheck.stdout.trim().split('\n').pop()})`);
+{
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const { buildDeck } = await import('../build.mjs');
+  const { default: puppeteer } = await import('puppeteer');
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'house-page-'));
+  const built = await buildDeck(pageDir, out);
+  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--allow-file-access-from-files'] });
+  try {
+    for (const mode of ['live', 'checker', 'print', 'print-media', 'report']) {
+      const page = await browser.newPage();
+      let requests = 0;
+      await page.setRequestInterception(true);
+      page.on('request', request => {
+        if (request.url().startsWith('https:')) {
+          requests++;
+          request.respond({ status: 200, contentType: 'text/html', body: '<h1>Live app</h1>' });
+        } else request.continue();
+      });
+      if (mode === 'checker') await page.evaluateOnNewDocument(() => { window.HousePosterOnly = true; });
+      if (mode === 'print-media') await page.emulateMediaType('print');
+      await page.goto('file://' + (mode === 'report' ? built.report : built.index) + (mode === 'print' ? '?print-pdf' : ''));
+      if (mode !== 'report') await page.waitForFunction(() => Reveal.isReady());
+      ok(requests === 0, `${mode}: no page request on opening`);
+      if (mode === 'live') {
+        ok(await page.evaluate(() => {
+          const iframe = document.querySelector('iframe');
+          return !iframe.hasAttribute('src') && getComputedStyle(iframe).display === 'none' &&
+            iframe.parentElement.style.getPropertyValue('--ar') === '1.77778' &&
+            iframe.previousElementSibling.src.startsWith('data:image/jpeg;base64,');
+        }), 'live page starts behind an inlined, poster-sized frame');
+        const loaded = page.waitForResponse('https://example.invalid/');
+        await page.evaluate(() => Reveal.slide(1));
+        await loaded;
+        ok(requests === 1, 'visiting the slide loads the live page once');
+        await page.evaluate(() => { Reveal.slide(0); Reveal.slide(1); });
+        ok(requests === 1 && await page.evaluate(() => document.querySelector('iframe').getAttribute('src') === 'https://example.invalid/'), 'the page stays loaded across visits');
+      } else {
+        if (mode !== 'report') await page.evaluate(() => Reveal.slide(1));
+        ok(requests === 0 && await page.evaluate(() => [...document.querySelectorAll('iframe')].every(f => !f.hasAttribute('src'))), `${mode}: visiting the page slide keeps the network unloaded`);
+        ok(await page.evaluate(() => !!document.querySelector('figure img[src^="data:image/jpeg"]')), `${mode}: the poster is present`);
+      }
+      await page.close();
+    }
+  } finally {
+    await browser.close();
+    fs.rmSync(out, { recursive: true, force: true });
+  }
 }
 
 const only = spawnSync(process.execPath, [CHECK, path.join(HERE, '..', 'demo'), '--only', 'nope'], { encoding: 'utf8' });

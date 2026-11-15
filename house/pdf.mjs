@@ -22,6 +22,7 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'house-pdf-'));
 const browser = await puppeteer.launch({ args: ['--allow-file-access-from-files'] });
 const page = await browser.newPage();
 await page.setViewport({ width: 1920, height: 1080 });
+await page.evaluateOnNewDocument(() => { window.HousePosterOnly = true; });
 await page.goto('file://' + html, { waitUntil: 'networkidle0', timeout: 180000 });
 await page.waitForFunction(() => window.Reveal && Reveal.isReady());
 // every top-level section, backups included (Reveal.getSlides() leaves out uncounted ones)
