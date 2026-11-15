@@ -11,11 +11,10 @@
   "sections": [
     {
       "title": "Opening",
-      "outline": "Title, index of the parts, and the paper this work is for.",
+      "outline": "Title and index of the three parts.",
       "slides": [
         "title",
-        "index",
-        "scope"
+        "index"
       ]
     },
     {
