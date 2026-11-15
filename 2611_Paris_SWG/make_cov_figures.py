@@ -32,7 +32,7 @@ DR1 = ("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/footprints/dr
 FIELDS = [("main", "Main"), ("summer_a", "Summer A"), ("summer_b", "Summer B")]
 
 DPI = 200
-W_PX, H_PX = 2 * 1712, 2 * 340   # 2x the figure box under the four bullets
+W_PX, H_PX = 2 * 800, 2 * 700    # 2x the figure column beside the bullets
 TXT, SMALL = 28, 25              # pt; the figure shows at ~0.49 of 2x, so 25 pt is ~33 px
 SKETCH = (2.2, 90, 2.5)          # path.sketch: scale, length, randomness
 SPT_C, DR1_C = OCHRE, ACCENT
@@ -168,7 +168,7 @@ def main():
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
 
     # footprints, left: equal-area so the washes compare as areas
-    ax = fig.add_axes([0.0, 0.0, 0.43, 1.0])
+    ax = fig.add_axes([0.0, 0.0, 0.92, 0.50])
     areas = sky(ax)
     ax.set_xlim(-1.18, 1.18)
     ax.set_ylim(-1.22, 0.06)
@@ -189,7 +189,7 @@ def main():
     # the two charts are drawn clean; only the footprint map is sketched
     plt.rcParams["path.sketch"] = None
     # noise per band
-    ax = fig.add_axes([0.60, 0.28, 0.30, 0.58])
+    ax = fig.add_axes([0.24, 0.63, 0.72, 0.30])
     noise(ax)
     ax.set_xticks([1000, 2000, 3000, 4000], ["1000", "", "3000", ""])
     ax.set_yticks([10, 100], ["10", "100"])

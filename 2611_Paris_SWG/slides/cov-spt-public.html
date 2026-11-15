@@ -1,21 +1,21 @@
-<section data-layout="figure-text" data-stack>
+<section data-layout="figure-text" data-flip data-split="50">
   <h2>SPT-like mocks: inputs from public sources</h2>
   <figure>
     <img src="images/paris26_cov_spt_public_sketch.png" alt="The SPT-3G Main, Summer A and Summer B footprints over the Euclid DR1 footprint with overlap areas in square degrees, and the noise curve of each band in temperature and polarization">
-    <span class="source">Leonardo: /leonardo_work/EUHPC_E07_074/cmbx/inputs/spt/public_covariance_package (README.md)</span>
   </figure>
   <div class="text">
   <ul>
-    <li>A generic quadratic estimator, run by the covariance team</li>
-    <li>Masks: SPT-3G Main, Summer A and B</li>
-    <li>Noise levels per band, temperature and polarization</li>
-    <li>Noise maps: 500 per band in the public D1 release</li>
-    <li>Unconstrained, so any number can be made</li>
+    <li>A generic quadratic estimator</li>
+    <li>Masks: Main, Summer A and B</li>
+    <li>Noise levels per band, T and P</li>
+    <li>500 noise maps per band (D1)</li>
+    <li>Any number can be made</li>
   </ul>
   </div>
+  <p class="source">Leonardo: /leonardo_work/EUHPC_E07_074/cmbx/inputs/spt/public_covariance_package (README.md)</p>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>What it is for</strong> — a generic quadratic-estimator κ reconstruction on simulated CMB with SPT-3G's footprint and noise, so that covariance mocks for the κ blocks can start before SPT's own reconstructions can be shared. Every number comes from a public paper or data release; nothing derives from internal SPT products.</li>
+      <li><strong>What it is for</strong> — a generic quadratic-estimator κ reconstruction, run by the covariance team on simulated CMB with SPT-3G's footprint and noise, so that covariance mocks for the κ blocks can start before SPT's own reconstructions can be shared. Every number comes from a public paper or data release; nothing derives from internal SPT products.</li>
       <li><strong>Masks</strong> — RA/Dec boxes from the published field boundaries, HEALPix $N_\mathrm{side} = 2048$, RING, equatorial, binary and apodized. Overlap with the observed DR1 footprint: Main 423 deg², Summer A 948 deg², Summer B 137 deg²; Summer C has none and is left out.</li>
       <li><strong>Noise</strong> — white level, atmospheric knee and slope, and beam per band (95, 150, 220 GHz), with beam-deconvolved noise curves. Summer polarization noise and Summer beams are proxies, labelled as such in the table.</li>
       <li><strong>Public D1 release</strong> — the SPT-3G D1 Main-field release has the survey pixel masks and 500 sign-flip noise realizations per band; for Main-field mocks these are better than the package's boxes and noise model.</li>
