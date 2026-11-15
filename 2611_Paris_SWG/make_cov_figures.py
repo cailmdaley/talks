@@ -168,7 +168,7 @@ def main():
     fig = plt.figure(figsize=(W_PX / DPI, H_PX / DPI), dpi=DPI)
 
     # footprints, left: equal-area so the washes compare as areas
-    ax = fig.add_axes([0.0, 0.0, 0.92, 0.50])
+    ax = fig.add_axes([0.04, 0.46, 0.92, 0.54])
     areas = sky(ax)
     ax.set_xlim(-1.18, 1.18)
     ax.set_ylim(-1.22, 0.06)
@@ -189,7 +189,7 @@ def main():
     # the two charts are drawn clean; only the footprint map is sketched
     plt.rcParams["path.sketch"] = None
     # noise per band
-    ax = fig.add_axes([0.24, 0.63, 0.72, 0.30])
+    ax = fig.add_axes([0.20, 0.14, 0.62, 0.26])
     noise(ax)
     ax.set_xticks([1000, 2000, 3000, 4000], ["1000", "", "3000", ""])
     ax.set_yticks([10, 100], ["10", "100"])
