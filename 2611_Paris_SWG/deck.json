@@ -3,15 +3,68 @@
   "author": "Cail Daley",
   "venue": "Euclid CMBX SWG meeting, Paris",
   "date": "2026-11-18",
-  "description": "Slides for three sessions of the Paris CMBX SWG meeting: how the Euclid groups blind DR1 and what CMBX has to decide, the CLOE versus dr1_cmbx likelihood comparison on TR1 chains, and what CMBX needs for its covariance.",
+  "description": "Slides for the Paris CMBX SWG meeting: how the Euclid groups blind DR1 and what CMBX has to decide, the CLOE versus dr1_cmbx likelihood comparison on TR1 chains, what CMBX needs for its covariance, and the SPT lensing-estimator trend in the κ crosses.",
   "footer": "Euclid CMBX SWG · Paris · 17–18 November 2026",
   "theme": "euclid",
   "draft": true,
   "noindex": true,
   "sections": [
-    { "title": "Opening", "outline": "Title and index of the three parts.", "slides": ["title", "index"] },
-    { "title": "Blinding", "outline": "Who blinds what in Euclid DR1, how large the CMBX blind should be, whether κκ is blinded, comparing blinded vectors across groups, and questions for the room.", "slides": ["blinding", "landscape", "policy", "blindspot", "size", "size-sigma", "kappa", "consistency", "blinding-questions"] },
-    { "title": "CLOE vs dr1_cmbx", "outline": "The same TR1 chains with CLOE and with the dr1_cmbx exact likelihood: posteriors, bias against the mock truth, cost.", "slides": ["cloe", "cloe-setup", "cloe-posteriors", "cloe-bias", "cloe-cost", "cloe-next"] },
-    { "title": "Covariance needs", "outline": "What CMBX uses now, which covariance blocks it needs from whom, and the open choices.", "slides": ["covariance", "cov-now", "cov-needs", "cov-questions"] }
+    {
+      "title": "Opening",
+      "outline": "Title, index of the parts, and the paper this work is for.",
+      "slides": [
+        "title",
+        "index",
+        "scope"
+      ]
+    },
+    {
+      "title": "Blinding",
+      "outline": "Who blinds what in Euclid DR1, how large the CMBX blind should be, whether κκ is blinded, comparing blinded vectors across groups, and questions for the room.",
+      "slides": [
+        "blinding",
+        "landscape",
+        "policy",
+        "blindspot",
+        "size",
+        "size-sigma",
+        "kappa",
+        "consistency",
+        "blinding-questions"
+      ]
+    },
+    {
+      "title": "CLOE vs dr1_cmbx",
+      "outline": "The same TR1 chains with CLOE and with the dr1_cmbx exact likelihood: posteriors, bias against the mock truth, cost. Production now samples CLOE directly through a JAX port.",
+      "slides": [
+        "cloe",
+        "cloe-setup",
+        "cloe-posteriors",
+        "cloe-bias",
+        "cloe-cost",
+        "cloe-jax",
+        "cloe-next"
+      ]
+    },
+    {
+      "title": "Covariance needs",
+      "outline": "What CMBX uses now, which covariance blocks it needs from whom, and the open choices.",
+      "slides": [
+        "covariance",
+        "cov-now",
+        "cov-needs",
+        "cov-spt-public",
+        "cov-questions"
+      ]
+    },
+    {
+      "title": "SPT estimator trend",
+      "outline": "The S8 shift between SPT-3G lensing estimators in the κ crosses, against Ouellette et al., and its band-level reading.",
+      "slides": [
+        "estimators",
+        "est-s8",
+        "est-bands"
+      ]
+    }
   ]
 }
