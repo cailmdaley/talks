@@ -23,7 +23,8 @@
       "slides": [
         "covariance",
         "cov-spt-public",
-        "cov-spt-constrained"
+        "cov-spt-constrained",
+        "cov-control-variates"
       ]
     },
     {

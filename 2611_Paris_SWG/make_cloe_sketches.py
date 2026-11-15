@@ -1,12 +1,13 @@
 """Pen drawings for the blinding and CLOE segments of the Paris CMBX SWG deck.
 
-Four drawings, each at 2x the slide's figure box (3424 x 1542 px), on white (the build
+Five drawings, each at 2x the slide's figure box (3424 x 1542 px), on white (the build
 multiplies white into the theme ground):
 
   paris26_sketch_blindspot.png  how blindspot makes a 3x2pt blinding shift
   paris26_sketch_anatomy.png    the three levels of a chain: sampler, likelihood, theory
   paris26_sketch_swap.png       eDR1like + CCL against CLOE: what is shared, what is swapped
   paris26_sketch_jax.png        plain CLOE against CLOE with its slow pieces in JAX
+  paris26_sketch_control_variates.png  CARPool for the SPT covariance: paired and unpaired mocks
 
 Every number drawn is quoted, with its source, in the notes card of the slide that shows it.
 The style is a fine-pen scientific plate: thin ink strokes whose weight swells and tapers
@@ -15,7 +16,7 @@ only where tone carries meaning, small EB Garamond lettering (the deck's face) w
 for variables. The random seed is fixed, so a redraw is identical. Each drawing is audited
 on save: a label that touches another label or a stroke is reported.
 
-Run in the cmbx container: app python make_cloe_sketches.py
+Run in the cmbx container: app python make_cloe_sketches.py [drawing ...]
 """
 import os
 import tempfile
@@ -175,6 +176,13 @@ class Plate:
     def arrow(self, p0, p1, bow=0.0, color=INK, w=WEIGHT, size=30):
         pts = self.line(p0, p1, bow=bow, color=color, w=w)
         self.head(p1, pts[-6], color=color, size=size)
+
+    def loop_arc(self, cx, cy, rx, ry, a0, a1, color=INK, w=WEIGHT, size=34):
+        """An arc of the ellipse (cx, cy, rx, ry) from angle a0 to a1 (degrees), headed at a1."""
+        t = np.radians(np.linspace(a0, a1, 120))
+        pts = np.stack([cx + rx * np.cos(t), cy + ry * np.sin(t)], 1)
+        pts = self.pen(pts, color=color, w=w, taper=0.4)
+        self.head(pts[-1], pts[-8], color=color, size=size)
 
     def ring(self, cx, cy, rx, ry=None, angle=0, dashed=False, **kw):
         ry = rx if ry is None else ry
@@ -343,40 +351,58 @@ def blindspot():
 
 
 def anatomy():
+    """The three levels as one loop: the sampler proposes, the theory predicts, the likelihood
+    returns ln L to the sampler, which proposes again."""
     p = Plate(11)
-    p.heading(330, 1450, "sampler")
-    p.heading(1180, 1450, "likelihood")
-    p.heading(2540, 1450, "theory")
+    cx, cy, rx, ry = 1712, 790, 1330, 560
+    p.loop_arc(cx, cy, rx, ry, 146, 47, color=ACCENT)       # over the top, left to right
+    p.loop_arc(cx, cy, rx, ry, -47, -72, color=ACCENT)      # down the right, to the bottom
+    p.loop_arc(cx, cy, rx, ry, 252, 218, color=ACCENT)      # up the left, back to the start
+    p.text(cx, cy + ry + 80, r"proposes $\theta$", size=HEAD, color=ACCENT, italic=True)
+    p.text(2620, 175, r"predicts $t(\theta)$", size=HEAD, color=ACCENT, italic=True)
+    p.text(800, 175, r"returns $\ln L$", size=HEAD, color=ACCENT, italic=True)
 
     # sampler: nested shells of live points
-    sx, sy = 330, 900
-    for k, (rx, ry) in enumerate([(250, 175), (175, 122), (108, 76), (52, 37)]):
-        p.ring(sx, sy, rx, ry, angle=18, w=WEIGHT * (0.6 + 0.12 * k))
-    a = np.radians(18)
-    rot = np.array([[np.cos(a), np.sin(a)], [-np.sin(a), np.cos(a)]])
+    sx, sy = 382, 830
+    p.heading(sx, 1180, "sampler")
+    for k, (a, b) in enumerate([(200, 140), (138, 96), (82, 57), (38, 27)]):
+        p.ring(sx, sy, a, b, angle=18, w=WEIGHT * (0.6 + 0.12 * k))
+    rot = np.radians(18)
+    rot = np.array([[np.cos(rot), np.sin(rot)], [-np.sin(rot), np.cos(rot)]])
 
     def live(n):
-        q = p.rng.normal(0, 1, (4 * n, 2)) * [120, 75]
-        q = q[(q[:, 0] ** 2 / 235 ** 2 + q[:, 1] ** 2 / 160 ** 2) < 1][:n]
+        q = p.rng.normal(0, 1, (4 * n, 2)) * [95, 60]
+        q = q[(q[:, 0] ** 2 / 188 ** 2 + q[:, 1] ** 2 / 128 ** 2) < 1][:n]
         return (sx, sy) + q @ rot
-    p.stipple(70, live, r=3.4)
-    p.text(sx, 560, "nautilus", size=BODY)
-    p.text(sx, 480, "nested sampling", size=SMALL, color=MUTED)
-    p.text(sx, 320, r"draws $\theta$ in", size=BODY)
-    p.text(sx, 235, "38 parameters", size=BODY)
+    p.stipple(50, live, r=3.4)
+    p.text(sx, 590, "nautilus", size=BODY)
+    p.text(sx, 515, "38 parameters", size=SMALL, color=MUTED)
 
-    # likelihood
-    lx = 1180
-    p.text(lx, 1250, r"$\ln L = -\frac{1}{2}\,\chi^2$", size=HEAD)
-    p.text(lx, 1140, "Gaussian", size=SMALL, color=MUTED)
-    vx, vy, vh = 905, 540, 380
-    for x in (vx, vx + 70):
+    # theory: cosmology and nuisances through the Limber projection to the bandpowers
+    tx = 3010
+    p.heading(tx, 1300, "theory")
+    p.text(tx, 1110, "cosmology + nuisances", size=BODY)
+    p.arrow((tx, 1010), (tx, 920), size=24, w=WEIGHT * 0.8)
+    p.ring(tx, 830, 180, 82, w=WEIGHT * 0.8)
+    p.text(tx, 830, "Limber", size=BODY)
+    p.arrow((tx, 745), (tx, 655), size=24, w=WEIGHT * 0.8)
+    p.text(tx, 590, "5×2pt bandpowers", size=BODY)
+    p.text(tx, 515, "90 pairs, 651 bands", size=SMALL, color=MUTED)
+    p.text(tx, 438, r"no $\kappa\kappa$", size=SMALL, color=MUTED)
+
+    # likelihood: the data vector and the covariance, compared with t(theta)
+    p.heading(cx, 990, "likelihood")
+    p.text(cx, 840, "Gaussian", size=BODY)
+    p.text(cx, 760, r"$\chi^2$ of $d - t(\theta)$", size=SMALL, color=MUTED)
+    vx, vy, vh = 1440, 330, 330
+    for x in (vx, vx + 60):
         p.line((x, vy), (x, vy + vh), w=WEIGHT * 0.6)
-    for i in range(9):
-        yy = vy + 22 + i * 42
-        p.line((vx + 12, yy), (vx + 12 + p.rng.uniform(14, 48), yy), w=WEIGHT, taper=0.7)
-    p.text(vx + 35, vy - 80, "data $d$", size=BODY)
-    cx0, cy0, cw = 1100, 540, 380
+    for i in range(8):
+        yy = vy + 22 + i * 40
+        p.line((vx + 10, yy), (vx + 10 + p.rng.uniform(12, 40), yy), w=WEIGHT, taper=0.7)
+    p.text(vx + 30, vy - 70, "data $d$", size=BODY)
+    cx0, cy0, cw = 1650, 330, 330
+
     for (x0, y0), (x1, y1) in [((0, 0), (1, 0)), ((1, 0), (1, 1)), ((1, 1), (0, 1)), ((0, 1), (0, 0))]:
         p.line((cx0 + x0 * cw, cy0 + y0 * cw), (cx0 + x1 * cw, cy0 + y1 * cw), w=WEIGHT * 0.6)
 
@@ -386,42 +412,9 @@ def anatomy():
         q = np.stack([u + off / 2, 1 - u + off / 2], 1)
         q = q[(q > 0.025).all(1) & (q < 0.975).all(1)]
         return (cx0, cy0) + q * cw
-    p.stipple(900, band, r=2.4)
-    p.text(cx0 + cw / 2, cy0 - 80, "covariance $C$", size=BODY)
-    p.text(cx0 + cw / 2, cy0 - 160, "Gaussian + SSC", size=SMALL, color=MUTED)
-    p.text(lx, 260, r"$\chi^2$ of $d - t(\theta)$", size=BODY)
-
-    # the calls between levels
-    for x0, x1, down, up in [(640, 790, r"$\theta$", r"$\ln L$"), (1560, 1720, r"$\theta$", r"$t(\theta)$")]:
-        p.arrow((x0, 1060), (x1, 1060), bow=-0.12)
-        p.text((x0 + x1) / 2, 1140, down, size=BODY)
-        p.arrow((x1, 330), (x0, 330), bow=-0.12)
-        p.text((x0 + x1) / 2, 410, up, size=BODY)
-
-    # theory: cosmology and nuisances, braced into the projection
-    tx = 1790
-    p.text(tx, 1290, "cosmology", size=BODY, ha="left", italic=True)
-    p.text(tx, 1195, r"background  $H(z),\ \chi(z)$", size=BODY, ha="left")
-    p.text(tx, 1110, r"$P(k, z)$", size=BODY, ha="left")
-    p.text(tx, 1035, "CAMB HMCode or emulator", size=SMALL, ha="left", color=MUTED)
-    p.text(tx, 860, "nuisances", size=BODY, ha="left", italic=True)
-    for i, item in enumerate(["intrinsic alignment", r"source, lens  $\Delta z$", r"shear  $m$",
-                              "magnification", "galaxy bias"]):
-        p.text(tx + 30, 765 - i * 92, item, size=BODY, ha="left")
-    lim = (3080, 900)
-    top = p.brace((2650, 1330), (2650, 990), depth=40, w=WEIGHT * 0.9)
-    bot = p.brace((2650, 820), (2650, 340), depth=40, w=WEIGHT * 0.9)
-    p.arrow(top + (20, 0), (lim[0] - 250, lim[1] + 80), bow=0.08)
-    p.arrow(bot + (20, 0), (lim[0] - 250, lim[1] - 80), bow=-0.08)
-    p.ring(*lim, 235, 140, w=WEIGHT * 0.8)
-    p.text(lim[0], lim[1] + 42, "Limber", size=BODY)
-    p.text(lim[0], lim[1] - 42, "projection", size=BODY)
-    p.arrow((lim[0], lim[1] - 155), (lim[0], 680))
-    p.text(lim[0], 615, r"$C_\ell \rightarrow$ bandpowers", size=BODY)
-    p.text(lim[0], 515, "5×2pt", size=HEAD)
-    p.text(lim[0], 420, r"$\gamma\gamma\;\;\gamma\delta\;\;\delta\delta\;\;\kappa\gamma\;\;\kappa\delta$", size=BODY)
-    p.text(lim[0], 330, "90 pairs, 651 bands", size=SMALL, color=MUTED)
-    p.text(lim[0], 260, r"no $\kappa\kappa$", size=SMALL, color=MUTED)
+    p.stipple(700, band, r=2.4)
+    p.text(cx0 + cw / 2, cy0 - 70, "covariance $C$", size=BODY)
+    p.text(cx0 + cw / 2, cy0 - 145, "Gaussian + SSC", size=SMALL, color=MUTED)
     p.save("paris26_sketch_anatomy.png")
 
 
@@ -529,12 +522,79 @@ def jax():
     p.save("paris26_sketch_jax.png")
 
 
+def control_variates():
+    """CARPool for the SPT covariance: a few SPT-constrained mocks, each paired with an SPT-like
+    mock of the same sky, and many SPT-like mocks alone."""
+    p = Plate(41)
+    R, r = 96, 56
+
+    def sky(n):
+        """One realization: a few clumps over a uniform floor, in the unit disc."""
+        centres = p.rng.uniform(-0.55, 0.55, (4, 2))
+        q = np.vstack([c + p.rng.normal(0, 0.16, (n // 6, 2)) for c in centres]
+                      + [p.rng.uniform(-1, 1, (n, 2))])
+        q = q[np.hypot(*q.T) < 0.82]
+        return q[p.rng.permutation(len(q))[:n]]
+
+    # few and accurate: each SPT-constrained mock beside an SPT-like mock of the same sky
+    xy, xc = 470, 1090
+    p.heading((xy + xc) / 2, 1460, "few, accurate")
+    p.text((xy + xc) / 2, 1300, r"SPT-constrained, $N \approx$ 350–400", size=SMALL, color=MUTED)
+    rows = [1130, 925, 655]
+    for k, y in enumerate(rows):
+        q = sky(30)
+        p.ring(xy, y, R, color=ACCENT, w=WEIGHT * 1.15)
+        p.stipple(len(q), lambda n: (xy, y) + q * R, r=3.2)
+        p.ring(xc, y, R, w=WEIGHT * 0.7)
+        p.stipple(len(q), lambda n: (xc, y) + q * R, r=3.2)
+        p.dashed([(xy + R + 30, y), (xc - R - 30, y)], dash=16, gap=12, w=WEIGHT * 0.6, color=MUTED)
+        if k == 0:
+            p.text((xy + xc) / 2, y + 55, "same sky", size=SMALL, color=MUTED, italic=True)
+    for x in (xy, (xy + xc) / 2, xc):
+        for j in range(3):
+            p.stipple(1, lambda n: np.array([[x, 820 - j * 30]]), r=3.6)
+    p.text(xy, 492, "$y$", size=HEAD, italic=True, color=ACCENT)
+    p.text(xy, 400, "SPT's own", size=SMALL, color=MUTED)
+    p.text(xy, 322, "reconstruction", size=SMALL, color=MUTED)
+    p.text(xc, 492, "$c$", size=HEAD, italic=True)
+    p.text(xc, 400, "generic", size=SMALL, color=MUTED)
+    p.text(xc, 322, "reconstruction", size=SMALL, color=MUTED)
+
+    # many and approximate: SPT-like mocks alone, each its own sky
+    gx = [1880 + 172 * i for i in range(8)]
+    gy = [1140, 980, 820, 660]
+    p.heading((gx[0] + gx[-1]) / 2, 1460, "many, approximate")
+    p.text((gx[0] + gx[-1]) / 2, 1300, r"SPT-like, any number $M$", size=SMALL, color=MUTED)
+    for y in gy:
+        for x in gx:
+            q = sky(12)
+            p.ring(x, y, r, w=WEIGHT * 0.55)
+            p.stipple(len(q), lambda n: (x, y) + q * r, r=2.6)
+    mx = (gx[0] + gx[-1]) / 2
+    p.text(mx, 492, "$c$", size=HEAD, italic=True)
+    p.text(mx, 400, "the same generic reconstruction,", size=SMALL, color=MUTED)
+    p.text(mx, 322, "each on its own sky", size=SMALL, color=MUTED)
+
+    # the estimator, and what it gives
+    p.line((120, 262), (3300, 262), w=WEIGHT * 0.5, color=RULE)
+    p.text(130, 150, r"$\hat\Sigma \;=\; \hat\Sigma_y^N \;-\; \beta\,(\hat\Sigma_c^N - \hat\Sigma_c^M)$",
+           size=HEAD + 4, ha="left")
+    p.text(1260, 195, r"$\hat\Sigma^N$: over the $N$ pairs;  $\hat\Sigma^M$: over the $M$", size=SMALL,
+           ha="left", color=MUTED)
+    p.text(1260, 110, r"$\beta$: fitted per element on the pairs", size=SMALL, ha="left", color=MUTED)
+    p.text(2340, 200, "unbiased for SPT's estimator,", size=SMALL, ha="left", color=ACCENT)
+    p.text(2340, 120, r"noise of $N / (1 - \rho^2)$ constrained mocks", size=SMALL, ha="left", color=ACCENT)
+    p.text(2340, 42, r"$\rho$: pair correlation, per element", size=SMALL, ha="left", color=MUTED)
+    p.save("paris26_sketch_control_variates.png")
+
+
 def main():
+    import sys
     setup_font()
-    blindspot()
-    anatomy()
-    swap()
-    jax()
+    drawings = {"blindspot": blindspot, "anatomy": anatomy, "swap": swap, "jax": jax,
+                "control_variates": control_variates}
+    for name in sys.argv[1:] or drawings:
+        drawings[name]()
 
 
 if __name__ == "__main__":

@@ -1,13 +1,14 @@
 <section data-layout="figure">
   <h2>Three levels of a cosmology chain</h2>
   <figure>
-    <img src="images/paris26_sketch_anatomy.png" alt="Sketch of a chain in three levels: the nautilus sampler draws parameters; the Gaussian likelihood compares the TR1 data vector with the theory vector through the Gaussian plus SSC covariance; the theory combines cosmology (background and P(k) from CAMB HMCode or the emulator) with nuisances (intrinsic alignment, source and lens redshift shifts, shear m, magnification, galaxy bias) in a Limber projection to 5×2pt bandpowers, 90 pairs and 651 bands, without κκ">
+    <img src="images/paris26_sketch_anatomy.png" alt="Sketch of a chain as one loop of three arrows: the nautilus sampler, over 38 parameters, proposes theta; the theory, cosmology and nuisances through the Limber projection to the 5×2pt bandpowers (90 pairs, 651 bands, no κκ), predicts t(theta); the Gaussian likelihood, chi-squared of the data d minus t(theta) with the Gaussian plus SSC covariance C, returns ln L to the sampler, which proposes again">
   </figure>
   <aside class="notes">
     <ul class="skim">
+      <li><strong>The loop</strong> — one evaluation goes once around: the sampler proposes a point $\theta$, the theory predicts the data vector $t(\theta)$ there, the likelihood compares it with the data and returns $\ln L$, and the sampler uses it to propose the next point.</li>
       <li><strong>Sampler</strong> — nautilus (nested sampling) draws a point $\theta$ in the 38 sampled parameters of the TR1 data chains (37 on the GLASS mock, where $\log T_\mathrm{AGN}$ is fixed) and receives $\ln L$.</li>
       <li><strong>Likelihood</strong> — Gaussian: $\ln L = -\tfrac12 (d - t)^\mathsf{T} C^{-1} (d - t)$, with $d$ the measured bandpowers and $C$ the production Gaussian + SSC covariance.</li>
-      <li><strong>Theory</strong> — the theory vector $t(\theta)$: the background and $P(k, z)$ of the cosmology, with the nuisances, projected (Limber) to $C_\ell$ and through the bandpower windows.</li>
+      <li><strong>Theory</strong> — the theory vector $t(\theta)$: the background ($H(z)$, $\chi(z)$) and $P(k, z)$ of the cosmology (CAMB with HMCode, or the emulator), with the nuisances, projected (Limber) to $C_\ell$ and through the bandpower windows.</li>
       <li><strong>Vector</strong> — 5×2pt after scale cuts: shear × shear, shear × positions, positions × positions, κ × shear and κ × positions; 90 pairs, 651 bands. κκ is not included (CLOElike has no CMB-lensing likelihood yet).</li>
     </ul>
     <details><summary>The nuisances</summary>
