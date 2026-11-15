@@ -1,0 +1,54 @@
+<section data-layout="figure">
+  <h2>A lensing measurement is a long chain, checked link by link</h2>
+  <figure>
+    <svg viewBox="0 0 1712 720" role="img" aria-label="Images to shapes to catalogue to data vectors to cosmology, with a band of simulations under every step against which each link is checked">
+      <defs>
+        <marker id="chain-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" class="fill-muted"/>
+        </marker>
+      </defs>
+      <g font-size="40" font-weight="600" text-anchor="middle">
+        <rect x="10" y="90" width="292" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="156" y="160">Images</text>
+        <text x="156" y="208" font-size="32" font-weight="400" class="fill-muted">PSF, astrometry</text>
+        <rect x="362" y="90" width="292" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="508" y="160">Shapes</text>
+        <text x="508" y="208" font-size="32" font-weight="400" class="fill-muted">calibration m</text>
+        <rect x="714" y="90" width="292" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="860" y="160">Catalogue</text>
+        <text x="860" y="208" font-size="32" font-weight="400" class="fill-muted">masks, n(z)</text>
+        <rect x="1066" y="90" width="292" height="150" rx="14" class="fill-panel stroke-rule" stroke-width="3"/>
+        <text x="1212" y="160">Data vectors</text>
+        <text x="1212" y="208" font-size="32" font-weight="400" class="fill-muted">nulls, blinding</text>
+        <rect x="1418" y="90" width="284" height="150" rx="14" class="fill-ground stroke-accent" stroke-width="5"/>
+        <text x="1560" y="160" class="fill-accent">Cosmology</text>
+        <text x="1560" y="208" font-size="32" font-weight="400" class="fill-muted">likelihood</text>
+      </g>
+      <g class="stroke-muted" stroke-width="4" fill="none">
+        <path d="M306 165 H354" marker-end="url(#chain-arrow)"/>
+        <path d="M658 165 H706" marker-end="url(#chain-arrow)"/>
+        <path d="M1010 165 H1058" marker-end="url(#chain-arrow)"/>
+        <path d="M1362 165 H1410" marker-end="url(#chain-arrow)"/>
+      </g>
+      <g class="fragment">
+        <g class="stroke-teal" stroke-width="4" stroke-dasharray="10 8" fill="none">
+          <path d="M156 244 V372"/><path d="M508 244 V372"/><path d="M860 244 V372"/><path d="M1212 244 V372"/><path d="M1560 244 V372"/>
+        </g>
+        <rect x="10" y="376" width="1692" height="124" rx="14" class="fill-panel stroke-teal" stroke-width="4"/>
+        <text x="856" y="436" font-size="40" font-weight="600" text-anchor="middle">Simulations with known inputs</text>
+        <text x="856" y="482" font-size="32" text-anchor="middle" class="fill-muted">the survey's footprint, noise, PSF and redshifts</text>
+      </g>
+      <g class="fragment" font-size="40" text-anchor="middle">
+        <text x="856" y="600">Most of the effort, and most of the risk, is in checking each link.</text>
+        <text x="856" y="660" class="fill-muted" font-size="36">The same forward models are what simulation-based inference needs.</text>
+      </g>
+    </svg>
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Top row</strong> — the stages of a weak-lensing analysis, from pixels to parameters, each with what it has to get right.</li>
+      <li><strong>Band</strong> — simulations that carry the survey's footprint, noise, PSF and redshift distributions, run through every stage so that each link is checked against a known answer.</li>
+      <li><strong>The point</strong> — the measurement itself is the short part; validating each link is where the time and the risk sit, and the simulations it needs are the same forward models simulation-based inference relies on.</li>
+    </ul>
+  </aside>
+</section>

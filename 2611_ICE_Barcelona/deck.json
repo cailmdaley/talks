@@ -22,9 +22,12 @@
   "sections": [
     {
       "title": "Opening",
-      "outline": "Weak lensing catalogues and cosmology with UNIONS, Euclid and SPT.",
+      "outline": "How large lensing analyses are done today: a long chain checked against simulations, collaborations the size the data needed, and an opening for small teams with ambitious methods.",
       "slides": [
-        "title"
+        "title",
+        "chain",
+        "collaborations",
+        "small-teams"
       ]
     },
     {
@@ -60,13 +63,27 @@
       ]
     },
     {
+      "title": "Simulations, agents, SBI",
+      "outline": "Pipeline, simulations and data held against each other; work chosen to scale with compute; one simulation framework with fidelity dialled against speed; agents running the checks; SBI as where it ends; what collaborations are for; Lightcone.",
+      "slides": [
+        "spiral",
+        "scales",
+        "fidelity",
+        "cmb-lensing-fm",
+        "agents",
+        "sbi",
+        "collaborations-for",
+        "lightcone",
+        "summary"
+      ]
+    },
+    {
       "title": "Backup",
-      "outline": "The blinding rehearsal on a mock, the systematics-template crosses, the FLASK covariance, Marco Gatti's ACT DR6 forward model; the UNIONS v2 error bars, robustness tests, contours and the IA prior.",
+      "outline": "The blinding rehearsal on a mock, the systematics-template crosses and the FLASK covariance; the UNIONS v2 error bars, robustness tests, contours and the IA prior.",
       "slides": [
         "blind-rehearsal",
         "systematics-triangle",
         "kp-3-sims-cov",
-        "cmb-lensing-fm",
         "unions-errorbars",
         "unions-robustness",
         "unions-contours",
