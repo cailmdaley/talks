@@ -1,0 +1,31 @@
+<section data-layout="figure">
+  <h2>CLOE with its slow pieces in JAX</h2>
+  <figure>
+    <img src="images/paris26_sketch_jax.png" alt="Sketch: plain CLOE evaluates one point per call through background (CAMB), P(k) (emulator), Limber (CLOElib) and the Gaussian chi-squared (CLOElike); 2.7 s go to background and P(k) and 5.3 s to the projection, 8.0 core-seconds or 71 ms of a 112-core node per point. CLOE in JAX ports the background, the emulator call and the projection, which is CLOElib's own code compiled, into one jit-compiled function evaluated on 1000 points per call: 4 ms of the node per point. It agrees with plain CLOE to 4×10⁻⁴ σ in every band">
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Top</strong> — plain CLOE with the Theory WG emulator for $P(k)$: 8.0 core-s per full-vector evaluation, of which the Limber projection alone is 5.3 s (a nuisance-only step, $P(k)$ not recomputed). The 2.7 s for background and $P(k)$ is the difference. With CAMB for $P(k)$ an evaluation is 22.6 core-s. So emulating $P(k)$ gains only about 3×: the projection sets the cost.</li>
+      <li><strong>Bottom</strong> — the same theory with three pieces ported to JAX: the background (closed-form $H(z)$, with CAMB's radiation and neutrino density tables computed once), the CosmoPower-JAX emulator call and the $P(k)$ table built from it, and the projection, which is CLOElib's own tracers and Limber integrals compiled under jit and vmap. The Gaussian $\chi^2$ is the same formula. The whole likelihood is one compiled function that nautilus calls on 1000 points at a time; there is no CCL and no reweighting step.</li>
+      <li><strong>Right</strong> — time per point on one 112-core Leonardo DCGP node. Plain CLOE: 8.0 core-s ÷ 112 = 71 ms, assuming perfect parallel efficiency. JAX: 4 ms, measured in the blinded TR1 × SPT-3G full chain (247&nbsp;000 points in 986 s of likelihood time); at most 0.45 core-s per point if it used every core.</li>
+      <li><strong>Agreement</strong> — over the fiducial point and 24 prior draws, 90 pairs and 651 bands, the largest difference from plain CLOE is $3.8\times10^{-4}\sigma$ of the Gaussian bandpower error (gate 0.1σ).</li>
+    </ul>
+    <details><summary>Numbers</summary>
+    <p><strong>Theory gate.</strong> TR1 with ACT DR6 κ: worst band $3.8\times10^{-4}\sigma$ in a clustering auto-spectrum at ℓ ≈ 349; the SPT-3G configuration has the same worst band, and its κ × shear bands stay ≤ $2\times10^{-4}\sigma$.</p>
+    <p><strong>Posterior check.</strong> The blinded TR1 chain, importance-reweighted to exact CLOE: the largest shift of any parameter mean is $1.3\times10^{-4}\sigma$ with ACT DR6 κ (8437 points) and $8.2\times10^{-5}\sigma$ with SPT-3G κ (8307 points). Widths agree to $3\times10^{-5}$ and the effective sample size is unchanged (ratio 0.9999–1.0002). The reweighting is kept as a check on the fiducial chain, not as a production step.</p>
+    <p><strong>Plain CLOE timing.</strong> Medians over 5 prior draws on one core of a DCGP node (Sapphire Rapids), the first of 6 excluded as warm-up.</p>
+    </details>
+    <details><summary>Where the port differs from CLOE</summary>
+    <p>Numerically, in the interpolation of $P$ onto the Limber wavenumbers, the quadrature of the comoving distance and $z_* = 1089$ in the CMB-lensing kernel; and the emulator is clamped to its training box, where CLOE raises. Together these stay below the agreement quoted above.</p>
+    </details>
+    <details><summary>Local patches to CLOElib</summary>
+    <p>Three: power-law extrapolation of $P(k)$ beyond the $k$ table, radiation in the background, and the continuation above $z = 5$.</p>
+    </details>
+    <details><summary>Not yet done</summary>
+    <p>The same posterior check on a GLASS mock (fast path against exact CLOE, and both against the mock truth) had not run when these slides were made.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>dr1_cmbx eDR1like jax_vector.py and cloe_jax.py (the port); the chain summary of tr1_v2 production_chains nested_full; felt fibers cmbx/likelihood/fast-path-as-cloe-s-jax-adapter and cmbx/likelihood/cloe-vs-dr1-cmbx-posterior-and (timing-summary.json). Drawing: make_cloe_sketches.py.</p>
+    </details>
+  </aside>
+</section>

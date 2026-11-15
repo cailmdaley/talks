@@ -1,0 +1,20 @@
+<section data-layout="figure">
+  <h2>Where a full chain's time goes</h2>
+  <figure>
+    <img src="images/paris26_sketch_chain.png" alt="Sketch of wall time per full chain on one node, in minutes: CLOE with the emulator sampled directly, estimated at 4 to 5 hours, off the scale; the JAX explorer plus exact reweighting, 1.2 to 1.9 hours, of which the exploration is the first 20 to 25 minutes; CLOE in JAX with no reweighting, 32 minutes, half in the likelihood and half in nautilus, for 247 000 points in 247 calls of 1000">
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Bars</strong> — wall time of one full-vector chain on one Leonardo DCGP node, in minutes.</li>
+      <li><strong>CLOE in JAX</strong> — the blinded TR1 × SPT-3G full chain: 32 min (38 parameters, 247&nbsp;000 likelihood points, effective sample size 2714). 16.4 min are spent in the likelihood and 15.9 min in everything else, mostly nautilus itself. The TR1 × ACT DR6 chain is the same within 1 min.</li>
+      <li><strong>Explore + reweight</strong> — the path of the chains in the comparison: JAX exploration (20–25 min) followed by the exact reweighting of 8&nbsp;500 (data) to 18&nbsp;700 (mock) points; measured, the range spans the two arms.</li>
+      <li><strong>Hatched</strong> — estimated, not run: a nautilus chain sampling CLOE + emulator directly needs about 200&nbsp;000–250&nbsp;000 evaluations at 8.0 core-s each, so 4–5 h on one node (11–14 h with CAMB), assuming perfect parallel efficiency.</li>
+    </ul>
+    <details><summary>Reading</summary>
+    <p>With a 4 ms likelihood, nautilus's own work (building its bounds and sampling from them) is now half of the wall time, so further speed-ups have to come from the sampler as much as from the likelihood.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>summary.json of the tr1_v2 and tr1_v2_act production_chains nested_full chains (wall, likelihood and sampler seconds, points evaluated); felt fibers cmbx/likelihood/fast-path-as-cloe-s-jax-adapter and cmbx/likelihood/cloe-vs-dr1-cmbx-posterior-and. Drawing: make_cloe_sketches.py.</p>
+    </details>
+  </aside>
+</section>

@@ -1,0 +1,23 @@
+<section data-layout="figure">
+  <h2>Three levels of a cosmology chain</h2>
+  <figure>
+    <img src="images/paris26_sketch_anatomy.png" alt="Sketch of a chain in three levels: the nautilus sampler draws parameters; the Gaussian likelihood compares the TR1 data vector with the theory vector through the Gaussian plus SSC covariance; the theory combines cosmology (background and P(k) from CAMB HMCode or the emulator) with nuisances (intrinsic alignment, source and lens redshift shifts, shear m, magnification, galaxy bias) in a Limber projection to 5×2pt bandpowers, 90 pairs and 651 bands, without κκ">
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Sampler</strong> — nautilus (nested sampling) draws a point $\theta$ in the 38 sampled parameters of the TR1 data chains (37 on the GLASS mock, where $\log T_\mathrm{AGN}$ is fixed) and receives $\ln L$.</li>
+      <li><strong>Likelihood</strong> — Gaussian: $\ln L = -\tfrac12 (d - t)^\mathsf{T} C^{-1} (d - t)$, with $d$ the measured bandpowers and $C$ the production Gaussian + SSC covariance.</li>
+      <li><strong>Theory</strong> — the theory vector $t(\theta)$: the background and $P(k, z)$ of the cosmology, with the nuisances, projected (Limber) to $C_\ell$ and through the bandpower windows.</li>
+      <li><strong>Vector</strong> — 5×2pt after scale cuts: shear × shear, shear × positions, positions × positions, κ × shear and κ × positions; 90 pairs, 651 bands. κκ is not included (CLOElike has no CMB-lensing likelihood yet).</li>
+    </ul>
+    <details><summary>The nuisances</summary>
+    <p>Per tomographic bin: a redshift shift $\Delta z$ for each of the six source and six lens bins, a shear multiplicative bias $m$ for each source bin, a magnification slope and a linear galaxy bias for each lens bin; and NLA intrinsic alignments ($A_\mathrm{IA}$, $\eta_\mathrm{IA}$). The baryonic feedback parameter $\log T_\mathrm{AGN}$ of HMCode-2020 sits with the cosmology. Priors are those of the DR1 photometric-cosmology document.</p>
+    </details>
+    <details><summary>The sampler level</summary>
+    <p>The first TR1 chains of this pipeline used Cobaya's Metropolis–Hastings sampler; with 44 parameters and a 1–4 s theory step it did not reach $R-1 \lesssim 0.02$ on a working-week timescale. From 19 October the chains use nautilus, with Metropolis kept as a cross-check: on the κ-only vector the two agree to ≤0.2σ in every parameter. With the earlier, slower likelihood, the full-vector nautilus chains still did not converge in 17 h on four nodes; the JAX version of CLOE (later in this section) makes a full chain take 32 min on one node.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>Production chain configuration (analyses/production_chains) and the nested-chain summaries of the blinded TR1 runs; felt fibers cmbx/likelihood/tr1-chains/nautilus-sampler, cmbx/code/inference-speed, cmbx/likelihood/cloe-vs-dr1-cmbx-posterior-and. Drawing: make_cloe_sketches.py.</p>
+    </details>
+  </aside>
+</section>

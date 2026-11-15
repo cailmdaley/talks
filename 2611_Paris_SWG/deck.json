@@ -36,11 +36,13 @@
       "outline": "The same TR1 chains with CLOE and with the dr1_cmbx exact likelihood: posteriors, bias against the mock truth, cost. Production now samples CLOE directly through a JAX port.",
       "slides": [
         "cloe",
-        "cloe-setup",
+        "cloe-anatomy",
+        "cloe-swap",
         "cloe-posteriors",
         "cloe-bias",
         "cloe-cost",
-        "cloe-jax",
+        "cloe-jax-pieces",
+        "cloe-chain-time",
         "cloe-next"
       ]
     },
