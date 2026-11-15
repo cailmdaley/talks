@@ -58,6 +58,20 @@
 
   Reveal.on('slidechanged', close);
 
+  // Videos restart on entry and pause when their slide is left.
+  function syncVideos() {
+    var cur = Reveal.getCurrentSlide();
+    document.querySelectorAll('.reveal video').forEach(function (v) {
+      if (cur && cur.contains(v)) {
+        v.currentTime = 0;
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+      } else v.pause();
+    });
+  }
+  Reveal.on('ready', syncVideos);
+  Reveal.on('slidechanged', syncVideos);
+
   // ── Peek: hovering an element that opens a detail shows the detail as a
   // popout beside it. The popout stays while the pointer is on the element or
   // on the popout, and lingers a moment after it leaves both, so the pointer

@@ -282,7 +282,7 @@ function moveMarks(fig, box, problems, where) {
   }
 }
 
-// Images are stored once per deck and referenced by key, so a figure shown
+// Media assets are stored once per deck and referenced by key, so a figure shown
 // on several slides (or cropped several ways) is inlined a single time.
 function addAsset(assets, im, blend) {
   const key = crypto.createHash('sha1').update(im.buf).update(blend ? 'x' : '').digest('hex').slice(0, 12);
@@ -290,7 +290,7 @@ function addAsset(assets, im, blend) {
   return key;
 }
 
-// Each asset becomes what the page sets as an <img> src: a data URI, or with `web` a
+// Each asset becomes a media URL: a data URI, or with `web` a
 // file under <deck>/a/ ({f}) plus, for a raster wider than PHONE_W, a narrower copy ({m}).
 const PHONE_W = 1600;
 async function resolveAssets(assets, ground, web) {
@@ -321,7 +321,7 @@ async function resolveAssets(assets, ground, web) {
 function assetScript(assets, html) {
   const used = html ? new Set([...html.matchAll(/data-asset="([0-9a-f]+)"/g)].map(m => m[1])) : null;
   const dict = JSON.stringify(Object.fromEntries([...assets].filter(([k]) => !used || used.has(k))));
-  return `<script>(function(){var A=${dict},small=window.HouseSmall=!!(window.matchMedia&&matchMedia('(max-width: 1024px), (max-height: 600px)').matches);for(var k in A)if(typeof A[k]!=='string')A[k]=(small&&A[k].m)||A[k].f;window.HouseAssets=A;document.querySelectorAll('img[data-asset]').forEach(function(i){i.loading='lazy';i.src=A[i.getAttribute('data-asset')];});})();</script>`;
+  return `<script>(function(){var A=${dict},small=window.HouseSmall=!!(window.matchMedia&&matchMedia('(max-width: 1024px), (max-height: 600px)').matches);for(var k in A)if(typeof A[k]!=='string')A[k]=(small&&A[k].m)||A[k].f;window.HouseAssets=A;document.querySelectorAll('img[data-asset]').forEach(function(i){i.loading='lazy';i.src=A[i.getAttribute('data-asset')];});document.querySelectorAll('video[data-asset]').forEach(function(v){v.poster=A[v.getAttribute('data-poster')];v.src=A[v.getAttribute('data-asset')];});})();</script>`;
 }
 
 // Text for one variant: data-variant="<variant> …" on any element of a slide shows it
@@ -380,7 +380,30 @@ function frameAlts(img, im, blend, src, deckDir, problems, where, assets, varian
   img.setAttribute('data-alt', JSON.stringify(out));
 }
 
+const VIDEO_MIME = { '.mp4': 'video/mp4', '.webm': 'video/webm' };
+
 function frameFigures(frame, deckDir, problems, where, assets, variants) {
+  // Videos keep their colours; the required poster supplies the frame's aspect ratio.
+  for (const video of [...frame.querySelectorAll('figure > video')]) {
+    const src = video.getAttribute('src') || '', poster = video.getAttribute('poster') || '';
+    const file = path.resolve(deckDir, src), pfile = path.resolve(deckDir, poster);
+    const mime = VIDEO_MIME[path.extname(src).toLowerCase()];
+    if (!src || !fs.existsSync(file)) { problems.push(`${where}: missing video ${src}`); continue; }
+    if (!mime) { problems.push(`${where}: ${src}: unsupported video type (mp4 or webm)`); continue; }
+    if (!poster || !fs.existsSync(pfile)) { problems.push(`${where}: <video src="${src}"> needs a poster image (house/video.py writes one)`); continue; }
+    let pim;
+    try { pim = loadImage(pfile); } catch (e) { problems.push(`${where}: ${poster}: ${e.message}`); continue; }
+    video.removeAttribute('src'); video.removeAttribute('poster');
+    video.setAttribute('data-asset', addAsset(assets, { buf: fs.readFileSync(file), mime }, false));
+    video.setAttribute('data-poster', addAsset(assets, pim, false));
+    video.setAttribute('data-src-path', src);
+    for (const a of ['muted', 'playsinline']) video.setAttribute(a, '');
+    if (!video.hasAttribute('data-once')) video.setAttribute('loop', '');
+    else video.removeAttribute('loop');
+    video.setAttribute('preload', 'auto');
+    const fig = video.parentElement;
+    moveMarks(fig, wrapInFrame(fig, video, pim.w / pim.h), problems, where);
+  }
   // inline SVG schematics: sized by their viewBox, coloured by theme tokens
   for (const svg of [...frame.querySelectorAll('figure > svg')]) {
     const vb = (svg.getAttribute('viewBox') || '').trim().split(/[\s,]+/).map(Number);
@@ -799,6 +822,17 @@ function reportHTML(deck, slides, mathCss, theme) {
 ${s.notes.trim() ? `<div class="prose">${s.notes.replace(/<details(?![^>]*\bopen\b)/g, '<details open')}</div>` : ''}
 ${s.details.map(d => `<div class="detail-copy"><p class="label">${esc(d.label)}</p><div class="viewport">${d.frame.replace('class="slide detail"', 'class="slide detail open"')}</div></div>`).join('\n')}
 </article>`;
+  }
+  // The written talk shows posters, without loading the clips.
+  if (body.includes('<video')) {
+    const doc = parseFragment(body);
+    for (const video of doc.querySelectorAll('video')) {
+      const img = doc.createElement('img');
+      img.setAttribute('data-asset', video.getAttribute('data-poster'));
+      img.setAttribute('alt', 'Video poster');
+      video.replaceWith(img);
+    }
+    body = doc.body.innerHTML;
   }
   return `<!doctype html>
 <html lang="en" class="theme-${esc(m.theme || 'house')}">

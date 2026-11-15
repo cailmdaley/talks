@@ -242,11 +242,13 @@ html, body { background: var(--ground); }
 }
 .slide figure.left > .cell { align-items: flex-start; }
 .slide figure.left figcaption, .slide figure.left .source { text-align: left; }
-.slide .frame > img {
+.slide .frame > img,
+.slide .frame > video {
   display: block;
   width: 100%;
   height: 100%;
 }
+.slide .frame > video { object-fit: contain; background: transparent; }
 /* a stack: later images (fragments) lie exactly over the first */
 .slide .frame > img ~ img { position: absolute; inset: 0; }
 /* a prism (<figure data-prism>) is a stack that runtime.js turns between its
@@ -727,7 +729,8 @@ html, body { background: var(--ground); }
 .slide[data-layout="bleed"] > .body { grid-row: 1; grid-column: 1; display: grid; }
 .slide[data-layout="bleed"] > .body > figure { height: 1080px; }
 .slide[data-layout="bleed"] .frame { width: 100cqw; height: 100cqh; aspect-ratio: auto; }
-.slide[data-layout="bleed"] .frame > img { object-fit: cover; }
+.slide[data-layout="bleed"] .frame > img,
+.slide[data-layout="bleed"] .frame > video { object-fit: cover; }
 .slide[data-layout="bleed"] > h2 {
   grid-row: 1;
   grid-column: 1;

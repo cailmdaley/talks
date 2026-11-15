@@ -1,0 +1,4 @@
+{
+  "title": "Video fixture", "author": "house test", "date": "2026-11-15", "footer": "fixture", "draft": true,
+  "sections": [{ "title": "Video", "outline": "Clips play only on their current slide.", "slides": ["loop", "once", "plain"] }]
+}
