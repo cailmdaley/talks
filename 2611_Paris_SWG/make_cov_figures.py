@@ -2,7 +2,7 @@
 
 Three vignettes drawn from the real products, in a hand-drawn style (sketched ink lines,
 watercolour washes in the euclid palette):
-  footprints  SPT-3G Main, Summer A and Summer B box masks (public package, masks/*_binary)
+  footprints  SPT-3G Main survey pixel mask and Summer A and B box masks (public package, masks/)
               against the observed Euclid DR1 wide footprint (union of DR1_R1 + DR1_R2 MER VIS
               tiles, results/scratch/footprints/dr1_observed), in a Lambert azimuthal equal-area
               view about the south celestial pole; outlines are the masks' own, lightly smoothed.
@@ -30,6 +30,10 @@ PKG = "/leonardo_work/EUHPC_E07_074/cmbx/inputs/spt/public_covariance_package"
 DR1 = ("/leonardo_work/EUHPC_E07_074/cdaley00/cmbx/results/scratch/footprints/dr1_observed/"
        "euclid_dr1_observed_wide_nside1024.fits")
 FIELDS = [("main", "Main"), ("summer_a", "Summer A"), ("summer_b", "Summer B")]
+# Main: the survey pixel mask of the public D1 release (borders only); Summer: boxes from the
+# published boundaries, since no Summer mask file is public.
+MASK_FILE = {"main": "spt3g_main_d1_binary_borders_only_nside2048.fits.gz",
+             "summer_a": "spt3g_summer_a_binary.fits.gz", "summer_b": "spt3g_summer_b_binary.fits.gz"}
 
 DPI = 200
 W_PX, H_PX = 2 * 800, 2 * 700    # 2x the figure column beside the bullets
@@ -118,7 +122,7 @@ def sky(ax):
 
     areas = {}
     for key, name in FIELDS:
-        m = read_ring(f"{PKG}/masks/spt3g_{key}_binary.fits.gz").astype(bool)
+        m = read_ring(f"{PKG}/masks/{MASK_FILE[key]}").astype(bool)
         areas[key] = (m.sum() * pix_area, (m & dr1).sum() * pix_area)
         mimg = m[pix].astype(float)
         wash(ax, outlines(gaussian_filter(mimg, 1.0), ext), SPT_C, alpha=0.15, amp=0.008, lw=3.0)
