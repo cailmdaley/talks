@@ -192,15 +192,16 @@ def fig_cost():
           f"R-1 = {mcmc['Rminus1']:.3f}; ratio {cob_nh / jax_nh:.0f}", flush=True)
     fig = new_fig()
     ax = fig.add_axes([0.225, 0.15, 0.24, 0.78])
-    rows = [("eDR1like + CCL\n(Cobaya)", cob["eval_s_median"], REF_C, None), ("CLOE + CAMB", t["camb_median_s"], OCHRE, None),
-            ("CLOE + emulator", t["cpj_median_s"], TEAL, None), ("CLOE in JAX", jax_eval, JAX_C, None)]
-    for i, (lab, v, c, txt) in enumerate(rows):
+    rows = [("eDR1like + CCL\n(Cobaya)", cob["eval_s_median"], REF_C), ("CLOE + CAMB", t["camb_median_s"], OCHRE),
+            ("CLOE + emulator", t["cpj_median_s"], TEAL), ("CLOE in JAX", jax_eval, JAX_C)]
+    for i, (lab, v, c) in enumerate(rows):
         ax.barh(i, v, color=c, height=0.62)
-        ax.text(v * 1.25, i, txt or (f"{v:.2f} s" if v < 1 else f"{v:.1f} s" if v < 30 else f"{v:.0f} s"), va="center", fontsize=TICK, color=INK)
+        ax.text(v + 0.9, i, f"{v:.2f} s" if v < 1 else f"{v:.1f} s" if v < 30 else f"{v:.0f} s", va="center",
+                fontsize=TICK, color=INK)
     ax.set_yticks(range(len(rows)), [r[0] for r in rows])
     ax.tick_params(axis="y", length=0, labelsize=TICK, labelcolor=INK)
-    ax.set_xscale("log")
-    ax.set_xlim(0.1, 400)
+    ax.set_xlim(0, 35)
+    ax.set_xticks([0, 10, 20, 30])
     ax.set_ylim(len(rows) - 0.5, -0.5)
     ax.set_xlabel("core-seconds per evaluation")
     ax.set_title("one likelihood evaluation", fontsize=LABEL, color=INK, loc="left")
@@ -212,14 +213,14 @@ def fig_cost():
                else f"> {mcmc['node_h']:.1f} node-h\n$R-1$ = {mcmc['Rminus1']:.2f}"),
               ("Cobaya,\nNautilus", cob_nh, REF_C, False, f"{cob_nh:.1f} node-h\n4 nodes × 4 h 09"),
               ("CLOE in JAX,\nNautilus", jax_nh, JAX_C, False, f"{jax_nh:.2f} node-h\n1 node × 27 min")]
+    top = max(c[1] for c in chains)
     for i, (lab, v, c, open_, txt) in enumerate(chains):
         ax.barh(i, v, color="white" if open_ else c, edgecolor=c, hatch="//" if open_ else None, lw=2, height=0.62)
-        ax.text(v * 1.2, i, txt, va="center", fontsize=TICK, color=INK, linespacing=1.1)
+        ax.text(v + 0.04 * top, i, txt, va="center", fontsize=TICK, color=INK, linespacing=1.1)
     ax.set_yticks(range(len(chains)), [c[0] for c in chains])
     ax.tick_params(axis="y", length=0, labelsize=TICK, labelcolor=INK)
-    ax.set_xscale("log")
-    ax.set_xlim(0.2, 200)
-    ax.set_xticks([0.3, 1, 3, 10, 30], ["0.3", "1", "3", "10", "30"])
+    ax.set_xlim(0, 1.02 * top)
+    ax.set_xticks(range(0, int(top) + 1, 5 if top < 21 else 10))
     ax.set_ylim(len(chains) - 0.5, -0.5)
     ax.set_xlabel("node-hours" + ("" if done else "; hatched: not converged"), loc="left")
     ax.set_title("one full chain", fontsize=LABEL, color=INK, loc="left")

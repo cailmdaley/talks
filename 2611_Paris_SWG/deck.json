@@ -43,16 +43,16 @@
   },
   {
    "title": "CLOE vs dr1_cmbx",
-   "outline": "From the Cobaya chains of the Q1 analysis to a CLOE likelihood in JAX: what is ported and what a chain costs, the same chains with both likelihoods on a GLASS mock and blinded TR1, and a proposal for a standalone CLOE likelihood beside eDR1like.",
+   "outline": "From the Cobaya chains of the Q1 analysis to a CLOE likelihood in JAX: what is ported, the same chains with both likelihoods on a GLASS mock and blinded TR1, what a chain costs, and a proposal for a standalone CLOE likelihood beside eDR1like.",
    "slides": [
     "cloe",
     "cloe-cobaya",
     "cloe-anatomy",
     "cloe-jax-pieces",
-    "cloe-cost",
     "cloe-swap",
     "cloe-posteriors",
     "cloe-selections",
+    "cloe-cost",
     "cloe-cleanroom",
     "cloe-next"
    ]
