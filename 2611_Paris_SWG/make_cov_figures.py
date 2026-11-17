@@ -6,7 +6,6 @@ watercolour washes in the euclid palette):
               against the observed Euclid DR1 wide footprint (union of DR1_R1 + DR1_R2 MER VIS
               tiles, results/scratch/footprints/dr1_observed), in a Lambert azimuthal equal-area
               view about the south celestial pole; outlines are the masks' own, lightly smoothed.
-              The overlap areas printed are computed here from the same maps.
   noise       beam-deconvolved per-band white+1/f noise model, T and P (noise_curves_main_d1.txt)
   check       public D1 PP lensing bandpower errors over the model's (checks/nl_variants.txt)
 
@@ -173,22 +172,16 @@ def main():
 
     # footprints, left: equal-area so the washes compare as areas
     ax = fig.add_axes([0.04, 0.46, 0.92, 0.54])
-    areas = sky(ax)
+    sky(ax)
     ax.set_xlim(-1.18, 1.18)
     ax.set_ylim(-1.22, 0.06)
     ax.set_aspect("equal")
     ax.axis("off")
-    NUDGE = {"summer_b": (0.15, -0.11)}
-    for key, name in FIELDS:
-        tot, ov, x, y = areas[key]
-        dx, dy = NUDGE.get(key, (0, 0))
-        ax.text(x + dx, y + dy, f"{ov:.0f}", color=INK, fontsize=TXT, ha="center", va="center", zorder=6)
     LABELS = {"main": (0.72, -0.03, "SPT-3G Main"), "summer_a": (-0.88, -0.1, "Summer A"),
               "summer_b": (0.0, -1.14, "Summer B")}
     for key, (x, y, s) in LABELS.items():
         ax.text(x, y, s, color="#6E5410", fontsize=TXT, ha="center", va="center", zorder=6)
     ax.text(0.98, -1.0, "Euclid DR1", color=COBALT, fontsize=TXT, ha="center", va="center", zorder=6)
-    ax.text(0.98, -1.13, "overlap, deg²", color=INK, fontsize=SMALL, ha="center", va="center", zorder=6)
 
     # the two charts are drawn clean; only the footprint map is sketched
     plt.rcParams["path.sketch"] = None

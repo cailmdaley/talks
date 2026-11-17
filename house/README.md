@@ -105,7 +105,7 @@ Above 60 words of on-screen text the checker warns: the audience reads instead o
 | `grid` | `<h2>`, three to six `<figure>` | three columns; four make a 2 × 2; `data-cols="2\|3"` sets the columns |
 | `number` | `<h2>`, one to three `div.stat` | key numbers: `<div class="stat"><span class="value">385</span><span class="label">deg² …</span></div>` |
 | `bleed` | optional `<h2>`, one `<figure>` | a photograph filling the canvas; headline on a band |
-| `table` | `<h2>`, one `<table>`, `.source` | `th`/`td`; `td.r` right-aligns, `tr.hl` highlights a row; `table.large` sets a short table at body size with its first column unwrapped |
+| `table` | `<h2>`, one `<table>`, `.source` | `th`/`td`; `td.r` right-aligns, `tr.hl` highlights a row; `table.large` sets a short table at body size with its first column unwrapped; `data-center` on the section centres the table in the body |
 | `quote` | one `<blockquote>`, `.source` | a quotation |
 | `closing` | `<h2>`, an `<ol>` of takeaways, `p.contact` | stays on screen for questions |
 | `people` | `<h2>`, one to six `div.people`, optional `div.people.memoriam`, optional `div.text`, `.source` | portraits with names, for a team, a project's leads, or several groups side by side; see below |
