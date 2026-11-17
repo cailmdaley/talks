@@ -1,14 +1,14 @@
 <section data-layout="figure-text" data-split="60">
-  <h2>Control variates for the SPT covariance</h2>
+  <h2>Control variates for the covariance</h2>
   <figure>
-    <img src="images/paris26_sketch_control_variates.png" alt="Sketch of a control-variate (CARPool) covariance. Left, few and accurate: SPT-constrained mocks, N of about 350 to 400, each y made with SPT's own reconstruction and drawn beside a mock c of the same sky made with a generic reconstruction; rho is the correlation between the two members of a pair. Right, many and approximate: SPT-like mocks, any number M, the same generic reconstruction each on its own sky">
+    <img src="images/paris26_sketch_control_variates.png" alt="Sketch of a control-variate (CARPool) covariance. Left, few and accurate: SPT-constrained mocks, N of about 350 to 400, each y made with SPT's reconstruction and drawn beside a mock c of the same sky made with a generic reconstruction; rho is the correlation between the two members of a pair. Right, many and approximate: SPT-like mocks, any number M, the same generic reconstruction">
   </figure>
   <div class="text">
     <div class="eq">$$\hat\Sigma = \hat\Sigma_y^N - \beta\,\bigl(\hat\Sigma_c^N - \hat\Sigma_c^M\bigr)$$</div>
     <ul>
-      <li>$\beta$: how much of $c$'s scatter is subtracted from $y$</li>
+      <li>$\beta = \dfrac{\mathrm{cov}(y, c)}{\mathrm{var}(c)}$ per element</li>
       <li>Noise per element: $\dfrac{1-\rho^2}{N} + \dfrac{\rho^2}{M}$ in place of $\dfrac{1}{N}$</li>
-      <li>Unbiased for SPT's estimator</li>
+      <li>Unbiased if constrained mocks are unbiased</li>
     </ul>
   </div>
   <aside class="notes">

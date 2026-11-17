@@ -558,7 +558,7 @@ def control_variates():
         for j in range(3):
             p.stipple(1, lambda n: np.array([[x, 570 - j * 30]]), r=3.6)
     p.text(xy, 242, "$y$", size=HEAD, italic=True, color=ACCENT)
-    p.text(xy, 150, "SPT's own", size=SMALL, color=MUTED)
+    p.text(xy, 150, "SPT's", size=SMALL, color=MUTED)
     p.text(xy, 72, "reconstruction", size=SMALL, color=MUTED)
     p.text(xc, 242, "$c$", size=HEAD, italic=True)
     p.text(xc, 150, "generic", size=SMALL, color=MUTED)
@@ -576,8 +576,7 @@ def control_variates():
             p.ring(x, y, r, w=WEIGHT * 0.55)
             p.stipple(len(q), lambda n: (x, y) + q * r, r=2.6)
     p.text(mx, 242, "$c$", size=HEAD, italic=True)
-    p.text(mx, 150, "generic reconstruction,", size=SMALL, color=MUTED)
-    p.text(mx, 72, "each on its own sky", size=SMALL, color=MUTED)
+    p.text(mx, 150, "generic reconstruction", size=SMALL, color=MUTED)
     p.save("paris26_sketch_control_variates.png")
 
 
