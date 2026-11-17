@@ -36,8 +36,8 @@
     "blindspot",
     "size",
     "size-sigma",
-    "consistency",
     "kappa",
+    "consistency",
     "blinding-questions"
    ]
   },

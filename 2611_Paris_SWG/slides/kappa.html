@@ -1,12 +1,17 @@
-<section data-layout="points">
-  <h2>Should κκ be blinded with its crosses?</h2>
-  <ul>
-    <li><strong>For</strong>: one shift on every spectrum keeps the likelihood consistent</li>
-    <li>An unshifted κκ would point to the shift's direction</li>
-    <li><strong>But</strong>: ACT DR6 and SPT-3G κκ results are public</li>
-  </ul>
+<section data-layout="figure-text" data-stack>
+  <h2>But we already know κκ</h2>
+  <figure>
+    <img src="images/paris26_public_lensing_spectra.png" alt="Two published CMB lensing power spectra with their residuals: ACT DR6 bandpowers against the Planck 2018 ΛCDM prediction, and SPT-3G 2019/20 bandpowers against SPT and Planck ΛCDM bands">
+    <span class="source">ACT DR6: Qu et al., arXiv:2304.05202 · SPT-3G 2019/20: Ge et al., arXiv:2411.06000</span>
+  </figure>
+  <div class="text">
+    <p><strong class="accent">Challenge:</strong> how do we blind when most CMB-lensing constraining power is public?</p>
+  </div>
   <aside class="notes">
     <ul class="skim">
+      <li><strong>The plots</strong> — the published CMB lensing power spectra of the two experiments whose κ maps enter the CMBX analyses. Left: ACT DR6 (Qu et al., Fig. 1), bandpowers against the Planck 2018 ΛCDM prediction. Right: SPT-3G 2019/20 polarization data (Ge et al., the φφ panels of their spectra figure), against the SPT and Planck ΛCDM bands. Both are unblinded, with public likelihoods.</li>
+      <li><strong>The challenge</strong> — the lensing auto-spectrum carries most of the cosmological information of the CMB-lensing side of a 6×2pt vector, and its answer is already known. A blind can hide the crosses; it cannot hide κκ.</li>
+      <li><strong>Should κκ be blinded with its crosses?</strong> — for: one shift on every spectrum keeps the likelihood self-consistent, and an unshifted κκ beside shifted crosses would point to the shift's direction. Against: the ACT DR6 and SPT-3G κκ results are public.</li>
       <li><strong>Consistency</strong> — the CMBX blind applies one cosmology shift to every spectrum it writes. If κκ entered unshifted, the blinded crosses and the true κκ would pull toward different cosmologies, and the direction of that internal tension would reveal the direction of the shift.</li>
       <li><strong>Public κκ</strong> — the ACT DR6 and SPT-3G κκ likelihoods and their κκ-only constraints are public, so the κκ-only answer stays known whatever CMBX does. Blinding κκ hides the joint constraint; the remaining discipline is not reading κκ-only results against the blinded crosses.</li>
       <li><strong>blindspot</strong> — a κκ shift needs the lensing kernel to last scattering; CLOElib continues $P(k)$ above the emulator's redshift range (the CLOE part of this deck gives the size of that continuation), so this is not an obstacle.</li>

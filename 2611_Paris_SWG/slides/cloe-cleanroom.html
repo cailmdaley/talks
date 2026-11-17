@@ -3,14 +3,14 @@
   <ul>
     <li>eDR1like is built around Cobaya: model, parameters, priors</li>
     <li>CLOE inside that structure works but stays entangled</li>
-    <li>Written fresh for SPT × Euclid: CLOElib in JAX, no Cobaya, no CCL</li>
-    <li>Proposal: this as its own module, data vector to posterior</li>
-    <li>The two share no components, so each checks the other</li>
+    <li>Clean room: pure CLOElib in JAX from data vector to posterior</li>
+    <li>They share no components so each checks the other</li>
+    <li>Caveat: this is my first likelihood work</li>
   </ul>
   <aside class="notes">
     <ul class="skim">
       <li><strong>Why it was hard</strong> — eDR1like assumes Cobaya throughout, which is right for a Cobaya likelihood: Cobaya assembles the model, holds the sampled, fixed and derived parameters and the priors, and CCL is imported by the theory modules whether it is used or not. Since 15 November my production chains compute all of the theory with CLOE, but still inside a Cobaya model, with CCL supplying a constant, a distance for a scale cut and the neutrino masses. Taking Cobaya out of that step by step took a week and was never clean.</li>
-      <li><strong>Written fresh</strong> — for the SPT × Euclid 6×2pt group the same CLOE theory was packaged on its own: a reader for the data-vector file, selection and scale cuts, priors, the JAX theory and a Gaussian likelihood, about 2500 lines. It imports neither Cobaya, CCL nor dr1_cmbx, and reproduces my production chain point for point.</li>
+      <li><strong>Clean room</strong> — for the SPT × Euclid 6×2pt group the same CLOE theory was packaged on its own: a reader for the data-vector file, selection and scale cuts, priors, the JAX theory and a Gaussian likelihood, about 2500 lines. It imports neither Cobaya, CCL nor dr1_cmbx, and reproduces my production chain point for point.</li>
       <li><strong>The proposal</strong> — keep it as a separate module, end to end from a data vector to a posterior, and leave eDR1like as it is. The cost is that pieces cannot be mixed between the two (a CCL theory with the JAX likelihood, say); the gain is two independent routes to the same posterior, which is what the comparison on the previous slides uses.</li>
       <li><strong>State</strong> — theory, likelihood and chains run together and have been stable since the standalone version was written; organising it into a well-structured shared code is still to do.</li>
     </ul>
