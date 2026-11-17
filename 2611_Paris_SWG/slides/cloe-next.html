@@ -1,17 +1,20 @@
 <section data-layout="points">
-  <h2>Where this leaves my 6×2pt likelihood</h2>
+  <h2>What the CLOE likelihood still needs</h2>
   <ul>
-    <li>cmbx main path: CLOElib + Theory WG emulators + CLOElike</li>
-    <li>κκ is not in CLOElike yet (?)</li>
-    <li>SPT, Planck and ACT κκ likelihoods as external CLOE modules (?)</li>
-    <li>Fast path: a JAX port of CLOElib's projection and emulator call</li>
+    <li>κκ: a term wrapping SPT's candl likelihood is designed but not built</li>
+    <li>Planck and ACT κκ as external likelihoods (?)</li>
+    <li>cloerun as the driver: runs today with three local patches</li>
+    <li>The JAX pieces proposed upstream to CLOElib</li>
   </ul>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>Main path</strong> — decided for the cmbx pipeline on 12 November 2026 and in production since 15 November: CLOE computes the theory (CLOElib with the Theory WG emulators) and the likelihood. The chain driver still builds a Cobaya model to hold the parameters and priors, and CCL still supplies the intrinsic-alignment constant, the distance for the linear-bias lens cut and the neutrino masses. eDR1like survives as adapters for what CLOE lacks.</li>
-      <li><strong>Above z = 5</strong> — the emulators are trained to $z = 5$; above it CLOElib continues $P(k)$ as a power law in $1+z$. Against CAMB-HMCode to the last-scattering surface, every variant is within 0.04σ (SPT and ACT, production Gaussian covariance) for κκ, κ×γ and κ×δ at the fiducial; the power law is −1.15 % on $C_\ell^{\kappa\kappa}$ at ℓ = 2696. The crosses see nothing above $z = 5$ (≤0.001σ). At prior corners the difference reaches 0.26σ against the fiducial covariance, which is too small there; in relative terms ~1–1.5 %, where every simple continuation misses. Not a blocker; $z &gt; 5$ is 18–30 % of $C_\ell^{\kappa\kappa}$.</li>
-      <li><strong>External κκ</strong> — adding SPT likelihoods to CLOE as an external module looks feasible (CMBX telecon, 5 November 2026); JC-1 welcomed it.</li>
-      <li><strong>Fast path</strong> — the production chains sample CLOE through a JAX port of its projection and emulator call, checked against CLOE band by band and at the posterior (the JAX slide in this section). Packaged on its own for the SPT × Euclid analysis, it reproduces the production mock chain point for point. What CLOElib lacks for it (radiation in the background, the $z &gt; 5$ continuation, the high-$k$ tail) is carried as local patches.</li>
+      <li><strong>κκ</strong> — the vector compared here is 5×2pt; the lensing auto-spectrum is not in it. For SPT the design is a likelihood term that wraps candl, either as an independent term or with κκ inside the joint vector and candl supplying only the model; neither is built. Adding SPT likelihoods to CLOE as an external module looked feasible at the CMBX telecon of 5 November 2026, and JC-1 welcomed it.</li>
+      <li><strong>cloerun</strong> — four chains (the GLASS mock full vector, 3×2pt and κ crosses, and the data model on blinded TR1) were run through cloerun and draw the same samples as the standalone runner to rounding, with wall times within 1–3 %. This needs three local changes to cloerun, which upstream cannot yet load an external or batched probe without; the likelihood is still not CLOElike's. Using cloerun would unify the driver, the configurations and the chain format with 3×2pt, not the theory.</li>
+      <li><strong>Upstream</strong> — the JAX call of the CosmoPower emulator is prepared as a change to CLOElib; the projection patches are carried locally and listed in the package README.</li>
+      <li><strong>Above z = 5</strong> — the emulators are trained to $z = 5$; above it CLOElib continues $P(k)$ as a power law in $1+z$. The crosses see nothing above $z = 5$ (≤0.001σ); it matters for κκ, where $z &gt; 5$ is 18–30 % of $C_\ell^{\kappa\kappa}$.</li>
     </ul>
+    <details><summary>Sources</summary>
+    <p>felt fibers cmbx/standalone-cloe-fast-likelihood (cloerun-gate/, docs/cloerun.md and docs/candl-term.md of the SPT × Euclid group repository), cmbx/code/inference-speed/upstream-fast-path and cmbx/likelihood/kappa-z5-test.</p>
+    </details>
   </aside>
 </section>

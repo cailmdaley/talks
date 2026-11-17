@@ -5,7 +5,7 @@ multiplies white into the theme ground):
 
   paris26_sketch_blindspot.png  how blindspot makes a 3x2pt blinding shift
   paris26_sketch_anatomy.png    the three levels of a chain: sampler, likelihood, theory
-  paris26_sketch_swap.png       eDR1like + CCL against CLOE: what is shared, what is swapped
+  paris26_sketch_swap.png       eDR1like + CCL in Cobaya against CLOE in JAX: what is shared, what is swapped
   paris26_sketch_jax.png        plain CLOE against CLOE with its slow pieces in JAX
   paris26_sketch_control_variates.png  CARPool for the SPT covariance: paired and unpaired mocks
 
@@ -312,7 +312,7 @@ def blindspot():
     p.text(rx + 165, ry + 175, "reference", size=SMALL, ha="left", italic=True)
     p.heading(590, 1450, "a hidden point")
     p.heading(1720, 1450, "cloelib theory")
-    p.heading(2700, 1450, "one draw")
+    p.heading(2700, 1450, "shifts")
 
     # b. the shift: cloelib theory there minus theory at the reference
     mx = 1720
@@ -337,9 +337,9 @@ def blindspot():
     p.text(2100, ty + 30, "not yet;", size=SMALL, color=MUTED, ha="left")
     p.text(2100, ty - 40, "cloelib has one", size=SMALL, color=MUTED, ha="left")
 
-    # c. one draw, every statistic, added to the measured data vector
+    # c. the shift of every statistic, added to the measured data vector
     sx = 2480
-    for y, stat in [(1250, r"$C_\ell$"), (fan[1], r"$\xi$"), (760, "COSEBIs")]:
+    for y, stat in [(1250, r"$\Delta C_\ell$"), (fan[1], r"$\Delta\xi$"), (760, r"$\Delta E_n$")]:
         p.arrow(fan, (sx - 40, y + (fan[1] - y) * 0.06), size=26)
         p.text(sx, y, stat, size=HEAD, ha="left")
     tip = p.brace((2900, 1320), (2900, 690), depth=44, w=WEIGHT * 0.9)
@@ -424,7 +424,7 @@ def swap():
     items = [("data vector", "GLASS mock and blinded TR1"),
              ("covariance", "Gaussian + SSC"),
              ("priors and scale cuts", "DR1-document priors"),
-             ("sampler", "nautilus nested sampling")]
+             ("sampler", "nautilus, 2000 live points")]
     y = 1210
     for head, sub in items:
         check(p, 78, y + 2, size=56)
@@ -438,27 +438,23 @@ def swap():
     for a, b in [((bx0, by0), (bx1, by0)), ((bx1, by0), (bx1, by1)), ((bx1, by1), (bx0, by1)), ((bx0, by1), (bx0, by0))]:
         p.line(a, b, w=WEIGHT * 0.7)
     p.text((bx0 + bx1) / 2, 190, "only this box is swapped", size=SMALL, italic=True)
-    gx, cw = 1690, 420
+    gx, cw = 1760, 400
     for i, h in enumerate(["background", r"$P(k)$", "Limber", r"Gaussian $\chi^2$"]):
         p.text(gx + cw * i + cw / 2, 1360, h, size=BODY, italic=True)
     p.line((1200, 1280), (bx1 - 40, 1280), w=WEIGHT * 0.5)
-    # the row rule breaks under P(k), which is one entry across both rows
-    p.line((1200, 740), (gx + cw - 20, 740), w=WEIGHT * 0.5, color=MUTED)
-    p.line((gx + 2 * cw + 20, 740), (bx1 - 40, 740), w=WEIGHT * 0.5, color=MUTED)
-    rows = [(1010, "dr1_cmbx", ["eDR1like + CCL"], ["CCL", None, "CCL", "eDR1like"]),
-            (530, "CLOE", ["CLOElib 0.11", "+ CLOElike 0.3"], ["CAMB", None, "CLOElib", "CLOElike"])]
-    for ry, name, subs, cells in rows:
-        p.text(1420, ry + 50, name, size=HEAD)
+    p.line((1200, 740), (bx1 - 40, 740), w=WEIGHT * 0.5, color=MUTED)
+    rows = [(1010, "dr1_cmbx", INK, ["eDR1like + CCL", "in Cobaya"],
+             [("CCL", None), ("CAMB", "HMCode-2020"), ("CCL", None), ("eDR1like", None)]),
+            (530, "CLOE in JAX", CORAL, ["CLOElib 0.11", "no Cobaya"],
+             [("CLOElib", None), ("emulator", "HMCode-2020"), ("CLOElib", None), ("JAX", None)])]
+    for ry, name, color, subs, cells in rows:
+        p.text(1455, ry + 50, name, size=HEAD, color=color)
         for k, sub in enumerate(subs):
-            p.text(1420, ry - 35 - 70 * k, sub, size=SMALL, color=MUTED)
-        for i, txt in enumerate(cells):
-            if txt is not None:
-                p.text(gx + cw * i + cw / 2, ry, txt, size=BODY + 2)
-    px = gx + cw * 1.5
-    p.text(px, 860, "CAMB", size=BODY + 2)
-    p.text(px, 770, "HMCode-2020", size=SMALL)
-    p.text(px, 660, "the same", size=SMALL, color=MUTED, italic=True)
-    p.text(px, 580, "in both", size=SMALL, color=MUTED, italic=True)
+            p.text(1455, ry - 35 - 70 * k, sub, size=SMALL, color=MUTED)
+        for i, (txt, sub) in enumerate(cells):
+            p.text(gx + cw * i + cw / 2, ry + (30 if sub else 0), txt, size=BODY + 2)
+            if sub:
+                p.text(gx + cw * i + cw / 2, ry - 55, sub, size=SMALL, color=MUTED)
     p.save("paris26_sketch_swap.png")
 
 
@@ -495,7 +491,7 @@ def jax():
     for x, (h, subs, ported) in zip(xs, [("background", [r"closed-form $H(z)$,", "CAMB tables once"], True),
                                          (r"$P(k)$", ["emulator network", "called in JAX"], True),
                                          ("Limber", ["CLOElib's own", "code, compiled"], True),
-                                         (r"Gaussian $\chi^2$", ["the same"], False)]):
+                                         (r"Gaussian $\chi^2$", ["same formula"], False)]):
         if ported:
             p.text(x, by + 125, "JAX", size=SMALL, color=CORAL)
         names.append(p.text(x, by + 30, h, size=BODY))
@@ -507,15 +503,14 @@ def jax():
         p.line(a, b, w=WEIGHT * 0.7, color=CORAL)
     p.text((fx0 + fx1) / 2, 320, "one compiled function (jit), 1000 points per call (vmap)", size=SMALL, color=CORAL)
 
-    # per point, on one node
+    # cost of one point
     cx = 3165
-    p.text(cx, 1470, "per point,", size=SMALL, color=MUTED)
-    p.text(cx, 1395, "one 112-core node", size=SMALL, color=MUTED)
-    p.text(cx, ty + 20, "71 ms", size=HEAD + 10)
-    p.text(cx, ty - 95, "8.0 core-s", size=SMALL, color=MUTED)
+    p.text(cx, 1470, "per point", size=SMALL, color=MUTED)
+    p.text(cx, ty + 20, "8.0", size=HEAD + 10)
+    p.text(cx, ty - 95, "core-seconds", size=SMALL, color=MUTED)
     p.arrow((cx, ty - 160), (cx, by + 120))
-    p.text(cx, by + 30, "4 ms", size=HEAD + 10, color=CORAL)
-    p.text(cx, by - 95, "batched", size=SMALL, color=MUTED)
+    p.text(cx, by + 30, "0.5", size=HEAD + 10, color=CORAL)
+    p.text(cx, by - 95, "core-seconds", size=SMALL, color=MUTED)
     p.text((fx0 + fx1) / 2, 120, r"agrees with plain CLOE to $4\times10^{-4}\,\sigma$ in every band",
            size=SMALL, color=MUTED)
     p.save("paris26_sketch_jax.png")

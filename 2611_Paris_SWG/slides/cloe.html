@@ -1,10 +1,11 @@
 <section data-layout="section">
   <h2>CLOE vs dr1_cmbx<span class="by">Cail Daley · Likelihood session</span></h2>
-  <p>The same TR1 chains with two likelihoods</p>
+  <p>1. Cobaya chains from the Q1 analysis<br>2. CLOE in JAX: 30-minute chains<br>3. Proposal: a standalone CLOE likelihood</p>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>The question</strong> — does replacing the dr1_cmbx exact likelihood (eDR1like with CCL theory) by CLOE change the CMBX posteriors, their bias, or their cost?</li>
-      <li><strong>Short answer</strong> — no parameter moves by more than 0.054σ, the bias against a mock's truth is the same, and CLOE is cheaper per evaluation. This is an exploratory comparison, not a key-project product.</li>
+      <li><strong>The question</strong> — does replacing dr1_cmbx's Cobaya likelihood (eDR1like with CCL theory) by a CLOE likelihood change my posteriors or their cost?</li>
+      <li><strong>Short answer</strong> — no parameter mean moves by more than 0.09σ on a GLASS mock or 0.06σ on blinded TR1, which is the Monte Carlo noise of the chains, and a chain costs about 40 times fewer node-hours. This is an exploratory comparison, not a key-project product.</li>
+      <li><strong>Names</strong> — "Cobaya" on these slides is dr1_cmbx's likelihood, eDR1like with CCL theory, run in Cobaya. "CLOE in JAX" is a standalone likelihood built on CLOElib, with no Cobaya and no CCL.</li>
     </ul>
   </aside>
 </section>

@@ -1,60 +1,61 @@
 {
-  "title": "SPT covariance, blinding and CLOE",
-  "author": "Cail Daley",
-  "venue": "Euclid CMBX SWG meeting, Paris",
-  "date": "2026-11-18",
-  "description": "Slides for the Paris CMBX SWG meeting: what the SPT × Euclid analysis needs for its covariance, how the Euclid groups blind DR1 and a proposal for the CMBX blind, and the CLOE versus dr1_cmbx likelihood comparison on TR1 chains.",
-  "footer": "Euclid CMBX SWG · Paris · 17–18 November 2026",
-  "theme": "euclid",
-  "draft": true,
-  "noindex": true,
-  "sections": [
-    {
-      "title": "Opening",
-      "outline": "Title and index of the three parts.",
-      "slides": [
-        "title",
-        "index"
-      ]
-    },
-    {
-      "title": "SPT covariance",
-      "outline": "What the SPT × Euclid analysis needs from the covariance effort: inputs for SPT-like mocks, constrained realizations on SPT's simulations, and the output wanted.",
-      "slides": [
-        "covariance",
-        "cov-spt-public",
-        "cov-spt-constrained",
-        "cov-control-variates"
-      ]
-    },
-    {
-      "title": "Blinding",
-      "outline": "What the other Euclid groups are doing, how CMBX chooses its blind, and how to compare with other groups while blinded.",
-      "slides": [
-        "blinding",
-        "landscape",
-        "blindspot",
-        "size",
-        "size-sigma",
-        "kappa",
-        "consistency",
-        "blinding-questions"
-      ]
-    },
-    {
-      "title": "CLOE vs dr1_cmbx",
-      "outline": "The same TR1 chains with CLOE and with the dr1_cmbx likelihood: posteriors and bias against the mock truth, and 3×2pt against the κ crosses on the mock; then CLOE with its slow pieces in JAX, and what a chain costs.",
-      "slides": [
-        "cloe",
-        "cloe-anatomy",
-        "cloe-swap",
-        "cloe-posteriors",
-        "cloe-bias",
-        "cloe-selections",
-        "cloe-jax-pieces",
-        "cloe-cost",
-        "cloe-next"
-      ]
-    }
-  ]
+ "title": "SPT covariance, blinding and CLOE",
+ "author": "Cail Daley",
+ "venue": "Euclid CMBX SWG meeting, Paris",
+ "date": "2026-11-18",
+ "description": "Slides for the Paris CMBX SWG meeting: what the SPT × Euclid analysis needs for its covariance, how the Euclid groups blind DR1 and a proposal for the CMBX blind, and a CLOE likelihood in JAX compared with the dr1_cmbx Cobaya likelihood on a GLASS mock and blinded TR1.",
+ "footer": "Euclid CMBX SWG · Paris · 17–18 November 2026",
+ "theme": "euclid",
+ "draft": true,
+ "noindex": true,
+ "sections": [
+  {
+   "title": "Opening",
+   "outline": "Title and index of the three parts.",
+   "slides": [
+    "title",
+    "index"
+   ]
+  },
+  {
+   "title": "SPT covariance",
+   "outline": "What the SPT × Euclid analysis needs from the covariance effort: inputs for SPT-like mocks, constrained realizations on SPT's simulations, and the output wanted.",
+   "slides": [
+    "covariance",
+    "cov-spt-public",
+    "cov-spt-constrained",
+    "cov-control-variates"
+   ]
+  },
+  {
+   "title": "Blinding",
+   "outline": "What the other Euclid groups are doing, how CMBX chooses its blind, and how to compare with other groups while blinded.",
+   "slides": [
+    "blinding",
+    "landscape",
+    "blindspot",
+    "size",
+    "size-sigma",
+    "kappa",
+    "consistency",
+    "blinding-questions"
+   ]
+  },
+  {
+   "title": "CLOE vs dr1_cmbx",
+   "outline": "From the Cobaya chains of the Q1 analysis to a CLOE likelihood in JAX: what is ported and what a chain costs, the same chains with both likelihoods on a GLASS mock and blinded TR1, and a proposal for a standalone CLOE likelihood beside eDR1like.",
+   "slides": [
+    "cloe",
+    "cloe-cobaya",
+    "cloe-anatomy",
+    "cloe-jax-pieces",
+    "cloe-cost",
+    "cloe-swap",
+    "cloe-posteriors",
+    "cloe-selections",
+    "cloe-cleanroom",
+    "cloe-next"
+   ]
+  }
+ ]
 }

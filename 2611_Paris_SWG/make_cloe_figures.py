@@ -1,20 +1,23 @@
 """CLOE vs dr1_cmbx figures, drawn for the Paris CMBX SWG deck at slide size.
 
-Sources (the receipts of the felt fiber cmbx/likelihood/cloe-vs-dr1-cmbx-posterior-and):
-  posterior-{mock,data}.csv   per-parameter shift (CLOE - eDR1like mean) / eDR1like sigma,
-                              width ratio, weight-only Monte Carlo error
-  truth-bias.json             (posterior mean - GLASS truth) / sigma, seed 3004 and ensemble
-  timing-summary.json         single-core CLOE+CAMB and CLOE+emulator evaluation times
-Chains for the contour panel (standardized coordinates only; never physical values):
-  eDR1like  push-nov/cloe/frozen/reference-mock/posterior_exact.npz
-  CLOE      cmbx-lanes/cloe-p4/.../full_mock_powerlaw/nested/posterior_exact.npz
+The two likelihoods compared: dr1_cmbx's Cobaya likelihood (eDR1like + CCL), sampled directly with
+Nautilus, and the standalone CLOE likelihood in JAX (the euclid_spt_like package), also with Nautilus.
+
+Sources:
+  summary-{mock,data}.json    (felt fiber cmbx/standalone-cloe-fast-likelihood, direct-cobaya/) per-parameter
+                              shift (CLOE in JAX - Cobaya mean) / Cobaya sigma, width ratio, Monte Carlo error
+  nautilus-mock-summary.json  calls and seconds per evaluation of the Cobaya chain on the GLASS mock
+  mcmc-mock/timeline.json     node-hours and R-1 of the Cobaya MCMC chain on the same mock
+  timing-summary.json         (felt fiber cmbx/likelihood/cloe-vs-dr1-cmbx-posterior-and) single-core
+                              CLOE + CAMB and CLOE + emulator evaluation times
+Chains for the contour panel (GLASS mock; standardized coordinates):
+  Cobaya        paris-direct-cobaya/nautilus-mock/posterior.npz
+  CLOE in JAX   chain_full.npz of the Euclid-SPT group repository
 Selections panel: chain_{full,3x2pt,kappa_crosses}.npz of the Euclid-SPT group repository
 (~/code/euclid-spt-6x2pt, results/baseline; GLASS mock, unblinded).
-Per-chain wall times are each chain's summary.json (also in posterior-*-summary.json).
 
 Run in the cmbx container: app python make_cloe_figures.py
 """
-import csv
 import json
 import os
 import tempfile
@@ -28,10 +31,13 @@ from scipy.ndimage import gaussian_filter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(HERE, "..", "images")
-FIBER = "/leonardo/home/userexternal/cdaley00/loom/.felt/pando/cmbx/likelihood/cloe-vs-dr1-cmbx-posterior-and"
-REF_MOCK = "/leonardo_scratch/large/userexternal/cdaley00/push-nov/cloe/frozen/reference-mock/posterior_exact.npz"
-CLOE_MOCK = ("/leonardo_scratch/large/userexternal/cdaley00/cmbx-lanes/cloe-p4/results/cache/"
-             "tr1_v2/cloe_parity/full_mock_powerlaw/nested/posterior_exact.npz")
+PANDO = "/leonardo/home/userexternal/cdaley00/loom/.felt/pando/cmbx"
+DIRECT = PANDO + "/standalone-cloe-fast-likelihood/direct-cobaya"
+TIMING = PANDO + "/likelihood/cloe-vs-dr1-cmbx-posterior-and/timing-summary.json"
+SCRATCH = "/leonardo_scratch/large/userexternal/cdaley00/paris-direct-cobaya"
+REF_MOCK = SCRATCH + "/nautilus-mock/posterior.npz"
+MCMC_TIMELINE = SCRATCH + "/mcmc-mock/timeline.json"
+TRUTH = {"S8": 0.8251325595490734, "Omega_m": 0.31104864620402706}   # GLASS input (compare_direct.py)
 
 # the three selections of the GLASS mock vector, made by lc materialize in the Euclid-SPT group repository
 GROUP_CHAINS = "/leonardo/home/userexternal/cdaley00/code/euclid-spt-6x2pt/results/baseline"
@@ -40,7 +46,8 @@ GROUP_CHAINS = "/leonardo/home/userexternal/cdaley00/code/euclid-spt-6x2pt/resul
 INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
 ACCENT, COBALT, TEAL, OCHRE = "#435AA1", "#2E417C", "#1D6C78", "#9C7414"
 BAND1, BAND2 = "#D6DEEA", "#EBF0F6"
-REF_C, CLOE_C = INK, OCHRE        # eDR1like + CCL, CLOE
+JAX_C = "#B5523B"
+REF_C, CLOE_C = INK, JAX_C        # eDR1like + CCL in Cobaya, CLOE in JAX
 MOCK_C, DATA_C = TEAL, COBALT     # GLASS mock, blinded TR1 data
 
 DPI = 200
@@ -94,9 +101,8 @@ FAMILIES = [
 
 
 def read_shifts(arm):
-    with open(os.path.join(FIBER, f"posterior-{arm}.csv")) as f:
-        return {r["parameter"]: (float(r["delta_mean_over_ref_sigma"]), float(r["weight_only_mc_error_over_ref_sigma"]))
-                for r in csv.DictReader(f)}
+    rows = json.load(open(os.path.join(DIRECT, f"summary-{arm}.json")))["against"]["package"]["rows"]
+    return {r["parameter"]: (r["shift_sigma"], r["mc_error_sigma"]) for r in rows}
 
 
 def standardized(path, mu=None, sd=None):
@@ -124,6 +130,9 @@ def contour(ax, v, w, color, ls):
 def fig_posteriors():
     mock, data = read_shifts("mock"), read_shifts("data")
     mc = np.mean([e for _, e in mock.values()] + [e for _, e in data.values()])
+    print(f"posteriors: mean MC error {mc:.4f}; max |shift| mock {max(abs(v) for v, _ in mock.values()):.3f}, "
+          f"data {max(abs(v) for v, _ in data.values()):.3f}", flush=True)
+    xl = 0.115
     fig = new_fig()
     ax = fig.add_axes([0.165, 0.15, 0.47, 0.83])
     for k, sig in ((2, BAND2), (1, BAND1)):
@@ -135,107 +144,84 @@ def fig_posteriors():
             ax.plot(xs, np.full(len(xs), i + dy), "o", ms=11, color=color, mec="white", mew=1.2, zorder=3)
     ax.set_yticks(range(len(FAMILIES)), [f[0] for f in FAMILIES])
     ax.set_ylim(len(FAMILIES) - 0.5, -1.15)
-    ax.set_xlim(-0.08, 0.08)
-    ax.set_xticks([-0.06, -0.03, 0, 0.03, 0.06], ["−0.06", "−0.03", "0", "0.03", "0.06"])
-    ax.set_xlabel(r"shift of each parameter's mean, CLOE − eDR1like, in $\sigma$")
+    ax.set_xlim(-xl, xl)
+    ax.set_xticks([-0.1, -0.05, 0, 0.05, 0.1], ["−0.1", "−0.05", "0", "0.05", "0.1"])
+    ax.set_xlabel(r"shift of each parameter's mean, CLOE in JAX − Cobaya, in $\sigma$")
     ax.text(-0.02, -0.85, "parameter family", transform=ax.get_yaxis_transform(), color=MUTED,
             fontsize=TICK, ha="right", va="center")
     ax.tick_params(axis="y", length=0, labelsize=LABEL, labelcolor=INK)
     ax.spines["left"].set_visible(False)
-    ax.plot([-0.077], [-0.85], "o", ms=11, color=MOCK_C, mec="white")
-    ax.text(-0.073, -0.85, "GLASS mock", color=MOCK_C, fontsize=TICK, ha="left", va="center")
-    ax.plot([-0.033], [-0.85], "o", ms=11, color=DATA_C, mec="white")
-    ax.text(-0.029, -0.85, "TR1 (blinded)", color=DATA_C, fontsize=TICK, ha="left", va="center")
-    ax.text(0.079, -0.85, "shaded: 1σ, 2σ MC error", color=MUTED, fontsize=TICK, ha="right", va="center")
+    ax.plot([-0.96 * xl], [-0.85], "o", ms=11, color=MOCK_C, mec="white")
+    ax.text(-0.91 * xl, -0.85, "GLASS mock", color=MOCK_C, fontsize=TICK, ha="left", va="center")
+    ax.plot([-0.41 * xl], [-0.85], "o", ms=11, color=DATA_C, mec="white")
+    ax.text(-0.36 * xl, -0.85, "TR1 (blinded)", color=DATA_C, fontsize=TICK, ha="left", va="center")
+    ax.text(0.99 * xl, -0.85, "shaded: 1σ, 2σ MC error", color=MUTED, fontsize=TICK, ha="right", va="center")
 
     vr, wr, mu, sd = standardized(REF_MOCK)
-    vc, wc, _, _ = standardized(CLOE_MOCK, mu, sd)
+    vc, wc, _, _ = standardized(os.path.join(GROUP_CHAINS, "chain_full.npz"), mu, sd)
     ax2 = fig.add_axes([0.70, 0.15, 0.28 * H_PX / W_PX / 0.5 * 0.83, 0.83])
     contour(ax2, vr, wr, REF_C, "-")
     contour(ax2, vc, wc, CLOE_C, "--")
+    tx, ty = (TRUTH["S8"] - mu[0]) / sd[0], (TRUTH["Omega_m"] - mu[1]) / sd[1]
+    print(f"posteriors: GLASS input at ({tx:+.3f}, {ty:+.3f}) sigma of the Cobaya chain", flush=True)
+    ax2.plot(tx, ty, "*", ms=26, color=MUTED, mec="white", mew=1.2, zorder=4)
     ax2.set_xlim(-3, 3)
-    ax2.set_ylim(-3, 3)
     ax2.set_aspect("equal")
     ax2.set_xticks([-2, 0, 2])
-    ax2.set_yticks([-2, 0, 2])
     ax2.set_xlabel(r"$S_8$ − mean, in $\sigma$")
     ax2.set_ylabel(r"$\Omega_\mathrm{m}$ − mean, in $\sigma$")
-    ax2.plot([], [], color=REF_C, lw=3, label="eDR1like + CCL")
-    ax2.plot([], [], color=CLOE_C, lw=3, ls="--", label="CLOE")
+    ax2.plot([], [], color=REF_C, lw=3, label="eDR1like + CCL (Cobaya)")
+    ax2.plot([], [], color=CLOE_C, lw=3, ls="--", label="CLOE in JAX")
+    ax2.plot([], [], "*", ms=22, color=MUTED, mec="white", label="GLASS mock input")
     ax2.legend(loc="upper center", bbox_to_anchor=(0.5, 1.02), ncol=1, frameon=False, handlelength=1.6)
-    ax2.set_ylim(-3, 5.2)
+    ax2.set_ylim(-3, 6.3)
     ax2.set_yticks([-2, 0, 2])
     ax2.spines["left"].set_bounds(-3, 3)
     fig.savefig(os.path.join(IMG, "paris26_cloe_posterior_shifts.png"), dpi=DPI)
     plt.close(fig)
 
 
-def fig_truth_bias():
-    b = json.load(open(os.path.join(FIBER, "truth-bias.json")))["bias_sigma"]
-    params = [("S8", r"$S_8$"), ("Omega_m", r"$\Omega_\mathrm{m}$"), ("sigma8", r"$\sigma_8$")]
-    fig = new_fig()
-    ax = fig.add_axes([0.08, 0.15, 0.56, 0.83])
-    ax.axvline(0, color=MUTED, lw=1.4)
-    for i, (p, _) in enumerate(params):
-        r = b[p]
-        # one chain: the posterior mean with its own 1 sigma, which is 1 in these units
-        ax.errorbar(r["edr1like_ccl"], i - 0.22, xerr=1, fmt="o", ms=15, color=REF_C, capsize=6, lw=2.4, mew=2.4)
-        ax.errorbar(r["cloe"], i, xerr=1, fmt="D", ms=13, color=CLOE_C, capsize=6, lw=2.4, mew=2.4)
-        # mean over the 20 seeds with its standard error
-        ax.errorbar(r["ensemble_mean"], i + 0.24, xerr=r["ensemble_mean_se"], fmt="s", ms=13, color="#8A929E",
-                    capsize=6, lw=2.4, mew=2.4)
-    ax.set_yticks(range(len(params)), [l for _, l in params])
-    ax.tick_params(axis="y", length=0, labelsize=LABEL + 6, labelcolor=INK)
-    ax.spines["left"].set_visible(False)
-    ax.set_ylim(len(params) - 0.5, -0.6)
-    ax.set_xlim(-1.8, 1.8)
-    ax.set_xticks([-1.5, -1, -0.5, 0, 0.5, 1, 1.5], ["−1.5", "−1", "−0.5", "0", "0.5", "1", "1.5"])
-    ax.set_xlabel(r"(posterior mean − GLASS truth) / posterior $\sigma$")
-    hs = [plt.Line2D([], [], ls="-", lw=2.4, marker="o", ms=15, color=REF_C),
-          plt.Line2D([], [], ls="-", lw=2.4, marker="D", ms=13, color=CLOE_C),
-          plt.Line2D([], [], ls="-", lw=2.4, marker="s", ms=13, color="#8A929E")]
-    fig.legend(hs, ["one mock, eDR1like + CCL\n(± posterior σ)", "the same mock, CLOE\n(± posterior σ)",
-                    "mean of 20 mocks, eDR1like\n(± standard error)"],
-               loc="center left", bbox_to_anchor=(0.665, 0.55), frameon=False, labelspacing=1.3,
-               fontsize=LABEL)
-    fig.savefig(os.path.join(IMG, "paris26_cloe_truth_bias.png"), dpi=DPI)
-    plt.close(fig)
-
-
 def fig_cost():
-    t = json.load(open(os.path.join(FIBER, "timing-summary.json")))
+    """Left: core-seconds per evaluation. Right: node-hours of one full chain on the GLASS mock. All measured."""
+    t = json.load(open(TIMING))
+    cob = json.load(open(os.path.join(DIRECT, "nautilus-mock-summary.json")))
+    mcmc = json.load(open(MCMC_TIMELINE))[-1]
+    cob_nh = 4 * (4 + 9 / 60)          # 4 nodes x 4 h 09 min (REPORT.md)
+    jax_nh, jax_eval = 0.45, 0.57      # 1 node x 27 min; likelihood wall x 112 cores / points (REPORT.md)
+    print(f"cost: Cobaya {cob['eval_s_median']:.1f} s/eval, {cob_nh:.1f} node-h; MCMC {mcmc['node_h']:.1f} node-h, "
+          f"R-1 = {mcmc['Rminus1']:.3f}; ratio {cob_nh / jax_nh:.0f}", flush=True)
     fig = new_fig()
-    JAX_C = "#B5523B"
-    # left: core-seconds per full-vector evaluation
-    ax = fig.add_axes([0.205, 0.15, 0.25, 0.78])
-    rows = [("eDR1like + CCL", 32.0, REF_C, "32 s"), ("CLOE + CAMB", t["camb_median_s"], CLOE_C, None),
-            ("CLOE + emulator", t["cpj_median_s"], TEAL, None),
-            ("CLOE projection", t["points"]["active_nuisance"]["cpj_s"], "#8A929E", None),
-            ("CLOE in JAX", 0.45, JAX_C, "≤ 0.45 s")]
+    ax = fig.add_axes([0.225, 0.15, 0.24, 0.78])
+    rows = [("eDR1like + CCL\n(Cobaya)", cob["eval_s_median"], REF_C, None), ("CLOE + CAMB", t["camb_median_s"], OCHRE, None),
+            ("CLOE + emulator", t["cpj_median_s"], TEAL, None), ("CLOE in JAX", jax_eval, JAX_C, None)]
     for i, (lab, v, c, txt) in enumerate(rows):
         ax.barh(i, v, color=c, height=0.62)
-        ax.text(v * 1.25, i, txt or f"{v:.3g} s", va="center", fontsize=TICK, color=INK)
+        ax.text(v * 1.25, i, txt or (f"{v:.2f} s" if v < 1 else f"{v:.1f} s" if v < 30 else f"{v:.0f} s"), va="center", fontsize=TICK, color=INK)
     ax.set_yticks(range(len(rows)), [r[0] for r in rows])
     ax.tick_params(axis="y", length=0, labelsize=TICK, labelcolor=INK)
     ax.set_xscale("log")
-    ax.set_xlim(0.1, 300)
+    ax.set_xlim(0.1, 400)
     ax.set_ylim(len(rows) - 0.5, -0.5)
     ax.set_xlabel("core-seconds per evaluation")
     ax.set_title("one likelihood evaluation", fontsize=LABEL, color=INK, loc="left")
-    # right: wall time of one full chain on one node, hours
-    ax = fig.add_axes([0.70, 0.15, 0.24, 0.78])
-    chains = [("CLOE + CAMB", 11, 14, CLOE_C, True, "11–14 h"), ("CLOE + emulator", 4, 5, TEAL, True, "4–5 h"),
-              ("CLOE in JAX", 0.54, 0.54, JAX_C, False, "32 min")]
-    for i, (lab, lo, hi, c, est, txt) in enumerate(chains):
-        ax.barh(i, hi, color="white" if est else c, edgecolor=c, hatch="//" if est else None, lw=2, height=0.62)
-        ax.text(hi * 1.2, i, txt, va="center", fontsize=TICK, color=INK)
+
+    ax = fig.add_axes([0.665, 0.15, 0.16, 0.78])
+    done = mcmc["Rminus1"] <= 0.02
+    chains = [("Cobaya,\nMCMC", mcmc["node_h"], REF_C, not done,
+               f"{mcmc['node_h']:.1f} node-h\n2 nodes × {mcmc['wall_h']:.1f} h" if done
+               else f"> {mcmc['node_h']:.1f} node-h\n$R-1$ = {mcmc['Rminus1']:.2f}"),
+              ("Cobaya,\nNautilus", cob_nh, REF_C, False, f"{cob_nh:.1f} node-h\n4 nodes × 4 h 09"),
+              ("CLOE in JAX,\nNautilus", jax_nh, JAX_C, False, f"{jax_nh:.2f} node-h\n1 node × 27 min")]
+    for i, (lab, v, c, open_, txt) in enumerate(chains):
+        ax.barh(i, v, color="white" if open_ else c, edgecolor=c, hatch="//" if open_ else None, lw=2, height=0.62)
+        ax.text(v * 1.2, i, txt, va="center", fontsize=TICK, color=INK, linespacing=1.1)
     ax.set_yticks(range(len(chains)), [c[0] for c in chains])
     ax.tick_params(axis="y", length=0, labelsize=TICK, labelcolor=INK)
     ax.set_xscale("log")
-    ax.set_xlim(0.3, 60)
-    ax.set_xticks([0.5, 1, 3, 10, 30], ["0.5", "1", "3", "10", "30"])
+    ax.set_xlim(0.2, 200)
+    ax.set_xticks([0.3, 1, 3, 10, 30], ["0.3", "1", "3", "10", "30"])
     ax.set_ylim(len(chains) - 0.5, -0.5)
-    ax.set_xlabel("hours on one node; hatched: estimated")
+    ax.set_xlabel("node-hours" + ("" if done else "; hatched: not converged"), loc="left")
     ax.set_title("one full chain", fontsize=LABEL, color=INK, loc="left")
     fig.savefig(os.path.join(IMG, "paris26_cloe_cost.png"), dpi=DPI)
     plt.close(fig)
@@ -291,6 +277,5 @@ def fig_selections():
 if __name__ == "__main__":
     setup_font()
     fig_posteriors()
-    fig_truth_bias()
     fig_cost()
     fig_selections()

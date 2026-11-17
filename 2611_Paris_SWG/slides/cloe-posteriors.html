@@ -1,26 +1,32 @@
 <section data-layout="figure">
   <h2>Posteriors agree to Monte Carlo precision</h2>
   <figure>
-    <img src="images/paris26_cloe_posterior_shifts.png" alt="Shift of every parameter mean, CLOE minus eDR1like, in posterior sigma, grouped by parameter family, for the GLASS mock and the blinded TR1 data; and S8–Omega_m contours of both chains on the mock">
+    <img src="images/paris26_cloe_posterior_shifts.png" alt="Shift of every parameter mean, CLOE in JAX minus Cobaya, in posterior sigma, grouped by parameter family, for the GLASS mock and the blinded TR1 data, all within 0.09 sigma; and S8–Omega_m contours of both chains on the mock with the mock input marked">
   </figure>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>Left</strong> — shift of every parameter mean, CLOE minus eDR1like, in units of the eDR1like posterior σ, grouped by parameter family (cosmology includes the derived $S_8$, $\sigma_8$, $\Omega_\mathrm{m}$, and on data the baryonic $\log T_\mathrm{AGN}$). Teal: GLASS mock; blue: blinded TR1. Shaded: 1σ and 2σ of the weight-only Monte Carlo error of the difference, about 0.024σ for every parameter.</li>
-      <li><strong>Right</strong> — 68 % and 95 % contours of $S_8$ and $\Omega_\mathrm{m}$ on the GLASS mock, each axis standardized to the eDR1like mean and σ.</li>
-      <li><strong>Reading</strong> — the shifts scatter around zero with the spread of Monte Carlo noise and no pattern across families.</li>
+      <li><strong>Left</strong> — shift of every parameter mean, CLOE in JAX minus Cobaya (eDR1like + CCL), in units of the Cobaya posterior σ, grouped by parameter family (cosmology includes the derived $S_8$, $\sigma_8$, $\Omega_\mathrm{m}$, and on data the baryonic $\log T_\mathrm{AGN}$). Teal: GLASS mock; blue: blinded TR1. Shaded: 1σ and 2σ of the Monte Carlo error of the difference, about 0.029σ for every parameter.</li>
+      <li><strong>Right</strong> — 68 % and 95 % contours of $S_8$ and $\Omega_\mathrm{m}$ on the GLASS mock, each axis standardized to the Cobaya mean and σ. Star: the mock's input cosmology.</li>
+      <li><strong>Reading</strong> — the shifts have the size of the Monte Carlo noise: their rms in units of that error is 1.02 on the mock and 1.01 on TR1. Parameters of one family move together (the lens $\Delta z$ on TR1, say) because they are correlated in the posterior and share one pair of chains.</li>
+      <li><strong>Blinding</strong> — the TR1 chains are blinded; only standardized differences are shown.</li>
     </ul>
     <details><summary>Numbers</summary>
     <table>
       <tr><th></th><th>GLASS mock</th><th>TR1 (blinded)</th></tr>
-      <tr><td>$S_8$ shift</td><td>−0.006σ</td><td>−0.011σ</td></tr>
-      <tr><td>$\Omega_\mathrm{m}$ shift</td><td>−0.023σ</td><td>+0.006σ</td></tr>
-      <tr><td>largest shift</td><td>0.044σ ($m$, source bin 2)</td><td>0.054σ ($\Delta z$, lens bin 0)</td></tr>
-      <tr><td>width ratio</td><td>0.97–1.04</td><td>0.96–1.05</td></tr>
-      <tr><td>ESS, eDR1like / CLOE</td><td>3547 / 3458</td><td>3519 / 3369</td></tr>
+      <tr><td>$S_8$ shift</td><td>+0.010 ± 0.028σ</td><td>−0.028 ± 0.029σ</td></tr>
+      <tr><td>$\Omega_\mathrm{m}$ shift</td><td>+0.021 ± 0.028σ</td><td>−0.046 ± 0.030σ</td></tr>
+      <tr><td>$\sigma_8$ shift</td><td>−0.019 ± 0.028σ</td><td>+0.040 ± 0.029σ</td></tr>
+      <tr><td>largest shift</td><td>0.087σ (magnification slope, lens bin 2)</td><td>0.059σ ($\Delta z$, lens bin 2)</td></tr>
+      <tr><td>rms of shift ÷ Monte Carlo error</td><td>1.02 (40 parameters)</td><td>1.01 (41 parameters)</td></tr>
+      <tr><td>width ratio</td><td>0.95–1.04</td><td>0.94–1.05</td></tr>
+      <tr><td>effective sample size, Cobaya / CLOE in JAX</td><td>2046 / 3357</td><td>2090 / 2587</td></tr>
     </table>
     </details>
-    <details><summary>A second, noise-free check</summary>
-    <p>Over each posterior, the fast JAX likelihood differs from the exact one by a $\log L$ standard deviation of 0.03–0.04 for eDR1like and 0.01–0.02 for CLOE. Both exact likelihoods are measured against the same fast one, so their own difference scatters by at most about 0.06 in $\log L$ across the posterior (inferred from these two numbers, not evaluated directly).</p>
+    <details><summary>Against the mock's input</summary>
+    <p>Posterior mean minus the GLASS input, in each chain's own σ: $S_8$ −0.11 (Cobaya) and −0.10 (CLOE in JAX); $\Omega_\mathrm{m}$ +0.53 and +0.56; $\sigma_8$ −0.52 and −0.54. The two likelihoods recover the input equally. The half-σ offsets of $\Omega_\mathrm{m}$ and $\sigma_8$, in opposite directions along their degeneracy, are also the mean over an earlier set of chains on 20 GLASS mocks (+0.55 ± 0.17σ and −0.57 ± 0.18σ, with $S_8$ at −0.04 ± 0.19σ), read there as a projection effect of marginalising a curved posterior.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>felt fiber cmbx/standalone-cloe-fast-likelihood, direct-cobaya/ (REPORT.md, summary-mock.json, summary-data.json); the Cobaya model reproduces the stored log-likelihood of the 4 November reference at six posterior points to $6\times10^{-12}$. Figure: make_cloe_figures.py.</p>
     </details>
   </aside>
 </section>
