@@ -377,17 +377,22 @@ def anatomy():
     p.text(sx, 590, "nautilus", size=BODY)
     p.text(sx, 515, "38 parameters", size=SMALL, color=MUTED)
 
-    # theory: cosmology and nuisances through the Limber projection to the bandpowers
+    # theory: the background (geometry) and P(k, z) (structure), projected along the line of sight
     tx = 3010
     p.heading(tx, 1300, "theory")
     p.text(tx, 1110, "cosmology + nuisances", size=BODY)
-    p.arrow((tx, 1010), (tx, 920), size=24, w=WEIGHT * 0.8)
-    p.ring(tx, 830, 180, 82, w=WEIGHT * 0.8)
-    p.text(tx, 830, "Limber", size=BODY)
-    p.arrow((tx, 745), (tx, 655), size=24, w=WEIGHT * 0.8)
-    p.text(tx, 590, "5×2pt bandpowers", size=BODY)
-    p.text(tx, 515, "90 pairs, 651 bands", size=SMALL, color=MUTED)
-    p.text(tx, 438, r"no $\kappa\kappa$", size=SMALL, color=MUTED)
+    p.arrow((tx, 1050), (tx, 985), size=24, w=WEIGHT * 0.8)
+    for x, name, sub in [(tx - 200, "background", "the geometry"), (tx + 200, r"$P(k, z)$", "the structure")]:
+        p.text(x, 920, name, size=BODY)
+        p.text(x, 845, sub, size=SMALL, color=MUTED)
+    p.arrow((tx, 790), (tx, 730), size=24, w=WEIGHT * 0.8)
+    p.ring(tx, 650, 180, 72, w=WEIGHT * 0.8)
+    p.text(tx, 650, "Limber", size=BODY)
+    p.text(tx, 530, "line-of-sight integral", size=SMALL, color=MUTED)
+    p.arrow((tx, 480), (tx, 420), size=24, w=WEIGHT * 0.8)
+    p.text(tx, 360, "5×2pt bandpowers", size=BODY)
+    p.text(tx, 285, "90 pairs, 651 bands", size=SMALL, color=MUTED)
+    p.text(tx, 215, r"no $\kappa\kappa$", size=SMALL, color=MUTED)
 
     # likelihood: the data vector and the covariance, compared with t(theta)
     p.heading(cx, 990, "likelihood")
@@ -427,9 +432,8 @@ def swap():
              ("sampler", "nautilus, 2000 live points")]
     y = 1210
     for head, sub in items:
-        check(p, 78, y + 2, size=56)
-        p.text(160, y, head, size=BODY, ha="left")
-        p.text(160, y - 82, sub, size=SMALL, ha="left", color=MUTED)
+        p.text(80, y, head, size=BODY, ha="left")
+        p.text(80, y - 82, sub, size=SMALL, ha="left", color=MUTED)
         y -= 265
 
     # the swapped box
