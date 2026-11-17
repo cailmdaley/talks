@@ -321,9 +321,9 @@
       "quote": "Data processed for DR3 were observed between the 9th of August 2011 and the 4th of October 2015"
      },
      "data_end": {
-      "date": "2015-07-31",
-      "url": "https://arxiv.org/pdf/1606.05338",
-      "quote": "The basis for our dataset are the 472 KiDS tiles which had been observed in four bands on July 31st, 2015"
+      "date": "2015-10-04",
+      "url": "https://arxiv.org/abs/1703.02991",
+      "quote": "observed between the 9th of August 2011 and the 4th of October 2015"
      },
      "paper_date": {
       "date": "2016-06-16",
@@ -345,9 +345,9 @@
       "quote": "Data processed for DR3 were observed between the 9th of August 2011 and the 4th of October 2015"
      },
      "data_end": {
-      "date": "2015-07-31",
-      "url": "https://arxiv.org/pdf/1606.05338",
-      "quote": "the 472 KiDS tiles which had been observed in four bands on July 31st, 2015"
+      "date": "2015-10-04",
+      "url": "https://arxiv.org/abs/1703.02991",
+      "quote": "observed between the 9th of August 2011 and the 4th of October 2015"
      },
      "paper_date": {
       "date": "2018-12-14",
@@ -473,7 +473,7 @@
      "arxiv": "1212.3338",
      "title": "CFHTLenS: Combined probe cosmological model comparison using 2D weak gravitational lensing",
      "n_authors": 23,
-     "notes": "First CFHTLenS cosmic shear cosmology paper. The fine-binned tomography paper (Heymans et al.) is recorded under 'also'."
+     "notes": "CFHTLenS cosmic shear cosmology paper (Benjamin et al. 1212.3327 and Simpson et al. 1212.3339 appeared the same day). The fine-binned tomography paper (Heymans et al.) is recorded as its own release."
     },
     {
      "name": "tomography (Heymans+13)",
@@ -777,14 +777,14 @@
      "probe": "TT/TE/EE",
      "area_deg2": 10300,
      "data_start": {
-      "date": "2017",
-      "url": "https://arxiv.org/pdf/2503.14452",
-      "quote": "This includes data gathered from 2017 until the experiment’s completion in 2022."
+      "date": "2017-05-05",
+      "url": "https://arxiv.org/abs/2503.14452",
+      "quote": "DR6 comprises five years of observations collected between May 5, 2017, and July 2, 2022."
      },
      "data_end": {
-      "date": "2022",
-      "url": "https://arxiv.org/pdf/2503.14452",
-      "quote": "The DR6 dataset spans five years of observations, from 2017 to 2022."
+      "date": "2022-07-02",
+      "url": "https://arxiv.org/abs/2503.14452",
+      "quote": "DR6 comprises five years of observations collected between May 5, 2017, and July 2, 2022."
      },
      "paper_date": {
       "date": "2025-03-18",
@@ -973,11 +973,11 @@
      "arxiv": "2506.20707",
      "title": "SPT-3G D1: CMB temperature and polarization power spectra and cosmology from 2019 and 2020 observations of the SPT-3G Main field",
      "n_authors": 97,
-     "notes": "Year precision (austral winter, roughly Mar-Nov). The same paper notes 'first cosmological results based on them were published in [17]' (an earlier map-based D1 analysis), not tracked here."
+     "notes": "Year precision (austral winter, roughly Mar-Nov). The same paper notes 'first cosmological results based on them were published in [17]' (an earlier map-based D1 analysis), not tracked here. The first cosmology result from the 2019-20 data is arXiv:2411.06000 (CMB lensing and delensed EE), v1 2024-11-08; this entry marks the primary power-spectrum cosmology paper."
     }
    ],
    "papers": {
-    "total": 284,
+    "total": 285,
     "by_year": {
      "2008": 1,
      "2009": 4,
@@ -995,14 +995,15 @@
      "2021": 15,
      "2022": 23,
      "2023": 20,
-     "2024": 21,
+     "2024": 22,
      "2025": 23,
      "2026": 19,
      "unknown": 2
     },
     "source": "https://pole.uchicago.edu/public/publications_current.html (embedded in https://pole.uchicago.edu/public/Publications.html)",
-    "counts_what": "'Scientific Results' section (all SPT science: CMB, clusters, SMGs, plus 16 Event Horizon Telescope papers with SPT participation). by_year by arXiv id year for 270 entries, journal year for 12, unknown for 2. 'Project Overview' and 'Technical Publications' sections excluded. 2026 is partial."
+    "counts_what": "'Scientific Results' section (all SPT science: CMB, clusters, SMGs, plus 17 Event Horizon Telescope papers with SPT participation). by_year by arXiv id year for 270 entries, journal year for 12, unknown for 2. 'Project Overview' and 'Technical Publications' sections excluded. 2026 is partial."
    }
   }
- ]
+ ],
+ "audited": "2026-11-17: independent audit against arXiv and the source pages; all 37 arXiv v1 dates, titles and ids confirmed"
 }
