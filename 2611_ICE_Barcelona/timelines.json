@@ -1,0 +1,1008 @@
+{
+ "retrieved": "2026-11-17",
+ "definitions": "paper_date = arXiv v1 submission date of the headline cosmology paper (from the arXiv API 'published' field). data_start/data_end = observing dates as stated by the release's own papers (or its data-release paper where noted). Month or year precision where the source gives only that. survey_start for ACT and SPT is first light, not first science night. Planck area 41253 deg2 (full sky) and ACT DR6 10300 deg2 (25% of sky) are computed, not quoted. A release may carry an also list of companion key papers.",
+ "surveys": [
+  {
+   "name": "DES",
+   "kind": "lensing",
+   "survey_start": {
+    "date": "2013-08-31",
+    "url": "https://www.darkenergysurvey.org/the-des-project/overview/",
+    "quote": "DES began searching the Southern skies on August 31, 2013."
+   },
+   "survey_end": {
+    "date": "2019-01-09",
+    "url": "https://arxiv.org/pdf/2601.14559",
+    "quote": "DES was allocated 760 distinct full- or half-nights of observations between 2013 August 15 and 2019 January 9"
+   },
+   "notes": "Science Verification ran 2012 November 1 through 2013 February 22 (DES DR1, arXiv:1801.03181: 'Science Verification (SV) period (2012 November 1 through 2013 February 22)'). DR1 and the Y3/Y6 key papers count the wide survey from 2013 August 15 ('345 distinct nights ... from 2013 August 15 to 2016 February 12', arXiv:1801.03181), while the Y1 papers and the DES website give August 31, 2013; survey_start uses the website date.",
+   "releases": [
+    {
+     "name": "SV",
+     "probe": "cosmic shear",
+     "area_deg2": 139,
+     "data_start": {
+      "date": "2012-11",
+      "url": "https://arxiv.org/pdf/1507.05552",
+      "quote": "Science Verification data were taken between November 2012 and February 2013 ... of which we use the 139 square degrees"
+     },
+     "data_end": {
+      "date": "2013-02",
+      "url": "https://arxiv.org/pdf/1507.05552",
+      "quote": "Science Verification data were taken between November 2012 and February 2013"
+     },
+     "paper_date": {
+      "date": "2015-07-20",
+      "url": "https://export.arxiv.org/api/query?id_list=1507.05552",
+      "quote": "arXiv API <published> for 1507.05552v1: 2015-07-20"
+     },
+     "arxiv": "1507.05552",
+     "title": "Cosmology from Cosmic Shear with DES Science Verification Data",
+     "n_authors": 129,
+     "notes": "Data are SV, i.e. before survey_start. DR1 paper gives exact SV dates 2012-11-01 to 2013-02-22. The SV 2pt clustering+GGL cosmology paper (Kwan et al., arXiv:1604.07871) came 2016-04-26."
+    },
+    {
+     "name": "Y1",
+     "probe": "3x2pt",
+     "area_deg2": 1321,
+     "data_start": {
+      "date": "2013-08-31",
+      "url": "https://arxiv.org/pdf/1708.01530",
+      "quote": "we analyze DECam images taken from August 31, 2013 to February 9, 2014 (“DES Year 1” or Y1)"
+     },
+     "data_end": {
+      "date": "2014-02-09",
+      "url": "https://arxiv.org/pdf/1708.01530",
+      "quote": "we analyze DECam images taken from August 31, 2013 to February 9, 2014"
+     },
+     "paper_date": {
+      "date": "2017-08-04",
+      "url": "https://export.arxiv.org/api/query?id_list=1708.01530",
+      "quote": "arXiv API <published> for 1708.01530v1: 2017-08-04"
+     },
+     "arxiv": "1708.01530",
+     "title": "Dark Energy Survey Year 1 Results: Cosmological Constraints from Galaxy Clustering and Weak Lensing",
+     "n_authors": 200,
+     "notes": "Cosmic shear key paper (Troxel et al.) submitted same day.",
+     "also": [
+      {
+       "probe": "cosmic shear",
+       "arxiv": "1708.01538",
+       "paper_date": {
+        "date": "2017-08-04",
+        "url": "https://export.arxiv.org/api/query?id_list=1708.01538",
+        "quote": "arXiv API <published> for 1708.01538v1: 2017-08-04"
+       },
+       "title": "Dark Energy Survey Year 1 Results: Cosmological Constraints from Cosmic Shear",
+       "n_authors": 135
+      }
+     ]
+    },
+    {
+     "name": "Y3",
+     "probe": "3x2pt",
+     "area_deg2": 4143,
+     "data_start": {
+      "date": "2013-08-15",
+      "url": "https://arxiv.org/pdf/2105.13543",
+      "quote": "the data acquired over the first three years of observations, from August 15, 2013 to February 12, 2016, approximately 345 nights"
+     },
+     "data_end": {
+      "date": "2016-02-12",
+      "url": "https://arxiv.org/pdf/2105.13543",
+      "quote": "from August 15, 2013 to February 12, 2016, approximately 345 nights"
+     },
+     "paper_date": {
+      "date": "2021-05-28",
+      "url": "https://export.arxiv.org/api/query?id_list=2105.13549",
+      "quote": "arXiv API <published> for 2105.13549v1: 2021-05-28"
+     },
+     "arxiv": "2105.13549",
+     "title": "Dark Energy Survey Year 3 Results: Cosmological Constraints from Galaxy Clustering and Weak Lensing",
+     "n_authors": 171,
+     "notes": "area_deg2 = 4143 is the shear-catalogue effective area (Amon et al.); the 3x2pt paper quotes the ~5000 deg2 footprint. Cosmic shear papers (Amon et al. 2105.13543, Secco et al. 2105.13544) submitted the same day.",
+     "also": [
+      {
+       "probe": "cosmic shear",
+       "arxiv": "2105.13543",
+       "paper_date": {
+        "date": "2021-05-28",
+        "url": "https://export.arxiv.org/api/query?id_list=2105.13543",
+        "quote": "arXiv API <published> for 2105.13543v1: 2021-05-28"
+       },
+       "title": "Dark Energy Survey Year 3 Results: Cosmology from Cosmic Shear and Robustness to Data Calibration",
+       "n_authors": 148
+      },
+      {
+       "probe": "cosmic shear",
+       "arxiv": "2105.13544",
+       "paper_date": {
+        "date": "2021-05-28",
+        "url": "https://export.arxiv.org/api/query?id_list=2105.13544",
+        "quote": "arXiv API <published> for 2105.13544v1: 2021-05-28"
+       },
+       "title": "Dark Energy Survey Year 3 Results: Cosmology from Cosmic Shear and Robustness to Modeling Uncertainty",
+       "n_authors": 154
+      }
+     ]
+    },
+    {
+     "name": "Y6",
+     "probe": "3x2pt",
+     "area_deg2": 4031,
+     "data_start": {
+      "date": "2013-08-15",
+      "url": "https://arxiv.org/pdf/2601.14559",
+      "quote": "DES was allocated 760 distinct full- or half-nights of observations between 2013 August 15 and 2019 January 9"
+     },
+     "data_end": {
+      "date": "2019-01-09",
+      "url": "https://arxiv.org/pdf/2601.14559",
+      "quote": "between 2013 August 15 and 2019 January 9"
+     },
+     "paper_date": {
+      "date": "2026-01-21",
+      "url": "https://export.arxiv.org/api/query?id_list=2601.14559",
+      "quote": "arXiv API <published> for 2601.14559v1: 2026-01-21"
+     },
+     "arxiv": "2601.14559",
+     "title": "Dark Energy Survey Year 6 Results: Cosmological Constraints from Galaxy Clustering and Weak Lensing",
+     "n_authors": 172,
+     "notes": "area_deg2 = 4031 is the Y6 shear catalogue ('139,662,173 galaxies over 4031 deg2', arXiv:2602.10065); Y6 Gold spans 4,923 deg2. The Y6 cosmic shear paper came 20 days after the 3x2pt paper (under the one-month threshold, recorded anyway).",
+     "also": [
+      {
+       "probe": "cosmic shear",
+       "arxiv": "2602.10065",
+       "paper_date": {
+        "date": "2026-02-10",
+        "url": "https://export.arxiv.org/api/query?id_list=2602.10065",
+        "quote": "arXiv API <published> for 2602.10065v1: 2026-02-10"
+       },
+       "title": "Dark Energy Survey Year 6 Results: Cosmological Constraints from Cosmic Shear",
+       "n_authors": 129
+      }
+     ]
+    }
+   ],
+   "papers": {
+    "total": 534,
+    "by_year": {
+     "2014": 7,
+     "2015": 43,
+     "2016": 37,
+     "2017": 57,
+     "2018": 60,
+     "2019": 38,
+     "2020": 66,
+     "2021": 52,
+     "2022": 45,
+     "2023": 31,
+     "2024": 35,
+     "2025": 39,
+     "2026": 14
+    },
+    "source": "https://dbweb1.fnal.gov:8443/DESPub/app/PB/pub/pbpublished (linked as 'Publications' from https://www.darkenergysurvey.org/news-and-results/publications/)",
+    "counts_what": "All DES papers that went through collaboration review ('a comprehensive list of all scientific papers by members of the DES Collaboration that have gone through collaboration review'); page comment says 'Showing 534 publications'. by_year is by arXiv submission year (yymm of the arXiv id) for the 524 entries with an arXiv link; 10 entries have no arXiv id and are in the total only. Includes data, methods and cross-correlation papers, not only cosmology. 2026 is partial and the list may lag arXiv."
+   }
+  },
+  {
+   "name": "HSC SSP",
+   "kind": "lensing",
+   "survey_start": {
+    "date": "2014-03",
+    "url": "https://arxiv.org/pdf/2304.00701",
+    "quote": "This includes data collected between March 2014 and April 2019"
+   },
+   "notes": "survey_start is the start of the Wide data used by the lensing papers (month precision). No HSC cosmology paper using data beyond the Y3 (S19A) internal release was found on arXiv as of 2026-11-17 (arXiv API queries ti:\"Hyper Suprime-Cam\" AND ti:cosmolog, and abs:\"Hyper Suprime-Cam\" with titles containing cosmic shear / Year 5 / full survey / 3x2); later HSC cosmology papers (e.g. Rana et al. 2508.21681, Sugiyama et al. 2508.14019, Chiu et al. 2608.02755 on shear-selected clusters) re-analyse Y3 or earlier data.",
+   "releases": [
+    {
+     "name": "Y1",
+     "probe": "cosmic shear (power spectra)",
+     "area_deg2": 137,
+     "data_start": {
+      "date": "2014-03",
+      "url": "https://arxiv.org/pdf/1809.09148",
+      "quote": "The HSC first-year shear catalog ... is based on about 90 nights of HSC Wide data taken from March 2014 to April 2016"
+     },
+     "data_end": {
+      "date": "2016-04",
+      "url": "https://arxiv.org/pdf/1809.09148",
+      "quote": "about 90 nights of HSC Wide data taken from March 2014 to April 2016"
+     },
+     "paper_date": {
+      "date": "2018-09-24",
+      "url": "https://export.arxiv.org/api/query?id_list=1809.09148",
+      "quote": "arXiv API <published> for 1809.09148v1: 2018-09-24"
+     },
+     "arxiv": "1809.09148",
+     "title": "Cosmology from cosmic shear power spectra with Subaru Hyper Suprime-Cam first-year data",
+     "n_authors": 37,
+     "notes": "The real-space companion (Hamana et al.) came almost 9 months later; recorded under 'also'.",
+     "also": [
+      {
+       "probe": "cosmic shear (correlation functions)",
+       "arxiv": "1906.06041",
+       "paper_date": {
+        "date": "2019-06-14",
+        "url": "https://export.arxiv.org/api/query?id_list=1906.06041",
+        "quote": "arXiv API <published> for 1906.06041v1: 2019-06-14"
+       },
+       "title": "Cosmological constraints from cosmic shear two-point correlation functions with HSC survey first-year data",
+       "n_authors": 20
+      }
+     ]
+    },
+    {
+     "name": "Y3",
+     "probe": "cosmic shear + 3x2pt (with SDSS BOSS)",
+     "area_deg2": 416,
+     "data_start": {
+      "date": "2014-03",
+      "url": "https://arxiv.org/pdf/2304.00702",
+      "quote": "The data is based on the S19A internal data release, which was released in September 2019 and was acquired between March 2014 and April 2019"
+     },
+     "data_end": {
+      "date": "2019-04",
+      "url": "https://arxiv.org/pdf/2304.00702",
+      "quote": "acquired between March 2014 and April 2019"
+     },
+     "paper_date": {
+      "date": "2023-04-03",
+      "url": "https://export.arxiv.org/api/query?id_list=2304.00701",
+      "quote": "arXiv API <published> for 2304.00701v1: 2023-04-03"
+     },
+     "arxiv": "2304.00701",
+     "title": "Hyper Suprime-Cam Year 3 Results: Cosmology from Cosmic Shear Power Spectra",
+     "n_authors": 38,
+     "notes": "Five key papers posted the same day (2304.00701-00705): cosmic shear in harmonic and real space, and 3x2pt-like analyses with SDSS BOSS lenses.",
+     "also": [
+      {
+       "probe": "cosmic shear (correlation functions)",
+       "arxiv": "2304.00702",
+       "paper_date": {
+        "date": "2023-04-03",
+        "url": "https://export.arxiv.org/api/query?id_list=2304.00702",
+        "quote": "arXiv API <published> for 2304.00702v1: 2023-04-03"
+       },
+       "title": "Hyper Suprime-Cam Year 3 Results: Cosmology from Cosmic Shear Two-point Correlation Functions",
+       "n_authors": 35
+      },
+      {
+       "probe": "clustering + GGL + shear (minimal bias)",
+       "arxiv": "2304.00705",
+       "paper_date": {
+        "date": "2023-04-03",
+        "url": "https://export.arxiv.org/api/query?id_list=2304.00705",
+        "quote": "arXiv API <published> for 2304.00705v1: 2023-04-03"
+       },
+       "title": "Hyper Suprime-Cam Year 3 Results: Cosmology from Galaxy Clustering and Weak Lensing with HSC and SDSS using the Minimal Bias Model",
+       "n_authors": 30
+      }
+     ]
+    }
+   ],
+   "papers": {
+    "total": 209,
+    "by_year": {
+     "2015": 1,
+     "2016": 5,
+     "2017": 7,
+     "2018": 56,
+     "2019": 33,
+     "2020": 57,
+     "2021": 50
+    },
+    "source": "https://hsc.mtk.nao.ac.jp/ssp/publications/",
+    "counts_what": "'Science Publications in Refereed Journals' section (all science areas, not only weak lensing), by journal publication year. The list stops in 2021 and is not maintained after that, so it misses the Y3 cosmology papers (2023). 21 technical papers listed separately are excluded."
+   }
+  },
+  {
+   "name": "KiDS",
+   "kind": "lensing",
+   "survey_start": {
+    "date": "2011-10-15",
+    "url": "https://arxiv.org/pdf/1507.00742",
+    "quote": "all tiles observed in all four filters during the first year of regular operations (15 October 2011 to 31 September 2012), including data taken during Early Science Time (EST, 13 August to 15 October 2011)"
+   },
+   "survey_end": {
+    "date": "2019-07",
+    "url": "https://arxiv.org/pdf/2007.15632",
+    "quote": "The ESO-KiDS public survey completed observations in July 2019, spanning 1350 deg2"
+   },
+   "notes": "Early Science Time ran 13 August to 15 October 2011 (de Jong et al. 2015, arXiv:1507.00742); the DR3/DR5 data (and so the lensing releases) include it, so data_start is August 2011. The DR5 paper (arXiv:2503.19439) mentions observations 'In November 2020, towards the end of the survey data taking', so some KiDS observing (the second i-band pass) seems to extend past the July 2019 completion date quoted by Heymans et al. 2021.",
+   "releases": [
+    {
+     "name": "KiDS-450",
+     "probe": "cosmic shear",
+     "area_deg2": 450,
+     "data_start": {
+      "date": "2011-08-09",
+      "url": "https://arxiv.org/pdf/1703.02991",
+      "quote": "Data processed for DR3 were observed between the 9th of August 2011 and the 4th of October 2015"
+     },
+     "data_end": {
+      "date": "2015-07-31",
+      "url": "https://arxiv.org/pdf/1606.05338",
+      "quote": "The basis for our dataset are the 472 KiDS tiles which had been observed in four bands on July 31st, 2015"
+     },
+     "paper_date": {
+      "date": "2016-06-16",
+      "url": "https://export.arxiv.org/api/query?id_list=1606.05338",
+      "quote": "arXiv API <published> for 1606.05338v1: 2016-06-16"
+     },
+     "arxiv": "1606.05338",
+     "title": "KiDS-450: Cosmological parameter constraints from tomographic weak gravitational lensing",
+     "n_authors": 36,
+     "notes": "data_start is from the DR3 release paper (the KiDS-450 tiles are the DR3 tiles); the KiDS-450 paper itself gives only the end cutoff."
+    },
+    {
+     "name": "KiDS+VIKING-450",
+     "probe": "cosmic shear",
+     "area_deg2": 341.3,
+     "data_start": {
+      "date": "2011-08-09",
+      "url": "https://arxiv.org/pdf/1703.02991",
+      "quote": "Data processed for DR3 were observed between the 9th of August 2011 and the 4th of October 2015"
+     },
+     "data_end": {
+      "date": "2015-07-31",
+      "url": "https://arxiv.org/pdf/1606.05338",
+      "quote": "the 472 KiDS tiles which had been observed in four bands on July 31st, 2015"
+     },
+     "paper_date": {
+      "date": "2018-12-14",
+      "url": "https://export.arxiv.org/api/query?id_list=1812.06076",
+      "quote": "arXiv API <published> for 1812.06076v1: 2018-12-14"
+     },
+     "arxiv": "1812.06076",
+     "title": "KiDS+VIKING-450: Cosmic shear tomography with optical+infrared data",
+     "n_authors": 28,
+     "notes": "Same 450 KiDS tiles as KiDS-450, adding VIKING NIR photometry (VIKING observations 2009-2016+); the KV450 paper does not restate observing dates, so data dates are inherited from KiDS-450/DR3. area_deg2 = 341.3 is the effective area after masking; the paper also quotes 360.3 deg2. Arguably a re-analysis rather than a new data release."
+    },
+    {
+     "name": "KiDS-1000",
+     "probe": "cosmic shear; 3x2pt with BOSS",
+     "area_deg2": 777.4,
+     "data_start": {
+      "date": "2011-08-09",
+      "url": "https://arxiv.org/pdf/1703.02991",
+      "quote": "Data processed for DR3 were observed between the 9th of August 2011 and the 4th of October 2015"
+     },
+     "data_end": {
+      "date": "2018-01-24",
+      "url": "https://arxiv.org/pdf/1902.11265",
+      "quote": "the DR4 data comprise all KiDS tiles for which the 4-band observations had been taken by January 24th, 2018"
+     },
+     "paper_date": {
+      "date": "2020-07-30",
+      "url": "https://export.arxiv.org/api/query?id_list=2007.15633",
+      "quote": "arXiv API <published> for 2007.15633v1: 2020-07-30"
+     },
+     "arxiv": "2007.15633",
+     "title": "KiDS-1000 Cosmology: Cosmic shear constraints and comparison between two point statistics",
+     "n_authors": 25,
+     "notes": "Data cutoff from the DR4 release paper (Kuijken et al. 2019), on which KiDS-1000 is built. data_start from DR3, whose tiles DR4 includes; the DR4 paper quotes 'starting operations in October 2011' for the VST. Footprint 1006 deg2, effective 777.4 deg2. Multi-probe (Heymans et al.) submitted the same day.",
+     "also": [
+      {
+       "probe": "3x2pt (with BOSS)",
+       "arxiv": "2007.15632",
+       "paper_date": {
+        "date": "2020-07-30",
+        "url": "https://export.arxiv.org/api/query?id_list=2007.15632",
+        "quote": "arXiv API <published> for 2007.15632v1: 2020-07-30"
+       },
+       "title": "KiDS-1000 Cosmology: Multi-probe weak gravitational lensing and spectroscopic galaxy clustering constraints",
+       "n_authors": 34
+      }
+     ]
+    },
+    {
+     "name": "KiDS-Legacy",
+     "probe": "cosmic shear",
+     "area_deg2": 967.4,
+     "data_start": {
+      "date": "2011",
+      "url": "https://arxiv.org/pdf/2503.19441",
+      "quote": "1347 square-degree tiles observed in the u, g, r, and i filters with the VST ... and OmegaCAM ... between 2011 and 2019"
+     },
+     "data_end": {
+      "date": "2019",
+      "url": "https://arxiv.org/pdf/2503.19441",
+      "quote": "observed ... between 2011 and 2019"
+     },
+     "paper_date": {
+      "date": "2025-03-25",
+      "url": "https://export.arxiv.org/api/query?id_list=2503.19441",
+      "quote": "arXiv API <published> for 2503.19441v1: 2025-03-25"
+     },
+     "arxiv": "2503.19441",
+     "title": "KiDS-Legacy: Cosmological constraints from cosmic shear with the complete Kilo-Degree Survey",
+     "n_authors": 38,
+     "notes": "Year precision only from the cosmic shear paper. Heymans et al. 2021 say KiDS 'completed observations in July 2019'; the DR5 paper describes observing in November 2020 'towards the end of the survey data taking', affecting mostly the second i-band pass of the KiDZ calibration fields, so the wide lensing data most likely end in 2019 (not confirmed to the month). Effective area 967.4 deg2 of a 1347 deg2 footprint. Companion (Stölzner et al., 2503.19442) same day; DR5 data paper (Wright et al., 2503.19439) also same day."
+    }
+   ],
+   "papers": {
+    "total": 219,
+    "by_year": {
+     "2006": 2,
+     "2012": 6,
+     "2013": 5,
+     "2015": 7,
+     "2016": 9,
+     "2017": 17,
+     "2018": 31,
+     "2019": 44,
+     "2020": 31,
+     "2021": 38,
+     "2022": 24,
+     "2023": 5
+    },
+    "source": "https://kids.strw.leidenuniv.nl/papers.php",
+    "counts_what": "'Refereed papers' section (all KiDS science, including KiDS-data papers by non-lensing teams), by journal publication year. The list stops in early 2023 and is not maintained after that, so KiDS-Legacy (2025) papers are absent. Conference proceedings excluded."
+   }
+  },
+  {
+   "name": "CFHTLenS",
+   "kind": "lensing",
+   "survey_start": {
+    "date": "2003-03-22",
+    "url": "https://arxiv.org/pdf/1210.8156",
+    "quote": "The CFHTLenS data set is based on the Wide part of the CFHTLS, which was observed in the period between 22nd of March 2003 and 1st of November 2008"
+   },
+   "notes": "CFHTLenS is a reanalysis of the CFHTLS Wide imaging; the collaboration was the analysis team, not the observing survey.",
+   "releases": [
+    {
+     "name": "2D (Kilbinger+13)",
+     "probe": "cosmic shear (2D)",
+     "area_deg2": 154,
+     "data_start": {
+      "date": "2003-03-22",
+      "url": "https://arxiv.org/pdf/1210.8156",
+      "quote": "observed in the period between 22nd of March 2003 and 1st of November 2008"
+     },
+     "data_end": {
+      "date": "2008-11-01",
+      "url": "https://arxiv.org/pdf/1210.8156",
+      "quote": "observed in the period between 22nd of March 2003 and 1st of November 2008"
+     },
+     "paper_date": {
+      "date": "2012-12-13",
+      "url": "https://export.arxiv.org/api/query?id_list=1212.3338",
+      "quote": "arXiv API <published> for 1212.3338v1: 2012-12-13"
+     },
+     "arxiv": "1212.3338",
+     "title": "CFHTLenS: Combined probe cosmological model comparison using 2D weak gravitational lensing",
+     "n_authors": 23,
+     "notes": "First CFHTLenS cosmic shear cosmology paper. The fine-binned tomography paper (Heymans et al.) is recorded under 'also'."
+    },
+    {
+     "name": "tomography (Heymans+13)",
+     "probe": "cosmic shear (tomographic, 6 bins)",
+     "area_deg2": 154,
+     "data_start": {
+      "date": "2003-03-22",
+      "url": "https://arxiv.org/pdf/1210.8156",
+      "quote": "observed in the period between 22nd of March 2003 and 1st of November 2008"
+     },
+     "data_end": {
+      "date": "2008-11-01",
+      "url": "https://arxiv.org/pdf/1210.8156",
+      "quote": "observed in the period between 22nd of March 2003 and 1st of November 2008"
+     },
+     "paper_date": {
+      "date": "2013-03-07",
+      "url": "https://export.arxiv.org/api/query?id_list=1303.1808",
+      "quote": "arXiv API <published> for 1303.1808v1: 2013-03-07"
+     },
+     "arxiv": "1303.1808",
+     "title": "CFHTLenS tomographic weak lensing cosmological parameter constraints: Mitigating the impact of intrinsic galaxy alignments",
+     "n_authors": 24,
+     "notes": "Same data as the 2D paper, 12 weeks later."
+    }
+   ],
+   "papers": {
+    "total": 18,
+    "by_year": {
+     "2012": 3,
+     "2013": 11,
+     "2014": 4
+    },
+    "source": "http://web.archive.org/web/20141014082118/http://www.cfhtlens.org:80/astronomers/publications",
+    "counts_what": "CFHTLenS collaboration papers on the team's publication page (Wayback snapshot of 2014-10-14; the live domain no longer hosts the project): technical and survey (5), cosmology (7), cluster and galaxy-galaxy lensing (6), by the year in the citation. Excludes 3 'in preparation' entries and the separately listed external papers using public CFHTLenS data."
+   }
+  },
+  {
+   "name": "UNIONS",
+   "kind": "lensing",
+   "survey_start": {
+    "date": "2017",
+    "url": "https://arxiv.org/pdf/2605.13549",
+    "quote": "With observations in the r-band having started in 2017, UNIONS is the last of the Stage-III surveys."
+   },
+   "notes": "Year precision only for survey start (r band, CFHT/CFIS). The UNIONS-3500 shape catalogue is v1.4.6.3 from a 2023-2024 reprocessing (arXiv:2605.13549: 'A re-processing campaign was run in 2023-2024 to reduce PSF leakage'); Goh et al. (arXiv:2605.13547) state the lensing sample uses data collected until the end of 2022. The UNIONS overview (Gwyn et al., arXiv:2503.13783) gives no start month for CFIS r band.",
+   "releases": [
+    {
+     "name": "UNIONS-3500",
+     "probe": "cosmic shear (2D, real and harmonic space)",
+     "area_deg2": 3500,
+     "data_start": {
+      "date": "2017",
+      "url": "https://arxiv.org/pdf/2605.13549",
+      "quote": "With observations in the r-band having started in 2017"
+     },
+     "data_end": {
+      "date": "2022-12",
+      "url": "https://arxiv.org/pdf/2605.13547",
+      "quote": "Our lensing sample gathers data collected until the end of 2022"
+     },
+     "paper_date": {
+      "date": "2026-05-13",
+      "url": "https://export.arxiv.org/api/query?id_list=2605.13547",
+      "quote": "arXiv API <published> for 2605.13547v1: 2026-05-13"
+     },
+     "arxiv": "2605.13547",
+     "title": "UNIONS-3500 Weak Lensing: III. 2D Cosmological Constraints in Configuration Space",
+     "n_authors": 16,
+     "notes": "Harmonic-space paper IV (Guerrini et al.) and shape catalogue paper I (Hervas-Peters et al.) submitted the same day; B-mode paper II (Daley et al., 2604.03227) on 2026-04-03. 3500 deg2 footprint, 2894 deg2 effective after masking.",
+     "also": [
+      {
+       "probe": "cosmic shear (harmonic space)",
+       "arxiv": "2605.13543",
+       "paper_date": {
+        "date": "2026-05-13",
+        "url": "https://export.arxiv.org/api/query?id_list=2605.13543",
+        "quote": "arXiv API <published> for 2605.13543v1: 2026-05-13"
+       },
+       "title": "UNIONS-3500 Weak Lensing: IV. 2D cosmological constraints in harmonic space",
+       "n_authors": 17
+      }
+     ]
+    }
+   ],
+   "papers": {
+    "total": 48,
+    "by_year": {
+     "2017": 2,
+     "2018": 1,
+     "2019": 4,
+     "2020": 1,
+     "2021": 5,
+     "2022": 9,
+     "2023": 6,
+     "2024": 6,
+     "2025": 14
+    },
+    "source": "https://www.skysurvey.cc/publications/",
+    "counts_what": "'UNIONS refereed scientific papers' (all science: Galactic archaeology, mergers, lensing; includes CFIS-era papers), by journal publication year. No 2026 entries yet, so the UNIONS-3500 cosmic shear papers are not on it."
+   }
+  },
+  {
+   "name": "Planck",
+   "kind": "cmb",
+   "survey_start": {
+    "date": "2009-08-12",
+    "url": "https://arxiv.org/pdf/1303.5062",
+    "quote": "Routine operations and science observations began 12 August 2009."
+   },
+   "survey_end": {
+    "date": "2013-10-23",
+    "url": "https://arxiv.org/pdf/1807.06205",
+    "quote": "It scanned the microwave and submillimetre sky continuously between 12 August 2009 and 23 October 2013"
+   },
+   "notes": "Launched 14 May 2009 ('was launched 14 May 2009', arXiv:1303.5062). HFI cryogenic phase ended 14 Jan 2012 ('14 Jan 2012 . . . . End of cryogenic mission, start of warm phase', arXiv:1807.06205 Table 1); after that only LFI observed, so the 2015 and 2018 temperature/polarisation cosmology is dominated by data up to Jan 2012. Lensing papers (2013 XVII 1303.5077, 2015 XV 1502.01591, 2018 VIII 1807.06210) were submitted the same day as each parameters paper.",
+   "releases": [
+    {
+     "name": "2013 (PR1)",
+     "probe": "TT + lensing",
+     "area_deg2": 41253,
+     "data_start": {
+      "date": "2009-08-12",
+      "url": "https://arxiv.org/pdf/1303.5062",
+      "quote": "based on data acquired by Planck during the “nominal mission”, defined as 12 August 2009 to 28 November 2010"
+     },
+     "data_end": {
+      "date": "2010-11-28",
+      "url": "https://arxiv.org/pdf/1303.5062",
+      "quote": "the “nominal mission”, defined as 12 August 2009 to 28 November 2010"
+     },
+     "paper_date": {
+      "date": "2013-03-20",
+      "url": "https://export.arxiv.org/api/query?id_list=1303.5076",
+      "quote": "arXiv API <published> for 1303.5076v1: 2013-03-20"
+     },
+     "arxiv": "1303.5076",
+     "title": "Planck 2013 results. XVI. Cosmological parameters",
+     "n_authors": 264,
+     "notes": "area_deg2 = full sky (41253 deg2); the likelihoods use a masked fraction."
+    },
+    {
+     "name": "2015 (PR2)",
+     "probe": "TT/TE/EE + lensing",
+     "area_deg2": 41253,
+     "data_start": {
+      "date": "2009-08-12",
+      "url": "https://arxiv.org/pdf/1502.01582",
+      "quote": "scanned the microwave and submillimetre sky continuously between 12 August 2009 and 23 October 2013"
+     },
+     "data_end": {
+      "date": "2013-10-23",
+      "url": "https://arxiv.org/pdf/1502.01582",
+      "quote": "between 12 August 2009 and 23 October 2013"
+     },
+     "paper_date": {
+      "date": "2015-02-05",
+      "url": "https://export.arxiv.org/api/query?id_list=1502.01589",
+      "quote": "arXiv API <published> for 1502.01589v1: 2015-02-05"
+     },
+     "arxiv": "1502.01589",
+     "title": "Planck 2015 results. XIII. Cosmological parameters",
+     "n_authors": 262,
+     "notes": "Full mission. data_end is the LFI end; HFI ended 2012-01-14 (see survey notes). The PR2 overview also writes 'ending on 23 October 2014', which contradicts its own abstract; 2013 used."
+    },
+    {
+     "name": "2018 (PR3)",
+     "probe": "TT/TE/EE + lensing",
+     "area_deg2": 41253,
+     "data_start": {
+      "date": "2009-08-12",
+      "url": "https://arxiv.org/pdf/1807.06205",
+      "quote": "It scanned the microwave and submillimetre sky continuously between 12 August 2009 and 23 October 2013"
+     },
+     "data_end": {
+      "date": "2013-10-23",
+      "url": "https://arxiv.org/pdf/1807.06205",
+      "quote": "between 12 August 2009 and 23 October 2013"
+     },
+     "paper_date": {
+      "date": "2018-07-17",
+      "url": "https://export.arxiv.org/api/query?id_list=1807.06209",
+      "quote": "arXiv API <published> for 1807.06209v1: 2018-07-17"
+     },
+     "arxiv": "1807.06209",
+     "title": "Planck 2018 results. VI. Cosmological parameters",
+     "n_authors": 182,
+     "notes": "Same observations as 2015, reprocessed (notably large-scale polarisation)."
+    }
+   ],
+   "papers": {
+    "total": 172,
+    "by_year": {
+     "2011": 27,
+     "2012": 2,
+     "2013": 14,
+     "2014": 36,
+     "2015": 16,
+     "2016": 51,
+     "2017": 4,
+     "2018": 3,
+     "2019": 3,
+     "2020": 15,
+     "unknown": 1
+    },
+    "source": "https://www.cosmos.esa.int/web/planck/publications",
+    "counts_what": "Planck Collaboration science papers in the ESA list: 2018 results (13 rows), 2015 results (36), joint BICEP2/Keck/Planck (1), 2013 results (34), Intermediate results (60), Early results (28). by_year is by journal publication year (so the 2013 release papers mostly count in 2014). Excluded: pre-launch (13), technical (46) and Scientific Programme (1) papers, which would bring the list to 232."
+   }
+  },
+  {
+   "name": "ACT",
+   "kind": "cmb",
+   "survey_start": {
+    "date": "2007-10-22",
+    "url": "https://cordis.europa.eu/project/id/202182/reporting",
+    "quote": "ACT saw first light on 22 October 2007 ... completed its first season in December of 2007"
+   },
+   "survey_end": {
+    "date": "2022",
+    "url": "https://arxiv.org/pdf/2503.14452",
+    "quote": "This includes data gathered from 2017 until the experiment’s completion in 2022."
+   },
+   "notes": "Observing seasons are named by year (s13-s16 for DR4). ACT first light source is an EU CORDIS project report, not an ACT paper. Earlier ACT cosmology (MBAC 2008-2010 seasons, e.g. Sievers et al. 2013 arXiv:1301.0824) is not included here.",
+   "releases": [
+    {
+     "name": "DR4",
+     "probe": "TT/TE/EE",
+     "area_deg2": 6000,
+     "data_start": {
+      "date": "2013",
+      "url": "https://arxiv.org/pdf/2007.07288",
+      "quote": "using data taken from 2013–2016 at 98 and 150 GHz"
+     },
+     "data_end": {
+      "date": "2016",
+      "url": "https://arxiv.org/pdf/2007.07288",
+      "quote": "using data taken from 2013–2016 at 98 and 150 GHz"
+     },
+     "paper_date": {
+      "date": "2020-07-14",
+      "url": "https://export.arxiv.org/api/query?id_list=2007.07288",
+      "quote": "arXiv API <published> for 2007.07288v1: 2020-07-14"
+     },
+     "arxiv": "2007.07288",
+     "title": "The Atacama Cosmology Telescope: DR4 Maps and Cosmological Parameters",
+     "n_authors": 141,
+     "notes": "Seasons s13-s16 (nighttime data). area_deg2 ~6000 ('We use the power spectrum derived from almost 6,000 deg2'). Power spectrum paper (Choi et al. 2007.07289) same day.",
+     "also": [
+      {
+       "probe": "TT/TE/EE power spectra",
+       "arxiv": "2007.07289",
+       "paper_date": {
+        "date": "2020-07-14",
+        "url": "https://export.arxiv.org/api/query?id_list=2007.07289",
+        "quote": "arXiv API <published> for 2007.07289v1: 2020-07-14"
+       },
+       "title": "The Atacama Cosmology Telescope: A Measurement of the Cosmic Microwave Background Power Spectra at 98 and 150 GHz",
+       "n_authors": 139
+      }
+     ]
+    },
+    {
+     "name": "DR6 lensing",
+     "probe": "CMB lensing",
+     "area_deg2": 9400,
+     "data_start": {
+      "date": "2017",
+      "url": "https://arxiv.org/pdf/2304.05203",
+      "quote": "a gravitational lensing mass map covering 9400 deg2 reconstructed from measurements of the cosmic microwave background (CMB) made by the Atacama Cosmology Telescope (ACT) from 2017 to 2021"
+     },
+     "data_end": {
+      "date": "2021",
+      "url": "https://arxiv.org/pdf/2304.05203",
+      "quote": "made by the Atacama Cosmology Telescope (ACT) from 2017 to 2021"
+     },
+     "paper_date": {
+      "date": "2023-04-11",
+      "url": "https://export.arxiv.org/api/query?id_list=2304.05203",
+      "quote": "arXiv API <published> for 2304.05203v1: 2023-04-11"
+     },
+     "arxiv": "2304.05203",
+     "title": "The Atacama Cosmology Telescope: DR6 Gravitational Lensing Map and Cosmological Parameters",
+     "n_authors": 159,
+     "notes": "Lensing power spectrum paper (Qu et al. 2304.05202) same day.",
+     "also": [
+      {
+       "probe": "CMB lensing power spectrum",
+       "arxiv": "2304.05202",
+       "paper_date": {
+        "date": "2023-04-11",
+        "url": "https://export.arxiv.org/api/query?id_list=2304.05202",
+        "quote": "arXiv API <published> for 2304.05202v1: 2023-04-11"
+       },
+       "title": "The Atacama Cosmology Telescope: A Measurement of the DR6 CMB Lensing Power Spectrum and its Implications for Structure Growth",
+       "n_authors": 158
+      }
+     ]
+    },
+    {
+     "name": "DR6 power spectra",
+     "probe": "TT/TE/EE",
+     "area_deg2": 10300,
+     "data_start": {
+      "date": "2017",
+      "url": "https://arxiv.org/pdf/2503.14452",
+      "quote": "This includes data gathered from 2017 until the experiment’s completion in 2022."
+     },
+     "data_end": {
+      "date": "2022",
+      "url": "https://arxiv.org/pdf/2503.14452",
+      "quote": "The DR6 dataset spans five years of observations, from 2017 to 2022."
+     },
+     "paper_date": {
+      "date": "2025-03-18",
+      "url": "https://export.arxiv.org/api/query?id_list=2503.14452",
+      "quote": "arXiv API <published> for 2503.14452v1: 2025-03-18"
+     },
+     "arxiv": "2503.14452",
+     "title": "The Atacama Cosmology Telescope: DR6 Power Spectra, Likelihoods and ΛCDM Parameters",
+     "n_authors": 168,
+     "notes": "area_deg2 approximate: 'we use 25% of the sky for this analysis' (25% of 41253 deg2 = ~10300). Extended-models paper (Calabrese et al. 2503.14454) same day.",
+     "also": [
+      {
+       "probe": "extended models",
+       "arxiv": "2503.14454",
+       "paper_date": {
+        "date": "2025-03-18",
+        "url": "https://export.arxiv.org/api/query?id_list=2503.14454",
+        "quote": "arXiv API <published> for 2503.14454v1: 2025-03-18"
+       },
+       "title": "The Atacama Cosmology Telescope: DR6 Constraints on Extended Cosmological Models",
+       "n_authors": 172
+      }
+     ]
+    }
+   ],
+   "papers": {
+    "total": 101,
+    "by_year": {
+     "2010": 3,
+     "2011": 9,
+     "2012": 8,
+     "2013": 10,
+     "2014": 6,
+     "2015": 5,
+     "2016": 4,
+     "2017": 5,
+     "2018": 2,
+     "2019": 4,
+     "2020": 8,
+     "2021": 19,
+     "2022": 10,
+     "2023": 8
+    },
+    "source": "http://web.archive.org/web/20251013091132/https://act.princeton.edu/publications",
+    "counts_what": "'Astrophysical Results' list, by year header (publication year). The live page (https://act.princeton.edu/publications) is behind a Cloudflare check and could not be fetched; counts are from the Wayback snapshot of 2025-10-13. The list stops at April 2023 (DR6 lensing) and is clearly incomplete (e.g. only 2 papers in 2018); DR6 power-spectrum papers (2025) are absent. Experimental papers and theses are on separate pages and excluded."
+   }
+  },
+  {
+   "name": "SPT",
+   "kind": "cmb",
+   "survey_start": {
+    "date": "2007-02-16",
+    "url": "https://pole.uchicago.edu/news/news_2007-02-15.html",
+    "quote": "First light achieved with the 10-m South Pole Telescope, February 16, 2007."
+   },
+   "notes": "SPT-SZ survey 2008-2011 ('From 2008 - 2011, the SPT was used to observe a contiguous ~2500 deg2 patch', arXiv:1210.7231; 'completed in November 2011'). SPTpol installed austral summer 2011-2012; SPT-3G installed 2016-2017 (arXiv:2506.20707). Seasons are austral winters.",
+   "releases": [
+    {
+     "name": "SPT-SZ 2008-09 (Keisler+11)",
+     "probe": "TT",
+     "area_deg2": 790,
+     "data_start": {
+      "date": "2008",
+      "url": "https://arxiv.org/pdf/1105.3182",
+      "quote": "The data consist of 790 square degrees of sky observed at 150 GHz during 2008 and 2009."
+     },
+     "data_end": {
+      "date": "2009",
+      "url": "https://arxiv.org/pdf/1105.3182",
+      "quote": "observed at 150 GHz during 2008 and 2009"
+     },
+     "paper_date": {
+      "date": "2011-05-16",
+      "url": "https://export.arxiv.org/api/query?id_list=1105.3182",
+      "quote": "arXiv API <published> for 1105.3182v1: 2011-05-16"
+     },
+     "arxiv": "1105.3182",
+     "title": "A Measurement of the Damping Tail of the Cosmic Microwave Background Power Spectrum with the South Pole Telescope",
+     "n_authors": 49,
+     "notes": ""
+    },
+    {
+     "name": "SPT-SZ full (Story+12)",
+     "probe": "TT",
+     "area_deg2": 2540,
+     "data_start": {
+      "date": "2008",
+      "url": "https://arxiv.org/pdf/1210.7231",
+      "quote": "From 2008 - 2011, the SPT was used to observe a contiguous ∼ 2500 deg2 patch of sky"
+     },
+     "data_end": {
+      "date": "2011-11",
+      "url": "https://arxiv.org/pdf/1210.7231",
+      "quote": "The first survey with the SPT, referred to as the “SPTSZ” survey, was completed in November 2011"
+     },
+     "paper_date": {
+      "date": "2012-10-26",
+      "url": "https://export.arxiv.org/api/query?id_list=1210.7231",
+      "quote": "arXiv API <published> for 1210.7231v1: 2012-10-26"
+     },
+     "arxiv": "1210.7231",
+     "title": "A Measurement of the Cosmic Microwave Background Damping Tail from the 2500-square-degree SPT-SZ survey",
+     "n_authors": 50,
+     "notes": "area_deg2 = 2540 is the field-table total."
+    },
+    {
+     "name": "SPTpol 500d (Henning+18)",
+     "probe": "TE/EE",
+     "area_deg2": 500,
+     "data_start": {
+      "date": "2013-04-30",
+      "url": "https://arxiv.org/pdf/1707.09353",
+      "quote": "three seasons of dedicated CMB observations ...: 2013 April 30 — 2013 November 27, 2014 March 25 — 2014 December 12, and 2015 March 27 — 2015 October 26"
+     },
+     "data_end": {
+      "date": "2015-10-26",
+      "url": "https://arxiv.org/pdf/1707.09353",
+      "quote": "and 2015 March 27 — 2015 October 26"
+     },
+     "paper_date": {
+      "date": "2017-07-28",
+      "url": "https://export.arxiv.org/api/query?id_list=1707.09353",
+      "quote": "arXiv API <published> for 1707.09353v1: 2017-07-28"
+     },
+     "arxiv": "1707.09353",
+     "title": "Measurements of the Temperature and E-Mode Polarization of the CMB from 500 Square Degrees of SPTpol Data",
+     "n_authors": 67,
+     "notes": "SPTpol receiver installed austral summer 2011-2012; 2012 data on a different field are not part of this release."
+    },
+    {
+     "name": "SPT-3G 2018 (Dutcher+21, Balkenhol+23)",
+     "probe": "TE/EE then TT/TE/EE",
+     "area_deg2": 1500,
+     "data_start": {
+      "date": "2018",
+      "url": "https://arxiv.org/pdf/2101.01684",
+      "quote": "from observations of a ∼1500 deg2 region undertaken during a four-month period of 2018"
+     },
+     "data_end": {
+      "date": "2018",
+      "url": "https://arxiv.org/pdf/2101.01684",
+      "quote": "undertaken during a four-month period of 2018"
+     },
+     "paper_date": {
+      "date": "2021-01-05",
+      "url": "https://export.arxiv.org/api/query?id_list=2101.01684",
+      "quote": "arXiv API <published> for 2101.01684v1: 2021-01-05"
+     },
+     "arxiv": "2101.01684",
+     "title": "Measurements of the E-Mode Polarization and Temperature-E-Mode Correlation of the CMB from SPT-3G 2018 Data",
+     "n_authors": 121,
+     "notes": "Year precision only (the papers give 'a four-month period of 2018', no dates). The TT completion (Balkenhol et al.) came ~23 months later; recorded under 'also'.",
+     "also": [
+      {
+       "probe": "TT/TE/EE",
+       "arxiv": "2212.05642",
+       "paper_date": {
+        "date": "2022-12-12",
+        "url": "https://export.arxiv.org/api/query?id_list=2212.05642",
+        "quote": "arXiv API <published> for 2212.05642v1: 2022-12-12"
+       },
+       "title": "A Measurement of the CMB Temperature Power Spectrum and Constraints on Cosmology from the SPT-3G 2018 TT/TE/EE Data Set",
+       "n_authors": 87
+      }
+     ]
+    },
+    {
+     "name": "SPT-3G D1 2019-20 (Camphuis+25)",
+     "probe": "TT/TE/EE",
+     "area_deg2": 1500,
+     "data_start": {
+      "date": "2019",
+      "url": "https://arxiv.org/pdf/2506.20707",
+      "quote": "We refer to the observations of the SPT-3G Main field taken during the austral winters in 2019 and 2020 as SPT-3G D1 observations"
+     },
+     "data_end": {
+      "date": "2020",
+      "url": "https://arxiv.org/pdf/2506.20707",
+      "quote": "taken during the austral winters in 2019 and 2020"
+     },
+     "paper_date": {
+      "date": "2025-06-25",
+      "url": "https://export.arxiv.org/api/query?id_list=2506.20707",
+      "quote": "arXiv API <published> for 2506.20707v1: 2025-06-25"
+     },
+     "arxiv": "2506.20707",
+     "title": "SPT-3G D1: CMB temperature and polarization power spectra and cosmology from 2019 and 2020 observations of the SPT-3G Main field",
+     "n_authors": 97,
+     "notes": "Year precision (austral winter, roughly Mar-Nov). The same paper notes 'first cosmological results based on them were published in [17]' (an earlier map-based D1 analysis), not tracked here."
+    }
+   ],
+   "papers": {
+    "total": 284,
+    "by_year": {
+     "2008": 1,
+     "2009": 4,
+     "2010": 5,
+     "2011": 8,
+     "2012": 11,
+     "2013": 15,
+     "2014": 11,
+     "2015": 11,
+     "2016": 21,
+     "2017": 15,
+     "2018": 20,
+     "2019": 20,
+     "2020": 19,
+     "2021": 15,
+     "2022": 23,
+     "2023": 20,
+     "2024": 21,
+     "2025": 23,
+     "2026": 19,
+     "unknown": 2
+    },
+    "source": "https://pole.uchicago.edu/public/publications_current.html (embedded in https://pole.uchicago.edu/public/Publications.html)",
+    "counts_what": "'Scientific Results' section (all SPT science: CMB, clusters, SMGs, plus 16 Event Horizon Telescope papers with SPT participation). by_year by arXiv id year for 270 entries, journal year for 12, unknown for 2. 'Project Overview' and 'Technical Publications' sections excluded. 2026 is partial."
+   }
+  }
+ ]
+}
