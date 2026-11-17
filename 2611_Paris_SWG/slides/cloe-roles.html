@@ -1,0 +1,24 @@
+<section data-layout="table" data-center>
+  <h2>Cobaya is both framework and sampler</h2>
+  <table class="large">
+    <tr><th></th><th>sampler</th><th>parameters, priors</th><th>theory, likelihood</th></tr>
+    <tr><td>dr1_cmbx default</td><td>Cobaya MCMC</td><td>Cobaya</td><td>eDR1like + CCL</td></tr>
+    <tr><td>Cobaya with nautilus</td><td>nautilus</td><td>Cobaya</td><td>eDR1like + CCL</td></tr>
+    <tr class="hl"><td>CLOE in JAX</td><td>nautilus</td><td>config file</td><td>CLOElib in JAX</td></tr>
+  </table>
+  <span class="source">Row 1 to row 2 changes only sampler · row 2 to row 3 changes only likelihood</span>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Cobaya</strong> — a framework for Bayesian inference in cosmology. It holds the model (which parameters are sampled, fixed or derived, and their priors), connects theory codes to likelihoods, and ships its own samplers: a Metropolis–Hastings MCMC, an interface to PolyChord, and a minimizer. So "running Cobaya" usually means both: Cobaya's model and Cobaya's MCMC.</li>
+      <li><strong>eDR1like</strong> — a likelihood written for Cobaya's framework, with CCL as its theory code. dr1_cmbx's configurations run it with Cobaya's MCMC (row 1).</li>
+      <li><strong>nautilus</strong> — a separate nested sampler. It needs only a function from parameters to log-likelihood, so it can sample Cobaya's model (row 2) or a JAX function (row 3). It proposes points in batches, which is what lets the JAX likelihood evaluate 1000 points per call.</li>
+      <li><strong>What each change gains</strong> — on a GLASS mock, full vector (measured 17–18 November 2026). Row 1: Cobaya's MCMC was at $R-1 = 0.13$ after 14.5 node-hours, against a stopping criterion of 0.02, so not converged. Row 2: 16.6 node-hours, converged. Row 3: 0.45 node-hours. The sampler change therefore gains some factor that this run only bounds from below; the likelihood change gains 37.</li>
+    </ul>
+    <details><summary>What my chains used before</summary>
+    <p>The first TR1 chains of this pipeline used Cobaya's MCMC; from 19 October 2026 they use nautilus on the same Cobaya model (row 2), and since 15 November nautilus on CLOE in JAX.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>Cobaya documentation (cobaya.readthedocs.io); felt fibers cmbx/likelihood/tr1-chains/nautilus-sampler and cmbx/standalone-cloe-fast-likelihood (direct-cobaya/REPORT.md and the MCMC timeline).</p>
+    </details>
+  </aside>
+</section>

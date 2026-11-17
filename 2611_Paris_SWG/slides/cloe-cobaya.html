@@ -2,20 +2,20 @@
   <h2>Q1 analysis gave me working Cobaya chains</h2>
   <ul>
     <li>eDR1like: the Cobaya likelihood of the Q1 analysis</li>
-    <li>Extended to weak lensing by Luca and Louis</li>
+    <li>Extended to weak lensing by Luca + Louis ++</li>
     <li>With it I could run TR1 chains as a newcomer to likelihoods</li>
     <li>One chain: 4 hours on four Leonardo nodes</li>
     <li>My two questions to Claude: can it be faster? And with CLOE?</li>
   </ul>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>eDR1like</strong> — the likelihood module of dr1_cmbx: a Cobaya likelihood with CCL theory. It came from the Q1 analysis (Louis Legrand's "updates likelihood and theory from q1", September 2025) and was merged and extended to the full shear, positions and κ vector by Luca Pagano and Louis Legrand in 2026.</li>
+      <li><strong>eDR1like</strong> — the likelihood module of dr1_cmbx: a Cobaya likelihood with CCL theory. It came from the Q1 analysis (Louis Legrand's "updates likelihood and theory from q1", September 2025) and was merged and extended to the full shear, positions and κ vector in 2026 by Luca Pagano, Louis Legrand and others.</li>
       <li><strong>What it gave me</strong> — a working route from a data vector to a posterior, which is what let me run chains on TR1 at all. The comparison that follows is exploratory and comes from someone new to likelihood work.</li>
       <li><strong>The cost</strong> — measured on 17 November 2026 on the GLASS mock, full vector (651 bands, 37 sampled parameters): one evaluation of the Cobaya likelihood takes 31 s on one core, and a nautilus chain needs 182&nbsp;000 of them: 4 h 09 min on four 112-core nodes. On blinded TR1 (38 parameters): 222&nbsp;000 evaluations of 35 s, 5 h 35 min on four nodes.</li>
       <li><strong>The two questions</strong> — whether the chains could be made faster, and what they would look like with CLOE, the collaboration's theory and likelihood code. The rest of the section is the answer so far.</li>
     </ul>
     <details><summary>Cobaya's own sampler</summary>
-    <p>dr1_cmbx's configurations use Cobaya's Metropolis–Hastings sampler. On the same mock, 16 chains on two nodes had reached $R-1 = 0.14$ after 11.4 node-hours (stopping criterion 0.02); their partial posterior was within 0.11σ of the nautilus one. So the sampler is not where the cost is: the likelihood evaluation is.</p>
+    <p>dr1_cmbx's configurations use Cobaya's Metropolis–Hastings sampler. On the same mock, 16 chains on two nodes had reached $R-1 = 0.13$ after 14.5 node-hours (stopping criterion 0.02), so they had not converged; their partial posterior was within 0.11σ of the nautilus one. The slide after the next sets the two samplers and the two likelihoods side by side.</p>
     </details>
     <details><summary>Sources</summary>
     <p>dr1_cmbx git history of eDR1like; the directly sampled Cobaya chains of 17 November 2026 (felt fiber cmbx/standalone-cloe-fast-likelihood, direct-cobaya/REPORT.md).</p>

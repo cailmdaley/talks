@@ -7,14 +7,14 @@
     <ul class="skim">
       <li><strong>Left</strong> — core-seconds per full-vector evaluation on a Leonardo DCGP node (112 cores, Sapphire Rapids). eDR1like + CCL in Cobaya: 31.0 s, the median over the 182&nbsp;000 evaluations of its chain, one core each. CLOE + CAMB 22.6 s and CLOE + emulator 8.0 s: medians over 5 prior draws on one core. CLOE in JAX: 0.57 core-s, the likelihood wall time of its chain × 112 cores ÷ points evaluated (an upper bound if not every core was busy).</li>
       <li><strong>Right</strong> — node-hours of one full chain on the GLASS mock (seed 3004, 651 bands, 37 sampled parameters), all measured on 17 November 2026. Cobaya with nautilus over 447 MPI workers: 182&nbsp;000 evaluations, 4 h 09 min on four nodes, 16.6 node-hours, effective sample size 2046. CLOE in JAX with nautilus in batches of 1000: 206&nbsp;000 evaluations, 27 min on one node, 0.45 node-hours, effective sample size 3357. Hatched: Cobaya's own MCMC sampler (16 chains on two nodes), not converged at the time of drawing.</li>
-      <li><strong>Reading</strong> — with the Cobaya likelihood, nautilus and MCMC cost about the same, so the sampler is not where the factor is. The factor of 37 comes from the likelihood: compiled, batched JAX at 0.57 core-s against 31 s.</li>
+      <li><strong>Reading</strong> — two changes, read off the right panel. Sampler, with the Cobaya likelihood: nautilus converged in 16.6 node-hours, and Cobaya's MCMC had not converged when this was drawn, so nautilus gains some factor that is only bounded from below. Likelihood, with nautilus: 16.6 against 0.45 node-hours, a factor of 37, from compiled and batched JAX at 0.57 core-s per evaluation against 31 s.</li>
       <li><strong>On blinded TR1</strong> — the same: Cobaya with nautilus 222&nbsp;000 evaluations of 35 s, 5 h 35 min on four nodes, 22.3 node-hours; CLOE in JAX 245&nbsp;000 evaluations, 31 min on one node, 0.52 node-hours: 43 times fewer.</li>
     </ul>
     <details><summary>Why the emulator alone gains only 3×</summary>
     <p>The Theory WG quotes about 200× for its emulator against CAMB; in this 651-band vector CLOElib's angular projection then dominates the cost (5.3 of the 8.0 s).</p>
     </details>
     <details><summary>The MCMC chain</summary>
-    <p>Cobaya's Metropolis–Hastings sampler as dr1_cmbx's configurations set it up, with the fast block oversampled ten times: $R-1 = 0.27$ at 7.8 node-hours, 0.16 at 10.4, 0.14 at 11.4; stopping criterion 0.02, wall-time limit 12 h (24 node-hours). Its partial posterior is within 0.11σ of the nautilus one in every parameter.</p>
+    <p>Cobaya's Metropolis–Hastings sampler as dr1_cmbx's configurations set it up, with the fast block oversampled ten times: $R-1 = 0.27$ at 7.8 node-hours, 0.16 at 10.4, 0.14 at 11.4, 0.13 at 14.5; stopping criterion 0.02, wall-time limit 12 h (24 node-hours). Its partial posterior at 11 node-hours was within 0.11σ of the nautilus one in every parameter.</p>
     </details>
     <details><summary>Emulator accuracy</summary>
     <p>CLOElib's CosmoPower-JAX HMCode-2020 emulator (the Theory WG network) agrees with CLOE + CAMB to 0.006σ per band at five of six prior draws and 0.042σ at the sixth, on the data configuration.</p>
