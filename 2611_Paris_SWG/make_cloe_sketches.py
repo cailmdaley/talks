@@ -92,11 +92,12 @@ def setup_font():
 class Plate:
     """One drawing: an axes in PNG pixel units (origin bottom left) and a seeded pen."""
 
-    def __init__(self, seed):
-        self.fig = plt.figure(figsize=(W / DPI, H / DPI), dpi=DPI)
+    def __init__(self, seed, w=W, h=H):
+        self.w, self.h = w, h
+        self.fig = plt.figure(figsize=(w / DPI, h / DPI), dpi=DPI)
         self.ax = self.fig.add_axes([0, 0, 1, 1])
-        self.ax.set_xlim(0, W)
-        self.ax.set_ylim(0, H)
+        self.ax.set_xlim(0, w)
+        self.ax.set_ylim(0, h)
         self.ax.axis("off")
         self.rng = np.random.default_rng(seed)
         self.marks = []   # centre lines of every stroke, for the audit
@@ -252,7 +253,7 @@ class Plate:
             pad = bb.padded(GAP)
             if t.get_fontsize() < 24:
                 bad.append(f"small type: {t.get_text()!r}")
-            if bb.x0 < 0 or bb.y0 < 0 or bb.x1 > W or bb.y1 > H:
+            if bb.x0 < 0 or bb.y0 < 0 or bb.x1 > self.w or bb.y1 > self.h:
                 bad.append(f"off the plate: {t.get_text()!r}")
             for u, cc in boxes[i + 1:]:
                 if bb.overlaps(cc):
@@ -524,8 +525,9 @@ def jax():
 
 def control_variates():
     """CARPool for the SPT covariance: a few SPT-constrained mocks, each paired with an SPT-like
-    mock of the same sky, and many SPT-like mocks alone."""
-    p = Plate(41)
+    mock of the same sky, and many SPT-like mocks alone. Sized for the figure column of a
+    figure-text slide; the estimator is set in the slide's text."""
+    p = Plate(41, w=2000, h=1290)
     R, r = 96, 56
 
     def sky(n):
@@ -537,10 +539,11 @@ def control_variates():
         return q[p.rng.permutation(len(q))[:n]]
 
     # few and accurate: each SPT-constrained mock beside an SPT-like mock of the same sky
-    xy, xc = 470, 1090
-    p.heading((xy + xc) / 2, 1460, "few, accurate")
-    p.text((xy + xc) / 2, 1300, r"SPT-constrained, $N \approx$ 350–400", size=SMALL, color=MUTED)
-    rows = [1130, 925, 655]
+    xy, xc = 220, 780
+    mid = (xy + xc) / 2
+    p.heading(mid, 1210, "few, accurate")
+    p.text(mid, 1050, r"SPT-constrained, $N \approx$ 350–400", size=SMALL, color=MUTED)
+    rows = [880, 675, 405]
     for k, y in enumerate(rows):
         q = sky(30)
         p.ring(xy, y, R, color=ACCENT, w=WEIGHT * 1.15)
@@ -549,42 +552,32 @@ def control_variates():
         p.stipple(len(q), lambda n: (xc, y) + q * R, r=3.2)
         p.dashed([(xy + R + 30, y), (xc - R - 30, y)], dash=16, gap=12, w=WEIGHT * 0.6, color=MUTED)
         if k == 0:
-            p.text((xy + xc) / 2, y + 55, "same sky", size=SMALL, color=MUTED, italic=True)
-    for x in (xy, (xy + xc) / 2, xc):
+            p.text(mid, y + 55, "same sky", size=SMALL, color=MUTED, italic=True)
+            p.text(mid, y - 55, r"correlation $\rho$", size=SMALL, color=ACCENT)
+    for x in (xy, mid, xc):
         for j in range(3):
-            p.stipple(1, lambda n: np.array([[x, 820 - j * 30]]), r=3.6)
-    p.text(xy, 492, "$y$", size=HEAD, italic=True, color=ACCENT)
-    p.text(xy, 400, "SPT's own", size=SMALL, color=MUTED)
-    p.text(xy, 322, "reconstruction", size=SMALL, color=MUTED)
-    p.text(xc, 492, "$c$", size=HEAD, italic=True)
-    p.text(xc, 400, "generic", size=SMALL, color=MUTED)
-    p.text(xc, 322, "reconstruction", size=SMALL, color=MUTED)
+            p.stipple(1, lambda n: np.array([[x, 570 - j * 30]]), r=3.6)
+    p.text(xy, 242, "$y$", size=HEAD, italic=True, color=ACCENT)
+    p.text(xy, 150, "SPT's own", size=SMALL, color=MUTED)
+    p.text(xy, 72, "reconstruction", size=SMALL, color=MUTED)
+    p.text(xc, 242, "$c$", size=HEAD, italic=True)
+    p.text(xc, 150, "generic", size=SMALL, color=MUTED)
+    p.text(xc, 72, "reconstruction", size=SMALL, color=MUTED)
 
     # many and approximate: SPT-like mocks alone, each its own sky
-    gx = [1880 + 172 * i for i in range(8)]
-    gy = [1140, 980, 820, 660]
-    p.heading((gx[0] + gx[-1]) / 2, 1460, "many, approximate")
-    p.text((gx[0] + gx[-1]) / 2, 1300, r"SPT-like, any number $M$", size=SMALL, color=MUTED)
+    gx = [1210 + 152 * i for i in range(5)]
+    gy = [890, 730, 570, 410]
+    mx = (gx[0] + gx[-1]) / 2
+    p.heading(mx, 1210, "many, approximate")
+    p.text(mx, 1050, r"SPT-like, any number $M$", size=SMALL, color=MUTED)
     for y in gy:
         for x in gx:
             q = sky(12)
             p.ring(x, y, r, w=WEIGHT * 0.55)
             p.stipple(len(q), lambda n: (x, y) + q * r, r=2.6)
-    mx = (gx[0] + gx[-1]) / 2
-    p.text(mx, 492, "$c$", size=HEAD, italic=True)
-    p.text(mx, 400, "the same generic reconstruction,", size=SMALL, color=MUTED)
-    p.text(mx, 322, "each on its own sky", size=SMALL, color=MUTED)
-
-    # the estimator, and what it gives
-    p.line((120, 262), (3300, 262), w=WEIGHT * 0.5, color=RULE)
-    p.text(130, 150, r"$\hat\Sigma \;=\; \hat\Sigma_y^N \;-\; \beta\,(\hat\Sigma_c^N - \hat\Sigma_c^M)$",
-           size=HEAD + 4, ha="left")
-    p.text(1260, 195, r"$\hat\Sigma^N$: over the $N$ pairs;  $\hat\Sigma^M$: over the $M$", size=SMALL,
-           ha="left", color=MUTED)
-    p.text(1260, 110, r"$\beta$: fitted per element on the pairs", size=SMALL, ha="left", color=MUTED)
-    p.text(2340, 200, "unbiased for SPT's estimator,", size=SMALL, ha="left", color=ACCENT)
-    p.text(2340, 120, r"noise of $N / (1 - \rho^2)$ constrained mocks", size=SMALL, ha="left", color=ACCENT)
-    p.text(2340, 42, r"$\rho$: pair correlation, per element", size=SMALL, ha="left", color=MUTED)
+    p.text(mx, 242, "$c$", size=HEAD, italic=True)
+    p.text(mx, 150, "generic reconstruction,", size=SMALL, color=MUTED)
+    p.text(mx, 72, "each on its own sky", size=SMALL, color=MUTED)
     p.save("paris26_sketch_control_variates.png")
 
 

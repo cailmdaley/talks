@@ -1,14 +1,23 @@
-<section data-layout="figure">
+<section data-layout="figure-text" data-split="60">
   <h2>Control variates for the SPT covariance</h2>
   <figure>
-    <img src="images/paris26_sketch_control_variates.png" alt="Sketch of a control-variate (CARPool) covariance. Left, few and accurate: SPT-constrained mocks, N of about 350 to 400, each y made with SPT's own reconstruction and drawn beside a mock c of the same sky made with a generic reconstruction. Right, many and approximate: SPT-like mocks, any number M, the same generic reconstruction each on its own sky. Below, the estimator: Sigma-hat equals Sigma-hat of y over the N pairs minus beta times (Sigma-hat of c over the N pairs minus Sigma-hat of c over the M), beta fitted per element on the pairs; unbiased for SPT's estimator, with the noise of N over (1 minus rho squared) constrained mocks, rho the pair correlation per element">
+    <img src="images/paris26_sketch_control_variates.png" alt="Sketch of a control-variate (CARPool) covariance. Left, few and accurate: SPT-constrained mocks, N of about 350 to 400, each y made with SPT's own reconstruction and drawn beside a mock c of the same sky made with a generic reconstruction; rho is the correlation between the two members of a pair. Right, many and approximate: SPT-like mocks, any number M, the same generic reconstruction each on its own sky">
   </figure>
+  <div class="text">
+    <div class="eq">$$\hat\Sigma = \hat\Sigma_y^N - \beta\,\bigl(\hat\Sigma_c^N - \hat\Sigma_c^M\bigr)$$</div>
+    <ul>
+      <li>$\beta$: how much of $c$'s scatter is subtracted from $y$</li>
+      <li>Noise per element: $\dfrac{1-\rho^2}{N} + \dfrac{\rho^2}{M}$ in place of $\dfrac{1}{N}$</li>
+      <li>Unbiased for SPT's estimator</li>
+    </ul>
+  </div>
   <aside class="notes">
     <ul class="skim">
       <li><strong>Left</strong> — each SPT-constrained mock $y$ (blue, SPT's own reconstruction) beside a mock $c$ of the same sky, the same κ and Euclid fields, reconstructed generically; identical dots mark the shared sky.</li>
       <li><strong>Right</strong> — SPT-like mocks alone, each on a new sky, as many as can be afforded: they pin down the covariance of the generic reconstruction.</li>
-      <li><strong>Estimator</strong> — the constrained mocks' sample covariance, corrected by how far the generic covariance on the same $N$ skies sits from its value over the $M$. Its expectation is SPT's covariance, whatever the generic reconstruction gets wrong.</li>
-      <li><strong>Gain</strong> — each element's noise shrinks by $1-\rho^2$, $\rho$ the correlation of that element's terms across pairs. How large $\rho$ is here is open. An idea for discussion, not a worked method.</li>
+      <li><strong>Estimator</strong> — $\hat\Sigma_y^N$ and $\hat\Sigma_c^N$ are the sample covariances of $y$ and $c$ over the $N$ pairs, $\hat\Sigma_c^M$ that of $c$ over the $M$ SPT-like mocks. The constrained mocks' covariance is corrected by how far the generic covariance on the same $N$ skies sits from its value over the $M$. Its expectation is SPT's covariance, whatever the generic reconstruction gets wrong.</li>
+      <li><strong>$\beta$</strong> — a regression coefficient, one per covariance element: the part of an element's fluctuation in $y$ that its fluctuation in $c$ predicts, $\beta = \mathrm{cov}(y,c)/\sigma_c^2 = \rho\,\sigma_y/\sigma_c$, fitted on the pairs. $\beta = 0$ ignores the SPT-like mocks; $\beta = 1$ is the SPT-like covariance plus the difference between the two reconstructions measured on the pairs.</li>
+      <li><strong>Noise</strong> — with $\rho$ the correlation of an element's terms between the two members of a pair, the element's variance is $\sigma_y^2\,[(1-\rho^2)/N + \rho^2/M]$ against $\sigma_y^2/N$ for the constrained mocks alone (my derivation for a fixed $\beta = \rho\,\sigma_y/\sigma_c$ and $M$ mocks independent of the pairs; the papers quote the $M \to \infty$ limit, $1-\rho^2$). The first term is the part of $y$ that $c$ does not predict; the second is the noise of the $M$ mocks' own covariance. For $N = 400$ and $\rho = 0.9$: equivalent to 2100 constrained mocks as $M \to \infty$, 1500 at $M = 4000$, 780 at $M = 1000$. How large $\rho$ is here is open. An idea for discussion, not a worked method.</li>
     </ul>
     <details><summary>The estimator</summary>
     <p>In CARPool (Chartier et al. 2021) a costly simulation $\boldsymbol{y}$ and a cheap surrogate $\boldsymbol{c}$ are run from the same initial conditions, and $\boldsymbol{x} = \boldsymbol{y} - \boldsymbol{\beta}(\boldsymbol{c} - \boldsymbol{\mu_c})$ is unbiased for $\mathbb{E}[\boldsymbol{y}]$ for any $\boldsymbol{\beta}$, with $\boldsymbol{\mu_c}$ the surrogate's mean from a separate set of seeds (their eqs. 5, 10–11 and 14). For one element the best $\beta$ is $\mathrm{cov}(y,c)/\sigma_c^2$ and the variance falls by $1-\rho_{y,c}^2$ (eqs. 3–4). Chartier &amp; Wandelt apply the same estimator to a covariance by treating the centred outer products $\boldsymbol{Y}_n = \tilde{\boldsymbol{y}}_n\tilde{\boldsymbol{y}}_n^\mathsf{T}$ and $\boldsymbol{C}_n$ as the samples: $\boldsymbol{\Sigma_{yy}}(\boldsymbol{\beta}) = \gamma\overline{\boldsymbol{Y}} - \gamma\boldsymbol{\beta}(\overline{\boldsymbol{C}} - \boldsymbol{\mathcal{M}}_C)$, with $\gamma = N/(N-1)$ and $\boldsymbol{\mathcal{M}}_C$ the surrogate covariance from separate realizations (their eq. 13), and $\beta$ fitted separately for each element on the same $N$ pairs (their section 3, "$q=1$").</p>
