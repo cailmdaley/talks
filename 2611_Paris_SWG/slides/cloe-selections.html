@@ -23,9 +23,6 @@
     <p>At 25 points drawn from the prior, the package's bandpowers and log-likelihood equal those of the production likelihood exactly on the full vector, with either $P(k)$ model, and to floating-point rounding on the two subsets (largest band difference $3\times10^{-14}\sigma$, largest $\Delta\ln L$ $7\times10^{-12}$).</p>
     <p>The mocks are made with dark-matter-only HMCode-2020, which the emulators do not provide. On the mock, CLOE in JAX therefore uses the feedback emulator with HMCode's feedback response removed and a correction table fixed at the reference cosmology; against plain CLOE with CAMB this is within 0.038σ in every band (0.005σ on the κ crosses). On the data model the same comparison gives $3.9\times10^{-4}\sigma$.</p>
     </details>
-    <details><summary>Open for Cail before showing</summary>
-    <p>Whether to say on a slide that this package imports neither Cobaya nor CCL. It is true of the package (the production chain still builds a Cobaya model for parameters and priors and calls CCL for a constant, the lens-cut distance and the neutrino masses), and it is left out of the slides here; delete this block once decided.</p>
-    </details>
     <details><summary>Sources</summary>
     <p>Chains chain_full, chain_3x2pt and chain_kappa_crosses and docs/gate.md of the SPT × Euclid group repository (private); felt fiber cmbx/standalone-cloe-fast-likelihood. Figure: make_cloe_figures.py.</p>
     </details>
