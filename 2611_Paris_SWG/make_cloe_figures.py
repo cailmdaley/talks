@@ -8,6 +8,8 @@ Sources (the receipts of the felt fiber cmbx/likelihood/cloe-vs-dr1-cmbx-posteri
 Chains for the contour panel (standardized coordinates only; never physical values):
   eDR1like  push-nov/cloe/frozen/reference-mock/posterior_exact.npz
   CLOE      cmbx-lanes/cloe-p4/.../full_mock_powerlaw/nested/posterior_exact.npz
+Selections panel: chain_{full,3x2pt,kappa_crosses}.npz of the Euclid-SPT group repository
+(~/code/euclid-spt-6x2pt, results/baseline; GLASS mock, unblinded).
 Per-chain wall times are each chain's summary.json (also in posterior-*-summary.json).
 
 Run in the cmbx container: app python make_cloe_figures.py
@@ -30,6 +32,9 @@ FIBER = "/leonardo/home/userexternal/cdaley00/loom/.felt/pando/cmbx/likelihood/c
 REF_MOCK = "/leonardo_scratch/large/userexternal/cdaley00/push-nov/cloe/frozen/reference-mock/posterior_exact.npz"
 CLOE_MOCK = ("/leonardo_scratch/large/userexternal/cdaley00/cmbx-lanes/cloe-p4/results/cache/"
              "tr1_v2/cloe_parity/full_mock_powerlaw/nested/posterior_exact.npz")
+
+# the three selections of the GLASS mock vector, made by lc materialize in the Euclid-SPT group repository
+GROUP_CHAINS = "/leonardo/home/userexternal/cdaley00/code/euclid-spt-6x2pt/results/baseline"
 
 # euclid theme (house/themes/euclid.css)
 INK, MUTED, RULE = "#111418", "#535B67", "#C6CEDA"
@@ -236,8 +241,56 @@ def fig_cost():
     plt.close(fig)
 
 
+def fig_selections():
+    """S8-Omega_m of the three selections of the GLASS mock vector (unblinded mock, physical values)."""
+    sel = [("3×2pt + κ crosses", "full", INK, "-"), ("3×2pt", "3x2pt", OCHRE, "--"),
+           ("κ crosses", "kappa_crosses", TEAL, "-")]
+    truth_om, truth_s8 = 0.3110, 0.8251   # chains/plot_variants.py --truth
+    fig = new_fig()
+    ax = fig.add_axes([0.10, 0.16, 0.44, 0.80])
+    bx = fig.add_axes([0.72, 0.16, 0.25, 0.80])
+    rng = [[0.15, 0.85], [0.70, 0.97]]
+    for i, (lab, key, c, ls) in enumerate(sel):
+        z = np.load(os.path.join(GROUP_CHAINS, f"chain_{key}.npz"))
+        names = [str(n) for n in z["derived_names"]]
+        om, s8 = z["derived"][:, names.index("Omega_m")], z["derived"][:, names.index("S8")]
+        w = np.exp(z["log_w"] - np.logaddexp.reduce(z["log_w"]))
+        h, xe, ye = np.histogram2d(om, s8, bins=90, range=rng, weights=w)
+        h = gaussian_filter(h, 2.5)
+        h /= h.sum()
+        o = np.sort(h.ravel())[::-1]
+        levels = sorted(o[np.searchsorted(o.cumsum(), m)] for m in (0.68, 0.95))
+        ax.contour((xe[:-1] + xe[1:]) / 2, (ye[:-1] + ye[1:]) / 2, h.T, levels=levels,
+                   colors=[c], linestyles=ls, linewidths=3)
+        m = w @ s8
+        sd = np.sqrt(w @ (s8 - m) ** 2)
+        print(f"selection {key}: S8 = {m:.4f} +- {sd:.4f}, N = {len(w)}", flush=True)
+        bx.errorbar(m, i, xerr=sd, fmt="o", color=c, ms=13, lw=3, capsize=0)
+        bx.text(m, i - 0.22, f"{m:.3f} ± {sd:.3f}", ha="center", va="bottom", fontsize=TICK, color=INK)
+        ax.plot([], [], color=c, ls=ls, lw=3, label=lab)
+    ax.axvline(truth_om, color=MUTED, lw=1.4, ls=":")
+    ax.axhline(truth_s8, color=MUTED, lw=1.4, ls=":")
+    ax.set_xlim(*rng[0])
+    ax.set_ylim(*rng[1])
+    ax.set_xlabel(r"$\Omega_\mathrm{m}$")
+    ax.set_ylabel(r"$S_8$")
+    ax.legend(frameon=False, loc="upper right", handlelength=1.6)
+    ax.text(truth_om + 0.008, rng[1][0] + 0.006, "mock input", fontsize=TICK, color=MUTED, va="bottom")
+    bx.axvline(truth_s8, color=MUTED, lw=1.4, ls=":")
+    bx.set_yticks(range(len(sel)), [s[0] for s in sel])
+    bx.tick_params(axis="y", length=0, labelsize=TICK, labelcolor=INK)
+    bx.set_ylim(len(sel) - 0.5, -0.6)
+    bx.set_xlim(0.765, 0.865)
+    bx.set_xticks([0.78, 0.80, 0.82, 0.84, 0.86])
+    bx.set_xlabel(r"$S_8$, mean and 1$\sigma$; dotted: mock input")
+    bx.spines["left"].set_visible(False)
+    fig.savefig(os.path.join(IMG, "paris26_cloe_selections.png"), dpi=DPI)
+    plt.close(fig)
+
+
 if __name__ == "__main__":
     setup_font()
     fig_posteriors()
     fig_truth_bias()
     fig_cost()
+    fig_selections()

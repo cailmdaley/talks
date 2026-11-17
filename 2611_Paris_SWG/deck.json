@@ -43,13 +43,14 @@
     },
     {
       "title": "CLOE vs dr1_cmbx",
-      "outline": "The same TR1 chains with CLOE and with the dr1_cmbx likelihood: posteriors and bias against the mock truth; then CLOE with its slow pieces in JAX, and what a chain costs.",
+      "outline": "The same TR1 chains with CLOE and with the dr1_cmbx likelihood: posteriors and bias against the mock truth, and 3×2pt against the κ crosses on the mock; then CLOE with its slow pieces in JAX, and what a chain costs.",
       "slides": [
         "cloe",
         "cloe-anatomy",
         "cloe-swap",
         "cloe-posteriors",
         "cloe-bias",
+        "cloe-selections",
         "cloe-jax-pieces",
         "cloe-cost",
         "cloe-next"

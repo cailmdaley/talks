@@ -21,8 +21,8 @@
     <details><summary>Local patches to CLOElib</summary>
     <p>Three: power-law extrapolation of $P(k)$ beyond the $k$ table, radiation in the background, and the continuation above $z = 5$.</p>
     </details>
-    <details><summary>Not yet done</summary>
-    <p>The same posterior check on a GLASS mock (fast path against exact CLOE, and both against the mock truth) had not run when these slides were made.</p>
+    <details><summary>On the GLASS mocks</summary>
+    <p>The mocks use dark-matter-only HMCode-2020, which the emulators do not provide, so there CLOE in JAX uses a correction table fixed at the reference cosmology and agrees with plain CLOE + CAMB to 0.038σ per band at prior draws. The posterior check (re-scoring a mock chain with plain CLOE) has not been run on a mock.</p>
     </details>
     <details><summary>Sources</summary>
     <p>dr1_cmbx eDR1like jax_vector.py and cloe_jax.py (the port); the chain summary of tr1_v2 production_chains nested_full; felt fibers cmbx/likelihood/fast-path-as-cloe-s-jax-adapter and cmbx/likelihood/cloe-vs-dr1-cmbx-posterior-and (timing-summary.json). Drawing: make_cloe_sketches.py.</p>

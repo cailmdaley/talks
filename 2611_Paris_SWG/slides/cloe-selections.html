@@ -1,0 +1,33 @@
+<section data-layout="figure">
+  <h2>3×2pt and the κ crosses on the GLASS mock</h2>
+  <figure>
+    <img src="images/paris26_cloe_selections.png" alt="Left: 68 and 95 per cent contours of S8 and Omega_m on the GLASS mock for three selections of the data vector, 3×2pt plus κ crosses, 3×2pt alone and the κ crosses alone, with the mock input marked. Right: S8 mean and one-sigma for each, 0.824 ± 0.013, 0.823 ± 0.013 and 0.812 ± 0.033, against the mock input 0.825">
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>What is run</strong> — three nautilus chains with CLOE in JAX on the GLASS mock (seed 3004, unblinded, so physical values are shown): the full 5×2pt vector (651 bands), 3×2pt alone (539 bands) and the κ × shear and κ × positions crosses alone (112 bands). Same priors, scale cuts and covariance as the production chains.</li>
+      <li><strong>$S_8$</strong> — 0.824 ± 0.013 (3×2pt + κ crosses), 0.823 ± 0.013 (3×2pt), 0.812 ± 0.033 (κ crosses); the mock input is 0.825. All three recover it within 0.4σ.</li>
+      <li><strong>Reading</strong> — on this TR1-sized mock with SPT-3G Winter-like κ noise, the κ crosses alone constrain $S_8$ about 2.6 times less tightly than 3×2pt and leave $\Omega_\mathrm{m}$ nearly free (0.43 ± 0.14); added to 3×2pt they do not change the $S_8$ width at the precision of these chains.</li>
+      <li><strong>Where these come from</strong> — the likelihood packaged for the SPT × Euclid 6×2pt analysis: the same CLOE theory and JAX port, built directly from a data-vector file and a configuration. Run with the production chain's random seed, its full-vector chain is identical to the production mock chain rerun with the current code: all 41&nbsp;000 points, weights and log-likelihoods are equal.</li>
+    </ul>
+    <details><summary>Numbers</summary>
+    <table>
+      <tr><th>selection</th><th>bands</th><th>$S_8$</th><th>$\Omega_\mathrm{m}$</th><th>points</th><th>effective sample size</th></tr>
+      <tr><td>3×2pt + κ crosses</td><td>651</td><td>0.824 ± 0.013</td><td>0.331 ± 0.036</td><td>41&nbsp;000</td><td>3357</td></tr>
+      <tr><td>3×2pt</td><td>539</td><td>0.823 ± 0.013</td><td>0.333 ± 0.038</td><td>40&nbsp;000</td><td>2815</td></tr>
+      <tr><td>κ crosses</td><td>112</td><td>0.812 ± 0.033</td><td>0.43 ± 0.14</td><td>16&nbsp;000</td><td>6519</td></tr>
+    </table>
+    <p>Mock input: $S_8 = 0.825$, $\Omega_\mathrm{m} = 0.311$. The $\Omega_\mathrm{m}$ means sit above the input as on the previous slide (a projection effect of the curved $\Omega_\mathrm{m}$–$\sigma_8$ posterior). The small closed 95 % islands of the κ-crosses contour are sampling noise in a broad posterior.</p>
+    </details>
+    <details><summary>The package against production</summary>
+    <p>At 25 points drawn from the prior, the package's bandpowers and log-likelihood equal those of the production likelihood exactly on the full vector, with either $P(k)$ model, and to floating-point rounding on the two subsets (largest band difference $3\times10^{-14}\sigma$, largest $\Delta\ln L$ $7\times10^{-12}$).</p>
+    <p>The mocks are made with dark-matter-only HMCode-2020, which the emulators do not provide. On the mock, CLOE in JAX therefore uses the feedback emulator with HMCode's feedback response removed and a correction table fixed at the reference cosmology; against plain CLOE with CAMB this is within 0.038σ in every band (0.005σ on the κ crosses). On the data model the same comparison gives $3.9\times10^{-4}\sigma$.</p>
+    </details>
+    <details><summary>Open for Cail before showing</summary>
+    <p>Whether to say on a slide that this package imports neither Cobaya nor CCL. It is true of the package (the production chain still builds a Cobaya model for parameters and priors and calls CCL for a constant, the lens-cut distance and the neutrino masses), and it is left out of the slides here; delete this block once decided.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>Chains chain_full, chain_3x2pt and chain_kappa_crosses and docs/gate.md of the SPT × Euclid group repository (private); felt fiber cmbx/standalone-cloe-fast-likelihood. Figure: make_cloe_figures.py.</p>
+    </details>
+  </aside>
+</section>
