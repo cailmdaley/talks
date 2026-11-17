@@ -267,11 +267,16 @@ class Plate:
             print(f"  [{name}] {b}")
         return bad
 
-    def save(self, name):
+    def save(self, name, crop_bottom=0):
+        """Write the plate; `crop_bottom` drops that many px of empty plate below the drawing."""
         self.audit(name)
         path = os.path.join(IMG, name)
         self.fig.savefig(path, dpi=DPI, facecolor="white")
         plt.close(self.fig)
+        if crop_bottom:
+            from PIL import Image
+            im = Image.open(path)
+            im.crop((0, 0, im.width, im.height - crop_bottom)).save(path)
         print("wrote", path)
 
 
@@ -341,14 +346,7 @@ def blindspot():
     for i, line in enumerate(["added to", "the measured", "data vector"]):
         p.text(tip[0] + 40, tip[1] + 85 - i * 85, line, size=BODY, ha="left")
 
-    # below the rule: the spectroscopic blind and the validation
-    p.line((120, 360), (3300, 360), w=WEIGHT * 0.5, color=MUTED)
-    p.text(130, 270, "GC spectro", size=SMALL, ha="left", italic=True)
-    p.text(130, 190, "same formula, its own script and draws", size=SMALL, ha="left", color=MUTED)
-    p.text(1750, 270, "validation", size=SMALL, ha="left", italic=True)
-    p.text(1750, 190, "recover an injected shift on synthetic DR1 vectors,", size=SMALL, ha="left", color=MUTED)
-    p.text(1750, 112, "posterior width unchanged", size=SMALL, ha="left", color=MUTED)
-    p.save("paris26_sketch_blindspot.png")
+    p.save("paris26_sketch_blindspot.png", crop_bottom=385)
 
 
 def anatomy():

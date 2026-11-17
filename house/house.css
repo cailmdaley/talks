@@ -745,6 +745,7 @@ html, body { background: var(--ground); }
 
 /* table — headline and one table */
 .slide[data-layout="table"] > .body { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s3); }
+.slide[data-layout="table"] > .body > p { align-self: stretch; }
 /* data-center: a short table centred in the body, both ways */
 .reveal section[data-center] .slide[data-layout="table"] > .body, .slide[data-layout="table"][data-center] > .body { align-items: center; justify-content: center; }
 
