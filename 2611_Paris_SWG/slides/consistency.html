@@ -1,17 +1,17 @@
 <section data-layout="points">
   <h2>Comparing with other groups while blinded</h2>
-  <p>Blind size should follow constraining power, but our probes span a wide range of it</p>
+  <p>We want our data vector to be consistent with 3×2pt</p>
   <ol>
-    <li>First: can we tell while blinded whether our measurements are consistent?</li>
-    <li>Then: are they?</li>
-    <li>How do we avoid thinking about blinding while we collaborate across blinded analyses?</li>
+    <li>Get 3×2pt shift?</li>
+    <li>Coordinate with SAS to apply 3×2pt shift to our data vectors?</li>
+    <li>Data vectors are simpler to compare than contours</li>
   </ol>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>Constraining power</strong> — the lesson of the Flagship-2 test: one shift in cosmology is a different number of σ for each probe, so no single size suits 3×2pt, the κ crosses and their combination at once.</li>
-      <li><strong>1, 2</strong> — the first priority is confidence that an inconsistency between two groups' measurements would be seen while both are blinded. Only then does the second question, whether the measurements are consistent, have an answer.</li>
-      <li><strong>3</strong> — the aim behind both: groups that share spectra should be able to work together without each exchange turning into a question about blinds.</li>
-      <li><strong>The problem</strong> — the γγ, δγ and δδ spectra in the CMBX 6×2pt vector are the official 3×2pt statistics measured on the same galaxies, but blinded with a different draw. A difference between the two blinded copies mixes real measurement differences with the difference of two hidden shifts. Using blindspot for CMBX shifts would not change that.</li>
+      <li><strong>The aim</strong> — the γγ, δγ and δδ blocks of the CMBX vector should agree with the official 3×2pt measurement of the same galaxies, and that has to be checkable while both are blinded.</li>
+      <li><strong>1, 2</strong> — two ways to put both on one blind. Either CMBX receives the 3×2pt shift and adds it where its data vectors are made, or the shift is applied to the CMBX vectors on the SAS, as it is to the 3×2pt ones, so that CMBX never holds it.</li>
+      <li><strong>3</strong> — with one shift on both, the shared spectra can be compared band by band. Comparing contours is harder: the probes differ in constraining power, so the same shift is a different number of σ for each (the Flagship-2 test).</li>
+      <li><strong>The problem today</strong> — the γγ, δγ and δδ spectra in the CMBX 6×2pt vector are the official 3×2pt statistics measured on the same galaxies, but blinded with a different draw. A difference between the two blinded copies mixes real measurement differences with the difference of two hidden shifts. Using blindspot for CMBX shifts would not change that.</li>
       <li><strong>Hold both shifts</strong> — if CMBX knew the 3×2pt draw, it could move one vector onto the other's blind and compare. Policy keeps the draws separate, and knowing it would reveal what 3×2pt is meant not to see.</li>
       <li><strong>Same mocks</strong> — run the official LE3 measurement and the CMBX one on the same simulated catalogue and masks. It tests code, masks and weights with no blind; it cannot test choices made only on data.</li>
       <li><strong>Key holder</strong> — a proposal, not in any Euclid document: someone who can see both unblinded vectors computes the χ² of their difference on the shared spectra with a test fixed in advance, and returns only the PTE. It reveals agreement, not cosmology.</li>
