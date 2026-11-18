@@ -4,14 +4,17 @@
     <li>eDR1like: the Cobaya likelihood of the Q1 analysis</li>
     <li>Extended to weak lensing by Luca + Louis ++</li>
     <li>With it I could run TR1 chains as a newcomer to likelihoods</li>
-    <li>One chain: 4 hours on four Leonardo nodes</li>
+    <li>Data vector: 5×2pt, 90 tracer pairs, 651 of 1350 bands after scale cuts</li>
+    <li>Scale cuts: 100 &lt; ℓ &lt; 3000; lens bins <i>k</i> &lt; 0.2 <i>h</i>/Mpc (0.15 in crosses)</li>
+    <li>One chain: 182&nbsp;000 evaluations of 31 s, 4 hours on 448 cores</li>
     <li>My two questions to Claude: can it be faster? And with CLOE?</li>
   </ul>
   <aside class="notes">
     <ul class="skim">
       <li><strong>eDR1like</strong> — the likelihood module of dr1_cmbx: a Cobaya likelihood with CCL theory. It came from the Q1 analysis (Louis Legrand's "updates likelihood and theory from q1", September 2025) and was merged and extended to the full shear, positions and κ vector in 2026 by Luca Pagano, Louis Legrand and others.</li>
       <li><strong>What it gave me</strong> — a working route from a data vector to a posterior, which is what let me run chains on TR1 at all. The comparison that follows is exploratory and comes from someone new to likelihood work.</li>
-      <li><strong>The cost</strong> — measured on 17 November 2026 on the GLASS mock, full vector (651 bands, 37 sampled parameters): one evaluation of the Cobaya likelihood takes 31 s on one core, and a nautilus chain needs 182&nbsp;000 of them: 4 h 09 min on four 112-core nodes. On blinded TR1 (38 parameters): 222&nbsp;000 evaluations of 35 s, 5 h 35 min on four nodes.</li>
+      <li><strong>Data vector and cuts</strong> — shear × shear (21 pairs), shear × positions (36), positions × positions (21), κ × shear (6) and κ × positions (6): 90 spectra in 15 logarithmic bands from ℓ = 100 to 3000, 1350 bands. Every spectrum with a lens bin is cut at the multipole where $k_\mathrm{max}$ falls at that bin's mean redshift, $\ell_\mathrm{max} = k_\mathrm{max}\,\chi$, with $k_\mathrm{max} = 0.2\,h/\mathrm{Mpc}$ for positions × positions and 0.15 for positions × shear and positions × κ. 651 bands remain: 539 in 3×2pt and 112 in the κ crosses. κκ is not in the vector.</li>
+      <li><strong>The cost</strong> — measured on 17 November 2026 on the GLASS mock, full vector (651 bands, 37 sampled parameters): one evaluation of the Cobaya likelihood takes 31 s on one core, and a nautilus chain needs 182&nbsp;000 of them: 4 h 09 min on four 112-core nodes (448 cores, 16.6 node-hours). On blinded TR1 (38 parameters): 222&nbsp;000 evaluations of 35 s, 5 h 35 min on four nodes.</li>
       <li><strong>The two questions</strong> — whether the chains could be made faster, and what they would look like with CLOE, the collaboration's theory and likelihood code. The rest of the section is the answer so far.</li>
     </ul>
     <details><summary>Cobaya's own sampler</summary>
