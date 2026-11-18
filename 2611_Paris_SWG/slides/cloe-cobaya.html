@@ -15,7 +15,7 @@
       <li><strong>The two questions</strong> — whether the chains could be made faster, and what they would look like with CLOE, the collaboration's theory and likelihood code. The rest of the section is the answer so far.</li>
     </ul>
     <details><summary>Cobaya's own sampler</summary>
-    <p>dr1_cmbx's configurations use Cobaya's Metropolis–Hastings sampler. On the same mock, 16 chains on two nodes had reached $R-1 = 0.13$ after 14.5 node-hours (stopping criterion 0.02), so they had not converged; their partial posterior was within 0.11σ of the nautilus one. The slide after the next sets the two samplers and the two likelihoods side by side.</p>
+    <p>dr1_cmbx's configurations use Cobaya's Metropolis–Hastings sampler. On the same mock, 16 chains on two nodes reached $R-1 = 0.059$ when their 12 h wall-time limit stopped them after 23.0 node-hours, short of the stopping criterion of 0.02; their posterior is within 0.08σ of the nautilus one in every parameter. The slide after the next sets the two samplers and the two likelihoods side by side.</p>
     </details>
     <details><summary>Sources</summary>
     <p>dr1_cmbx git history of eDR1like; the directly sampled Cobaya chains of 17 November 2026 (felt fiber cmbx/standalone-cloe-fast-likelihood, direct-cobaya/REPORT.md).</p>
