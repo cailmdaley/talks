@@ -39,6 +39,7 @@
     "size",
     "kappa",
     "consistency",
+    "unblinding",
     "blinding-questions"
    ]
   },
