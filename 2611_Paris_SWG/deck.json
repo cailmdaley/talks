@@ -35,6 +35,8 @@
     "blinding-goal",
     "landscape",
     "blindspot",
+    "selfblind",
+    "blind-rehearsal",
     "size-sigma",
     "size",
     "kappa",
