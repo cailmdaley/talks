@@ -19,7 +19,7 @@ const html = path.resolve('_site', name, 'index.html');
 if (!fs.existsSync(html)) throw new Error(`build the deck first: node house/build.mjs ${deckDir}`);
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'house-pdf-'));
-const browser = await puppeteer.launch({ args: ['--allow-file-access-from-files'] });
+const browser = await puppeteer.launch({ args: ['--no-sandbox', '--allow-file-access-from-files', '--font-render-hinting=none'] });
 const page = await browser.newPage();
 await page.setViewport({ width: 1920, height: 1080 });
 await page.evaluateOnNewDocument(() => { window.HousePosterOnly = true; });
