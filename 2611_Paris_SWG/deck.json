@@ -24,7 +24,8 @@
     "covariance",
     "cov-spt-public",
     "cov-spt-constrained",
-    "cov-control-variates"
+    "cov-control-variates",
+    "cov-agora"
    ]
   },
   {
