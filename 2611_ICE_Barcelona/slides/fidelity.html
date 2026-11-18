@@ -1,0 +1,52 @@
+<section data-layout="figure-text" data-stack>
+  <h2>One framework, fidelity dialled against speed</h2>
+  <figure>
+    <svg viewBox="0 110 1712 410" role="img" aria-label="A track from fast to faithful with four rungs: Gaussian fields, lognormal, N-body calibrated, full forward model; the mocks in this talk are marked on it">
+      <defs>
+        <marker id="fidelity-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" class="fill-muted"/>
+        </marker>
+      </defs>
+      <path d="M40 200 H1660" class="stroke-muted" stroke-width="5" marker-end="url(#fidelity-arrow)"/>
+      <g font-size="34" class="fill-muted">
+        <text x="40" y="160">fast, approximate</text>
+        <text x="1660" y="160" text-anchor="end">faithful, expensive</text>
+      </g>
+      <g>
+        <circle cx="200" cy="200" r="20" class="fill-ground stroke-ink" stroke-width="5"/>
+        <circle cx="620" cy="200" r="20" class="fill-ink"/>
+        <circle cx="1040" cy="200" r="20" class="fill-ink"/>
+        <circle cx="1460" cy="200" r="20" class="fill-accent"/>
+      </g>
+      <g font-size="40" font-weight="600" text-anchor="middle">
+        <text x="200" y="272">Gaussian</text>
+        <text x="620" y="272">lognormal</text>
+        <text x="1040" y="272">N-body calibrated</text>
+        <text x="1460" y="272" class="fill-accent">full forward model</text>
+      </g>
+      <g font-size="34" text-anchor="middle" class="fragment">
+        <text x="200" y="340" class="fill-muted">analytic covariances</text>
+        <text x="620" y="340">GLASS: UNIONS, Euclid × κ</text>
+        <text x="620" y="388" class="fill-muted">κ conditioned on ACT sims</text>
+        <text x="1040" y="340">FLASK on DEMNUni</text>
+        <text x="1040" y="388" class="fill-muted">Euclid × CMB covariance</text>
+        <text x="1460" y="340">ACT DR6 κ pipeline</text>
+        <text x="1460" y="388" class="fill-muted">M. Gatti</text>
+      </g>
+      <text x="856" y="490" font-size="38" text-anchor="middle" class="fragment">shear, clustering and CMB lensing from one simulated sky</text>
+    </svg>
+  </figure>
+  <div class="text">
+    <ul>
+      <li>every element of the analysis, inputs included, simulated in one framework</li>
+    </ul>
+  </div>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>The track</strong> — four rungs of simulation fidelity, each slower and more faithful than the last: Gaussian fields, lognormal fields, lognormal calibrated on N-body simulations, a full forward model of the measurement.</li>
+      <li><strong>Marks</strong> — where the simulations in this talk sit: the GLASS lognormal mocks under UNIONS and Euclid × CMB lensing (their κ conditioning on ACT's own reconstruction simulations is implemented and validated; SPT-3G and the production ensembles are next); the FLASK covariance mocks calibrated on DEMNUni; Marco Gatti's forward model of the ACT DR6 lensing reconstruction.</li>
+      <li><strong>The aim</strong> — one framework spanning every element, inputs included, with the fidelity chosen per task: fast and approximate for exploring and validating, full fidelity for the final inference. Shear, clustering and CMB lensing drawn from one sky bring the cross-probe checks with them.</li>
+    </ul>
+    <details><summary>Pieces that exist</summary><p>GLASS (Tessore et al. 2023) for shear, clustering and CMB lensing; FLASK (Xavier et al. 2016) on the DEMNUni simulations; SimBIG for galaxy clustering; the ACT DR6 lensing forward model of the Euclid forward-modelling work package (Gatti). Joining them and making them look like the data is where most of the work is.</p></details>
+  </aside>
+</section>

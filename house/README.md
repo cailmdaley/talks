@@ -9,6 +9,7 @@ node house/check.mjs <deck-dir> --steps          # also one screenshot per fragm
 node house/check.mjs <deck-dir> --only a,b       # just these slides
 node house/check.mjs <deck-dir> --theme euclid   # try the deck in another theme
 node house/check.mjs --all             # every top-level directory holding a deck.json
+node house/pdf.mjs <deck-dir> [--steps] [--only a,b] [--out f.pdf]   # backup PDF of the built deck: a page per slide (or per build step)
 npm test                               # the checker's own tests (demo passes, fixtures fail)
 ```
 
@@ -127,9 +128,18 @@ Several groups (a key project each, say) are several `div.people` blocks, up to 
 
 ## Figures
 
-A `<figure>` holds an optional `<figcaption>` (a one-line label above), one image, optional `<mark>` highlights, and an optional `.source` line under it. Caption, image and source stay together, centred in the space the layout gives the figure (top-aligned in `compare` and `grid`, so captions line up).
+A `<figure>` holds an optional `<figcaption>` (a one-line label above), one visual (an image, video, live page or inline SVG), optional `<mark>` highlights, and an optional `.source` line under it. Caption, image and source stay together, centred in the space the layout gives the figure (top-aligned in `compare` and `grid`, so captions line up).
 
 - **Pre-rendered figures are the normal case.** PNG, JPEG, SVG and PDF work as `<img src="images/…">`; a PDF's first page is rasterised to 3200 px on its long side at build time (cached in `node_modules/.cache/house`). The image takes the largest box of its aspect ratio that fits its cell. The build multiplies figure pixels by the theme's ground colour, so a plot's white background becomes the ground and the plot sits on the paper without a white rectangle, identically on screen, in a PDF and in any browser; a figure whose background is content (a photograph, a map with a cream ground) takes `class="plain"`. SVG images blend in CSS instead.
+- **Videos** use `<figure><video src="images/clip.mp4" poster="images/clip.jpg"></video></figure>` (MP4 or WebM).
+  The poster is required: its aspect ratio sizes the frame, and the checker and report show it instead of playing the clip.
+  Videos restart when their slide becomes current, pause when it is left, and loop unless the video has `data-once`.
+  The build includes both assets without multiplying or blending their colours into the ground.
+  Run `uv run house/video.py SRC OUT.mp4` to encode a silent H.264 clip and its `OUT.jpg` poster; aim for a few MB per clip.
+  Options include `--width`, `--crf`, `--fps`, `--start`, `--duration`, `--speed`, `--poster-at` and `--vf` (extra ffmpeg filters).
+- **Live pages** use `<figure><iframe src="https://…" data-poster="images/page.png" title="App name"></iframe></figure>`.
+  The required poster sets the frame's aspect ratio and stays behind the page; the page loads when its slide first becomes current and stays loaded after that.
+  The report, PDF/print view and checker show only the poster and never load the network page.
 - **Text in figures** must be legible on screen too, and the checker cannot read pixels: make axis labels and legends at least 32 px *as displayed*. A plot shown 1371 px wide from a 12-inch matplotlib figure at 100 dpi is scaled by 1.14, so 22 pt labels are about 35 px. Look at the screenshots.
 - **Stacks** build a figure up in steps: further `<img class="fragment">` after the first image in the same `<figure>` are drawn exactly over it, one per step. Every image in a stack has the first one's aspect ratio and no `data-crop`; make them as frames of one plot (same axes, same canvas) so only the new layer changes. Each frame is opaque once multiplied into the ground, so a later one hides the earlier ones. Example: `2610_Napoli_CMBX/slides/footprint.html`.
 - **Prisms** turn a stack instead of laying frames over each other: `<figure data-prism>` makes each step rotate the stack about its horizontal axis, like a prism with one frame on each side, so the next frame rolls up from below as the last one turns away and darkens. A later frame with `data-zoom="x y w h"` arrives differently: the view pulls back, the previous frame shrinking into that box of the new one (percent of the image, from its top left; it may reach past the edges) while the new frame settles to rest around it. Use it for a detail that becomes part of a larger whole. For an undistorted move, give the box the image's aspect ratio (`w` = `h`). Only the step between two states moves. At rest a prism is the plain stack, so the report, a PDF export and the checker see the stack, and with `prefers-reduced-motion` the frames crossfade. To change how the last frame arrives, add or drop its `data-zoom`; to change what it shows, swap its image. The motion lives in `runtime.js`. Example: `house/demo/slides/prism.html`.
@@ -174,10 +184,10 @@ A figure walked step by step can carry a card for each step: `<div class="step-c
 
 Errors:
 
-- structure: an unknown layout or a class outside the vocabulary (house.css, the themes, the deck's css); content a layout does not allow, or too many of it; a figure without exactly one image, inline SVG or placeholder (a portrait: one image or one `span.initials`, and a name); an id used on two slides; elements the build cannot inline (`<script>`, `<iframe>`, `<video>`, SVG `<image>`, `url()` in a style); an inline type size or scale; build failures (missing image, TeX error, text outside the `<section>`, a highlight or crop outside its image);
+- structure: an unknown layout or a class outside the vocabulary (house.css, the themes, the deck's css); content a layout does not allow, or too many of it; a figure without exactly one image, video, live page, inline SVG or placeholder (a portrait: one image or one `span.initials`, and a name); an id used on two slides; elements the build cannot inline (`<script>`, SVG `<image>`, `url()` in a style); an inline type size or scale; build failures (missing image, TeX error, text outside the `<section>`, a highlight or crop outside its image);
 - geometry: text ink or a box outside the content box, anything off the canvas (footer, logos and themed bands may leave the content box but not the canvas); an element clipping its content; the headline overlapping the body, or sibling blocks overlapping anywhere in the body; a caption or source wider than its figure (a portrait's name may take two lines within its column); more than 32 portraits on a `people` slide; a scaled or transformed slide frame; a three-line headline;
 - legibility: text set below 32 px, SVG text as displayed included; contrast below 4.5:1 for text against its background, with opacity, and for SVG text against the filled shape under its centre;
-- the page: a script error, a file that fails to load, any network request (decks work offline).
+- the page: a script error, a file that fails to load, any network request (the checker uses posters for live pages; the rest of the deck works offline).
 
 Warnings: a two-line headline (not on `statement`); more than 60 words on screen (the notes card is exempt); a `points` slide filling less than 40 % of its body (make it a `statement`, or merge); an image drawn under 240 px tall and under 900 px wide (check its labels, or give it room; portraits and logos are exempt); no notes; a placeholder; inline styles; images without alt text.
 

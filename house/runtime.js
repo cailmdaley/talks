@@ -58,6 +58,39 @@
 
   Reveal.on('slidechanged', close);
 
+  // Videos restart on entry and pause when their slide is left; a poster-only
+  // render (checker, PDF export, print) never plays them, so the poster shows.
+  function syncVideos() {
+    var still = window.HousePosterOnly || (Reveal.isPrintView && Reveal.isPrintView()) || window.matchMedia('print').matches;
+    var cur = still ? null : Reveal.getCurrentSlide();
+    document.querySelectorAll('.reveal video').forEach(function (v) {
+      if (cur && cur.contains(v)) {
+        v.currentTime = 0;
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+      } else v.pause();
+    });
+  }
+  Reveal.on('ready', syncVideos);
+  Reveal.on('slidechanged', syncVideos);
+
+  // A live page loads on its first visit and stays loaded across slide changes.
+  function loadPages() {
+    if (window.HousePosterOnly || (Reveal.isPrintView && Reveal.isPrintView()) || window.matchMedia('print').matches) return;
+    var cur = Reveal.getCurrentSlide();
+    // The page replaces the poster only once its host answers, so an unreachable host
+    // leaves the poster up instead of the browser's error page.
+    if (cur) cur.querySelectorAll('iframe[data-page-src]:not([src]):not([data-probing])').forEach(function (iframe) {
+      var url = iframe.getAttribute('data-page-src');
+      iframe.setAttribute('data-probing', '');
+      fetch(url, { mode: 'no-cors', cache: 'no-store' })
+        .then(function () { iframe.src = url; })
+        .catch(function () { iframe.removeAttribute('data-probing'); });
+    });
+  }
+  Reveal.on('ready', loadPages);
+  Reveal.on('slidechanged', loadPages);
+
   // ── Peek: hovering an element that opens a detail shows the detail as a
   // popout beside it. The popout stays while the pointer is on the element or
   // on the popout, and lingers a moment after it leaves both, so the pointer
