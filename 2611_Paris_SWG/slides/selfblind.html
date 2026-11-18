@@ -1,14 +1,14 @@
 <section data-layout="figure">
   <h2>CMBX today: one hidden cosmology shift</h2>
   <figure>
-    <img src="images/spt26_selfblind_shift.png" alt="Blinded κ-cross bandpowers in six tomographic bins, galaxy clustering × κ on top and cosmic shear × κ below, with error bars, against the windowed fiducial theory as dashed lines">
-    <span class="source">Blinded κ crosses against the fiducial · dr1_cmbx merge request 9 · shown at the SPT summer meeting, June 2026</span>
+    <img src="images/paris26_blind_shift_glass_tv.png" alt="Shift of every bandpower of a GLASS mock data vector under one throwaway blind, blinded minus true in units of the Gaussian error, in five panels: κδ up to 0.7σ, κγ within 0.3σ, δδ up to 22σ, δγ up to 4σ and γγ up to 1.4σ, with lines coloured by tomographic bin">
+    <span class="source">One throwaway blind on a GLASS mock, revealed · theory and blind of dr1_cmbx merge request 9</span>
   </figure>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>The blind</strong> — when the pipeline writes a data vector, each bandpower is shifted by the theory at a hidden cosmology minus the theory at the fiducial (after Muir et al. 2020, the method of blindspot). Shapes, signal-to-noise, the covariance and the null tests stay visible; the inferred cosmology does not.</li>
-      <li><strong>The plot</strong> — blinded κ-cross bandpowers, as $\ell C_\ell$, in the six tomographic bins: galaxy clustering × κ above, cosmic shear × κ below, with the error bars of the covariance, which the blind does not touch. Dashed: the fiducial theory through each bandpower window, which is not shifted. The data are an earlier catalogue, as shown in June 2026.</li>
-      <li><strong>The draw</strong> — the hidden cosmology is one entry of a public list of 100, uniform within ±0.1 in $\Omega_\mathrm{m}$ and ±0.075 in $S_8$ of the Planck 2018 fiducial; the index is sealed and only its hash is shown.</li>
+      <li><strong>The blind</strong> — when the pipeline writes a data vector, each bandpower is shifted by the theory at a hidden cosmology minus the theory at the fiducial (after Muir et al. 2020, the method of blindspot). Shapes, the covariance and the null tests stay visible; the inferred cosmology does not.</li>
+      <li><strong>The plot</strong> — that shift for one throwaway blind on a GLASS mock (seed 3000), revealed for the purpose: $\Delta S_8 = -0.029$, $\Delta\Omega_\mathrm{m} = -0.089$. Each line is one spectrum, coloured by tomographic bin; the vertical axis is blinded minus true in units of the Gaussian error of that bandpower. Theory: the likelihood's own theory vector of dr1_cmbx, with the HEALPix pixel windows and the ACT κ filter.</li>
+      <li><strong>Reading</strong> — one cosmology shift is a very different number of σ per probe: at most 0.3σ per bandpower in κγ and 0.7σ in κδ, but up to 22σ in δδ. The table gives the median and largest shift per family and the joint significance on that family's covariance block (κγ 1.0, κδ 2.2, γγ 7.7, δγ 18, δδ 91).</li>
       <li><strong>In dr1_cmbx</strong> — merge request 9 (draft): the blind is applied where the likelihood input is written, and spectra the theory does not model are refused, so nothing is written unshifted by accident.</li>
     </ul>
   </aside>
