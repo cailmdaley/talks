@@ -32,10 +32,11 @@
    "outline": "What the other Euclid groups are doing, how CMBX chooses its blind, and how to compare with other groups while blinded.",
    "slides": [
     "blinding",
+    "blinding-goal",
     "landscape",
     "blindspot",
-    "size",
     "size-sigma",
+    "size",
     "kappa",
     "consistency",
     "blinding-questions"
