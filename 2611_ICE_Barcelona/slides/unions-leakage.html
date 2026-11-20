@@ -1,0 +1,23 @@
+<section data-layout="figure-text" data-split="50">
+  <h2>Injected PSF leakage shows which fit recovers it</h2>
+  <figure>
+    <img src="images/unions_leakage_xisys.png" alt="Relative error of the PSF systematic correlation function against angular scale: standard least squares 23 to 35 per cent low, three errors-in-variables fits within a few per cent of zero">
+  </figure>
+  <div class="text">
+    <ul>
+      <li>58 realizations on real v2 positions, weights and PSF fields</li>
+      <li>known leakage injected, then refit</li>
+      <li>standard least squares: $\xi_{\rm sys}$ 23–35% low</li>
+      <li>errors in variables: within −2% to +7%</li>
+    </ul>
+  </div>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Leakage model</strong> — a galaxy's ellipticity picks up $\alpha\,e_{\rm PSF} + \beta\,\delta e_{\rm PSF} + \eta\,(\delta T/T)\,e_{\rm PSF},$ with $(\alpha, \beta, \eta)$ fitted to star–galaxy correlation functions (the $\rho$ and $\tau$ statistics). $\xi_{\rm sys}$ is the additive term in $\xi_+$ that the fitted parameters predict; it is what reaches cosmology.</li>
+      <li><strong>Test</strong> — each realization keeps the real v2 galaxy positions, weights and PSF fields, rotates the galaxy shapes at random, and injects known leakage near the data's fit, $(\alpha, \beta, \eta) = (0.015, 1.2, 1.0).$ The fits then run as on data.</li>
+      <li><strong>Curves</strong> — the mean relative error of $\xi_{\rm sys}$ from the fitted parameters against the injected truth. Standard least squares comes out 23–35 % low from 1′ to 221′: the noisy $\rho$ design dilutes the fit, and the galaxy and star fields were centered inconsistently. Every errors-in-variables variant is within −2 to +7 %, against a floor of about +3 % from noise.</li>
+    </ul>
+    <details><summary>Caveats</summary><p>No cosmic shear in the realizations, so they do not reproduce the data's $\chi^2$ growth with patch count; a rotated GLASS shear field is the next step. The injected $\beta$ is constant by construction. The errors-in-variables fit reports $\alpha$ and $\eta$ errors 0.55–0.65 times the true scatter, so those two need profile-likelihood or mock-calibrated intervals; $\beta$'s errors are calibrated. No cosmology was fitted.</p></details>
+    <details><summary>Sources</summary><p>UNIONS PSF-leakage injection ensemble (8 November 2026), prompted by Sacha Guerrini's questions on the leakage estimator; 400 jackknife patches. The figure is redrawn at the five reported scales by <em>make_unions_mock_checks.py</em> in this deck.</p></details>
+  </aside>
+</section>

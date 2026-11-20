@@ -1,9 +1,9 @@
 {
-  "title": "Weak lensing catalogues and cosmology with UNIONS, Euclid and SPT",
+  "title": "Simulating surveys from catalogs to cosmology with Euclid, SPT, and UNIONS",
   "author": "Cail Daley",
   "venue": "ICE-CSIC seminar, Barcelona",
   "date": "2026-11-25",
-  "description": "How large weak-lensing analyses are done today, through Euclid × SPT-3G CMB lensing and UNIONS cosmic shear, and where simulation pipelines take them.",
+  "description": "Mocks and forward models from catalogs to cosmology, through a Euclid × SPT-3G 6×2pt analysis and a new UNIONS shape catalog.",
   "footer": "Cail Daley · ICE-CSIC · November 2026",
   "theme": "house",
   "css": "deck.css",
@@ -21,13 +21,13 @@
   },
   "sections": [
     {
-      "title": "Opening",
-      "outline": "How large lensing analyses are done today: a long chain checked against simulations, collaborations the size the data needed, and an opening for small teams with ambitious methods.",
+      "title": "Simulating surveys",
+      "outline": "Mocks reproduce a survey to validate pipelines and characterize systematics; the same techniques give forward models for explicit and implicit inference; simulations give agents a verifiable environment.",
       "slides": [
         "title",
         "chain",
-        "collaborations",
-        "small-teams"
+        "fidelity",
+        "agents"
       ]
     },
     {
@@ -48,46 +48,49 @@
     },
     {
       "title": "UNIONS",
-      "outline": "The first UNIONS cosmic-shear release over 3,500 deg², validated with B-modes and mocks and blinded, and the new 191-million-galaxy catalogue over 5,200 deg² that opens the survey to tomography.",
+      "outline": "The first UNIONS cosmic-shear release over 3,500 deg², the new 191-million-galaxy shape catalog over 5,200 deg², its mock checks of B-modes and PSF leakage, and the tomographic cosmic shear and 3×2pt with SPHEREx it feeds.",
       "slides": [
         "unions",
         "unions-survey",
         "unions-north",
         "unions-release",
-        "unions-bmodes",
-        "unions-mocks",
-        "unions-s8",
-        "unions-blinding",
         "unions-v2",
-        "unions-next"
+        "unions-bmode-mocks",
+        "unions-leakage",
+        "unions-next",
+        "unions-3x2pt"
       ]
     },
     {
-      "title": "Simulations, agents, SBI",
-      "outline": "Pipeline, simulations and data held against each other; work chosen to scale with compute; one simulation framework with fidelity dialled against speed; agents running the checks; SBI as where it ends; what collaborations are for; Lightcone.",
+      "title": "Forward models and inference",
+      "outline": "A forward model of the ACT DR6 lensing reconstruction, simulation-based inference as where the mocks lead, and Lightcone, where both analyses run.",
       "slides": [
-        "spiral",
-        "scales",
-        "fidelity",
         "cmb-lensing-fm",
-        "agents",
         "sbi",
-        "collaborations-for",
         "lightcone",
         "summary"
       ]
     },
     {
       "title": "Backup",
-      "outline": "The blinding rehearsal on a mock, the systematics-template crosses and the FLASK covariance; the UNIONS v2 error bars, robustness tests, contours and the IA prior.",
+      "outline": "The blinding rehearsal on a mock, the systematics-template crosses and the FLASK covariance; the UNIONS first-release S8, B-modes, mock comparison and blinding, the v2 error bars, robustness tests, contours and the IA prior; the earlier opening and close on how collaborations work.",
       "slides": [
         "blind-rehearsal",
         "systematics-triangle",
         "kp-3-sims-cov",
+        "unions-s8",
+        "unions-bmodes",
+        "unions-mocks",
+        "unions-blinding",
         "unions-errorbars",
         "unions-robustness",
         "unions-contours",
-        "unions-ia"
+        "unions-ia",
+        "collaborations",
+        "small-teams",
+        "spiral",
+        "scales",
+        "collaborations-for"
       ]
     }
   ]
