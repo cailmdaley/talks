@@ -48,14 +48,13 @@
     },
     {
       "title": "UNIONS",
-      "outline": "The first UNIONS cosmic-shear release over 3,500 deg², the new 191-million-galaxy shape catalog over 5,200 deg², its mock checks of B-modes and PSF leakage, and the tomographic cosmic shear and 3×2pt with SPHEREx it feeds.",
+      "outline": "The first UNIONS cosmic-shear release over 3,500 deg², the new 191-million-galaxy shape catalog over 5,200 deg², its PSF-leakage check on injected realizations, and the tomographic cosmic shear and 3×2pt with SPHEREx it feeds.",
       "slides": [
         "unions",
         "unions-survey",
         "unions-north",
         "unions-release",
         "unions-v2",
-        "unions-bmode-mocks",
         "unions-leakage",
         "unions-next",
         "unions-3x2pt"
@@ -82,6 +81,7 @@
         "unions-bmodes",
         "unions-mocks",
         "unions-blinding",
+        "unions-bmode-mocks",
         "unions-errorbars",
         "unions-robustness",
         "unions-contours",
