@@ -78,13 +78,13 @@
   ]
  },
  "leakage_xi_sys": {
-  "source": "fir:/project/rrg-kyi/cdaley/unions/analyses/inject-leakage/xi_sys_np400.md (58 realizations, 400 patches, M from star-centred rho): relative bias of xi_sys+ from fitted (alpha, beta, eta) against the injected truth",
+  "source": "fir:/project/rrg-kyi/cdaley/unions/analyses/inject-leakage/xi_sys_np400.md (58 realizations, 400 patches, M from star-centred rho): relative bias of xi_sys+ from fitted (alpha, beta, eta) against the injected truth. Scales are the TreeCorr meanr of reporting bins 0, 5, 10, 15, 19 (fixed.npz p__p meanr); the table header labels the fourth 56', which is bin 14's scale.",
   "theta_arcmin": [
-   1,
-   5,
-   18,
-   56,
-   221
+   1.17,
+   4.64,
+   18.44,
+   73.29,
+   220.99
   ],
   "arms": {
    "lsq standard (rho, galaxies centred)": [
