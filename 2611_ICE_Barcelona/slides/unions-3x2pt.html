@@ -2,32 +2,44 @@
   <h2>3×2pt with SPHEREx lenses expected in summer 2027</h2>
   <figure>
     <svg viewBox="0 30 1712 310" role="img" aria-label="Redshift axis from 0 to 1.2: five LSx lens bins between 0.05 and 0.55, and the mean redshifts of the four UNIONS source bins at 0.29, 0.43, 0.58 and 0.92">
-      <path d="M60 240 H1652" class="stroke-muted" stroke-width="3"></path>
-      <path d="M60 240 V256" class="stroke-muted" stroke-width="3"></path><text x="60" y="296" text-anchor="middle" font-size="34" class="fill-muted">0</text>
-      <path d="M325 240 V256" class="stroke-muted" stroke-width="3"></path><text x="325" y="296" text-anchor="middle" font-size="34" class="fill-muted">0.2</text>
-      <path d="M591 240 V256" class="stroke-muted" stroke-width="3"></path><text x="591" y="296" text-anchor="middle" font-size="34" class="fill-muted">0.4</text>
-      <path d="M856 240 V256" class="stroke-muted" stroke-width="3"></path><text x="856" y="296" text-anchor="middle" font-size="34" class="fill-muted">0.6</text>
-      <path d="M1121 240 V256" class="stroke-muted" stroke-width="3"></path><text x="1121" y="296" text-anchor="middle" font-size="34" class="fill-muted">0.8</text>
-      <path d="M1387 240 V256" class="stroke-muted" stroke-width="3"></path><text x="1387" y="296" text-anchor="middle" font-size="34" class="fill-muted">1</text>
-      <path d="M1652 240 V256" class="stroke-muted" stroke-width="3"></path><text x="1652" y="296" text-anchor="middle" font-size="34" class="fill-muted">1.2</text>
-      <g font-size="36" font-weight="600"><rect x="129" y="150" width="127" height="70" rx="8" class="fill-panel stroke-teal" stroke-width="4"></rect>
-        <text x="193" y="198" text-anchor="middle">L1</text>
-        <rect x="262" y="150" width="127" height="70" rx="8" class="fill-panel stroke-teal" stroke-width="4"></rect>
-        <text x="325" y="198" text-anchor="middle">L2</text>
-        <rect x="395" y="150" width="127" height="70" rx="8" class="fill-panel stroke-teal" stroke-width="4"></rect>
-        <text x="458" y="198" text-anchor="middle">L3</text>
-        <rect x="527" y="150" width="127" height="70" rx="8" class="fill-panel stroke-teal" stroke-width="4"></rect>
-        <text x="591" y="198" text-anchor="middle">L4</text>
-        <rect x="660" y="150" width="127" height="70" rx="8" class="fill-panel stroke-teal" stroke-width="4"></rect>
-        <text x="723" y="198" text-anchor="middle">L5</text>
-        <path d="M449 128 L433 100 L465 100 Z" class="fill-accent"></path>
-        <text x="449" y="84" text-anchor="middle" class="fill-accent">S1</text>
-        <path d="M628 128 L612 100 L644 100 Z" class="fill-accent"></path>
-        <text x="628" y="84" text-anchor="middle" class="fill-accent">S2</text>
-        <path d="M833 128 L817 100 L849 100 Z" class="fill-accent"></path>
-        <text x="833" y="84" text-anchor="middle" class="fill-accent">S3</text>
-        <path d="M1286 128 L1270 100 L1302 100 Z" class="fill-accent"></path>
-        <text x="1286" y="84" text-anchor="middle" class="fill-accent">S4</text></g>
+      <defs>
+        <linearGradient id="unions-3x2pt-wash" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" class="stop-sage" stop-opacity="0.8"/><stop offset="1" class="stop-sage" stop-opacity="0.4"/>
+        </linearGradient>
+      </defs>
+      <!-- the redshift axis, in pen -->
+      <g class="pen fill-none stroke-muted" stroke-width="2.6" stroke-linecap="round">
+        <path d="M60 240 H1652 M60 240 V254 M325 240 V254 M591 240 V254 M856 240 V254 M1121 240 V254 M1387 240 V254 M1652 240 V254"/>
+      </g>
+      <g font-size="34" text-anchor="middle">
+        <text x="60" y="296" class="fill-muted">0</text>
+        <text x="325" y="296" class="fill-muted">0.2</text>
+        <text x="591" y="296" class="fill-muted">0.4</text>
+        <text x="856" y="296" class="fill-muted">0.6</text>
+        <text x="1121" y="296" class="fill-muted">0.8</text>
+        <text x="1387" y="296" class="fill-muted">1</text>
+        <text x="1652" y="296" class="fill-muted">1.2</text>
+      </g>
+      <!-- lens bins: one wash over z 0.05–0.55, cut in pen at the bin edges -->
+      <rect x="126" y="150" width="664" height="70" rx="2" class="glaze" fill="url(#unions-3x2pt-wash)"/>
+      <path d="M259 154 V216 M392 154 V216 M524 154 V216 M657 154 V216" class="pen fill-none stroke-teal" stroke-width="2"/>
+      <!-- source-bin means: rose under a pen triangle -->
+      <path d="M449 128 L433 100 L465 100 Z M628 128 L612 100 L644 100 Z M833 128 L817 100 L849 100 Z M1286 128 L1270 100 L1302 100 Z" class="glaze fill-rose"/>
+      <g class="pen fill-none stroke-accent" stroke-width="2.4" stroke-linejoin="round">
+        <rect x="420" y="90" width="900" height="50" class="fill-none" stroke="none"/>
+        <path d="M449 128 L433 100 L465 100 Z M628 128 L612 100 L644 100 Z M833 128 L817 100 L849 100 Z M1286 128 L1270 100 L1302 100 Z"/>
+      </g>
+      <g font-size="36" font-weight="600" text-anchor="middle">
+        <text x="193" y="198">L1</text>
+        <text x="325" y="198">L2</text>
+        <text x="458" y="198">L3</text>
+        <text x="591" y="198">L4</text>
+        <text x="723" y="198">L5</text>
+        <text x="449" y="84" class="fill-accent">S1</text>
+        <text x="628" y="84" class="fill-accent">S2</text>
+        <text x="833" y="84" class="fill-accent">S3</text>
+        <text x="1286" y="84" class="fill-accent">S4</text>
+      </g>
       <text x="1652" y="200" text-anchor="end" font-size="36" class="fill-teal">LSx lens bins</text>
       <text x="60" y="84" font-size="36" class="fill-accent">UNIONS v2 sources</text>
       <text x="856" y="334" text-anchor="middle" font-size="34" class="fill-muted">redshift</text>

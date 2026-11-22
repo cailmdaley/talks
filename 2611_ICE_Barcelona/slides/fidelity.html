@@ -3,20 +3,30 @@
   <figure>
     <svg viewBox="0 110 1712 410" role="img" aria-label="A track from fast to faithful with four rungs: Gaussian fields, lognormal, N-body calibrated, full forward model; the mocks in this talk are marked on it">
       <defs>
-        <marker id="fidelity-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
-          <path d="M0 0 L10 5 L0 10 z" class="fill-muted"/>
+        <marker id="fidelity-arrow" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="9" markerHeight="8" orient="auto">
+          <path d="M0 0.5 Q6 3.5 12 5 Q6 6.5 0 9.5" class="fill-none stroke-ink" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
         </marker>
+        <linearGradient id="fidelity-butter" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" class="stop-butter" stop-opacity="0.35"/><stop offset="0.45" class="stop-butter" stop-opacity="0.75"/><stop offset="0.72" class="stop-butter" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="fidelity-lilac" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0.55" class="stop-lilac" stop-opacity="0"/><stop offset="0.92" class="stop-lilac" stop-opacity="0.75"/>
+        </linearGradient>
       </defs>
-      <path d="M40 200 H1660" class="stroke-muted" stroke-width="5" marker-end="url(#fidelity-arrow)"/>
+      <!-- fidelity as a stroke of wash that widens from fast to faithful, warming into the forward models' lilac -->
+      <path d="M40 199 C500 196 1100 186 1600 174 Q1640 174 1640 200 Q1640 226 1600 226 C1100 214 500 204 40 201 Z" class="glaze" fill="url(#fidelity-butter)"/>
+      <path d="M40 199 C500 196 1100 186 1600 174 Q1640 174 1640 200 Q1640 226 1600 226 C1100 214 500 204 40 201 Z" class="glaze" fill="url(#fidelity-lilac)"/>
       <g font-size="34" class="fill-muted">
         <text x="40" y="160">fast, approximate</text>
         <text x="1660" y="160" text-anchor="end">faithful, expensive</text>
       </g>
-      <g>
-        <circle cx="200" cy="200" r="20" class="fill-ground stroke-ink" stroke-width="5"/>
-        <circle cx="620" cy="200" r="20" class="fill-ink"/>
-        <circle cx="1040" cy="200" r="20" class="fill-ink"/>
-        <circle cx="1460" cy="200" r="20" class="fill-accent"/>
+      <g class="pen" stroke-width="2.4">
+        <rect x="30" y="160" width="1650" height="80" class="fill-none"/>
+        <path d="M40 200 H1662" class="fill-none stroke-ink" stroke-width="2.6" marker-end="url(#fidelity-arrow)"/>
+        <circle cx="200" cy="200" r="17" class="fill-ground stroke-ink"/>
+        <circle cx="620" cy="200" r="17" class="fill-ink stroke-ink"/>
+        <circle cx="1040" cy="200" r="17" class="fill-ink stroke-ink"/>
+        <circle cx="1460" cy="200" r="17" class="fill-accent stroke-accent"/>
       </g>
       <g font-size="40" font-weight="600" text-anchor="middle">
         <text x="200" y="272">Gaussian</text>

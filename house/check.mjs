@@ -454,7 +454,7 @@ async function render(deck, built, outDir, { steps, only }) {
   page.on('requestfailed', r => pageErrors.push(`failed to load ${r.url().slice(0, 80)} (${r.failure()?.errorText})`));
   const results = new Map();
   const shots = [];
-  const n = await page.evaluate(() => Reveal.getTotalSlides());
+  const n = deck.slides.length;   // backup slides too, which reveal leaves out of its own count
   for (let i = 0; i < n; i++) {
     const s = deck.slides[i];
     if (only && !only.includes(s.name)) continue;

@@ -93,3 +93,8 @@
 /* the DR6 globe clip has a white ground: multiply it into the paper, poster included */
 [data-house-slide="unions-v2"] .frame > video,
 [data-house-slide="unions-v2"] .frame > img { mix-blend-mode: multiply; }
+
+/* stop-… — a gradient stop in a wash's pastel, for a graded wash in a schematic */
+.slide svg .stop-butter { stop-color: var(--butter); }  .slide svg .stop-sky   { stop-color: var(--sky); }
+.slide svg .stop-rose   { stop-color: var(--rose); }    .slide svg .stop-lilac { stop-color: var(--lilac); }
+.slide svg .stop-sage   { stop-color: var(--sage); }
