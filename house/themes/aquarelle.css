@@ -1,0 +1,59 @@
+/* aquarelle — warm paper, a pen line and watercolour washes. Ink is what is
+   measured; wash is what is inferred. EB Garamond throughout. */
+:root {
+  --ground:       #F6F0E4;
+  --ground-deep:  #ECE3D2;
+  --ink:          #211C17;
+  --muted:        #675D4F;
+  --accent:       #A8403A;
+  --teal:         #2F6F68;
+  --cobalt:       #3D5BA0;
+  --ochre:        #B98A2E;
+  --rose:         #E3A9A3;
+  --sage:         #A9C4A6;
+  --sky:          #9FBEDB;
+  --butter:       #EBD38A;
+  --lilac:        #C3B3DC;
+  --rule:         #CFC3AD;
+  --panel:        #EFE6D6;
+  --veil:         rgba(246, 240, 228, 0.82);
+  --figure-card:  transparent;
+  --figure-blend: multiply;
+}
+
+/* the parts of a talk each take a wash, in order; the headline's rule and the footer wear it */
+.theme-aquarelle { --part-1: var(--butter); --part-2: var(--sky); --part-3: var(--rose); --part-4: var(--lilac); --part-5: var(--sage); }
+.theme-aquarelle .slide { --part: var(--rule); }
+.theme-aquarelle .slide[data-part="1"] { --part: var(--part-1); }
+.theme-aquarelle .slide[data-part="2"] { --part: var(--part-2); }
+.theme-aquarelle .slide[data-part="3"] { --part: var(--part-3); }
+.theme-aquarelle .slide[data-part="4"] { --part: var(--part-4); }
+.theme-aquarelle .slide[data-part="5"] { --part: var(--part-5); }
+
+/* a stroke of the part's wash with a pen line through it */
+.theme-aquarelle .slide > h2::after {
+  width: 96px; height: 7px; border-radius: 0;
+  background: linear-gradient(var(--ink), var(--ink)) center / 100% 1.6px no-repeat, var(--part);
+}
+.theme-aquarelle .slide.detail > h2::after { background: var(--teal); height: 4px; }
+
+/* footer: in place of the progress bar, a ruled hairline under the footer, a tick between
+   parts, each part in its wash and inked as far as the talk has come */
+.theme-aquarelle .reveal .progress { display: none !important; }
+.theme-aquarelle .slide > .foot > .parts {
+  display: flex; position: absolute; left: 0; right: 0; bottom: -24px; height: 14px;
+  background: linear-gradient(var(--muted), var(--muted)) center / 100% 1.2px no-repeat;
+  border-right: 1.5px solid var(--muted);
+}
+.theme-aquarelle .slide > .foot > .parts > i { flex: var(--n) 0 0; position: relative; border-left: 1.5px solid var(--muted); --c: var(--part-1); }
+.theme-aquarelle .slide > .foot > .parts > i:nth-child(2) { --c: var(--part-2); }
+.theme-aquarelle .slide > .foot > .parts > i:nth-child(3) { --c: var(--part-3); }
+.theme-aquarelle .slide > .foot > .parts > i:nth-child(4) { --c: var(--part-4); }
+.theme-aquarelle .slide > .foot > .parts > i:nth-child(5) { --c: var(--part-5); }
+.theme-aquarelle .slide > .foot > .parts > i::before,
+.theme-aquarelle .slide > .foot > .parts > i::after { content: ""; position: absolute; left: 0; top: 50%; height: 6px; margin-top: -3px; }
+.theme-aquarelle .slide > .foot > .parts > i::before { right: 0; background: var(--c); opacity: 0.5; }
+.theme-aquarelle .slide > .foot > .parts > i::after {
+  width: calc(var(--done) * 100%);
+  background: linear-gradient(var(--ink), var(--ink)) center / 100% 1.8px no-repeat, var(--c);
+}

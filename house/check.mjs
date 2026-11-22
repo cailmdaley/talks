@@ -26,8 +26,8 @@ const MAX_WORDS = 60;
 // What each layout may hold at its top level, after the headline.
 // Each entry: [selector, min, max].
 const SCHEMA = {
-  title:         { head: 'h1', body: [['p.subtitle', 0, 1], ['p.byline', 0, 1], ['p.affil', 0, 2], ['p.venue', 0, 1], ['p.date', 0, 1], ['div.logos', 0, 1]] },
-  section:       { head: 'h2', body: [['p', 0, 1]] },
+  title:         { head: 'h1', body: [['p.subtitle', 0, 1], ['p.byline', 0, 1], ['p.affil', 0, 2], ['p.venue', 0, 1], ['p.date', 0, 1], ['div.logos', 0, 1], ['figure.art', 0, 1]] },
+  section:       { head: 'h2', body: [['p', 0, 1], ['figure.art', 0, 1]] },
   statement:     { head: 'h2', body: [['p', 0, 2]] },
   points:        { head: 'h2', body: [['ul', 0, 2], ['ol', 0, 2], ['p', 0, 4], ['div.eq', 0, 3], ['div.cols', 0, 1], ['pre', 0, 1], ['span.source', 0, 1], ['p.source', 0, 1]], need: 1 },
   figure:        { head: 'h2', body: [['figure', 1, 1]] },
@@ -221,6 +221,8 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
     (el.localName === 'img' && el.parentElement?.matches('.frame.crop')) ||
     // a word styled inside the headline (a coloured span) is placed by the headline
     (!!el.parentElement?.closest('h2') && getComputedStyle(el).display === 'inline') ||
+    // art fills the frame behind the text; its author keeps the drawing clear of the words
+    !!el.closest('figure.art') ||
     // the notes card scrolls: what is below its fold is measured for size and contrast, not place
     !!el.parentElement?.closest('.notes .scroll');
   // furniture that may sit outside the content box but must stay on the canvas

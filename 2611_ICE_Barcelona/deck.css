@@ -88,7 +88,7 @@
 
 /* the footer credit line stays off: the house footer centres it, where this deck's
    preliminary stamps and variant controls sit */
-.slide:not(.detail) > .foot > span:not(.num) { visibility: hidden; }
+.slide:not(.detail) > .foot > span:not(.num):not(.parts) { visibility: hidden; }
 
 /* the DR6 globe clip has a white ground: multiply it into the paper, poster included */
 [data-house-slide="unions-v2"] .frame > video,

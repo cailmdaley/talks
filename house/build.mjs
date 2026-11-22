@@ -424,6 +424,12 @@ function frameFigures(frame, deckDir, problems, where, assets, variants) {
     // portraits are photographs and keep their own backgrounds
     const portrait = !!img.closest('.people');
     const blend = !!fig0 && !fig0.classList.contains('plain') && !portrait && frame.getAttribute('data-layout') !== 'bleed';
+    // art is a drawing laid behind a title or section slide, on a transparent ground
+    if (fig0?.classList.contains('art')) {
+      img.setAttribute('data-asset', addAsset(assets, im, false));
+      if (!img.hasAttribute('alt')) img.setAttribute('alt', '');
+      continue;
+    }
     img.setAttribute('data-asset', addAsset(assets, im, blend));
     if (blend && im.mime === 'image/svg+xml') img.setAttribute('data-blend', '');
     img.setAttribute('data-src-path', src);
@@ -568,12 +574,13 @@ function appScripts(apps) {
 }
 
 // Build one .slide frame from an authored element (a <section> or an <aside class="detail">).
-function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, assets, apps, typeset, variants }) {
+function makeFrame(el, { deckDir, problems, where, footer, number, part, isDetail, assets, apps, typeset, variants }) {
   const doc = el.ownerDocument;
   const layout = el.getAttribute('data-layout');
   const frame = doc.createElement('div');
   frame.className = isDetail ? 'slide detail' : 'slide';
   if (layout) frame.setAttribute('data-layout', layout);
+  if (part) frame.setAttribute('data-part', String(part.index));
   for (const a of ['data-split', 'data-flip', 'data-cols', 'data-stack', 'data-variant-axes']) if (el.hasAttribute(a)) frame.setAttribute(a, el.getAttribute(a));
   if (el.hasAttribute('data-variant-axes')) {
     const named = el.getAttribute('data-variant-axes').trim().split(/\s+/).filter(Boolean);
@@ -608,13 +615,19 @@ function makeFrame(el, { deckDir, problems, where, footer, number, isDetail, ass
     foot.className = 'foot';
     foot.innerHTML = isDetail
       ? `<span>${esc(el.getAttribute('data-label') || 'Detail')}</span><button class="close" type="button">back to slide ${number}</button>`
-      : `<span>${footer}</span><span class="num">${number}</span>`;
+      : `<span>${footer}</span>${part ? partsRule(part) : ''}<span class="num">${number}</span>`;
     // a source marked data-foot (a team credit, say) sits in the footer beside the notes button
     const credit = isDetail ? null : frame.querySelector(':scope > .body > p.source[data-foot]');
     if (credit) foot.insertBefore(credit, foot.querySelector('.num'));
     frame.appendChild(foot);
   }
   return frame;
+}
+
+// The footer's rule of parts: one segment per main section, as long as its share of the
+// slides, each filled up to the slide shown. A theme draws it (house.css hides it).
+function partsRule(part) {
+  return `<span class="parts" aria-hidden="true">${part.fills.map(([n, done]) => `<i style="--n:${n};--done:${done.toFixed(3)}"></i>`).join('')}</span>`;
 }
 
 // linkedom escapes only quotes in attribute values; escape ampersands too, so
@@ -637,6 +650,9 @@ function buildSlides(deck, typeset) {
   const apps = { code: new Map(), data: new Map() };
   out.apps = apps;
   let counted = 0, extra = 0;
+  // the parts of the talk: its main sections, in order, with their slide counts
+  const mains = deck.meta.sections.filter(sec => !/^backup$/i.test(sec.title ?? ''));
+  const seenIn = new Map();
   deck.slides.forEach((s, i) => {
     const where = s.generated ? 'the Backup divider' : `slides/${s.name}.html`;
     const { section, stray } = parseSlide(s.src);
@@ -646,7 +662,12 @@ function buildSlides(deck, typeset) {
     const divider = Boolean(s.generated);
     const number = !s.backup ? ++counted : divider ? '' : `B${++extra}`;
     const footer = esc(deck.meta.footer);
-    const frame = makeFrame(section, { deckDir: deck.dir, problems, where, footer, number, assets, apps, typeset, variants: deck.meta.variants });
+    // a slide's part is its section's place among the main ones; backup slides show every part done
+    const at = mains.indexOf(s.section);
+    if (at >= 0) seenIn.set(at, (seenIn.get(at) || 0) + 1);
+    const part = { index: at >= 0 ? at + 1 : 'backup',
+      fills: mains.map((sec, k) => [sec.slides.length, at < 0 || k < at ? 1 : k > at ? 0 : seenIn.get(at) / sec.slides.length]) };
+    const frame = makeFrame(section, { deckDir: deck.dir, problems, where, footer, number, part, assets, apps, typeset, variants: deck.meta.variants });
     // the notes are public: a "Sources & notes" overlay built like a detail (so
     // figures, maths and the checker work in it), opened from the footer, and the
     // slide's prose in the report
@@ -740,6 +761,42 @@ function markOpener(el) {
 
 // ── Output ────────────────────────────────────────────────────────────────
 
+// The drawing media of inline schematics: SVG filters that house.css applies by class
+// (.wash, .wash-fine, .glaze, .pen), carried once in every deck and report.
+const MEDIA = `<svg class="house-media" width="0" height="0" aria-hidden="true" focusable="false"><defs>
+${[['house-wash', 0.006, 110, 3, 4, 4], ['house-wash-fine', 0.012, 36, 1.6, 2, 2.5]].map(([id, freq, scale, blur, erode, rim]) => `<filter id="${id}" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="${freq}" numOctaves="4" seed="11" result="n"></feTurbulence>
+<feDisplacementMap in="SourceGraphic" in2="n" scale="${scale}" xChannelSelector="R" yChannelSelector="G" result="d"></feDisplacementMap>
+<feGaussianBlur in="d" stdDeviation="${blur}" result="soft"></feGaussianBlur>
+<feMorphology in="soft" operator="erode" radius="${erode}" result="er"></feMorphology>
+<feGaussianBlur in="er" stdDeviation="${rim}" result="erb"></feGaussianBlur>
+<feComposite in="soft" in2="erb" operator="out" result="edge"></feComposite>
+<feTurbulence type="fractalNoise" baseFrequency="${freq * 2}" numOctaves="3" seed="5" result="pool"></feTurbulence>
+<feColorMatrix in="pool" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.4 0 0 0 -0.75" result="poolA"></feColorMatrix>
+<feComposite in="soft" in2="poolA" operator="in" result="pooled"></feComposite>
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="g"></feTurbulence>
+<feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.9 1.25" result="ga"></feColorMatrix>
+<feComposite in="soft" in2="ga" operator="in" result="grain"></feComposite>
+<feMerge><feMergeNode in="grain"></feMergeNode><feMergeNode in="pooled"></feMergeNode><feMergeNode in="edge"></feMergeNode></feMerge>
+</filter>`).join('\n')}
+<filter id="house-glaze" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" seed="11" result="n"></feTurbulence>
+<feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G" result="d"></feDisplacementMap>
+<feGaussianBlur in="d" stdDeviation="0.7" result="soft"></feGaussianBlur>
+<feMorphology in="soft" operator="erode" radius="1.4" result="er"></feMorphology>
+<feGaussianBlur in="er" stdDeviation="1.3" result="erb"></feGaussianBlur>
+<feComposite in="soft" in2="erb" operator="out" result="edge"></feComposite>
+<feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="3" result="g"></feTurbulence>
+<feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.45 1.12" result="ga"></feColorMatrix>
+<feComposite in="soft" in2="ga" operator="in" result="grain"></feComposite>
+<feMerge><feMergeNode in="grain"></feMergeNode><feMergeNode in="edge"></feMergeNode></feMerge>
+</filter>
+<filter id="house-pen" x="-5%" y="-5%" width="110%" height="110%">
+<feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="2" result="n"></feTurbulence>
+<feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+</defs></svg>`;
+
 // A theme is a token set (plus any furniture, such as a logo) in themes/<name>.css;
 // url(...) references in it are inlined relative to the themes directory.
 export function themeNames() {
@@ -812,6 +869,7 @@ ${openGraph(deck)}
 ${deckCss(deck) ? `<style>${deckCss(deck)}</style>` : ''}
 </head>
 <body>
+${MEDIA}
 <div class="reveal"><div class="slides">
 ${sections}
 </div></div>
