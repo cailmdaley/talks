@@ -59,11 +59,10 @@
     },
     {
       "title": "Doing science now",
-      "outline": "How the two analyses were done and what comes next: simulations as a verifiable environment for agents, the pipeline, simulations and data held against each other, simulation-based inference as the work proposed for ICE, Lightcone, the questions this puts to the community, and a summary.",
+      "outline": "How the two analyses were done and what comes next: simulations as a verifiable environment for agents, simulation-based inference as the work proposed for ICE, Lightcone, the questions this puts to the community, and a summary.",
       "slides": [
         "exciting",
         "agents",
-        "spiral",
         "sbi",
         "lightcone",
         "questions",
@@ -74,6 +73,7 @@
       "title": "Backup",
       "outline": "The blinding rehearsal on a mock, the lens ratio as a check on shear calibration, the systematics-template crosses and the FLASK covariance; the UNIONS first-release S8, B-modes, mock comparison and blinding, the v2 error bars, robustness tests, contours and the IA prior; the earlier opening and close on how collaborations work.",
       "slides": [
+        "spiral",
         "spt-vs-act",
         "dr2",
         "unions-leakage",
