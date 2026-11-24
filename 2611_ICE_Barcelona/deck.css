@@ -99,11 +99,11 @@
 .slide svg .stop-rose   { stop-color: var(--rose); }    .slide svg .stop-lilac { stop-color: var(--lilac); }
 .slide svg .stop-sage   { stop-color: var(--sage); }
 
-/* the drawings' instruments sweep their patch of sky: each view turns about the instrument
-   (make_art.mjs: the dish's pivot, Mauna Kea's summit dome, Euclid's middle) */
-.slide figure.art > img.about-spt    { transform-origin: 57.17% 84.52%; --sweep: 1.5deg; --sweep-time: 13s; }
-.slide figure.art > img.about-unions { transform-origin: 80.21% 73.33%; --sweep: 1.1deg; --sweep-time: 17s; }
-.slide figure.art > img.about-euclid { transform-origin: 91.25% 55.56%; --sweep: 0.9deg; --sweep-time: 21s; }
+/* the drawings' instruments sweep their patch of sky: each view turns about the instrument, a point of
+   the frame (make_art.mjs: the dish's pivot, Mauna Kea's summit dome, Euclid's middle) taken from the layer's own corner */
+.slide figure.art > img.about-spt    { transform-origin: calc(1097.6px - var(--x, 0px)) calc(912.8px - var(--y, 0px)); --sweep: 1.5deg; --sweep-time: 13s; }
+.slide figure.art > img.about-unions { transform-origin: calc(1540px - var(--x, 0px)) calc(792px - var(--y, 0px)); --sweep: 1.1deg; --sweep-time: 17s; }
+.slide figure.art > img.about-euclid { transform-origin: calc(1752px - var(--x, 0px)) calc(600px - var(--y, 0px)); --sweep: 0.9deg; --sweep-time: 21s; }
 
 /* the summary: the takeaways beside the drawing keep left of it, and each numeral sits on a dab of the wash
    of the part of the talk it sums up, the wash the same part's sheet wears in the drawing */

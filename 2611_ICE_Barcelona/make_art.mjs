@@ -2,12 +2,13 @@
 // instruments look up into a light cone of redshift sheets that ends at the CMB; the section openers
 // are the same scene cut down to each part's instruments; the other slides' drawings take their
 // motifs from it (the cone, a sheet of sky, the mock globe). ART at the bottom maps each slide to its
-// drawing. A drawing is a stack of layers, each a full 1920×1080 frame on a transparent ground, so
-// that its washes and instruments can move a little.
+// drawing. A drawing is a stack of layers drawn in the 1920×1080 frame, so that its washes and
+// instruments can move a little; each is saved as the part of the frame it covers, with its place.
 // node 2611_ICE_Barcelona/make_art.mjs [--only title,unions] [--out dir]
 //   → images/ice_art/<drawing>-<layer>.png, and the <figure class="art"> of slides/<drawing>.html
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer';
+import sharp from 'sharp';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const S = { ground: '#F6F0E4', graphite: '#39342E', payne: '#3B4150', rose: '#E3A9A3', sage: '#A9C4A6', sky: '#9FBEDB', butter: '#EBD38A', lilac: '#C3B3DC' };
 
@@ -259,18 +260,21 @@ function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380] }) {
   ].filter(Boolean);
 }
 
-// Looking up the cone from where the instruments stand: every sheet lies over the others, as the
-// sky does in projection. Six discs a little apart, far to near, their washes mixing where they overlap.
-function upTheCone({ cols, cx = 1545, cy = 505, words = [1260, 1600], lifted = 0.14 }) {
+// Looking straight up the cone from where the instruments stand: each sheet is a ring around the
+// opening to the next, the nearest outermost with the coarsest web, and the CMB closes the far end.
+// The rings drift a little off centre, as a cone seen slightly from the side, and no wash lies over another.
+function upTheCone({ cols, cx = 1690, cy = 630, R = 315 }) {
   hand(11);
-  const lift = lifting(words, lifted);
-  const place = [[-150, -135, 300], [130, -200, 235], [225, 70, 265], [25, 205, 225], [-185, 150, 205], [5, 0, 180]];   // dx, dy, r: the CMB first, the nearest sheet last, in the middle
-  const sky = [{ ...CMB, seed: 21 }, ...DEPTHS.map((s, i) => ({ ...s, col: cols[i], seed: 8 + 3 * i }))];
-  const sheets = sky.map((s, i) => { const [dx, dy, r] = place[i];
-    return { id: `sheet${i}`, cls: `wash breathe t${sky.length - 1 - i}`, dpr: 1, svg: `<defs>${sliceFilter('z', s, true)}</defs>${lift}<g mask="url(#lift)" opacity="0.85">
-      <g transform="translate(${cx + dx} ${cy + dy}) scale(${r / 100})"><circle r="100" fill="${s.col}" filter="url(#z)"/></g></g>` }; });
-  const rims = place.map(([dx, dy, r]) => oval(cx + dx + jit(2), cy + dy + jit(2), r * 1.006, r * (1.006 + jit(0.01)), jit(20), W.fine, 0.04 + rnd() * 0.06)).join('');
-  return [...sheets, { id: 'rims', svg: `${MEDIA}${lift}<g mask="url(#lift)">${pencil(rims)}</g>` }];
+  const fr = [1, 0.83, 0.67, 0.52, 0.38, 0.25], drift = [-46, -34];
+  const sky = [...DEPTHS.map((s, i) => ({ ...s, col: cols[i], seed: 8 + 3 * i })).reverse(), { ...CMB, seed: 21 }];   // near to far
+  const at = (i) => [cx + (1 - fr[i]) * drift[0], cy + (1 - fr[i]) * drift[1], R * fr[i]];
+  const sheets = sky.map((s, i) => { const [x, y, r] = at(i), k = r / 100;
+    const hole = i < sky.length - 1 ? (([u, v, q]) => ` ${ell((u - x) / k, (v - y) / k, q / k, q / k)}`)(at(i + 1)) : '';
+    return { id: `sheet${i}`, cls: `wash breathe t${i}`, dpr: 1, svg: `<defs>${sliceFilter('z', s, true)}</defs><g opacity="0.9" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${k.toFixed(3)})"><path d="${ell(0, 0, 100, 100)}${hole}" fill-rule="evenodd" fill="${s.col}" filter="url(#z)"/></g>` }; });
+  const rims = sky.map((_, i) => { const [x, y, r] = at(i); return oval(x + jit(1), y + jit(1), r * 1.004, r * (1.004 + jit(0.006)), jit(20), i < 2 ? W.line : W.fine, 0.04 + rnd() * 0.05); }).join('');
+  // the cone's walls, ruled from the mouth toward the far end
+  const wall = (a) => { const [x0, y0, r0] = at(0), [x1, y1, r1] = at(5); return ln(x0 + r0 * Math.cos(a), y0 + r0 * Math.sin(a), x1 + r1 * Math.cos(a), y1 + r1 * Math.sin(a), W.ghost, 0); };
+  return [...sheets.reverse(), { id: 'rims', svg: `${MEDIA}${pencil(rims + [2.5, 3.9, 5.3].map(wall).join(''))}` }];
 }
 
 // a standing figure as a sketcher sets one into a landscape for scale: a contour in pencil down the
@@ -470,7 +474,7 @@ const ART = {
   title: () => scene({ sky: slices([S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose]), who: ['euclid', 'spt', 'unions'] }),
   // Euclid's galaxies in the part's sky blue, in front of the CMB that SPT maps
   'euclid-spt': () => scene({ sky: slices(ramp('#8FB2D6', '#B9D0E6')), who: ['euclid', 'spt'], lifted: 0.14, words: [1020, 1440] }),
-  // the turn to how the work is done: the whole sky at once, every redshift over the others
+  // the turn to how the work is done: looking straight up the cone, every redshift at once
   exciting: () => upTheCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose] }),
   questions: () => ahead(),
   // the same cone, painted: one sheet for each part of the talk, in its wash
@@ -493,7 +497,7 @@ const ALT = {
   overview: 'A brace gathers the three projects and points to one simulated sky, a globe in pencil and wash',
   sbi: 'Seven mock skies along a parameter axis, their structure growing clumpier; the one that matches the data is ringed in ink and the posterior is a lilac wash on the axis beneath it',
   agents: 'A known input spectrum in pencil, the sky simulated from it as a washed globe, and the measured bandpowers in ink lying on the same pencil curve',
-  exciting: 'Watercolour: six overlapping discs of sky, the redshift sheets and the CMB seen from below, their washes mixing',
+  exciting: 'Pencil and watercolour: the light cone seen from below, its redshift sheets as rings of wash, one inside the other, around the CMB at the far end',
 };
 
 const flag = (n) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : null; };
@@ -504,12 +508,23 @@ const pages = {};
 for (const dpr of [1, 2]) { pages[dpr] = await b.newPage(); await pages[dpr].setViewport({ width: 1920, height: 1080, deviceScaleFactor: dpr }); }
 for (const [name, art] of Object.entries(ART)) {
   if (only && !only.includes(name)) continue;
-  const layers = art();
-  for (const l of layers) { const p = pages[l.dpr || 2];
+  // layers that neither move nor differ in how they are laid (same classes, same resolution) are one image
+  const layers = art().reduce((out, l) => { const last = out[out.length - 1];
+    if (last && !l.cls && !last.cls && (l.dpr || 2) === (last.dpr || 2)) last.svg += l.svg; else out.push({ ...l });
+    return out; }, []);
+  for (const f of fs.readdirSync(OUT)) if (f.startsWith(`${name}-`)) fs.rmSync(path.join(OUT, f));
+  for (const l of layers) { const dpr = l.dpr || 2, p = pages[dpr];
     await p.setContent(`<body style="margin:0;background:transparent"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" style="display:block">${l.svg}</svg>`);
-    await p.screenshot({ path: path.join(OUT, `${name}-${l.id}.png`), omitBackground: true }); }
+    // each layer is kept as the part of the frame it draws on, with its place in the frame (data-at)
+    const { data, info } = await sharp(await p.screenshot({ omitBackground: true })).raw().toBuffer({ resolveWithObject: true });
+    let x0 = info.width, y0 = info.height, x1 = 0, y1 = 0;
+    for (let y = 0; y < info.height; y++) for (let x = 0; x < info.width; x++) if (data[(y * info.width + x) * 4 + 3] > 2) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    const pad = 4 * dpr, snap = (v, up) => Math[up ? 'ceil' : 'floor'](v / dpr) * dpr;   // whole frame pixels, so a layer sits where it was drawn
+    x0 = Math.max(0, snap(x0 - pad)); y0 = Math.max(0, snap(y0 - pad)); x1 = Math.min(info.width, snap(x1 + 1 + pad, true)); y1 = Math.min(info.height, snap(y1 + 1 + pad, true));
+    await sharp(data, { raw: info }).extract({ left: x0, top: y0, width: x1 - x0, height: y1 - y0 }).png({ compressionLevel: 9 }).toFile(path.join(OUT, `${name}-${l.id}.png`));
+    l.at = [x0, y0, x1 - x0, y1 - y0].map(v => v / dpr).join(' '); }
   // the slide of the same name carries the drawing: its <figure class="art"> is written here
-  const figure = `  <figure class="art">\n${layers.map((l, i) => `    <img src="images/ice_art/${name}-${l.id}.png"${l.cls ? ` class="${l.cls}"` : ''} alt="${i ? '' : ALT[name]}">`).join('\n')}\n  </figure>\n`;
+  const figure = `  <figure class="art">\n${layers.map((l, i) => `    <img src="images/ice_art/${name}-${l.id}.png"${l.cls ? ` class="${l.cls}"` : ''} data-at="${l.at}" alt="${i ? '' : ALT[name]}">`).join('\n')}\n  </figure>\n`;
   const file = path.join(HERE, 'slides', `${name}.html`), html = fs.readFileSync(file, 'utf8');
   const next = /  <figure class="art">[\s\S]*?<\/figure>\n/.test(html) ? html.replace(/  <figure class="art">[\s\S]*?<\/figure>\n/, figure) : html.replace('  <aside class="notes">', figure + '  <aside class="notes">');
   if (next !== html && !flag('--out')) fs.writeFileSync(file, next);

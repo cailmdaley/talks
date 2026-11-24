@@ -427,6 +427,10 @@ function frameFigures(frame, deckDir, problems, where, assets, variants) {
     // art is a drawing laid behind a title or section slide, on a transparent ground
     if (fig0?.classList.contains('art')) {
       img.setAttribute('data-asset', addAsset(assets, im, false));
+      // data-at="x y w h": the layer's box in the 1920 × 1080 frame, in px (house.css places it)
+      const at = img.getAttribute('data-at')?.trim().split(/\s+/).map(Number);
+      if (at && (at.length !== 4 || at.some(v => !Number.isFinite(v)))) problems.push(`${where}: data-at wants "x y w h" in frame pixels (has "${img.getAttribute('data-at')}")`);
+      else if (at) img.setAttribute('style', ['x', 'y', 'w', 'h'].map((k, i) => `--${k}:${at[i]}px`).join(';'));
       if (!img.hasAttribute('alt')) img.setAttribute('alt', '');
       continue;
     }

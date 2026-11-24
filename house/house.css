@@ -187,15 +187,18 @@ html, body { background: var(--ground); }
 .slide:has(figure.art) { isolation: isolate; }
 .slide figure.art { position: absolute; inset: 0; margin: 0; z-index: -1; }
 .slide figure.art > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* a layer smaller than the frame says where it lies (data-at="x y w h", frame px; the build sets --x … --h) */
+.slide figure.art > img[data-at] { inset: auto; left: var(--x); top: var(--y); width: var(--w); height: var(--h); }
 .slide figure.art > img.wash { mix-blend-mode: multiply; }
 /* on a title or section slide the drawing keeps the right of the frame; the text keeps the left */
 .slide:is([data-layout="title"], [data-layout="section"]):has(figure.art) :is(h1, h2, .subtitle, .body > p) { max-width: 1040px; }
 /* a layer may move, slowly and a little. .breathe: a wash laid lighter that comes to full strength and
    pales again, in turn through .t0, .t1, … so that a wave passes through the stack. .sweep: the
-   layer turns --sweep either way about its transform-origin (a deck's class sets both). Nothing
-   moves in the report, in print or under reduced motion: the layers at rest are the drawing. */
-.slide figure.art > img.breathe { animation: art-breathe 36s ease-in-out infinite; animation-delay: calc(var(--t, 0) * 6s - 36s); }
-.slide figure.art > img.sweep { animation: art-sweep var(--sweep-time, 14s) ease-in-out infinite alternate; }
+   layer turns --sweep either way about its transform-origin (a deck's class sets both). Only the
+   slide on screen moves, and nothing moves in the report, in print or under reduced motion: the
+   layers at rest are the drawing. */
+.reveal section.present figure.art > img.breathe { animation: art-breathe 36s ease-in-out infinite; animation-delay: calc(var(--t, 0) * 6s - 36s); }
+.reveal section.present figure.art > img.sweep { animation: art-sweep var(--sweep-time, 14s) ease-in-out infinite alternate; }
 .slide figure.art > img.t1 { --t: 1; } .slide figure.art > img.t2 { --t: 2; } .slide figure.art > img.t3 { --t: 3; }
 .slide figure.art > img.t4 { --t: 4; } .slide figure.art > img.t5 { --t: 5; } .slide figure.art > img.t0 { --t: 0; }
 /* .late: a layer that waits for the slide's last fragment and arrives with it; .early: with its first */
