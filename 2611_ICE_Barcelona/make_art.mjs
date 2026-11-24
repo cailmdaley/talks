@@ -387,13 +387,44 @@ function fourSims() {
   ];
 }
 
+// The shape catalogue under a loupe, drawn out from a spot on the nearest sheet: galaxies in ink
+// (what is measured), each turned around the mass in wash beneath it (what is inferred from them).
+function shapeCatalogue({ cx = 676, cy = 800, R = 168, spot = [1150, 693] } = {}) {
+  hand(97);
+  const peaks = [[-58, -38, 1, 50], [72, 44, 0.8, 44], [-18, 104, 0.5, 34]];   // dx, dy, mass, core radius
+  const deepRose = deep(S.rose, 0.72);
+  const wash = `<defs><radialGradient id="mass"><stop offset="0" stop-color="${deepRose}" stop-opacity="0.95"/><stop offset="0.4" stop-color="${deepRose}" stop-opacity="0.45"/><stop offset="1" stop-color="${deepRose}" stop-opacity="0"/></radialGradient>
+      <filter id="bleed" x="-30%" y="-30%" width="160%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="3" seed="6" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="34" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation="1.2"/></filter>
+      <clipPath id="lens"><circle cx="${cx}" cy="${cy}" r="${R - 2}"/></clipPath>${GLAZE}</defs>
+    ${glaze(S.rose, ell(cx, cy, R - 1, R - 1), 0.3)}
+    <g clip-path="url(#lens)"><g filter="url(#bleed)">
+      <path d="M${cx + peaks[0][0]} ${cy + peaks[0][1]} Q${cx + 20} ${cy - 30} ${cx + peaks[1][0]} ${cy + peaks[1][1]} T${cx + 150} ${cy + 96}" fill="none" stroke="${deepRose}" stroke-width="15" opacity="0.3" stroke-linecap="round"/>
+      <path d="M${cx + peaks[0][0]} ${cy + peaks[0][1]} Q${cx - 60} ${cy + 40} ${cx + peaks[2][0]} ${cy + peaks[2][1]}" fill="none" stroke="${deepRose}" stroke-width="12" opacity="0.26" stroke-linecap="round"/>
+      ${peaks.map(([dx, dy, m, rc]) => `<circle cx="${cx + dx}" cy="${cy + dy}" r="${(rc * 1.9).toFixed(1)}" fill="url(#mass)" opacity="${(0.5 + 0.5 * m).toFixed(2)}"/>`).join('')}</g></g>`;
+  // galaxies scattered evenly (no two closer than 28 px), each with a shape of its own, sheared tangentially around the peaks
+  const pts = [];
+  for (let n = 0; n < 6000 && pts.length < 100; n++) { const a = rnd() * 2 * Math.PI, rr = Math.sqrt(rnd()) * (R - 15), q = [rr * Math.cos(a), rr * Math.sin(a)];
+    if (pts.every(o => Math.hypot(o[0] - q[0], o[1] - q[1]) > 28)) pts.push(q); }
+  const gal = pts.map(([x, y]) => { const ei = 0.06 + rnd() * 0.15, al = rnd() * Math.PI; let e1 = ei * Math.cos(2 * al), e2 = ei * Math.sin(2 * al);
+    for (const [dx, dy, m, rc] of peaks) { const u = Math.hypot(x - dx, y - dy) / rc, g = 0.64 * m * 2 * u / (1 + u * u), ph = Math.atan2(y - dy, x - dx); e1 -= g * Math.cos(2 * ph); e2 -= g * Math.sin(2 * ph); }
+    const e = Math.min(Math.hypot(e1, e2), 0.58), th = 0.5 * Math.atan2(e2, e1) * 180 / Math.PI, size = 4.4 + rnd() * rnd() * 5.5, k = Math.sqrt((1 + e) / (1 - e));
+    return `<ellipse cx="${(cx + x).toFixed(1)}" cy="${(cy + y).toFixed(1)}" rx="${(size * k).toFixed(1)}" ry="${(size / k).toFixed(1)}" transform="rotate(${th.toFixed(1)} ${(cx + x).toFixed(1)} ${(cy + y).toFixed(1)})"/>`; }).join('');
+  // the loupe: its rim, the spot it is drawn out from, and the two lines that join them
+  const d = Math.hypot(spot[0] - cx, spot[1] - cy), u = [(spot[0] - cx) / d, (spot[1] - cy) / d], nrm = [-u[1], u[0]], rs = 30;
+  const tie = (sg) => ln(cx + sg * R * nrm[0] + u[0] * 6, cy + sg * R * nrm[1] + u[1] * 6, spot[0] + sg * rs * nrm[0] * 0.3, spot[1] + sg * rs * nrm[1] * 0.3, W.sight, 0);
+  return [
+    { id: 'mass', cls: 'wash', dpr: 1, svg: wash },
+    { id: 'shapes', svg: MEDIA + `<defs>${INK}</defs>` + pencil(oval(cx, cy, R, R, 0, W.line, 0.07) + oval(cx + 1, cy + 1, R + 7, R + 6, 0, W.ghost, 0.04) + oval(spot[0], spot[1], rs, rs * 0.24, TILT, W.fine, 0.08) + tie(1) + tie(-1))
+      + `<g fill="none" stroke="#211C17" stroke-width="1.55" stroke-linecap="round" filter="url(#ink)">${gal}</g>` },
+  ];
+}
+
 const ramp = (a, b) => [0, 0.25, 0.5, 0.75, 1].map(t => mix(a, b, t));
 const ART = {
   // every instrument, five redshifts from sky blue through lilac to rose, and the CMB behind them
   title: () => scene({ sky: slices([S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose]), who: ['euclid', 'spt', 'unions'] }),
   // Euclid's galaxies in the part's sky blue, in front of the CMB that SPT maps
   'euclid-spt': () => scene({ sky: slices(ramp('#8FB2D6', '#B9D0E6')), who: ['euclid', 'spt'], lifted: 0.14, words: [1020, 1440] }),
-  // the northern sky from Mauna Kea, in the part's rose
   // the turn to how the work is done: the whole sky at once, every redshift over the others
   exciting: () => upTheCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose] }),
   questions: () => ahead(),
@@ -401,13 +432,14 @@ const ART = {
   summary: () => ahead(true),
   overview: () => oneSky(),
   agents: () => knownInput(),
-  unions: () => scene({ sky: slices(ramp('#D9A0B4', '#E8B5A8'), false), who: ['unions'], lifted: 0.14, words: [1020, 1440] }),
+  // the northern sky from Mauna Kea, in the part's rose, and the shape catalogue under a loupe
+  unions: () => [...scene({ sky: slices(ramp('#D9A0B4', '#E8B5A8'), false), who: ['unions'], lifted: 0.14, words: [1020, 1440] }), ...shapeCatalogue()],
 };
 
 const ALT = {
   title: 'Pencil and watercolour drawing: the South Pole Telescope, the Mauna Kea domes and Euclid look up into a cone of redshift sheets that ends at the CMB',
   'euclid-spt': 'Euclid and the South Pole Telescope look up into a cone of blue redshift sheets that ends at the CMB',
-  unions: 'The Mauna Kea domes look up into a cone of rose redshift sheets',
+  unions: 'The Mauna Kea domes look up into a cone of rose redshift sheets; a loupe drawn out from the nearest sheet shows galaxy shapes in ink, turned around the mass in wash beneath them',
   summary: 'Pencil and watercolour: a small group of people stand at the foot of a light cone of four painted sheets, one in the wash of each part of the talk',
   questions: 'Pencil and watercolour: a small group of people stand at the foot of a light cone whose sheets are traced in pencil and not yet painted',
   overview: 'A brace gathers the three projects and points to one simulated sky, a globe in pencil and wash',
