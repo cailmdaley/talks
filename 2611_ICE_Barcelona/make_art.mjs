@@ -279,28 +279,33 @@ function person(x, y, h, col, lean = 0, w = 0.13, look = 1) {
     + glaze(mix(S.rose, S.butter, 0.5), ell(top + look * r * 0.55, sh - h * 0.03 - r * 1.42, r * 0.86, r), 0.95) + glaze(S.payne, ell(top + look * r * 0.55 + r * 0.25, sh - h * 0.03 - r * 1.42, r * 0.6, r * 0.9), 0.14);
 }
 
-// What lies ahead: the cone again, its sheets traced and not yet painted, the first wash only begun,
-// and people where the instruments stood, looking up into it together.
-function ahead() {
+// What lies ahead, and what the talk has painted: the cone again with people where the instruments
+// stood, looking up into it together. Ahead, its sheets are traced and not yet painted, the first
+// wash only begun; painted, the same four sheets carry the washes of the talk's four parts, far to near.
+function ahead(painted = false) {
   hand(23);
-  const base = [1602, 960], ang = -80 * Math.PI / 180, ax = [Math.cos(ang), Math.sin(ang)], mj = [Math.cos(ang + Math.PI / 2), Math.sin(ang + Math.PI / 2)], tilt = -80 + 90, flat = 0.2;
-  const r = (d) => 62 + 0.5 * d, c = (d, o = 0) => [base[0] + d * ax[0] + o * r(d) * mj[0], base[1] + d * ax[1] + o * r(d) * mj[1]];
-  const ds = [175, 275, 380, 490], os = [-0.06, 0.08, -0.05, 0.06];
-  const near = { d: ds[0], o: os[0], gain: 6, off: 1.4, tint: 0.26, col: S.lilac };
-  const [nx, ny] = c(ds[0], os[0]), k = r(ds[0]) / 100;
-  const wash = `<defs>${sliceFilter('z', near)}<linearGradient id="begun" x1="0" y1="0" x2="1" y2="0"><stop offset="0.25" stop-color="#fff"/><stop offset="0.8" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  const base = [1602, 960], ang = -86 * Math.PI / 180, ax = [Math.cos(ang), Math.sin(ang)], mj = [Math.cos(ang + Math.PI / 2), Math.sin(ang + Math.PI / 2)], tilt = -86 + 90, flat = 0.3;
+  const r = (d) => 62 + 0.44 * d, c = (d, o = 0) => [base[0] + d * ax[0] + o * r(d) * mj[0], base[1] + d * ax[1] + o * r(d) * mj[1]];
+  const ds = [150, 232, 318, 405], os = [-0.06, 0.08, -0.05, 0.06];
+  const sky = [{ ...DEPTHS[4], col: S.lilac }, { ...DEPTHS[3], col: S.rose }, { ...DEPTHS[2], col: S.sky }, { ...CMB }];   // near to far
+  const disc = (i) => { const [x, y] = c(ds[i], os[i]), k = r(ds[i]) / 100;
+    return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${tilt}) scale(${k.toFixed(3)} ${(k * flat).toFixed(3)})"><circle r="100" fill="${sky[i].col}" filter="url(#z)"/></g>`; };
+  const [nx, ny] = c(ds[0], os[0]);
+  const begun = `<defs>${sliceFilter('z', sky[0])}<linearGradient id="begun" x1="0" y1="0" x2="1" y2="0"><stop offset="0.25" stop-color="#fff"/><stop offset="0.8" stop-color="#fff" stop-opacity="0"/></linearGradient>
     <mask id="begun-m" maskUnits="userSpaceOnUse" x="${nx - 200}" y="${ny - 100}" width="400" height="200"><rect x="${nx - 200}" y="${ny - 100}" width="400" height="200" fill="url(#begun)" transform="rotate(8 ${nx} ${ny})"/></mask></defs>
-    <g mask="url(#begun-m)"><g transform="translate(${nx.toFixed(1)} ${ny.toFixed(1)}) rotate(${tilt}) scale(${k.toFixed(3)} ${(k * flat).toFixed(3)})"><circle r="100" fill="${S.lilac}" filter="url(#z)"/></g></g>`;
-  const wts = [W.fine, W.fine, W.sight, W.ghost], runs = [0.07, 0.05, 0.03, -0.5];
+    <g mask="url(#begun-m)">${disc(0)}</g>`;
+  const washes = painted ? [3, 2, 1, 0].map(i => ({ id: `sheet${i}`, cls: `wash breathe t${i}`, dpr: 1, svg: `<defs>${sliceFilter('z', sky[i])}</defs><g opacity="0.9">${disc(i)}</g>` }))
+    : [{ id: 'wash', cls: 'wash', dpr: 1, svg: begun }];
+  const wts = painted ? [W.fine, W.fine, W.fine, W.fine] : [W.fine, W.fine, W.sight, W.ghost], runs = [0.07, 0.05, 0.03, painted ? 0.06 : -0.5];
   const rims = ds.map((d, i) => { const [x, y] = c(d, os[i]); return oval(x, y, r(d), r(d) * flat, tilt, wts[i], runs[i], i === 3 ? -0.3 : null); }).join('');
   // the cone's sides, ruled lightly past the last sheet
-  const side = (u) => { const a = c(u < 0 ? 150 : 100, u), b = c(u < 0 ? ds[2] + 30 : ds[3] + 40, u); return ln(a[0], a[1], b[0], b[1], W.ghost, 0); };
+  const side = (u) => { const a = c(u < 0 ? 125 : 85, u), b = c(u < 0 ? ds[2] + 30 : ds[3] + 40, u); return ln(a[0], a[1], b[0], b[1], W.ghost, 0); };
   const tone = (c) => mix(c, S.payne, 0.3);
   // x, height, wash, lean, half-width: a pair in talk, a group, two a little apart
   const crowd = [[1190, 102, tone(S.sky), 0.035, 0.125, 1], [1229, 84, tone(S.butter), -0.04, 0.115, -1], [1316, 106, tone(S.rose), -0.01, 0.13, 1], [1347, 90, tone(S.lilac), 0.03, 0.108, 1], [1383, 112, tone(S.sage), 0.015, 0.135, 0.6], [1417, 78, tone(S.rose), 0.05, 0.12, 1], [1480, 104, tone(S.lilac), 0.04, 0.125, 1], [1511, 90, tone(S.butter), -0.02, 0.11, 1]];
   const G = 962;
   return [
-    { id: 'wash', cls: 'wash', dpr: 1, svg: wash },
+    ...washes,
     { id: 'lines', svg: MEDIA + pencil(rims + side(-1) + side(1)) },
     { id: 'people', svg: MEDIA + `<defs><linearGradient id="g-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${S.lilac}" stop-opacity="0.5"/><stop offset="1" stop-color="${S.lilac}" stop-opacity="0"/></linearGradient></defs>`
       + glaze('url(#g-floor)', `M1060 ${G} H1700 L1650 ${G + 28} H1120Z`) + pencil(ln(1040, G, 1722, G, W.fine, 0) + ln(1090, G + 6, 1230, G + 6, W.ghost, 0))
@@ -392,9 +397,10 @@ const ART = {
   // the turn to how the work is done: the whole sky at once, every redshift over the others
   exciting: () => upTheCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose] }),
   questions: () => ahead(),
+  // the same cone, painted: one sheet for each part of the talk, in its wash
+  summary: () => ahead(true),
   overview: () => oneSky(),
   agents: () => knownInput(),
-  'sim-history': () => fourSims(),
   unions: () => scene({ sky: slices(ramp('#D9A0B4', '#E8B5A8'), false), who: ['unions'], lifted: 0.14, words: [1020, 1440] }),
 };
 
@@ -402,9 +408,9 @@ const ALT = {
   title: 'Pencil and watercolour drawing: the South Pole Telescope, the Mauna Kea domes and Euclid look up into a cone of redshift sheets that ends at the CMB',
   'euclid-spt': 'Euclid and the South Pole Telescope look up into a cone of blue redshift sheets that ends at the CMB',
   unions: 'The Mauna Kea domes look up into a cone of rose redshift sheets',
+  summary: 'Pencil and watercolour: a small group of people stand at the foot of a light cone of four painted sheets, one in the wash of each part of the talk',
   questions: 'Pencil and watercolour: a small group of people stand at the foot of a light cone whose sheets are traced in pencil and not yet painted',
   overview: 'A brace gathers the three projects and points to one simulated sky, a globe in pencil and wash',
-  'sim-history': 'Four simulations, simple to complex: a Gaussian CMB sky, the CMB under a correlated foreground, a simulated image of galaxies on pixels, and a light cone of redshift sheets',
   agents: 'A known input spectrum in pencil, the sky simulated from it as a washed globe, and the measured bandpowers in ink lying on the same pencil curve',
   exciting: 'Watercolour: six overlapping discs of sky, the redshift sheets and the CMB seen from below, their washes mixing',
 };

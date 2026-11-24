@@ -104,3 +104,12 @@
 .slide figure.art > img.about-spt    { transform-origin: 57.17% 84.52%; --sweep: 1.5deg; --sweep-time: 13s; }
 .slide figure.art > img.about-unions { transform-origin: 80.21% 73.33%; --sweep: 1.1deg; --sweep-time: 17s; }
 .slide figure.art > img.about-euclid { transform-origin: 91.25% 55.56%; --sweep: 0.9deg; --sweep-time: 21s; }
+
+/* the summary: the takeaways beside the drawing keep left of it, and each numeral sits on a dab of the wash
+   of the part of the talk it sums up, the wash the same part's sheet wears in the drawing */
+[data-house-slide="summary"] .slide[data-layout="closing"] ol > li:nth-child(n+3) { max-width: 1250px; }
+[data-house-slide="summary"] .slide[data-layout="closing"] ol > li::before { color: var(--ink); z-index: 1; }
+[data-house-slide="summary"] ol > li::after { content: ""; position: absolute; left: -0.34em; top: 0.16em; width: 1.12em; height: 1.02em;
+  border-radius: 50%; background: var(--dab); opacity: 0.85; filter: url(#house-wash-fine); z-index: 0; mix-blend-mode: multiply; }
+[data-house-slide="summary"] ol > li:nth-child(1) { --dab: var(--part-1); }  [data-house-slide="summary"] ol > li:nth-child(2) { --dab: var(--part-2); }
+[data-house-slide="summary"] ol > li:nth-child(3) { --dab: var(--part-3); }  [data-house-slide="summary"] ol > li:nth-child(4) { --dab: var(--part-4); }
