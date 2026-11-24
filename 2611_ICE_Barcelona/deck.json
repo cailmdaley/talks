@@ -22,10 +22,11 @@
   "sections": [
     {
       "title": "Simulating surveys",
-      "outline": "An overview of the three parts and what unites them; mocks that reproduce a survey to validate pipelines and characterize systematics; simulations from cheap to realistic, with forward models for explicit and implicit inference at the realistic end.",
+      "outline": "An overview of the three parts and what unites them; the tensions that appear in ΛCDM when probes are combined, new physics or systematics; mocks that reproduce a survey to validate pipelines; simulations from cheap to realistic, with forward models for inference at the realistic end.",
       "slides": [
         "title",
         "overview",
+        "tensions",
         "chain",
         "fidelity"
       ]
