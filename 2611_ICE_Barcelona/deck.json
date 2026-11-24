@@ -22,9 +22,11 @@
   "sections": [
     {
       "title": "Simulating surveys",
-      "outline": "Mocks reproduce a survey to validate pipelines and characterize systematics; the same techniques give forward models for explicit and implicit inference.",
+      "outline": "An overview of the three parts and what unites them, simulation first; where Cail has built pipelines on simulations before; mocks that reproduce a survey to validate pipelines and characterize systematics; the same techniques as forward models for explicit and implicit inference.",
       "slides": [
         "title",
+        "overview",
+        "sim-history",
         "chain",
         "fidelity"
       ]
