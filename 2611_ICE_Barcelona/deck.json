@@ -46,26 +46,24 @@
     },
     {
       "title": "UNIONS",
-      "outline": "The first UNIONS cosmic-shear release over 3,500 deg², the new 191-million-galaxy shape catalog over 5,200 deg², its PSF-leakage check on injected realizations, and the tomographic cosmic shear and 3×2pt with SPHEREx it feeds.",
+      "outline": "The first UNIONS cosmic-shear release over 3,500 deg², the new 191-million-galaxy shape catalog over 5,200 deg² and the tomographic cosmic shear and 3×2pt with SPHEREx it feeds.",
       "slides": [
         "unions",
         "unions-survey",
         "unions-north",
         "unions-release",
         "unions-v2",
-        "unions-leakage",
         "unions-next",
         "unions-3x2pt"
       ]
     },
     {
       "title": "Doing science now",
-      "outline": "How the two analyses were done and what comes next: simulations as a verifiable environment for agents, the pipeline, simulations and data held against each other, a forward model of the CMB-lensing reconstruction and simulation-based inference as the work proposed for ICE, Lightcone, the questions this puts to the community, and a summary.",
+      "outline": "How the two analyses were done and what comes next: simulations as a verifiable environment for agents, the pipeline, simulations and data held against each other, simulation-based inference as the work proposed for ICE, Lightcone, the questions this puts to the community, and a summary.",
       "slides": [
         "exciting",
         "agents",
         "spiral",
-        "cmb-lensing-fm",
         "sbi",
         "lightcone",
         "questions",
@@ -78,6 +76,7 @@
       "slides": [
         "spt-vs-act",
         "dr2",
+        "unions-leakage",
         "blind-rehearsal",
         "lens-ratio",
         "systematics-triangle",
