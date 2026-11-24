@@ -10,6 +10,7 @@ node house/check.mjs <deck-dir> --only a,b       # just these slides
 node house/check.mjs <deck-dir> --theme euclid   # try the deck in another theme
 node house/check.mjs --all             # every top-level directory holding a deck.json
 node house/pdf.mjs <deck-dir> [--steps] [--only a,b] [--out f.pdf]   # backup PDF of the built deck: a page per slide (or per build step)
+node house/film.mjs <deck-dir> <slide> [--seconds 36] [--fps 15] [--out f.mp4]   # an MP4 of one slide, for a drawing that moves (needs ffmpeg)
 npm test                               # the checker's own tests (demo passes, fixtures fail)
 ```
 
