@@ -231,10 +231,12 @@ const MEDIA = `<defs>${PENCIL}${GLAZE}</defs>`;
 
 // One drawing, as layers from the back: each sheet of the cone washed in (far to near), their rims
 // traced in pencil, what stands on the ground, and each instrument named in `who` with its view,
-// the light of a patch of the far sky converging on its aperture.
+// the light of a patch of the farthest sheet it sees converging on its aperture.
 function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380] }) {
   hand(5);
-  const far = { ...sky[0], o: 0 }, has = (n) => who.includes(n), media = `<defs>${PENCIL}${GLAZE}</defs>`;
+  const has = (n) => who.includes(n), media = `<defs>${PENCIL}${GLAZE}</defs>`;
+  // the farthest sheet each instrument sees: SPT the CMB, Euclid the deepest galaxies, UNIONS one sheet nearer
+  const cmb = sky[0].cmb ? 1 : 0, src = { spt: { ...sky[0], o: 0 }, euclid: { ...sky[cmb], o: 0 }, unions: { ...sky[cmb + 1], o: 0 } };
   const lift = lifting(words, lifted);
   const sheets = sky.map((s, i) => { const [cx, cy] = at(s), k = rad(s.d) / 100;
     return { id: `sheet${i}`, cls: `wash breathe t${sky.length - 1 - i}`, dpr: 1, svg: `<defs>${sliceFilter('z', s)}</defs>${lift}<g mask="url(#lift)" opacity="${soft}">
@@ -242,24 +244,24 @@ function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380] }) {
   const rims = sky.map(s => { const [cx, cy] = at(s), r = rad(s.d) * (1.008 + jit(0.008));
     return oval(cx + jit(3), cy + jit(3), r, r * SKY.flat * (1 + jit(0.03)), TILT + jit(0.6), W.fine, 0.05 + rnd() * 0.07); }).join('');
   // each ray straight but for a small turn at every sheet it crosses
-  const view = (to, u0) => pencil([-0.11, 0, 0.11].map((du, j) => { const from = at(far, u0 + du), a0 = along(from), a1 = along(to);
-    const mid = sky.slice(1).filter(s => s.d > a1 + 40).map(s => { const t = (a0 - s.d) / (a0 - a1), b = jit(5);
+  const view = (to, n) => pencil([-0.11, 0, 0.11].map((du, j) => { const from = at(src[n], LOOK[n] + du), a0 = along(from), a1 = along(to);
+    const mid = sky.filter(s => s.d < src[n].d - 1 && s.d > a1 + 40).map(s => { const t = (a0 - s.d) / (a0 - a1), b = jit(5);
       return [from[0] + (to[0] - from[0]) * t + MAJ[0] * b, from[1] + (to[1] - from[1]) * t + MAJ[1] * b]; });
     return stroke(through(ease([from, ...mid, to])), j === 1 ? W.sight : W.ghost); }).join(''));
-  const tilt = deg(SPT_PIVOT, at(far, LOOK.spt)), dish = off(SPT_PIVOT, 49 * SPT.k, tilt);
-  const eRot = deg([EUC.x, EUC.y], at(far, LOOK.euclid)), eTip = off([EUC.x, EUC.y], 150 * EUC.k, eRot);
+  const tilt = deg(SPT_PIVOT, at(src.spt, LOOK.spt)), dish = off(SPT_PIVOT, 49 * SPT.k, tilt);
+  const eRot = deg([EUC.x, EUC.y], at(src.euclid, LOOK.euclid)), eTip = off([EUC.x, EUC.y], 150 * EUC.k, eRot);
   return [...sheets,
     { id: 'rims', svg: `${media}${lift}<g mask="url(#lift)">${pencil(rims)}</g>` },
     { id: 'ground', svg: media + (has('unions') ? glaze('url(#g-far)', 'M1090 960 C1230 930 1420 820 1560 800 S1800 840 1920 870 L1920 960Z') + maunaKea(MKP.x, MKP.y, MKP.k) : '') + (has('spt') ? sptBase(SPT.x, SPT.y, SPT.k) : '') },
-    has('spt') && { id: 'spt', cls: 'sweep about-spt', svg: media + view(dish, LOOK.spt) + sptDish(SPT.x, SPT.y, tilt, SPT.k) },
-    has('unions') && { id: 'unions', cls: 'sweep about-unions', svg: media + view(MK, LOOK.unions) },
-    has('euclid') && { id: 'euclid', cls: 'sweep about-euclid', svg: media + view(eTip, LOOK.euclid) + euclid(EUC.x, EUC.y, eRot, EUC.k) },
+    has('spt') && { id: 'spt', cls: 'sweep about-spt', svg: media + view(dish, 'spt') + sptDish(SPT.x, SPT.y, tilt, SPT.k) },
+    has('unions') && { id: 'unions', cls: 'sweep about-unions', svg: media + view(MK, 'unions') },
+    has('euclid') && { id: 'euclid', cls: 'sweep about-euclid', svg: media + view(eTip, 'euclid') + euclid(EUC.x, EUC.y, eRot, EUC.k) },
   ].filter(Boolean);
 }
 
 // Looking up the cone from where the instruments stand: every sheet lies over the others, as the
 // sky does in projection. Six discs a little apart, far to near, their washes mixing where they overlap.
-function upTheCone({ cols, cx = 1545, cy = 505, words = [1130, 1480], lifted = 0.22 }) {
+function upTheCone({ cols, cx = 1545, cy = 505, words = [1260, 1600], lifted = 0.14 }) {
   hand(11);
   const lift = lifting(words, lifted);
   const place = [[-150, -135, 300], [130, -200, 235], [225, 70, 265], [25, 205, 225], [-185, 150, 205], [5, 0, 180]];   // dx, dy, r: the CMB first, the nearest sheet last, in the middle
@@ -298,8 +300,8 @@ function ahead(painted = false) {
     <g mask="url(#begun-m)">${disc(0)}</g>`;
   const washes = painted ? [3, 2, 1, 0].map(i => ({ id: `sheet${i}`, cls: `wash breathe t${i}`, dpr: 1, svg: `<defs>${sliceFilter('z', sky[i])}</defs><g opacity="0.9">${disc(i)}</g>` }))
     : [{ id: 'wash', cls: 'wash', dpr: 1, svg: begun }];
-  const wts = painted ? [W.fine, W.fine, W.fine, W.fine] : [W.line, W.fine, W.fine, W.sight], runs = [0.07, 0.05, 0.03, painted ? 0.06 : -0.5];
-  const rims = ds.map((d, i) => { const [x, y] = c(d, os[i]); return oval(x, y, r(d), r(d) * flat, tilt, wts[i], runs[i], i === 3 ? -0.3 : null); }).join('');
+  const wts = painted ? [W.fine, W.fine, W.fine, W.fine] : [W.line, W.fine, W.fine, W.sight], runs = [0.07, 0.05, 0.03, 0.06];
+  const rims = ds.map((d, i) => { const [x, y] = c(d, os[i]); return oval(x, y, r(d), r(d) * flat, tilt, wts[i], runs[i]); }).join('');
   // the cone's sides, ruled lightly past the last sheet
   const side = (u) => { const a = c(u < 0 ? 125 : 85, u), b = c(u < 0 ? ds[2] + 30 : ds[3] + 40, u); return ln(a[0], a[1], b[0], b[1], W.sight, 0); };
   const tone = (c) => mix(c, S.payne, 0.3);
@@ -339,10 +341,10 @@ function knownInput() {
   const truth = (x0, wt) => stroke(through(curve(x0)), wt);
   const pts = [2, 6, 10, 14, 18, 22, 26, 30, 34, 37].map((i, j) => { const [x, y] = curve(xb)[i], e = 9 + j * 2.1, d = jit(e * 0.75);
     return `<path d="M${x.toFixed(1)} ${(y + d - e).toFixed(1)} V${(y + d + e).toFixed(1)}"/><circle cx="${x.toFixed(1)}" cy="${(y + d).toFixed(1)}" r="5.2" fill="#211C17"/>`; }).join('');
-  const arrow = (x1, x2, y) => ln(x1, y, x2, y, W.sight, 0) + stroke(`M${x2 - 12} ${y - 7} L${x2} ${y} L${x2 - 12} ${y + 7}`, W.sight);
+  const arrow = (x1, x2, y) => ln(x1, y, x2, y, W.fine, 0) + stroke(`M${x2 - 12} ${y - 7} L${x2} ${y} L${x2 - 12} ${y + 7}`, W.fine);
   return [
     { id: 'wash', cls: 'wash', dpr: 1, svg: mockSky(gx, gy, gr) },
-    { id: 'lines', svg: MEDIA + `<defs>${INK}</defs>` + pencil(axes(xa) + truth(xa, W.line) + graticule(gx, gy, gr) + axes(xb) + truth(xb, W.fine) + arrow(660, 780, gy) + arrow(1140, 1260, gy)) + ink(pts) },
+    { id: 'lines', svg: MEDIA + `<defs>${INK}</defs>` + pencil(axes(xa) + truth(xa, W.line) + graticule(gx, gy, gr) + axes(xb) + truth(xb, W.line) + arrow(660, 780, gy) + arrow(1140, 1260, gy)) + ink(pts) },
   ];
 }
 
@@ -357,12 +359,13 @@ function oneSky() {
   const brace = stroke(`M${x} ${y1} q18 2 18 24 L${x + 18} ${ym - 26} q0 20 20 26 q-20 6 -20 26 L${x + 18} ${y2 - 24} q0 22 -18 24`, W.line);
   return [
     { id: 'wash', cls: 'wash late', dpr: 1, svg: globe },
-    { id: 'lines', cls: 'late', svg: MEDIA + pencil(lines + brace + ln(x + 46, ym, cx - r - 14, ym, W.ghost, 0)) },
+    { id: 'lines', cls: 'late', svg: MEDIA + pencil(lines + brace + ln(x + 46, ym, cx - r - 14, ym, W.fine, 0)) },
   ];
 }
 
-// The shape catalogue under a loupe, drawn out from a spot on the nearest sheet: galaxies in ink
-// (what is measured), each turned around the mass in wash beneath it (what is inferred from them).
+// The shape catalogue under a loupe, drawn out from a spot on the nearest sheet: each galaxy's
+// ellipticity as a fine stroke of ink (what is measured), longer where it is more elongated, turned
+// around the mass in wash beneath it (what is inferred from them).
 function shapeCatalogue({ cx = 676, cy = 800, R = 168, spot = [1150, 693] } = {}) {
   hand(97);
   const peaks = [[-58, -38, 1, 50], [72, 44, 0.8, 44], [-18, 104, 0.5, 34]];   // dx, dy, mass, core radius
@@ -375,21 +378,22 @@ function shapeCatalogue({ cx = 676, cy = 800, R = 168, spot = [1150, 693] } = {}
       <path d="M${cx + peaks[0][0]} ${cy + peaks[0][1]} Q${cx + 20} ${cy - 30} ${cx + peaks[1][0]} ${cy + peaks[1][1]} T${cx + 150} ${cy + 96}" fill="none" stroke="${deepRose}" stroke-width="15" opacity="0.3" stroke-linecap="round"/>
       <path d="M${cx + peaks[0][0]} ${cy + peaks[0][1]} Q${cx - 60} ${cy + 40} ${cx + peaks[2][0]} ${cy + peaks[2][1]}" fill="none" stroke="${deepRose}" stroke-width="12" opacity="0.26" stroke-linecap="round"/>
       ${peaks.map(([dx, dy, m, rc]) => `<circle cx="${cx + dx}" cy="${cy + dy}" r="${(rc * 1.9).toFixed(1)}" fill="url(#mass)" opacity="${(0.5 + 0.5 * m).toFixed(2)}"/>`).join('')}</g></g>`;
-  // galaxies scattered evenly (no two closer than 28 px), each with a shape of its own, sheared tangentially around the peaks
+  // galaxies scattered evenly (no two closer than 28 px), each with an ellipticity of its own, sheared tangentially around the peaks
   const pts = [];
   for (let n = 0; n < 6000 && pts.length < 100; n++) { const a = rnd() * 2 * Math.PI, rr = Math.sqrt(rnd()) * (R - 15), q = [rr * Math.cos(a), rr * Math.sin(a)];
     if (pts.every(o => Math.hypot(o[0] - q[0], o[1] - q[1]) > 28)) pts.push(q); }
   const gal = pts.map(([x, y]) => { const ei = 0.06 + rnd() * 0.15, al = rnd() * Math.PI; let e1 = ei * Math.cos(2 * al), e2 = ei * Math.sin(2 * al);
     for (const [dx, dy, m, rc] of peaks) { const u = Math.hypot(x - dx, y - dy) / rc, g = 0.64 * m * 2 * u / (1 + u * u), ph = Math.atan2(y - dy, x - dx); e1 -= g * Math.cos(2 * ph); e2 -= g * Math.sin(2 * ph); }
     const e = Math.min(Math.hypot(e1, e2), 0.58), th = 0.5 * Math.atan2(e2, e1) * 180 / Math.PI, size = 4.4 + rnd() * rnd() * 5.5, k = Math.sqrt((1 + e) / (1 - e));
-    return `<ellipse cx="${(cx + x).toFixed(1)}" cy="${(cy + y).toFixed(1)}" rx="${(size * k).toFixed(1)}" ry="${(size / k).toFixed(1)}" transform="rotate(${th.toFixed(1)} ${(cx + x).toFixed(1)} ${(cy + y).toFixed(1)})"/>`; }).join('');
+    const L = size * (0.55 + 2.4 * e), c = Math.cos(th * Math.PI / 180), sn = Math.sin(th * Math.PI / 180);
+    return `<path d="M${(cx + x - L * c).toFixed(1)} ${(cy + y - L * sn).toFixed(1)} L${(cx + x + L * c).toFixed(1)} ${(cy + y + L * sn).toFixed(1)}"/>`; }).join('');
   // the loupe: its rim, the spot it is drawn out from, and the two lines that join them
   const d = Math.hypot(spot[0] - cx, spot[1] - cy), u = [(spot[0] - cx) / d, (spot[1] - cy) / d], nrm = [-u[1], u[0]], rs = 30;
   const tie = (sg) => ln(cx + sg * R * nrm[0] + u[0] * 6, cy + sg * R * nrm[1] + u[1] * 6, spot[0] + sg * rs * nrm[0] * 0.3, spot[1] + sg * rs * nrm[1] * 0.3, W.sight, 0);
   return [
     { id: 'mass', cls: 'wash', dpr: 1, svg: wash },
     { id: 'shapes', svg: MEDIA + `<defs>${INK}</defs>` + pencil(oval(cx, cy, R, R, 0, W.line, 0.07) + oval(cx + 1, cy + 1, R + 7, R + 6, 0, W.ghost, 0.04) + oval(spot[0], spot[1], rs, rs * 0.24, TILT, W.fine, 0.08) + tie(1) + tie(-1))
-      + `<g fill="none" stroke="#211C17" stroke-width="1.55" stroke-linecap="round" filter="url(#ink)">${gal}</g>` },
+      + `<g fill="none" stroke="#211C17" stroke-width="1.9" stroke-linecap="round" filter="url(#ink)">${gal}</g>` },
   ];
 }
 
@@ -399,7 +403,7 @@ function shapeCatalogue({ cx = 676, cy = 800, R = 168, spot = [1150, 693] } = {}
 function inference() {
   hand(113);
   const y = 792, r = 56, ax = 936, xs = [0, 1, 2, 3, 4, 5, 6].map(i => 372 + i * 196), hit = 4;
-  const globes = xs.map((x, i) => { const gain = 1.3 + i * 1.35; return sheet({ gain, off: 0.34 + 0.175 * gain, tint: 0.3, col: S.butter, seed: 14 }, x, y, r, { id: 'g' + i }); }).join('');
+  const globes = xs.map((x, i) => { const gain = 1.2 * 1.42 ** i; return sheet({ gain, off: 0.34 + 0.175 * gain, tint: 0.3, col: S.butter, seed: 14 }, x, y, r, { id: 'g' + i }); }).join('');
   const bump = (t) => Math.exp(-0.5 * ((t - xs[hit] - 14) / (t < xs[hit] + 14 ? 120 : 150)) ** 2);
   const top = Array.from({ length: 61 }, (_, i) => { const x = xs[hit] - 380 + i * 14; return [x, ax - 3 - 66 * bump(x)]; });
   const post = `<defs>${GLAZE}<linearGradient id="g-post" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${deep(S.lilac, 0.86)}" stop-opacity="0.95"/><stop offset="1" stop-color="${S.lilac}" stop-opacity="0.45"/></linearGradient></defs>`
@@ -410,7 +414,7 @@ function inference() {
     + oval(x, y, r * 0.5, r, 4, W.ghost, 0.02);
   const lines = xs.map((x, i) => globe(x, i !== hit)).join('')
     + ln(250, ax, 1700, ax, W.line, 0) + stroke(`M1688 ${ax - 7} L1700 ${ax} L1688 ${ax + 7}`, W.line)
-    + xs.map(x => ln(x, ax - 7, x, ax + 7, W.fine, 0)).join('') + stroke(through(top), W.fine);
+    + xs.map(x => ln(x, ax - 8, x, ax + 8, W.line, 0)).join('') + stroke(through(top), W.fine);
   return [
     { id: 'wash', cls: 'wash', dpr: 1, svg: globes + post },
     { id: 'lines', svg: MEDIA + `<defs>${INK}</defs>` + pencil(lines) + ink(`<circle cx="${xs[hit]}" cy="${y}" r="${r + 2}"/>`) },
@@ -430,16 +434,16 @@ function tensions() {
     return `<g transform="${t}">${two(col, ell(cx, cy, a, b), o)}${two(deep(col, 0.9), ell(cx, cy, a * 0.58, b * 0.58), o * 1.25)}</g>`; };
   const hump = (cx, w, h) => { const pts = Array.from({ length: 41 }, (_, i) => { const x = cx - 3 * w + i * 6 * w / 40; return [x, y0 - 2 - h * Math.exp(-0.5 * ((x - cx) / w) ** 2)]; }); return through(pts); };
   const area = (cx, w, h) => hump(cx, w, h) + ` L${cx + 3 * w} ${y0} L${cx - 3 * w} ${y0}Z`;
-  const axes = (x) => ln(x, y0, x + 330, y0, W.fine, 6) + ln(x, y0, x, top, W.fine, 6);
+  const axes = (x) => ln(x, y0, x + 330, y0, W.line, 6) + ln(x, y0, x, top, W.line, 6);
   const xa = 300, xb = 795, xc = 1290;
   const wash = `<defs>${GLAZE}</defs>`
     + two(S.butter, area(xa + 112, 15, 160), 1.5) + two(S.rose, area(xa + 232, 27, 104), 1.5)
     + contour(S.sky, xb + 158, y0 - 74, 112, 36, -9) + contour(S.butter, xb + 232, y0 - 136, 38, 17, -30, 1.5)
     + contour(S.lilac, xc + 212, y0 - 68, 92, 30, 38, 1.35);
   const lcdm = [xc + 118, y0 - 128];
-  const lines = ln(xa - 6, y0, xa + 336, y0, W.fine, 0) + stroke(hump(xa + 112, 15, 160), W.fine) + stroke(hump(xa + 232, 27, 104), W.fine)
+  const lines = ln(xa - 6, y0, xa + 336, y0, W.line, 0) + stroke(hump(xa + 112, 15, 160), W.fine) + stroke(hump(xa + 232, 27, 104), W.fine)
     + axes(xb) + axes(xc)
-    + ln(lcdm[0], top + 10, lcdm[0], y0 - 8, W.ghost, 0) + ln(xc + 8, lcdm[1], xc + 322, lcdm[1], W.ghost, 0)
+    + ln(lcdm[0], top + 10, lcdm[0], y0 - 8, W.sight, 0) + ln(xc + 8, lcdm[1], xc + 322, lcdm[1], W.sight, 0)
     + stroke(`M${lcdm[0] - 7} ${lcdm[1] - 7} l14 14 M${lcdm[0] + 7} ${lcdm[1] - 7} l-14 14`, W.line);
   return [{ id: 'wash', cls: 'wash early', dpr: 1, svg: wash }, { id: 'lines', cls: 'early', svg: MEDIA + pencil(lines) }];   // both arrive with the bullet that names the tensions
 }
