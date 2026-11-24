@@ -419,6 +419,30 @@ function shapeCatalogue({ cx = 676, cy = 800, R = 168, spot = [1150, 693] } = {}
   ];
 }
 
+// Simulation-based inference: the mock sky simulated again and again along a parameter, its web
+// growing clumpier; the one that looks like the data is ringed in ink, and the posterior is a wash
+// laid on the axis under it.
+function inference() {
+  hand(113);
+  const y = 792, r = 56, ax = 936, xs = [0, 1, 2, 3, 4, 5, 6].map(i => 372 + i * 196), hit = 4;
+  const globes = xs.map((x, i) => { const gain = 1.3 + i * 1.35; return sheet({ gain, off: 0.34 + 0.175 * gain, tint: 0.3, col: S.butter, seed: 14 }, x, y, r, { id: 'g' + i }); }).join('');
+  const bump = (t) => Math.exp(-0.5 * ((t - xs[hit] - 14) / (t < xs[hit] + 14 ? 120 : 150)) ** 2);
+  const top = Array.from({ length: 61 }, (_, i) => { const x = xs[hit] - 380 + i * 14; return [x, ax - 3 - 66 * bump(x)]; });
+  const post = `<defs>${GLAZE}<linearGradient id="g-post" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${deep(S.lilac, 0.86)}" stop-opacity="0.95"/><stop offset="1" stop-color="${S.lilac}" stop-opacity="0.45"/></linearGradient></defs>`
+    + glaze('url(#g-post)', through(top) + ` L${top[60][0]} ${ax} L${top[0][0]} ${ax}Z`);
+  // each globe traced lightly: its rim, three parallels and a meridian
+  const globe = (x, rim) => (rim ? oval(x, y, r * 1.005, r * 1.005, 0, W.fine, 0.06) : '')
+    + [-40, 0, 40].map(lat => { const a = lat * Math.PI / 180; return oval(x, y - r * Math.sin(a) * Math.cos(0.3), r * Math.cos(a), r * Math.cos(a) * Math.sin(0.3), 0, W.ghost, 0.02); }).join('')
+    + oval(x, y, r * 0.5, r, 4, W.ghost, 0.02);
+  const lines = xs.map((x, i) => globe(x, i !== hit)).join('')
+    + ln(250, ax, 1700, ax, W.line, 0) + stroke(`M1688 ${ax - 7} L1700 ${ax} L1688 ${ax + 7}`, W.line)
+    + xs.map(x => ln(x, ax - 7, x, ax + 7, W.fine, 0)).join('') + stroke(through(top), W.fine);
+  return [
+    { id: 'wash', cls: 'wash', dpr: 1, svg: globes + post },
+    { id: 'lines', svg: MEDIA + `<defs>${INK}</defs>` + pencil(lines) + ink(`<circle cx="${xs[hit]}" cy="${y}" r="${r + 2}"/>`) },
+  ];
+}
+
 const ramp = (a, b) => [0, 0.25, 0.5, 0.75, 1].map(t => mix(a, b, t));
 const ART = {
   // every instrument, five redshifts from sky blue through lilac to rose, and the CMB behind them
@@ -432,6 +456,7 @@ const ART = {
   summary: () => ahead(true),
   overview: () => oneSky(),
   agents: () => knownInput(),
+  sbi: () => inference(),
   // the northern sky from Mauna Kea, in the part's rose, and the shape catalogue under a loupe
   unions: () => [...scene({ sky: slices(ramp('#D9A0B4', '#E8B5A8'), false), who: ['unions'], lifted: 0.14, words: [1020, 1440] }), ...shapeCatalogue()],
 };
@@ -443,6 +468,7 @@ const ALT = {
   summary: 'Pencil and watercolour: a small group of people stand at the foot of a light cone of four painted sheets, one in the wash of each part of the talk',
   questions: 'Pencil and watercolour: a small group of people stand at the foot of a light cone whose sheets are traced in pencil and not yet painted',
   overview: 'A brace gathers the three projects and points to one simulated sky, a globe in pencil and wash',
+  sbi: 'Seven mock skies along a parameter axis, their structure growing clumpier; the one that matches the data is ringed in ink and the posterior is a lilac wash on the axis beneath it',
   agents: 'A known input spectrum in pencil, the sky simulated from it as a washed globe, and the measured bandpowers in ink lying on the same pencil curve',
   exciting: 'Watercolour: six overlapping discs of sky, the redshift sheets and the CMB seen from below, their washes mixing',
 };
