@@ -1,7 +1,9 @@
 // The deck's drawings, a pencil underdrawing with watercolour laid in. The title: the three
 // instruments look up into a light cone of redshift sheets that ends at the CMB; the section openers
-// are the same scene cut down to each part's instruments. A drawing is a stack of layers, each a
-// full 1920×1080 frame on a transparent ground, so that its washes and instruments can move a little.
+// are the same scene cut down to each part's instruments; the other slides' drawings take their
+// motifs from it (the cone, a sheet of sky, the mock globe). ART at the bottom maps each slide to its
+// drawing. A drawing is a stack of layers, each a full 1920×1080 frame on a transparent ground, so
+// that its washes and instruments can move a little.
 // node 2611_ICE_Barcelona/make_art.mjs [--only title,unions] [--out dir]
 //   → images/ice_art/<drawing>-<layer>.png, and the <figure class="art"> of slides/<drawing>.html
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
@@ -315,7 +317,6 @@ function ahead(painted = false) {
 
 // a sheet of sky as one wash: a disc of radius r at (cx, cy), seen face-on (flat 1) or tilted
 const sheet = (s, cx, cy, r, { flat = 1, tilt = 0, o = 1, id = 'z' } = {}) => `<defs>${sliceFilter(id, s, flat === 1)}</defs><g opacity="${o}" transform="translate(${cx.toFixed(1)} ${cy.toFixed(1)}) rotate(${tilt}) scale(${(r / 100).toFixed(3)} ${(r / 100 * flat).toFixed(3)})"><circle r="100" fill="${s.col}" filter="url(#${id})"/></g>`;
-const WEB = { gain: 4.6, off: 1.16, tint: 0.3 };
 
 // A simulated sky: a full-sky mock as a globe, one wash of butter with its web, over a graticule
 // in pencil (the construction it is laid in).
@@ -357,33 +358,6 @@ function oneSky() {
   return [
     { id: 'wash', cls: 'wash late', dpr: 1, svg: globe },
     { id: 'lines', cls: 'late', svg: MEDIA + pencil(lines + brace + ln(x + 46, ym, cx - r - 14, ym, W.ghost, 0)) },
-  ];
-}
-
-// From simple to complex, four simulations: a Gaussian CMB sky; the CMB with a correlated
-// foreground laid over it; a simulated image, galaxies on a pixel grid; and a light cone of sheets.
-function fourSims() {
-  hand(71);
-  const y = 868, G = y + 98;
-  const cmb = { ...CMB, seed: 21 }, fg = { ...WEB, gain: 3.4, off: 1.0, tint: 0.3, col: S.sky, seed: 19 };
-  const washes = sheet(cmb, 250, y, 82, { id: 'a' })
-    + sheet(cmb, 610, y, 88, { id: 'b' }) + sheet(fg, 668, y - 14, 88, { id: 'c', o: 0.9 });
-  // the image: a square of pixels with a handful of galaxies, each a soft elliptical blot
-  const ix = 960, iy = y - 96, n = 7, px = 27, gal = [[1.2, 1.4, 16, 9, 30], [4.6, 1.1, 12, 7, -50], [2.9, 3.3, 20, 11, 70], [5.4, 4.2, 13, 8, 15], [1.5, 5.3, 11, 7, -20], [4.1, 5.7, 9, 6, 60]];
-  const image = `<defs><filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2"/></filter></defs>`
-    + gal.map(([gx, gy, a, b, pa]) => `<ellipse cx="${ix + gx * px}" cy="${iy + gy * px}" rx="${a}" ry="${b}" transform="rotate(${pa} ${ix + gx * px} ${iy + gy * px})" fill="${deep(S.rose, 0.82)}" opacity="0.85" filter="url(#soft)"/>`).join('');
-  const grid = Array.from({ length: n + 1 }, (_, i) => ln(ix + i * px, iy, ix + i * px, iy + n * px, i % n ? W.ghost : W.fine, i % n ? 0 : 4) + ln(ix, iy + i * px, ix + n * px, iy + i * px, i % n ? W.ghost : W.fine, i % n ? 0 : 4)).join('');
-  // the cone, small
-  const F = { base: [1560, G + 6], ax: [Math.cos(-99 * Math.PI / 180), Math.sin(-99 * Math.PI / 180)] }, mj = [F.ax[1] * -1, F.ax[0]];
-  const cr = (d) => 36 + 0.62 * d, cc = (d, o) => [F.base[0] + d * F.ax[0] + o * cr(d) * mj[0], F.base[1] + d * F.ax[1] + o * cr(d) * mj[1]];
-  const cone = [[236, 0, { ...CMB, seed: 21 }], [186, -0.08, { ...DEPTHS[1], col: S.sky }], [138, 0.09, { ...DEPTHS[2], col: '#B1B8DE' }], [92, -0.07, { ...DEPTHS[3], col: S.lilac }], [50, 0.06, { ...DEPTHS[4], col: S.rose }]];
-  const coneWash = cone.map(([d, o, s], i) => { const [cx, cy] = cc(d, o); return `<g style="mix-blend-mode:multiply">${sheet(s, cx, cy, cr(d), { flat: 0.22, tilt: -9, id: 'k' + i, o: 0.9 })}</g>`; }).join('');
-  const coneRims = cone.map(([d, o]) => { const [cx, cy] = cc(d, o); return oval(cx, cy, cr(d) * 1.01, cr(d) * 0.22, -9, W.fine, 0.06); }).join('');
-  const arrow = (x1, x2) => ln(x1, y, x2, y, W.sight, 0) + stroke(`M${x2 - 11} ${y - 6} L${x2} ${y} L${x2 - 11} ${y + 6}`, W.sight);
-  return [
-    { id: 'wash', cls: 'wash', dpr: 1, svg: washes + image + coneWash },
-    { id: 'lines', svg: MEDIA + pencil(oval(250, y, 82.5, 82.5, 0, W.fine, 0.06) + oval(610, y, 88.5, 88.5, 0, W.fine, 0.06) + oval(668, y - 14, 88.5, 88.5, 0, W.fine, 0.05)
-      + grid + coneRims + arrow(372, 482) + arrow(796, 906) + arrow(1196, 1306)) },
   ];
 }
 
