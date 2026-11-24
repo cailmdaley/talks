@@ -20,7 +20,8 @@ largest 1, 2 or 5 x 10^k with 2s below the top of its range, in units of 10^-e s
 once per block of rows (gamma-gamma, gamma-delta, delta-delta, and each half of
 the CMB lensing row). Every range is the union over all variants on disk, so the
 toggles change only the points and a rerun with new variants rescales them all. The overview marks them but labels nothing on its y axes;
-the close-up and the detail cards label them. Residual strips span +-3 sigma with ticks at
+the close-up and the detail cards label them. With --show-cut, bands outside the scale cut
+are drawn in a paler blue. Residual strips span +-3 sigma with ticks at
 -2, 0 and 2; a band beyond the strip is drawn as a triangle on its edge.
 
 Run in the cmbx container, after make_dv_vector.py:
@@ -47,6 +48,8 @@ OUT = os.path.join(HERE, "dv_vector_app.json")
 
 # ── style: a paper figure ───────────────────────────────────────────────────
 INK, DATA, FRAME, MUTED = "#16191F", "#2B4A8B", "#3A3F47", "#4A505A"
+CUT_DATA = "#B4C0D8"           # bands outside the scale cut, with --show-cut
+SHOW_CUT = False
 plt.rcParams.update({
     "font.family": "serif", "font.serif": ["cmr10"], "mathtext.fontset": "cm",
     "axes.formatter.use_mathtext": True, "axes.unicode_minus": False,
@@ -131,7 +134,8 @@ def prep(p, e):
     f = 10.0 ** e
     return dict(ell=ell, v=ell * np.asarray(p["cl"]) * f, s=ell * np.asarray(p["sig"]) * f,
                 t=ell * np.asarray(p["th"]) * f,
-                r=(np.asarray(p["cl"]) - np.asarray(p["th"])) / np.asarray(p["sig"]))
+                r=(np.asarray(p["cl"]) - np.asarray(p["th"])) / np.asarray(p["sig"]),
+                f=np.asarray(p["fit"], bool) if SHOW_CUT else np.ones(len(ell), bool))
 
 
 def exponent(pairs, keys):
@@ -165,11 +169,13 @@ def yaxis(lo, hi):
     return (lo - pad, top + pad), [0.0, float(f"{s:.6g}"), float(f"{2 * s:.6g}")]
 
 
-def errorbars(ax, x, y, s, lw, ms):
-    xs = np.repeat(x, 3)
-    ys = np.column_stack([y - s, y + s, np.full_like(y, np.nan)]).ravel()
-    ax.plot(xs, ys, color=DATA, lw=lw, solid_capstyle="butt", zorder=3)
-    ax.plot(x, y, "o", color=DATA, ms=ms, mew=0, zorder=4)
+def errorbars(ax, x, y, s, lw, ms, fit):
+    for m, color in ((fit, DATA), (~fit, CUT_DATA)):
+        if m.any():
+            xs = np.repeat(x[m], 3)
+            ys = np.column_stack([y[m] - s[m], y[m] + s[m], np.full(m.sum(), np.nan)]).ravel()
+            ax.plot(xs, ys, color=color, lw=lw, solid_capstyle="butt", zorder=3)
+            ax.plot(x[m], y[m], "o", color=color, ms=ms, mew=0, zorder=4)
 
 
 def frame(ax, ylim, yticks, *, tick_len, lw_frame, minor=True):
@@ -195,7 +201,7 @@ def draw_panel(ax, d, ylim, yticks, *, lw_bar, ms, lw_th, tick_len, lw_frame, mi
     frame(ax, ylim, yticks, tick_len=tick_len, lw_frame=lw_frame, minor=minor)
     ax.axhline(0, color=FRAME, lw=lw_frame * 0.6, alpha=0.45, zorder=1)
     ax.plot(d["ell"], d["t"], color=INK, lw=lw_th, zorder=2, solid_joinstyle="round")
-    errorbars(ax, d["ell"], d["v"], d["s"], lw_bar, ms)
+    errorbars(ax, d["ell"], d["v"], d["s"], lw_bar, ms, d["f"])
 
 
 def draw_strip(ax, d, *, ms, tick_len, lw_frame):
@@ -203,12 +209,13 @@ def draw_strip(ax, d, *, ms, tick_len, lw_frame):
     ax.axhspan(-1, 1, color="#CDD3DC", alpha=0.45, lw=0, zorder=0.5)
     ax.axhline(0, color=INK, lw=lw_frame, zorder=1)
     r, edge = d["r"], 0.9 * R
-    inside = np.abs(r) <= edge
-    ax.plot(d["ell"][inside], r[inside], "o", color=DATA, ms=ms, mew=0, zorder=4)
-    for sgn, mk in ((1, "^"), (-1, "v")):
-        m = sgn * r > edge
-        if m.any():
-            ax.plot(d["ell"][m], np.full(m.sum(), sgn * edge), mk, color=DATA, ms=ms * 1.25, mew=0, zorder=4)
+    for fit, color in ((d["f"], DATA), (~d["f"], CUT_DATA)):
+        inside = (np.abs(r) <= edge) & fit
+        ax.plot(d["ell"][inside], r[inside], "o", color=color, ms=ms, mew=0, zorder=4)
+        for sgn, mk in ((1, "^"), (-1, "v")):
+            m = (sgn * r > edge) & fit
+            if m.any():
+                ax.plot(d["ell"][m], np.full(m.sum(), sgn * edge), mk, color=color, ms=ms * 1.25, mew=0, zorder=4)
 
 
 def axes_at(fig, x, y, w, h, fw, fh):
@@ -448,13 +455,16 @@ def detail(pairs, k, a, b, glyphs, axis):
 
 
 def main():
-    global FID_LABEL
+    global FID_LABEL, SHOW_CUT
     ap = argparse.ArgumentParser()
     ap.add_argument("--source", default=SRC, help="data JSON from make_dv_vector.py")
     ap.add_argument("--output", default=OUT)
     ap.add_argument("--no-title", action="store_true",
                     help="omit the release/shear/CMB title line (the slide states them)")
+    ap.add_argument("--show-cut", action="store_true",
+                    help="draw bands outside the scale cut (the data JSON's fit mask) in a paler blue")
     args = ap.parse_args()
+    SHOW_CUT = args.show_cut
     src = json.load(open(args.source))
     labels = src.get("fiducial_label", FID_LABEL)
     release = src.get("release", "TR1")
