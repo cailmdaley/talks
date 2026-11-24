@@ -22,12 +22,11 @@
   "sections": [
     {
       "title": "Simulating surveys",
-      "outline": "Mocks reproduce a survey to validate pipelines and characterize systematics; the same techniques give forward models for explicit and implicit inference; simulations give agents a verifiable environment.",
+      "outline": "Mocks reproduce a survey to validate pipelines and characterize systematics; the same techniques give forward models for explicit and implicit inference.",
       "slides": [
         "title",
         "chain",
-        "fidelity",
-        "agents"
+        "fidelity"
       ]
     },
     {
@@ -60,14 +59,17 @@
       ]
     },
     {
-      "title": "Forward models and inference",
-      "outline": "A forward model of the ACT DR6 lensing reconstruction, simulation-based inference as where the mocks lead, Lightcone, where both analyses run, and the questions this way of working puts to the community.",
+      "title": "Doing science now",
+      "outline": "How the two analyses were done and what comes next: simulations as a verifiable environment for agents, the pipeline, simulations and data held against each other, a forward model of the CMB-lensing reconstruction and simulation-based inference as the work proposed for ICE, Lightcone, the questions this puts to the community, and a summary.",
       "slides": [
+        "exciting",
+        "agents",
+        "spiral",
         "cmb-lensing-fm",
         "sbi",
         "lightcone",
-        "summary",
-        "questions"
+        "questions",
+        "summary"
       ]
     },
     {
@@ -90,7 +92,6 @@
         "collaborations",
         "timeline",
         "small-teams",
-        "spiral",
         "scales",
         "collaborations-for"
       ]
