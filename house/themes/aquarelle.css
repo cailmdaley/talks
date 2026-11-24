@@ -57,3 +57,5 @@
   width: calc(var(--done) * 100%);
   background: linear-gradient(var(--ink), var(--ink)) center / 100% 1.8px no-repeat, var(--c);
 }
+/* controls in the footer band stand on the footer's baseline, clear of the rule of parts */
+.theme-aquarelle .slide > .variants { bottom: 36px; }
