@@ -296,10 +296,10 @@ function ahead(painted = false) {
     <g mask="url(#begun-m)">${disc(0)}</g>`;
   const washes = painted ? [3, 2, 1, 0].map(i => ({ id: `sheet${i}`, cls: `wash breathe t${i}`, dpr: 1, svg: `<defs>${sliceFilter('z', sky[i])}</defs><g opacity="0.9">${disc(i)}</g>` }))
     : [{ id: 'wash', cls: 'wash', dpr: 1, svg: begun }];
-  const wts = painted ? [W.fine, W.fine, W.fine, W.fine] : [W.fine, W.fine, W.sight, W.ghost], runs = [0.07, 0.05, 0.03, painted ? 0.06 : -0.5];
+  const wts = painted ? [W.fine, W.fine, W.fine, W.fine] : [W.line, W.fine, W.fine, W.sight], runs = [0.07, 0.05, 0.03, painted ? 0.06 : -0.5];
   const rims = ds.map((d, i) => { const [x, y] = c(d, os[i]); return oval(x, y, r(d), r(d) * flat, tilt, wts[i], runs[i], i === 3 ? -0.3 : null); }).join('');
   // the cone's sides, ruled lightly past the last sheet
-  const side = (u) => { const a = c(u < 0 ? 125 : 85, u), b = c(u < 0 ? ds[2] + 30 : ds[3] + 40, u); return ln(a[0], a[1], b[0], b[1], W.ghost, 0); };
+  const side = (u) => { const a = c(u < 0 ? 125 : 85, u), b = c(u < 0 ? ds[2] + 30 : ds[3] + 40, u); return ln(a[0], a[1], b[0], b[1], W.sight, 0); };
   const tone = (c) => mix(c, S.payne, 0.3);
   // x, height, wash, lean, half-width: a pair in talk, a group, two a little apart
   const crowd = [[1190, 102, tone(S.sky), 0.035, 0.125, 1], [1229, 84, tone(S.butter), -0.04, 0.115, -1], [1316, 106, tone(S.rose), -0.01, 0.13, 1], [1347, 90, tone(S.lilac), 0.03, 0.108, 1], [1383, 112, tone(S.sage), 0.015, 0.135, 0.6], [1417, 78, tone(S.rose), 0.05, 0.12, 1], [1480, 104, tone(S.lilac), 0.04, 0.125, 1], [1511, 90, tone(S.butter), -0.02, 0.11, 1]];
