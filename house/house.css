@@ -198,9 +198,10 @@ html, body { background: var(--ground); }
 .slide figure.art > img.sweep { animation: art-sweep var(--sweep-time, 14s) ease-in-out infinite alternate; }
 .slide figure.art > img.t1 { --t: 1; } .slide figure.art > img.t2 { --t: 2; } .slide figure.art > img.t3 { --t: 3; }
 .slide figure.art > img.t4 { --t: 4; } .slide figure.art > img.t5 { --t: 5; } .slide figure.art > img.t0 { --t: 0; }
-/* .late: a layer that waits for the slide's last fragment and arrives with it */
-.slide figure.art > img.late { transition: opacity 0.9s ease; }
+/* .late: a layer that waits for the slide's last fragment and arrives with it; .early: with its first */
+.slide figure.art > img:is(.late, .early) { transition: opacity 0.9s ease; }
 .reveal .slide:has(.fragment:not(.visible)) figure.art > img.late { opacity: 0; }
+.reveal .slide:has(.fragment):not(:has(.fragment.visible)) figure.art > img.early { opacity: 0; }
 @keyframes art-breathe { 0%, 26%, 100% { opacity: 0.6; } 13% { opacity: 1; } }
 @keyframes art-sweep { from { transform: rotate(calc(-1 * var(--sweep, 1.2deg))); } to { transform: rotate(var(--sweep, 1.2deg)); } }
 .report .slide figure.art > img { animation: none; }

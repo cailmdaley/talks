@@ -443,6 +443,33 @@ function inference() {
   ];
 }
 
+// The three tensions, as a cosmologist sketches them: two posteriors of the expansion rate that stand
+// apart; the clustering amplitude from lensing below the one the CMB predicts; and the dark-energy
+// contour lying off the point where ΛCDM sits. Every posterior is a wash, since it is inferred;
+// the CMB's is butter, as on the title.
+function tensions() {
+  hand(131);
+  const y0 = 940, top = 752;
+  const two = (fill, d, o = 1) => glaze(fill, d, 0.42 * o);
+  // a tilted ellipse and its inner contour
+  const contour = (col, cx, cy, a, b, deg, o = 1) => { const t = `rotate(${deg} ${cx} ${cy})`;
+    return `<g transform="${t}">${two(col, ell(cx, cy, a, b), o)}${two(deep(col, 0.9), ell(cx, cy, a * 0.58, b * 0.58), o * 1.25)}</g>`; };
+  const hump = (cx, w, h) => { const pts = Array.from({ length: 41 }, (_, i) => { const x = cx - 3 * w + i * 6 * w / 40; return [x, y0 - 2 - h * Math.exp(-0.5 * ((x - cx) / w) ** 2)]; }); return through(pts); };
+  const area = (cx, w, h) => hump(cx, w, h) + ` L${cx + 3 * w} ${y0} L${cx - 3 * w} ${y0}Z`;
+  const axes = (x) => ln(x, y0, x + 330, y0, W.fine, 6) + ln(x, y0, x, top, W.fine, 6);
+  const xa = 300, xb = 795, xc = 1290;
+  const wash = `<defs>${GLAZE}</defs>`
+    + two(S.butter, area(xa + 112, 15, 160), 1.5) + two(S.rose, area(xa + 232, 27, 104), 1.5)
+    + contour(S.sky, xb + 158, y0 - 74, 112, 36, -9) + contour(S.butter, xb + 232, y0 - 136, 38, 17, -30, 1.5)
+    + contour(S.lilac, xc + 212, y0 - 68, 92, 30, 38, 1.35);
+  const lcdm = [xc + 118, y0 - 128];
+  const lines = ln(xa - 6, y0, xa + 336, y0, W.fine, 0) + stroke(hump(xa + 112, 15, 160), W.fine) + stroke(hump(xa + 232, 27, 104), W.fine)
+    + axes(xb) + axes(xc)
+    + ln(lcdm[0], top + 10, lcdm[0], y0 - 8, W.ghost, 0) + ln(xc + 8, lcdm[1], xc + 322, lcdm[1], W.ghost, 0)
+    + stroke(`M${lcdm[0] - 7} ${lcdm[1] - 7} l14 14 M${lcdm[0] + 7} ${lcdm[1] - 7} l-14 14`, W.line);
+  return [{ id: 'wash', cls: 'wash early', dpr: 1, svg: wash }, { id: 'lines', cls: 'early', svg: MEDIA + pencil(lines) }];   // both arrive with the bullet that names the tensions
+}
+
 const ramp = (a, b) => [0, 0.25, 0.5, 0.75, 1].map(t => mix(a, b, t));
 const ART = {
   // every instrument, five redshifts from sky blue through lilac to rose, and the CMB behind them
@@ -455,6 +482,7 @@ const ART = {
   // the same cone, painted: one sheet for each part of the talk, in its wash
   summary: () => ahead(true),
   overview: () => oneSky(),
+  tensions: () => tensions(),
   agents: () => knownInput(),
   sbi: () => inference(),
   // the northern sky from Mauna Kea, in the part's rose, and the shape catalogue under a loupe
@@ -467,6 +495,7 @@ const ALT = {
   unions: 'The Mauna Kea domes look up into a cone of rose redshift sheets; a loupe drawn out from the nearest sheet shows galaxy shapes in ink, turned around the mass in wash beneath them',
   summary: 'Pencil and watercolour: a small group of people stand at the foot of a light cone of four painted sheets, one in the wash of each part of the talk',
   questions: 'Pencil and watercolour: a small group of people stand at the foot of a light cone whose sheets are traced in pencil and not yet painted',
+  tensions: 'Three sketches in pencil and wash: two posteriors of the expansion rate standing apart, the lensing contour of clustering amplitude below the one from the CMB, and the dark-energy contour lying off the point where ΛCDM sits',
   overview: 'A brace gathers the three projects and points to one simulated sky, a globe in pencil and wash',
   sbi: 'Seven mock skies along a parameter axis, their structure growing clumpier; the one that matches the data is ringed in ink and the posterior is a lilac wash on the axis beneath it',
   agents: 'A known input spectrum in pencil, the sky simulated from it as a washed globe, and the measured bandpowers in ink lying on the same pencil curve',
