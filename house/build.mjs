@@ -762,7 +762,8 @@ function markOpener(el) {
 // ── Output ────────────────────────────────────────────────────────────────
 
 // The drawing media of inline schematics: SVG filters that house.css applies by class
-// (.wash, .wash-fine, .glaze, .pen), carried once in every deck and report.
+// (.wash, .wash-fine, .glaze, .pen, .pencil), carried once in every deck and report.
+// The pencil's region is the whole drawing (user space), so a lone straight line keeps it.
 const MEDIA = `<svg class="house-media" width="0" height="0" aria-hidden="true" focusable="false"><defs>
 ${[['house-wash', 0.006, 110, 3, 4, 4], ['house-wash-fine', 0.012, 36, 1.6, 2, 2.5]].map(([id, freq, scale, blur, erode, rim]) => `<filter id="${id}" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
 <feTurbulence type="fractalNoise" baseFrequency="${freq}" numOctaves="4" seed="11" result="n"></feTurbulence>
@@ -794,6 +795,16 @@ ${[['house-wash', 0.006, 110, 3, 4, 4], ['house-wash-fine', 0.012, 36, 1.6, 2, 2
 <filter id="house-pen" x="-5%" y="-5%" width="110%" height="110%">
 <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="2" result="n"></feTurbulence>
 <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="house-pencil" filterUnits="userSpaceOnUse" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="9" result="w"></feTurbulence>
+<feDisplacementMap in="SourceGraphic" in2="w" scale="2.2" xChannelSelector="R" yChannelSelector="G" result="d"></feDisplacementMap>
+<feTurbulence type="fractalNoise" baseFrequency="0.011" numOctaves="3" seed="17" result="p"></feTurbulence>
+<feColorMatrix in="p" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.3 0.2" result="pa"></feColorMatrix>
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="3" result="g"></feTurbulence>
+<feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2 1.95" result="ga"></feColorMatrix>
+<feComposite in="d" in2="pa" operator="in" result="dp"></feComposite>
+<feComposite in="dp" in2="ga" operator="in"></feComposite>
 </filter>
 </defs></svg>`;
 
