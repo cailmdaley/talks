@@ -70,5 +70,8 @@
 }
 .theme-aquarelle .slide > .foot > .notes-open::before { content: none; }
 .theme-aquarelle .slide > .foot > .notes-open:hover { color: var(--ink); border-bottom-color: var(--ink); }
+/* over a photograph the rule of parts is not drawn, and the marginal note stands on the veil as the folio does */
+.theme-aquarelle .slide[data-layout="bleed"] > .foot > .parts { display: none; }
+.theme-aquarelle .slide[data-layout="bleed"] > .foot > .notes-open { margin: 0 12px 0 0; padding: 8px 12px; border: 0; border-radius: 6px; background: var(--veil); color: var(--ink); }
 /* controls in the footer band stand on the footer's baseline, clear of the rule of parts */
 .theme-aquarelle .slide > .variants { bottom: 36px; }

@@ -168,49 +168,79 @@ function chain() {
 }
 
 // ── unions-3x2pt ─────────────────────────────────────────────────────────────────────────────
-// Lenses and sources along redshift. The source bins are broad and overlap, so four washes of rose
-// rising from the axis, each a schematic n(z) whose mean falls on the pencil line under its label
-// (the shapes follow the working n(z) of the cosmic-shear slide: the first three compact, the last
-// with a long tail). The lens bins are cuts, so five blocks of one grey wash with a pen line at
-// each edge, standing in front of the sources as the lenses do on the sky.
+// Calum Murray's plot of the lens sample against DES, redrawn in the deck's hand from the curves of
+// his figure (images/lsx_nz_desy6.svg, a matplotlib SVG: axes from z = 0 at 38.55 pt to 1.4 at
+// 460.925 pt, baseline at 122.796 pt). Each n(z) is peak-normalised, as he drew it. The six LSx
+// bins are narrow, so six washes of rose under a pen line; the six DES Y6 clustering bins are
+// broad washes of grey under pencil, the bin DES dropped from its 3×2pt dashed.
 function unions3x2pt() {
-  const x = (z) => 60 + z * 1326.67, BASE = 246, H = 160;
-  // peak, width below it, width above it, height; the means come out at 0.29, 0.43, 0.58, 0.92
-  const bins = [[0.281, 0.085, 0.1, 0.92], [0.404, 0.07, 0.1, 1], [0.611, 0.11, 0.075, 0.8], [0.82, 0.07, 0.2, 0.56]], means = [0.293, 0.428, 0.583, 0.924];
-  const hump = ([zp, sl, sr, a]) => { const pts = []; for (let z = Math.max(0, zp - 3.2 * sl); z <= Math.min(1.245, zp + 3.2 * sr); z += 0.01) pts.push([x(z), BASE - H * a * Math.exp(-0.5 * ((z - zp) / (z < zp ? sl : sr)) ** 2)]);
-    return line([[pts[0][0], BASE], ...pts, [pts[pts.length - 1][0], BASE]]) + 'Z'; };
-  const tick = [0, 0.2, 0.4, 0.6, 0.8, 1, 1.2];
-  return `<svg viewBox="0 30 1712 310" role="img" aria-label="Redshift axis from 0 to 1.2: five LSx lens bins between 0.05 and 0.55, and the four UNIONS source bins as broad overlapping distributions with mean redshifts 0.29, 0.43, 0.58 and 0.92">
-      <defs>
-        <linearGradient id="unions-3x2pt-tail" gradientUnits="userSpaceOnUse" x1="1480" y1="0" x2="1700" y2="0">
-          <stop offset="0" class="stop-rose" stop-opacity="0.62"/><stop offset="1" class="stop-rose" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
-      <!-- the redshift axis, in pencil -->
+  const src = fs.readFileSync(path.join(HERE, 'images', 'lsx_nz_desy6.svg'), 'utf8');
+  const curves = [...src.matchAll(/<g id="line2d_\d+">\s*<path d="([^"]+)"[^>]*style="([^"]+)"/g)]
+    .map(([, d, style]) => ({ pts: [...d.matchAll(/[ML] ([\d.]+) ([\d.]+)/g)].map(([, px, py]) => [(px - 38.55) / (460.925 - 38.55) * 1.4, 122.796 - py]),
+      lsx: /#b9573a/.test(style), dashed: /dasharray/.test(style) }))
+    .filter((c) => c.pts.length > 20);
+  const x = (z) => 60 + z * 1137.14, BASE = 300, H = 204;
+  // each curve is kept from where it leaves the axis to where it returns, so the lines do not pile up along it
+  for (const c of curves) { const top = Math.max(...c.pts.map((p) => p[1])), on = c.pts.map((p) => p[1] > 0.006 * top);
+    const i0 = Math.max(0, on.indexOf(true) - 1), i1 = Math.min(c.pts.length - 1, on.lastIndexOf(true) + 1);
+    c.xy = c.pts.slice(i0, i1 + 1).map(([z, v]) => [x(z), BASE - H * v / top]); }
+  const area = (c) => line([[c.xy[0][0], BASE], ...c.xy, [c.xy[c.xy.length - 1][0], BASE]]) + 'Z';
+  const des = curves.filter((c) => !c.lsx), lsx = curves.filter((c) => c.lsx);
+  const tick = [0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4];
+  return `<svg viewBox="0 24 1712 386" role="img" aria-label="Redshift distributions, each scaled to a peak of one: six narrow bins of the SPHEREx all-sky lens sample LSx v0.9 between redshift 0 and 0.55, against the six broader DES Y6 clustering bins between 0.2 and 1.2, the second of which DES dropped from its 3x2pt analysis">
+      <!-- the axes, in pencil -->
       <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">
-        <path d="M60 246 H1652 ${tick.map((z) => `M${n1(x(z))} 246 V259`).join(' ')}"/>
+        <path d="M60 ${BASE} H1652 M60 ${BASE} V${BASE - H - 24} ${tick.map((z) => `M${n1(x(z))} ${BASE} V${BASE + 13}`).join(' ')}"/>
       </g>
-      <g font-size="34" text-anchor="middle" class="fill-muted">
-        ${tick.map((z) => `<text x="${n1(x(z))}" y="300">${z}</text>`).join('')}
+      <g font-size="35" text-anchor="middle" class="fill-muted">
+        ${tick.map((z) => `<text x="${n1(x(z))}" y="${BASE + 54}">${z}</text>`).join('')}
+        <text x="856" y="${BASE + 94}">redshift</text>
+        <text x="1652" y="${BASE + 94}" text-anchor="end" font-style="italic">preliminary · plot after Calum Murray</text>
       </g>
-      <!-- source bins: four washes of rose, broad and overlapping, each mean on a pencil line -->
-      ${bins.map((b, i) => `<path d="${hump(b)}" class="glaze${i < 3 ? ' fill-rose' : ''}"${i < 3 ? ' opacity="0.62"' : ' fill="url(#unions-3x2pt-tail)"'}/>`).join('\n      ')}
-      <path d="${means.map((z) => `M${n1(x(z))} 84 V${BASE}`).join(' ')}" class="pencil fill-none stroke-muted" stroke-width="1.8" stroke-linecap="round"/>
-      <!-- lens bins: one grey wash over z 0.05–0.55, cut in pen at the bin edges, on paper kept clear of the sources behind -->
-      <rect x="${n1(x(0.05))}" y="192" width="${n1(x(0.55) - x(0.05))}" height="46" class="fill-ground"/>
-      <rect x="${n1(x(0.05))}" y="192" width="${n1(x(0.55) - x(0.05))}" height="46" rx="2" class="glaze" fill="#3B4150" opacity="0.2"/>
-      <path d="${[0.05, 0.15, 0.25, 0.35, 0.45, 0.55].map((z) => `M${n1(x(z))} 190 V240`).join(' ')}" class="pen fill-none stroke-ink" stroke-width="2"/>
-      <g font-size="36" font-weight="600" text-anchor="middle">
-        ${[0.1, 0.2, 0.3, 0.4, 0.5].map((z, i) => `<text x="${n1(x(z))}" y="228">L${i + 1}</text>`).join('')}
-        ${means.map((z, i) => `<text x="${n1(x(z))}" y="72" class="fill-accent">S${i + 1}</text>`).join('')}
+      <!-- DES Y6 clustering bins: broad grey washes under pencil, the dropped bin dashed and unpainted -->
+      ${des.filter((c) => !c.dashed).map((c) => `<path d="${area(c)}" class="glaze" fill="#3B4150" opacity="0.13"/>`).join('\n      ')}
+      <g class="pencil fill-none stroke-ink" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+        ${des.map((c) => `<path d="${line(c.xy)}"${c.dashed ? ' stroke-dasharray="12 9" opacity="0.6"' : ''}/>`).join('\n        ')}
       </g>
-      <text x="${n1(x(0.583) + 18)}" y="228" font-size="36">LSx lens bins</text>
-      <text x="60" y="72" font-size="36" class="fill-accent">UNIONS v2 sources</text>
-      <text x="856" y="336" text-anchor="middle" font-size="34" class="fill-muted">redshift</text>
+      <!-- LSx lens bins: narrow washes of rose under a pen line -->
+      ${lsx.map((c) => `<path d="${area(c)}" class="glaze fill-rose" opacity="0.5"/>`).join('\n      ')}
+      <g class="pen fill-none stroke-accent" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+        ${lsx.map((c) => `<path d="${line(c.xy)}"/>`).join('\n        ')}
+      </g>
+      <text x="84" y="62" font-size="36" font-weight="600" class="fill-accent">SPHEREx all-sky (LSx v0.9), 6 bins</text>
+      <text x="${n1(x(0.62))}" y="62" font-size="36" font-weight="600">DES Y6 clustering, 6 bins <tspan font-weight="400" font-size="35" class="fill-muted">· dashed: dropped from its 3×2pt</tspan></text>
     </svg>`;
 }
 
-const SCHEMATICS = { spiral, chain, 'unions-3x2pt': unions3x2pt };
+// ── unions-next ──────────────────────────────────────────────────────────────────────────────
+// The shear calibration of the slide's three bullets as measurements on one axis of m: a pencil
+// line at zero, each estimate an ink point with its error bar in pen. The first release sits far
+// to the left; the two v2 estimates straddle zero.
+function shearcal() {
+  const x = (m) => 96 + (m + 7) / 9.4 * 720, rows = [['first release', -5.7, 0.47, 150], ['v2 · ShapePipe', -0.6, 0.4, 262], ['v2 · AnaCal', 0.3, 0.8, 374]];
+  const tick = [-6, -4, -2, 0, 2];
+  return `<svg viewBox="0 40 860 520" role="img" aria-label="Multiplicative shear bias m in percent on one axis: the first release at minus 5.7, and the two v2 estimates, ShapePipe at minus 0.6 plus or minus 0.4 and AnaCal at plus 0.3 plus or minus 0.8, both consistent with zero">
+      <!-- zero, and the axis, in pencil -->
+      <g class="pencil fill-none stroke-ink" stroke-linecap="round">
+        <path d="M${n1(x(-7))} 452 H${n1(x(2.4))} ${tick.map((m) => `M${n1(x(m))} 452 V465`).join(' ')}" stroke-width="2.2"/>
+        <path d="M${n1(x(0))} 96 V452" stroke-width="1.8" stroke-dasharray="3 9"/>
+      </g>
+      <g font-size="35" text-anchor="middle" class="fill-muted">
+        ${tick.map((m) => `<text x="${n1(x(m))}" y="506">${m > 0 ? '+' : m < 0 ? '−' : ''}${Math.abs(m)}</text>`).join('')}
+        <text x="${n1(x(-2.3))}" y="550">shear bias <tspan font-style="italic">m</tspan>, percent</text>
+      </g>
+      <!-- the three estimates: error bars in pen, points in ink -->
+      <g class="pen fill-none stroke-ink" stroke-width="2.6" stroke-linecap="round">
+        ${rows.map(([, m, e, y]) => `<path d="M${n1(x(m - e))} ${y} H${n1(x(m + e))} M${n1(x(m - e))} ${y - 11} V${y + 11} M${n1(x(m + e))} ${y - 11} V${y + 11}"/>`).join('\n        ')}
+      </g>
+      ${rows.map(([, m, , y]) => `<circle cx="${n1(x(m))}" cy="${y}" r="9" class="fill-ink"/>`).join('')}
+      <g font-size="36">
+        ${rows.map(([name, m, e, y], i) => i ? `<text x="${n1(x(m - e) - 26)}" y="${y + 12}" text-anchor="end">${name}</text>` : `<text x="${n1(x(m + e) + 26)}" y="${y + 12}">${name}</text>`).join('\n        ')}
+      </g>
+    </svg>`;
+}
+
+const SCHEMATICS = { spiral, chain, 'unions-3x2pt': unions3x2pt, 'unions-next': shearcal };
 const only = (() => { const i = process.argv.indexOf('--only'); return i > 0 ? process.argv[i + 1].split(',') : null; })();
 for (const [name, draw] of Object.entries(SCHEMATICS)) {
   if (only && !only.includes(name)) continue;
