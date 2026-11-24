@@ -182,12 +182,27 @@ html, body { background: var(--ground); }
 /* the rule of parts (one segment per main section, filled to the slide shown) is a theme's to draw */
 .slide > .foot > .parts { display: none; }
 
-/* art — a drawing behind a title or section slide: figure.art, the full frame, under the text */
+/* art — a drawing behind a slide's text: figure.art, the full frame, one image or a stack of
+   layers in order; a .wash layer is transparent pigment, multiplied onto the layers under it */
 .slide:has(figure.art) { isolation: isolate; }
 .slide figure.art { position: absolute; inset: 0; margin: 0; z-index: -1; }
-.slide figure.art > img { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* the drawing keeps the right of the frame; the text keeps the left */
-.slide:has(figure.art) > h2, .slide:has(figure.art) h1, .slide:has(figure.art) .subtitle, .slide:has(figure.art) > .body > p { max-width: 1040px; }
+.slide figure.art > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.slide figure.art > img.wash { mix-blend-mode: multiply; }
+/* on a title or section slide the drawing keeps the right of the frame; the text keeps the left */
+.slide:is([data-layout="title"], [data-layout="section"]):has(figure.art) :is(h1, h2, .subtitle, .body > p) { max-width: 1040px; }
+/* a layer may move, slowly and a little. .breathe: a wash laid lighter that comes to full strength and
+   pales again, in turn through .t0, .t1, … so that a wave passes through the stack. .sweep: the
+   layer turns --sweep either way about its transform-origin (a deck's class sets both). Nothing
+   moves in the report, in print or under reduced motion: the layers at rest are the drawing. */
+.slide figure.art > img.breathe { animation: art-breathe 36s ease-in-out infinite; animation-delay: calc(var(--t, 0) * 6s - 36s); }
+.slide figure.art > img.sweep { animation: art-sweep var(--sweep-time, 14s) ease-in-out infinite alternate; }
+.slide figure.art > img.t1 { --t: 1; } .slide figure.art > img.t2 { --t: 2; } .slide figure.art > img.t3 { --t: 3; }
+.slide figure.art > img.t4 { --t: 4; } .slide figure.art > img.t5 { --t: 5; } .slide figure.art > img.t0 { --t: 0; }
+@keyframes art-breathe { 0%, 26%, 100% { opacity: 0.6; } 13% { opacity: 1; } }
+@keyframes art-sweep { from { transform: rotate(calc(-1 * var(--sweep, 1.2deg))); } to { transform: rotate(var(--sweep, 1.2deg)); } }
+.report .slide figure.art > img { animation: none; }
+@media print { .slide figure.art > img { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .slide figure.art > img { animation: none !important; } }
 
 /* ── Figures ────────────────────────────────────────────────────────────────
    <figure> holds an optional <figcaption>, one image or inline <svg>, optional

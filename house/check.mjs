@@ -28,8 +28,8 @@ const MAX_WORDS = 60;
 const SCHEMA = {
   title:         { head: 'h1', body: [['p.subtitle', 0, 1], ['p.byline', 0, 1], ['p.affil', 0, 2], ['p.venue', 0, 1], ['p.date', 0, 1], ['div.logos', 0, 1], ['figure.art', 0, 1]] },
   section:       { head: 'h2', body: [['p', 0, 1], ['figure.art', 0, 1]] },
-  statement:     { head: 'h2', body: [['p', 0, 2]] },
-  points:        { head: 'h2', body: [['ul', 0, 2], ['ol', 0, 2], ['p', 0, 4], ['div.eq', 0, 3], ['div.cols', 0, 1], ['pre', 0, 1], ['span.source', 0, 1], ['p.source', 0, 1]], need: 1 },
+  statement:     { head: 'h2', body: [['p', 0, 2], ['figure.art', 0, 1]] },
+  points:        { head: 'h2', body: [['ul', 0, 2], ['ol', 0, 2], ['p', 0, 4], ['div.eq', 0, 3], ['div.cols', 0, 1], ['pre', 0, 1], ['span.source', 0, 1], ['p.source', 0, 1], ['figure.art', 0, 1]], need: 1 },
   figure:        { head: 'h2', body: [['figure', 1, 1]] },
   'figure-text': { head: 'h2', body: [['figure', 1, 1], ['div.text', 1, 1], ['p.lede', 0, 1], ['p.source', 0, 1]] },
   compare:       { head: 'h2', body: [['figure', 2, 2]] },
@@ -38,7 +38,7 @@ const SCHEMA = {
   bleed:         { head: 'h2?', body: [['figure', 1, 1]] },
   table:         { head: 'h2', body: [['table', 1, 1], ['span.source', 0, 1], ['p.source', 0, 1], ['p', 0, 1]] },
   quote:         { head: null, body: [['blockquote', 1, 1], ['span.source', 0, 1], ['p.source', 0, 1]] },
-  closing:       { head: 'h2', body: [['ol', 0, 1], ['ul', 0, 1], ['p', 0, 2], ['p.contact', 0, 1]], need: 1 },
+  closing:       { head: 'h2', body: [['ol', 0, 1], ['ul', 0, 1], ['p', 0, 2], ['p.contact', 0, 1], ['figure.art', 0, 1]], need: 1 },
   people:        { head: 'h2', body: [['div.people', 1, 6], ['div.memoriam', 0, 1], ['div.text', 0, 1], ['span.source', 0, 1], ['p.source', 0, 1]] },
 };
 const MAX_PEOPLE = 32;
@@ -135,6 +135,11 @@ function lintBlock(el, where, vocab, out, isDetail) {
   }
   for (const fig of el.querySelectorAll('figure')) {
     if (fig.parentElement?.classList.contains('people')) continue;
+    // art: one image or a stack of layers, all shown at once
+    if (fig.classList.contains('art')) {
+      if (!fig.children.length || [...fig.children].some(c => c.localName !== 'img')) out.errors.push(`${where}: figure.art holds <img>s only, one or a stack of layers`);
+      continue;
+    }
     const visuals = [...fig.children].filter(c => c.localName === 'img' || c.localName === 'video' || c.localName === 'iframe' || c.localName === 'svg' || c.classList.contains('placeholder'));
     // a stack: several <img>, every one after the first a fragment, drawn over the first
     const stack = visuals.length > 1 && visuals.every((c, i) => c.localName === 'img' && (i === 0) !== c.classList.contains('fragment'));

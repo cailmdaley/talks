@@ -98,3 +98,9 @@
 .slide svg .stop-butter { stop-color: var(--butter); }  .slide svg .stop-sky   { stop-color: var(--sky); }
 .slide svg .stop-rose   { stop-color: var(--rose); }    .slide svg .stop-lilac { stop-color: var(--lilac); }
 .slide svg .stop-sage   { stop-color: var(--sage); }
+
+/* the drawings' instruments sweep their patch of sky: each view turns about the instrument
+   (make_art.mjs: the dish's pivot, Mauna Kea's summit dome, Euclid's middle) */
+.slide figure.art > img.about-spt    { transform-origin: 57.17% 84.52%; --sweep: 1.5deg; --sweep-time: 13s; }
+.slide figure.art > img.about-unions { transform-origin: 80.21% 73.33%; --sweep: 1.1deg; --sweep-time: 17s; }
+.slide figure.art > img.about-euclid { transform-origin: 91.25% 55.56%; --sweep: 0.9deg; --sweep-time: 21s; }

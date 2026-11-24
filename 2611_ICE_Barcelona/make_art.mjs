@@ -1,11 +1,13 @@
-// The deck's drawings, a pencil underdrawing with watercolour laid in: the three instruments looking
-// up a light cone of redshift slices to the CMB (the title), and the same scene cut down to each
-// part's instruments (the section openers). Each is a full 1920×1080 frame on a transparent ground.
-// node 2611_ICE_Barcelona/make_art.mjs → images/ice_art_{title,euclid-spt,unions}.png
-import path from 'node:path'; import { fileURLToPath } from 'node:url';
+// The deck's drawings, a pencil underdrawing with watercolour laid in. The title: the three
+// instruments look up into a light cone of redshift sheets that ends at the CMB; the section openers
+// are the same scene cut down to each part's instruments. A drawing is a stack of layers, each a
+// full 1920×1080 frame on a transparent ground, so that its washes and instruments can move a little.
+// node 2611_ICE_Barcelona/make_art.mjs [--only title,unions] [--out dir]
+//   → images/ice_art/<drawing>-<layer>.png, and each drawing's <figure class="art"> on stdout
+import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const S = { ground: '#F6F0E4', graphite: '#45403A', payne: '#3B4150', rose: '#E3A9A3', sage: '#A9C4A6', sky: '#9FBEDB', butter: '#EBD38A', lilac: '#C3B3DC' };
+const S = { ground: '#F6F0E4', graphite: '#39342E', payne: '#3B4150', rose: '#E3A9A3', sage: '#A9C4A6', sky: '#9FBEDB', butter: '#EBD38A', lilac: '#C3B3DC' };
 
 // ── the pencil ───────────────────────────────────────────────────────────────────────────────
 // Graphite: a fine line with a steady hand's drift, its pressure rising and falling along the
@@ -27,7 +29,7 @@ const rnd = () => { state = (state + 0x6D2B79F5) | 0; let t = Math.imul(state ^ 
 const jit = (a) => (rnd() * 2 - 1) * a;
 const f = ([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`;
 // weights: a contour, a detail, a construction line
-const W = { line: { w: 1.75, o: 0.94 }, fine: { w: 1.3, o: 0.75 }, ghost: { w: 1.05, o: 0.34 }, sight: { w: 1.15, o: 0.5 } };
+const W = { line: { w: 2.3, o: 0.96 }, fine: { w: 1.65, o: 0.82 }, ghost: { w: 1.25, o: 0.42 }, sight: { w: 1.45, o: 0.6 } };
 const stroke = (d, { w, o }) => `<path d="${d}" stroke-width="${w}" opacity="${(o * (0.85 + rnd() * 0.15)).toFixed(2)}" vector-effect="non-scaling-stroke"/>`;
 const pencil = (s) => `<g fill="none" stroke="${S.graphite}" stroke-linecap="round" stroke-linejoin="round" filter="url(#pencil)">${s}</g>`;
 
@@ -122,11 +124,11 @@ function maunaKea(x, y, k = 1) {   // the summit ridge with CFHT, Subaru, the Ke
 }
 
 // the 10 m off-axis dish on its fork, pointed tilt degrees from the zenith, beside the raised lab;
-// the back of the dish turns about PIVOT, above the tower
+// the back of the dish turns about PIVOT, above the tower, so the dish is drawn apart from its base
 const PIVOT = [72, -124];
-function spt(x, y, tilt, k = 1) {
+const BOWL = 'M-120 0 Q0 98 120 0', CABIN = [[130, -128], [174, -128], [168, -164], [124, -164]];
+function sptBase(x, y, k = 1) {   // the ice, the raised lab and the tower
   hand(47);
-  const bowl = 'M-120 0 Q0 98 120 0', cabin = [[130, -128], [174, -128], [168, -164], [124, -164]];
   return `<g transform="translate(${x} ${y}) scale(${k})">
     ${glaze('url(#g-ice)', 'M-340 0 H360 L300 46 H-280Z')}
     ${paper('M-230 -34 h150 v-62 h-150Z')}${loose('url(#g-shade)', 'M-120 -96 h40 v62 h-40Z')}
@@ -137,13 +139,17 @@ function spt(x, y, tilt, k = 1) {
       + box(-214, -80, 20, 16, W.fine, 0) + box(-180, -80, 20, 16, W.fine, 0) + box(-146, -80, 20, 16, W.fine, 0)
       + ln(-80, -60, -44, 0, W.fine) + ln(-80, -44, -70, -44, W.fine)
       + poly([[32, 0], [48, -96], [96, -96], [112, 0]], W.line, 6, false) + ln(58, -96, 61, -132, W.line, 0) + ln(86, -96, 83, -132, W.line, 0))}
-    <g transform="translate(${PIVOT[0]} ${PIVOT[1]}) rotate(${tilt}) translate(0 -49)">
-      ${paper(bowl + 'Z')}${loose('url(#g-shade)', 'M-10 49 Q70 44 120 0 Q60 80 -10 49Z', 1, 2, 1.5)}
+  </g>`;
+}
+function sptDish(x, y, tilt, k = 1) {   // the dish, its struts and the receiver cabin
+  hand(48);
+  return `<g transform="translate(${x} ${y}) scale(${k})"><g transform="translate(${PIVOT[0]} ${PIVOT[1]}) rotate(${tilt}) translate(0 -49)">
+      ${paper(BOWL + 'Z')}${loose('url(#g-shade)', 'M-10 49 Q70 44 120 0 Q60 80 -10 49Z', 1, 2, 1.5)}
       ${paper(ell(0, 0, 120, 22))}${loose(S.sky, ell(0, 0, 120, 22), 0.4, -2.5, 1.5)}
-      ${paper(cabin.map((p, i) => (i ? 'L' : 'M') + f(p)).join(' ') + 'Z')}
-      ${pencil(stroke(bowl, W.line) + oval(0, 0, 120, 22, 0, W.line, 0.08)
+      ${paper(CABIN.map((p, i) => (i ? 'L' : 'M') + f(p)).join(' ') + 'Z')}
+      ${pencil(stroke(BOWL, W.line) + oval(0, 0, 120, 22, 0, W.line, 0.08)
         + ln(0, 49, -72, 13, W.fine, 0) + ln(0, 49, 0, 22, W.fine, 0) + ln(0, 49, 72, 13, W.fine, 0) + stroke('M-104 10 Q0 44 104 10', W.fine)
-        + ln(120, 0, 152, -128, W.fine, 6) + ln(64, -19, 138, -128, W.fine, 6) + poly(cabin, W.line, 5))}
+        + ln(120, 0, 152, -128, W.fine, 6) + ln(64, -19, 138, -128, W.fine, 6) + poly(CABIN, W.line, 5))}
     </g></g>`;
 }
 
@@ -163,90 +169,115 @@ function euclid(x, y, rot, k = 1) { // the telescope tube on its service module,
 }
 
 // ── the sky ─────────────────────────────────────────────────────────────────────────────────
-// The sky as a light cone: discs at growing redshift, each a wash whose pigment pools along the same
-// web of structure. The web sharpens toward the observer (growth) and the last disc is the CMB.
-const AX = { x: 1235, y: 740, ang: -62 * Math.PI / 180 };
+// The sky as a light cone, wide enough at its mouth to hold every observer: sheets at growing
+// redshift, each a wash whose pigment pools along the same web of structure. The web sharpens
+// toward the observer (growth) and the last sheet is the CMB. Light leaves a patch of the far sky
+// and reaches each instrument, bent a little at every sheet it crosses.
+const SKY = { base: [1395, 930], ang: -101 * Math.PI / 180, r0: 100, k: 0.7, flat: 0.2 };
+const AXV = [Math.cos(SKY.ang), Math.sin(SKY.ang)], MAJ = [Math.cos(SKY.ang + Math.PI / 2), Math.sin(SKY.ang + Math.PI / 2)];
+const TILT = SKY.ang * 180 / Math.PI + 90;
+const rad = (d) => SKY.r0 + SKY.k * d;
+// a point on the sheet at distance d, u radii sideways of the sheet's own centre
+const at = (s, u = 0) => { const w = (s.o + u) * rad(s.d); return [SKY.base[0] + s.d * AXV[0] + w * MAJ[0], SKY.base[1] + s.d * AXV[1] + w * MAJ[1]]; };
+const along = (p) => (p[0] - SKY.base[0]) * AXV[0] + (p[1] - SKY.base[1]) * AXV[1];   // how far up the cone a point lies
 const hex = (rgb) => '#' + rgb.map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
 const rgb = (h) => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
 const deep = (h, k = 0.7) => hex(rgb(h).map(v => v * k));
 const mix = (a, b, t) => hex(rgb(a).map((v, i) => v * (1 - t) + rgb(b)[i] * t));
-const CMB = { d: 590, o: 0.00, col: S.butter, cmb: true };
-// five redshifts, far to near: distance along the cone, sideways offset (in radii), contrast of the web, base tint
+const CMB = { d: 815, o: 0.00, col: S.butter, cmb: true };
+// five redshifts, far to near: distance up the cone, sideways offset (in radii), contrast of the web, base tint
 const DEPTHS = [
-  { d: 470, o: -0.10, gain: 2.0, off: 0.72, tint: 0.42 },
-  { d: 375, o: 0.12, gain: 2.7, off: 0.84, tint: 0.38 },
-  { d: 290, o: -0.08, gain: 3.5, off: 0.98, tint: 0.34 },
-  { d: 215, o: 0.14, gain: 4.6, off: 1.16, tint: 0.3 },
-  { d: 150, o: -0.05, gain: 6, off: 1.4, tint: 0.26 },
+  { d: 690, o: -0.09, gain: 2.0, off: 0.72, tint: 0.42 },
+  { d: 572, o: 0.10, gain: 2.7, off: 0.84, tint: 0.38 },
+  { d: 462, o: -0.08, gain: 3.5, off: 0.98, tint: 0.34 },
+  { d: 358, o: 0.11, gain: 4.6, off: 1.16, tint: 0.3 },
+  { d: 262, o: -0.05, gain: 6, off: 1.4, tint: 0.26 },
 ];
 const slices = (cols, cmb = true) => [...(cmb ? [CMB] : []), ...DEPTHS.map((s, i) => ({ ...s, col: cols[i] }))];
-const sliceFilter = (i, s) => `<filter id="z${i}" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+const sliceFilter = (id, s) => `<filter id="${id}" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
   <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="4" result="e"/>
-  <feDisplacementMap in="SourceGraphic" in2="e" scale="4" xChannelSelector="R" yChannelSelector="G" result="disc"/>
-  <feGaussianBlur in="disc" stdDeviation="0.9" result="mask"/>
-  ${s.cmb ? `<feTurbulence type="fractalNoise" baseFrequency="0.11" numOctaves="2" seed="21" result="t"/>
+  <feDisplacementMap in="SourceGraphic" in2="e" scale="3" xChannelSelector="R" yChannelSelector="G" result="disc"/>
+  <feGaussianBlur in="disc" stdDeviation="0.5" result="mask"/>
+  ${s.cmb ? `<feTurbulence type="fractalNoise" baseFrequency="0.3 0.17" numOctaves="2" seed="21" result="t"/>
   <feColorMatrix in="t" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.2 0 0 0 -0.8" result="a"/>`
-  : `<feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="4" seed="8" result="t"/>
+  : `<feTurbulence type="turbulence" baseFrequency="0.026 0.014" numOctaves="4" seed="8" result="t"/>
   <feColorMatrix in="t" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  ${-s.gain} 0 0 0 ${s.off}" result="a"/>`}
-  <feGaussianBlur in="a" stdDeviation="${s.cmb ? 0.5 : 0.8}" result="ab"/>
+  <feGaussianBlur in="a" stdDeviation="${s.cmb ? 0.3 : 0.45}" result="ab"/>
   <feFlood flood-color="${deep(s.col, s.cmb ? 0.93 : 0.8)}" result="c"/>
   <feComposite in="c" in2="ab" operator="in" result="web"/>
   <feComposite in="web" in2="mask" operator="in" result="webIn"/>
   <feComponentTransfer in="mask" result="base"><feFuncA type="linear" slope="${s.cmb ? 0.38 : s.tint * 0.7}"/></feComponentTransfer>
-  <feMorphology in="mask" operator="erode" radius="1" result="er"/><feGaussianBlur in="er" stdDeviation="0.9" result="erb"/>
+  <feMorphology in="mask" operator="erode" radius="0.5" result="er"/><feGaussianBlur in="er" stdDeviation="0.45" result="erb"/>
   <feComposite in="mask" in2="erb" operator="out" result="rim"/>
   <feFlood flood-color="${deep(s.col, 0.8)}" result="rc"/><feComposite in="rc" in2="rim" operator="in" result="rimC"/>
   <feComponentTransfer in="rimC" result="rimA"><feFuncA type="linear" slope="0.8"/></feComponentTransfer>
   <feMerge><feMergeNode in="base"/><feMergeNode in="webIn"/><feMergeNode in="rimA"/></feMerge></filter>`;
-const K = 0.5, FLAT = 0.3, rot = AX.ang * 180 / Math.PI + 90;
-const maj = [Math.cos(AX.ang + Math.PI / 2), Math.sin(AX.ang + Math.PI / 2)];
-// a point on the cone at distance d and u radii sideways of the slice's own centre
-const at = (s, u = 0) => { const r = s.d * K, w = (s.o + u) * r; return [AX.x + s.d * Math.cos(AX.ang) + w * maj[0], AX.y + s.d * Math.sin(AX.ang) + w * maj[1]]; };
-const pos = (d) => [AX.x + d * Math.cos(AX.ang), AX.y + d * Math.sin(AX.ang)];
-const EYE = pos(88);   // where the light meets: every instrument points here
-const SPT = { x: 1070, y: 1012, k: 0.8 }, EUC = { x: 1040, y: 640, k: 0.6 }, MK = [1545, 800];
-const deg = (from, to) => Math.atan2(to[0] - from[0], -(to[1] - from[1])) * 180 / Math.PI;   // clockwise from up
-const piv = [SPT.x + PIVOT[0] * SPT.k, SPT.y + PIVOT[1] * SPT.k], tilt = deg(piv, EYE);
-const dish = [piv[0] + 49 * SPT.k * Math.sin(tilt * Math.PI / 180), piv[1] - 49 * SPT.k * Math.cos(tilt * Math.PI / 180)];   // the centre of its aperture
-const eRot = deg([EUC.x, EUC.y], EYE), eTip = [EUC.x + 150 * EUC.k * Math.sin(eRot * Math.PI / 180), EUC.y - 150 * EUC.k * Math.cos(eRot * Math.PI / 180)];
-// a line of sight, laid in lightly from the instrument through the point where the light meets and a little beyond
-const sight = (from) => { const L = Math.hypot(EYE[0] - from[0], EYE[1] - from[1]), e = 26 / L;
-  return ln(from[0], from[1], EYE[0] + (EYE[0] - from[0]) * e, EYE[1] + (EYE[1] - from[1]) * e, W.sight, 0); };
 
-// One frame: the slices of the cone, each traced in pencil and washed in, the light bent a little
-// at each on its way to the observer, and the instruments named in `who`, each aimed at the point
-// where the light meets.
-function scene({ sky, who }) {
+// where each instrument stands, and the point its light arrives at
+const SPT = { x: 1040, y: 1012, k: 0.8 }, EUC = { x: 1752, y: 600, k: 0.56 }, MKP = { x: 1330, y: 800, k: 0.68 }, MK = [1540, 792];
+const SPT_PIVOT = [SPT.x + PIVOT[0] * SPT.k, SPT.y + PIVOT[1] * SPT.k];   // the dish turns here; Euclid turns about its middle, Mauna Kea's view about MK
+const LOOK = { spt: -0.22, euclid: 0.3, unions: 0.04 };   // where on the far sky each looks, in radii from the axis
+const deg = (from, to) => Math.atan2(to[0] - from[0], -(to[1] - from[1])) * 180 / Math.PI;   // clockwise from up
+const off = (p, len, a) => [p[0] + len * Math.sin(a * Math.PI / 180), p[1] - len * Math.cos(a * Math.PI / 180)];
+
+// One drawing, as layers from the back: each sheet of the cone washed in (far to near), their rims
+// traced in pencil, what stands on the ground, and each instrument named in `who` with its view,
+// the light of a patch of the far sky converging on its aperture.
+function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380] }) {
   hand(5);
-  const cone = `<defs>${sky.map((s, i) => sliceFilter(i, s)).join('')}</defs>` + sky.map((s, i) => { const [cx, cy] = at(s), k = s.d * K / 100;
-    return `<g style="mix-blend-mode:multiply" transform="translate(${cx.toFixed(1)} ${cy.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${k.toFixed(3)} ${(k * FLAT).toFixed(3)})"><circle r="100" fill="${s.col}" filter="url(#z${i})"/></g>`; }).join('');
-  const rims = sky.map(s => { const [cx, cy] = at(s), r = s.d * K * (1.01 + jit(0.012));
-    return oval(cx + jit(3), cy + jit(3), r, r * FLAT * (1 + jit(0.04)), rot + jit(1), W.fine, 0.06 + rnd() * 0.08); }).join('');
-  const rays = [-0.62, -0.3, 0.02, 0.33, 0.6].map(u => stroke(through(ease([...sky.map(s => at(s, u)), EYE])), W.fine)).join('');
-  const has = (n) => who.includes(n);
-  return `<defs>${PENCIL}${GLAZE}</defs>
-  ${cone}
-  ${pencil(rims + rays)}
-  ${pencil((has('spt') ? sight(dish) : '') + (has('unions') ? sight(MK) : '') + (has('euclid') ? sight(eTip) : ''))}
-  ${has('unions') ? glaze('url(#g-far)', 'M1090 960 C1230 930 1420 820 1560 800 S1800 840 1920 870 L1920 960Z') + maunaKea(1330, 800, 0.68) : ''}
-  ${has('spt') ? spt(SPT.x, SPT.y, tilt, SPT.k) : ''}
-  ${has('euclid') ? euclid(EUC.x, EUC.y, eRot, EUC.k) : ''}`;
+  const far = { ...sky[0], o: 0 }, has = (n) => who.includes(n), media = `<defs>${PENCIL}${GLAZE}</defs>`;
+  // washes laid lighter where the words are (left of words[0]), coming to full strength by words[1]
+  const lift = `<defs><linearGradient id="lift-g" gradientUnits="userSpaceOnUse" x1="${words[0]}" y1="0" x2="${words[1]}" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="${lifted}"/><stop offset="1" stop-color="#fff"/></linearGradient>
+    <mask id="lift" maskUnits="userSpaceOnUse" x="0" y="-200" width="2200" height="1500"><rect x="0" y="-200" width="2200" height="1500" fill="url(#lift-g)"/></mask></defs>`;
+  const sheets = sky.map((s, i) => { const [cx, cy] = at(s), k = rad(s.d) / 100;
+    return { id: `sheet${i}`, cls: `wash breathe t${sky.length - 1 - i}`, dpr: 1, svg: `<defs>${sliceFilter('z', s)}</defs>${lift}<g mask="url(#lift)" opacity="${soft}">
+      <g transform="translate(${cx.toFixed(1)} ${cy.toFixed(1)}) rotate(${TILT.toFixed(1)}) scale(${k.toFixed(3)} ${(k * SKY.flat).toFixed(3)})"><circle r="100" fill="${s.col}" filter="url(#z)"/></g></g>` }; });
+  const rims = sky.map(s => { const [cx, cy] = at(s), r = rad(s.d) * (1.008 + jit(0.008));
+    return oval(cx + jit(3), cy + jit(3), r, r * SKY.flat * (1 + jit(0.03)), TILT + jit(0.6), W.fine, 0.05 + rnd() * 0.07); }).join('');
+  // each ray straight but for a small turn at every sheet it crosses
+  const view = (to, u0) => pencil([-0.11, 0, 0.11].map((du, j) => { const from = at(far, u0 + du), a0 = along(from), a1 = along(to);
+    const mid = sky.slice(1).filter(s => s.d > a1 + 40).map(s => { const t = (a0 - s.d) / (a0 - a1), b = jit(5);
+      return [from[0] + (to[0] - from[0]) * t + MAJ[0] * b, from[1] + (to[1] - from[1]) * t + MAJ[1] * b]; });
+    return stroke(through(ease([from, ...mid, to])), j === 1 ? W.sight : W.ghost); }).join(''));
+  const tilt = deg(SPT_PIVOT, at(far, LOOK.spt)), dish = off(SPT_PIVOT, 49 * SPT.k, tilt);
+  const eRot = deg([EUC.x, EUC.y], at(far, LOOK.euclid)), eTip = off([EUC.x, EUC.y], 150 * EUC.k, eRot);
+  return [...sheets,
+    { id: 'rims', svg: `${media}${lift}<g mask="url(#lift)">${pencil(rims)}</g>` },
+    { id: 'ground', svg: media + (has('unions') ? glaze('url(#g-far)', 'M1090 960 C1230 930 1420 820 1560 800 S1800 840 1920 870 L1920 960Z') + maunaKea(MKP.x, MKP.y, MKP.k) : '') + (has('spt') ? sptBase(SPT.x, SPT.y, SPT.k) : '') },
+    has('spt') && { id: 'spt', cls: 'sweep about-spt', svg: media + view(dish, LOOK.spt) + sptDish(SPT.x, SPT.y, tilt, SPT.k) },
+    has('unions') && { id: 'unions', cls: 'sweep about-unions', svg: media + view(MK, LOOK.unions) },
+    has('euclid') && { id: 'euclid', cls: 'sweep about-euclid', svg: media + view(eTip, LOOK.euclid) + euclid(EUC.x, EUC.y, eRot, EUC.k) },
+  ].filter(Boolean);
 }
 
 const ramp = (a, b) => [0, 0.25, 0.5, 0.75, 1].map(t => mix(a, b, t));
 const ART = {
   // every instrument, five redshifts from sky blue through lilac to rose, and the CMB behind them
-  title: scene({ sky: slices([S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose]), who: ['euclid', 'spt', 'unions'] }),
+  title: () => scene({ sky: slices([S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose]), who: ['euclid', 'spt', 'unions'] }),
   // Euclid's galaxies in the part's sky blue, in front of the CMB that SPT maps
-  'euclid-spt': scene({ sky: slices(ramp('#8FB2D6', '#B9D0E6')), who: ['euclid', 'spt'] }),
+  'euclid-spt': () => scene({ sky: slices(ramp('#8FB2D6', '#B9D0E6')), who: ['euclid', 'spt'], lifted: 0.14, words: [1020, 1440] }),
   // the northern sky from Mauna Kea, in the part's rose
-  unions: scene({ sky: slices(ramp('#D9A0B4', '#E8B5A8'), false), who: ['unions'] }),
+  unions: () => scene({ sky: slices(ramp('#D9A0B4', '#E8B5A8'), false), who: ['unions'], lifted: 0.14, words: [1020, 1440] }),
 };
 
+const ALT = {
+  title: 'Pencil and watercolour drawing: the South Pole Telescope, the Mauna Kea domes and Euclid look up into a cone of redshift sheets that ends at the CMB',
+  'euclid-spt': 'Euclid and the South Pole Telescope look up into a cone of blue redshift sheets that ends at the CMB',
+  unions: 'The Mauna Kea domes look up into a cone of rose redshift sheets',
+};
+
+const flag = (n) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : null; };
+const only = flag('--only')?.split(','), OUT = flag('--out') || path.join(HERE, 'images', 'ice_art');
+fs.mkdirSync(OUT, { recursive: true });
 const b = await puppeteer.launch();
-const p = await b.newPage(); await p.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
+const pages = {};
+for (const dpr of [1, 2]) { pages[dpr] = await b.newPage(); await pages[dpr].setViewport({ width: 1920, height: 1080, deviceScaleFactor: dpr }); }
 for (const [name, art] of Object.entries(ART)) {
-  await p.setContent(`<body style="margin:0;background:transparent"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" style="display:block">${art}</svg>`);
-  await p.screenshot({ path: path.join(HERE, 'images', `ice_art_${name}.png`), omitBackground: true });
+  if (only && !only.includes(name)) continue;
+  const layers = art();
+  for (const l of layers) { const p = pages[l.dpr || 2];
+    await p.setContent(`<body style="margin:0;background:transparent"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" style="display:block">${l.svg}</svg>`);
+    await p.screenshot({ path: path.join(OUT, `${name}-${l.id}.png`), omitBackground: true }); }
+  console.log(`<!-- ${name} -->\n  <figure class="art">\n${layers.map((l, i) => `    <img src="images/ice_art/${name}-${l.id}.png"${l.cls ? ` class="${l.cls}"` : ''} alt="${i ? '' : ALT[name]}">`).join('\n')}\n  </figure>`);
 }
 await b.close();
