@@ -33,8 +33,13 @@ ell_eff are asserted equal before it is applied.
 A MetaCal variant on Cycle 2 has no reference run of its own: it borrows the LensMC universe on
 the same CMB map (BORROWED), whose n(z), lens and kappa windows it is asserted to share, so the
 curve differs from its own only through the shear windows.
+With --bestfit (bestfit_dv_vector.py's JSON) every curve becomes the best fit of the blinded production
+5x2pt chain, through the variant's own bandpower windows; the chain's data are asserted equal to the
+variant's. A borrowed variant then keeps its own lens and kappa windows (its curve is the LensMC chain's
+point evaluated through them).
 Run in the cmbx container:
   app python private/make_dv_vector.py
+  app python private/make_dv_vector.py --cycle2-root $CMBX --bestfit bestfit.json --output private/dv_vector_bestfit.json
 """
 import argparse
 import json
@@ -261,11 +266,12 @@ def load_cycle2(root, universe, earlier, index):
 BORROWED = {("metacal", "act"): ("tr1_v2_act_metacal", "tr1_v2_act")}
 
 
-def load_borrowed(root, universe, ref_universe, ref_pairs):
+def load_borrowed(root, universe, ref_universe, ref_pairs, own_windows=False):
     """A Cycle-2 universe that differs from ref_universe only in its shear catalogue: data and
     sigma_G from its own likelihood_input; reference curve and production cut from ref_pairs
     (ref_universe's datavector_vs_theory). Asserted: same blind, same n(z) file, same pairs and
-    bands, lens and kappa field windows equal to the reference's (only the shear ones differ).
+    bands, lens and kappa field windows equal to the reference's (only the shear ones differ),
+    unless own_windows (the curve is then replaced by one through this universe's own windows).
     None when its likelihood_input is not there."""
     base, ref = f"{root}/results/{universe}/likelihood_product", f"{root}/results/{ref_universe}/likelihood_product"
     like = f"{base}/likelihood_input.tar"
@@ -286,7 +292,7 @@ def load_borrowed(root, universe, ref_universe, ref_pairs):
     fields, reff = payload["metadata"]["fields"], refload["metadata"]["fields"]
     shear = sorted(t for t in fields if t.startswith("l"))
     for t in fields:
-        if t not in shear:
+        if t not in shear and not own_windows:
             assert fields[t]["sha256"] == reff[t]["sha256"], f"{universe} {t}: window differs from {ref_universe}'s"
     assert list(payload["cls"]) == list(refload["cls"]) and set(payload["cls"]) == set(ref_pairs)
     cov = np.asarray(payload["cov_all"])
@@ -308,6 +314,24 @@ def load_borrowed(root, universe, ref_universe, ref_pairs):
     return pairs
 
 
+def best_fit(path, variants, sources):
+    """Replace every variant's curve with the production chain's best fit (bestfit_dv_vector.py's JSON),
+    asserting the chain's data and cut equal the variant's band for band. A variant whose best fit is
+    borrowed (MetaCal: the LensMC chain's point through its own windows) is sourced as bestfit:<chain>."""
+    best = json.load(open(path))
+    assert best["blind"] == BLIND
+    for vk, pairs in variants.items():
+        bf = best["variants"][vk]
+        for k, p in pairs.items():
+            if "data" in bf:
+                assert np.allclose(bf["data"][k], p["cl"], rtol=1e-5, atol=0), (vk, k, "chain data differ")
+            assert bf["fit"][k] == p["fit"], (vk, k, "chain cut differs")
+            p["th"] = sig(bf["theory"][k])
+        sources[vk] = f"bestfit:{bf['borrowed']}" if "borrowed" in bf else "bestfit"
+        fit = bf[bf["best"]] if "best" in bf else bf
+        print(f"{vk}: curve is the best fit ({sources[vk]}), chi2 {fit['chi2']:.1f} on {fit['n']} bands")
+
+
 def packed(pairs):
     return {k: {"t": tracers(k), "family": p["family"], "ell": sig(p["ell"], 5),
                 "cl": sig(p["data"]), "sig": sig(p["sigma"]), "th": sig(p["theory"]),
@@ -319,6 +343,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cycle2-root", help="a checkout whose results/tr1_v2{,_act}/likelihood_product "
                                           "holds the Cycle-2 likelihood products; writes Cycle 2 alone")
+    ap.add_argument("--bestfit", help="with --cycle2-root: bestfit_dv_vector.py's JSON; every curve becomes "
+                                      "the production chain's best fit")
     ap.add_argument("--output", default=OUT)
     args = ap.parse_args()
     if args.cycle2_root:
@@ -337,16 +363,21 @@ def main():
         for (shear, cmb), (universe, ref) in BORROWED.items():
             if sources.get(f"lensmc|{cmb}") != "cycle2":
                 continue
-            got = load_borrowed(args.cycle2_root, universe, ref, loaded[ref])
+            got = load_borrowed(args.cycle2_root, universe, ref, loaded[ref], own_windows=bool(args.bestfit))
             if got is not None:
                 variants[f"{shear}|{cmb}"], sources[f"{shear}|{cmb}"] = packed(got), f"borrowed:{ref}"
+        if args.bestfit:
+            best_fit(args.bestfit, variants, sources)
         out = {"blind": BLIND, "release": "TR1 Cycle 2", "source": f"{args.cycle2_root} tr1_v2 likelihood products",
                "fiducial_source": sources,
                "fiducial_label": {vk: "fiducial model" if src == "cycle2"
                                   else "fiducial model (LensMC windows)" if src.startswith("borrowed:")
+                                  else "best fit" if src == "bestfit"
+                                  else "LensMC best fit" if src.startswith("bestfit:")
                                   else "fiducial (Cycle-1 run)"
                                   for vk, src in sources.items()},
-               "cut": {vk: "production linear-bias cut of its datavector_vs_theory" if src == "cycle2"
+               "cut": {vk: "production linear-bias cut of its datavector_vs_theory"
+                       if src == "cycle2" or src.startswith("bestfit")
                        else f"production linear-bias cut of {src[9:]}'s datavector_vs_theory" if src.startswith("borrowed:")
                        else "validated linear-bias cut, the Cycle-1 export's per-pair ell bounds"
                        for vk, src in sources.items()},
