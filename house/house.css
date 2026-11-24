@@ -342,11 +342,13 @@ html, body { background: var(--ground); }
 .slide svg .fill-lilac  { fill: var(--lilac, #C3B3DC); }
 /* drawing media: a shape painted as a loose watercolour wash (.wash-fine for shapes under ~150
    units across) or as a glaze laid precisely to its outline, pigment gathering at the edge;
-   a line drawn with a pen's wobble */
+   a line drawn with a pen's wobble, or in pencil: fine, its pressure rising and falling, broken
+   by the grain of the paper */
 .slide svg .glaze     { filter: url(#house-glaze); }
 .slide svg .wash      { filter: url(#house-wash); }
 .slide svg .wash-fine { filter: url(#house-wash-fine); }
 .slide svg .pen       { filter: url(#house-pen); }
+.slide svg .pencil    { filter: url(#house-pencil); }
 .house-media { position: absolute; }
 
 /* a figure that does not exist yet */
