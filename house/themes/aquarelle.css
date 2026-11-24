@@ -57,5 +57,18 @@
   width: calc(var(--done) * 100%);
   background: linear-gradient(var(--ink), var(--ink)) center / 100% 1.8px no-repeat, var(--c);
 }
+/* sources & notes: a marginal note in pencil at the foot of the page, as quiet as the folio */
+.theme-aquarelle .slide > .foot > .notes-open {
+  padding: 0 0 4px;
+  margin-bottom: 7px;     /* holds the footer's baseline where the folio sits beside the footer controls */
+  border: 0;
+  border-bottom: 1.2px solid color-mix(in srgb, var(--muted) 40%, transparent);
+  border-radius: 0;
+  background: none;
+  font-style: italic;
+  color: color-mix(in srgb, var(--muted) 80%, transparent);
+}
+.theme-aquarelle .slide > .foot > .notes-open::before { content: none; }
+.theme-aquarelle .slide > .foot > .notes-open:hover { color: var(--ink); border-bottom-color: var(--ink); }
 /* controls in the footer band stand on the footer's baseline, clear of the rule of parts */
 .theme-aquarelle .slide > .variants { bottom: 36px; }

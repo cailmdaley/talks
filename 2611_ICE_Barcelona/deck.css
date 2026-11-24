@@ -39,27 +39,44 @@
 /* the tSZ × shear plot carries its y-axis label at the left: centre the credit on the axes */
 [data-house-slide="kp-4"] .cell > .source { padding-left: 66px; }
 
-/* preliminary — a stamp in the footer's free middle for TR1 results the KP has not yet discussed */
-[data-preliminary] .slide:not(.detail) > .foot::after {
-  content: "Preliminary (TR1 Cycle 1)";
-  font-variant-caps: normal;
+/* preliminary — a rubber stamp struck faintly across the figure of a result the KP has not
+   yet discussed: one line of letterspaced capitals in a double rule, lying along the plot's
+   diagonal and sized to it (--fw × --fh is the frame, from the cell's container units), in
+   the blind's red, multiplied into the paper so the data reads through it. --n is the
+   longest line's length in glyphs, which sets the type size; the two-line wording is also
+   held to the height of a wide, short figure. */
+[data-preliminary] .slide:not(.detail) .frame::after {
+  content: "Preliminary\A TR1 Cycle 1";
+  --n: 11;
+  --tall: calc(var(--fh) / 6);
+  --fw: min(100cqw, (100cqh - var(--chrome)) * var(--ar));
+  --fh: calc(var(--fw) / var(--ar));
   position: absolute;
-  bottom: 0;            /* on the footer's baseline, above the rule of parts */
-  left: 580px;          /* centred between the notes button and the footer text */
-  transform: translateX(-50%);
-  padding: 6px 22px 8px;
-  border: 3px solid #B3261E;
-  border-radius: 6px;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  rotate: calc(atan2(var(--fh), var(--fw)) * -0.8);
+  font-size: min(hypot(var(--fw), var(--fh)) * 0.66 / (var(--n) * 0.8 + 1.4), var(--tall));
+  font-weight: 600;
+  line-height: 1.12;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  white-space: pre;
+  padding: 0.22em 0.56em 0.26em 0.7em;
+  border: 0.075em solid;
+  border-radius: 0.14em;
+  outline: 0.028em solid;
+  outline-offset: -0.17em;
   color: #B3261E;
-  font-size: var(--t-fine);
-  background: var(--ground);
-  letter-spacing: 0.02em;
-  line-height: 1;
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+  filter: url(#house-pencil);
   pointer-events: none;
+  z-index: 3;
 }
-
-[data-preliminary="very"] .slide:not(.detail) > .foot::after { content: "Very preliminary"; }
-[data-preliminary="cycle2"] .slide:not(.detail) > .foot::after { content: "Preliminary"; }
+[data-preliminary="very"] .slide:not(.detail) .frame::after { content: "Very preliminary"; --n: 16; --tall: 100cqh; }
+[data-preliminary="cycle2"] .slide:not(.detail) .frame::after { content: "Preliminary"; --tall: 100cqh; }
 .slide .prelim { color: #B3261E; }
 
 /* a red highlight box, for the one row a slide is about */
@@ -87,7 +104,7 @@
 .slide ul.mid { font-size: 46px; }
 
 /* the footer credit line stays off: the house footer centres it, where this deck's
-   preliminary stamps and variant controls sit */
+   variant controls sit */
 .slide:not(.detail) > .foot > span:not(.num):not(.parts) { visibility: hidden; }
 
 /* the DR6 globe clip has a white ground: multiply it into the paper, poster included */
