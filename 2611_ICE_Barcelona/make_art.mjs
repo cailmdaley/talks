@@ -3,7 +3,7 @@
 // are the same scene cut down to each part's instruments. A drawing is a stack of layers, each a
 // full 1920×1080 frame on a transparent ground, so that its washes and instruments can move a little.
 // node 2611_ICE_Barcelona/make_art.mjs [--only title,unions] [--out dir]
-//   → images/ice_art/<drawing>-<layer>.png, and each drawing's <figure class="art"> on stdout
+//   → images/ice_art/<drawing>-<layer>.png, and the <figure class="art"> of slides/<drawing>.html
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -53,9 +53,10 @@ function through(p, tension = 1) {
 }
 // a path eased: each inner point drawn halfway toward its neighbours, so kinks become bends
 const ease = (p, n = 1) => n ? ease(p.map((q, i) => i && i < p.length - 1 ? [(p[i - 1][0] + 2 * q[0] + p[i + 1][0]) / 4, (p[i - 1][1] + 2 * q[1] + p[i + 1][1]) / 4] : q), n - 1) : p;
-// an ellipse traced in one movement: it starts anywhere, drifts a little outward and runs past where it began
-function oval(cx, cy, rx, ry, deg = 0, wt = W.line, run = 0.1) {
-  const t0 = rnd() * 2 * Math.PI, a = deg * Math.PI / 180, n = 48, drift = 0.012 + rnd() * 0.012, pts = [];
+// an ellipse traced in one movement: it starts anywhere (or at the angle `from`), drifts a little outward and
+// runs past where it began (or, with a negative run, stops short of it)
+function oval(cx, cy, rx, ry, deg = 0, wt = W.line, run = 0.1, from = null) {
+  const t0 = from ?? rnd() * 2 * Math.PI, a = deg * Math.PI / 180, n = 48, drift = 0.012 + rnd() * 0.012, pts = [];
   for (let i = 0; i <= n; i++) {
     const s = i / n, t = t0 + s * 2 * Math.PI * (1 + run), g = 1 + drift * (s - 0.5) + 0.004 * Math.sin(3 * t + t0);
     const x = rx * g * Math.cos(t), y = ry * g * Math.sin(t);
@@ -194,13 +195,13 @@ const DEPTHS = [
   { d: 262, o: -0.05, gain: 6, off: 1.4, tint: 0.26 },
 ];
 const slices = (cols, cmb = true) => [...(cmb ? [CMB] : []), ...DEPTHS.map((s, i) => ({ ...s, col: cols[i] }))];
-const sliceFilter = (id, s) => `<filter id="${id}" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+const sliceFilter = (id, s, face = false) => `<filter id="${id}" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
   <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="4" result="e"/>
   <feDisplacementMap in="SourceGraphic" in2="e" scale="3" xChannelSelector="R" yChannelSelector="G" result="disc"/>
   <feGaussianBlur in="disc" stdDeviation="0.5" result="mask"/>
-  ${s.cmb ? `<feTurbulence type="fractalNoise" baseFrequency="0.3 0.17" numOctaves="2" seed="21" result="t"/>
+  ${s.cmb ? `<feTurbulence type="fractalNoise" baseFrequency="${face ? '0.22' : '0.3 0.17'}" numOctaves="2" seed="${s.seed || 21}" result="t"/>
   <feColorMatrix in="t" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.2 0 0 0 -0.8" result="a"/>`
-  : `<feTurbulence type="turbulence" baseFrequency="0.026 0.014" numOctaves="4" seed="8" result="t"/>
+  : `<feTurbulence type="turbulence" baseFrequency="${face ? '0.019' : '0.026 0.014'}" numOctaves="4" seed="${s.seed || 8}" result="t"/>
   <feColorMatrix in="t" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  ${-s.gain} 0 0 0 ${s.off}" result="a"/>`}
   <feGaussianBlur in="a" stdDeviation="${s.cmb ? 0.3 : 0.45}" result="ab"/>
   <feFlood flood-color="${deep(s.col, s.cmb ? 0.93 : 0.8)}" result="c"/>
@@ -220,15 +221,19 @@ const LOOK = { spt: -0.22, euclid: 0.3, unions: 0.04 };   // where on the far sk
 const deg = (from, to) => Math.atan2(to[0] - from[0], -(to[1] - from[1])) * 180 / Math.PI;   // clockwise from up
 const off = (p, len, a) => [p[0] + len * Math.sin(a * Math.PI / 180), p[1] - len * Math.cos(a * Math.PI / 180)];
 
+// washes laid lighter where the words are (left of words[0]), coming to full strength by words[1]:
+// mask="url(#lift)"
+const lifting = (words, lifted) => `<defs><linearGradient id="lift-g" gradientUnits="userSpaceOnUse" x1="${words[0]}" y1="0" x2="${words[1]}" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="${lifted}"/><stop offset="1" stop-color="#fff"/></linearGradient>
+  <mask id="lift" maskUnits="userSpaceOnUse" x="0" y="-200" width="2200" height="1500"><rect x="0" y="-200" width="2200" height="1500" fill="url(#lift-g)"/></mask></defs>`;
+const MEDIA = `<defs>${PENCIL}${GLAZE}</defs>`;
+
 // One drawing, as layers from the back: each sheet of the cone washed in (far to near), their rims
 // traced in pencil, what stands on the ground, and each instrument named in `who` with its view,
 // the light of a patch of the far sky converging on its aperture.
 function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380] }) {
   hand(5);
   const far = { ...sky[0], o: 0 }, has = (n) => who.includes(n), media = `<defs>${PENCIL}${GLAZE}</defs>`;
-  // washes laid lighter where the words are (left of words[0]), coming to full strength by words[1]
-  const lift = `<defs><linearGradient id="lift-g" gradientUnits="userSpaceOnUse" x1="${words[0]}" y1="0" x2="${words[1]}" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="${lifted}"/><stop offset="1" stop-color="#fff"/></linearGradient>
-    <mask id="lift" maskUnits="userSpaceOnUse" x="0" y="-200" width="2200" height="1500"><rect x="0" y="-200" width="2200" height="1500" fill="url(#lift-g)"/></mask></defs>`;
+  const lift = lifting(words, lifted);
   const sheets = sky.map((s, i) => { const [cx, cy] = at(s), k = rad(s.d) / 100;
     return { id: `sheet${i}`, cls: `wash breathe t${sky.length - 1 - i}`, dpr: 1, svg: `<defs>${sliceFilter('z', s)}</defs>${lift}<g mask="url(#lift)" opacity="${soft}">
       <g transform="translate(${cx.toFixed(1)} ${cy.toFixed(1)}) rotate(${TILT.toFixed(1)}) scale(${k.toFixed(3)} ${(k * SKY.flat).toFixed(3)})"><circle r="100" fill="${s.col}" filter="url(#z)"/></g></g>` }; });
@@ -250,6 +255,133 @@ function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380] }) {
   ].filter(Boolean);
 }
 
+// Looking up the cone from where the instruments stand: every sheet lies over the others, as the
+// sky does in projection. Six discs a little apart, far to near, their washes mixing where they overlap.
+function upTheCone({ cols, cx = 1545, cy = 505, words = [1130, 1480], lifted = 0.22 }) {
+  hand(11);
+  const lift = lifting(words, lifted);
+  const place = [[-150, -135, 300], [130, -200, 235], [225, 70, 265], [25, 205, 225], [-185, 150, 205], [5, 0, 180]];   // dx, dy, r: the CMB first, the nearest sheet last, in the middle
+  const sky = [{ ...CMB, seed: 21 }, ...DEPTHS.map((s, i) => ({ ...s, col: cols[i], seed: 8 + 3 * i }))];
+  const sheets = sky.map((s, i) => { const [dx, dy, r] = place[i];
+    return { id: `sheet${i}`, cls: `wash breathe t${sky.length - 1 - i}`, dpr: 1, svg: `<defs>${sliceFilter('z', s, true)}</defs>${lift}<g mask="url(#lift)" opacity="0.85">
+      <g transform="translate(${cx + dx} ${cy + dy}) scale(${r / 100})"><circle r="100" fill="${s.col}" filter="url(#z)"/></g></g>` }; });
+  const rims = place.map(([dx, dy, r]) => oval(cx + dx + jit(2), cy + dy + jit(2), r * 1.006, r * (1.006 + jit(0.01)), jit(20), W.fine, 0.04 + rnd() * 0.06)).join('');
+  return [...sheets, { id: 'rims', svg: `${MEDIA}${lift}<g mask="url(#lift)">${pencil(rims)}</g>` }];
+}
+
+// a standing figure as a watercolourist sets one into a landscape for scale: a head and a long
+// taper from the shoulders to the feet, each a single touch of the brush, and a shadow on the ground
+function person(x, y, h, col, lean = 0, w = 0.13, look = 1) {
+  const top = x + lean * h, sh = y - h * 0.82, hw = h * w, r = h * 0.058;
+  const taper = `M${f([top - hw, sh + h * 0.05])} C${f([top - hw * 0.95, sh - h * 0.012])} ${f([top - hw * 0.5, sh - h * 0.03])} ${f([top, sh - h * 0.03])} C${f([top + hw * 0.5, sh - h * 0.03])} ${f([top + hw * 0.95, sh - h * 0.012])} ${f([top + hw, sh + h * 0.05])} C${f([top + hw * 0.92, y - h * 0.42])} ${f([x + hw * 0.5, y - h * 0.16])} ${f([x + hw * 0.28, y])} L${f([x - hw * 0.28, y])} C${f([x - hw * 0.5, y - h * 0.16])} ${f([top - hw * 0.92, y - h * 0.42])} ${f([top - hw, sh + h * 0.05])}Z`;
+  return `<ellipse cx="${(x + h * 0.1).toFixed(1)}" cy="${y + 2}" rx="${(h * 0.2).toFixed(1)}" ry="2.6" fill="${S.payne}" opacity="0.22" filter="url(#glaze)"/>`
+    + glaze(col, taper, 0.82) + glaze(S.payne, `M${f([top + hw * 0.15, sh - h * 0.028])} C${f([top + hw * 0.6, sh - h * 0.03])} ${f([top + hw * 0.95, sh - h * 0.012])} ${f([top + hw, sh + h * 0.05])} C${f([top + hw * 0.92, y - h * 0.42])} ${f([x + hw * 0.5, y - h * 0.16])} ${f([x + hw * 0.28, y])} L${f([x, y])} C${f([x + hw * 0.2, y - h * 0.3])} ${f([top + hw * 0.3, y - h * 0.5])} ${f([top + hw * 0.15, sh - h * 0.028])}Z`, 0.16)
+    + glaze(mix(S.rose, S.butter, 0.5), ell(top + look * r * 0.55, sh - h * 0.03 - r * 1.42, r * 0.86, r), 0.95) + glaze(S.payne, ell(top + look * r * 0.55 + r * 0.25, sh - h * 0.03 - r * 1.42, r * 0.6, r * 0.9), 0.14);
+}
+
+// What lies ahead: the cone again, its sheets traced and not yet painted, the first wash only begun,
+// and people where the instruments stood, looking up into it together.
+function ahead() {
+  hand(23);
+  const base = [1602, 960], ang = -80 * Math.PI / 180, ax = [Math.cos(ang), Math.sin(ang)], mj = [Math.cos(ang + Math.PI / 2), Math.sin(ang + Math.PI / 2)], tilt = -80 + 90, flat = 0.2;
+  const r = (d) => 62 + 0.5 * d, c = (d, o = 0) => [base[0] + d * ax[0] + o * r(d) * mj[0], base[1] + d * ax[1] + o * r(d) * mj[1]];
+  const ds = [175, 275, 380, 490], os = [-0.06, 0.08, -0.05, 0.06];
+  const near = { d: ds[0], o: os[0], gain: 6, off: 1.4, tint: 0.26, col: S.lilac };
+  const [nx, ny] = c(ds[0], os[0]), k = r(ds[0]) / 100;
+  const wash = `<defs>${sliceFilter('z', near)}<linearGradient id="begun" x1="0" y1="0" x2="1" y2="0"><stop offset="0.25" stop-color="#fff"/><stop offset="0.8" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <mask id="begun-m" maskUnits="userSpaceOnUse" x="${nx - 200}" y="${ny - 100}" width="400" height="200"><rect x="${nx - 200}" y="${ny - 100}" width="400" height="200" fill="url(#begun)" transform="rotate(8 ${nx} ${ny})"/></mask></defs>
+    <g mask="url(#begun-m)"><g transform="translate(${nx.toFixed(1)} ${ny.toFixed(1)}) rotate(${tilt}) scale(${k.toFixed(3)} ${(k * flat).toFixed(3)})"><circle r="100" fill="${S.lilac}" filter="url(#z)"/></g></g>`;
+  const wts = [W.fine, W.fine, W.sight, W.ghost], runs = [0.07, 0.05, 0.03, -0.5];
+  const rims = ds.map((d, i) => { const [x, y] = c(d, os[i]); return oval(x, y, r(d), r(d) * flat, tilt, wts[i], runs[i], i === 3 ? -0.3 : null); }).join('');
+  // the cone's sides, ruled lightly past the last sheet
+  const side = (u) => { const a = c(u < 0 ? 150 : 100, u), b = c(u < 0 ? ds[2] + 30 : ds[3] + 40, u); return ln(a[0], a[1], b[0], b[1], W.ghost, 0); };
+  const tone = (c) => mix(c, S.payne, 0.3);
+  // x, height, wash, lean, half-width: a pair in talk, a group, two a little apart
+  const crowd = [[1190, 102, tone(S.sky), 0.035, 0.125, 1], [1229, 84, tone(S.butter), -0.04, 0.115, -1], [1316, 106, tone(S.rose), -0.01, 0.13, 1], [1347, 90, tone(S.lilac), 0.03, 0.108, 1], [1383, 112, tone(S.sage), 0.015, 0.135, 0.6], [1417, 78, tone(S.rose), 0.05, 0.12, 1], [1480, 104, tone(S.lilac), 0.04, 0.125, 1], [1511, 90, tone(S.butter), -0.02, 0.11, 1]];
+  const G = 962;
+  return [
+    { id: 'wash', cls: 'wash', dpr: 1, svg: wash },
+    { id: 'lines', svg: MEDIA + pencil(rims + side(-1) + side(1)) },
+    { id: 'people', svg: MEDIA + `<defs><linearGradient id="g-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${S.lilac}" stop-opacity="0.5"/><stop offset="1" stop-color="${S.lilac}" stop-opacity="0"/></linearGradient></defs>`
+      + glaze('url(#g-floor)', `M1060 ${G} H1700 L1650 ${G + 28} H1120Z`) + pencil(ln(1040, G, 1722, G, W.fine, 0) + ln(1090, G + 6, 1230, G + 6, W.ghost, 0))
+      + crowd.map(([x, h, col, lean, w, look]) => person(1511 + (x - 1511) * 1.18, G, h * 1.22, col, lean, w, look)).join('') },
+  ];
+}
+
+// a sheet of sky as one wash: a disc of radius r at (cx, cy), seen face-on (flat 1) or tilted
+const sheet = (s, cx, cy, r, { flat = 1, tilt = 0, o = 1, id = 'z' } = {}) => `<defs>${sliceFilter(id, s, flat === 1)}</defs><g opacity="${o}" transform="translate(${cx.toFixed(1)} ${cy.toFixed(1)}) rotate(${tilt}) scale(${(r / 100).toFixed(3)} ${(r / 100 * flat).toFixed(3)})"><circle r="100" fill="${s.col}" filter="url(#${id})"/></g>`;
+const WEB = { gain: 4.6, off: 1.16, tint: 0.3 };
+
+// A simulated sky: a full-sky mock as a globe, one wash of butter with its web, over a graticule
+// in pencil (the construction it is laid in).
+const mockSky = (cx, cy, r, id = 'z') => sheet({ gain: 5.2, off: 1.22, tint: 0.34, col: S.butter, seed: 14 }, cx, cy, r, { id });
+const graticule = (cx, cy, r, inc = 0.3) => oval(cx, cy, r * 1.005, r * 1.005, 0, W.line, 0.06)
+  + [-60, -30, 0, 30, 60].map(lat => { const a = lat * Math.PI / 180; return oval(cx, cy - r * Math.sin(a) * Math.cos(inc), r * Math.cos(a), r * Math.cos(a) * Math.sin(inc), 0, W.ghost, 0.02); }).join('')
+  + [25, 55, 90].map(lon => oval(cx, cy, r * Math.sin(lon * Math.PI / 180), r, 4, W.ghost, 0.02)).join('');
+// ink: what is measured, in a pen's dark line
+const INK = `<filter id="ink" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G"/></filter>`;
+const ink = (s) => `<g fill="none" stroke="#211C17" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#ink)">${s}</g>`;
+
+// A mock's input is known: the input spectrum in pencil, the sky simulated from it in wash, and
+// what the pipeline measures on that sky in ink, lying on the pencil curve it came from.
+function knownInput() {
+  hand(83);
+  const y0 = 905, H = 250, Wd = 440, shape = (t) => Math.pow(t, 0.55) * Math.exp(-1.7 * t) / 0.44;
+  const curve = (x0) => Array.from({ length: 40 }, (_, i) => { const t = 0.03 + 1.75 * i / 39; return [x0 + 26 + (Wd - 40) * i / 39, y0 - 22 - (H - 60) * shape(t)]; });
+  const axes = (x0) => ln(x0, y0, x0 + Wd, y0, W.fine, 6) + ln(x0, y0, x0, y0 - H, W.fine, 6);
+  const xa = 170, xb = 1310, gx = 960, gy = 770, gr = 138;
+  const truth = (x0, wt) => stroke(through(curve(x0)), wt);
+  const pts = [2, 6, 10, 14, 18, 22, 26, 30, 34, 37].map((i, j) => { const [x, y] = curve(xb)[i], e = 9 + j * 2.1, d = jit(e * 0.75);
+    return `<path d="M${x.toFixed(1)} ${(y + d - e).toFixed(1)} V${(y + d + e).toFixed(1)}"/><circle cx="${x.toFixed(1)}" cy="${(y + d).toFixed(1)}" r="5.2" fill="#211C17"/>`; }).join('');
+  const arrow = (x1, x2, y) => ln(x1, y, x2, y, W.sight, 0) + stroke(`M${x2 - 12} ${y - 7} L${x2} ${y} L${x2 - 12} ${y + 7}`, W.sight);
+  return [
+    { id: 'wash', cls: 'wash', dpr: 1, svg: mockSky(gx, gy, gr) },
+    { id: 'lines', svg: MEDIA + `<defs>${INK}</defs>` + pencil(axes(xa) + truth(xa, W.line) + graticule(gx, gy, gr) + axes(xb) + truth(xb, W.fine) + arrow(660, 780, gy) + arrow(1140, 1260, gy)) + ink(pts) },
+  ];
+}
+
+// What unites the three projects: one simulated sky, a full-sky mock as a globe, its graticule in
+// pencil (the construction) under a wash (what is simulated), and a brace gathering the three lines.
+function oneSky() {
+  hand(61);
+  const cx = 1640, cy = 335, r = 150;
+  const globe = mockSky(cx, cy, r);
+  const lines = graticule(cx, cy, r);
+  const x = 1378, y1 = 222, y2 = 452, ym = (y1 + y2) / 2;
+  const brace = stroke(`M${x} ${y1} q18 2 18 24 L${x + 18} ${ym - 26} q0 20 20 26 q-20 6 -20 26 L${x + 18} ${y2 - 24} q0 22 -18 24`, W.line);
+  return [
+    { id: 'wash', cls: 'wash late', dpr: 1, svg: globe },
+    { id: 'lines', cls: 'late', svg: MEDIA + pencil(lines + brace + ln(x + 46, ym, cx - r - 14, ym, W.ghost, 0)) },
+  ];
+}
+
+// From simple to complex, four simulations: a Gaussian CMB sky; the CMB with a correlated
+// foreground laid over it; a simulated image, galaxies on a pixel grid; and a light cone of sheets.
+function fourSims() {
+  hand(71);
+  const y = 868, G = y + 98;
+  const cmb = { ...CMB, seed: 21 }, fg = { ...WEB, gain: 3.4, off: 1.0, tint: 0.3, col: S.sky, seed: 19 };
+  const washes = sheet(cmb, 250, y, 82, { id: 'a' })
+    + sheet(cmb, 610, y, 88, { id: 'b' }) + sheet(fg, 668, y - 14, 88, { id: 'c', o: 0.9 });
+  // the image: a square of pixels with a handful of galaxies, each a soft elliptical blot
+  const ix = 960, iy = y - 96, n = 7, px = 27, gal = [[1.2, 1.4, 16, 9, 30], [4.6, 1.1, 12, 7, -50], [2.9, 3.3, 20, 11, 70], [5.4, 4.2, 13, 8, 15], [1.5, 5.3, 11, 7, -20], [4.1, 5.7, 9, 6, 60]];
+  const image = `<defs><filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2"/></filter></defs>`
+    + gal.map(([gx, gy, a, b, pa]) => `<ellipse cx="${ix + gx * px}" cy="${iy + gy * px}" rx="${a}" ry="${b}" transform="rotate(${pa} ${ix + gx * px} ${iy + gy * px})" fill="${deep(S.rose, 0.82)}" opacity="0.85" filter="url(#soft)"/>`).join('');
+  const grid = Array.from({ length: n + 1 }, (_, i) => ln(ix + i * px, iy, ix + i * px, iy + n * px, i % n ? W.ghost : W.fine, i % n ? 0 : 4) + ln(ix, iy + i * px, ix + n * px, iy + i * px, i % n ? W.ghost : W.fine, i % n ? 0 : 4)).join('');
+  // the cone, small
+  const F = { base: [1560, G + 6], ax: [Math.cos(-99 * Math.PI / 180), Math.sin(-99 * Math.PI / 180)] }, mj = [F.ax[1] * -1, F.ax[0]];
+  const cr = (d) => 36 + 0.62 * d, cc = (d, o) => [F.base[0] + d * F.ax[0] + o * cr(d) * mj[0], F.base[1] + d * F.ax[1] + o * cr(d) * mj[1]];
+  const cone = [[236, 0, { ...CMB, seed: 21 }], [186, -0.08, { ...DEPTHS[1], col: S.sky }], [138, 0.09, { ...DEPTHS[2], col: '#B1B8DE' }], [92, -0.07, { ...DEPTHS[3], col: S.lilac }], [50, 0.06, { ...DEPTHS[4], col: S.rose }]];
+  const coneWash = cone.map(([d, o, s], i) => { const [cx, cy] = cc(d, o); return `<g style="mix-blend-mode:multiply">${sheet(s, cx, cy, cr(d), { flat: 0.22, tilt: -9, id: 'k' + i, o: 0.9 })}</g>`; }).join('');
+  const coneRims = cone.map(([d, o]) => { const [cx, cy] = cc(d, o); return oval(cx, cy, cr(d) * 1.01, cr(d) * 0.22, -9, W.fine, 0.06); }).join('');
+  const arrow = (x1, x2) => ln(x1, y, x2, y, W.sight, 0) + stroke(`M${x2 - 11} ${y - 6} L${x2} ${y} L${x2 - 11} ${y + 6}`, W.sight);
+  return [
+    { id: 'wash', cls: 'wash', dpr: 1, svg: washes + image + coneWash },
+    { id: 'lines', svg: MEDIA + pencil(oval(250, y, 82.5, 82.5, 0, W.fine, 0.06) + oval(610, y, 88.5, 88.5, 0, W.fine, 0.06) + oval(668, y - 14, 88.5, 88.5, 0, W.fine, 0.05)
+      + grid + coneRims + arrow(372, 482) + arrow(796, 906) + arrow(1196, 1306)) },
+  ];
+}
+
 const ramp = (a, b) => [0, 0.25, 0.5, 0.75, 1].map(t => mix(a, b, t));
 const ART = {
   // every instrument, five redshifts from sky blue through lilac to rose, and the CMB behind them
@@ -257,6 +389,12 @@ const ART = {
   // Euclid's galaxies in the part's sky blue, in front of the CMB that SPT maps
   'euclid-spt': () => scene({ sky: slices(ramp('#8FB2D6', '#B9D0E6')), who: ['euclid', 'spt'], lifted: 0.14, words: [1020, 1440] }),
   // the northern sky from Mauna Kea, in the part's rose
+  // the turn to how the work is done: the whole sky at once, every redshift over the others
+  exciting: () => upTheCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose] }),
+  questions: () => ahead(),
+  overview: () => oneSky(),
+  agents: () => knownInput(),
+  'sim-history': () => fourSims(),
   unions: () => scene({ sky: slices(ramp('#D9A0B4', '#E8B5A8'), false), who: ['unions'], lifted: 0.14, words: [1020, 1440] }),
 };
 
@@ -264,6 +402,11 @@ const ALT = {
   title: 'Pencil and watercolour drawing: the South Pole Telescope, the Mauna Kea domes and Euclid look up into a cone of redshift sheets that ends at the CMB',
   'euclid-spt': 'Euclid and the South Pole Telescope look up into a cone of blue redshift sheets that ends at the CMB',
   unions: 'The Mauna Kea domes look up into a cone of rose redshift sheets',
+  questions: 'Pencil and watercolour: a small group of people stand at the foot of a light cone whose sheets are traced in pencil and not yet painted',
+  overview: 'A brace gathers the three projects and points to one simulated sky, a globe in pencil and wash',
+  'sim-history': 'Four simulations, simple to complex: a Gaussian CMB sky, the CMB under a correlated foreground, a simulated image of galaxies on pixels, and a light cone of redshift sheets',
+  agents: 'A known input spectrum in pencil, the sky simulated from it as a washed globe, and the measured bandpowers in ink lying on the same pencil curve',
+  exciting: 'Watercolour: six overlapping discs of sky, the redshift sheets and the CMB seen from below, their washes mixing',
 };
 
 const flag = (n) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : null; };
@@ -278,6 +421,10 @@ for (const [name, art] of Object.entries(ART)) {
   for (const l of layers) { const p = pages[l.dpr || 2];
     await p.setContent(`<body style="margin:0;background:transparent"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" style="display:block">${l.svg}</svg>`);
     await p.screenshot({ path: path.join(OUT, `${name}-${l.id}.png`), omitBackground: true }); }
-  console.log(`<!-- ${name} -->\n  <figure class="art">\n${layers.map((l, i) => `    <img src="images/ice_art/${name}-${l.id}.png"${l.cls ? ` class="${l.cls}"` : ''} alt="${i ? '' : ALT[name]}">`).join('\n')}\n  </figure>`);
+  // the slide of the same name carries the drawing: its <figure class="art"> is written here
+  const figure = `  <figure class="art">\n${layers.map((l, i) => `    <img src="images/ice_art/${name}-${l.id}.png"${l.cls ? ` class="${l.cls}"` : ''} alt="${i ? '' : ALT[name]}">`).join('\n')}\n  </figure>\n`;
+  const file = path.join(HERE, 'slides', `${name}.html`), html = fs.readFileSync(file, 'utf8');
+  const next = /  <figure class="art">[\s\S]*?<\/figure>\n/.test(html) ? html.replace(/  <figure class="art">[\s\S]*?<\/figure>\n/, figure) : html.replace('  <aside class="notes">', figure + '  <aside class="notes">');
+  if (next !== html && !flag('--out')) fs.writeFileSync(file, next);
 }
 await b.close();
