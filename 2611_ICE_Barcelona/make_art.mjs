@@ -273,14 +273,26 @@ function upTheCone({ cols, cx = 1545, cy = 505, words = [1260, 1600], lifted = 0
   return [...sheets, { id: 'rims', svg: `${MEDIA}${lift}<g mask="url(#lift)">${pencil(rims)}</g>` }];
 }
 
-// a standing figure as a watercolourist sets one into a landscape for scale: a head and a long
-// taper from the shoulders to the feet, each a single touch of the brush, and a shadow on the ground
-function person(x, y, h, col, lean = 0, w = 0.13, look = 1) {
-  const top = x + lean * h, sh = y - h * 0.82, hw = h * w, r = h * 0.058;
-  const taper = `M${f([top - hw, sh + h * 0.05])} C${f([top - hw * 0.95, sh - h * 0.012])} ${f([top - hw * 0.5, sh - h * 0.03])} ${f([top, sh - h * 0.03])} C${f([top + hw * 0.5, sh - h * 0.03])} ${f([top + hw * 0.95, sh - h * 0.012])} ${f([top + hw, sh + h * 0.05])} C${f([top + hw * 0.92, y - h * 0.42])} ${f([x + hw * 0.5, y - h * 0.16])} ${f([x + hw * 0.28, y])} L${f([x - hw * 0.28, y])} C${f([x - hw * 0.5, y - h * 0.16])} ${f([top - hw * 0.92, y - h * 0.42])} ${f([top - hw, sh + h * 0.05])}Z`;
-  return `<ellipse cx="${(x + h * 0.1).toFixed(1)}" cy="${y + 2}" rx="${(h * 0.2).toFixed(1)}" ry="2.6" fill="${S.payne}" opacity="0.22" filter="url(#glaze)"/>`
-    + glaze(col, taper, 0.82) + glaze(S.payne, `M${f([top + hw * 0.15, sh - h * 0.028])} C${f([top + hw * 0.6, sh - h * 0.03])} ${f([top + hw * 0.95, sh - h * 0.012])} ${f([top + hw, sh + h * 0.05])} C${f([top + hw * 0.92, y - h * 0.42])} ${f([x + hw * 0.5, y - h * 0.16])} ${f([x + hw * 0.28, y])} L${f([x, y])} C${f([x + hw * 0.2, y - h * 0.3])} ${f([top + hw * 0.3, y - h * 0.5])} ${f([top + hw * 0.15, sh - h * 0.028])}Z`, 0.16)
-    + glaze(mix(S.rose, S.butter, 0.5), ell(top + look * r * 0.55, sh - h * 0.03 - r * 1.42, r * 0.86, r), 0.95) + glaze(S.payne, ell(top + look * r * 0.55 + r * 0.25, sh - h * 0.03 - r * 1.42, r * 0.6, r * 0.9), 0.14);
+// a standing figure as a sketcher sets one into a landscape for scale: a contour in pencil down the
+// lit side and around the head, then one muted wash for the figure (shoulders, a waist, two legs or
+// a long coat), a darker touch for the head and the shaded side, and a shadow on the ground.
+// `look` turns the head (1 toward the right), `arm` raises one toward the sky (1 the right arm),
+// `step` sets one foot out to that side, the weight on the other.
+function person(x, y, h, col, { lean = 0, look = 1, arm = 0, coat = false, w = 1, step = 0 } = {}) {
+  const P = (u, v) => [x + (u * w + lean * v) * h, y - v * h];
+  const side = (k) => [P(k * 0.105, 0.795), P(k * 0.094, 0.62), P(k * 0.076, 0.525), P(k * 0.088, 0.45)];
+  const R = side(1), L = side(-1);
+  const legs = coat ? [P(0.092, 0.16), P(0.05, 0.15), P(0.052, 0), P(0.012, 0), P(0.01, 0.15), P(-0.01, 0.15), P(-0.012, 0), P(-0.052, 0), P(-0.05, 0.15), P(-0.092, 0.16)]
+    : [P(0.064 + step * 0.035, 0), P(0.02 + step * 0.035, 0), P(0.004, 0.4), P(-0.004, 0.4), P(-0.02 + step * 0.012, 0.012 * Math.abs(step)), P(-0.064 + step * 0.012, 0.012 * Math.abs(step))];
+  const body = `M${f(L[0])} Q${f(P(-0.07, 0.842))} ${f(P(0, 0.842))} Q${f(P(0.07, 0.842))} ${f(R[0])} L${[...R.slice(1), ...legs, ...L.slice(1).reverse()].map(f).join(' L')}Z`;
+  const shade = `M${f(P(0.03, 0.84))} Q${f(P(0.075, 0.84))} ${f(R[0])} L${[...R.slice(1), ...(coat ? [P(0.092, 0.16), P(0.03, 0.16)] : [P(0.064, 0), P(0.04, 0)]), P(0.03, 0.45)].map(f).join(' L')}Z`;
+  const hc = P(look * 0.014, 0.915), dark = mix(col, S.payne, 0.35);
+  const up = arm ? `M${f(P(arm * 0.085, 0.8))} L${f(P(arm * 0.105, 0.74))} L${f(P(arm * 0.232, 0.985))} L${f(P(arm * 0.212, 1.0))}Z` : '';
+  return {
+    lines: stroke(through([P(-0.108, 0.8), P(-0.097, 0.62), P(-0.079, 0.525), P(-0.091, 0.45), coat ? P(-0.095, 0.16) : P(-0.067, 0.02)]), W.fine) + oval(hc[0] - 0.6, hc[1] - 0.4, h * 0.047, h * 0.059, look * 8, W.ghost, -0.25),
+    wash: `<ellipse cx="${(x + h * 0.12).toFixed(1)}" cy="${y + 2}" rx="${(h * 0.2).toFixed(1)}" ry="2.6" fill="${S.payne}" opacity="0.24" filter="url(#glaze)"/>`
+      + glaze(col, body + up, 0.86) + glaze(S.payne, shade, 0.17) + glaze(dark, ell(hc[0], hc[1], h * 0.044, h * 0.056), 0.9),
+  };
 }
 
 // What lies ahead, and what the talk has painted: the cone again with people where the instruments
@@ -304,16 +316,20 @@ function ahead(painted = false) {
   const rims = ds.map((d, i) => { const [x, y] = c(d, os[i]); return oval(x, y, r(d), r(d) * flat, tilt, wts[i], runs[i]); }).join('');
   // the cone's sides, ruled lightly past the last sheet
   const side = (u) => { const a = c(u < 0 ? 125 : 85, u), b = c(u < 0 ? ds[2] + 30 : ds[3] + 40, u); return ln(a[0], a[1], b[0], b[1], W.sight, 0); };
-  const tone = (c) => mix(c, S.payne, 0.3);
-  // x, height, wash, lean, half-width: a pair in talk, a group, two a little apart
-  const crowd = [[1190, 102, tone(S.sky), 0.035, 0.125, 1], [1229, 84, tone(S.butter), -0.04, 0.115, -1], [1316, 106, tone(S.rose), -0.01, 0.13, 1], [1347, 90, tone(S.lilac), 0.03, 0.108, 1], [1383, 112, tone(S.sage), 0.015, 0.135, 0.6], [1417, 78, tone(S.rose), 0.05, 0.12, 1], [1480, 104, tone(S.lilac), 0.04, 0.125, 1], [1511, 90, tone(S.butter), -0.02, 0.11, 1]];
-  const G = 962;
+  const tone = (c, k = 0.42) => mix(c, S.payne, k);
+  // the people stand at the foot of the cone and under its nearest sheet: a pair in talk, a group
+  // (one pointing up), three more under the cone. x, height, wash, how each stands
+  const G = 962, crowd = [
+    [1322, 102, tone(S.sky), { lean: 0.04, look: 1, step: 0.6 }], [1351, 91, tone(S.rose), { lean: -0.04, look: -1, coat: true }],
+    [1440, 105, tone(S.lilac), { lean: 0.03, look: 1, arm: 1, step: -0.8 }], [1469, 93, tone('#DDB96F', 0.3), { lean: 0.045, look: 1, step: 0.5 }], [1501, 101, tone(S.rose, 0.5), { lean: -0.015, look: 1, coat: true }],
+    [1586, 99, tone(S.sky, 0.5), { lean: 0.02, look: 0.5, step: -0.6 }], [1616, 89, tone(S.lilac), { lean: -0.03, look: -0.6, coat: true }], [1676, 101, tone(S.rose), { lean: -0.045, look: -1, step: 0.7 }]];
+  const people = crowd.map(([x, h, col, how]) => person(x, G, h, col, how));
   return [
     ...washes,
     { id: 'lines', svg: MEDIA + pencil(rims + side(-1) + side(1)) },
     { id: 'people', svg: MEDIA + `<defs><linearGradient id="g-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${S.lilac}" stop-opacity="0.5"/><stop offset="1" stop-color="${S.lilac}" stop-opacity="0"/></linearGradient></defs>`
-      + glaze('url(#g-floor)', `M1060 ${G} H1700 L1650 ${G + 28} H1120Z`) + pencil(ln(1040, G, 1722, G, W.fine, 0) + ln(1090, G + 6, 1230, G + 6, W.ghost, 0))
-      + crowd.map(([x, h, col, lean, w, look]) => person(1511 + (x - 1511) * 1.18, G, h * 1.22, col, lean, w, look)).join('') },
+      + glaze('url(#g-floor)', `M1250 ${G} H1790 L1745 ${G + 26} H1300Z`) + pencil(ln(1228, G, 1806, G, W.fine, 0) + ln(1270, G + 6, 1400, G + 6, W.ghost, 0) + people.map(p => p.lines).join(''))
+      + people.map(p => p.wash).join('') },
   ];
 }
 
