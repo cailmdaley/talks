@@ -261,12 +261,13 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
   };
 
   // what lies under SVG text: the topmost filled shape at its centre, else the page
+  // (an <image>, a medium the build painted, is a picture whose colours are not read)
   const svgBackground = el => {
     const r = el.getBoundingClientRect();
     const stack = document.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2);
     const svg = el.closest('svg');
     for (const u of stack) {
-      if (u === el || u.contains(el) || !svg.contains(u) || u.localName === 'text' || u.closest('text')) continue;
+      if (u === el || u.contains(el) || !svg.contains(u) || u.localName === 'image' || u.localName === 'text' || u.closest('text')) continue;
       const st = getComputedStyle(u);
       const f = parse(st.fill || '');
       if (f && st.fill !== 'none' && f.a > 0) return over({ ...f, a: f.a * parseFloat(st.fillOpacity || 1) * opacity(u) }, background(svg));

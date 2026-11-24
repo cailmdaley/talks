@@ -8,6 +8,7 @@
 //   node house/build.mjs <deck-dir>... [--out _site] [--web]   build named decks
 //   node house/build.mjs --all [--out _site] [--web]           build every deck with a deck.json
 //   node house/build.mjs --listing <file.yml>          write Quarto listing items for house decks
+// --live-media leaves the drawing media as live SVG filters instead of painting them (to compare).
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -321,7 +322,7 @@ async function resolveAssets(assets, ground, web) {
 function assetScript(assets, html) {
   const used = html ? new Set([...html.matchAll(/data-asset="([0-9a-f]+)"/g)].map(m => m[1])) : null;
   const dict = JSON.stringify(Object.fromEntries([...assets].filter(([k]) => !used || used.has(k))));
-  return `<script>(function(){var A=${dict},small=window.HouseSmall=!!(window.matchMedia&&matchMedia('(max-width: 1024px), (max-height: 600px)').matches);for(var k in A)if(typeof A[k]!=='string')A[k]=(small&&A[k].m)||A[k].f;window.HouseAssets=A;document.querySelectorAll('img[data-asset]').forEach(function(i){i.loading='lazy';i.src=A[i.getAttribute('data-asset')];});document.querySelectorAll('video[data-asset]').forEach(function(v){v.poster=A[v.getAttribute('data-poster')];v.src=A[v.getAttribute('data-asset')];});})();</script>`;
+  return `<script>(function(){var A=${dict},small=window.HouseSmall=!!(window.matchMedia&&matchMedia('(max-width: 1024px), (max-height: 600px)').matches);for(var k in A)if(typeof A[k]!=='string')A[k]=(small&&A[k].m)||A[k].f;window.HouseAssets=A;document.querySelectorAll('img[data-asset]').forEach(function(i){i.loading='lazy';i.src=A[i.getAttribute('data-asset')];});document.querySelectorAll('image[data-asset]').forEach(function(i){i.setAttribute('href',A[i.getAttribute('data-asset')]);});document.querySelectorAll('video[data-asset]').forEach(function(v){v.poster=A[v.getAttribute('data-poster')];v.src=A[v.getAttribute('data-asset')];});})();</script>`;
 }
 
 // Text for one variant: data-variant="<variant> …" on any element of a slide shows it
@@ -862,6 +863,107 @@ function openGraph(deck) {
   return tags.map(([k, v]) => `<meta ${k.startsWith('og:') ? 'property' : 'name'}="${k}" content="${esc(v)}">`).join('\n');
 }
 
+// ── Baked media ───────────────────────────────────────────────────────────
+
+// A browser recomputes a live SVG filter whenever it paints the slide, and WebKit computes
+// feTurbulence on the CPU: a schematic with a dozen pencil lines holds Safari for seconds on
+// every core. So the build paints each element drawn in a medium once, in headless Chrome at
+// twice the slide's resolution, and puts an <image> of it in the element's place; the deck that
+// is shown carries no live filter. An element with a fragment inside it stays live, so its
+// steps still arrive. A slide is painted again only when its markup or the styles change.
+const MEDIA_CLASSES = ['wash', 'wash-fine', 'glaze', 'pen', 'pencil'];
+// the elements to paint, in document order (run here on the parsed frame and in the page)
+function mediaTargets(root, classes) {
+  const medium = e => classes.some(c => e.classList.contains(c));
+  const inside = e => { for (let a = e.parentElement; a && a !== root; a = a.parentElement) if (medium(a)) return true; return false; };
+  return [...root.querySelectorAll('svg *')].filter(e => medium(e) && !inside(e) && !e.querySelector('.fragment'));
+}
+const BAKE_CSS = `html.house-bake, html.house-bake body { background: none !important; }
+html.house-bake * { visibility: hidden !important; animation: none !important; transition: none !important; }
+html.house-bake .fragment, html.house-bake svg g:has(.house-baking), html.house-bake .house-baking { opacity: 1 !important; }
+html.house-bake .house-baking, html.house-bake .house-baking *, html.house-bake svg :is(defs, marker, pattern, mask, clipPath, symbol) * { visibility: visible !important; }`;
+
+async function paintMedia(index, todo) {
+  const { default: puppeteer } = await import('puppeteer');
+  const { default: sharp } = await import('sharp');
+  const browser = await puppeteer.launch({ headless: 'shell', args: ['--no-sandbox', '--allow-file-access-from-files', '--font-render-hinting=none'] });
+  const page = await browser.newPage();
+  const W = 1920, H = 1080, D = 2;
+  await page.setViewport({ width: W, height: H, deviceScaleFactor: D });
+  await page.evaluateOnNewDocument(() => { window.HousePosterOnly = true; });
+  await page.goto(`file://${path.resolve(index)}`, { waitUntil: 'load', timeout: 120000 });
+  await page.evaluate(async () => { await document.fonts.ready; await new Promise(r => Reveal.isReady() ? r() : Reveal.on('ready', r)); });
+  await page.addStyleTag({ content: BAKE_CSS });
+  const painted = new Map();
+  for (const s of todo) {
+    const n = await page.evaluate((id, classes, targets) => {
+      const sec = document.getElementById(id), at = Reveal.getIndices(sec);
+      Reveal.slide(at.h, at.v);
+      document.documentElement.classList.add('house-bake');
+      const found = new Function(`return ${targets}`)()(sec.querySelector(':scope > .slide'), classes);
+      found.forEach((e, i) => e.setAttribute('data-bake', i));
+      return found.length;
+    }, s.name, MEDIA_CLASSES, mediaTargets.toString());
+    const items = [];
+    for (let i = 0; i < n; i++) {
+      const at = await page.evaluate((i) => {
+        const e = document.querySelector(`[data-bake="${i}"]`);
+        const opacity = getComputedStyle(e).opacity, m = e.parentNode.getScreenCTM().inverse();
+        e.classList.add('house-baking');
+        return { opacity, m: [m.a, m.b, m.c, m.d, m.e, m.f] };
+      }, i);
+      const { data } = await sharp(await page.screenshot({ omitBackground: true })).raw().toBuffer({ resolveWithObject: true });
+      await page.evaluate(() => document.querySelector('.house-baking').classList.remove('house-baking'));
+      let x0 = W * D, y0 = H * D, x1 = -1, y1 = -1;
+      for (let y = 0, k = 3; y < H * D; y++) for (let x = 0; x < W * D; x++, k += 4) if (data[k]) {
+        if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+      }
+      if (x1 < 0) continue;   // paints nothing: left as it is
+      const w = x1 - x0 + 1, h = y1 - y0 + 1;
+      const buf = await sharp(data, { raw: { width: W * D, height: H * D, channels: 4 } }).extract({ left: x0, top: y0, width: w, height: h })
+        .webp({ quality: 92, alphaQuality: 100, smartSubsample: true }).toBuffer();
+      items.push({ i, ...at, x: x0 / D, y: y0 / D, w: w / D, h: h / D, pw: w, ph: h, webp: buf.toString('base64') });
+    }
+    await page.evaluate(() => {
+      document.documentElement.classList.remove('house-bake');
+      for (const e of document.querySelectorAll('[data-bake]')) e.removeAttribute('data-bake');
+    });
+    painted.set(s, items);
+  }
+  await browser.close();
+  return painted;
+}
+
+// Replace every painted element of `slides` by its image. `write` writes the deck page, live
+// filters and all, for the browser to paint from; it is called only when a slide is not cached.
+async function bakeMedia(slides, styles, write, ground, web) {
+  const dir = path.join(CACHE, 'bake');
+  const withMedia = slides.filter(s => s.frame.includes('<svg') && MEDIA_CLASSES.some(c => new RegExp(`class="[^"]*\\b${c}\\b`).test(s.frame)));
+  const file = s => path.join(dir, crypto.createHash('sha1').update(['1', s.frame, MEDIA, BAKE_CSS, ...styles].join('\0')).digest('hex') + '.json');
+  const todo = withMedia.filter(s => !fs.existsSync(file(s)));
+  if (todo.length) {
+    fs.mkdirSync(dir, { recursive: true });
+    for (const [s, items] of await paintMedia(write(), todo)) fs.writeFileSync(file(s), JSON.stringify(items));
+  }
+  for (const s of withMedia) {
+    const doc = parseFragment(s.frame), root = doc.body.firstElementChild;
+    const targets = mediaTargets(root, MEDIA_CLASSES), added = new Map();
+    for (const it of JSON.parse(read(file(s)))) {
+      const e = targets[it.i], img = doc.createElementNS('http://www.w3.org/2000/svg', 'image');
+      const cls = [...e.classList].filter(c => !MEDIA_CLASSES.includes(c)).join(' ');
+      if (cls) img.setAttribute('class', cls);
+      for (const a of [...e.attributes]) if (a.name === 'id' || a.name.startsWith('data-')) img.setAttribute(a.name, a.value);
+      if (+it.opacity !== 1) img.setAttribute('opacity', it.opacity);
+      const im = { buf: Buffer.from(it.webp, 'base64'), mime: 'image/webp', w: it.pw, h: it.ph };
+      const key = addAsset(added, im, false);
+      for (const [k, v] of Object.entries({ 'data-asset': key, x: it.x, y: it.y, width: it.w, height: it.h, preserveAspectRatio: 'none', transform: `matrix(${it.m.map(v => +v.toFixed(6)).join(' ')})` })) img.setAttribute(k, v);
+      e.replaceWith(img);
+    }
+    for (const [k, v] of await resolveAssets(added, ground, web)) slides.assets.set(k, v);
+    s.frame = serialize(root);
+  }
+}
+
 function deckHTML(deck, slides, mathCss, theme) {
   const sections = slides.map(s => `<section ${s.sectionAttrs}>
 ${s.frame}
@@ -966,7 +1068,7 @@ ${assetScript(slides.assets, body)}
 `;
 }
 
-export async function buildDeck(dir, outRoot, { theme: themeOverride, web = false } = {}) {
+export async function buildDeck(dir, outRoot, { theme: themeOverride, web = false, liveMedia = false } = {}) {
   const deck = loadDeck(dir);
   if (themeOverride) deck.meta.theme = themeOverride;
   const typeset = await makeTypesetter(deck.meta.macros || {});
@@ -983,7 +1085,9 @@ export async function buildDeck(dir, outRoot, { theme: themeOverride, web = fals
   fs.mkdirSync(out, { recursive: true });
   const index = path.join(out, 'index.html');
   const report = path.join(out, 'report.html');
-  fs.writeFileSync(index, deckHTML(deck, slides, mathCss, theme));
+  const write = () => (fs.writeFileSync(index, deckHTML(deck, slides, mathCss, theme)), index);
+  if (!liveMedia) await bakeMedia(slides, [read(path.join(HOUSE, 'house.css')), theme, mathCss, deckCss(deck)], write, themeGround(theme), web && path.join(out, 'a'));
+  write();
   const preview = previewSource(deck);
   if (preview) fs.copyFileSync(preview, path.join(out, 'preview.png'));
   fs.writeFileSync(report, reportHTML(deck, slides, mathCss, theme));
@@ -1027,7 +1131,7 @@ async function main(argv) {
   let failed = 0;
   for (const d of dirs) {
     try {
-      const r = await buildDeck(d, out, { web });
+      const r = await buildDeck(d, out, { web, liveMedia: args.includes('--live-media') });
       const kb = f => `${Math.round(fs.statSync(f).size / 1024)} kB`;
       console.log(`${r.deck.name}: ${r.slides.length} slides → ${path.relative(process.cwd(), r.index)} (${kb(r.index)}), report.html (${kb(r.report)})`);
     } catch (e) {

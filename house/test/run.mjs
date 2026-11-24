@@ -285,6 +285,24 @@ ok(pageCheck.status === 0, `live page fixture passes (${pageCheck.stdout.trim().
   }
 }
 
+// media: the build paints each element drawn in a medium and ships an image in its place
+{
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const { buildDeck } = await import('../build.mjs');
+  const { parseHTML } = await import('linkedom');
+  const mediaDir = path.join(HERE, 'media');
+  const built = await buildDeck(mediaDir, fs.mkdtempSync(path.join(os.tmpdir(), 'house-media-')));
+  const { document } = parseHTML(fs.readFileSync(built.index, 'utf8'));
+  const svg = document.querySelector('#drawn figure svg');
+  ok(!svg.querySelector('.pencil, .glaze'), 'media: no element of the built schematic carries a live filter');
+  ok(svg.querySelectorAll('image[data-asset]').length === 2, 'media: the pencil line and the glaze are each an image');
+  ok(svg.querySelector('g.fragment > image[data-asset]'), 'media: the glaze stays inside its fragment');
+  ok(svg.querySelector(':scope > image[opacity="0.8"]'), 'media: the pencil line keeps its opacity');
+  const mediaCheck = run(mediaDir);
+  ok(mediaCheck.status === 0, `media fixture passes (${mediaCheck.stdout.trim().split('\n').pop()})`);
+}
+
 const only = spawnSync(process.execPath, [CHECK, path.join(HERE, '..', 'demo'), '--only', 'nope'], { encoding: 'utf8' });
 ok(only.status === 2 && only.stderr.includes('no slide named nope'), '--only with an unknown slide fails');
 
