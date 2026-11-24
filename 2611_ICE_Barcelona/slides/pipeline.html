@@ -4,109 +4,107 @@
     <svg viewBox="0 0 1712 771" role="img" aria-label="KP2-3 pipeline in three workstreams. Data vectors and systematics: Euclid catalogs, CMB lensing maps and systematics maps feed NaMaster pseudo-Cl bandpowers for six spectra and the null tests. Simulations and covariance: mocks feed the pseudo-Cl step and the covariance. Theory and likelihood: the blinded bandpowers, the covariance and the theory model feed the likelihood.">
       <defs>
         <marker id="pipeline-arrow" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="9" markerHeight="8" orient="auto">
-          <path d="M0 0.5 Q6 3.5 12 5 Q6 6.5 0 9.5" class="fill-none stroke-muted" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M0 0.5 Q6 3.5 12 5 Q6 6.5 0 9.5" class="fill-none stroke-ink" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </marker>
         <linearGradient id="pipeline-wash" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" class="stop-sky" stop-opacity="0.55"/><stop offset="1" class="stop-sky" stop-opacity="0.2"/>
         </linearGradient>
+        <linearGradient id="pipeline-deep" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" class="stop-sky" stop-opacity="0.95"/><stop offset="1" class="stop-sky" stop-opacity="0.5"/>
+        </linearGradient>
       </defs>
 
-      <!-- step 1: data vectors and systematics, measured: in pen, inside its workstream in pencil -->
+      <!-- step 1: data vectors and systematics, measured: boxes in pen; the workstream's frame and the ties between boxes in pencil -->
       <g>
-        <path d="M18 4 H398 Q412 4 412 18 V162 Q412 176 426 176 H854 Q868 176 868 190 V753 Q868 767 854 767 H18 Q4 767 4 753 V18 Q4 4 18 4 Z" class="pencil fill-none stroke-accent" stroke-width="2.2"/>
-        <g class="pen fill-none" stroke-linejoin="round">
-          <rect x="18" y="80" width="380" height="220" rx="3" class="stroke-ink" stroke-width="2"/>
-          <rect x="18" y="320" width="380" height="220" rx="3" class="stroke-ink" stroke-width="2"/>
-          <rect x="18" y="608" width="380" height="150" rx="3" class="stroke-ink" stroke-width="2"/>
-          <rect x="474" y="608" width="380" height="150" rx="3" class="stroke-ink" stroke-width="2"/>
-          <rect x="474" y="196" width="380" height="360" rx="3" class="stroke-accent" stroke-width="3"/>
-          <g stroke-width="2">
-            <rect x="504" y="350" width="140" height="58" rx="3" class="stroke-cobalt"/>
-            <rect x="504" y="416" width="140" height="58" rx="3" class="stroke-cobalt"/>
-            <rect x="504" y="482" width="140" height="58" rx="3" class="stroke-cobalt"/>
-            <rect x="684" y="350" width="140" height="58" rx="3" class="stroke-teal"/>
-            <rect x="684" y="416" width="140" height="58" rx="3" class="stroke-teal"/>
-            <rect x="684" y="482" width="140" height="58" rx="3" class="stroke-teal"/>
-          </g>
-          <g class="stroke-muted" stroke-width="2.2">
-            <path d="M404 250 H466" marker-end="url(#pipeline-arrow)"/>
-            <path d="M404 430 H466" marker-end="url(#pipeline-arrow)"/>
-            <path d="M404 684 H466" marker-end="url(#pipeline-arrow)"/>
-            <path d="M664 562 V600" marker-end="url(#pipeline-arrow)"/>
+        <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">
+          <path class="stroke-muted" d="M18 4 H398 Q412 4 412 18 V164 Q412 178 426 178 H856 Q870 178 870 192 V753 Q870 767 856 767 H18 Q4 767 4 753 V18 Q4 4 18 4 Z"/>
+          <path d="M406 250 H464" marker-end="url(#pipeline-arrow)"/>
+          <path d="M406 430 H464" marker-end="url(#pipeline-arrow)"/>
+          <path d="M406 671 H464" marker-end="url(#pipeline-arrow)"/>
+          <path d="M664 564 V588" marker-end="url(#pipeline-arrow)"/>
+        </g>
+        <g class="pen fill-none stroke-ink" stroke-linejoin="round" stroke-width="2">
+          <rect x="24" y="80" width="374" height="220" rx="3"/>
+          <rect x="24" y="320" width="374" height="220" rx="3"/>
+          <rect x="24" y="596" width="374" height="150" rx="3"/>
+          <rect x="474" y="596" width="380" height="150" rx="3"/>
+          <rect x="474" y="198" width="380" height="358" rx="3" stroke-width="3.2"/>
+          <g stroke-width="1.6">
+            <rect x="504" y="350" width="140" height="58" rx="3"/>
+            <rect x="504" y="416" width="140" height="58" rx="3"/>
+            <rect x="504" y="482" width="140" height="58" rx="3"/>
+            <rect x="684" y="350" width="140" height="58" rx="3"/>
+            <rect x="684" y="416" width="140" height="58" rx="3"/>
+            <rect x="684" y="482" width="140" height="58" rx="3"/>
           </g>
         </g>
-        <text x="30" y="56" font-size="34" font-weight="700" class="fill-accent">Data vectors &amp; systematics</text>
+        <text x="30" y="56" font-size="34" font-weight="700">Data vectors &amp; systematics</text>
 
         <text x="664" y="248" font-size="40" font-weight="700" text-anchor="middle">Pseudo-Cℓ</text>
         <text x="664" y="290" font-size="32" class="fill-muted" text-anchor="middle">NaMaster</text>
         <text x="574" y="336" font-size="32" class="fill-muted" text-anchor="middle">Euclid</text>
         <text x="754" y="336" font-size="32" class="fill-muted" text-anchor="middle">× CMB</text>
-        <text x="574" y="393" font-size="40" text-anchor="middle" class="fill-cobalt">γγ</text>
-        <text x="574" y="459" font-size="40" text-anchor="middle" class="fill-cobalt">γδ</text>
-        <text x="574" y="525" font-size="40" text-anchor="middle" class="fill-cobalt">δδ</text>
+        <text x="574" y="393" font-size="40" text-anchor="middle">γγ</text>
+        <text x="574" y="459" font-size="40" text-anchor="middle">γδ</text>
+        <text x="574" y="525" font-size="40" text-anchor="middle">δδ</text>
         <text x="754" y="393" font-size="40" text-anchor="middle">γκ</text>
         <text x="754" y="459" font-size="40" text-anchor="middle">δκ</text>
         <text x="754" y="525" font-size="40" text-anchor="middle">κκ</text>
 
-        <text x="42" y="150" font-size="40" font-weight="700">Euclid TR1</text>
-        <text x="42" y="202" font-size="32">LensMC, MetaCal shear</text>
-        <text x="42" y="246" font-size="32">positions, masks, n(z)</text>
+        <text x="46" y="150" font-size="40" font-weight="700">Euclid TR1</text>
+        <text x="46" y="202" font-size="32">LensMC, MetaCal shear</text>
+        <text x="46" y="246" font-size="32">positions, masks, n(z)</text>
 
-        <text x="42" y="390" font-size="40" font-weight="700">CMB lensing κ</text>
-        <text x="42" y="442" font-size="32">Planck PR4, ACT DR6</text>
-        <text x="42" y="486" font-size="32">SPT-3G Main, PH-GMV</text>
+        <text x="46" y="390" font-size="40" font-weight="700">CMB lensing κ</text>
+        <text x="46" y="442" font-size="32">Planck PR4, ACT DR6</text>
+        <text x="46" y="486" font-size="32">SPT-3G Main, PH-GMV</text>
 
-        <text x="42" y="660" font-size="40" font-weight="700">Systematics maps</text>
-        <text x="42" y="704" font-size="32">Euclid VMPZ templates</text>
-        <text x="42" y="742" font-size="32">CMB foreground maps</text>
+        <text x="46" y="648" font-size="40" font-weight="700">Systematics maps</text>
+        <text x="46" y="692" font-size="32">Euclid VMPZ templates</text>
+        <text x="46" y="730" font-size="32">CMB foreground maps</text>
 
-        <text x="664" y="660" font-size="40" font-weight="700" text-anchor="middle">Null tests</text>
-        <text x="664" y="704" font-size="32" text-anchor="middle">templates × data</text>
-        <text x="664" y="742" font-size="32" text-anchor="middle">and validation</text>
+        <text x="664" y="648" font-size="40" font-weight="700" text-anchor="middle">Null tests</text>
+        <text x="664" y="692" font-size="32" text-anchor="middle">templates × data</text>
+        <text x="664" y="730" font-size="32" text-anchor="middle">and validation</text>
       </g>
 
-      <!-- step 2: simulations and covariance, modelled: in wash -->
+      <!-- step 2: simulations and covariance, modelled: in wash, with no pen -->
       <g class="fragment" data-fragment-index="0">
-        <rect x="474" y="18" width="380" height="134" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
-        <rect x="938" y="18" width="348" height="134" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
-        <path d="M474 4 H1286 Q1300 4 1300 18 V152 Q1300 166 1286 166 H474 Q460 166 460 152 V18 Q460 4 474 4 Z" class="pencil fill-none stroke-cobalt" stroke-width="2.2"/>
-        <g class="pen fill-none" stroke-linejoin="round">
-          <g class="stroke-muted" stroke-width="2.2">
-            <path d="M664 156 V188" marker-end="url(#pipeline-arrow)"/>
-            <path d="M862 85 H930" marker-end="url(#pipeline-arrow)"/>
-          </g>
+        <rect x="474" y="22" width="380" height="130" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
+        <rect x="944" y="22" width="316" height="130" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
+        <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">
+          <path class="stroke-muted" d="M474 4 H1264 Q1278 4 1278 18 V154 Q1278 168 1264 168 H474 Q460 168 460 154 V18 Q460 4 474 4 Z"/>
+          <path d="M664 158 V190" marker-end="url(#pipeline-arrow)"/>
+          <path d="M862 87 H936" marker-end="url(#pipeline-arrow)"/>
         </g>
-        <text x="498" y="74" font-size="40" font-weight="700">Simulations</text>
-        <text x="498" y="122" font-size="32">GLASS, FLASK mocks</text>
-        <text x="1112" y="74" font-size="40" font-weight="700" text-anchor="middle">Covariance</text>
-        <text x="1112" y="122" font-size="32" class="fill-muted" text-anchor="middle">iNKA + SSC, FLASK</text>
-        <text x="1112" y="208" font-size="34" font-weight="700" text-anchor="middle" class="fill-cobalt">Simulations &amp; covariance</text>
+        <text x="498" y="76" font-size="40" font-weight="700">Simulations</text>
+        <text x="498" y="124" font-size="32">GLASS, FLASK mocks</text>
+        <text x="1102" y="76" font-size="40" font-weight="700" text-anchor="middle">Covariance</text>
+        <text x="1102" y="124" font-size="32" class="fill-muted" text-anchor="middle">iNKA + SSC, FLASK</text>
+        <text x="1086" y="216" font-size="34" font-weight="700" text-anchor="middle">Simulations &amp; covariance</text>
       </g>
 
-      <!-- step 3: theory and likelihood, with the blind -->
+      <!-- step 3: theory and likelihood, with the blind: in wash, the likelihood the deepest -->
       <g class="fragment" data-fragment-index="1">
-        <rect x="938" y="270" width="320" height="200" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
-        <rect x="1340" y="18" width="354" height="160" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
-        <rect x="1340" y="270" width="354" height="218" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
-        <path d="M1340 4 H1694 Q1708 4 1708 18 V488 Q1708 502 1694 502 H1340 Q1326 502 1326 488 V18 Q1326 4 1340 4 Z" class="pencil fill-none stroke-teal" stroke-width="2.2"/>
-        <g class="pen fill-none" stroke-linejoin="round">
-          <rect x="1340" y="270" width="354" height="218" rx="3" class="stroke-accent" stroke-width="3"/>
-          <g class="stroke-muted" stroke-width="2.2">
-            <path d="M862 370 H930" marker-end="url(#pipeline-arrow)"/>
-            <path d="M1264 370 H1332" marker-end="url(#pipeline-arrow)"/>
-            <path d="M1290 156 L1334 262" marker-end="url(#pipeline-arrow)"/>
-            <path d="M1517 184 V262" marker-end="url(#pipeline-arrow)"/>
-          </g>
+        <rect x="944" y="270" width="316" height="200" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
+        <rect x="1344" y="22" width="346" height="160" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
+        <rect x="1344" y="270" width="346" height="214" rx="3" class="glaze" fill="url(#pipeline-deep)"/>
+        <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">
+          <path class="stroke-muted" d="M1340 4 H1694 Q1708 4 1708 18 V488 Q1708 502 1694 502 H1340 Q1326 502 1326 488 V18 Q1326 4 1340 4 Z"/>
+          <path d="M862 370 H936" marker-end="url(#pipeline-arrow)"/>
+          <path d="M1268 370 H1336" marker-end="url(#pipeline-arrow)"/>
+          <path d="M1268 92 C1306 96 1296 262 1336 304" marker-end="url(#pipeline-arrow)"/>
+          <path d="M1517 190 V262" marker-end="url(#pipeline-arrow)"/>
         </g>
-        <text x="1098" y="336" font-size="40" font-weight="700" text-anchor="middle">Blind</text>
-        <text x="1098" y="386" font-size="32" class="fill-muted" text-anchor="middle">hidden cosmology</text>
-        <text x="1098" y="428" font-size="32" class="fill-muted" text-anchor="middle">shift added to Cℓ</text>
+        <text x="1102" y="336" font-size="40" font-weight="700" text-anchor="middle">Blind</text>
+        <text x="1102" y="386" font-size="32" class="fill-muted" text-anchor="middle">hidden cosmology</text>
+        <text x="1102" y="428" font-size="32" class="fill-muted" text-anchor="middle">shift added to Cℓ</text>
         <g>
           <text x="1517" y="336" font-size="40" font-weight="700" text-anchor="middle">Likelihood</text>
           <text x="1517" y="386" font-size="32" class="fill-muted" text-anchor="middle">b, Δz, m, IA</text>
-          <text x="1517" y="80" font-size="40" font-weight="700" text-anchor="middle">Theory</text>
-          <text x="1517" y="128" font-size="32" class="fill-muted" text-anchor="middle">CLOE, through the</text>
-          <text x="1517" y="164" font-size="32" class="fill-muted" text-anchor="middle">bandpower windows</text>
+          <text x="1517" y="84" font-size="40" font-weight="700" text-anchor="middle">Theory</text>
+          <text x="1517" y="132" font-size="32" class="fill-muted" text-anchor="middle">CLOE, through the</text>
+          <text x="1517" y="168" font-size="32" class="fill-muted" text-anchor="middle">bandpower windows</text>
           <text x="1517" y="548" font-size="34" font-weight="700" text-anchor="middle">Theory &amp; likelihood</text>
         </g>
       </g>
