@@ -33,7 +33,7 @@
     },
     {
       "title": "Euclid × SPT-3G",
-      "outline": "Euclid shear and clustering crossed with SPT-3G CMB lensing: the overlap, the pipeline and its mocks, the blinded TR1 data vector, blinded posteriors against ACT DR6, and where SPT-3G is tighter.",
+      "outline": "Euclid shear and clustering crossed with SPT-3G CMB lensing: the overlap, the pipeline and its mocks, the blinded TR1 data vector, and blinded posteriors against ACT DR6.",
       "slides": [
         "euclid-spt",
         "why-kappa",
@@ -41,9 +41,7 @@
         "pipeline",
         "mocks",
         "dv-vector",
-        "chains",
-        "spt-vs-act",
-        "dr2"
+        "chains"
       ]
     },
     {
@@ -78,6 +76,8 @@
       "title": "Backup",
       "outline": "The blinding rehearsal on a mock, the lens ratio as a check on shear calibration, the systematics-template crosses and the FLASK covariance; the UNIONS first-release S8, B-modes, mock comparison and blinding, the v2 error bars, robustness tests, contours and the IA prior; the earlier opening and close on how collaborations work.",
       "slides": [
+        "spt-vs-act",
+        "dr2",
         "blind-rehearsal",
         "lens-ratio",
         "systematics-triangle",
