@@ -21,7 +21,7 @@ once per block of rows (gamma-gamma, gamma-delta, delta-delta, and each half of
 the CMB lensing row). Every range is the union over all variants on disk, so the
 toggles change only the points and a rerun with new variants rescales them all. The overview marks them but labels nothing on its y axes;
 the close-up and the detail cards label them. With --show-cut, bands outside the scale cut
-are drawn in a paler blue. Residual strips span +-3 sigma with ticks at
+are drawn in a paler blue over a grey band spanning their l range. Residual strips span +-3 sigma with ticks at
 -2, 0 and 2; a band beyond the strip is drawn as a triangle on its edge.
 
 Run in the cmbx container, after make_dv_vector.py:
@@ -48,7 +48,7 @@ OUT = os.path.join(HERE, "dv_vector_app.json")
 
 # ── style: a paper figure ───────────────────────────────────────────────────
 INK, DATA, FRAME, MUTED = "#16191F", "#2B4A8B", "#3A3F47", "#4A505A"
-CUT_DATA = "#B4C0D8"           # bands outside the scale cut, with --show-cut
+CUT_DATA, CUT_SHADE = "#8E9EC2", "#E3E6EB"   # bands outside the scale cut and their l range, with --show-cut
 SHOW_CUT = False
 plt.rcParams.update({
     "font.family": "serif", "font.serif": ["cmr10"], "mathtext.fontset": "cm",
@@ -178,6 +178,22 @@ def errorbars(ax, x, y, s, lw, ms, fit):
             ax.plot(x[m], y[m], "o", color=color, ms=ms, mew=0, zorder=4)
 
 
+def shade_cut(ax, ell, fit):
+    """Grey band over each run of bands outside the cut, out to the midpoints (in log l) to its
+    kept neighbours or to the panel edge."""
+    edges = np.r_[XLIM[0], np.sqrt(ell[1:] * ell[:-1]), XLIM[1]]
+    i = 0
+    while i < len(ell):
+        if fit[i]:
+            i += 1
+            continue
+        j = i
+        while j + 1 < len(ell) and not fit[j + 1]:
+            j += 1
+        ax.axvspan(edges[i], edges[j + 1], color=CUT_SHADE, lw=0, zorder=0.3)
+        i = j + 1
+
+
 def frame(ax, ylim, yticks, *, tick_len, lw_frame, minor=True):
     ax.set_xscale("log")
     ax.set_xlim(*XLIM)
@@ -200,12 +216,14 @@ def frame(ax, ylim, yticks, *, tick_len, lw_frame, minor=True):
 def draw_panel(ax, d, ylim, yticks, *, lw_bar, ms, lw_th, tick_len, lw_frame, minor=True):
     frame(ax, ylim, yticks, tick_len=tick_len, lw_frame=lw_frame, minor=minor)
     ax.axhline(0, color=FRAME, lw=lw_frame * 0.6, alpha=0.45, zorder=1)
+    shade_cut(ax, d["ell"], d["f"])
     ax.plot(d["ell"], d["t"], color=INK, lw=lw_th, zorder=2, solid_joinstyle="round")
     errorbars(ax, d["ell"], d["v"], d["s"], lw_bar, ms, d["f"])
 
 
 def draw_strip(ax, d, *, ms, tick_len, lw_frame):
     frame(ax, (-R, R), [-2, 0, 2], tick_len=tick_len, lw_frame=lw_frame)
+    shade_cut(ax, d["ell"], d["f"])
     ax.axhspan(-1, 1, color="#CDD3DC", alpha=0.45, lw=0, zorder=0.5)
     ax.axhline(0, color=INK, lw=lw_frame, zorder=1)
     r, edge = d["r"], 0.9 * R
