@@ -1,0 +1,39 @@
+<section data-layout="figure-text" data-split="60">
+  <h2>CMB lensing halves the DR1 error on σ<sub>8</sub></h2>
+  <figure>
+    <img src="images/ice_dr1_forecast_1.png" alt="Forecast sigma8 against Omega_m for Euclid DR1 3x2pt on its own, a narrow tilted ellipse">
+    <img class="fragment" data-fragment-index="1" src="images/ice_dr1_forecast_2.png" alt="The same with the SPT-3G Main and Summer 6x2pt added: a red ellipse about half as long along the degeneracy">
+    <img class="fragment" data-fragment-index="2" src="images/ice_dr1_forecast_3.png" alt="The ACT DR6 6x2pt outlined, between the two">
+  </figure>
+  <div class="text">
+    <span class="kicker">$\sigma(\sigma_8)$ · Euclid DR1 South</span>
+    <ul>
+      <li>3×2pt: 0.029</li>
+      <li class="fragment" data-fragment-index="1">6×2pt with SPT-3G: 0.015</li>
+      <li class="fragment" data-fragment-index="2">6×2pt with ACT: 0.019</li>
+      <li class="fragment" data-fragment-index="3">5×2pt, no κκ: 0.028</li>
+      <li class="fragment" data-fragment-index="3">$S_8$: 0.0105 to 0.0085</li>
+    </ul>
+  </div>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Contours</strong> — 68 % and 95 % for a noiseless Euclid DR1 South vector, $\sigma_8$ against $\Omega_\mathrm{m}$, with the input cosmology as the cross: the 3×2pt alone, then with the SPT-3G fields (Main and Summer together, disjoint on the sky) and with ACT DR6 outlined.</li>
+      <li><strong>6×2pt</strong> — all the auto- and cross-spectra of shear, galaxy positions and κ, including $\kappa\kappa$. The $\kappa$ crosses alone (5×2pt) leave the widths within 4 % of the 3×2pt; $\kappa\kappa$ breaks the $\sigma_8$–$\Omega_\mathrm{m}$ degeneracy. It covers each κ map's whole field, not only its overlap with Euclid.</li>
+      <li><strong>Check</strong> — the same machinery on the TR1 footprint, densities and noise gives a 5×2pt $\sigma(S_8)$ of 0.0171 and $\sigma(\Omega_\mathrm{m})$ of 0.043 against the real blinded chains' 0.0169 and 0.040 (ratios 1.01 and 1.07); κ crosses alone, $\sigma(S_8)$ 0.0475 against 0.0466.</li>
+    </ul>
+    <details><summary>Assumptions</summary>
+    <p>Euclid DR1 South from the Nowcast v2 kit: its 1151 deg² mask, per-bin number densities, shape noise and South n(z). Noiseless theory vectors, the cmbx likelihood (pure CLOE through the JAX adapter, nested sampling), priors of the 15 November production chains. Gaussian plus super-sample covariance from our own code, on coupled pseudo-$C_\ell$ in the inference group's 50 square-root-spaced bands, $10&lt;\ell&lt;2000$.</p>
+    <p>κ maps: SPT-3G Main (bias- and profile-hardened GMV, 2019–20), SPT-3G Summer (TT-only) and ACT DR6 baseline, noise from the delivered maps (SPT) or the published curve (ACT). The κ noise is a single realization at $L\lesssim100$ for SPT. No κ reconstruction systematics or foreground parameters are marginalised.</p>
+    <p>Scale cuts: shear spectra ($\gamma\gamma$, $\kappa\gamma$) to $\ell=2000$, the upper edge of the bands; galaxy spectra to $k_\max=0.2$ (GG) and $0.15$ (GL, Gκ) $h$/Mpc; $\kappa\kappa$ from $\ell=40$ to 763 (ACT) or 2000 (SPT); other κ legs above $\ell=40$.</p>
+    </details>
+    <details><summary>Different from the inference group's run</summary>
+    <p>South only; our lens $k$ cuts; our covariance rather than Spaceborne; one mask for positions and shear rather than per-bin matrices; the 15 November CLOE through the JAX adapter. The Euclid-only 3×2pt is the cross-check, but I have no published widths from the group to set beside it.</p>
+    </details>
+    <details><summary>Numbers</summary>
+    <p>$\sigma(\sigma_8)$, $\sigma(S_8)$, $\sigma(\Omega_\mathrm{m})$: 3×2pt 0.0293, 0.0105, 0.0213. 6×2pt with SPT-3G Main 0.0156, 0.0088, 0.0150; Summer 0.0210, 0.0092, 0.0173; both 0.0145, 0.0085, 0.0143; ACT DR6 0.0187, 0.0090, 0.0163. 5×2pt with both SPT fields 0.0281, 0.0101, 0.0210, with ACT 0.0287, 0.0102, 0.0212. κ crosses only: SPT-3G both 0.071, 0.027, 0.070. Dropping $\ell&lt;100$ from the Euclid spectra: 3×2pt 0.032, 0.0110, 0.0232, 6×2pt with both SPT fields 0.0151, 0.0089, 0.0151.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>Figure 2611_ICE_Barcelona/make_dr1_forecast.py, summary in dr1_forecast.json; chains of 25 November on Leonardo.</p>
+    </details>
+  </aside>
+</section>
