@@ -83,9 +83,6 @@
       "outline": "The DR1 blinding tests, how a shift is drawn and whether it is recovered, the lens ratio as a check on shear calibration, the systematics-template crosses and the FLASK covariance; the UNIONS first-release S8, B-modes, mock comparison and blinding, the v2 error bars, robustness tests, contours and the IA prior; the earlier opening and close on how collaborations work.",
       "slides": [
         "spiral",
-        "spt-vs-act",
-        "dr2",
-        "unions-leakage",
         "blind-draws",
         "blind-rehearsal",
         "lens-ratio",
