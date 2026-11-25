@@ -1,6 +1,7 @@
 // The deck's drawings, a pencil underdrawing with watercolour laid in. The title: the three
-// instruments look up into a light cone of redshift sheets that ends at the CMB; the section openers
-// are the same scene cut down to each part's instruments; the other slides' drawings take their
+// instruments stand under a light cone of redshift sheets seen from below, rings around the CMB;
+// the first two openers show the cone from the side, cut down to each part's instruments, and the
+// third looks up it again; the other slides' drawings take their
 // motifs from it (the cone, a sheet of sky, the mock globe). ART at the bottom maps each slide to its
 // drawing. A drawing is a stack of layers drawn in the 1920×1080 frame, so that its washes and
 // instruments can move a little; each is saved as the part of the frame it covers, with its place.
@@ -263,11 +264,12 @@ function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380] }) {
 // Looking straight up the cone from where the instruments stand: each sheet is a ring around the
 // opening to the next, the nearest outermost with the coarsest web, and the CMB closes the far end.
 // The rings drift a little off centre, as a cone seen slightly from the side, and no wash lies over another.
+const RING = [1, 0.83, 0.67, 0.52, 0.38, 0.25];   // each sheet's radius in the mouth's, near to far
+const ringAt = ({ cx, cy, R }) => (i) => [cx - (1 - RING[i]) * 0.146 * R, cy - (1 - RING[i]) * 0.108 * R, R * RING[i]];   // centre and radius of sheet i
 function upTheCone({ cols, cx = 1690, cy = 630, R = 315 }) {
   hand(11);
-  const fr = [1, 0.83, 0.67, 0.52, 0.38, 0.25], drift = [-46, -34];
   const sky = [...DEPTHS.map((s, i) => ({ ...s, col: cols[i], seed: 8 + 3 * i })).reverse(), { ...CMB, seed: 21 }];   // near to far
-  const at = (i) => [cx + (1 - fr[i]) * drift[0], cy + (1 - fr[i]) * drift[1], R * fr[i]];
+  const at = ringAt({ cx, cy, R });
   const sheets = sky.map((s, i) => { const [x, y, r] = at(i), k = r / 100;
     const hole = i < sky.length - 1 ? (([u, v, q]) => ` ${ell((u - x) / k, (v - y) / k, q / k, q / k)}`)(at(i + 1)) : '';
     return { id: `sheet${i}`, cls: `wash breathe t${i}`, dpr: 1, svg: `<defs>${sliceFilter('z', s, true)}</defs><g opacity="0.9" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${k.toFixed(3)})"><path d="${ell(0, 0, 100, 100)}${hole}" fill-rule="evenodd" fill="${s.col}" filter="url(#z)"/></g>` }; });
@@ -275,6 +277,31 @@ function upTheCone({ cols, cx = 1690, cy = 630, R = 315 }) {
   // the cone's walls, ruled from the mouth toward the far end
   const wall = (a) => { const [x0, y0, r0] = at(0), [x1, y1, r1] = at(5); return ln(x0 + r0 * Math.cos(a), y0 + r0 * Math.sin(a), x1 + r1 * Math.cos(a), y1 + r1 * Math.sin(a), W.ghost, 0); };
   return [...sheets.reverse(), { id: 'rims', svg: `${MEDIA}${pencil(rims + [2.5, 3.9, 5.3].map(wall).join(''))}` }];
+}
+
+// The title: the cone seen from below is the sky, and the three instruments stand under it, each
+// looking up into the sheet its light left: SPT the CMB at the far end, Euclid the deepest galaxies,
+// the Mauna Kea domes one sheet nearer. A sight line turns a little at every sheet it crosses.
+const UNDER = { cx: 1490, cy: 400, R: 370, spt: { x: 1000, y: 1024, k: 0.62 }, euc: { x: 1806, y: 868, k: 0.5 }, ridge: [-150, 162] };
+UNDER.sptPivot = [UNDER.spt.x + PIVOT[0] * UNDER.spt.k, UNDER.spt.y + PIVOT[1] * UNDER.spt.k];
+UNDER.mk = [MK[0] + UNDER.ridge[0], MK[1] + UNDER.ridge[1]];
+function underTheCone({ cols }) {
+  const U = UNDER, sky = upTheCone({ cols, ...U }), at = ringAt(U);
+  hand(5);
+  // a patch of sheet i: midway to the next sheet's opening, at the angle a (clockwise from the right)
+  const patch = (i, a = 0) => { const [x, y, r] = at(i), q = i < 5 ? (r + at(i + 1)[2]) / 2 : 0; return [x + q * Math.cos(a), y + q * Math.sin(a)]; };
+  const view = (from, to) => { const L = Math.hypot(to[0] - from[0], to[1] - from[1]), n = [-(to[1] - from[1]) / L, (to[0] - from[0]) / L];
+    return pencil([-22, 0, 22].map((du, j) => { const far = [to[0] + n[0] * du, to[1] + n[1] * du];
+      const mid = [1, 2, 3, 4, 5].map(k => { const t = k / 6, b = jit(4); return [far[0] + (from[0] - far[0]) * t + n[0] * b, far[1] + (from[1] - far[1]) * t + n[1] * b]; });
+      return stroke(through(ease([far, ...mid, from])), j === 1 ? W.sight : W.ghost); }).join('')); };
+  const cmb = patch(5), tilt = deg(U.sptPivot, cmb), dish = off(U.sptPivot, 49 * U.spt.k, tilt);
+  const deepest = patch(4, 0.25), eRot = deg([U.euc.x, U.euc.y], deepest), eTip = off([U.euc.x, U.euc.y], 150 * U.euc.k, eRot);
+  return [...sky,
+    { id: 'ground', svg: `${MEDIA}<g transform="translate(${U.ridge})">${glaze('url(#g-far)', 'M1090 960 C1230 930 1420 820 1560 800 S1800 840 1920 870 L1920 960Z')}${maunaKea(MKP.x, MKP.y, MKP.k)}</g>${sptBase(U.spt.x, U.spt.y, U.spt.k)}` },
+    { id: 'spt', cls: 'sweep about-spt', svg: MEDIA + view(dish, cmb) + sptDish(U.spt.x, U.spt.y, tilt, U.spt.k) },
+    { id: 'unions', cls: 'sweep about-unions', svg: MEDIA + view(U.mk, patch(3, 1.15)) },
+    { id: 'euclid', cls: 'sweep about-euclid', svg: MEDIA + view(eTip, deepest) + euclid(U.euc.x, U.euc.y, eRot, U.euc.k) },
+  ];
 }
 
 // a standing figure as a sketcher sets one into a landscape for scale: a contour in pencil down the
@@ -470,8 +497,8 @@ function tensions() {
 
 const ramp = (a, b) => [0, 0.25, 0.5, 0.75, 1].map(t => mix(a, b, t));
 const ART = {
-  // every instrument, five redshifts from sky blue through lilac to rose, and the CMB behind them
-  title: () => scene({ sky: slices([S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose]), who: ['euclid', 'spt', 'unions'] }),
+  // every instrument under the whole cone: five redshifts from rose out to sky blue, and the CMB at the far end
+  title: () => underTheCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose] }),
   // Euclid's galaxies in the part's sky blue, in front of the CMB that SPT maps
   'euclid-spt': () => scene({ sky: slices(ramp('#8FB2D6', '#B9D0E6')), who: ['euclid', 'spt'], lifted: 0.14, words: [1020, 1440] }),
   // the turn to how the work is done: looking straight up the cone, every redshift at once
@@ -488,7 +515,7 @@ const ART = {
 };
 
 const ALT = {
-  title: 'Pencil and watercolour drawing: the South Pole Telescope, the Mauna Kea domes and Euclid look up into a cone of redshift sheets that ends at the CMB',
+  title: 'Pencil and watercolour drawing: the light cone seen from below, its redshift sheets as rings of wash around the CMB, and under it the South Pole Telescope, the Mauna Kea domes and Euclid, each looking up into the sheet it observes',
   'euclid-spt': 'Euclid and the South Pole Telescope look up into a cone of blue redshift sheets that ends at the CMB',
   unions: 'The Mauna Kea domes look up into a cone of rose redshift sheets; a loupe drawn out from the nearest sheet shows galaxy shapes in ink, turned around the mass in wash beneath them',
   summary: 'Pencil and watercolour: a small group of people stand at the foot of a light cone of four painted sheets, one in the wash of each part of the talk',
