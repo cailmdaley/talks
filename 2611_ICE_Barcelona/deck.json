@@ -53,6 +53,7 @@
         "unions-survey",
         "unions-north",
         "unions-release",
+        "unions-bmodes",
         "unions-v2",
         "unions-next",
         "unions-3x2pt"
@@ -83,7 +84,6 @@
         "systematics-triangle",
         "kp-3-sims-cov",
         "unions-s8",
-        "unions-bmodes",
         "unions-mocks",
         "unions-blinding",
         "unions-bmode-mocks",
