@@ -103,9 +103,17 @@
 /* mid — a list between body and small type, for two dense columns */
 .slide ul.mid { font-size: 46px; }
 
-/* the footer credit line stays off: the house footer centres it, where this deck's
-   variant controls sit */
-.slide:not(.detail) > .foot > span:not(.num):not(.parts) { visibility: hidden; }
+/* the footer credit is centred on the slide */
+.slide:not(.detail) > .foot > span:not(.num):not(.parts) { position: absolute; left: 0; right: 0; text-align: center; pointer-events: none; }
+/* a lead's credit with a larger portrait */
+.slide .source.lead .who > img { width: 2.6em; height: 2.6em; }
+/* authors: portrait and name in one column, each one's paper in the next */
+.slide ul.authors { list-style: none; padding: 0; display: grid; grid-template-columns: max-content 1fr; column-gap: 0.9em; row-gap: 0.35em; align-items: center; }
+.slide ul.authors > li { display: contents; }
+.slide ul.authors > li > .who { margin-right: 0; }
+.slide ul.authors > li > .paper { color: var(--muted); }
+/* panel titles over the two COSEBI panels of unions-bmodes, each centred on its panel */
+.slide figure figcaption.panels { display: grid; grid-template-columns: 54.8% 45.2%; justify-items: center; width: 100%; }
 
 /* the DR6 globe clip has a white ground: multiply it into the paper, poster included */
 [data-house-slide="unions-v2"] .frame > video,
