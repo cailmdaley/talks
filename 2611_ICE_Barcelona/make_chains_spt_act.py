@@ -45,7 +45,7 @@ def main():
             chains.append(c)
             stats[cmb][run] = {q: round(float(v), 4) for n in ('S8', 'Omega_m')
                                for q, v in zip((n + '_blinded', 'sigma_' + n), c.sigma(n))}
-        fig = posteriors(chains, {'Omega_m': r'\Omega_\mathrm{m}', 'S8': r'S_8\ \mathrm{(blinded)}'}, title=label,
+        fig = posteriors(chains, {'S8': r'S_8\ \mathrm{(blinded)}', 'Omega_m': r'\Omega_\mathrm{m}'}, title=label,
                          lims={'Omega_m': (0, 1.1), 'S8': (.64, 1.08)},
                          ticks={'Omega_m': [.2, .6, 1.], 'S8': [.7, .8, .9, 1.]})
         for ax in fig.axes:   # the marginals carry the numbers; the axes show ticks without values
