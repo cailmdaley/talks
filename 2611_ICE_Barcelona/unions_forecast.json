@@ -47,6 +47,22 @@
   "fom": 1488,
   "wall_s": 453
  },
+ "first_3x2_fixT": {
+  "sigma8": {
+   "mean": 0.8135,
+   "sigma": 0.0527
+  },
+  "S8": {
+   "mean": 0.8331,
+   "sigma": 0.0161
+  },
+  "Omega_m": {
+   "mean": 0.318,
+   "sigma": 0.0371
+  },
+  "fom": 1699,
+  "wall_s": 470
+ },
  "first_3x2_hi": {
   "sigma8": {
    "mean": 0.8289,
@@ -175,6 +191,54 @@
   "fom": 441,
   "wall_s": 122
  },
+ "mid_3x2": {
+  "sigma8": {
+   "mean": 0.8275,
+   "sigma": 0.0597
+  },
+  "S8": {
+   "mean": 0.8394,
+   "sigma": 0.0214
+  },
+  "Omega_m": {
+   "mean": 0.3121,
+   "sigma": 0.0354
+  },
+  "fom": 1456,
+  "wall_s": 499
+ },
+ "mid_LL": {
+  "sigma8": {
+   "mean": 0.8246,
+   "sigma": 0.1029
+  },
+  "S8": {
+   "mean": 0.8363,
+   "sigma": 0.0274
+  },
+  "Omega_m": {
+   "mean": 0.3202,
+   "sigma": 0.0698
+  },
+  "fom": 675,
+  "wall_s": 140
+ },
+ "wide_2x2": {
+  "sigma8": {
+   "mean": 0.787,
+   "sigma": 0.0959
+  },
+  "S8": {
+   "mean": 0.8213,
+   "sigma": 0.0402
+  },
+  "Omega_m": {
+   "mean": 0.3354,
+   "sigma": 0.0566
+  },
+  "fom": 567,
+  "wall_s": 392
+ },
  "wide_3x2": {
   "sigma8": {
    "mean": 0.828,
@@ -190,6 +254,54 @@
   },
   "fom": 1550,
   "wall_s": 611
+ },
+ "wide_3x2_dzrel": {
+  "sigma8": {
+   "mean": 0.8268,
+   "sigma": 0.0548
+  },
+  "S8": {
+   "mean": 0.8416,
+   "sigma": 0.0182
+  },
+  "Omega_m": {
+   "mean": 0.3137,
+   "sigma": 0.0326
+  },
+  "fom": 1950,
+  "wall_s": 489
+ },
+ "wide_3x2_m005": {
+  "sigma8": {
+   "mean": 0.827,
+   "sigma": 0.0565
+  },
+  "S8": {
+   "mean": 0.8402,
+   "sigma": 0.0208
+  },
+  "Omega_m": {
+   "mean": 0.3127,
+   "sigma": 0.0334
+  },
+  "fom": 1592,
+  "wall_s": 558
+ },
+ "wide_3x2_ns": {
+  "sigma8": {
+   "mean": 0.8241,
+   "sigma": 0.0561
+  },
+  "S8": {
+   "mean": 0.8395,
+   "sigma": 0.0209
+  },
+  "Omega_m": {
+   "mean": 0.3143,
+   "sigma": 0.0333
+  },
+  "fom": 1580,
+  "wall_s": 496
  },
  "wide_LL": {
   "sigma8": {
@@ -238,6 +350,22 @@
   },
   "fom": 1205,
   "wall_s": 147
+ },
+ "wide_LL_hi": {
+  "sigma8": {
+   "mean": 0.8516,
+   "sigma": 0.088
+  },
+  "S8": {
+   "mean": 0.8445,
+   "sigma": 0.0235
+  },
+  "Omega_m": {
+   "mean": 0.3026,
+   "sigma": 0.0539
+  },
+  "fom": 912,
+  "wall_s": 169
  },
  "wide_LL_noia": {
   "sigma8": {
