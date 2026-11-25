@@ -9,6 +9,9 @@
   "css": "deck.css",
   "draft": true,
   "noindex": true,
+  "local": [
+    { "url": "http://localhost:5318/", "start": "lightcone-demo studio" }
+  ],
   "variants": {
     "shear": {
       "lensmc": "LensMC",

@@ -4,6 +4,7 @@ Talks are hand-authored HTML on reveal.js, written against one design system and
 
 ```
 node house/build.mjs <deck-dir>        # → _site/<deck>/index.html and report.html
+node house/local.mjs <deck-dir>        # work on a deck: serve it on http://localhost:8090/<deck>/, rebuild and reload on every change
 node house/check.mjs <deck-dir>        # lint + render; screenshots in <deck-dir>/_check/
 node house/check.mjs <deck-dir> --steps          # also one screenshot per fragment step
 node house/check.mjs <deck-dir> --only a,b       # just these slides
@@ -67,6 +68,12 @@ A slide file holds exactly one `<section>` with a `data-layout`, a headline, its
 ```
 
 The headline is a claim, one line. **The notes are public**: there are no speaker notes. The build turns each slide's `aside.notes` into its *Sources & notes* card, which the audience or the speaker opens from the button at the left of the footer (or `N`), and the report prints them under the slide. Write them for a reader: what is plotted, sources, caveats, the detail that does not fit on the slide; prose, with `<h3>` subheads, lists, links, maths and `<figure>`s as needed. The card scrolls, so length is free. For a card that reads at a skim, open with `<ul class="skim">` (one line per thing on the slide, led by a `<strong>` naming it) and put the depth in `<details><summary>Topic</summary>…</details>` blocks, which the audience opens on click; such a card is set at the fine size, and the report prints every `<details>` open. Subscripts in the card are written as maths (`$A_V$`), since an HTML `<sub>` at the fine size falls below the floor. They are where small explanatory text goes instead of shrinking it onto the slide. Math is TeX between `$…$`, `\(…\)`, `$$…$$` or `\[…\]`, typeset to SVG at build time; a TeX error fails the build and names the slide. An expression must sit in one run of text (no tags inside it); write a literal dollar as `\$`. Put punctuation that follows inline math inside it (`$b_i,$`), or the line may break before it.
+
+**Working on a deck.** `node house/local.mjs <deck-dir>` builds the deck into `_local/` with its localhost pages live, serves it on http://localhost:8090/<deck>/, and rebuilds and reloads the browser whenever a file of the deck or of `house/` changes. A deck whose live pages need a program running lists it in `deck.json`, and the command starts it when its address does not answer:
+
+```json
+"local": [{ "url": "http://localhost:5318/", "start": "lightcone-demo studio" }]
+```
 
 ## The canvas and its budget
 
@@ -141,6 +148,7 @@ A `<figure>` holds an optional `<figcaption>` (a one-line label above), one visu
 - **Live pages** use `<figure><iframe src="https://…" data-poster="images/page.png" title="App name"></iframe></figure>`.
   The required poster sets the frame's aspect ratio and stays behind the page; the page loads when its slide first becomes current and stays loaded after that.
   The report, PDF/print view and checker show only the poster and never load the network page.
+  A page served from the presenting machine (`src="http://localhost:…"`) is kept only by a local build (`--local`, which `house/local.mjs` passes); every other build, the published one included, shows its poster alone.
 - **Text in figures** must be legible on screen too, and the checker cannot read pixels: make axis labels and legends at least 32 px *as displayed*. A plot shown 1371 px wide from a 12-inch matplotlib figure at 100 dpi is scaled by 1.14, so 22 pt labels are about 35 px. Look at the screenshots.
 - **Stacks** build a figure up in steps: further `<img class="fragment">` after the first image in the same `<figure>` are drawn exactly over it, one per step. Every image in a stack has the first one's aspect ratio and no `data-crop`; make them as frames of one plot (same axes, same canvas) so only the new layer changes. Each frame is opaque once multiplied into the ground, so a later one hides the earlier ones. Example: `2610_Napoli_CMBX/slides/footprint.html`.
 - **Prisms** turn a stack instead of laying frames over each other: `<figure data-prism>` makes each step rotate the stack about its horizontal axis, like a prism with one frame on each side, so the next frame rolls up from below as the last one turns away and darkens. A later frame with `data-zoom="x y w h"` arrives differently: the view pulls back, the previous frame shrinking into that box of the new one (percent of the image, from its top left; it may reach past the edges) while the new frame settles to rest around it. Use it for a detail that becomes part of a larger whole. For an undistorted move, give the box the image's aspect ratio (`w` = `h`). Only the step between two states moves. At rest a prism is the plain stack, so the report, a PDF export and the checker see the stack, and with `prefers-reduced-motion` the frames crossfade. To change how the last frame arrives, add or drop its `data-zoom`; to change what it shows, swap its image. The motion lives in `runtime.js`. Example: `house/demo/slides/prism.html`.

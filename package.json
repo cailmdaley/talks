@@ -5,6 +5,7 @@
   "scripts": {
     "build": "node house/build.mjs",
     "check": "node house/check.mjs",
+    "local": "node house/local.mjs",
     "test": "node house/test/run.mjs"
   },
   "dependencies": {

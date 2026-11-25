@@ -8,6 +8,7 @@
 //   node house/build.mjs <deck-dir>... [--out _site] [--web]   build named decks
 //   node house/build.mjs --all [--out _site] [--web]           build every deck with a deck.json
 //   node house/build.mjs --listing <file.yml>          write Quarto listing items for house decks
+// --local keeps live pages served from this machine (localhost iframes); house/local.mjs uses it.
 // --live-media leaves the drawing media as live SVG filters instead of painting them (to compare).
 
 import fs from 'node:fs';
@@ -383,7 +384,7 @@ function frameAlts(img, im, blend, src, deckDir, problems, where, assets, varian
 
 const VIDEO_MIME = { '.mp4': 'video/mp4', '.webm': 'video/webm' };
 
-function frameFigures(frame, deckDir, problems, where, assets, variants) {
+function frameFigures(frame, deckDir, problems, where, assets, variants, local) {
   // Videos keep their colours; the required poster supplies the frame's aspect ratio.
   for (const video of [...frame.querySelectorAll('figure > video')]) {
     const src = video.getAttribute('src') || '', poster = video.getAttribute('poster') || '';
@@ -475,22 +476,25 @@ function frameFigures(frame, deckDir, problems, where, assets, variants) {
     moveMarks(fig, box, problems, where);
   }
   // Live pages load only in the interactive deck; their posters work offline.
+  // A page on this machine (localhost) is kept only in a --local build: elsewhere its poster stands alone.
   for (const iframe of [...frame.querySelectorAll('figure > iframe')]) {
     const poster = iframe.getAttribute('data-poster') || '';
     const file = path.resolve(deckDir, poster);
     if (!poster || !fs.existsSync(file)) { problems.push(`${where}: <iframe> needs a data-poster image`); continue; }
     let im;
     try { im = loadImage(file); } catch (e) { problems.push(`${where}: ${poster}: ${e.message}`); continue; }
-    iframe.setAttribute('data-page-src', iframe.getAttribute('src') || '');
+    const src = iframe.getAttribute('src') || '';
+    iframe.setAttribute('data-page-src', src);
     iframe.removeAttribute('src');
     iframe.removeAttribute('data-poster');
     const fig = iframe.parentElement;
-    const box = wrapInFrame(fig, iframe, im.w / im.h);
     const img = frame.ownerDocument.createElement('img');
     img.setAttribute('data-asset', addAsset(assets, im, false));
     img.setAttribute('data-src-path', poster);
     img.setAttribute('alt', iframe.getAttribute('title') || 'Live page poster');
+    const box = wrapInFrame(fig, iframe, im.w / im.h);
     box.insertBefore(img, iframe);
+    if (!local && /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])[:\/]/.test(src)) iframe.remove();
     moveMarks(fig, box, problems, where);
   }
 }
@@ -579,7 +583,7 @@ function appScripts(apps) {
 }
 
 // Build one .slide frame from an authored element (a <section> or an <aside class="detail">).
-function makeFrame(el, { deckDir, problems, where, footer, number, part, isDetail, assets, apps, typeset, variants }) {
+function makeFrame(el, { deckDir, problems, where, footer, number, part, isDetail, assets, apps, typeset, variants, local }) {
   const doc = el.ownerDocument;
   const layout = el.getAttribute('data-layout');
   const frame = doc.createElement('div');
@@ -608,7 +612,7 @@ function makeFrame(el, { deckDir, problems, where, footer, number, part, isDetai
   if (layout === 'grid') frame.setAttribute('data-count', String(body.querySelectorAll(':scope > figure').length));
   if (layout === 'people') peopleGrid(frame, body, problems, where);
 
-  frameFigures(frame, deckDir, problems, where, assets, variants);
+  frameFigures(frame, deckDir, problems, where, assets, variants, local);
   frameVariantText(frame, problems, where, variants);
   if (!isDetail) frameApps(frame, deckDir, problems, where, apps);
   textPass(frame, typeset, problems, where);
@@ -672,7 +676,7 @@ function buildSlides(deck, typeset) {
     if (at >= 0) seenIn.set(at, (seenIn.get(at) || 0) + 1);
     const part = { index: at >= 0 ? at + 1 : 'backup',
       fills: mains.map((sec, k) => [sec.slides.length, at < 0 || k < at ? 1 : k > at ? 0 : seenIn.get(at) / sec.slides.length]) };
-    const frame = makeFrame(section, { deckDir: deck.dir, problems, where, footer, number, part, assets, apps, typeset, variants: deck.meta.variants });
+    const frame = makeFrame(section, { deckDir: deck.dir, problems, where, footer, number, part, assets, apps, typeset, variants: deck.meta.variants, local: deck.local });
     // the notes are public: a "Sources & notes" overlay built like a detail (so
     // figures, maths and the checker work in it), opened from the footer, and the
     // slide's prose in the report
@@ -687,7 +691,7 @@ function buildSlides(deck, typeset) {
       scroll.className = 'scroll';
       for (const n of notesSrc) for (const c of [...n.childNodes]) scroll.appendChild(c);
       a.appendChild(scroll);
-      notes = makeFrame(a, { deckDir: deck.dir, problems, where: `${where} notes`, footer, number, isDetail: true, assets, typeset, variants: deck.meta.variants });
+      notes = makeFrame(a, { deckDir: deck.dir, problems, where: `${where} notes`, footer, number, isDetail: true, assets, typeset, variants: deck.meta.variants, local: deck.local });
       notes.classList.add('notes');
       notes.setAttribute('data-detail', 'notes');
       notes.querySelector(':scope > .foot')?.remove();
@@ -707,7 +711,7 @@ function buildSlides(deck, typeset) {
       }
     }
     const details = [...section.querySelectorAll(':scope > aside.detail')].map((d, k) => {
-      const f = makeFrame(d, { deckDir: deck.dir, problems, where: `${where} detail ${k + 1}`, footer, number, isDetail: true, assets, typeset, variants: deck.meta.variants });
+      const f = makeFrame(d, { deckDir: deck.dir, problems, where: `${where} detail ${k + 1}`, footer, number, isDetail: true, assets, typeset, variants: deck.meta.variants, local: deck.local });
       f.setAttribute('data-detail', String(k));
       return { frame: f, label: d.getAttribute('data-label') || `Detail ${k + 1}` };
     });
@@ -1078,8 +1082,9 @@ ${assetScript(slides.assets, body)}
 `;
 }
 
-export async function buildDeck(dir, outRoot, { theme: themeOverride, web = false, liveMedia = false } = {}) {
+export async function buildDeck(dir, outRoot, { theme: themeOverride, web = false, liveMedia = false, local = false } = {}) {
   const deck = loadDeck(dir);
+  deck.local = local;
   if (themeOverride) deck.meta.theme = themeOverride;
   const typeset = await makeTypesetter(deck.meta.macros || {});
   const slides = buildSlides(deck, typeset);
@@ -1141,7 +1146,7 @@ async function main(argv) {
   let failed = 0;
   for (const d of dirs) {
     try {
-      const r = await buildDeck(d, out, { web, liveMedia: args.includes('--live-media') });
+      const r = await buildDeck(d, out, { web, local: args.includes('--local'), liveMedia: args.includes('--live-media') });
       const kb = f => `${Math.round(fs.statSync(f).size / 1024)} kB`;
       console.log(`${r.deck.name}: ${r.slides.length} slides → ${path.relative(process.cwd(), r.index)} (${kb(r.index)}), report.html (${kb(r.report)})`);
     } catch (e) {

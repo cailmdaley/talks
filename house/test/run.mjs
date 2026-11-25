@@ -231,6 +231,17 @@ ok(pageCheck.status === 0, `live page fixture passes (${pageCheck.stdout.trim().
   const { default: puppeteer } = await import('puppeteer');
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'house-page-'));
   const built = await buildDeck(pageDir, out);
+  // a page served from this machine is kept only by a local build
+  {
+    const here = path.join(out, 'herepage');
+    fs.cpSync(pageDir, here, { recursive: true });
+    const slide = path.join(here, 'slides', 'page.html');
+    fs.writeFileSync(slide, fs.readFileSync(slide, 'utf8').replace('https://example.invalid/', 'http://localhost:5318/'));
+    const html = async opts => fs.readFileSync((await buildDeck(here, path.join(out, 'herepage-out'), opts)).index, 'utf8');
+    const pub = await html({}), loc = await html({ local: true });
+    ok(!pub.includes('localhost:5318') && !pub.includes('data-page-src="') && pub.includes('alt="Test page"'), 'a localhost page is its poster alone in a published build');
+    ok(loc.includes('data-page-src="http://localhost:5318/"'), 'a local build keeps the localhost page');
+  }
   const browser = await puppeteer.launch({ args: ['--no-sandbox', '--allow-file-access-from-files'] });
   try {
     for (const mode of ['live', 'checker', 'print', 'print-media', 'report']) {
