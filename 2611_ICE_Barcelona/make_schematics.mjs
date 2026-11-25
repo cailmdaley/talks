@@ -80,7 +80,7 @@ function spiral() {
 // Under them the mocks, one band of wash tied to every stage.
 function chain() {
   hand(11);
-  const X = [156, 508, 860, 1212, 1560], Y = 78, TILT = -28 * Math.PI / 180;
+  const X = [156, 508, 860, 1250, 1580], Y = 72, YB = 574, YM = 373, SC = 1.05, TILT = -28 * Math.PI / 180;
   const pen = (d, w = 2.2, extra = '') => `<path d="${d}" class="pen fill-none stroke-ink" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"${extra}/>`;
   const pencil = (d, w = 2.2) => `<path d="${d}" class="pencil fill-none stroke-ink" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
   const ellipse = (cx, cy, a, b, th, n = 40) => line(Array.from({ length: n }, (_, i) => { const t = 2 * Math.PI * i / n, x = a * Math.cos(t), y = b * Math.sin(t);
@@ -119,18 +119,45 @@ function chain() {
     + `<path d="${sticks.trim()}" class="fill-none stroke-ink" stroke-width="1.6" stroke-linecap="round"/>`;
 
   // data vectors: bandpowers with their errors, on pencil axes
-  const axes = (cx) => pencil(`M${cx - 74} ${Y - 62} V${Y + 58} H${cx + 80}`, 2);
+  const axes = (cx) => pencil(`M${cx - 74} ${YM - 62} V${YM + 58} H${cx + 80}`, 2);
   let bars = '', dots = '';
-  for (let i = 0; i < 7; i++) { const x = X[3] - 52 + i * 19.5, y = Y - 38 * Math.exp(-(((i - 1.2) / 3.4) ** 2)) + 22 + jit(3 + i * 0.9), e = 6 + i * 1.7;
+  for (let i = 0; i < 7; i++) { const x = X[3] - 52 + i * 19.5, y = YM - 38 * Math.exp(-(((i - 1.2) / 3.4) ** 2)) + 22 + jit(3 + i * 0.9), e = 6 + i * 1.7;
     bars += `M${n1(x)} ${n1(y - e)} V${n1(y + e)} `; dots += `<circle cx="${n1(x)}" cy="${n1(y)}" r="4.4"/>`; }
   const vectors = axes(X[3]) + pen(bars.trim(), 2.2) + `<g class="fill-ink">${dots}</g>`;
 
   // cosmology: a posterior, two contours of one wash
-  const cosmology = axes(X[4]) + `<path d="${ellipse(X[4] + 6, Y - 4, 56, 27, -0.6)}" class="glaze fill-lilac" opacity="0.6"/><path d="${ellipse(X[4] + 6, Y - 4, 32, 15, -0.6)}" class="glaze fill-lilac" opacity="0.95"/>`;
+  const cosmology = axes(X[4]) + `<path d="${ellipse(X[4] + 6, YM - 4, 56, 27, -0.6)}" class="glaze fill-lilac" opacity="0.6"/><path d="${ellipse(X[4] + 6, YM - 4, 32, 15, -0.6)}" class="glaze fill-lilac" opacity="0.95"/>`;
 
-  const arrows = X.slice(0, -1).map((x, i) => `M${x + 112} ${Y} H${X[i + 1] - 112}`).map((d) => `<path d="${d}" marker-end="url(#chain-arrow)"/>`).join('');
-  const label = (i, a, b) => `<text x="${X[i]}" y="212">${a}</text>\n        <text x="${X[i]}" y="258" font-size="32" font-weight="400" class="fill-muted">${b}</text>`;
-  return `<svg viewBox="0 0 1712 720" role="img" aria-label="Images to shapes to catalog to data vectors to cosmology, with a band of mocks under every step, used to validate the pipeline and characterize systematics">
+  // timestreams: what the detectors record as the telescope scans, one trace each, a glitch in one
+  let traces = '';
+  for (let d = 0; d < 4; d++) { let v = 0; const y = YB - 45 + d * 30;
+    traces += line(Array.from({ length: 44 }, (_, i) => { v = 0.72 * v + gauss() * 3.6; return [X[0] - 72 + i * 144 / 43, y + v + 5 * Math.sin(i / 7 + d) - (d === 1 && i === 29 ? 20 : 0)]; })) + ' '; }
+  const streams = pen(traces.trim(), 1.7);
+
+  // maps: the temperature of a patch of sky, hot spots contoured in pen and cold ones in pencil
+  const H = 62, NG = 36, K = 2 * Math.PI / 54;
+  const waves = Array.from({ length: 12 }, () => { const th = rnd() * Math.PI, k = K * (0.75 + 0.5 * rnd()); return [k * Math.cos(th), k * Math.sin(th), rnd() * 2 * Math.PI]; });
+  const T = (x, y) => waves.reduce((t, [kx, ky, ph]) => t + Math.cos(kx * x + ky * y + ph), 0) / Math.sqrt(waves.length / 2);
+  const contour = (level) => { let d = ''; const g = (i) => -H + 2 * H * i / NG;
+    for (let j = 0; j < NG; j++) for (let i = 0; i < NG; i++) {
+      const c = [[g(i), g(j)], [g(i + 1), g(j)], [g(i + 1), g(j + 1)], [g(i), g(j + 1)]], v = c.map(([x, y]) => T(x, y) - level), cut = [];
+      for (let e = 0; e < 4; e++) { const a = v[e], b = v[(e + 1) % 4]; if ((a > 0) !== (b > 0)) { const t = a / (a - b), [p, q] = [c[e], c[(e + 1) % 4]]; cut.push([X[1] + p[0] + t * (q[0] - p[0]), YB + p[1] + t * (q[1] - p[1])]); } }
+      for (let e = 0; e + 1 < cut.length; e += 2) d += `M${f(cut[e])} L${f(cut[e + 1])} `;
+    } return d.trim(); };
+  const frame = (cx) => pencil(`M${cx - H} ${YB - H} H${cx + H} V${YB + H} H${cx - H}Z`, 2);
+  const maps = frame(X[1]) + pencil(contour(-0.75), 1.5) + pen(contour(0.75), 1.9);
+
+  // the lensing map: the mass in front of the CMB, inferred from its maps, so laid in wash
+  const kappa = [[-24, -20, 26, 19, 0.5, 0.85], [22, 14, 30, 20, -0.4, 0.7], [-30, 30, 15, 12, 0.2, 0.55], [30, -34, 14, 11, 0.9, 0.5]]
+    .map(([x, y, a, b, th, o]) => `<path d="${ellipse(X[2] + x, YB + y, a, b, th, 24)}" class="wash-fine fill-sky" opacity="${o}"/>`).join('') + frame(X[2]);
+
+  const at = (i, y, g) => `<g transform="translate(${X[i]} ${y}) scale(${SC}) translate(${-X[i]} ${-y})">${g}</g>`;
+  const arrow = (d) => `<path d="${d}" marker-end="url(#chain-arrow)"/>`;
+  const row = (y) => [0, 1].map((i) => arrow(`M${X[i] + 106} ${y} H${X[i + 1] - 106}`)).join('');
+  // each probe's last stage bends to the data vectors, which both share
+  const join = (y, s) => arrow(`M${X[2] + 106} ${y} C${X[2] + 205} ${y} ${X[3] - 195} ${YM + s * 34} ${X[3] - 106} ${YM + s * 34}`);
+  const label = (i, y, a, b) => `<text x="${X[i]}" y="${y}">${a}</text>\n        <text x="${X[i]}" y="${y + 44}" font-size="32" font-weight="400" class="fill-muted">${b}</text>`;
+  return `<svg viewBox="0 0 1712 760" role="img" aria-label="Two rows meet at shared data vectors and cosmology: galaxy images to shapes to catalog above, CMB timestreams to maps to lensing map below, and a band of mocks between them tied to every stage, used to validate the pipeline and characterize systematics">
       <defs>
         <marker id="chain-arrow" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="8" markerHeight="7" orient="auto">
           <path d="M0 0.5 Q6 3.5 12 5 Q6 6.5 0 9.5" class="fill-none stroke-ink" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -139,30 +166,36 @@ function chain() {
           <stop offset="0" class="stop-butter" stop-opacity="0.75"/><stop offset="1" class="stop-butter" stop-opacity="0.25"/>
         </linearGradient>
       </defs>
-      <!-- the pipeline: each stage drawn as what it holds; measured in ink, inferred in wash, laid out in pencil -->
-      <g transform="translate(${X[0]} ${Y}) scale(1.2) translate(${-X[0]} ${-Y})">${images}</g>
-      <g transform="translate(${X[1]} ${Y}) scale(1.2) translate(${-X[1]} ${-Y})">${shapes}</g>
-      <g transform="translate(${X[2]} ${Y}) scale(1.2) translate(${-X[2]} ${-Y})">${catalog}</g>
-      <g transform="translate(${X[3]} ${Y}) scale(1.2) translate(${-X[3]} ${-Y})">${vectors}</g>
-      <g transform="translate(${X[4]} ${Y}) scale(1.2) translate(${-X[4]} ${-Y})">${cosmology}</g>
-      <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">${arrows}</g>
+      <!-- two probes, one measurement: each stage drawn as what it holds; measured in ink, inferred in wash, laid out in pencil -->
+      ${at(0, Y, images)}
+      ${at(1, Y, shapes)}
+      ${at(2, Y, catalog)}
+      ${at(0, YB, streams)}
+      ${at(1, YB, maps)}
+      ${at(2, YB, kappa)}
+      ${at(3, YM, vectors)}
+      ${at(4, YM, cosmology)}
+      <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">${row(Y)}${row(YB)}${join(Y, -1)}${join(YB, 1)}${arrow(`M${X[3] + 112} ${YM} H${X[4] - 112}`)}</g>
       <g font-size="40" font-weight="600" text-anchor="middle">
-        ${label(0, 'Images', 'PSF, astrometry')}
-        ${label(1, 'Shapes', 'calibration m')}
-        ${label(2, 'Catalog', 'masks, n(z)')}
-        ${label(3, 'Data vectors', 'nulls, blinding')}
-        ${label(4, 'Cosmology', 'likelihood')}
+        ${label(0, Y + 118, 'Images', 'PSF, astrometry')}
+        ${label(1, Y + 118, 'Shapes', 'calibration m')}
+        ${label(2, Y + 118, 'Catalog', 'masks, n(z)')}
+        ${label(0, YB + 118, 'Timestreams', 'noise, filtering')}
+        ${label(1, YB + 118, 'Maps', 'beam, calibration')}
+        ${label(2, YB + 118, 'Lensing map', 'foregrounds, normalization')}
+        ${label(3, YM + 118, 'Data vectors', 'nulls, blinding')}
+        ${label(4, YM + 118, 'Cosmology', 'likelihood')}
       </g>
-      <!-- the mocks: a wash under the whole pipeline, tied to every stage -->
+      <!-- the mocks: a wash between the two probes, tied to every stage and run to the same data vectors -->
       <g class="fragment">
-        <rect x="10" y="376" width="1692" height="124" rx="3" class="glaze" fill="url(#chain-wash)"/>
-        <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">${X.map((x) => `<path d="M${x} 366 V282" marker-end="url(#chain-arrow)"/>`).join('')}</g>
-        <text x="856" y="436" font-size="40" font-weight="600" text-anchor="middle">Mocks with known inputs</text>
-        <text x="856" y="482" font-size="32" text-anchor="middle" class="fill-muted">footprint, noise, PSF, redshift distributions, systematics</text>
+        <rect x="10" y="${YM - 55}" width="1020" height="110" rx="3" class="glaze" fill="url(#chain-wash)"/>
+        <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">${X.slice(0, 3).map((x) => arrow(`M${x} ${YM - 65} V${Y + 178}`) + arrow(`M${x} ${YM + 65} V${YB - 78}`)).join('')}${arrow(`M1042 ${YM} H${X[3] - 106}`)}</g>
+        <text x="520" y="${YM - 6}" font-size="40" font-weight="600" text-anchor="middle">Mocks with known inputs</text>
+        <text x="520" y="${YM + 36}" font-size="32" text-anchor="middle" class="fill-muted">footprint, noise, PSF, redshift distributions, systematics</text>
       </g>
       <g class="fragment" font-size="40" text-anchor="middle">
-        <text x="856" y="600">validate the pipeline at each step</text>
-        <text x="856" y="660">characterize systematics</text>
+        <text x="1415" y="${YB + 86}">validate the pipeline at each step</text>
+        <text x="1415" y="${YB + 146}">characterize systematics</text>
       </g>
     </svg>`;
 }
