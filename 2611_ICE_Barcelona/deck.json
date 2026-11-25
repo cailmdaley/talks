@@ -44,6 +44,7 @@
         "pipeline",
         "mocks",
         "dv-vector",
+        "covariance",
         "chains",
         "dr1-forecast"
       ]
