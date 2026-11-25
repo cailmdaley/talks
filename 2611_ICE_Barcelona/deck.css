@@ -148,11 +148,11 @@
 
 /* lightcone-research: each part with its mark at the left, its line and link beside it;
    the institutions' marks in a row underneath */
-.slide ul.marks { list-style: none; padding: 0; display: grid; grid-template-columns: 400px 1fr; column-gap: 56px; row-gap: 56px; align-items: center; }
+.slide ul.marks { list-style: none; padding: 0; display: grid; grid-template-columns: 400px 1fr; column-gap: 56px; row-gap: 28px; align-items: center; }
 .slide ul.marks > li { display: contents; }
 .slide ul.marks > li > img { max-width: 300px; max-height: 120px; justify-self: center; }
 .slide ul.marks > li > img.shot { max-width: 400px; max-height: none; border-radius: 8px; border: 1px solid var(--rule); }
-.slide h2 > img.wordmark { height: 0.95em; width: auto; vertical-align: -0.16em; margin-right: 0.15em; }
+.slide h2 > img.wordmark { height: 1.9em; width: auto; display: block; margin: 0 0 -0.5em 0; }
 .slide ul.marks a { font-size: var(--t-small); color: var(--muted); }
 .slide p.logos { display: flex; align-items: center; gap: 56px; margin-top: 64px; }
 .slide p.logos > img { height: 96px; width: auto; }
