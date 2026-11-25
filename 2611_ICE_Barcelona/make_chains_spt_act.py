@@ -48,6 +48,8 @@ def main():
         fig = posteriors(chains, {'Omega_m': r'\Omega_\mathrm{m}', 'S8': r'S_8\ \mathrm{(blinded)}'}, title=label,
                          lims={'Omega_m': (0, 1.1), 'S8': (.64, 1.08)},
                          ticks={'Omega_m': [.2, .6, 1.], 'S8': [.7, .8, .9, 1.]})
+        for ax in fig.axes:   # the marginals carry the numbers; the axes show ticks without values
+            ax.set_xticklabels([]); ax.set_yticklabels([])
         save(fig, f'ice_chains_spt_act_{k}.png')
     (HERE / 'chains_spt_act.json').write_text(json.dumps(stats, indent=1) + '\n')
 
