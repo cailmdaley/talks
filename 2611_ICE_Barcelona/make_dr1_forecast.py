@@ -93,6 +93,20 @@ def main():
             for part in range(2 if c.fill else 1):   # a filled chain is a fill and its outline
                 next(sets).set_zorder(2 + [id(d) for d in draw].index(id(c)) + .1 * part)
         save(fig, f'ice_dr1_forecast_{k}.png')
+        if k == 3:   # the same frame again with one draw from the 5×2pt posterior and one from the 6×2pt, as blinding shifts
+            fig2 = posteriors(chains, D, center=truth, value=False, rows=3, lims={'Omega_m': (-.07, .07), 'S8': (-.036, .036)},
+                              ticks={'Omega_m': [-.05, 0, .05], 'S8': [-.02, 0, .02]})
+            sets = iter(fig2.axes[0].collections)
+            for c in chains:
+                for part in range(2 if c.fill else 1):
+                    next(sets).set_zorder(2 + [id(d) for d in draw].index(id(c)) + .1 * part)
+            rng = np.random.default_rng(11)
+            for name, color in (('dr1_MS_5x2', style.INK), ('dr1_MS_6x2', SPT)):
+                d, w = z[name + '|d'].astype(float), z[name + '|w'].astype(float)
+                i = rng.choice(len(w), p=w / w.sum())
+                x, y = (d[i, DERIVED.index(n)] - truth[n] for n in ('S8', 'Omega_m'))
+                fig2.axes[0].plot(x, y, marker='o', ms=20, color=color, mec='white', mew=2.5, zorder=9)
+            save(fig2, 'ice_dr1_forecast_draws.png')
     fig_m(zw)
     names = sorted({k.split('|')[0] for k in z.files if k.startswith(('dr1_', 'tr1_'))})
     out = {n: stats(z, n) for n in names} | {n: stats(zw, n) for n in ('dr1_3x2_pw10', 'dr1_MS_5x2_pw10')}

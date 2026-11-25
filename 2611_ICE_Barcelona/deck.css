@@ -180,3 +180,7 @@
 /* a figure with its lead credited beneath it: the frame leaves room for the larger portrait */
 .slide figure > .cell:has(> .source.lead) { --chrome: 150px; }
 .slide figure .cell > .source.lead { height: auto; margin-top: 28px; }
+
+/* dr1-forecast: the two blinding draws, keyed by the dots on the plot */
+.slide ul.draws { list-style: none; padding-left: 0; }
+.slide ul.draws .dot { display: inline-block; width: 0.5em; height: 0.5em; border-radius: 50%; margin-right: 0.45em; vertical-align: 0.08em; }

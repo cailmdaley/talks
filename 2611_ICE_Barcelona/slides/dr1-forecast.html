@@ -1,11 +1,22 @@
-<section data-layout="figure">
+<section data-layout="figure-text" data-split="60">
   <h2>DR1-like forecast with SPT-3G and ACT DR6</h2>
   <figure>
     <img src="images/ice_dr1_forecast_1.png" alt="Forecast S8 against Omega_m for Euclid DR1 3x2pt on its own, a tilted ellipse">
     <img class="fragment" data-fragment-index="1" src="images/ice_dr1_forecast_2.png" alt="The 5x2pt with SPT-3G and with ACT DR6 drawn over it: both nearly the same as the 3x2pt">
     <img class="fragment" data-fragment-index="2" src="images/ice_dr1_forecast_3.png" alt="The 6x2pt with SPT-3G and with ACT DR6 in their place: the SPT-3G ellipse has less than half the area of the 3x2pt">
+    <img class="fragment" data-fragment-index="3" src="images/ice_dr1_forecast_draws.png" alt="The same 6x2pt frame with two dots: one point drawn at random from the 5x2pt posterior and one from the 6x2pt posterior">
     <span class="source">Euclid DR1 forecast: chains on a model data vector with no noise added</span>
   </figure>
+  <div class="text">
+    <ul>
+      <li class="fragment" data-fragment-index="3">draw a blinding shift from these posteriors
+        <ul class="draws">
+          <li><span class="dot" style="background:#1B1611"></span>5×2pt first</li>
+          <li><span class="dot" style="background:#C0392B"></span><span style="color:#C0392B">then 6×2pt</span></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
   <aside class="notes">
     <ul class="skim">
       <li><strong>Contours</strong> — 68 % and 95 % for a noiseless Euclid DR1 South vector, $S_8$ against $\Omega_\mathrm{m}$, with the input cosmology at the origin: the 3×2pt alone and kept throughout, then the 5×2pt with SPT-3G (Main and Summer together, disjoint on the sky) filled and with ACT DR6 outlined, then the 6×2pt of each in their place.</li>
