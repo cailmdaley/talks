@@ -232,8 +232,8 @@ const lifting = (words, lifted) => `<defs><linearGradient id="lift-g" gradientUn
 const MEDIA = `<defs>${PENCIL}${GLAZE}</defs>`;
 
 // One drawing, as layers from the back: each sheet of the cone washed in (far to near), their rims
-// traced in pencil, what stands on the ground, and each instrument named in `who` with its view,
-// the light of a patch of the farthest sheet it sees converging on its aperture.
+// traced in pencil, what stands on the ground, and each instrument named in `who`, aimed at
+// a patch of the farthest sheet it sees.
 function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380] }) {
   hand(5);
   const has = (n) => who.includes(n), media = `<defs>${PENCIL}${GLAZE}</defs>`;
@@ -245,19 +245,13 @@ function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380] }) {
       <g transform="translate(${cx.toFixed(1)} ${cy.toFixed(1)}) rotate(${TILT.toFixed(1)}) scale(${k.toFixed(3)} ${(k * SKY.flat).toFixed(3)})"><circle r="100" fill="${s.col}" filter="url(#z)"/></g></g>` }; });
   const rims = sky.map(s => { const [cx, cy] = at(s), r = rad(s.d) * (1.008 + jit(0.008));
     return oval(cx + jit(3), cy + jit(3), r, r * SKY.flat * (1 + jit(0.03)), TILT + jit(0.6), W.fine, 0.05 + rnd() * 0.07); }).join('');
-  // each ray straight but for a small turn at every sheet it crosses
-  const view = (to, n) => pencil([-0.11, 0, 0.11].map((du, j) => { const from = at(src[n], LOOK[n] + du), a0 = along(from), a1 = along(to);
-    const mid = sky.filter(s => s.d < src[n].d - 1 && s.d > a1 + 40).map(s => { const t = (a0 - s.d) / (a0 - a1), b = jit(5);
-      return [from[0] + (to[0] - from[0]) * t + MAJ[0] * b, from[1] + (to[1] - from[1]) * t + MAJ[1] * b]; });
-    return stroke(through(ease([from, ...mid, to])), j === 1 ? W.sight : W.ghost); }).join(''));
-  const tilt = deg(SPT_PIVOT, at(src.spt, LOOK.spt)), dish = off(SPT_PIVOT, 49 * SPT.k, tilt);
-  const eRot = deg([EUC.x, EUC.y], at(src.euclid, LOOK.euclid)), eTip = off([EUC.x, EUC.y], 150 * EUC.k, eRot);
+  const tilt = deg(SPT_PIVOT, at(src.spt, LOOK.spt));
+  const eRot = deg([EUC.x, EUC.y], at(src.euclid, LOOK.euclid));
   return [...sheets,
     { id: 'rims', svg: `${media}${lift}<g mask="url(#lift)">${pencil(rims)}</g>` },
     { id: 'ground', svg: media + (has('unions') ? glaze('url(#g-far)', 'M1090 960 C1230 930 1420 820 1560 800 S1800 840 1920 870 L1920 960Z') + maunaKea(MKP.x, MKP.y, MKP.k) : '') + (has('spt') ? sptBase(SPT.x, SPT.y, SPT.k) : '') },
-    has('spt') && { id: 'spt', cls: 'sweep about-spt', svg: media + view(dish, 'spt') + sptDish(SPT.x, SPT.y, tilt, SPT.k) },
-    has('unions') && { id: 'unions', cls: 'sweep about-unions', svg: media + view(MK, 'unions') },
-    has('euclid') && { id: 'euclid', cls: 'sweep about-euclid', svg: media + view(eTip, 'euclid') + euclid(EUC.x, EUC.y, eRot, EUC.k) },
+    has('spt') && { id: 'spt', cls: 'sweep about-spt', svg: media + sptDish(SPT.x, SPT.y, tilt, SPT.k) },
+    has('euclid') && { id: 'euclid', cls: 'sweep about-euclid', svg: media + euclid(EUC.x, EUC.y, eRot, EUC.k) },
   ].filter(Boolean);
 }
 
