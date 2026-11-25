@@ -377,16 +377,48 @@ function knownInput() {
   ];
 }
 
-// What unites the three projects: one simulated sky, a full-sky mock as a globe, its graticule in
-// pencil (the construction) under a wash (what is simulated), and a brace gathering the three lines.
+// The overview: each part of the talk as its opener in small, standing above its own stretch of
+// the footer's rule of parts and under a sheet of sky in the part's wash; and what unites the
+// three, which arrives with the slide's last line: one simulated sky, a full-sky mock as a globe,
+// its graticule in pencil (the construction) under a wash (what is simulated), and a brace
+// gathering the three lines.
+const partMiddles = () => {   // x of the middle of each main section's stretch of the rule
+  const n = JSON.parse(fs.readFileSync(path.join(HERE, 'deck.json'), 'utf8')).sections.filter(s => !/^backup$/i.test(s.title ?? '')).map(s => s.slides.length);
+  const all = n.reduce((a, b) => a + b, 0); let run = 0;
+  return n.map(k => { const m = 104 + 1712 * (run + k / 2) / all; run += k; return m; });
+};
 function oneSky() {
+  const [, x1, x2, x3] = partMiddles(), y = 950;
+  // a small cone of three sheets, near to far, as on the openers: the nearest centred on (cx, cy)
+  const cone = (cx, cy, cols, id) => { const at = [0, 1, 2].map(i => [cx - 9 * i, cy - 38 * i, 76 + 23 * i]);
+    return { far: at[2], wash: at.map(([u, v, r], i) => sheet({ ...DEPTHS[4 - i], col: cols[i], seed: 8 + 3 * i }, u, v, r, { flat: 0.25, tilt: -10, o: 0.88, id: id + i })).reverse().join(''),
+      rims: at.map(([u, v, r]) => oval(u + jit(1), v + jit(1), r * 1.01, r * 0.25 * (1.01 + jit(0.02)), -10 + jit(0.6), W.fine, 0.05 + rnd() * 0.06)).join('') }; };
+  hand(5);
+  // 1, Euclid × SPT-3G: the South Pole Telescope and Euclid look up into sheets of sky blue
+  const k1 = 0.42, spt = [x1 - 70, y], c1 = cone(x1 + 34, y - 202, ['#8FB2D6', '#A4C1DE', '#B9D0E6'], 'a'), euc = [x1 + 168, y - 96];
+  const one = sptBase(spt[0], spt[1], k1) + sptDish(spt[0], spt[1], deg([spt[0] + PIVOT[0] * k1, spt[1] + PIVOT[1] * k1], [c1.far[0] - 34, c1.far[1]]), k1)
+    + euclid(euc[0], euc[1], deg(euc, [c1.far[0] + 44, c1.far[1]]), 0.3);
+  // 2, UNIONS: the Mauna Kea domes under sheets of rose; the mountain's wash fades out above the rule
+  const k2 = 0.42, mk = [x2 - 190, y - 60], c2 = cone(x2 + 24, y - 202, ['#D9A0B4', '#E0AAAE', '#E8B5A8'], 'b');
+  const two = `<defs><linearGradient id="ov-fade" gradientUnits="userSpaceOnUse" x1="0" y1="${y - 14}" x2="0" y2="${y + 26}"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <mask id="ov-foot" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><rect width="1920" height="1080" fill="url(#ov-fade)"/></mask></defs><g mask="url(#ov-foot)">${maunaKea(mk[0], mk[1], k2)}</g>`;
+  // 3, agents and Lightcone: the light cone of the third opener, its past cone holding sheets of lilac
+  hand(23);
+  const A = [x3, y - 136], H = 126, R = 88, flat = 0.26, T = [1, 0.72, 0.46], lil = [deep(S.lilac, 0.94), S.lilac, mix(S.lilac, S.rose, 0.35)];
+  const ring = (t, up, wt) => oval(A[0] + jit(1), A[1] + (up ? -1 : 1) * H * t + jit(1), R * t * 1.008, R * t * flat * (1 + jit(0.03)), jit(1.2), wt, 0.05 + rnd() * 0.05);
+  const three = T.map(t => ring(t, false, W.fine)).join('') + ring(1, true, W.line) + ring(0.55, true, W.ghost)
+    + ln(A[0] - R, A[1] - H, A[0] + R, A[1] + H, W.line, 6) + ln(A[0] + R, A[1] - H, A[0] - R, A[1] + H, W.line, 6)
+    + ln(A[0] + 2, A[1] - H - 34, A[0] - 2, A[1] + H + 34, W.fine, 4) + ln(A[0] - 132, A[1] + 6, A[0] + 132, A[1] - 7, W.fine, 4);
+  const parts = { id: 'parts', svg: MEDIA + pencil(c1.rims + c2.rims) + one + two + pencil(three) };
+  const skies = { id: 'skies', cls: 'wash', dpr: 1, svg: c1.wash + c2.wash
+    + T.map((t, i) => sheet({ ...DEPTHS[2 + i], col: lil[i], seed: 8 + 3 * i }, A[0], A[1] + H * t, R * t, { flat, o: 0.9, id: `o${i}` })).join('') };
   hand(61);
   const cx = 1640, cy = 335, r = 150;
   const globe = mockSky(cx, cy, r);
   const lines = graticule(cx, cy, r);
   const x = 1378, y1 = 222, y2 = 452, ym = (y1 + y2) / 2;
   const brace = stroke(`M${x} ${y1} q18 2 18 24 L${x + 18} ${ym - 26} q0 20 20 26 q-20 6 -20 26 L${x + 18} ${y2 - 24} q0 22 -18 24`, W.line);
-  return [
+  return [skies, parts,
     { id: 'wash', cls: 'wash late', dpr: 1, svg: globe },
     { id: 'lines', cls: 'late', svg: MEDIA + pencil(lines + brace + ln(x + 46, ym, cx - r - 14, ym, W.fine, 0)) },
   ];
@@ -540,7 +572,7 @@ const ART = {
   exciting: () => markCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose] }),
   questions: () => ahead(),
   // the whole sky again to close: looking straight up the cone, every redshift at once
-  summary: () => upTheCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose], cx: 1640, cy: 700, R: 255 }),
+  summary: () => upTheCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose], cx: 1642, cy: 712, R: 245 }),
   overview: () => oneSky(),
   mocks: () => mockMark(),
   tensions: () => tensions(),
@@ -559,7 +591,7 @@ const ALT = {
   questions: 'Pencil and watercolour: a small group of people stand at the foot of a light cone and look up into it; its four sheets fade with distance, the nearest painted, the third almost gone',
   tensions: 'Three sketches in pencil and wash: two posteriors of the expansion rate standing apart, the lensing contour of clustering amplitude below the one from the CMB, and the dark-energy contour lying off the point where ΛCDM sits',
   mocks: 'A simulated sky as a small globe in pencil and wash',
-  overview: 'A brace gathers the three projects and points to one simulated sky, a globe in pencil and wash',
+  overview: 'The three parts of the talk as small drawings in pencil and wash, each above its stretch of the footer rule: the South Pole Telescope and Euclid under a blue sheet of sky, the Mauna Kea domes under a rose one, and a light cone in lilac; a brace gathers the three lines of text and points to one simulated sky, a globe',
   sbi: 'Seven mock skies along a parameter axis, their structure growing clumpier; the one that matches the data is ringed in ink and the posterior is a lilac wash on the axis beneath it',
   agentic: 'Four sheets drawn one above another in pencil and wash: a survey sky of ink specks, a simulated cosmic web, a grid of ticked tests, and on top a sheet still in construction lines with its wash only begun',
   agents: 'A known input spectrum in pencil, the sky simulated from it as a washed globe, and the measured bandpowers in ink lying on the same pencil curve',
