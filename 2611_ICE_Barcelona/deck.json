@@ -43,8 +43,8 @@
         "mocks",
         "dv-vector",
         "covariance",
-        "chains",
-        "dr1-forecast"
+        "dr1-forecast",
+        "chains"
       ]
     },
     {
