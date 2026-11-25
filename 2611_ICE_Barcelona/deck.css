@@ -106,10 +106,11 @@
 /* a lead's credit with a larger portrait */
 .slide .source.lead .who > img { width: 2.6em; height: 2.6em; }
 /* authors: portrait and name in one column, each one's paper in the next */
-.slide ul.authors { list-style: none; padding: 0; display: grid; grid-template-columns: max-content 1fr; column-gap: 0.9em; row-gap: 0.35em; align-items: center; }
+.slide ul.authors { list-style: none; padding: 0; display: grid; grid-template-columns: max-content max-content 1fr; font-size: var(--t-small); white-space: nowrap; column-gap: 0.7em; row-gap: 0.35em; align-items: center; }
 .slide ul.authors > li { display: contents; }
 .slide ul.authors > li > .who { margin-right: 0; }
 .slide ul.authors > li > .paper { color: var(--muted); }
+.slide ul.authors > li > .num { color: var(--muted); text-align: right; margin-right: -0.4em; }
 /* panel titles over the two COSEBI panels of unions-bmodes, each centred on its panel */
 .slide figure figcaption.panels { display: grid; grid-template-columns: 54.8% 45.2%; justify-items: center; width: 100%; }
 
