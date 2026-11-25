@@ -1,7 +1,7 @@
 <section data-layout="figure-text" data-stack>
-  <h2>Simulations range from cheap to realistic</h2>
+  <h2>Simulations range from approximate to sophisticated</h2>
   <figure>
-    <svg viewBox="0 110 1712 410" role="img" aria-label="A track from fast to faithful with four rungs, each drawn as a small sky: Gaussian fields, lognormal, N-body, full forward model; the mocks in this talk are marked on it">
+    <svg viewBox="0 110 1712 410" role="img" aria-label="A track from fast and approximate to expensive and sophisticated with four rungs, each drawn as a small sky: Gaussian fields, lognormal, N-body, full forward model">
       <defs>
         <marker id="fidelity-arrow" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="9" markerHeight="8" orient="auto">
           <path d="M0 0.5 Q6 3.5 12 5 Q6 6.5 0 9.5" class="fill-none stroke-ink" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -60,7 +60,7 @@
       <path d="M40 214 C500 211 1100 201 1600 189 Q1640 189 1640 215 Q1640 241 1600 241 C1100 229 500 219 40 216 Z" class="glaze" fill="url(#fidelity-lilac)"/>
       <g font-size="34" class="fill-muted">
         <text x="40" y="150">fast, approximate</text>
-        <text x="1660" y="150" text-anchor="end">faithful, expensive</text>
+        <text x="1660" y="150" text-anchor="end">expensive, sophisticated</text>
       </g>
       <!-- the track in pencil; on it the four skies in wash, each traced in pencil; the forward model's is cut to a survey's footprint and masks, outlined in pen -->
       <path d="M40 215 H1662" class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round" marker-end="url(#fidelity-arrow)"/>
@@ -86,28 +86,18 @@
         <text x="1040" y="306">N-body</text>
         <text x="1460" y="306" class="fill-accent">forward model</text>
       </g>
-      <g font-size="34" text-anchor="middle" class="fragment">
-        <text x="200" y="364">Gaussian κ</text>
-        <text x="200" y="410" class="fill-muted">SPT lensing calibration</text>
-        <text x="620" y="364">GLASS: UNIONS, Euclid × κ</text>
-        <text x="620" y="410" class="fill-muted">FLASK: covariance</text>
-        <text x="1040" y="364">Agora</text>
-        <text x="1040" y="410" class="fill-muted">correlated tSZ CIB radio</text>
-        <text x="1460" y="364">ACT DR6 κ pipeline</text>
-        <text x="1460" y="410" class="fill-muted">M. Gatti</text>
-      </g>
-      <text x="856" y="496" font-size="38" text-anchor="middle" class="fragment">shear, clustering and CMB lensing from one simulated sky</text>
     </svg>
   </figure>
   <div class="text">
     <ul>
-      <li><strong>cheap:</strong> many realizations on which the pipeline has to recover the input</li>
-      <li><strong>realistic:</strong> a few expensive simulations that characterize subtle effects</li>
-      <li class="fragment">forward models are used for explicit or implicit inference</li>
+      <li>hill-climbable!</li>
     </ul>
   </div>
   <aside class="notes">
     <ul class="skim">
+      <li><strong>Rungs</strong> — Gaussian κ realizations (SPT lensing calibration); lognormal GLASS for UNIONS and Euclid × κ, FLASK for the covariance; Agora, N-body lightcones with correlated tSZ, CIB and radio sources; a full forward model such as the ACT DR6 κ pipeline (M. Gatti). Shear, clustering and CMB lensing come from one simulated sky.</li>
+      <li><strong>Two uses</strong> — fast simulations give many realizations on which the pipeline has to recover the input; a few expensive ones characterize subtle effects. Forward models are used for explicit or implicit inference.</li>
+      <li><strong>Hill-climbable</strong> — a simulation with a known answer gives a score that an agent, or a person, can improve against.</li>
       <li><strong>Track</strong> — four rungs of simulation fidelity, each slower and more faithful than the last: Gaussian fields, lognormal fields, N-body lightcones, a full forward model of the measurement.</li>
       <li><strong>Marks</strong> — where the simulations in this talk sit: the GLASS lognormal mocks under UNIONS and Euclid × CMB lensing (their κ conditioning on ACT's own reconstruction simulations is implemented and validated); the FLASK covariance mocks calibrated on DEMNUni; Marco Gatti's forward model of the ACT DR6 lensing reconstruction.</li>
       <li><strong>Explicit and implicit</strong> — a forward model fast and faithful enough to compare directly with the data serves inference two ways: explicitly, by writing the likelihood of the data given the simulated field (field-level inference), or implicitly, by learning the posterior from simulations (simulation-based inference).</li>
