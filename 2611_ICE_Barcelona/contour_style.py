@@ -19,7 +19,7 @@ style.plt.rcParams.update({
     'ytick.color': style.MUTED, 'xtick.major.size': 12, 'ytick.major.size': 12, 'xtick.major.width': 2.4,
     'ytick.major.width': 2.4, 'axes.spines.top': True, 'axes.spines.right': True})
 IMAGES = HERE.parent / 'images'
-D = {'Omega_m': r'\Delta\Omega_\mathrm{m}', 'S8': r'\Delta S_8'}
+D = {'S8': r'\Delta S_8', 'Omega_m': r'\Delta\Omega_\mathrm{m}'}
 
 
 def save(fig, name, **kw):
