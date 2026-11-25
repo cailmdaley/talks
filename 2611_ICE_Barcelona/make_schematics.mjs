@@ -205,8 +205,8 @@ function chain() {
 // Murray's figure (images/lsx_nz_desy6.svg, a matplotlib SVG: axes from z = 0 at 38.55 pt to 1.4 at
 // 460.925 pt, baseline at 122.796 pt), narrow washes of rose under a pen line. Behind them rises the
 // source n(z) of the first UNIONS release, a broad wash of sky under pencil, deepest under the ridge
-// and thinning to the axis, with the jagged ridge of its histogram kept. Heights are arbitrary: every lens bin is drawn to one height, the
-// sources taller.
+// and thinning to the axis, with the jagged ridge of its histogram kept. Every curve is scaled to a
+// peak of one, as Calum drew his.
 //
 // UNIONS_NZ is the published n(z) of ShapePipe v1.4.6.3 (nz_SP_v1.4.6.3_B.txt, sha256 e09a917b…,
 // the SOM-weighted histogram of Z_B in blind_nz_shapepipe_v1.4.6.3.fits): its value in each bin of
@@ -221,15 +221,15 @@ function unions3x2pt() {
     .filter(([, , style]) => /#b9573a/.test(style))
     .map(([, d]) => ({ pts: [...d.matchAll(/[ML] ([\d.]+) ([\d.]+)/g)].map(([, px, py]) => [(px - 38.55) / (460.925 - 38.55) * 1.4, 122.796 - py]) }))
     .filter((c) => c.pts.length > 20);
-  const ZMAX = 1.6, x = (z) => 60 + z * 1592 / ZMAX, BASE = 300, H = 204, LENS = 0.64 * H;
+  const ZMAX = 1.6, x = (z) => 60 + z * 1592 / ZMAX, BASE = 300, H = 204;
   // each lens bin is kept from where it leaves the axis to where it returns, so the lines do not pile up along it
   for (const c of lsx) { const top = Math.max(...c.pts.map((p) => p[1])), on = c.pts.map((p) => p[1] > 0.006 * top);
     const i0 = Math.max(0, on.indexOf(true) - 1), i1 = Math.min(c.pts.length - 1, on.lastIndexOf(true) + 1);
-    c.xy = c.pts.slice(i0, i1 + 1).map(([z, v]) => [x(z), BASE - LENS * v / top]); }
+    c.xy = c.pts.slice(i0, i1 + 1).map(([z, v]) => [x(z), BASE - H * v / top]); }
   const sources = [[x(0), BASE], ...UNIONS_NZ.map((v, i) => [x(0.025 * (i + 0.5)), BASE - H * v])];
   const area = (xy) => line([[xy[0][0], BASE], ...xy, [xy[xy.length - 1][0], BASE]]) + 'Z';
   const tick = [0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6];
-  return `<svg viewBox="0 24 1712 386" role="img" aria-label="Redshift distributions between redshift 0 and 1.6, heights arbitrary: six narrow bins of the SPHEREx all-sky lens sample LSx v0.9 between redshift 0 and 0.55, in front of the source galaxies of the first UNIONS release, whose distribution rises to a broad peak near 0.5 and falls away to 1.6">
+  return `<svg viewBox="0 24 1712 386" role="img" aria-label="Redshift distributions between redshift 0 and 1.6, each scaled to a peak of one: six narrow bins of the SPHEREx all-sky lens sample LSx v0.9 between redshift 0 and 0.55, in front of the source galaxies of the first UNIONS release, whose distribution rises to a broad peak near 0.5 and falls away to 1.6">
       <!-- the axes, in pencil -->
       <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">
         <path d="M60 ${BASE} H1652 M60 ${BASE} V${BASE - H - 24} ${tick.map((z) => `M${n1(x(z))} ${BASE} V${BASE + 13}`).join(' ')}"/>

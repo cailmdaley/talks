@@ -74,4 +74,18 @@
 .theme-aquarelle .slide[data-layout="bleed"] > .foot > .parts { display: none; }
 .theme-aquarelle .slide[data-layout="bleed"] > .foot > .notes-open { margin: 0 12px 0 0; padding: 8px 12px; border: 0; border-radius: 6px; background: var(--veil); color: var(--ink); }
 /* controls in the footer band stand on the footer's baseline, clear of the rule of parts */
-.theme-aquarelle .slide > .variants { bottom: 36px; }
+.theme-aquarelle .slide > .variants { bottom: 42px; }
+/* a choice of variant: marginal notes like the one beside them; the option on screen is in ink over a pen line, the others in pencil */
+.theme-aquarelle .slide .variants { gap: 44px; }
+.theme-aquarelle .slide .variants .seg { gap: 20px; }
+.theme-aquarelle .slide .variants button {
+  margin: 0; padding: 0 0 4px;
+  border: 0; border-bottom: 1.6px solid transparent; border-radius: 0;
+  background: none;
+  font-style: italic;
+  color: color-mix(in srgb, var(--muted) 80%, transparent);
+}
+.theme-aquarelle .slide .variants button:hover:enabled { color: var(--ink); }
+.theme-aquarelle .slide .variants button.on { font-style: normal; color: var(--ink); border-bottom-color: var(--ink); }
+.theme-aquarelle .slide .variants button:disabled:not(.on) { color: color-mix(in srgb, var(--muted) 45%, transparent); }
+.theme-aquarelle .slide .variants .seg.idle button.on { border-bottom-color: var(--muted); }
