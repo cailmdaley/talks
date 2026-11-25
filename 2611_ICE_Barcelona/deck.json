@@ -66,7 +66,7 @@
     },
     {
       "title": "Doing science now",
-      "outline": "How the two analyses were done and what comes next: simulations as a verifiable environment for agents, Lightcone with a live demonstration, simulation-based inference as the work proposed for ICE, the questions this puts to the community, and a summary.",
+      "outline": "Simulations as a verifiable environment for agents, Lightcone with a live demonstration, simulation-based inference as the work proposed for ICE, the questions this puts to the community, and a summary.",
       "slides": [
         "exciting",
         "agents",

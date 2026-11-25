@@ -25,7 +25,7 @@
     <details><summary>Numbers</summary>
     <p>Over the 90 shear × κ bandpowers the mean $|\Delta|$ is $0.246\,\sigma_1$ against $0.252\,\sigma_1$ expected from noise alone, the signed mean $+0.014\,\sigma_1$; treating the bands as independent, $\sum 10\,(\Delta/\sigma_1)^2 = 89.7$ over 90 bands. The per-bin mean offsets are $+0.18$, $+0.08$, $-0.09$, $0.00$, $-0.09$ and $0.00\,\sigma_1$. The largest point, $0.96\,\sigma_1$ in source bin 1 at $\ell \approx 220,$ is about 3 standard errors of the mean, about what one expects once among 90 bands. The galaxy density × κ crosses recover their input as well (mean $|\Delta|$ $0.22\,\sigma_1$ over 90 bands). This ten-mock figure is an October validation example; full-covariance recovery tests and production-posterior ensembles followed.</p>
     </details>
-    <details><summary>What they have caught</summary>
+    <details><summary>Caught so far</summary>
     <p>Many pipeline bugs, found by putting mocks through the production code. The latest: the likelihood fit on the mocks came back biased, $\Omega_{\rm m}$ about $+1.6\sigma$ high over 10 seeds. The cause is the shear mask: weighting it by source counts lets the clustering of the sources into the mask, which raises $\gamma\gamma$ at $\ell > 1000$ by about 8 %. A binary shear mask removes the excess ($\Omega_{\rm m}$ $+0.2 \pm 0.5\sigma$).</p>
     </details>
     <details><summary>Production chains on the mocks</summary>

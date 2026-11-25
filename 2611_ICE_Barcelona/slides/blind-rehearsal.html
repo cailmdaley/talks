@@ -16,13 +16,13 @@
     <details><summary>One shift for every probe</summary>
     <p>Crocce's plan applies the same shift to the 3×2pt, 2×2pt and 1×2pt. With a fixed reference off the truth each probe moves by a slightly different amount, so one blind changes the $S_8$ difference between cosmic shear and 2×2pt by a scatter of 0.3 to $0.4\sigma$ over the 30 shifts, up to $0.7\sigma$. A blinded internal-consistency test would see that as a mild tension that is not in the data. With the shared 3×2pt reference it is 0.04 and $0.15\sigma$ for the two noise draws, up to $0.4\sigma$.</p>
     </details>
-    <details><summary>Where the miss comes from</summary>
+    <details><summary>Origin of the miss</summary>
     <p>The miss is the product of the shift and the offset of the reference, so it is linear in both: at half the offset the 3×2pt $S_8$ miss halves ($0.11\sigma$ against $0.24\sigma$). By source, for the 3×2pt: cosmology alone $0.19\sigma$, galaxy bias alone $0.08\sigma$ ($0.18\sigma$ in $\Omega_\mathrm{m}$), intrinsic alignments $0.02\sigma$, baryons $0.02\sigma$. The offsets chosen are large on purpose: the truth's $S_8$ is $5.9\sigma$ from the reference's, at the level where weak lensing measures it low.</p>
     </details>
     <details><summary>The alternative of scaling the vector</summary>
     <p>Multiplying by $T(\mathrm{shifted})/T(\mathrm{ref})$ recovers $S_8$ to $0.3\sigma$ on a noiseless vector ($\Omega_\mathrm{m}$ to $0.4\sigma$), but with noise the 3×2pt $S_8$ misses by up to $0.7\sigma$. Muir et al. (2020, arXiv:1911.05929, footnote 1) warn that scaling rescales the noise as well as the signal, and it does: the best-fit $\chi^2$ changes by a factor 0.82 to 1.21 for cosmic shear and 0.84 to 1.18 for the 5×2pt, and for cosmic shear it follows the hidden $S_8$ shift with a correlation of 0.98. A blind that shows the shift in the goodness of fit is not usable. The added shift, with either reference, leaves $\chi^2$ unchanged within 1 %.</p>
     </details>
-    <details><summary>What the reference at the fit would need</summary>
+    <details><summary>Needs of a reference at the fit</summary>
     <p>The blinding pipeline would fit the unblinded 3×2pt vector, use that fit as the reference and keep it sealed with the shift. A full best fit takes minutes on one node with all 38 parameters, so it is cheap; the cost is that the pipeline then holds an unblinded fit. This is a best-fit test with the right model on two noise draws: no model error, no chains, no mocks, and it is applied to no blind. The same shift in $(A_s, \omega_c, h)$ from a different reference is a different shift in $S_8$, up to $5.9\sigma$ for the 6×2pt here against $3.7\sigma$ from the fixed one, so the blue points carry the larger shifts. $\Omega_\mathrm{m}$ still misses by 0.12 to $0.25\sigma$ of scatter, up to $0.65\sigma$ for the 2×2pt.</p>
     </details>
     <details><summary>Best fits against chains</summary>
