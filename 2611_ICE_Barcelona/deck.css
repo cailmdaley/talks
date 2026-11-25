@@ -163,3 +163,10 @@
 .slide p.plate-credit { position: absolute; right: 104px; bottom: 112px; margin: 0; font-variant-caps: small-caps; letter-spacing: 0.06em; }
 /* the live Studio slide shows no folio */
 [data-house-slide="lightcone"] .slide:not(.detail) > .foot > .num { visibility: hidden; }
+
+/* a portrait and name that closes a parenthesis */
+.slide .text li .who.last { margin-right: 0; }
+
+/* a figure with its lead credited beneath it: the frame leaves room for the larger portrait */
+.slide figure > .cell:has(> .source.lead) { --chrome: 150px; }
+.slide figure .cell > .source.lead { height: auto; margin-top: 28px; }

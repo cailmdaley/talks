@@ -1,44 +1,26 @@
-<section data-layout="figure-text" data-flip data-split="50">
+<section data-layout="figure-text" data-split="50">
   <h2>Tomographic cosmic shear expected in summer 2027</h2>
   <figure>
-    <svg viewBox="0 40 860 520" role="img" aria-label="Multiplicative shear bias m in percent on one axis: the first release at minus 5.7, and the two v2 estimates, ShapePipe at minus 0.6 plus or minus 0.4 and AnaCal at plus 0.3 plus or minus 0.8, both consistent with zero">
-      <!-- zero, and the axis, in pencil -->
-      <g class="pencil fill-none stroke-ink" stroke-linecap="round">
-        <path d="M96 452 H816 M172.6 452 V465 M325.8 452 V465 M479 452 V465 M632.2 452 V465 M785.4 452 V465" stroke-width="2.2"/>
-        <path d="M632.2 96 V452" stroke-width="1.8" stroke-dasharray="3 9"/>
-      </g>
-      <g font-size="35" text-anchor="middle" class="fill-muted">
-        <text x="172.6" y="506">−6</text><text x="325.8" y="506">−4</text><text x="479" y="506">−2</text><text x="632.2" y="506">0</text><text x="785.4" y="506">+2</text>
-        <text x="456" y="550">shear bias <tspan font-style="italic">m</tspan>, percent</text>
-      </g>
-      <!-- the three estimates: error bars in pen, points in ink -->
-      <g class="pen fill-none stroke-ink" stroke-width="2.6" stroke-linecap="round">
-        <path d="M159.6 150 H231.6 M159.6 139 V161 M231.6 139 V161"/>
-        <path d="M555.6 262 H616.9 M555.6 251 V273 M616.9 251 V273"/>
-        <path d="M593.9 374 H716.4 M593.9 363 V385 M716.4 363 V385"/>
-      </g>
-      <circle cx="195.6" cy="150" r="9" class="fill-ink"/><circle cx="586.2" cy="262" r="9" class="fill-ink"/><circle cx="655.1" cy="374" r="9" class="fill-ink"/>
-      <g font-size="36">
-        <text x="257.6" y="162">first release</text>
-        <text x="529.6" y="274" text-anchor="end">v2 · ShapePipe</text>
-        <text x="567.9" y="386" text-anchor="end">v2 · AnaCal</text>
-      </g>
-    </svg>
+    <img src="images/unions_xi_errorbars.png" alt="Concealed non-tomographic v2 xi plus and xi minus against angular separation, each point with two error bars: the first release's, wide and pale, and v2's, about 0.7 times as long">
+    <span class="source lead"><span class="who"><img src="images/collaborators/klara-bertmann.jpg" alt="Klara Bertmann">Led by Klara Bertmann</span></span>
   </figure>
   <div class="text">
     <p>Shear calibration, very preliminary:</p>
     <ul>
-      <li>first release: −5.7 %</li>
-      <li>v2: −0.6 ± 0.4 % <span class="who"><img src="images/collaborators/martin-kilbinger.jpg" alt="Martin Kilbinger">ShapePipe</span></li>
-      <li>v2: +0.3 ± 0.8 % <span class="who"><img src="images/collaborators/shurui-lin.jpg" alt="Shurui Lin">AnaCal</span></li>
-      <li>blending not yet tested for v2</li>
+      <li>first release: −5.7 % w/ blending</li>
+      <li>v2 w/o blending:
+        <ul>
+          <li>ShapePipe: +0.03 ± 0.15 %<br>(<span class="who"><img src="images/collaborators/cail-daley.jpg" alt="Cail Daley">myself</span><span class="who last"><img src="images/collaborators/martin-kilbinger.jpg" alt="Martin Kilbinger">Martin Kilbinger</span>)</li>
+          <li>AnaCal: +0.3 ± 0.8 %<br>(<span class="who last"><img src="images/collaborators/shurui-lin.jpg" alt="Shurui Lin">Shurui Lin</span>)</li>
+        </ul>
+      </li>
     </ul>
-    <p class="source lead"><span class="who"><img src="images/collaborators/klara-bertmann.jpg" alt="Klara Bertmann">Led by Klara Bertmann</span></p>
   </div>
   <aside class="notes">
     <ul class="skim">
       <li><strong>$n(z)$</strong> — not shown: the $n(z)$ for parameters comes from the photo-z group (Klara Bertmann, Bochum, who also leads the tomographic cosmic-shear paper).</li>
-      <li><strong>Shear calibration</strong> — first release $m = -0.057 \pm 0.0047$ from image simulations. v2: Martin Kilbinger's ShapePipe metacalibration on Fabian Hervas-Peters' isolated-galaxy grid simulations, $m_1 = -0.0062 \pm 0.0038,$ $m_2 = -0.0057 \pm 0.0046,$ shear plus selection response; Shurui Lin's AnaCal, $m_1 = (+3.1 \pm 7.8)\times10^{-3},$ $m_2 = (+2.0 \pm 7.6)\times10^{-3},$ likely without the selection response, so not yet like for like.</li>
+      <li><strong>Figure</strong> — the non-tomographic $\xi_\pm$ of the full-area v2 sample (170.6 million galaxies over 4690 deg², every galaxy, no tomographic selection), concealed, with the first release's error bars and v2's: v2's are 0.71× ($\xi_+$) and 0.68× ($\xi_-$) inside 12–83′, both from OneCovariance (Gaussian, non-Gaussian and super-sample terms). Unshaded: 12–83′.</li>
+      <li><strong>Shear calibration</strong> — first release $m = -0.057 \pm 0.0047$ from image simulations. v2 ShapePipe: image simulations rerun on Fir in November (150 interior tiles, isolated galaxies on a grid, processed by ShapePipe as the data are, v2 weights, tile jackknife), $m_1 = (+0.3 \pm 1.5)\times10^{-3},$ $m_2 = (-0.9 \pm 1.7)\times10^{-3};$ the slide quotes $m_1.$ The October grids gave $m_1 = -0.0062 \pm 0.0038,$ $m_2 = -0.0057 \pm 0.0046.$ Shurui Lin's AnaCal, $m_1 = (+3.1 \pm 7.8)\times10^{-3},$ $m_2 = (+2.0 \pm 7.6)\times10^{-3},$ likely without the selection response, so not yet like for like.</li>
       <li><strong>Caveat</strong> — isolated galaxies only; blending added about −1.7 % in the first release. Multi-band image simulations are in progress.</li>
       <li><strong>Outlook</strong> — the tomographic cosmic-shear analysis, led by Klara Bertmann, targets a June 2027 release, with constraints expected to be competitive with Stage III and with Year-1 Stage IV.</li>
     </ul>
