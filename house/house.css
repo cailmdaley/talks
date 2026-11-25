@@ -795,6 +795,8 @@ html, body, body.reveal-viewport, .reveal-viewport:fullscreen { background: var(
   background: var(--veil);
   max-width: 1500px;
 }
+/* a live page covers the window (runtime.js sizes it), so its slide does not clip it */
+.slide[data-layout="bleed"]:has(.frame > iframe) { overflow: visible; }
 .slide[data-layout="bleed"] > .foot { z-index: 2; left: auto; }
 .slide[data-layout="bleed"] > .foot > span:first-of-type { display: none; }
 .slide[data-layout="bleed"] > .foot .num { background: var(--veil); padding: 8px 12px; border-radius: 6px; color: var(--ink); }

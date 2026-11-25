@@ -17,6 +17,7 @@
   --rule:         #CFC3AD;
   --panel:        #EFE6D6;
   --veil:         rgba(246, 240, 228, 0.82);
+  --t-foot:       26px;       /* the footer's one line: running foot, notes, folio */
   --figure-card:  transparent;
   --figure-blend: multiply;
 }
@@ -37,11 +38,14 @@
 }
 .theme-aquarelle .slide.detail > h2::after { background: var(--teal); height: 4px; }
 
-/* footer: in place of the progress bar, a ruled hairline under the footer, a tick between
-   parts, each part in its wash and inked as far as the talk has come */
+/* footer: in place of the progress bar, a ruled hairline closes the page, a tick between parts,
+   each part in its wash and inked as far as the talk has come. Under it runs one line of small
+   type: the notes at the left, the running foot (who, where, when) in the middle, the choice of
+   variant and the folio at the right */
 .theme-aquarelle .reveal .progress { display: none !important; }
+.theme-aquarelle .slide:not(.detail) > .foot { bottom: 30px; font-size: var(--t-foot); letter-spacing: 0.09em; }
 .theme-aquarelle .slide > .foot > .parts {
-  display: flex; position: absolute; left: 0; right: 0; bottom: -24px; height: 14px;
+  display: flex; position: absolute; left: 0; right: 0; bottom: 44px; height: 14px;
   background: linear-gradient(var(--muted), var(--muted)) center / 100% 1.2px no-repeat;
   border-right: 1.5px solid var(--muted);
 }
@@ -57,24 +61,25 @@
   width: calc(var(--done) * 100%);
   background: linear-gradient(var(--ink), var(--ink)) center / 100% 1.8px no-repeat, var(--c);
 }
-/* sources & notes: a marginal note in pencil at the foot of the page, as quiet as the folio */
+/* the running foot stands at the right, beside the folio */
+.theme-aquarelle .slide:not(.detail) > .foot > span:first-of-type { margin-left: auto; white-space: pre; }
+.theme-aquarelle .slide:not(.detail) > .foot > .num { margin-left: 1.5em; font-size: 30px; }
+/* sources & notes: small capitals throughout, as quiet as the running foot */
 .theme-aquarelle .slide > .foot > .notes-open {
-  padding: 0 0 4px;
-  margin-bottom: 7px;     /* holds the footer's baseline where the folio sits beside the footer controls */
-  border: 0;
-  border-bottom: 1.2px solid color-mix(in srgb, var(--muted) 40%, transparent);
-  border-radius: 0;
-  background: none;
-  font-style: italic;
-  color: color-mix(in srgb, var(--muted) 80%, transparent);
+  padding: 0; border: 0; border-radius: 0; background: none;
+  font-size: var(--t-foot);
+  font-variant-caps: all-small-caps;
+  font-feature-settings: "smcp" 1, "c2sc" 1, "lnum" 1;
+  letter-spacing: 0.09em;
+  color: var(--muted);
 }
 .theme-aquarelle .slide > .foot > .notes-open::before { content: none; }
-.theme-aquarelle .slide > .foot > .notes-open:hover { color: var(--ink); border-bottom-color: var(--ink); }
-/* over a photograph the rule of parts is not drawn, and the marginal note stands on the veil as the folio does */
+.theme-aquarelle .slide > .foot > .notes-open:hover { color: var(--ink); }
+/* over a photograph the rule of parts is not drawn, and the notes stand on the veil as the folio does */
 .theme-aquarelle .slide[data-layout="bleed"] > .foot > .parts { display: none; }
-.theme-aquarelle .slide[data-layout="bleed"] > .foot > .notes-open { margin: 0 12px 0 0; padding: 8px 12px; border: 0; border-radius: 6px; background: var(--veil); color: var(--ink); }
-/* controls in the footer band stand on the footer's baseline, clear of the rule of parts */
-.theme-aquarelle .slide > .variants { bottom: 42px; }
+.theme-aquarelle .slide[data-layout="bleed"] > .foot > .notes-open { margin: 0 12px 0 0; padding: 8px 12px; border-radius: 6px; background: var(--veil); color: var(--ink); }
+/* the choice of variant stands on the footer's line, between the notes and the running foot */
+.theme-aquarelle .slide > .variants { left: 330px; right: 830px; bottom: 26px; justify-content: center; font-variant-caps: small-caps; letter-spacing: 0.09em; }
 /* a choice of variant: marginal notes like the one beside them; the option on screen is in ink over a pen line, the others in pencil */
 .theme-aquarelle .slide .variants { gap: 44px; }
 .theme-aquarelle .slide .variants .seg { gap: 20px; }
@@ -89,3 +94,5 @@
 .theme-aquarelle .slide .variants button.on { font-style: normal; color: var(--ink); border-bottom-color: var(--ink); }
 .theme-aquarelle .slide .variants button:disabled:not(.on) { color: color-mix(in srgb, var(--muted) 45%, transparent); }
 .theme-aquarelle .slide .variants .seg.idle button.on { border-bottom-color: var(--muted); }
+/* in the footer the choice is set as the running foot is: small capitals, upright */
+.theme-aquarelle .slide > .variants button, .theme-aquarelle .slide > .variants button.on { font-size: var(--t-foot); font-style: normal; }

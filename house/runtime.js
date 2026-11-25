@@ -91,6 +91,30 @@
   Reveal.on('ready', loadPages);
   Reveal.on('slidechanged', loadPages);
 
+  // A live page on a bleed slide covers the window, not only the slide's 16:9 frame: in a
+  // window of another shape the page takes the bands above and below (or beside) it too.
+  function coverPages() {
+    var scale = Reveal.getScale(), cfg = Reveal.getConfig();
+    var w = window.innerWidth / scale, h = window.innerHeight / scale;
+    document.querySelectorAll('.slide[data-layout="bleed"] .frame > iframe').forEach(function (iframe) {
+      iframe.style.width = w + 'px';
+      iframe.style.height = h + 'px';
+      iframe.style.left = (cfg.width - w) / 2 + 'px';
+      iframe.style.top = (cfg.height - h) / 2 + 'px';
+    });
+  }
+  Reveal.on('ready', coverPages);
+  Reveal.on('resize', coverPages);
+
+  // A click inside a live page moves the keyboard into it, where the deck cannot hear the
+  // arrow keys. The deck takes the keyboard back at once; the page keeps the pointer.
+  window.addEventListener('blur', function () {
+    setTimeout(function () {
+      var a = document.activeElement;
+      if (a && a.localName === 'iframe' && a.closest('.slide')) { a.blur(); window.focus(); }
+    }, 0);
+  });
+
   // ── Peek: hovering an element that opens a detail shows the detail as a
   // popout beside it. The popout stays while the pointer is on the element or
   // on the popout, and lingers a moment after it leaves both, so the pointer

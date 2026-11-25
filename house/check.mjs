@@ -18,6 +18,7 @@ import { loadDeck, parseSlide, buildDeck, BuildError, LAYOUTS, houseDecks } from
 
 const HOUSE = path.dirname(fileURLToPath(import.meta.url));
 const MIN_PX = 32;
+const FOOT_MIN_PX = 24;   // the footer's running line (who, where, the folio, its controls) may be set smaller
 const MIN_CONTRAST = 4.5;
 const MAX_WORDS = 60;
 
@@ -197,7 +198,7 @@ function lint(deck) {
 // ── Render and measure ────────────────────────────────────────────────────
 
 // Runs in the page. Measures the visible frame of the current slide.
-function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
+function measure({ MIN_PX, FOOT_MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
   const errors = [], warnings = [];
   const section = Reveal.getCurrentSlide();
   const frame = section.querySelector(':scope > .slide.detail.open') || section.querySelector(':scope > .slide:not(.detail)');
@@ -320,7 +321,8 @@ function measure({ MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
       const st = getComputedStyle(el);
       let size = parseFloat(st.fontSize);
       if (el.closest('svg')) { const m = el.getScreenCTM?.(); if (m) size *= Math.hypot(m.a, m.b) / scale; }
-      if (size < MIN_PX - 0.5) errors.push(`${label(el)} is set at ${size.toFixed(1)}px (minimum ${MIN_PX}px)`);
+      const floor = el.closest('.slide:not(.detail) > .foot, .slide > .variants') ? FOOT_MIN_PX : MIN_PX;
+      if (size < floor - 0.5) errors.push(`${label(el)} is set at ${size.toFixed(1)}px (minimum ${floor}px)`);
       if (!el.closest('svg') && !el.closest('.foot')) words += [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join(' ').split(/\s+/).filter(w => /\w/.test(w)).length;
       const fg = parse(st.color);
       let svgFill = null;
@@ -480,7 +482,7 @@ async function render(deck, built, outDir, { steps, only }) {
       // a step's animation (a prism turning) is finished at once: states are measured at rest
       await page.evaluate((i, f) => { Reveal.slide(i, 0, f); document.getAnimations().forEach(a => a.finish()); }, i, f);
       await new Promise(r => setTimeout(r, 60));
-      const m = await page.evaluate(measure, { MIN_PX, MIN_CONTRAST, MAX_WORDS });
+      const m = await page.evaluate(measure, { MIN_PX, FOOT_MIN_PX, MIN_CONTRAST, MAX_WORDS });
       if (f === count - 1) { res.errors.push(...m.errors); res.warnings.push(...m.warnings); m.errors.forEach(e => final.add(e)); }
       else for (const e of m.errors) if (!final.has(e)) { final.add(e); early.push(`at step ${f + 1} of ${count}: ${e}`); }
       if (steps && count) await page.screenshot({ path: path.join(outDir, `${tag}.step${f + 1}.png`) });
@@ -495,7 +497,7 @@ async function render(deck, built, outDir, { steps, only }) {
     for (let k = 0; k < keys.length; k++) {
       await page.evaluate(key => House.open(Reveal.getCurrentSlide(), key), keys[k]);
       await new Promise(r => setTimeout(r, 150));
-      const dm = await page.evaluate(measure, { MIN_PX, MIN_CONTRAST, MAX_WORDS });
+      const dm = await page.evaluate(measure, { MIN_PX, FOOT_MIN_PX, MIN_CONTRAST, MAX_WORDS });
       const dn = keys[k] === 'notes' ? 'notes' : `detail ${k + 1}`;
       res.errors.push(...dm.errors.map(e => `${dn}: ${e}`));
       res.warnings.push(...dm.warnings.map(e => `${dn}: ${e}`));
