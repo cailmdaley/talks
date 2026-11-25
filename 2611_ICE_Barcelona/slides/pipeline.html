@@ -1,7 +1,7 @@
 <section data-layout="figure">
   <h2>One pipeline from catalogs to a blinded likelihood</h2>
   <figure>
-    <svg viewBox="0 0 1712 771" role="img" aria-label="KP2-3 pipeline in three workstreams. Data vectors and systematics: Euclid catalogs, CMB lensing maps and systematics maps feed NaMaster pseudo-Cl bandpowers for six spectra and the null tests. Simulations and covariance: mocks feed the pseudo-Cl step and the covariance. Theory and likelihood: the blinded bandpowers, the covariance and the theory model feed the likelihood.">
+    <svg viewBox="0 0 1712 771" role="img" aria-label="Pipeline in three workstreams. Data vectors and systematics: Euclid catalogs, CMB lensing maps and systematics maps feed NaMaster pseudo-Cl bandpowers for six spectra, and the systematics maps also feed the null tests. Simulations and covariance: mocks feed the pseudo-Cl step and the covariance. Theory and likelihood: the blinded bandpowers and the covariance feed one box, theory and likelihood, built on CLOE with JAX patches: the 3x2pt setup plus kappa.">
       <defs>
         <marker id="pipeline-arrow" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="9" markerHeight="8" orient="auto">
           <path d="M0 0.5 Q6 3.5 12 5 Q6 6.5 0 9.5" class="fill-none stroke-ink" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -21,6 +21,7 @@
           <path d="M406 250 H464" marker-end="url(#pipeline-arrow)"/>
           <path d="M406 430 H464" marker-end="url(#pipeline-arrow)"/>
           <path d="M406 671 H464" marker-end="url(#pipeline-arrow)"/>
+          <path d="M406 630 C438 628 434 536 464 528" marker-end="url(#pipeline-arrow)"/>
           <path d="M664 564 V588" marker-end="url(#pipeline-arrow)"/>
         </g>
         <g class="pen fill-none stroke-ink" stroke-linejoin="round" stroke-width="2">
@@ -86,25 +87,20 @@
       <!-- step 3: theory and likelihood, with the blind: in wash, the likelihood the deepest -->
       <g class="fragment" data-fragment-index="1">
         <rect x="944" y="270" width="316" height="200" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
-        <rect x="1344" y="22" width="346" height="160" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
         <rect x="1344" y="270" width="346" height="214" rx="3" class="glaze" fill="url(#pipeline-deep)"/>
         <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">
-          <path class="stroke-muted" d="M1340 4 H1694 Q1708 4 1708 18 V488 Q1708 502 1694 502 H1340 Q1326 502 1326 488 V18 Q1326 4 1340 4 Z"/>
           <path d="M862 370 H936" marker-end="url(#pipeline-arrow)"/>
           <path d="M1268 370 H1336" marker-end="url(#pipeline-arrow)"/>
           <path d="M1268 92 C1306 96 1296 262 1336 304" marker-end="url(#pipeline-arrow)"/>
-          <path d="M1517 190 V262" marker-end="url(#pipeline-arrow)"/>
         </g>
         <text x="1102" y="336" font-size="40" font-weight="700" text-anchor="middle">Blind</text>
         <text x="1102" y="386" font-size="32" class="fill-muted" text-anchor="middle">hidden cosmology</text>
         <text x="1102" y="428" font-size="32" class="fill-muted" text-anchor="middle">shift added to Cℓ</text>
         <g>
-          <text x="1517" y="336" font-size="40" font-weight="700" text-anchor="middle">Likelihood</text>
-          <text x="1517" y="386" font-size="32" class="fill-muted" text-anchor="middle">b, Δz, m, IA</text>
-          <text x="1517" y="84" font-size="40" font-weight="700" text-anchor="middle">Theory</text>
-          <text x="1517" y="132" font-size="32" class="fill-muted" text-anchor="middle">CLOE, through the</text>
-          <text x="1517" y="168" font-size="32" class="fill-muted" text-anchor="middle">bandpower windows</text>
-          <text x="1517" y="548" font-size="34" font-weight="700" text-anchor="middle">Theory &amp; likelihood</text>
+          <text x="1517" y="328" font-size="40" font-weight="700" text-anchor="middle">Theory &amp;</text>
+          <text x="1517" y="372" font-size="40" font-weight="700" text-anchor="middle">likelihood</text>
+          <text x="1517" y="420" font-size="32" class="fill-muted" text-anchor="middle">CLOE + JAX patches</text>
+          <text x="1517" y="460" font-size="32" class="fill-muted" text-anchor="middle">3×2pt setup + κ</text>
         </g>
       </g>
     </svg>
@@ -117,7 +113,7 @@
       <li><strong>Blind</strong> — a step of this pipeline, applied to the five families of the current data vector (κκ not yet included) before the likelihood (backup: the blinding rehearsal).</li>
     </ul>
     <details><summary>Data vectors and systematics</summary>
-    <p>Euclid TR1 shear and positions are pixelized into maps with their masks and redshift distributions; the CMB-lensing inputs are the Planck PR4, ACT DR6 and SPT-3G Main convergence maps. The SPT-3G baseline is the bias- and profile-hardened GMV reconstruction (PH-GMV, kGMVbhTTprf), which suppresses the tSZ and foreground bias a temperature-based reconstruction imprints on crosses with large-scale-structure tracers; plain GMV and polarization-only are the variants.</p>
+    <p>Euclid TR1 shear and positions are pixelized into maps with their masks and redshift distributions; the CMB-lensing inputs are the Planck PR4, ACT DR6 and SPT-3G Main and Summer convergence maps. The SPT-3G Main baseline is the bias- and profile-hardened GMV reconstruction (PH-GMV, kGMVbhTTprf), which suppresses the tSZ and foreground bias a temperature-based reconstruction imprints on crosses with large-scale-structure tracers; plain GMV and polarization-only are the variants.</p>
     <p>NaMaster pseudo-$C_\ell$ turns them into bandpowers for all six families. The same estimator crosses the data with systematics maps, the templates carried by Euclid's VMPs (extinction, exposures, noise, PSF, zodiacal light, stars) and external CMB foreground maps, which gives the null tests and validation of the data vectors.</p>
     </details>
     <details><summary>Simulations and covariance</summary>
