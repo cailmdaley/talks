@@ -232,7 +232,7 @@ function unions3x2pt() {
   return `<svg viewBox="0 24 1712 386" role="img" aria-label="Redshift distributions between redshift 0 and 1.6, each scaled to a peak of one: six narrow bins of the SPHEREx all-sky lens sample LSx v0.9 between redshift 0 and 0.55, in front of the source galaxies of the first UNIONS release, whose distribution rises to a broad peak near 0.5 and falls away to 1.6">
       <!-- the axes, in pencil -->
       <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">
-        <path d="M60 ${BASE} H1652 M60 ${BASE} V${BASE - H - 24} ${tick.map((z) => `M${n1(x(z))} ${BASE} V${BASE + 13}`).join(' ')}"/>
+        <path d="M60 ${BASE} H1652 ${tick.map((z) => `M${n1(x(z))} ${BASE} V${BASE + 13}`).join(' ')}"/>
       </g>
       <g font-size="35" text-anchor="middle" class="fill-muted">
         ${tick.map((z) => `<text x="${n1(x(z))}" y="${BASE + 54}">${z}</text>`).join('')}
@@ -254,7 +254,7 @@ function unions3x2pt() {
       <g class="pen fill-none stroke-accent" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
         ${lsx.map((c) => `<path d="${line(c.xy)}"/>`).join('\n        ')}
       </g>
-      <text x="${n1(x(0.82))}" y="74" font-size="36" font-weight="600" class="fill-accent">SPHEREx all-sky lenses (LSx v0.9), 6 bins</text>
+      <text x="${n1(x(0.82))}" y="74" font-size="36" font-weight="600" class="fill-accent">SPHEREx all-sky lenses (v0.9), 6 bins</text>
       <text x="${n1(x(0.82))}" y="124" font-size="36" font-weight="600">UNIONS sources, first release</text>
     </svg>`;
 }

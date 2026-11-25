@@ -125,6 +125,7 @@
 /* the drawings' instruments sweep their patch of sky: each view turns about the instrument, a point of
    the frame (make_art.mjs: the dish's pivot, Mauna Kea's summit dome, Euclid's middle) taken from the layer's own corner */
 .slide figure.art > img.about-spt    { transform-origin: calc(1097.6px - var(--x, 0px)) calc(912.8px - var(--y, 0px)); --sweep: 1.5deg; --sweep-time: 13s; }
+[data-house-slide="euclid-spt"] .slide figure.art > img.about-spt { transform-origin: calc(983.3px - var(--x, 0px)) calc(860.2px - var(--y, 0px)); }   /* on this opener the telescope stands above the footer */
 .slide figure.art > img.about-unions { transform-origin: calc(1540px - var(--x, 0px)) calc(792px - var(--y, 0px)); --sweep: 1.1deg; --sweep-time: 17s; }
 .slide figure.art > img.about-euclid { transform-origin: calc(1752px - var(--x, 0px)) calc(600px - var(--y, 0px)); --sweep: 0.9deg; --sweep-time: 21s; }
 

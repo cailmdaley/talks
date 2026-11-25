@@ -234,7 +234,7 @@ const MEDIA = `<defs>${PENCIL}${GLAZE}</defs>`;
 // One drawing, as layers from the back: each sheet of the cone washed in (far to near), their rims
 // traced in pencil, what stands on the ground, and each instrument named in `who`, aimed at
 // a patch of the farthest sheet it sees.
-function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380] }) {
+function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380], spt = SPT }) {   // spt: where the South Pole Telescope stands (above a footer, on an opener)
   hand(5);
   const has = (n) => who.includes(n), media = `<defs>${PENCIL}${GLAZE}</defs>`;
   // the farthest sheet each instrument sees: SPT the CMB, Euclid the deepest galaxies, UNIONS one sheet nearer
@@ -245,12 +245,12 @@ function scene({ sky, who, soft = 0.8, lifted = 0.42, words = [760, 1380] }) {
       <g transform="translate(${cx.toFixed(1)} ${cy.toFixed(1)}) rotate(${TILT.toFixed(1)}) scale(${k.toFixed(3)} ${(k * SKY.flat).toFixed(3)})"><circle r="100" fill="${s.col}" filter="url(#z)"/></g></g>` }; });
   const rims = sky.map(s => { const [cx, cy] = at(s), r = rad(s.d) * (1.008 + jit(0.008));
     return oval(cx + jit(3), cy + jit(3), r, r * SKY.flat * (1 + jit(0.03)), TILT + jit(0.6), W.fine, 0.05 + rnd() * 0.07); }).join('');
-  const tilt = deg(SPT_PIVOT, at(src.spt, LOOK.spt));
+  const tilt = deg([spt.x + PIVOT[0] * spt.k, spt.y + PIVOT[1] * spt.k], at(src.spt, LOOK.spt));
   const eRot = deg([EUC.x, EUC.y], at(src.euclid, LOOK.euclid));
   return [...sheets,
     { id: 'rims', svg: `${media}${lift}<g mask="url(#lift)">${pencil(rims)}</g>` },
-    { id: 'ground', svg: media + (has('unions') ? glaze('url(#g-far)', 'M1090 960 C1230 930 1420 820 1560 800 S1800 840 1920 870 L1920 960Z') + maunaKea(MKP.x, MKP.y, MKP.k) : '') + (has('spt') ? sptBase(SPT.x, SPT.y, SPT.k) : '') },
-    has('spt') && { id: 'spt', cls: 'sweep about-spt', svg: media + sptDish(SPT.x, SPT.y, tilt, SPT.k) },
+    { id: 'ground', svg: media + (has('unions') ? glaze('url(#g-far)', 'M1090 960 C1230 930 1420 820 1560 800 S1800 840 1920 870 L1920 960Z') + maunaKea(MKP.x, MKP.y, MKP.k) : '') + (has('spt') ? sptBase(spt.x, spt.y, spt.k) : '') },
+    has('spt') && { id: 'spt', cls: 'sweep about-spt', svg: media + sptDish(spt.x, spt.y, tilt, spt.k) },
     has('euclid') && { id: 'euclid', cls: 'sweep about-euclid', svg: media + euclid(EUC.x, EUC.y, eRot, EUC.k) },
   ].filter(Boolean);
 }
@@ -535,7 +535,7 @@ const ART = {
   // every instrument, five redshifts from sky blue through lilac to rose, and the CMB behind them
   title: () => scene({ sky: slices([S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose]), who: ['euclid', 'spt', 'unions'] }),
   // Euclid's galaxies in the part's sky blue, in front of the CMB that SPT maps
-  'euclid-spt': () => scene({ sky: slices(ramp('#8FB2D6', '#B9D0E6')), who: ['euclid', 'spt'], lifted: 0.14, words: [1020, 1440] }),
+  'euclid-spt': () => scene({ sky: slices(ramp('#8FB2D6', '#B9D0E6')), who: ['euclid', 'spt'], lifted: 0.14, words: [1020, 1440], spt: { x: 930, y: 952, k: 0.74 } }),
   // the turn to how the work is done: Lightcone's own mark, with the talk's sky in its past cone
   exciting: () => markCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose] }),
   questions: () => ahead(),
