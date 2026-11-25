@@ -535,8 +535,8 @@ function layers() {
 // result back through its analysis to the choices it came from.
 function lineage() {
   hand(167);
-  const sx = 250, sy = 664, sw = 270, sh = 282, rows = [0, 1, 2, 3].map(i => sy + 62 + i * 58), pick = [1, 0, 2, 1];
-  const optX = (k) => sx + 152 + k * 38, nx = 850, nw = 150, nh = 56, rx = 1380, rw = 220, rh = 84, ys = [706, 806, 906];
+  const sx = 670, sy = 664, sw = 270, sh = 282, rows = [0, 1, 2, 3].map(i => sy + 62 + i * 58), pick = [1, 0, 2, 1];
+  const optX = (k) => sx + 152 + k * 38, nx = 1140, nw = 150, nh = 56, rx = 1540, rw = 220, rh = 84, ys = [706, 806, 906];
   const thread = (x1, y1, x2, y2) => stroke(`M${x1} ${y1} C${x1 + (x2 - x1) * 0.5} ${y1} ${x2 - (x2 - x1) * 0.5} ${y2} ${x2} ${y2}`, W.fine);
   const sheet = poly([[sx, sy], [sx + sw - 34, sy], [sx + sw, sy + 34], [sx + sw, sy + sh], [sx, sy + sh]], W.line, 4)
     + ln(sx + sw - 34, sy, sx + sw - 34, sy + 34, W.fine, 0) + ln(sx + sw - 34, sy + 34, sx + sw, sy + 34, W.fine, 0)
