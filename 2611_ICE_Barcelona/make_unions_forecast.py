@@ -1,12 +1,14 @@
 """UNIONS v2 forecast in the (Omega_m, S8) plane: cosmic shear alone, then the 3x2pt with the LSx lenses.
 
-Reads the nested-sampling posteriors of the noiseless UNIONS x LSx vectors (slim.npz: derived parameters and weights of
-each chain, named <cut>_<probes>, from /leonardo_scratch/large/userexternal/cdaley00/unions-forecast).
+Reads the nested-sampling posteriors (slim_fir.npz: derived parameters and weights of each chain). The two drawn are
+chains on the model prediction with no noise added, run on fir (~/scratch/ufc there): v092f_first_LL_hi_s1 and
+v092f_first_3x2_hi_s1. Names without a prefix are the 25 November chains from Leonardo, mockg_* chains on noisy Gaussian
+skies and glass_* chains on GLASS mocks.
 Writes images/ice_unions_forecast_<k>.png (build frames) and unions_forecast.json (mean and sigma of S8, Omega_m and
 sigma8 of every chain, the figure of merit 1/sqrt(det C) of (Omega_m, S8), and the wall time).
 
 Run: uv run --with numpy --with scipy --with matplotlib --with fonttools --with brotli \
-       python 2611_ICE_Barcelona/make_unions_forecast.py --src ~/scratch/ufc/slim.npz
+       python 2611_ICE_Barcelona/make_unions_forecast.py --src ~/scratch/ufc-fir/slim_fir.npz
 """
 from __future__ import annotations
 
@@ -50,7 +52,7 @@ def main():
                          'xtick.color': style.MUTED, 'ytick.color': style.MUTED, 'xtick.major.size': 12,
                          'ytick.major.size': 12, 'xtick.major.width': 2.4, 'ytick.major.width': 2.4,
                          'axes.spines.top': False, 'axes.spines.right': False})
-    layers = [('first_LL_hi', SHEAR, 'cosmic shear'), ('first_3x2_hi', JOINT, '3×2pt with SPHEREx lenses')]
+    layers = [('v092f_first_LL_hi_s1', SHEAR, 'cosmic shear'), ('v092f_first_3x2_hi_s1', JOINT, '3×2pt with SPHEREx lenses')]
     for k in range(1, len(layers) + 1):
         fig = plt.figure(figsize=(style.W_PX / style.DPI, style.H_PX / style.DPI), dpi=style.DPI)
         ax = fig.add_axes([0.15, 0.17, 0.82, 0.62])
