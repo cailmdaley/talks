@@ -165,8 +165,8 @@
 .slide h2.marque > img.inst { height: 0.8em; width: auto; }
 .slide ul.marks { list-style: none; padding: 0; display: grid; grid-template-columns: 480px 1fr; column-gap: 56px; row-gap: 28px; align-items: center; }
 .slide ul.marks > li { display: contents; }
-.slide ul.marks > li > img { max-width: 300px; max-height: 120px; justify-self: center; }
-.slide ul.marks > li > img.shot { max-width: 480px; max-height: none; mix-blend-mode: multiply; }
+.slide ul.marks > li > img { max-width: 300px; max-height: 120px; justify-self: start; margin-left: 8px; }
+.slide ul.marks > li > img.shot { max-width: 480px; max-height: none; margin-left: 0; mix-blend-mode: multiply; }
 .slide ul.marks a { font-size: var(--t-small); color: var(--muted); }
 .slide h2.marque::after { display: none; }
 .slide figure.art > img.plate { opacity: 0.78;
