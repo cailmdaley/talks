@@ -530,6 +530,38 @@ function layers() {
   ];
 }
 
+// Lightcone: the specification of an analysis as a sheet, one choice marked in each of its rows; the
+// analyses run from it, as boxes; the results they give, as small figures. A thread ties every
+// result back through its analysis to the choices it came from.
+function lineage() {
+  hand(167);
+  const sx = 250, sy = 664, sw = 270, sh = 282, rows = [0, 1, 2, 3].map(i => sy + 62 + i * 58), pick = [1, 0, 2, 1];
+  const optX = (k) => sx + 152 + k * 38, nx = 850, nw = 150, nh = 56, rx = 1380, rw = 220, rh = 84, ys = [706, 806, 906];
+  const thread = (x1, y1, x2, y2) => stroke(`M${x1} ${y1} C${x1 + (x2 - x1) * 0.5} ${y1} ${x2 - (x2 - x1) * 0.5} ${y2} ${x2} ${y2}`, W.fine);
+  const sheet = poly([[sx, sy], [sx + sw - 34, sy], [sx + sw, sy + 34], [sx + sw, sy + sh], [sx, sy + sh]], W.line, 4)
+    + ln(sx + sw - 34, sy, sx + sw - 34, sy + 34, W.fine, 0) + ln(sx + sw - 34, sy + 34, sx + sw, sy + 34, W.fine, 0)
+    + rows.map((y, i) => ln(sx + 26, y, sx + 100 + (i % 2) * 16, y, W.fine, 0) + [0, 1, 2].map(k => oval(optX(k), y, 9, 9, 0, W.fine, 0.06)).join('')).join('');
+  const chosen = rows.map((y, i) => `<circle cx="${optX(pick[i])}" cy="${y}" r="5.2" fill="#211C17" stroke="none"/>`).join('');
+  const nodes = ys.map(y => box(nx, y - nh / 2, nw, nh, W.line, 4) + ln(nx + 18, y, nx + nw - 18 - rnd() * 30, y, W.ghost, 0)).join('');
+  const frames = ys.map(y => ln(rx, y + rh / 2, rx + rw, y + rh / 2, W.fine, 4) + ln(rx, y + rh / 2, rx, y - rh / 2, W.fine, 4)).join('');
+  // the three results: bandpowers on their curve, a posterior, a histogram
+  const curve = Array.from({ length: 24 }, (_, i) => { const t = 0.05 + 1.7 * i / 23; return [rx + 16 + (rw - 30) * i / 23, ys[0] + rh / 2 - 8 - (rh - 22) * Math.pow(t, 0.55) * Math.exp(-1.7 * t) / 0.44]; });
+  const points = [2, 5, 8, 11, 14, 17, 20, 22].map((i, j) => { const [x, y] = curve[i], e = 5 + j * 0.9, d = jit(e * 0.6);
+    return `<path d="M${x.toFixed(1)} ${(y + d - e).toFixed(1)} V${(y + d + e).toFixed(1)}"/><circle cx="${x.toFixed(1)}" cy="${(y + d).toFixed(1)}" r="3.6" fill="#211C17"/>`; }).join('');
+  const cx = rx + rw * 0.52, cy = ys[1] - 2, post = `<g transform="rotate(-24 ${cx} ${cy})">${glaze(S.lilac, ell(cx, cy, 70, 24), 0.55)}${glaze(deep(S.lilac, 0.86), ell(cx, cy, 40, 13), 0.7)}</g>`;
+  const bars = [0.25, 0.5, 0.85, 1, 0.7, 0.4, 0.18].map((h, i) => [rx + 22 + i * 26, ys[2] + rh / 2 - h * (rh - 16), 22, h * (rh - 16)]);
+  const wash = `<defs>${GLAZE}</defs>` + glaze(S.butter, `M${sx} ${sy} H${sx + sw - 34} L${sx + sw} ${sy + 34} V${sy + sh} H${sx}Z`, 0.3)
+    + ys.map((y, i) => glaze([S.sky, S.rose, S.lilac][i], `M${nx} ${y - nh / 2} h${nw} v${nh} h${-nw}Z`, 0.55)).join('') + post
+    + bars.map(([x, y, w, h]) => glaze(S.rose, `M${x} ${y} h${w} v${h} h${-w}Z`, 0.6)).join('');
+  const ties = [[0, 0], [1, 0], [1, 1], [2, 1], [2, 2], [3, 2]].map(([r, n]) => thread(sx + sw + 6, rows[r], nx - 6, ys[n])).join('')
+    + [[0, 0], [1, 0], [1, 1], [1, 2], [2, 2]].map(([n, r]) => thread(nx + nw + 6, ys[n], rx - 12, ys[r])).join('');
+  return [
+    { id: 'wash', cls: 'wash', dpr: 1, svg: wash },
+    { id: 'lines', svg: MEDIA + `<defs>${INK}</defs>` + pencil(sheet + nodes + frames + ties + stroke(through(curve), W.fine) + bars.map(([x, y, w, h]) => box(x, y, w, h, W.fine, 0)).join('')
+        + oval(cx, cy, 70, 24, -24, W.fine, 0.05)) + ink(chosen + points) },
+  ];
+}
+
 const ramp = (a, b) => [0, 0.25, 0.5, 0.75, 1].map(t => mix(a, b, t));
 const ART = {
   // every instrument, five redshifts from sky blue through lilac to rose, and the CMB behind them
@@ -546,6 +578,7 @@ const ART = {
   tensions: () => tensions(),
   agents: () => knownInput(),
   agentic: () => layers(),
+  'lightcone-research': () => lineage(),
   sbi: () => inference(),
   // the northern sky from Mauna Kea, in the part's rose, and the shape catalogue under a loupe
   unions: () => [...scene({ sky: slices(ramp('#D9A0B4', '#E8B5A8'), false), who: ['unions'], lifted: 0.14, words: [1020, 1440] }), ...shapeCatalogue()],
@@ -562,6 +595,7 @@ const ALT = {
   overview: 'A brace gathers the three projects and points to one simulated sky, a globe in pencil and wash',
   sbi: 'Seven mock skies along a parameter axis, their structure growing clumpier; the one that matches the data is ringed in ink and the posterior is a lilac wash on the axis beneath it',
   agentic: 'Four sheets drawn one above another in pencil and wash: a survey sky of ink specks, a simulated cosmic web, a grid of ticked tests, and on top a sheet still in construction lines with its wash only begun',
+  'lightcone-research': 'A specification sheet in pencil with one choice marked in each row; threads run from its rows to three analyses, drawn as washed boxes, and on to three small results: bandpowers on a curve, a posterior, a histogram',
   agents: 'A known input spectrum in pencil, the sky simulated from it as a washed globe, and the measured bandpowers in ink lying on the same pencil curve',
   exciting: 'Pencil and watercolour: a light cone drawn about its time and space axes, as in the Lightcone logo; the past cone holds the redshift sheets as washes, down to the CMB at its mouth, and the future cone is bare pencil',
 };
