@@ -21,7 +21,7 @@
           <path d="M406 250 H464" marker-end="url(#pipeline-arrow)"/>
           <path d="M406 430 H464" marker-end="url(#pipeline-arrow)"/>
           <path d="M406 671 H464" marker-end="url(#pipeline-arrow)"/>
-          <path d="M406 630 C438 628 434 536 464 528" marker-end="url(#pipeline-arrow)"/>
+          <path d="M406 626 H426 Q438 626 438 614 V532 Q438 520 450 520 H464" marker-end="url(#pipeline-arrow)"/>
           <path d="M664 564 V588" marker-end="url(#pipeline-arrow)"/>
         </g>
         <g class="pen fill-none stroke-ink" stroke-linejoin="round" stroke-width="2">
@@ -68,40 +68,37 @@
         <text x="664" y="730" font-size="32" text-anchor="middle">and validation</text>
       </g>
 
-      <!-- step 2: simulations and covariance, modelled: in wash, with no pen -->
+      <!-- step 2: the model and what is made from it, in wash with no pen: theory and likelihood feed the simulations, which feed the estimator and the covariance -->
       <g class="fragment" data-fragment-index="0">
-        <rect x="474" y="22" width="380" height="130" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
-        <rect x="944" y="22" width="316" height="130" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
+        <rect x="944" y="206" width="316" height="200" rx="3" class="glaze" fill="url(#pipeline-deep)"/>
+        <rect x="1344" y="22" width="316" height="130" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
+        <rect x="1100" y="616" width="380" height="130" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
         <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">
-          <path class="stroke-muted" d="M474 4 H1264 Q1278 4 1278 18 V154 Q1278 168 1264 168 H474 Q460 168 460 154 V18 Q460 4 474 4 Z"/>
-          <path d="M664 158 V190" marker-end="url(#pipeline-arrow)"/>
-          <path d="M862 87 H936" marker-end="url(#pipeline-arrow)"/>
+          <path d="M1200 198 C1230 176 1390 204 1420 160" marker-end="url(#pipeline-arrow)"/>
+          <path d="M1336 87 H704 Q664 87 664 127 V190" marker-end="url(#pipeline-arrow)"/>
+          <path d="M1668 87 H1680 Q1700 87 1700 107 V661 Q1700 681 1680 681 H1488" marker-end="url(#pipeline-arrow)"/>
+          <path d="M1092 681 H862" marker-end="url(#pipeline-arrow)"/>
         </g>
-        <text x="498" y="76" font-size="40" font-weight="700">Simulations</text>
-        <text x="498" y="124" font-size="32">GLASS, FLASK mocks</text>
-        <text x="1102" y="76" font-size="40" font-weight="700" text-anchor="middle">Covariance</text>
-        <text x="1102" y="124" font-size="32" class="fill-muted" text-anchor="middle">iNKA + SSC, FLASK</text>
-        <text x="1086" y="216" font-size="34" font-weight="700" text-anchor="middle">Simulations &amp; covariance</text>
+        <text x="1102" y="258" font-size="40" font-weight="700" text-anchor="middle">Theory &amp;</text>
+        <text x="1102" y="302" font-size="40" font-weight="700" text-anchor="middle">likelihood</text>
+        <text x="1102" y="348" font-size="32" class="fill-muted" text-anchor="middle">CLOE + JAX patches</text>
+        <text x="1102" y="388" font-size="32" class="fill-muted" text-anchor="middle">3×2pt setup + κ</text>
+        <text x="1502" y="76" font-size="40" font-weight="700" text-anchor="middle">Simulations</text>
+        <text x="1502" y="124" font-size="32" text-anchor="middle">GLASS, FLASK mocks</text>
+        <text x="1290" y="670" font-size="40" font-weight="700" text-anchor="middle">Covariance</text>
+        <text x="1290" y="718" font-size="32" class="fill-muted" text-anchor="middle">iNKA + SSC, FLASK</text>
       </g>
 
-      <!-- step 3: theory and likelihood, with the blind: in wash, the likelihood the deepest -->
+      <!-- step 3: the blind, drawn from the same model and added to the measured bandpowers -->
       <g class="fragment" data-fragment-index="1">
-        <rect x="944" y="270" width="316" height="200" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
-        <rect x="1344" y="270" width="346" height="214" rx="3" class="glaze" fill="url(#pipeline-deep)"/>
+        <rect x="1344" y="446" width="316" height="170" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
         <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">
-          <path d="M862 370 H936" marker-end="url(#pipeline-arrow)"/>
-          <path d="M1268 370 H1336" marker-end="url(#pipeline-arrow)"/>
-          <path d="M1268 92 C1306 96 1296 262 1336 304" marker-end="url(#pipeline-arrow)"/>
+          <path d="M1180 414 C1190 470 1270 500 1336 500" marker-end="url(#pipeline-arrow)"/>
+          <path d="M862 470 C1000 470 1150 560 1336 560" marker-end="url(#pipeline-arrow)"/>
         </g>
-        <text x="1102" y="336" font-size="40" font-weight="700" text-anchor="middle">Blind</text>
-        <text x="1102" y="386" font-size="32" class="fill-muted" text-anchor="middle">hidden cosmology</text>
-        <text x="1102" y="428" font-size="32" class="fill-muted" text-anchor="middle">shift added to Cℓ</text>
-        <g>
-          <text x="1517" y="328" font-size="40" font-weight="700" text-anchor="middle">Theory &amp;</text>
-          <text x="1517" y="372" font-size="40" font-weight="700" text-anchor="middle">likelihood</text>
-          <text x="1517" y="420" font-size="32" class="fill-muted" text-anchor="middle">CLOE + JAX patches</text>
-          <text x="1517" y="460" font-size="32" class="fill-muted" text-anchor="middle">3×2pt setup + κ</text>
-        </g>
+        <text x="1502" y="500" font-size="40" font-weight="700" text-anchor="middle">Blind</text>
+        <text x="1502" y="548" font-size="32" class="fill-muted" text-anchor="middle">hidden cosmology</text>
+        <text x="1502" y="588" font-size="32" class="fill-muted" text-anchor="middle">shift added to Cℓ</text>
       </g>
     </svg>
   </figure>
