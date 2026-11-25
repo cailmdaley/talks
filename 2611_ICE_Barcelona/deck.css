@@ -144,3 +144,7 @@
 
 /* agentic: the lines keep the left of the slide; the stack of layers is drawn on the right */
 [data-house-slide="agentic"] .slide:not(.detail) > .body > ul { max-width: 1040px; }
+
+/* lightcone-research: the institutions' marks in a row under the two lines */
+.slide p.logos { display: flex; align-items: center; gap: 56px; margin-top: 72px; font-size: var(--t-small); color: var(--muted); }
+.slide p.logos > img { height: 110px; width: auto; }

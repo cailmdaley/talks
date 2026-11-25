@@ -67,6 +67,7 @@
       "outline": "Simulations as a verifiable environment for agents, Lightcone with a live demonstration, mocks that reproduce a survey and simulations from cheap to realistic, simulation-based inference as the work proposed for ICE, the questions this puts to the community, and a summary.",
       "slides": [
         "exciting",
+        "lightcone-research",
         "lightcone",
         "agentic",
         "agents",
