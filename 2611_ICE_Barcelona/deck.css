@@ -160,7 +160,7 @@
 .slide h2.marque::after { display: none; }
 .slide figure.art > img.plate { opacity: 0.78;
   -webkit-mask-image: linear-gradient(to bottom right, transparent 6%, #000 52%); mask-image: linear-gradient(to bottom right, transparent 6%, #000 52%); }
-.slide p.plate-credit { position: absolute; right: 672px; bottom: 112px; margin: 0; font-variant-caps: small-caps; letter-spacing: 0.06em; }
+.slide p.plate-credit { position: absolute; right: 672px; bottom: 150px; margin: 0; font-style: italic; opacity: 0.6; }
 /* the live Studio slide shows no folio */
 [data-house-slide="lightcone"] .slide:not(.detail) > .foot > .num { visibility: hidden; }
 
