@@ -86,6 +86,7 @@
         "blind-draws",
         "blind-rehearsal",
         "lens-ratio",
+        "cov-control-variates",
         "unions-mocks",
         "unions-blinding",
         "unions-errorbars",
