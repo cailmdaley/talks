@@ -6,9 +6,9 @@
     <img class="fragment" data-fragment-index="2" src="images/ice_dr1_forecast_3.png" alt="The ACT DR6 6x2pt outlined, between the two">
   </figure>
   <div class="text">
-    <span class="kicker">$\sigma(\sigma_8)$ · Euclid DR1 South</span>
+    <span class="kicker">$\sigma(\sigma_8)$ · SPT-3G is Main + Summer</span>
     <ul>
-      <li>3×2pt: 0.029</li>
+      <li>DR1 South 3×2pt: 0.029</li>
       <li class="fragment" data-fragment-index="1">6×2pt with SPT-3G: 0.015</li>
       <li class="fragment" data-fragment-index="2">6×2pt with ACT: 0.019</li>
       <li class="fragment" data-fragment-index="3">5×2pt, no κκ: 0.028</li>
@@ -31,6 +31,9 @@
     </details>
     <details><summary>Numbers</summary>
     <p>$\sigma(\sigma_8)$, $\sigma(S_8)$, $\sigma(\Omega_\mathrm{m})$: 3×2pt 0.0293, 0.0105, 0.0213. 6×2pt with SPT-3G Main 0.0156, 0.0088, 0.0150; Summer 0.0210, 0.0092, 0.0173; both 0.0145, 0.0085, 0.0143; ACT DR6 0.0187, 0.0090, 0.0163. 5×2pt with both SPT fields 0.0281, 0.0101, 0.0210, with ACT 0.0287, 0.0102, 0.0212. κ crosses only: SPT-3G both 0.071, 0.027, 0.070. Dropping $\ell&lt;100$ from the Euclid spectra: 3×2pt 0.032, 0.0110, 0.0232, 6×2pt with both SPT fields 0.0151, 0.0089, 0.0151.</p>
+    </details>
+    <details><summary>κκ through candl, and its covariance with the crosses</summary>
+    <p>ACT DR6's published $\kappa\kappa$ likelihood, run through candl as an independent term on a noiseless vector, gives $\sigma(\sigma_8)=0.0204$ (3×2pt + ACT crosses + candl $\kappa\kappa$) against 0.0187 for our joint vector; the published $\kappa\kappa$ covariance is wider than ours ($S/N$ 39 against 46). Dropping the covariance between $\kappa\kappa$ and everything else in our joint vector changes $\sigma(\sigma_8)$ by 4 % with ACT (0.0187 to 0.0195) and 2 % with SPT-3G (0.0145 to 0.0148). SPT's own D1 $\kappa\kappa$ candl likelihood is withdrawn by its authors for a known bug until spt_candl_data 3.1.0, so it is not used here.</p>
     </details>
     <details><summary>Sources</summary>
     <p>Figure 2611_ICE_Barcelona/make_dr1_forecast.py, summary in dr1_forecast.json; chains of 25 November on Leonardo.</p>
