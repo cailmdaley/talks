@@ -201,26 +201,35 @@ function chain() {
 }
 
 // ── unions-3x2pt ─────────────────────────────────────────────────────────────────────────────
-// Calum Murray's plot of the lens sample against DES, redrawn in the deck's hand from the curves of
-// his figure (images/lsx_nz_desy6.svg, a matplotlib SVG: axes from z = 0 at 38.55 pt to 1.4 at
-// 460.925 pt, baseline at 122.796 pt). Each n(z) is peak-normalised, as he drew it. The six LSx
-// bins are narrow, so six washes of rose under a pen line; the six DES Y6 clustering bins are
-// broad washes of grey under pencil, the bin DES dropped from its 3×2pt dashed.
+// The lens bins in front of the sources they lens. The six SPHEREx bins are the LSx curves of Calum
+// Murray's figure (images/lsx_nz_desy6.svg, a matplotlib SVG: axes from z = 0 at 38.55 pt to 1.4 at
+// 460.925 pt, baseline at 122.796 pt), narrow washes of rose under a pen line. Behind them rises the
+// source n(z) of the first UNIONS release, a broad wash of sky under pencil, deepest under the ridge
+// and thinning to the axis, with the jagged ridge of its histogram kept. Heights are arbitrary: every lens bin is drawn to one height, the
+// sources taller.
+//
+// UNIONS_NZ is the published n(z) of ShapePipe v1.4.6.3 (nz_SP_v1.4.6.3_B.txt, sha256 e09a917b…,
+// the SOM-weighted histogram of Z_B in blind_nz_shapepipe_v1.4.6.3.fits): its value in each bin of
+// width 0.025 from z = 0 to 1.6, over its peak (1.405 at z = 0.4625).
+const UNIONS_NZ = [0.006, 0.056, 0.147, 0.209, 0.301, 0.462, 0.497, 0.629, 0.817, 0.876, 0.856, 0.972, 0.765, 0.848, 0.977, 0.909,
+  0.957, 0.973, 1.000, 0.921, 0.956, 0.988, 0.949, 0.846, 0.855, 0.763, 0.660, 0.638, 0.560, 0.561, 0.512, 0.479,
+  0.471, 0.448, 0.398, 0.411, 0.365, 0.303, 0.315, 0.336, 0.279, 0.256, 0.194, 0.204, 0.206, 0.170, 0.194, 0.164,
+  0.164, 0.168, 0.146, 0.120, 0.118, 0.090, 0.064, 0.097, 0.051, 0.057, 0.085, 0.035, 0.042, 0.067, 0.035, 0.047];
 function unions3x2pt() {
   const src = fs.readFileSync(path.join(HERE, 'images', 'lsx_nz_desy6.svg'), 'utf8');
-  const curves = [...src.matchAll(/<g id="line2d_\d+">\s*<path d="([^"]+)"[^>]*style="([^"]+)"/g)]
-    .map(([, d, style]) => ({ pts: [...d.matchAll(/[ML] ([\d.]+) ([\d.]+)/g)].map(([, px, py]) => [(px - 38.55) / (460.925 - 38.55) * 1.4, 122.796 - py]),
-      lsx: /#b9573a/.test(style), dashed: /dasharray/.test(style) }))
+  const lsx = [...src.matchAll(/<g id="line2d_\d+">\s*<path d="([^"]+)"[^>]*style="([^"]+)"/g)]
+    .filter(([, , style]) => /#b9573a/.test(style))
+    .map(([, d]) => ({ pts: [...d.matchAll(/[ML] ([\d.]+) ([\d.]+)/g)].map(([, px, py]) => [(px - 38.55) / (460.925 - 38.55) * 1.4, 122.796 - py]) }))
     .filter((c) => c.pts.length > 20);
-  const x = (z) => 60 + z * 1137.14, BASE = 300, H = 204;
-  // each curve is kept from where it leaves the axis to where it returns, so the lines do not pile up along it
-  for (const c of curves) { const top = Math.max(...c.pts.map((p) => p[1])), on = c.pts.map((p) => p[1] > 0.006 * top);
+  const ZMAX = 1.6, x = (z) => 60 + z * 1592 / ZMAX, BASE = 300, H = 204, LENS = 0.64 * H;
+  // each lens bin is kept from where it leaves the axis to where it returns, so the lines do not pile up along it
+  for (const c of lsx) { const top = Math.max(...c.pts.map((p) => p[1])), on = c.pts.map((p) => p[1] > 0.006 * top);
     const i0 = Math.max(0, on.indexOf(true) - 1), i1 = Math.min(c.pts.length - 1, on.lastIndexOf(true) + 1);
-    c.xy = c.pts.slice(i0, i1 + 1).map(([z, v]) => [x(z), BASE - H * v / top]); }
-  const area = (c) => line([[c.xy[0][0], BASE], ...c.xy, [c.xy[c.xy.length - 1][0], BASE]]) + 'Z';
-  const des = curves.filter((c) => !c.lsx), lsx = curves.filter((c) => c.lsx);
-  const tick = [0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4];
-  return `<svg viewBox="0 24 1712 386" role="img" aria-label="Redshift distributions, each scaled to a peak of one: six narrow bins of the SPHEREx all-sky lens sample LSx v0.9 between redshift 0 and 0.55, against the six broader DES Y6 clustering bins between 0.2 and 1.2, the second of which DES dropped from its 3x2pt analysis">
+    c.xy = c.pts.slice(i0, i1 + 1).map(([z, v]) => [x(z), BASE - LENS * v / top]); }
+  const sources = [[x(0), BASE], ...UNIONS_NZ.map((v, i) => [x(0.025 * (i + 0.5)), BASE - H * v])];
+  const area = (xy) => line([[xy[0][0], BASE], ...xy, [xy[xy.length - 1][0], BASE]]) + 'Z';
+  const tick = [0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6];
+  return `<svg viewBox="0 24 1712 386" role="img" aria-label="Redshift distributions between redshift 0 and 1.6, heights arbitrary: six narrow bins of the SPHEREx all-sky lens sample LSx v0.9 between redshift 0 and 0.55, in front of the source galaxies of the first UNIONS release, whose distribution rises to a broad peak near 0.5 and falls away to 1.6">
       <!-- the axes, in pencil -->
       <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">
         <path d="M60 ${BASE} H1652 M60 ${BASE} V${BASE - H - 24} ${tick.map((z) => `M${n1(x(z))} ${BASE} V${BASE + 13}`).join(' ')}"/>
@@ -228,20 +237,25 @@ function unions3x2pt() {
       <g font-size="35" text-anchor="middle" class="fill-muted">
         ${tick.map((z) => `<text x="${n1(x(z))}" y="${BASE + 54}">${z}</text>`).join('')}
         <text x="856" y="${BASE + 94}">redshift</text>
-        <text x="1652" y="${BASE + 94}" text-anchor="end" font-style="italic">preliminary · plot after Calum Murray</text>
+        <text x="1652" y="${BASE + 94}" text-anchor="end" font-style="italic">lens bins preliminary, from Calum Murray</text>
       </g>
-      <!-- DES Y6 clustering bins: broad grey washes under pencil, the dropped bin dashed and unpainted -->
-      ${des.filter((c) => !c.dashed).map((c) => `<path d="${area(c)}" class="glaze" fill="#3B4150" opacity="0.13"/>`).join('\n      ')}
+      <defs>
+        <linearGradient id="nz-sky" gradientUnits="userSpaceOnUse" x1="0" y1="${BASE - H}" x2="0" y2="${BASE}">
+          <stop offset="0" class="stop-sky" stop-opacity="0.95"/><stop offset="0.55" class="stop-sky" stop-opacity="0.5"/><stop offset="1" class="stop-sky" stop-opacity="0.14"/>
+        </linearGradient>
+      </defs>
+      <!-- the UNIONS sources: one broad wash of sky under pencil, behind, the pigment gathered under the ridge and thinning to the axis -->
+      <path d="${area(sources)}" class="glaze" fill="url(#nz-sky)"/>
       <g class="pencil fill-none stroke-ink" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-        ${des.map((c) => `<path d="${line(c.xy)}"${c.dashed ? ' stroke-dasharray="12 9" opacity="0.6"' : ''}/>`).join('\n        ')}
+        <path d="${line(sources)}"/>
       </g>
-      <!-- LSx lens bins: narrow washes of rose under a pen line -->
-      ${lsx.map((c) => `<path d="${area(c)}" class="glaze fill-rose" opacity="0.5"/>`).join('\n      ')}
+      <!-- LSx lens bins: narrow washes of rose under a pen line, in front -->
+      ${lsx.map((c) => `<path d="${area(c.xy)}" class="glaze fill-rose" opacity="0.62"/>`).join('\n      ')}
       <g class="pen fill-none stroke-accent" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
         ${lsx.map((c) => `<path d="${line(c.xy)}"/>`).join('\n        ')}
       </g>
-      <text x="84" y="62" font-size="36" font-weight="600" class="fill-accent">SPHEREx all-sky (LSx v0.9), 6 bins</text>
-      <text x="${n1(x(0.62))}" y="62" font-size="36" font-weight="600">DES Y6 clustering, 6 bins <tspan font-weight="400" font-size="35" class="fill-muted">· dashed: dropped from its 3×2pt</tspan></text>
+      <text x="${n1(x(0.82))}" y="74" font-size="36" font-weight="600" class="fill-accent">SPHEREx all-sky lenses (LSx v0.9), 6 bins</text>
+      <text x="${n1(x(0.82))}" y="124" font-size="36" font-weight="600">UNIONS sources, first release</text>
     </svg>`;
 }
 
