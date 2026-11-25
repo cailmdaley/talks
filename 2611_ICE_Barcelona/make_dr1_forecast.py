@@ -72,20 +72,27 @@ def main():
     z, zw = np.load(args.src), np.load(args.wide)
     truth = dict(zip(DERIVED, z['dr1_3x2|t'].astype(float)))
     base = chain(z, 'dr1_3x2', '3×2pt', EUCLID)
-    frames = [[base]] + [[base, chain(z, f'dr1_MS_{n}x2', f'{n}×2pt with SPT-3G', SPT),
-                          chain(z, f'dr1_A_{n}x2', f'{n}×2pt with ACT DR6', ACT, False)] for n in (5, 6)]
-    # wide priors, in two frames: the 3×2pt against itself, then the 5×2pt added as the bottom row
-    wide3 = [chain(zw, 'dr1_3x2_pw10', '3×2pt, wide priors', EUCLID), chain(z, 'dr1_3x2', '3×2pt', style.INK, False)]
-    frames += [wide3, [chain(zw, 'dr1_MS_5x2_pw10', '5×2pt, wide priors', SPT)] + wide3]
-    for k, chains in enumerate(frames, 1):
+    ink = chain(z, 'dr1_3x2', '3×2pt', style.INK, False)
+    wide3 = chain(zw, 'dr1_3x2_pw10', '3×2pt, wide priors', EUCLID)
+    wide5 = chain(zw, 'dr1_MS_5x2_pw10', '5×2pt, wide priors', SPT)
+    # Each frame: its rows from top to bottom (widest first), then the order its contours are laid down, outlines last.
+    frames = [([base], [base])]
+    for n in (5, 6):
+        act = chain(z, f'dr1_A_{n}x2', f'{n}×2pt with ACT DR6', ACT)
+        spt = chain(z, f'dr1_MS_{n}x2', f'{n}×2pt with SPT-3G', SPT, False)
+        frames.append(([base, act, spt], [base, act, spt]))
+    frames += [([ink, wide3], [wide3, ink]), ([ink, wide3, wide5], [wide3, wide5, ink])]
+    for k, (rows, draw) in enumerate(frames, 1):
         wide = k >= 4
+        chains = rows[::-1]
         fig = posteriors(
             chains, D, center=truth, value=False, rows=3,
             lims={'Omega_m': (-.08, .08) if wide else (-.07, .07), 'S8': (-.095, .095) if wide else (-.036, .036)},
             ticks={'Omega_m': [-.05, 0, .05], 'S8': [-.05, 0, .05] if wide else [-.02, 0, .02]})
-        if k == 5:   # rows follow the chain order; the 5×2pt contour is still drawn over the wide 3×2pt
-            sets = fig.axes[0].collections
-            sets[0].set_zorder(2.5); sets[1].set_zorder(2.6); sets[4].set_zorder(3)
+        sets = iter(fig.axes[0].collections)
+        for c in chains:
+            for part in range(2 if c.fill else 1):   # a filled chain is a fill and its outline
+                next(sets).set_zorder(2 + [id(d) for d in draw].index(id(c)) + .1 * part)
         save(fig, f'ice_dr1_forecast_{k}.png')
     fig_m(zw)
     names = sorted({k.split('|')[0] for k in z.files if k.startswith(('dr1_', 'tr1_'))})
