@@ -146,13 +146,20 @@
 /* agentic: the lines keep the left of the slide; the stack of layers is drawn on the right */
 [data-house-slide="agentic"] .slide:not(.detail) > .body > ul { max-width: 1040px; }
 
-/* lightcone-research: each part with its mark at the left, its line and link beside it;
-   the institutions' marks in a row underneath */
-.slide ul.marks { list-style: none; padding: 0; display: grid; grid-template-columns: 400px 1fr; column-gap: 56px; row-gap: 28px; align-items: center; }
+/* lightcone-research: the organisation's logo as the headline with its institutions at the right;
+   each part with its mark at the left and its line beside it; Bayer's star chart in the lower
+   right, fading up and to the left where the text is */
+.slide h2.marque { display: flex; align-items: center; gap: 36px; }
+.slide h2.marque > img.wordmark { height: 1.5em; width: auto; margin-right: auto; }
+.slide h2.marque > img.inst { height: 0.8em; width: auto; }
+.slide ul.marks { list-style: none; padding: 0; display: grid; grid-template-columns: 480px 1fr; column-gap: 56px; row-gap: 28px; align-items: center; }
 .slide ul.marks > li { display: contents; }
 .slide ul.marks > li > img { max-width: 300px; max-height: 120px; justify-self: center; }
-.slide ul.marks > li > img.shot { max-width: 400px; max-height: none; border-radius: 8px; border: 1px solid var(--rule); }
-.slide h2 > img.wordmark { height: 1.9em; width: auto; display: block; margin: 0 0 -0.5em 0; }
+.slide ul.marks > li > img.shot { max-width: 480px; max-height: none; mix-blend-mode: multiply; }
 .slide ul.marks a { font-size: var(--t-small); color: var(--muted); }
-.slide p.logos { display: flex; align-items: center; gap: 56px; margin-top: 64px; }
-.slide p.logos > img { height: 96px; width: auto; }
+.slide h2.marque::after { display: none; }
+.slide figure.art > img.plate { opacity: 0.5; mix-blend-mode: multiply;
+  -webkit-mask-image: linear-gradient(to bottom right, transparent 42%, #000 92%); mask-image: linear-gradient(to bottom right, transparent 42%, #000 92%); }
+.slide p.plate-credit { position: absolute; right: 104px; bottom: 112px; margin: 0; font-variant-caps: small-caps; letter-spacing: 0.06em; }
+/* the live Studio slide shows no folio */
+[data-house-slide="lightcone"] .slide:not(.detail) > .foot > .num { visibility: hidden; }
