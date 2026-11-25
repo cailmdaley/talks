@@ -483,6 +483,16 @@ function tensions() {
   return [{ id: 'wash', cls: 'wash early', dpr: 1, svg: wash }, { id: 'lines', cls: 'early', svg: MEDIA + pencil(lines) }];   // both arrive with the bullet that names the tensions
 }
 
+// The mock's own mark: the simulated sky as a small globe in the corner of the slide that tests the pipeline on it.
+function mockMark() {
+  hand(61);
+  const cx = 1716, cy = 122, r = 82;
+  return [
+    { id: 'wash', cls: 'wash', dpr: 1, svg: mockSky(cx, cy, r) },
+    { id: 'lines', svg: MEDIA + pencil(graticule(cx, cy, r)) },
+  ];
+}
+
 const ramp = (a, b) => [0, 0.25, 0.5, 0.75, 1].map(t => mix(a, b, t));
 const ART = {
   // every instrument, five redshifts from sky blue through lilac to rose, and the CMB behind them
@@ -495,6 +505,7 @@ const ART = {
   // the whole sky again to close: looking straight up the cone, every redshift at once
   summary: () => upTheCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose], cx: 1640, cy: 700, R: 255 }),
   overview: () => oneSky(),
+  mocks: () => mockMark(),
   tensions: () => tensions(),
   agents: () => knownInput(),
   sbi: () => inference(),
@@ -509,6 +520,7 @@ const ALT = {
   summary: 'Pencil and watercolour: the light cone seen from below, its redshift sheets as rings of wash, one inside the other, around the CMB at the far end',
   questions: 'Pencil and watercolour: a small group of people stand at the foot of a light cone and look up into it; its four sheets fade with distance, the nearest painted, the third almost gone',
   tensions: 'Three sketches in pencil and wash: two posteriors of the expansion rate standing apart, the lensing contour of clustering amplitude below the one from the CMB, and the dark-energy contour lying off the point where ΛCDM sits',
+  mocks: 'A simulated sky as a small globe in pencil and wash',
   overview: 'A brace gathers the three projects and points to one simulated sky, a globe in pencil and wash',
   sbi: 'Seven mock skies along a parameter axis, their structure growing clumpier; the one that matches the data is ringed in ink and the posterior is a lilac wash on the axis beneath it',
   agents: 'A known input spectrum in pencil, the sky simulated from it as a washed globe, and the measured bandpowers in ink lying on the same pencil curve',
