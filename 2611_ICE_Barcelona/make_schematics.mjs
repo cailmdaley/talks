@@ -118,12 +118,17 @@ function chain() {
   const catalog = pencil(masks.map(([u, v, r]) => ellipse(X[2] + u, Y + v, r, r, 0, 16)).join(' '), 1.8) + pen(foot, 2.4)
     + `<path d="${sticks.trim()}" class="fill-none stroke-ink" stroke-width="1.6" stroke-linecap="round"/>`;
 
-  // data vectors: bandpowers with their errors, on pencil axes
+  // data vectors: the n×2pt triangle, one small panel of bandpowers for each pair of fields
   const axes = (cx) => pencil(`M${cx - 74} ${YM - 62} V${YM + 58} H${cx + 80}`, 2);
-  let bars = '', dots = '';
-  for (let i = 0; i < 7; i++) { const x = X[3] - 52 + i * 19.5, y = YM - 38 * Math.exp(-(((i - 1.2) / 3.4) ** 2)) + 22 + jit(3 + i * 0.9), e = 6 + i * 1.7;
-    bars += `M${n1(x)} ${n1(y - e)} V${n1(y + e)} `; dots += `<circle cx="${n1(x)}" cy="${n1(y)}" r="4.4"/>`; }
-  const vectors = axes(X[3]) + pen(bars.trim(), 2.2) + `<g class="fill-ink">${dots}</g>`;
+  const PW = 56, PH = 42, PG = 8, tx = X[3] - (3 * PW + 2 * PG) / 2 + 8, ty = YM - (3 * PH + 2 * PG) / 2 - 2;
+  let panels = '', bars = '', dots = '';
+  for (let r = 0; r < 3; r++) for (let c = 0; c <= r; c++) {
+    const px = tx + c * (PW + PG), py = ty + r * (PH + PG), amp = 0.6 + 0.4 * rnd();
+    panels += `M${n1(px)} ${n1(py)} V${n1(py + PH)} H${n1(px + PW)} `;
+    for (let i = 0; i < 4; i++) { const x = px + 11 + i * 11.8, y = py + PH - 9 - (PH - 19) * amp * Math.exp(-i / 2.2) + jit(1.4), e = 3 + i * 0.9;
+      bars += `M${n1(x)} ${n1(y - e)} V${n1(y + e)} `; dots += `<circle cx="${n1(x)}" cy="${n1(y)}" r="3.2"/>`; }
+  }
+  const vectors = pencil(panels.trim(), 1.8) + pen(bars.trim(), 1.7) + `<g class="fill-ink">${dots}</g>`;
 
   // cosmology: a posterior, two contours of one wash
   const cosmology = axes(X[4]) + `<path d="${ellipse(X[4] + 6, YM - 4, 56, 27, -0.6)}" class="glaze fill-lilac" opacity="0.6"/><path d="${ellipse(X[4] + 6, YM - 4, 32, 15, -0.6)}" class="glaze fill-lilac" opacity="0.95"/>`;
@@ -157,7 +162,7 @@ function chain() {
   // each probe's last stage bends to the data vectors, which both share
   const join = (y, s) => arrow(`M${X[2] + 106} ${y} C${X[2] + 205} ${y} ${X[3] - 195} ${YM + s * 34} ${X[3] - 106} ${YM + s * 34}`);
   const label = (i, y, a, b) => `<text x="${X[i]}" y="${y}">${a}</text>\n        <text x="${X[i]}" y="${y + 44}" font-size="32" font-weight="400" class="fill-muted">${b}</text>`;
-  return `<svg viewBox="0 0 1712 760" role="img" aria-label="Two rows meet at shared data vectors and cosmology: galaxy images to shapes to catalog above, CMB timestreams to maps to lensing map below, and a band of mocks between them tied to every stage, used to validate the pipeline and characterize systematics">
+  return `<svg viewBox="0 0 1712 760" role="img" aria-label="Two rows meet at shared data vectors, drawn as a triangle of six small panels, one for each pair of fields, and cosmology: galaxy images to shapes to catalog above, CMB timestreams to maps to lensing map below, and a band of mocks between them tied to every stage, used to validate the pipeline and characterize systematics">
       <defs>
         <marker id="chain-arrow" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="8" markerHeight="7" orient="auto">
           <path d="M0 0.5 Q6 3.5 12 5 Q6 6.5 0 9.5" class="fill-none stroke-ink" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
