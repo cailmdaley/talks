@@ -44,6 +44,7 @@
         "dv-vector",
         "covariance",
         "dr1-forecast",
+        "dr1-shear-m",
         "chains"
       ]
     },
