@@ -1,7 +1,7 @@
 <section data-layout="figure-text" data-stack>
   <h2>Simulations range from approximate to sophisticated</h2>
   <figure>
-    <svg viewBox="0 110 1712 410" role="img" aria-label="A track from fast and approximate to expensive and sophisticated with four rungs, each drawn as a small sky: Gaussian fields, lognormal, N-body, full forward model">
+    <svg viewBox="0 40 1712 420" role="img" aria-label="A track from fast and approximate to expensive and sophisticated with four rungs, each drawn as a sky: smooth Gaussian blotches, the soft web of a lognormal field, the sharp web of an N-body simulation, and for the forward model that web as a survey sees it, inside a footprint with star masks, pointings and noise">
       <defs>
         <marker id="fidelity-arrow" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="9" markerHeight="8" orient="auto">
           <path d="M0 0.5 Q6 3.5 12 5 Q6 6.5 0 9.5" class="fill-none stroke-ink" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -56,35 +56,43 @@
         <clipPath id="fidelity-footprint"><path clip-rule="evenodd" d="M-70 -34 C-56 -68 -14 -80 22 -66 C40 -58 50 -72 66 -52 C82 -30 70 -6 60 14 C52 32 60 54 36 66 C10 80 -24 72 -44 52 C-54 42 -74 36 -78 12 C-80 -6 -76 -22 -70 -34Z M-22 -28 a11 11 0 1 0 22 0 a11 11 0 1 0 -22 0Z M20 22 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0Z M-40 30 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0Z"/></clipPath>
       </defs>
       <!-- fidelity as a stroke of wash that widens from fast to faithful, warming into the forward models' lilac -->
-      <path d="M40 214 C500 211 1100 201 1600 189 Q1640 189 1640 215 Q1640 241 1600 241 C1100 229 500 219 40 216 Z" class="glaze" fill="url(#fidelity-butter)"/>
-      <path d="M40 214 C500 211 1100 201 1600 189 Q1640 189 1640 215 Q1640 241 1600 241 C1100 229 500 219 40 216 Z" class="glaze" fill="url(#fidelity-lilac)"/>
-      <g font-size="34" class="fill-muted">
-        <text x="40" y="150">fast, approximate</text>
-        <text x="1660" y="150" text-anchor="end">expensive, sophisticated</text>
+      <path d="M40 254 C560 249 1160 231 1640 211 Q1690 211 1690 255 Q1690 299 1640 299 C1160 279 560 261 40 256 Z" class="glaze" fill="url(#fidelity-butter)"/>
+      <path d="M40 254 C560 249 1160 231 1640 211 Q1690 211 1690 255 Q1690 299 1640 299 C1160 279 560 261 40 256 Z" class="glaze" fill="url(#fidelity-lilac)"/>
+      <g font-size="36" class="fill-muted">
+        <text x="40" y="96">fast, approximate</text>
+        <text x="1700" y="96" text-anchor="end">expensive, sophisticated</text>
       </g>
-      <!-- the track in pencil; on it the four skies in wash, each traced in pencil; the forward model's is cut to a survey's footprint and masks, outlined in pen -->
-      <path d="M40 215 H1662" class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round" marker-end="url(#fidelity-arrow)"/>
+      <!-- the track in pencil; on it the four skies in wash, each traced in pencil. Three are theory: the whole sky, clean. The forward
+           model's is what a survey sees of it: cut to a footprint and its star masks (pen), tiled by pointings (pencil), with noise (a stipple of ink) -->
+      <path d="M40 255 H1700" class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round" marker-end="url(#fidelity-arrow)"/>
       <g>
-        <circle cx="200" cy="215" r="46" class="fill-ground"/><circle cx="620" cy="215" r="46" class="fill-ground"/>
-        <circle cx="1040" cy="215" r="46" class="fill-ground"/><circle cx="1460" cy="215" r="46" class="fill-ground"/>
-        <g transform="translate(200 215) scale(0.46)"><circle r="100" class="fill-butter" filter="url(#fidelity-gauss)"/></g>
-        <g transform="translate(620 215) scale(0.46)"><circle r="100" class="fill-butter" filter="url(#fidelity-lognormal)"/></g>
-        <g transform="translate(1040 215) scale(0.46)"><circle r="100" class="fill-lilac" filter="url(#fidelity-nbody)"/></g>
-        <g transform="translate(1460 215) scale(0.46)" clip-path="url(#fidelity-footprint)"><circle r="100" class="fill-lilac" filter="url(#fidelity-nbody)"/></g>
+        <circle cx="230" cy="255" r="100" class="fill-ground"/><circle cx="647" cy="255" r="100" class="fill-ground"/><circle cx="1064" cy="255" r="100" class="fill-ground"/><circle cx="1481" cy="255" r="100" class="fill-ground"/>
+        <g transform="translate(230 255)"><circle r="100" class="fill-butter" filter="url(#fidelity-gauss)"/></g>
+        <g transform="translate(647 255)"><circle r="100" class="fill-butter" filter="url(#fidelity-lognormal)"/></g>
+        <g transform="translate(1064 255)"><circle r="100" class="fill-lilac" filter="url(#fidelity-nbody)"/></g>
+        <g transform="translate(1481 255)" clip-path="url(#fidelity-footprint)"><circle r="100" class="fill-lilac" filter="url(#fidelity-nbody)"/></g>
       </g>
       <g class="pencil fill-none stroke-ink" stroke-width="2.2">
-        <circle cx="200" cy="215" r="46.5"/><circle cx="620" cy="215" r="46.5"/><circle cx="1040" cy="215" r="46.5"/><circle cx="1460" cy="215" r="46.5"/>
+        <circle cx="230" cy="255" r="100.5"/><circle cx="647" cy="255" r="100.5"/><circle cx="1064" cy="255" r="100.5"/><circle cx="1481" cy="255" r="100.5"/>
       </g>
-      <g class="pen fill-none stroke-accent" stroke-width="5.2" transform="translate(1460 215) scale(0.46)">
-        <rect x="-130" y="-130" width="260" height="260" class="fill-none" stroke="none"/>
-        <path d="M-70 -34 C-56 -68 -14 -80 22 -66 C40 -58 50 -72 66 -52 C82 -30 70 -6 60 14 C52 32 60 54 36 66 C10 80 -24 72 -44 52 C-54 42 -74 36 -78 12 C-80 -6 -76 -22 -70 -34Z"/>
-        <path d="M-22 -28 a11 11 0 1 0 22 0 a11 11 0 1 0 -22 0Z M20 22 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0Z M-40 30 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0Z" stroke-width="3.6"/>
+      <g transform="translate(1481 255)">
+        <g class="pencil fill-none stroke-ink" stroke-width="1.3" opacity="0.5" clip-path="url(#fidelity-footprint)">
+          <rect x="-130" y="-130" width="260" height="260" class="fill-none" stroke="none"/>
+          <path d="M-48 -90 V90 M-12 -90 V90 M24 -90 V90 M60 -90 V90 M-90 -44 H90 M-90 -8 H90 M-90 28 H90 M-90 64 H90"/>
+        </g>
+        <g class="fill-ink" opacity="0.8"><circle cx="-27.3" cy="-47.5" r="1.1"/><circle cx="-62.0" cy="4.9" r="1.6"/><circle cx="8.4" cy="55.7" r="1.3"/><circle cx="-13.4" cy="44.5" r="1.1"/><circle cx="-41.5" cy="7.7" r="1.3"/><circle cx="-55.7" cy="-26.0" r="1.3"/><circle cx="26.3" cy="8.8" r="1.3"/><circle cx="-3.5" cy="4.3" r="1.6"/><circle cx="-7.7" cy="57.6" r="1.6"/><circle cx="-30.6" cy="40.0" r="1.3"/><circle cx="-10.1" cy="14.8" r="1.1"/><circle cx="-55.7" cy="-11.1" r="1.6"/><circle cx="-51.0" cy="-1.5" r="1.1"/><circle cx="5.0" cy="39.3" r="1.6"/><circle cx="-25.1" cy="-20.4" r="2.0"/><circle cx="8.0" cy="-6.0" r="1.1"/><circle cx="58.4" cy="-3.5" r="1.1"/><circle cx="41.4" cy="-29.3" r="2.0"/><circle cx="50.4" cy="-20.8" r="2.0"/><circle cx="-22.9" cy="15.1" r="2.0"/><circle cx="-33.6" cy="-11.5" r="1.6"/><circle cx="22.2" cy="-16.3" r="1.3"/><circle cx="-40.0" cy="-36.3" r="2.0"/><circle cx="1.8" cy="14.9" r="1.6"/><circle cx="-17.9" cy="-13.7" r="1.1"/><circle cx="-5.5" cy="-13.5" r="1.3"/><circle cx="48.7" cy="15.5" r="1.3"/><circle cx="-6.0" cy="26.1" r="1.1"/><circle cx="-22.1" cy="25.8" r="1.1"/><circle cx="16.7" cy="-55.6" r="1.6"/><circle cx="-22.9" cy="-37.7" r="1.6"/><circle cx="15.8" cy="15.4" r="1.3"/><circle cx="30.1" cy="-37.2" r="2.0"/><circle cx="44.0" cy="-2.8" r="1.6"/><circle cx="36.0" cy="34.0" r="2.0"/><circle cx="50.7" cy="-9.0" r="1.6"/><circle cx="27.6" cy="-5.0" r="1.1"/><circle cx="42.0" cy="-39.3" r="1.6"/><circle cx="33.4" cy="-23.7" r="2.0"/><circle cx="19.4" cy="42.8" r="2.0"/><circle cx="-1.5" cy="50.7" r="1.3"/><circle cx="11.6" cy="-40.9" r="1.6"/><circle cx="24.5" cy="51.2" r="1.6"/><circle cx="-37.1" cy="-49.3" r="2.0"/><circle cx="-17.0" cy="-1.7" r="1.3"/><circle cx="-45.0" cy="-24.7" r="1.6"/><circle cx="-13.3" cy="-58.2" r="1.1"/><circle cx="-3.0" cy="-43.8" r="1.6"/><circle cx="28.6" cy="-49.0" r="1.6"/><circle cx="18.5" cy="-34.2" r="1.1"/><circle cx="-52.1" cy="11.8" r="2.0"/><circle cx="-51.4" cy="30.5" r="1.3"/><circle cx="29.3" cy="42.5" r="1.3"/><circle cx="17.7" cy="-5.4" r="2.0"/><circle cx="10.8" cy="-22.9" r="1.6"/><circle cx="-42.0" cy="-1.4" r="1.6"/><circle cx="-7.9" cy="-4.6" r="1.1"/><circle cx="-18.6" cy="56.7" r="1.3"/><circle cx="-17.6" cy="-46.4" r="2.0"/><circle cx="33.1" cy="-13.6" r="1.3"/><circle cx="15.8" cy="27.0" r="1.1"/><circle cx="-44.3" cy="36.2" r="1.3"/><circle cx="-31.5" cy="9.1" r="1.6"/><circle cx="-21.7" cy="37.1" r="1.3"/></g>
+        <g class="pen fill-none stroke-accent" stroke-width="2.6">
+          <rect x="-130" y="-130" width="260" height="260" class="fill-none" stroke="none"/>
+          <path d="M-70 -34 C-56 -68 -14 -80 22 -66 C40 -58 50 -72 66 -52 C82 -30 70 -6 60 14 C52 32 60 54 36 66 C10 80 -24 72 -44 52 C-54 42 -74 36 -78 12 C-80 -6 -76 -22 -70 -34Z"/>
+          <path d="M-22 -28 a11 11 0 1 0 22 0 a11 11 0 1 0 -22 0Z M20 22 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0Z M-40 30 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0Z" stroke-width="2.2"/>
+          <path d="M-29 -28 H7 M-11 -46 V-10 M13 22 H43 M28 7 V37 M-47 30 H-21 M-34 17 V43" stroke-width="1.6"/>
+        </g>
       </g>
       <g font-size="40" font-weight="600" text-anchor="middle">
-        <text x="200" y="306">Gaussian</text>
-        <text x="620" y="306">lognormal</text>
-        <text x="1040" y="306">N-body</text>
-        <text x="1460" y="306" class="fill-accent">forward model</text>
+        <text x="230" y="427">Gaussian</text>
+        <text x="647" y="427">lognormal</text>
+        <text x="1064" y="427">N-body</text>
+        <text x="1481" y="427" class="fill-accent">forward model</text>
       </g>
     </svg>
   </figure>
