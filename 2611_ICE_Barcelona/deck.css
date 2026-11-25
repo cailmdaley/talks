@@ -146,6 +146,11 @@
 /* agentic: the lines keep the left of the slide; the stack of layers is drawn on the right */
 [data-house-slide="agentic"] .slide:not(.detail) > .body > ul { max-width: 1040px; }
 
-/* lightcone-research: the institutions' marks in a row under the two lines */
-.slide p.logos { display: flex; align-items: center; gap: 56px; margin-top: 72px; font-size: var(--t-small); color: var(--muted); }
-.slide p.logos > img { height: 110px; width: auto; }
+/* lightcone-research: each part with its mark at the left, its line and link beside it;
+   the institutions' marks in a row underneath */
+.slide ul.marks { list-style: none; padding: 0; display: grid; grid-template-columns: 300px 1fr; column-gap: 56px; row-gap: 56px; align-items: center; }
+.slide ul.marks > li { display: contents; }
+.slide ul.marks > li > img { max-width: 300px; max-height: 120px; justify-self: center; }
+.slide ul.marks a { font-size: var(--t-small); color: var(--muted); }
+.slide p.logos { display: flex; align-items: center; gap: 56px; margin-top: 64px; }
+.slide p.logos > img { height: 96px; width: auto; }
