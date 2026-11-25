@@ -869,14 +869,20 @@ function openGraph(deck) {
 // feTurbulence on the CPU: a schematic with a dozen pencil lines holds Safari for seconds on
 // every core. So the build paints each element drawn in a medium once, in headless Chrome at
 // twice the slide's resolution, and puts an <image> of it in the element's place; the deck that
-// is shown carries no live filter. An element with a fragment inside it stays live, so its
-// steps still arrive. A slide is painted again only when its markup or the styles change.
+// is shown carries no live filter. The image carries its element's opacity, id, data- attributes
+// and other classes, and nothing more, so an element that needs more stays live: one that is a
+// step or holds one, opens a detail, has an inline style, holds a variant, a link or an id, or is
+// filled from a gradient of another slide. A slide is painted again only when its markup, the
+// styles or the painter change.
 const MEDIA_CLASSES = ['wash', 'wash-fine', 'glaze', 'pen', 'pencil'];
 // the elements to paint, in document order (run here on the parsed frame and in the page)
 function mediaTargets(root, classes) {
   const medium = e => classes.some(c => e.classList.contains(c));
   const inside = e => { for (let a = e.parentElement; a && a !== root; a = a.parentElement) if (medium(a)) return true; return false; };
-  return [...root.querySelectorAll('svg *')].filter(e => medium(e) && !inside(e) && !e.querySelector('.fragment'));
+  const refs = e => [e, ...e.querySelectorAll('*')].flatMap(n => [...n.attributes]).flatMap(a => [...a.value.matchAll(/url\(\s*["']?#([^"')\s]+)/g)].map(m => m[1]));
+  const live = e => e.matches('.fragment, [data-opens], [data-open], [style]') || e.querySelector('.fragment, [data-variant], [data-opens], [data-open], a, [id]')
+    || refs(e).some(id => !root.querySelector(`[id="${id}"]`));
+  return [...root.querySelectorAll('svg *')].filter(e => medium(e) && !inside(e) && !live(e));
 }
 const BAKE_CSS = `html.house-bake, html.house-bake body { background: none !important; }
 html.house-bake * { visibility: hidden !important; animation: none !important; transition: none !important; }
@@ -887,6 +893,7 @@ async function paintMedia(index, todo) {
   const { default: puppeteer } = await import('puppeteer');
   const { default: sharp } = await import('sharp');
   const browser = await puppeteer.launch({ headless: 'shell', args: ['--no-sandbox', '--allow-file-access-from-files', '--font-render-hinting=none'] });
+  try {
   const page = await browser.newPage();
   const W = 1920, H = 1080, D = 2;
   await page.setViewport({ width: W, height: H, deviceScaleFactor: D });
@@ -897,7 +904,9 @@ async function paintMedia(index, todo) {
   const painted = new Map();
   for (const s of todo) {
     const n = await page.evaluate((id, classes, targets) => {
-      const sec = document.getElementById(id), at = Reveal.getIndices(sec);
+      const sec = document.getElementById(id);
+      if (!sec) return 0;   // a hidden slide is not in the page: it stays live
+      const at = Reveal.getIndices(sec);
       Reveal.slide(at.h, at.v);
       document.documentElement.classList.add('house-bake');
       const found = new Function(`return ${targets}`)()(sec.querySelector(':scope > .slide'), classes);
@@ -930,8 +939,8 @@ async function paintMedia(index, todo) {
     });
     painted.set(s, items);
   }
-  await browser.close();
   return painted;
+  } finally { await browser.close(); }
 }
 
 // Replace every painted element of `slides` by its image. `write` writes the deck page, live
@@ -939,16 +948,17 @@ async function paintMedia(index, todo) {
 async function bakeMedia(slides, styles, write, ground, web) {
   const dir = path.join(CACHE, 'bake');
   const withMedia = slides.filter(s => s.frame.includes('<svg') && MEDIA_CLASSES.some(c => new RegExp(`class="[^"]*\\b${c}\\b`).test(s.frame)));
-  const file = s => path.join(dir, crypto.createHash('sha1').update(['1', s.frame, MEDIA, BAKE_CSS, ...styles].join('\0')).digest('hex') + '.json');
-  const todo = withMedia.filter(s => !fs.existsSync(file(s)));
+  const file = s => path.join(dir, crypto.createHash('sha1').update([paintMedia, mediaTargets, s.frame, MEDIA, BAKE_CSS, ...styles].join('\0')).digest('hex') + '.json');
+  const cached = s => { try { return JSON.parse(read(file(s))); } catch { return null; } };   // a painting that is missing or cut short is made again
+  const todo = withMedia.filter(s => !cached(s));
   if (todo.length) {
     fs.mkdirSync(dir, { recursive: true });
-    for (const [s, items] of await paintMedia(write(), todo)) fs.writeFileSync(file(s), JSON.stringify(items));
+    for (const [s, items] of await paintMedia(write(), todo)) { const tmp = `${file(s)}.${process.pid}.tmp`; fs.writeFileSync(tmp, JSON.stringify(items)); fs.renameSync(tmp, file(s)); }
   }
   for (const s of withMedia) {
     const doc = parseFragment(s.frame), root = doc.body.firstElementChild;
     const targets = mediaTargets(root, MEDIA_CLASSES), added = new Map();
-    for (const it of JSON.parse(read(file(s)))) {
+    for (const it of cached(s)) {
       const e = targets[it.i], img = doc.createElementNS('http://www.w3.org/2000/svg', 'image');
       const cls = [...e.classList].filter(c => !MEDIA_CLASSES.includes(c)).join(' ');
       if (cls) img.setAttribute('class', cls);
