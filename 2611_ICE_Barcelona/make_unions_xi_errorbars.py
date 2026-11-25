@@ -61,7 +61,7 @@ def read_bars(path, half, rgb, yrange):
 
 def main():
     style.setup_font()
-    plt.rcParams.update({'font.size': 34, 'xtick.labelsize': 32, 'ytick.labelsize': 32,
+    plt.rcParams.update({'mathtext.fontset': 'cm', 'font.size': 34, 'xtick.labelsize': 32, 'ytick.labelsize': 32,
                          'axes.linewidth': 2.4, 'axes.edgecolor': MUTED, 'axes.labelcolor': INK,
                          'xtick.color': MUTED, 'ytick.color': MUTED, 'xtick.major.size': 12,
                          'ytick.major.size': 12, 'xtick.major.width': 2.4, 'ytick.major.width': 2.4,
@@ -75,7 +75,6 @@ def main():
         mid = 0.5 * (lo2 + hi2)
         print(f'xi{sign}: sigma_v2/sigma_first, bins inside 12-83 arcmin:',
               np.round(((hi2 - lo2) / (hi1 - lo1))[(THETA > 12) & (THETA < 83)], 2))
-        ax.axvspan(1, 12, color=RULE, alpha=0.13, lw=0); ax.axvspan(83, 250, color=RULE, alpha=0.13, lw=0)
         if sign == '-':
             ax.axhline(0, color=MUTED, lw=1.2)
         ax.vlines(THETA, lo1, hi1, color=FIRST, lw=5, capstyle='butt')
