@@ -141,3 +141,6 @@
    notes but leaves the screen, and of the footer only the folio stays (N opens the notes) */
 [data-house-slide="lightcone"] .slide:not(.detail) > h2 { opacity: 0; pointer-events: none; }
 [data-house-slide="lightcone"] .slide:not(.detail) > .foot > .notes-open { display: none; }
+
+/* agentic: the lines keep the left of the slide; the stack of layers is drawn on the right */
+[data-house-slide="agentic"] .slide:not(.detail) > .body > ul { max-width: 1040px; }

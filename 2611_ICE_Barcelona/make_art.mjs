@@ -487,6 +487,49 @@ function mockMark() {
   ];
 }
 
+// Computing changed astronomy in layers: sheets laid one over another, the oldest at the bottom.
+// Three are finished, each a wash with what it carries: the sky a survey takes, as specks of ink;
+// a simulated sky, as the web in wash; a grid of tests, ticked in ink. The fourth, agentic
+// research, is still construction: its outline in pencil and the first of its wash, which spreads
+// across the sheet when the slide's last line arrives.
+function layers() {
+  hand(149);
+  const cx = 1500, a = 300, b = 84, th = 13, cys = [836, 660, 484, 308], cols = [S.butter, S.sky, S.rose, S.lilac];
+  const P = (cy, u, v) => [cx + a * (u - v) / 2, cy + b * (u + v) / 2];                   // a point of a sheet, u and v in −1…1
+  const corners = (cy) => [P(cy, -1, -1), P(cy, 1, -1), P(cy, 1, 1), P(cy, -1, 1)];        // far, right, near, left
+  const shape = (pts) => `M${pts.map(f).join(' L')}Z`;
+  const down = ([x, y]) => [x, y + th];
+  const slabWash = (cy, col) => { const [, R, N, L] = corners(cy);
+    return glaze(deep(col, 0.86), shape([L, N, down(N), down(L)]), 0.8) + glaze(deep(col, 0.78), shape([N, R, down(R), down(N)]), 0.8); };
+  const slabLines = (cy) => { const c = corners(cy), [, R, N, L] = c;
+    return poly(c, W.line, 3) + [L, N, R].map(q => ln(q[0], q[1], q[0], q[1] + th, W.fine, 0)).join('')
+      + ln(...down(L), ...down(N), W.fine, 2) + ln(...down(N), ...down(R), W.fine, 2); };
+  // the ties between one sheet and the next, at the left and right corners
+  const ties = (lo, hi) => [3, 1].map(k => { const p = corners(lo)[k], q = corners(hi)[k]; return ln(p[0], p[1] - 6, q[0], q[1] + th + 8, W.ghost, 0); }).join('');
+  const plane = (cy) => `matrix(${a / 200} ${b / 200} ${-a / 200} ${b / 200} ${cx} ${cy})`;
+  // the survey's sky: galaxies as specks of ink, a few of them elongated
+  const specks = Array.from({ length: 130 }, () => { const u = jit(0.9), v = jit(0.9), [x, y] = P(cys[0], u, v), r = 0.9 + rnd() * rnd() * 2.1, e = rnd() < 0.25 ? 1.5 + rnd() * 0.7 : 1;
+    return `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${(r * e).toFixed(1)}" ry="${(r * 0.7).toFixed(1)}" transform="rotate(${(rnd() * 180).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" fill="#211C17" stroke="none"/>`; }).join('');
+  // the tests: a grid ruled in pencil, a tick of ink in each cell but the two still running
+  const rule = [-0.5, 0, 0.5].map(t => ln(...P(cys[2], t, -0.94), ...P(cys[2], t, 0.94), W.ghost, 0) + ln(...P(cys[2], -0.94, t), ...P(cys[2], 0.94, t), W.ghost, 0)).join('');
+  const cells = [-0.75, -0.25, 0.25, 0.75];
+  const ticks = cells.flatMap((u, i) => cells.map((v, j) => { if ((i === 3 && j === 2) || (i === 2 && j === 3)) return ''; const [x, y] = P(cys[2], u, v);
+    return `<path d="M${(x - 9).toFixed(1)} ${(y + 0.5).toFixed(1)} l6 6.5 l11 -14.5"/>`; })).join('');
+  const web = `<defs>${sliceFilter('sim', { gain: 5.2, off: 1.22, tint: 0.5, col: deep(S.sky, 0.92), seed: 14 }, true)}</defs><g transform="${plane(cys[1])}"><rect x="-98" y="-98" width="196" height="196" fill="${S.sky}" filter="url(#sim)"/></g>`;
+  // the sheet being laid: its outline and construction, and the wash begun at its near corner
+  const top = cys[3], begun = shape([P(top, -1, 1), P(top, -1, 0.05), P(top, -0.45, 0.2), P(top, -0.1, 0.62), P(top, 0.12, 1)]);
+  const construction = poly(corners(top), W.fine, 5) + ln(...P(top, -1, -1), ...P(top, 1, 1), W.ghost, 0) + ln(...P(top, -1, 1), ...P(top, 1, -1), W.ghost, 0)
+    + ln(...P(top, 0, -1), ...P(top, 0, 1), W.ghost, 0) + ln(...P(top, -1, 0), ...P(top, 1, 0), W.ghost, 0);
+  return [
+    { id: 'wash', cls: 'wash', dpr: 1, svg: `<defs>${GLAZE}</defs>` + glaze(S.butter, shape(corners(cys[0])), 0.62) + slabWash(cys[0], S.butter) + web + slabWash(cys[1], S.sky)
+        + glaze(S.rose, shape(corners(cys[2])), 0.5) + slabWash(cys[2], S.rose) },
+    { id: 'lines', svg: MEDIA + `<defs>${INK}</defs>` + pencil(cys.slice(0, 3).map(slabLines).join('') + rule + ties(cys[0], cys[1]) + ties(cys[1], cys[2])) + ink(specks + ticks) },
+    { id: 'begun', cls: 'wash early', dpr: 1, svg: `<defs>${GLAZE}</defs>` + loose(S.lilac, begun, 0.7) },
+    { id: 'next', cls: 'early', svg: MEDIA + pencil(construction + ties(cys[2], top)) },
+    { id: 'spread', cls: 'wash late', dpr: 1, svg: `<defs>${GLAZE}</defs>` + glaze(S.lilac, shape(corners(top)), 0.5) },
+  ];
+}
+
 const ramp = (a, b) => [0, 0.25, 0.5, 0.75, 1].map(t => mix(a, b, t));
 const ART = {
   // every instrument, five redshifts from sky blue through lilac to rose, and the CMB behind them
@@ -502,6 +545,7 @@ const ART = {
   mocks: () => mockMark(),
   tensions: () => tensions(),
   agents: () => knownInput(),
+  agentic: () => layers(),
   sbi: () => inference(),
   // the northern sky from Mauna Kea, in the part's rose, and the shape catalogue under a loupe
   unions: () => [...scene({ sky: slices(ramp('#D9A0B4', '#E8B5A8'), false), who: ['unions'], lifted: 0.14, words: [1020, 1440] }), ...shapeCatalogue()],
@@ -517,6 +561,7 @@ const ALT = {
   mocks: 'A simulated sky as a small globe in pencil and wash',
   overview: 'A brace gathers the three projects and points to one simulated sky, a globe in pencil and wash',
   sbi: 'Seven mock skies along a parameter axis, their structure growing clumpier; the one that matches the data is ringed in ink and the posterior is a lilac wash on the axis beneath it',
+  agentic: 'Four sheets drawn one above another in pencil and wash: a survey sky of ink specks, a simulated cosmic web, a grid of ticked tests, and on top a sheet still in construction lines with its wash only begun',
   agents: 'A known input spectrum in pencil, the sky simulated from it as a washed globe, and the measured bandpowers in ink lying on the same pencil curve',
   exciting: 'Pencil and watercolour: a light cone drawn about its time and space axes, as in the Lightcone logo; the past cone holds the redshift sheets as washes, down to the CMB at its mouth, and the future cone is bare pencil',
 };
