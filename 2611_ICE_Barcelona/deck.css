@@ -121,10 +121,6 @@
 .slide figure.art > img.about-spt    { transform-origin: calc(1097.6px - var(--x, 0px)) calc(912.8px - var(--y, 0px)); --sweep: 1.5deg; --sweep-time: 13s; }
 .slide figure.art > img.about-unions { transform-origin: calc(1540px - var(--x, 0px)) calc(792px - var(--y, 0px)); --sweep: 1.1deg; --sweep-time: 17s; }
 .slide figure.art > img.about-euclid { transform-origin: calc(1752px - var(--x, 0px)) calc(600px - var(--y, 0px)); --sweep: 0.9deg; --sweep-time: 21s; }
-/* on the title the instruments stand elsewhere (UNDER in make_art.mjs) */
-[data-house-slide="title"] figure.art > img.about-spt    { transform-origin: calc(1044.6px - var(--x, 0px)) calc(947.1px - var(--y, 0px)); }
-[data-house-slide="title"] figure.art > img.about-unions { transform-origin: calc(1390px - var(--x, 0px)) calc(954px - var(--y, 0px)); }
-[data-house-slide="title"] figure.art > img.about-euclid { transform-origin: calc(1806px - var(--x, 0px)) calc(868px - var(--y, 0px)); }
 
 /* the summary: the takeaways beside the drawing keep left of it, and each numeral sits on a dab of the wash
    of the part of the talk it sums up, the wash the same part's sheet wears in the drawing */
