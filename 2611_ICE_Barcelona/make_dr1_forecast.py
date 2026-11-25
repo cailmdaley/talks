@@ -85,7 +85,7 @@ def main():
         wide = k >= 4
         chains = rows[::-1]
         fig = posteriors(
-            chains, D, center=truth, value=False, rows=3,
+            chains, D, center=truth, value=False, rows=2 if wide else 3,
             lims={'Omega_m': (-.08, .08) if wide else (-.07, .07), 'S8': (-.095, .095) if wide else (-.036, .036)},
             ticks={'Omega_m': [-.05, 0, .05], 'S8': [-.05, 0, .05] if wide else [-.02, 0, .02]})
         sets = iter(fig.axes[0].collections)
