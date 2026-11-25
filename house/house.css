@@ -40,7 +40,7 @@
 /* ── Fonts are inlined by the build as @font-face rules ─────────────────── */
 
 /* ── Reveal shell ───────────────────────────────────────────────────────── */
-html, body { background: var(--ground); }
+html, body, body.reveal-viewport, .reveal-viewport:fullscreen { background: var(--ground); }
 .reveal { font-family: var(--face); color: var(--ink); }
 .reveal .slides { text-align: left; }
 .reveal .slides > section { padding: 0; width: 1920px; height: 1080px; }
