@@ -1,9 +1,10 @@
-"""DR1 6x2pt forecast: what CMB lensing adds to Euclid DR1 3x2pt, in the (Omega_m, sigma8) plane.
+"""DR1 6x2pt forecast: what CMB lensing adds to Euclid DR1 3x2pt, in the (Omega_m, S8) plane.
 
 Reads the nested-sampling posteriors of the noiseless DR1 chains (slim.npz, the derived parameters and weights of
 each chain; chain names dr1_<kappa>_<probes>, from /leonardo_scratch/large/userexternal/cdaley00/dr1-forecast).
-Writes images/ice_dr1_forecast_<k>.png (build frames: Euclid alone, then with SPT-3G, then with ACT) and
-dr1_forecast.json (sigma of S8, Omega_m, sigma8 for every chain).
+Writes images/ice_dr1_forecast_<k>.png (build frames: the 3x2pt alone, then the 5x2pt with SPT-3G and with ACT over it, then the 6x2pt in their place) and
+dr1_forecast.json (sigma of S8, Omega_m, sigma8 for every chain, and the figure of merit
+1/sqrt(det C) of (Omega_m, S8)).
 
 Run: uv run --with numpy --with scipy --with matplotlib --with fonttools --with brotli \
        python 2611_ICE_Barcelona/make_dr1_forecast.py --src ~/scratch/dr1fc/slim.npz
@@ -35,7 +36,10 @@ def stats(z, name):
     d, w = z[name + '|d'].astype(float), z[name + '|w'].astype(float)
     w /= w.sum(); m = w @ d
     s = np.sqrt(w @ (d - m) ** 2)
-    return {n: {'mean': round(float(a), 4), 'sigma': round(float(b), 4)} for n, a, b in zip(DERIVED, m, s)}
+    out = {n: {'mean': round(float(a), 4), 'sigma': round(float(b), 4)} for n, a, b in zip(DERIVED, m, s)}
+    q = d[:, [DERIVED.index('Omega_m'), DERIVED.index('S8')]] - m[[DERIVED.index('Omega_m'), DERIVED.index('S8')]]
+    out['fom'] = round(float(np.linalg.det((q * w[:, None]).T @ q) ** -0.5))
+    return out
 
 
 def density(z, name, y):
@@ -60,16 +64,17 @@ def main():
                          'ytick.major.size': 12, 'xtick.major.width': 2.4, 'ytick.major.width': 2.4,
                          'axes.spines.top': False, 'axes.spines.right': False})
     truth = z['dr1_3x2|t']
-    layers = [('dr1_3x2', EUCLID, 'fill', 'Euclid DR1 3×2pt'),
-              ('dr1_MS_6x2', SPT, 'fill', '6×2pt with SPT-3G'),
-              ('dr1_A_6x2', ACT, 'line', '6×2pt with ACT DR6')]
-    for y, ylab, yticks in (('sigma8', r'$\sigma_8$', [0.75, 0.80, 0.85, 0.90]),):
-        dens = [density(z, n, y) for n, *_ in layers]
-        for k in range(1, 4):
+    base = ('dr1_3x2', EUCLID, 'fill', 'Euclid DR1 3×2pt')
+    frames = [[base],
+              [base, ('dr1_MS_5x2', SPT, 'fill', '5×2pt with SPT-3G'), ('dr1_A_5x2', ACT, 'line', '5×2pt with ACT DR6')],
+              [base, ('dr1_MS_6x2', SPT, 'fill', '6×2pt with SPT-3G'), ('dr1_A_6x2', ACT, 'line', '6×2pt with ACT DR6')]]
+    for y, ylab, yticks in (('S8', r'$S_8$', [0.82, 0.84, 0.86]),):
+        for k, layers in enumerate(frames, 1):
+            dens = [density(z, n, y) for n, *_ in layers]
             fig = plt.figure(figsize=(style.W_PX / style.DPI, style.H_PX / style.DPI), dpi=style.DPI)
             ax = fig.add_axes([0.15, 0.17, 0.82, 0.62])
             handles = []
-            for i, (name, color, kind, label) in enumerate(layers[:k]):
+            for i, (name, color, kind, label) in enumerate(layers):
                 xc, yc, H, lv = dens[i]
                 if kind == 'fill':
                     ax.contourf(xc, yc, H, levels=[lv[0], H.max() * 1.01], colors=[color], alpha=.28, zorder=2 + i)
