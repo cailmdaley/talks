@@ -1,30 +1,38 @@
 <section data-layout="figure">
-  <h2>Muir-style blinding: a hidden shift of the data vector</h2>
+  <h2>A blinding shift is recovered when its reference is near the truth</h2>
   <figure>
-    <img src="images/napoli_blind_rehearsal_1.png" alt="Omega_m and S8 posterior of the unblinded GLASS mock chain, with the input cosmology inside its 68 percent contour">
-    <img class="fragment" src="images/napoli_blind_rehearsal_2.png" alt="Two throwaway blinds move the posterior far from the unblinded mock one">
-    <img class="fragment" src="images/napoli_blind_rehearsal_3.png" alt="Moved back by their hidden shifts, both blinded posteriors overlap the unblinded mock posterior and the input cosmology">
-    <span class="source">Data-vector blinding after Muir et al. (2020); a chain on one GLASS mock, fitting $\Omega_\mathrm{m}$, $S_8$ and six galaxy biases.</span>
+    <img src="images/ice_blind_recovery_1.png" alt="Recovered minus injected S8 against Omega_m for 30 blinding shifts in the 3x2pt and 5x2pt, with the truth at the blind's reference: every chain within 0.12 sigma of zero">
+    <img class="fragment" src="images/ice_blind_recovery_2.png" alt="The same 30 shifts with the truth off the blind's reference: misses of up to 0.6 sigma, two thirds of them outside the 0.3 sigma circle">
+    <img class="fragment" src="images/ice_blind_recovery_3.png" alt="Second panel: recovered minus injected S8 for cosmic shear, 2x2pt, 3x2pt, 5x2pt and 6x2pt, with one fixed reference and with the reference at the fit to the vector: the first misses by up to 1 sigma, the second stays within 0.4">
+    <span class="source">DR1 South · 30 shifts drawn flat in $(A_s, \omega_c, h)$ · left: chains · right: best fits to two noisy vectors</span>
   </figure>
   <aside class="notes">
     <ul class="skim">
-      <li><strong>First step</strong> — the unblinded chain on one GLASS mock, with the input cosmology inside its 68 % contour.</li>
-      <li><strong>Second step</strong> — two throwaway blinds move the posterior far from the unblinded one, which is the point of the blind.</li>
-      <li><strong>Third step</strong> — moved back by their injected shifts, both overlap the unblinded posterior: recovered shifts within $0.75\sigma$ of the injected ones.</li>
-      <li><strong>Caveat</strong> — a blinded chain's widths are not the unblinded widths; the real TR1 blind was never opened.</li>
+      <li><strong>The test</strong> — Martin Crocce's of 24 November: add 30 shifts to a noiseless Euclid DR1 South vector, run the full chain on each (38 parameters, nuisances sampled, as he asked on 20 November), and plot recovered minus injected $(\Omega_\mathrm{m}, S_8)$. The dashed circle is $0.3\sigma$, the pass level registered for the CMBX blind. 90 shifted chains, 30 per set of points.</li>
+      <li><strong>First step</strong> — the truth sits at the blind's reference, as in the group's plan. All 60 chains (3×2pt, and 5×2pt with SPT-3G Main and Summer) are within $0.12\sigma$, and $\sigma(S_8)$ keeps its size within 9 %. This case passes by construction: $T(\mathrm{ref}) + T(\mathrm{shifted}) - T(\mathrm{ref})$ is exactly $T(\mathrm{shifted})$, so the chain is the forecast at another cosmology. It tests projection effects and numerics, not whether the added shift is the right one.</li>
+      <li><strong>Second step</strong> — the truth sits off the reference and the blind does not know it: galaxy biases 10 % higher, $A_\mathrm{IA}$ 0.55 for 0.85, $\log T_\mathrm{AGN}$ 7.9 for 7.7, and $S_8$ 0.777 for 0.839. The 5×2pt misses by a scatter of $0.29\sigma$ in $S_8$ and in $\Omega_\mathrm{m}$, up to $0.6\sigma$; 10 of 30 stay inside the circle. The mean miss is zero ($-0.04$ and $+0.01\sigma$), so an ensemble average hides it.</li>
+      <li><strong>Third step</strong> — the same 30 shifts, best fits instead of chains, on two noisy vectors, for five probe sets. With one fixed reference (red) the $S_8$ miss scatters by 0.24, 0.49, 0.25, 0.29 and $0.50\sigma$ for cosmic shear, 2×2pt, 3×2pt, 5×2pt and 6×2pt. With the reference set to the best fit of the vector being blinded (blue) it is 0.06, 0.05, 0.10, 0.04 and $0.15\sigma$, and at most $0.4\sigma$.</li>
     </ul>
-    <details><summary>The blind</summary>
-    <p>The blind follows the Euclid 3×2pt analysis: a parameter-shift blind in the style of Muir et al. (2020, arXiv:1911.05929), the same method as the 3×2pt blinding tool (blindspot) and LSST DESC's Smokescreen. A sealed shift in cosmology is turned into a $\Delta C_\ell$ added to the data vector, so shapes, signal-to-noise, the covariance and the null tests stay visible while the inferred cosmology is hidden. The official pipeline blinds only the Euclid 2pt spectra, so the κ crosses are blinded by a separate module, over the whole 5×2pt data vector.</p>
+    <details><summary>One shift for every probe</summary>
+    <p>Crocce's plan applies the same shift to the 3×2pt, 2×2pt and 1×2pt. With a fixed reference off the truth, each probe moves by a slightly different amount, so one blind separates cosmic shear from 2×2pt: the false $S_8$ difference has a scatter of $0.4\sigma$ over the 30 shifts and reaches $0.8\sigma$. Referenced to the best fit it stays below $0.2\sigma$. A blinded internal-consistency test would see the first as a mild tension that is not in the data.</p>
     </details>
-    <details><summary>The rehearsal chain</summary>
-    <p>The likelihood chain run on one GLASS mock (seed 3000): all 90 spectra of the 5×2pt data vector, 15 bands each, $\ell$ from 100 to 3000, scored with the fixed Gaussian covariance. The model is reduced to eight parameters, $\Omega_\mathrm{m}$ and $S_8$ plus six linear galaxy biases, with $\Omega_\mathrm{b}$, $h$, $n_s$ and the neutrino mass held at the mock's truth and no intrinsic-alignment, shear-calibration or photo-z nuisances, so the 0.4 % error on $S_8$ is optimistic. The unblinded chain gives $\Omega_\mathrm{m} = 0.326 \pm 0.010$ and $S_8 = 0.8338 \pm 0.0035$ against an input of 0.315 and 0.832: $+1.0\sigma$ and $+0.4\sigma,$ with the input inside the 68 % contour.</p>
-    <p>That $\Omega_\mathrm{m}$ offset is the shear-mask bias found on the mocks (the mocks slide's notes): this chain weights the shear mask by source counts, which over 10 mocks puts $\Omega_\mathrm{m}$ $+1.6\sigma$ high and leaves $S_8$ unbiased. A binary mask removes the $\Omega_\mathrm{m}$ bias and uncovered an $S_8$ offset of about $-1\sigma$ that the excess had hidden; the later 20-seed full-vector ensemble recovers $S_8$ to $-0.04 \pm 0.19\sigma$ with 0.80 and 1.00 coverage at 68 and 95 %. The blind test does not depend on it: a blind is judged by how its posterior moves relative to the unblinded one on the same mock.</p>
+    <details><summary>Where the miss comes from</summary>
+    <p>The miss is the product of the shift and the offset of the reference, so it is linear in both: at half the offset the 3×2pt $S_8$ miss halves ($0.11\sigma$ against $0.24\sigma$). By source, for the 3×2pt: cosmology alone $0.19\sigma$, galaxy bias alone $0.08\sigma$ ($0.18\sigma$ in $\Omega_\mathrm{m}$), intrinsic alignments $0.02\sigma$, baryons $0.02\sigma$. The offsets chosen are large on purpose: $S_8$ is at the level where weak lensing measures it low.</p>
     </details>
-    <details><summary>The blinds</summary>
-    <p>Two throwaway blinds were drawn at random by the same blinding module the TR1 analysis uses, each a hidden shift in $(\Omega_\mathrm{m}, S_8)$ turned into a $\Delta C_\ell$ added to the data vector, and the full chain was rerun on each blinded vector; the shifts were revealed only after all chains had converged. The recovered shifts match the injected ones to $-0.75$ and $+0.14$ unblinded $\sigma$ (blind A, in $\Omega_\mathrm{m}$ and $S_8$) and $+0.13$ and $+0.40\sigma$ (blind B).</p>
+    <details><summary>The alternative of scaling the vector</summary>
+    <p>Multiplying by $T(\mathrm{shifted})/T(\mathrm{ref})$ recovers to $0.3\sigma$ on a noiseless vector, but Muir et al. (2020, arXiv:1911.05929, footnote 1) warn that it rescales the noise as well as the signal, and it does: the best-fit $\chi^2$ changes by a factor 0.82 to 1.21 for cosmic shear and 0.84 to 1.18 for the 5×2pt, and for cosmic shear it follows the hidden $S_8$ shift with a correlation of 0.98. A blind that shows the shift in the goodness of fit is not usable. The added shift, with either reference, leaves $\chi^2$ unchanged within 1 %.</p>
     </details>
-    <details><summary>Caveats</summary>
-    <p>The blind is a translation only approximately. The residuals are larger than the chains' Monte Carlo error, and the posterior's shape changes with where it lands: blind A's $\Omega_\mathrm{m}$ width shrinks to a third of the unblinded one, while blind B keeps 83 % and 92 % of the widths. So widths read off a blinded chain are not the unblinded widths, and are not to be quoted as such. The real TR1 blind was never opened.</p>
+    <details><summary>What the reference at the fit would need</summary>
+    <p>The blinding pipeline would fit the unblinded vector and keep the result sealed with the shift. The full best fit takes about 3 minutes on one node with all 38 parameters, so it is cheap; the cost is that the pipeline then holds an unblinded fit. It has not been tested on mocks or applied to any blind. $\Omega_\mathrm{m}$ still moves by 0.1 to $0.3\sigma$ with noise, up to $0.65\sigma$ for the 2×2pt, where the best fit is a poorer summary than a posterior mean.</p>
+    </details>
+    <details><summary>Best fits against chains</summary>
+    <p>The recovery test at the posterior's maximum, all 30 shifts batched, takes 3 minutes where a chain takes 10 to 25 minutes for each shift. On the 30 off-reference 5×2pt chains the two agree to $0.05\sigma$ in $S_8$ and $0.06\sigma$ in $\Omega_\mathrm{m}$ (correlation 0.99).</p>
+    </details>
+    <details><summary>Setup</summary>
+    <p>The DR1 forecast's vector, covariance, priors and scale cuts (the DR1 forecast slide), with the 15 November CLOE through its JAX adapter, $n_s$ held in the shift. Widths on a shifted vector are not the unshifted widths: $\sigma(\Omega_\mathrm{m})$ changes by a factor 0.75 to 1.34 with where the shift lands. An earlier rehearsal on one GLASS mock, with two throwaway blinds and eight parameters, recovered its shifts within $0.75\sigma$ (the Napoli 2610 deck). The real TR1 blind was never opened.</p>
+    </details>
+    <details><summary>Sources</summary>
+    <p>Figure 2611_ICE_Barcelona/make_blind_ensemble.py, numbers in blind_ensemble.json; chains and best fits of 25 November on Leonardo. The blind is Muir et al. (2020); the shift recipe and the ensemble are Martin Crocce's, the validation steps Alessio Spurio Mancini's of 11 November.</p>
     </details>
   </aside>
 </section>
