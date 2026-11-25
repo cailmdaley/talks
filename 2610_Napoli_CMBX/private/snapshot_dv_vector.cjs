@@ -2,22 +2,27 @@
 // render without JS): the live SVG at each rest state, on white at twice the
 // displayed size. White multiplies into any theme's ground, and an opaque frame
 // hides the one under it, as a stack needs. The click hint and the toggles are
-// left out: the frames do not respond to clicks.
+// left out: the frames do not respond to clicks. So is a deck's stamp over the frame (.frame::after),
+// which the slide lays over the fallback images as over the app.
 //
 //   node house/build.mjs 2610_Napoli_CMBX --out /tmp/site
 //   node 2610_Napoli_CMBX/private/snapshot_dv_vector.cjs /tmp/site/2610_Napoli_CMBX/index.html
 //   node house/build.mjs 2610_Napoli_CMBX                  # again, with the new frames
+//
+// An optional second argument names the frames: dv_vector_ice writes dv_vector_ice_{1,2,3}.png
+// (the ICE deck's, from its own build).
 const path = require('path');
 const TALKS = path.resolve(__dirname, '..', '..');
 const puppeteer = require(require.resolve('puppeteer', { paths: [TALKS] }));
 const deck = path.resolve(process.argv[2]);
+const stem = process.argv[3] || 'dv_vector';
 (async () => {
   const b = await puppeteer.launch({ args: ['--no-sandbox', '--allow-file-access-from-files', '--font-render-hinting=none'] });
   const p = await b.newPage();
   await p.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
   await p.goto('file://' + deck + '#/dv-vector', { waitUntil: 'load' });
   await p.evaluate(async () => { await document.fonts.ready; await new Promise(r => Reveal.isReady() ? r() : Reveal.on('ready', r)); });
-  await p.addStyleTag({ content: 'html, body, .reveal, .reveal .slides, .reveal section, .slide { background: #FFFFFF !important; } .slide > .variants { display: none !important; }' });
+  await p.addStyleTag({ content: 'html, body, .reveal, .reveal .slides, .reveal section, .slide { background: #FFFFFF !important; } .slide > .variants, .frame::after { display: none !important; }' });
   for (let k = 0; k < 3; k++) {
     await p.evaluate(k => {
       const i = Reveal.getIndices(document.getElementById('dv-vector'));
@@ -26,7 +31,7 @@ const deck = path.resolve(process.argv[2]);
     }, k);
     await new Promise(r => setTimeout(r, 300));
     const svg = await p.$('#dv-vector svg.app-view');
-    const out = path.join(__dirname, `dv_vector_${k + 1}.png`);
+    const out = path.join(__dirname, `${stem}_${k + 1}.png`);
     await svg.screenshot({ path: out });
     console.log('wrote', out);
   }

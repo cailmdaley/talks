@@ -24,8 +24,11 @@ the close-up and the detail cards label them. With --show-cut, bands outside the
 are drawn in a paler blue over a grey band spanning their l range. Residual strips span +-3 sigma with ticks at
 -2, 0 and 2; a band beyond the strip is drawn as a triangle on its edge.
 
-Run in the cmbx container, after make_dv_vector.py:
+Run after make_dv_vector.py, in the cmbx container or anywhere with matplotlib and numpy:
   app python private/render_dv_vector.py
+The ICE deck's figure (best fit, cut shown, larger type, no source line under it):
+  uv run --no-project --with matplotlib --with numpy python render_dv_vector.py \
+    --source dv_vector_bestfit.json --output dv_vector_ice_app.json --no-title --show-cut --large
 """
 import argparse
 import io
@@ -62,14 +65,43 @@ plt.rcParams.update({
 
 # ── overview geometry (world units: SVG user units = pt = px at rest) ───────
 W, H = 1712.0, 771.0
-GUT, G, MG, RM = 20.0, 6.0, 50.0, 34.0      # left gutter, column gap, gamma|delta gap, right
-CW = (W - GUT - 10 * G - MG - RM) / 12
-T0, RG, MR, KG, BOT = 8.0, 3.0, 8.0, 10.0, 34.0
-RH = (H - T0 - BOT - 11 * RG - MR - KG) / 13          # every row, the kappa row included
-KH = RH
+GUT, G, RM = 20.0, 6.0, 34.0                # left gutter, column gap, right
 TR = [f"l{i}" for i in range(6)] + [f"g{i}" for i in range(6)]
 R = 3.0                                                # residual strip half-range, sigma
 XLIM = (100 / 1.12, 3000 * 1.12)
+CL = 48.0                                              # world room left of a close-up half for its y labels
+
+# type sizes and layout: the default, and --large, for a figure box at rest at 1:1 (no source
+# line under it): type of at least 32 px, a wider gamma|delta gap to keep the close-up's larger
+# y labels out of the other half's view, and a close-up whose residual strip is 0.44 of its main panel
+STYLE = dict(
+    default=dict(mg=50.0, bot=34.0, fs_name=21.0, fs_key=19.0, key_x=30.0, key_dy=40.0,
+                 fs_near=23.0, fs_near_key=22.0, near_key_y=48.0, nm_top=200.0, nm_h=352.0, ns_gap=12.0, ns_h=92.0, ell_dy=44.0),
+    large=dict(mg=62.0, bot=50.0, fs_name=34.0, fs_key=34.0, key_x=95.0, key_dy=52.0,
+               fs_near=32.0, fs_near_key=34.0, near_key_y=30.0, nm_top=130.0, nm_h=360.0, ns_gap=14.0, ns_h=160.0, ell_dy=54.0),
+)
+
+
+def configure(style):
+    """Set the style's sizes and the geometry derived from them, for every view."""
+    global ST, MG, CW, T0, RG, MR, KG, BOT, RH, KH, VW, S_CLOSE, VH, V0X, V1X, NM_TOP, NM_H, NS_GAP, NS_H, VY, VIEWS, NEAR_W
+    ST = STYLE[style]
+    MG = ST["mg"]                                      # the gamma|delta gap
+    CW = (W - GUT - 10 * G - MG - RM) / 12
+    T0, RG, MR, KG, BOT = 8.0, 3.0, 8.0, 10.0, ST["bot"]
+    RH = (H - T0 - BOT - 11 * RG - MR - KG) / 13      # every row, the kappa row included
+    KH = RH
+    # close-up camera: the kappa row's halves, columns in register
+    VW = CL + 6 * CW + 5 * G + 8                       # world width each close-up view shows
+    S_CLOSE = W / VW
+    VH = H / S_CLOSE
+    V0X = col_x(0) - CL
+    V1X = col_x(6) - CL                                # gamma_6's right spine stays outside (MG > CL)
+    # vertically, the close-up's main panels sit over the overview's kappa row (screen px)
+    NM_TOP, NM_H, NS_GAP, NS_H = ST["nm_top"], ST["nm_h"], ST["ns_gap"], ST["ns_h"]
+    VY = row_y(12) + KH / 2 - (NM_TOP + NM_H / 2) / S_CLOSE
+    VIEWS = [dict(x=V0X, y=VY, w=VW, h=VH), dict(x=V1X, y=VY, w=VW, h=VH), dict(x=0.0, y=0.0, w=W, h=H)]
+    NEAR_W = S_CLOSE * (V1X + VW - V0X)                # the close-up drawing, screen px
 
 
 def col_x(c):
@@ -86,18 +118,7 @@ def row_h(r):
     return KH if r == 12 else RH
 
 
-# ── close-up camera: the kappa row's halves, columns in register ────────────
-CL = 48.0                                              # world room left of a half for its y labels
-VW = CL + 6 * CW + 5 * G + 8                           # world width each close-up view shows
-S_CLOSE = W / VW
-VH = H / S_CLOSE
-V0X = col_x(0) - CL
-V1X = col_x(6) - CL                                    # gamma_6's right spine stays outside (MG > CL)
-# vertically, the close-up's main panels sit over the overview's kappa row
-NM_TOP, NM_H, NS_GAP, NS_H = 200.0, 352.0, 12.0, 92.0  # close-up main and strip, screen px
-VY = row_y(12) + KH / 2 - (NM_TOP + NM_H / 2) / S_CLOSE
-VIEWS = [dict(x=V0X, y=VY, w=VW, h=VH), dict(x=V1X, y=VY, w=VW, h=VH), dict(x=0.0, y=0.0, w=W, h=H)]
-NEAR_W = S_CLOSE * (V1X + VW - V0X)                    # the close-up drawing, screen px
+configure("default")
 
 
 def nx(world_x):
@@ -368,7 +389,7 @@ def segments(variants):
 
 def overview(pairs, title, glyphs, segs):
     fig = plt.figure(figsize=(W / 72, H / 72), dpi=72)
-    fs_name = 21.0
+    fs_name = ST["fs_name"]
     for (r, h), sg in segs.items():
         for c, k in sg["cols"]:
             d = prep(pairs[k], sg["e"])
@@ -383,15 +404,15 @@ def overview(pairs, title, glyphs, segs):
     for c, t in enumerate(TR):
         text_at(fig, col_x(c) + CW / 2, row_y(12) + KH + 6, f"${sym(t)}$", W, H, ha="center",
                 va="top", fontsize=fs_name)
-    x0 = col_x(3) + 30
+    x0 = col_x(3) + ST["key_x"]
     dy = 0
     if title:
         text_at(fig, x0, T0 + 4, title, W, H, ha="left", va="top", fontsize=fs_name + 3)
         dy = 34
     nb = sum(len(p["ell"]) for p in pairs.values())
     text_at(fig, x0, T0 + 4 + dy, rf"$\ell C_\ell$ of 90 spectra, {nb} bandpowers", W, H,
-            ha="left", va="top", fontsize=fs_name - 2, color=MUTED)
-    key(fig, x0, T0 + 44 + dy, fs_name - 2, W, H)
+            ha="left", va="top", fontsize=ST["fs_key"], color=MUTED)
+    key(fig, x0, T0 + 4 + ST["key_dy"] + dy, ST["fs_key"], W, H)
     return svg_of(fig, W, H, glyphs)
 
 
@@ -399,7 +420,7 @@ def near(pairs, title, glyphs, segs):
     """The kappa row close up, in the close-up camera's screen px; columns over the overview's."""
     fw, fh = NEAR_W, H
     fig = plt.figure(figsize=(fw / 72, fh / 72), dpi=72)
-    fs = 23.0
+    fs = ST["fs_near"]
     for h in (0, 1):
         sg = segs[(12, h)]
         lo, hi = sg["ylim"]
@@ -428,13 +449,13 @@ def near(pairs, title, glyphs, segs):
         text_at(fig, x0 - 66, NM_TOP + NM_H + NS_GAP + NS_H / 2, r"$\Delta/\sigma$", fw, fh,
                 rotation=90, ha="center", va="center", fontsize=fs + 1)
         mid = (nx(col_x(6 * h)) + nx(col_x(6 * h + 5) + CW)) / 2
-        text_at(fig, mid, NM_TOP + NM_H + NS_GAP + NS_H + 44, r"$\ell$", fw, fh, ha="center", va="top",
+        text_at(fig, mid, NM_TOP + NM_H + NS_GAP + NS_H + ST["ell_dy"], r"$\ell$", fw, fh, ha="center", va="top",
                 fontsize=fs + 2)
         # title and key at the top of this half's view
         left = nx(col_x(6 * h))
         if title:
             text_at(fig, left, 40, title, fw, fh, ha="left", va="top", fontsize=fs + 3)
-        key(fig, left, 96 if title else 48, fs - 1, fw, fh)
+        key(fig, left, ST["near_key_y"] + (48 if title else 0), ST["fs_near_key"], fw, fh)
     return svg_of(fig, fw, fh, glyphs)
 
 
@@ -481,8 +502,11 @@ def main():
                     help="omit the release/shear/CMB title line (the slide states them)")
     ap.add_argument("--show-cut", action="store_true",
                     help="draw bands outside the scale cut (the data JSON's fit mask) in a paler blue")
+    ap.add_argument("--large", action="store_true",
+                    help="type of at least 32 px at rest, and a close-up with a taller residual strip")
     args = ap.parse_args()
     SHOW_CUT = args.show_cut
+    configure("large" if args.large else "default")
     src = json.load(open(args.source))
     labels = src.get("fiducial_label", FID_LABEL)
     release = src.get("release", "TR1")

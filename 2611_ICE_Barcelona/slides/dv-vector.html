@@ -1,15 +1,15 @@
 <section data-preliminary="cycle2" data-layout="figure">
   <h2>TR1 × CMB lensing <span class="blind">blinded</span> 5×2pt data vector</h2>
-  <figure data-app="private/dv_vector.js" data-app-data="private/dv_vector_bestfit_app.json">
-    <img src="private/dv_vector_bestfit_1.png" alt="Blinded TR1 shear cross SPT-3G CMB lensing bandpowers in six source bins: the source-bin half of the CMB lensing row">
-    <img class="fragment" src="private/dv_vector_bestfit_2.png" alt="The same row panned to TR1 galaxy density cross SPT-3G CMB lensing in six lens bins">
-    <img class="fragment" src="private/dv_vector_bestfit_3.png" alt="All 90 spectra of the blinded TR1 by SPT-3G 3x2pt plus CMB lensing data vector as a triangle of small panels, the CMB lensing row at its base">
-    <span class="source"><span data-variant="lensmc|spt">SPT-3G Main field</span><span data-variant="lensmc|act">ACT DR6</span><span data-variant="metacal|act">ACT DR6 · MetaCal shear</span></span>
+  <figure data-app="private/dv_vector.js" data-app-data="private/dv_vector_ice_app.json">
+    <img src="private/dv_vector_ice_1.png" alt="Blinded TR1 shear cross SPT-3G CMB lensing bandpowers in six source bins: the source-bin half of the CMB lensing row">
+    <img class="fragment" src="private/dv_vector_ice_2.png" alt="The same row panned to TR1 galaxy density cross SPT-3G CMB lensing in six lens bins">
+    <img class="fragment" src="private/dv_vector_ice_3.png" alt="All 90 spectra of the blinded TR1 by SPT-3G 3x2pt plus CMB lensing data vector as a triangle of small panels, the CMB lensing row at its base">
   </figure>
   <aside class="notes">
     <ul class="skim">
       <li><strong>Steps</strong> — one row of the data vector, the crosses with SPT-3G κ: shear × κ in six source bins, then panned to galaxy density × κ in six lens bins, then pulled back to all 90 spectra with that row at the base.</li>
       <li><strong>Black curve</strong> — the best fit of the full 5×2pt chain to these blinded data, through the bandpower windows: $\chi^2 = 577$ for 651 bands inside the scale cut and 38 parameters (SPT-3G; 576 with ACT DR6). The strip under each panel is $(\text{data} - \text{best fit})/\sigma_G$ over $\pm 3$, shaded at $\pm 1$, a triangle on its edge marking a band beyond it.</li>
+      <li><strong>Detection</strong> — best-fit amplitude over its error, on the bands inside the scale cut with the production covariance: shear × κ 11.7σ and density × κ 5.7σ, 12.0σ together, with SPT-3G and with ACT DR6 alike. The two amplitudes correlate at about 0.3–0.4 through the shared κ map, so they do not add in quadrature. Most of the shear × κ signal is in source bins 4 to 6.</li>
       <li><strong>Pale points</strong> — bands outside the scale cut ($k_\mathrm{max} = 0.2\,h$/Mpc for δδ, 0.15 for γδ and δκ), which the fit is not asked to match; there the clustering spectra rise above the linear-bias curve.</li>
       <li><strong>Blinded</strong> — the data carry the blind's shift, so the fit's parameter values say nothing about cosmology; what the slide shows is that one model describes all five families at once.</li>
       <li><strong>5×2pt</strong> — the κ auto-spectrum, the sixth family, is not in this vector.</li>
@@ -31,7 +31,7 @@
     <p>No MetaCal chain exists, so the MetaCal variant shows the LensMC × ACT DR6 best fit through the MetaCal product's own windows, labelled as such on the figure. Against it MetaCal shear runs high, γγ 1.12 and γκ 1.20, the coherent shear-amplitude excess of about 7 % per shear field seen before; neither method carries a multiplicative calibration here. The MetaCal product is the 29 Oct one and its windows and covariance are of a different date from the LensMC product's, so its $\chi^2$ against this curve (779.5/651) is not comparable with the LensMC ones.</p>
     </details>
     <details><summary>Sources</summary>
-    <p>Data: the TR1 v2 likelihood products the production chains fit (SPT-3G and ACT DR6, 6 Nov), blinded (cmbx_dr1_a). Best fit: private/bestfit_dv_vector.py on the nested_full chains, bookkeeping in private/dv_vector_bestfit_chains.json. App and frames: private/dv_vector.js with dv_vector_bestfit_app.json.</p>
+    <p>Data: the TR1 v2 likelihood products the production chains fit (SPT-3G and ACT DR6, 6 Nov), blinded (cmbx_dr1_a). Best fit: private/bestfit_dv_vector.py on the nested_full chains, bookkeeping in private/dv_vector_bestfit_chains.json. App and frames: private/dv_vector.js with dv_vector_ice_app.json (render_dv_vector.py --large).</p>
     </details>
   </aside>
 </section>
