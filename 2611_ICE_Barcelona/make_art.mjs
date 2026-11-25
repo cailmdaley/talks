@@ -1,7 +1,7 @@
 // The deck's drawings, a pencil underdrawing with watercolour laid in. The title: the three
 // instruments stand under a light cone of redshift sheets seen from below, rings around the CMB;
 // the first two openers show the cone from the side, cut down to each part's instruments, and the
-// third looks up it again; the other slides' drawings take their
+// third is Lightcone's mark with that sky in its past cone; the other slides' drawings take their
 // motifs from it (the cone, a sheet of sky, the mock globe). ART at the bottom maps each slide to its
 // drawing. A drawing is a stack of layers drawn in the 1920×1080 frame, so that its washes and
 // instruments can move a little; each is saved as the part of the frame it covers, with its place.
@@ -279,6 +279,23 @@ function upTheCone({ cols, cx = 1690, cy = 630, R = 315 }) {
   return [...sheets.reverse(), { id: 'rims', svg: `${MEDIA}${pencil(rims + [2.5, 3.9, 5.3].map(wall).join(''))}` }];
 }
 
+// The third opener: Lightcone's mark, a light cone drawn by hand about its time and space axes, in
+// the deck's pencil. Its past cone holds the talk's sky: the redshift sheets washed in, rose
+// nearest the apex out to sky blue, and the CMB closing the mouth. The future cone is pencil alone.
+function markCone({ cols, A = [1560, 505], H = 345, R = 215, flat = 0.26 }) {
+  hand(23);
+  const T = [0.8, 0.68, 0.56, 0.44, 0.32];   // how far down the past cone each sheet lies, far to near
+  const sky = [{ ...CMB, t: 1 }, ...DEPTHS.map((s, i) => ({ ...s, col: cols[i], t: T[i], seed: 8 + 3 * i }))];
+  const sheets = sky.map((s, i) => { const k = R * s.t / 100;
+    return { id: `sheet${i}`, cls: `wash breathe t${sky.length - 1 - i}`, dpr: 1, svg: `<defs>${sliceFilter('z', s)}</defs><g opacity="0.88" transform="translate(${A[0]} ${(A[1] + H * s.t).toFixed(1)}) scale(${k.toFixed(3)} ${(k * flat).toFixed(3)})"><circle r="100" fill="${s.col}" filter="url(#z)"/></g>` }; });
+  const ring = (t, up, wt) => oval(A[0] + jit(1.5), A[1] + (up ? -1 : 1) * H * t + jit(1.5), R * t * 1.006, R * t * flat * (1 + jit(0.03)), jit(1.2), wt, 0.04 + rnd() * 0.06);
+  const lines = sky.map((s) => ring(s.t, false, s.cmb ? W.line : W.fine)).join('') + ring(1, true, W.line) + ring(0.6, true, W.ghost) + ring(0.32, true, W.ghost)
+    // the cone's two walls cross at here and now; time runs up the page, space across it
+    + ln(A[0] - R, A[1] - H, A[0] + R, A[1] + H, W.line, 10) + ln(A[0] + R, A[1] - H, A[0] - R, A[1] + H, W.line, 10)
+    + ln(A[0] + 5, A[1] - H - 92, A[0] - 4, A[1] + H + 92, W.fine, 8) + ln(A[0] - 318, A[1] + 15, A[0] + 318, A[1] - 17, W.fine, 8);
+  return [...sheets, { id: 'rims', svg: MEDIA + pencil(lines) }];
+}
+
 // The title: the cone seen from below is the sky, and the three instruments stand under it, each
 // looking up into the sheet its light left: SPT the CMB at the far end, Euclid the deepest galaxies,
 // the Mauna Kea domes one sheet nearer. A sight line turns a little at every sheet it crosses.
@@ -326,27 +343,22 @@ function person(x, y, h, col, { lean = 0, look = 1, arm = 0, coat = false, w = 1
   };
 }
 
-// What lies ahead, and what the talk has painted: the cone again with people where the instruments
-// stood, looking up into it together. Ahead, its sheets are traced and not yet painted, the first
-// wash only begun; painted, the same four sheets carry the washes of the talk's four parts, far to near.
-function ahead(painted = false) {
+// What lies ahead: the cone again, with people where the instruments stood, looking up into it
+// together. They see the nearest sheet and little beyond it: we do not see far into the future.
+function ahead() {
   hand(23);
   const base = [1602, 960], ang = -86 * Math.PI / 180, ax = [Math.cos(ang), Math.sin(ang)], mj = [Math.cos(ang + Math.PI / 2), Math.sin(ang + Math.PI / 2)], tilt = -86 + 90, flat = 0.3;
   const r = (d) => 62 + 0.44 * d, c = (d, o = 0) => [base[0] + d * ax[0] + o * r(d) * mj[0], base[1] + d * ax[1] + o * r(d) * mj[1]];
   const ds = [150, 232, 318, 405], os = [-0.06, 0.08, -0.05, 0.06];
-  const sky = [{ ...DEPTHS[4], col: S.lilac }, { ...DEPTHS[3], col: S.rose }, { ...DEPTHS[2], col: S.sky }, { ...CMB }];   // near to far
-  const disc = (i) => { const [x, y] = c(ds[i], os[i]), k = r(ds[i]) / 100;
-    return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${tilt}) scale(${k.toFixed(3)} ${(k * flat).toFixed(3)})"><circle r="100" fill="${sky[i].col}" filter="url(#z)"/></g>`; };
-  const [nx, ny] = c(ds[0], os[0]);
-  const begun = `<defs>${sliceFilter('z', sky[0])}<linearGradient id="begun" x1="0" y1="0" x2="1" y2="0"><stop offset="0.25" stop-color="#fff"/><stop offset="0.8" stop-color="#fff" stop-opacity="0"/></linearGradient>
-    <mask id="begun-m" maskUnits="userSpaceOnUse" x="${nx - 200}" y="${ny - 100}" width="400" height="200"><rect x="${nx - 200}" y="${ny - 100}" width="400" height="200" fill="url(#begun)" transform="rotate(8 ${nx} ${ny})"/></mask></defs>
-    <g mask="url(#begun-m)">${disc(0)}</g>`;
-  const washes = painted ? [3, 2, 1, 0].map(i => ({ id: `sheet${i}`, cls: `wash breathe t${i}`, dpr: 1, svg: `<defs>${sliceFilter('z', sky[i])}</defs><g opacity="0.9">${disc(i)}</g>` }))
-    : [{ id: 'wash', cls: 'wash', dpr: 1, svg: begun }];
-  const wts = painted ? [W.fine, W.fine, W.fine, W.fine] : [W.line, W.fine, W.fine, W.sight], runs = [0.07, 0.05, 0.03, 0.06];
-  const rims = ds.map((d, i) => { const [x, y] = c(d, os[i]); return oval(x, y, r(d), r(d) * flat, tilt, wts[i], runs[i]); }).join('');
-  // the cone's sides, ruled lightly past the last sheet
-  const side = (u) => { const a = c(u < 0 ? 125 : 85, u), b = c(u < 0 ? ds[2] + 30 : ds[3] + 40, u); return ln(a[0], a[1], b[0], b[1], W.sight, 0); };
+  // the nearest sheet is painted and the next barely; beyond it there is no wash
+  const sky = [{ ...DEPTHS[4], col: S.lilac }, { ...DEPTHS[3], col: S.rose }];
+  const washes = [1, 0].map(i => { const [x, y] = c(ds[i], os[i]), k = r(ds[i]) / 100;
+    return { id: `sheet${i}`, cls: `wash breathe t${i}`, dpr: 1, svg: `<defs>${sliceFilter('z', sky[i])}</defs><g opacity="${[0.9, 0.3][i]}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${tilt}) scale(${k.toFixed(3)} ${(k * flat).toFixed(3)})"><circle r="100" fill="${sky[i].col}" filter="url(#z)"/></g>` }; });
+  // and the pencil gives out with distance: each rim fainter and less of it drawn, the last only an arc
+  const FAINT = { w: 1.1, o: 0.24 }, wts = [W.line, W.sight, W.ghost, FAINT], runs = [0.07, 0.03, -0.34, -0.66];
+  const rims = ds.map((d, i) => { const [x, y] = c(d, os[i]); return oval(x, y, r(d), r(d) * flat, tilt, wts[i], runs[i], i > 1 ? 2.2 + i * 0.5 : null); }).join('');
+  // the cone's sides, ruled as far as the second sheet and trailing off before the third
+  const side = (u) => { const a = c(u < 0 ? 125 : 85, u), m = c(ds[1] + 16, u), b = c(ds[2] - 12, u); return ln(a[0], a[1], m[0], m[1], W.sight, 0) + ln(m[0], m[1], b[0], b[1], FAINT, 0); };
   const tone = (c, k = 0.42) => mix(c, S.payne, k);
   // the people stand at the foot of the cone and under its nearest sheet: a pair in talk, a group
   // (one pointing up), three more under the cone. x, height, wash, how each stands
@@ -501,11 +513,11 @@ const ART = {
   title: () => underTheCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose] }),
   // Euclid's galaxies in the part's sky blue, in front of the CMB that SPT maps
   'euclid-spt': () => scene({ sky: slices(ramp('#8FB2D6', '#B9D0E6')), who: ['euclid', 'spt'], lifted: 0.14, words: [1020, 1440] }),
-  // the turn to how the work is done: looking straight up the cone, every redshift at once
-  exciting: () => upTheCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose] }),
+  // the turn to how the work is done: Lightcone's own mark, with the talk's sky in its past cone
+  exciting: () => markCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose] }),
   questions: () => ahead(),
-  // the same cone, painted: one sheet for each part of the talk, in its wash
-  summary: () => ahead(true),
+  // the whole sky again to close: looking straight up the cone, every redshift at once
+  summary: () => upTheCone({ cols: [S.sky, '#B1B8DE', S.lilac, '#D7AEC0', S.rose], cx: 1640, cy: 700, R: 255 }),
   overview: () => oneSky(),
   tensions: () => tensions(),
   agents: () => knownInput(),
@@ -518,13 +530,13 @@ const ALT = {
   title: 'Pencil and watercolour drawing: the light cone seen from below, its redshift sheets as rings of wash around the CMB, and under it the South Pole Telescope, the Mauna Kea domes and Euclid, each looking up into the sheet it observes',
   'euclid-spt': 'Euclid and the South Pole Telescope look up into a cone of blue redshift sheets that ends at the CMB',
   unions: 'The Mauna Kea domes look up into a cone of rose redshift sheets; a loupe drawn out from the nearest sheet shows galaxy shapes in ink, turned around the mass in wash beneath them',
-  summary: 'Pencil and watercolour: a small group of people stand at the foot of a light cone of four painted sheets, one in the wash of each part of the talk',
-  questions: 'Pencil and watercolour: a small group of people stand at the foot of a light cone whose sheets are traced in pencil and not yet painted',
+  summary: 'Pencil and watercolour: the light cone seen from below, its redshift sheets as rings of wash, one inside the other, around the CMB at the far end',
+  questions: 'Pencil and watercolour: a small group of people stand at the foot of a light cone; its nearest sheet is painted, the next barely, and beyond that the pencil lines give out',
   tensions: 'Three sketches in pencil and wash: two posteriors of the expansion rate standing apart, the lensing contour of clustering amplitude below the one from the CMB, and the dark-energy contour lying off the point where ΛCDM sits',
   overview: 'A brace gathers the three projects and points to one simulated sky, a globe in pencil and wash',
   sbi: 'Seven mock skies along a parameter axis, their structure growing clumpier; the one that matches the data is ringed in ink and the posterior is a lilac wash on the axis beneath it',
   agents: 'A known input spectrum in pencil, the sky simulated from it as a washed globe, and the measured bandpowers in ink lying on the same pencil curve',
-  exciting: 'Pencil and watercolour: the light cone seen from below, its redshift sheets as rings of wash, one inside the other, around the CMB at the far end',
+  exciting: 'Pencil and watercolour: a light cone drawn about its time and space axes, as in the Lightcone logo; the past cone holds the redshift sheets as washes, down to the CMB at its mouth, and the future cone is bare pencil',
 };
 
 const flag = (n) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : null; };
