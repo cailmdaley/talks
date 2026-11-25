@@ -143,8 +143,18 @@
 [data-house-slide="lightcone"] .slide:not(.detail) > h2 { opacity: 0; pointer-events: none; }
 [data-house-slide="lightcone"] .slide:not(.detail) > .foot > .notes-open { display: none; }
 
-/* agentic: the lines keep the left of the slide; the stack of layers is drawn on the right */
-[data-house-slide="agentic"] .slide:not(.detail) > .body > ul { max-width: 1040px; }
+/* agentic: the stack of layers is drawn on the right, oldest at the bottom, and each line sits beside the
+   sheet it names, tied to it by a ruled leader; the last line runs under the stack. A line beside a
+   sheet is kept to one line and has about 1000 px (some 46 characters) */
+[data-house-slide="agentic"] .slide:not(.detail) > .body > ul > li { position: absolute; left: 113px; width: 1076px; margin: 0; display: flex; align-items: center; white-space: nowrap; }
+[data-house-slide="agentic"] .slide:not(.detail) > .body > ul > li::before { content: ""; flex: none; width: 0.3em; height: 0.3em; margin: 0.08em 0.56em 0 0.14em; border-radius: 50%; background: var(--accent); }
+[data-house-slide="agentic"] .slide:not(.detail) > .body > ul > li::after { content: ""; flex: 1; min-width: 40px; margin-left: 28px; border-top: 2px solid var(--muted); opacity: 0.55; }
+[data-house-slide="agentic"] .slide:not(.detail) > .body > ul > li:nth-child(1) { top: 735px; }
+[data-house-slide="agentic"] .slide:not(.detail) > .body > ul > li:nth-child(2) { top: 575px; }
+[data-house-slide="agentic"] .slide:not(.detail) > .body > ul > li:nth-child(3) { top: 415px; }
+[data-house-slide="agentic"] .slide:not(.detail) > .body > ul > li:nth-child(4) { top: 255px; }
+[data-house-slide="agentic"] .slide:not(.detail) > .body > ul > li:nth-child(5) { top: 884px; width: auto; }
+[data-house-slide="agentic"] .slide:not(.detail) > .body > ul > li:nth-child(5)::after { display: none; }
 
 /* lightcone-research: the organisation's logo as the headline with its institutions at the right;
    each part with its mark at the left and its line beside it; Bayer's star chart rises from the

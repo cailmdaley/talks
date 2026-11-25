@@ -526,7 +526,7 @@ function mockMark() {
 // across the sheet when the slide's last line arrives.
 function layers() {
   hand(149);
-  const cx = 1500, a = 300, b = 84, th = 13, cys = [836, 660, 484, 308], cols = [S.butter, S.sky, S.rose, S.lilac];
+  const cx = 1500, a = 300, b = 72, th = 13, cys = [770, 610, 450, 290], cols = [S.butter, S.sky, S.rose, S.lilac];
   const P = (cy, u, v) => [cx + a * (u - v) / 2, cy + b * (u + v) / 2];                   // a point of a sheet, u and v in −1…1
   const corners = (cy) => [P(cy, -1, -1), P(cy, 1, -1), P(cy, 1, 1), P(cy, -1, 1)];        // far, right, near, left
   const shape = (pts) => `M${pts.map(f).join(' L')}Z`;
