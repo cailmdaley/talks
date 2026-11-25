@@ -191,7 +191,7 @@ function chain() {
         <rect x="10" y="${YM - 55}" width="1020" height="110" rx="3" class="glaze" fill="url(#chain-wash)"/>
         <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">${X.slice(0, 3).map((x) => arrow(`M${x} ${YM - 65} V${Y + 178}`) + arrow(`M${x} ${YM + 65} V${YB - 78}`)).join('')}${arrow(`M1042 ${YM} H${X[3] - 106}`)}</g>
         <text x="520" y="${YM - 6}" font-size="40" font-weight="600" text-anchor="middle">Mocks with known inputs</text>
-        <text x="520" y="${YM + 36}" font-size="32" text-anchor="middle" class="fill-muted">footprint, noise, PSF, redshift distributions, systematics</text>
+        <text x="520" y="${YM + 36}" font-size="32" text-anchor="middle" class="fill-muted">sky signals, footprint, noise, PSF, redshift distributions, systematics</text>
       </g>
       <g class="fragment" font-size="40" text-anchor="middle">
         <text x="1415" y="${YB + 86}">validate the pipeline at each step</text>
