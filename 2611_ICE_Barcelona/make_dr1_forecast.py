@@ -72,7 +72,6 @@ def main():
     z, zw = np.load(args.src), np.load(args.wide)
     truth = dict(zip(DERIVED, z['dr1_3x2|t'].astype(float)))
     base = chain(z, 'dr1_3x2', '3×2pt', EUCLID)
-    ink = chain(z, 'dr1_3x2', '3×2pt', style.INK, False)
     wide3 = chain(zw, 'dr1_3x2_pw10', '3×2pt, wide priors', EUCLID)
     wide5 = chain(zw, 'dr1_MS_5x2_pw10', '5×2pt, wide priors', SPT)
     # Each frame: its rows from top to bottom (widest first), then the order its contours are laid down, outlines last.
@@ -81,7 +80,7 @@ def main():
         act = chain(z, f'dr1_A_{n}x2', f'{n}×2pt with ACT DR6', ACT)
         spt = chain(z, f'dr1_MS_{n}x2', f'{n}×2pt with SPT-3G', SPT, False)
         frames.append(([base, act, spt], [base, act, spt]))
-    frames += [([ink, wide3], [wide3, ink]), ([ink, wide3, wide5], [wide3, wide5, ink])]
+    frames += [([wide3], [wide3]), ([wide3, wide5], [wide3, wide5])]
     for k, (rows, draw) in enumerate(frames, 1):
         wide = k >= 4
         chains = rows[::-1]
