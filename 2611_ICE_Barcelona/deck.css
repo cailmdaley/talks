@@ -132,8 +132,8 @@
 [data-house-slide="summary"] .slide[data-layout="closing"] ol > li::before { color: var(--ink); z-index: 1; }
 [data-house-slide="summary"] ol > li::after { content: ""; position: absolute; left: -0.34em; top: 0.16em; width: 1.12em; height: 1.02em;
   border-radius: 50%; background: var(--dab); opacity: 0.85; filter: url(#house-wash-fine); z-index: 0; mix-blend-mode: multiply; }
-[data-house-slide="summary"] ol > li:nth-child(1) { --dab: var(--part-1); }  [data-house-slide="summary"] ol > li:nth-child(2) { --dab: var(--part-2); }
-[data-house-slide="summary"] ol > li:nth-child(3) { --dab: var(--part-3); }  [data-house-slide="summary"] ol > li:nth-child(4) { --dab: var(--part-4); }
+[data-house-slide="summary"] ol > li:nth-child(1) { --dab: var(--part-2); }  [data-house-slide="summary"] ol > li:nth-child(2) { --dab: var(--part-3); }
+[data-house-slide="summary"] ol > li:nth-child(3) { --dab: var(--part-4); }
 
 /* Lightcone Studio fills the canvas, to be driven live: the headline stays in the outline and the
    notes but leaves the screen, and of the footer only the folio stays (N opens the notes) */
