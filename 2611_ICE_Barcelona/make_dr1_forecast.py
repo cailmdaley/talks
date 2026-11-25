@@ -21,7 +21,7 @@ import json
 
 import numpy as np
 
-from contour_style import D, HERE, Chain, joint, save, style
+from contour_style import D, HERE, Chain, posteriors, save, style
 
 plt = style.plt
 DERIVED = ['sigma8', 'S8', 'Omega_m']
@@ -51,7 +51,7 @@ def fig_m(z):
     ax.axhline(0, color=style.MUTED, lw=1.2, alpha=.6, zorder=1)
     ax.text(6.4, .094, r'prior, $\pm0.10$', color=style.MUTED, fontsize=27, va='top', ha='right')
     for k, (name, label, color, dx) in enumerate([('dr1_3x2_pw10', '3×2pt', EUCLID, -.14),
-                                                  ('dr1_MS_5x2_pw10', '5×2pt, SPT-3G', SPT, .14)]):
+                                                  ('dr1_MS_5x2_pw10', '5×2pt with SPT-3G', SPT, .14)]):
         w = z[name + '|w'].astype(float); w /= w.sum()
         x = z[name + '|x'][:, [list(z[name + '|xn']).index(f'm_{i}') for i in range(6)]]
         m = w @ x; s = np.sqrt(w @ (x - m) ** 2)
@@ -61,7 +61,7 @@ def fig_m(z):
     ax.set_xlim(.5, 6.5); ax.set_ylim(-.12, .12)
     ax.set_xticks(range(1, 7)); ax.set_yticks([-.1, -.05, 0, .05, .1])
     ax.set_xlabel('source redshift bin'); ax.set_ylabel('shear bias $m$', labelpad=6)
-    save(fig, 'ice_dr1_shear_m.png')
+    save(fig, 'ice_dr1_shear_m.png', transparent=True)  # an image in a text column is not multiplied into the ground
 
 
 def main():
@@ -72,17 +72,17 @@ def main():
     z, zw = np.load(args.src), np.load(args.wide)
     truth = dict(zip(DERIVED, z['dr1_3x2|t'].astype(float)))
     base = chain(z, 'dr1_3x2', '3×2pt', EUCLID)
-    frames = [[base]] + [[base, chain(z, f'dr1_MS_{n}x2', f'{n}×2pt, SPT-3G', SPT),
-                          chain(z, f'dr1_A_{n}x2', f'{n}×2pt, ACT DR6', ACT, False)] for n in (5, 6)]
-    frames.append([chain(zw, 'dr1_3x2_pw10', '3×2pt, free $m$', EUCLID),
-                   chain(zw, 'dr1_MS_5x2_pw10', '5×2pt, free $m$', SPT),
-                   chain(z, 'dr1_3x2', '3×2pt, $m$ to 1 %', style.INK, False)])
+    frames = [[base]] + [[base, chain(z, f'dr1_MS_{n}x2', f'{n}×2pt with SPT-3G', SPT),
+                          chain(z, f'dr1_A_{n}x2', f'{n}×2pt with ACT DR6', ACT, False)] for n in (5, 6)]
+    frames.append([chain(zw, 'dr1_3x2_pw10', '3×2pt, wide priors', EUCLID),
+                   chain(zw, 'dr1_MS_5x2_pw10', '5×2pt, wide priors', SPT),
+                   chain(z, 'dr1_3x2', '3×2pt', style.INK, False)])
     for k, chains in enumerate(frames, 1):
         wide = k == 4
-        fig = joint(chains, 'Omega_m', 'S8', D,
-                    {'Omega_m': (-.08, .08) if wide else (-.07, .07), 'S8': (-.095, .095) if wide else (-.036, .036)},
-                    ticks={'Omega_m': [-.05, 0, .05], 'S8': [-.05, 0, .05] if wide else [-.02, 0, .02]},
-                    center=truth, rows=3, decimals={'Omega_m': 3, 'S8': 4})
+        fig = posteriors(
+            chains, D, center=truth, value=False, rows=3,
+            lims={'Omega_m': (-.08, .08) if wide else (-.07, .07), 'S8': (-.095, .095) if wide else (-.036, .036)},
+            ticks={'Omega_m': [-.05, 0, .05], 'S8': [-.05, 0, .05] if wide else [-.02, 0, .02]})
         save(fig, f'ice_dr1_forecast_{k}.png')
     fig_m(zw)
     names = sorted({k.split('|')[0] for k in z.files if k.startswith(('dr1_', 'tr1_'))})

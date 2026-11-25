@@ -23,12 +23,12 @@ import json
 
 import numpy as np
 
-from contour_style import HERE, Chain, joint, save
+from contour_style import HERE, Chain, posteriors, save
 
 CMB = {'spt': ('SPT-3G', '#C0392B'), 'act': ('ACT DR6', '#2E6F95')}
 RUNS = [('kappa_only', r'$\kappa\gamma + \kappa\delta$'),
         ('kappa_gl', r'$\kappa\gamma + \kappa\delta + \gamma\delta$'),
-        ('full', r'5×2pt: $\gamma\gamma + \gamma\delta + \delta\delta + \kappa\gamma + \kappa\delta$')]
+        ('full', '5×2pt')]
 
 
 def main():
@@ -44,11 +44,10 @@ def main():
             c = Chain(d, z[f'{cmb}_{run}|w'], name, color, fill=cmb == 'spt')
             chains.append(c)
             stats[cmb][run] = {q: round(float(v), 4) for n in ('S8', 'Omega_m')
-                               for q, v in zip((n + '_blinded', 'sigma_' + n), c.interval(n)[:2])}
-        fig = joint(chains, 'Omega_m', 'S8', {'Omega_m': r'$\Omega_\mathrm{m}$', 'S8': r'$S_8$ (blinded)'},
-                    {'Omega_m': (.1, 1.1), 'S8': (.62, 1.16)},
-                    ticks={'Omega_m': [.2, .4, .6, .8, 1.], 'S8': [.7, .8, .9, 1., 1.1]},
-                    box=(.17, .17, .54, .47), side=(.27, .25), split=.5, title=label)
+                               for q, v in zip((n + '_blinded', 'sigma_' + n), c.sigma(n))}
+        fig = posteriors(chains, {'Omega_m': r'\Omega_\mathrm{m}', 'S8': r'S_8\ \mathrm{(blinded)}'}, title=label,
+                         lims={'Omega_m': (0, 1.1), 'S8': (.64, 1.08)},
+                         ticks={'Omega_m': [.2, .6, 1.], 'S8': [.7, .8, .9, 1.]})
         save(fig, f'ice_chains_spt_act_{k}.png')
     (HERE / 'chains_spt_act.json').write_text(json.dumps(stats, indent=1) + '\n')
 

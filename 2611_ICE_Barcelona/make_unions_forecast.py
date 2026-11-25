@@ -19,7 +19,7 @@ import json
 import numpy as np
 
 import make_dr1_forecast as dr1
-from contour_style import D, HERE, joint, save
+from contour_style import D, HERE, posteriors, save
 
 SHEAR, JOINT = '#3D5BA0', '#A8403A'
 TRUTH = dict(Omega_m=0.3190, S8=0.8387)
@@ -32,9 +32,9 @@ def main():
     z = np.load(p.parse_args().src)
     chains = [dr1.chain(z, *layer) for layer in LAYERS]
     for k in (1, 2):
-        fig = joint(chains[:k], 'Omega_m', 'S8', D, {'Omega_m': (-.24, .36), 'S8': (-.088, .088)},
-                    ticks={'Omega_m': [-.2, 0, .2], 'S8': [-.05, 0, .05]}, center=TRUTH, rows=2, side=(.27, .25),
-                    split=.5)
+        fig = posteriors(chains[:k], D, center=TRUTH, value=False, rows=2,
+                         lims={'Omega_m': (-.24, .36), 'S8': (-.088, .088)},
+                         ticks={'Omega_m': [-.2, 0, .2], 'S8': [-.05, 0, .05]})
         save(fig, f'ice_unions_forecast_{k}.png')
     names = sorted({k.split('|')[0] for k in z.files})
     (HERE / 'unions_forecast.json').write_text(
