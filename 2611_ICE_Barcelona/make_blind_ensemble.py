@@ -4,7 +4,7 @@ draws.npz: shift draws in (logA, omch2, h) and what each means in (S8, Omega_m),
 slim.npz, ens.npz: 30 shifts drawn flat in (A_s, omch2, h), kept within 3 sigma of the 3x2pt (S8, Omega_m); for each a
 chain on the shifted noiseless DR1 vector. Recovery = posterior mean(shifted) - mean(unshifted) - injected, in units of
 the unshifted chain's sigma, for (Omega_m, S8). map/*.npz (mapfit.py): the same at the posterior's maximum, for five probe
-sets with noise, with the blind's reference fixed or at the best fit of the vector. Writes images/ice_blind_draws.png, images/ice_blind_recovery_<k>.png
+sets with noise, with the blind's reference fixed or at the best fit of the 3x2pt. Writes images/ice_blind_draws.png, images/ice_blind_recovery_<k>.png
 and blind_ensemble.json.
 
 Run: uv run --with numpy --with scipy --with matplotlib --with fonttools --with brotli \
@@ -127,7 +127,7 @@ def fig_recovery(z, ens, M, outdir):
             for j, (p, label) in enumerate(PROBES):
                 y = len(PROBES) - 1 - j
                 for mode, c, off in (('add', ADD, .17), ('refit', REFIT, -.17)):
-                    v = np.concatenate([M[f'stress_{p}_{mode}_n{n}'][0][:, 0] for n in (1, 2)])
+                    v = np.concatenate([M[f'stress_{p}_{mode}_v{n}'][0][:, 0] for n in (1, 2)])
                     bx.scatter(v, y + off + rng.uniform(-.07, .07, len(v)), s=75, color=c, alpha=.5, lw=0, zorder=3)
                     bx.plot([-v.std(), v.std()], [y + off] * 2, color=c, lw=5, alpha=.9, zorder=2, solid_capstyle='butt')
                 bx.text(-1.18, y, label, ha='right', va='center', fontsize=28, color=style.INK)
@@ -136,7 +136,7 @@ def fig_recovery(z, ens, M, outdir):
             bx.set_xlim(-1.1, 1.1); bx.set_ylim(-.55, len(PROBES) - .45)
             bx.set_xticks([-1, -.5, 0, .5, 1]); bx.set_yticks([]); bx.spines['left'].set_visible(False)
             bx.set_xlabel(r'recovered $-$ injected $S_8$  [$\sigma$ of each probe]')
-            for txt, c in (('fixed reference off the truth', ADD), ('reference at the fit to the vector', REFIT)):
+            for txt, c in (('fixed reference off the truth', ADD), ('reference at the 3×2pt fit', REFIT)):
                 bx.scatter([], [], s=170, color=c, label=txt, lw=0)
             bx.legend(loc='lower left', bbox_to_anchor=(-.33, 1.01), frameon=False, fontsize=26, handletextpad=.1,
                       borderaxespad=0, labelspacing=.1)
