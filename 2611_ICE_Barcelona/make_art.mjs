@@ -590,7 +590,7 @@ const ALT = {
   summary: 'Pencil and watercolour: the light cone seen from below, its redshift sheets as rings of wash, one inside the other, around the CMB at the far end',
   questions: 'Pencil and watercolour: a small group of people stand at the foot of a light cone and look up into it; its four sheets fade with distance, the nearest painted, the third almost gone',
   tensions: 'Three sketches in pencil and wash: two posteriors of the expansion rate standing apart, the lensing contour of clustering amplitude below the one from the CMB, and the dark-energy contour lying off the point where ΛCDM sits',
-  mocks: 'A simulated sky as a small globe in pencil and wash',
+  mocks: 'A simulated sky as a globe in pencil and wash',
   overview: 'The three parts of the talk as small drawings in pencil and wash, each above its stretch of the footer rule: the South Pole Telescope and Euclid under a blue sheet of sky, the Mauna Kea domes under a rose one, and a light cone in lilac; a brace gathers the three lines of text and points to one simulated sky, a globe',
   sbi: 'Seven mock skies along a parameter axis, their structure growing clumpier; the one that matches the data is ringed in ink and the posterior is a lilac wash on the axis beneath it',
   agentic: 'Four sheets drawn one under another in pencil and wash, the oldest on top: a survey sky of ink specks, a simulated cosmic web, a grid of ticked tests, and at the foot a sheet still in construction lines with its wash only begun',
