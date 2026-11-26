@@ -163,7 +163,7 @@
 .slide h2.marque { display: flex; align-items: center; gap: 36px; }
 .slide h2.marque > img.wordmark { height: 1.5em; width: auto; margin-right: auto; }
 .slide h2.marque > img.inst { height: 0.8em; width: auto; }
-.slide ul.marks { list-style: none; padding: 0; display: grid; grid-template-columns: 480px 1fr; column-gap: 56px; row-gap: 28px; align-items: center; }
+.slide ul.marks { list-style: none; padding: 0; margin-top: 70px; display: grid; grid-template-columns: 480px 1fr; column-gap: 56px; row-gap: 120px; align-items: center; }
 .slide ul.marks > li { display: contents; }
 .slide ul.marks > li > .mark { justify-self: start; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .slide ul.marks > li > .mark > img { width: 300px; margin-left: 8px; }
