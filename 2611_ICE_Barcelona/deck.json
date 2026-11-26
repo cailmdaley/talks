@@ -65,7 +65,7 @@
     },
     {
       "title": "Doing science now",
-      "outline": "Simulations as a verifiable environment for agents, Lightcone with a live demonstration, mocks that reproduce a survey and simulations from cheap to realistic, simulation-based inference as the work proposed for ICE, the questions this puts to the community, and a summary.",
+      "outline": "Simulations as a verifiable environment for agents, Lightcone with a live demonstration, mocks that reproduce a survey and simulations from cheap to realistic, simulation-based inference as the work proposed for ICE, and a summary.",
       "slides": [
         "exciting",
         "lightcone-research",
@@ -75,7 +75,6 @@
         "chain",
         "fidelity",
         "sbi",
-        "questions",
         "summary"
       ]
     },
@@ -83,6 +82,7 @@
       "title": "Backup",
       "outline": "The DR1 blinding tests, how a shift is drawn and whether it is recovered, the lens ratio as a check on shear calibration, the systematics-template crosses and the FLASK covariance; the UNIONS first-release S8, B-modes, mock comparison and blinding, the v2 error bars, robustness tests, contours and the IA prior; the earlier opening and close on how collaborations work.",
       "slides": [
+        "questions",
         "spiral",
         "blind-draws",
         "blind-rehearsal",
