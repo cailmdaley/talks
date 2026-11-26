@@ -80,7 +80,7 @@ def main():
         act = chain(z, f'dr1_A_{n}x2', f'{n}×2pt with ACT DR6', ACT)
         spt = chain(z, f'dr1_MS_{n}x2', f'{n}×2pt with SPT-3G', SPT, False)
         frames.append(([base, act, spt], [base, act, spt]))
-    frames += [([wide3], [wide3]), ([wide3, wide5], [wide3, wide5])]
+    frames += [([wide3], [wide3]), ([wide5, wide3], [wide3, wide5])]   # the 5×2pt arrives above, so the 3×2pt's row stays put
     for k, (rows, draw) in enumerate(frames, 1):
         wide = k >= 4
         chains = rows[::-1]
