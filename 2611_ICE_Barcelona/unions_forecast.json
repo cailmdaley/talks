@@ -933,6 +933,38 @@
   "fom": 1303,
   "wall_s": 971
  },
+ "v092f100_first_3x2_hi_s1": {
+  "sigma8": {
+   "mean": 0.8295,
+   "sigma": 0.0576
+  },
+  "S8": {
+   "mean": 0.8407,
+   "sigma": 0.02
+  },
+  "Omega_m": {
+   "mean": 0.3114,
+   "sigma": 0.0352
+  },
+  "fom": 1526,
+  "wall_s": 544
+ },
+ "v092f100_first_LL_hi_s1": {
+  "sigma8": {
+   "mean": 0.8395,
+   "sigma": 0.1066
+  },
+  "S8": {
+   "mean": 0.8376,
+   "sigma": 0.0239
+  },
+  "Omega_m": {
+   "mean": 0.3113,
+   "sigma": 0.0734
+  },
+  "fom": 658,
+  "wall_s": 204
+ },
  "v092f_first_2x2": {
   "sigma8": {
    "mean": 0.7894,
