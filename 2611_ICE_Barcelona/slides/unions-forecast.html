@@ -7,14 +7,14 @@
   </figure>
   <div class="text">
     <ul>
+      <li>assuming 100 % of shear weight used for tomography</li>
       <li>relatively conservative priors</li>
     </ul>
-    <p class="source">* assuming we can use 100 % of our shear weight in tomography</p>
   </div>
   <aside class="notes">
     <ul class="skim">
       <li><strong>Contours</strong> — 68 % and 95 % of chains run on the model prediction itself: no noise is added to the data vector, so the posterior sits on the input cosmology ($S_8=0.839$, $\Omega_\mathrm{m}=0.319$, the origin of both axes) and its width is the expected error, which the covariance sets. No data vector is measured or looked at. Four tomographic source bins on 4,582 deg², alone and then with the five SPHEREx all-sky lens bins at $z=0.05$–$0.55$.</li>
-      <li><strong>Drawn (the asterisk)</strong> — the four source bins carry the whole v2 sample's shear weight: each bin's density is multiplied by 1/0.54, so $n_{\rm eff}$ sums to 7.6 arcmin⁻² instead of 4.08, with the same $n(z)$ per bin. Shear alone $\sigma(S_8)=0.0239$, $\sigma(\Omega_\mathrm{m})=0.073$, $\sigma(\sigma_8)=0.107$. 3×2pt 0.0200, 0.0352, 0.058, which is 2.4 % on $S_8$. One sampler seed, 16,000 effective samples each (26 November, fir).</li>
+      <li><strong>Drawn</strong> — the four source bins carry the whole v2 sample's shear weight: each bin's density is multiplied by 1/0.54, so $n_{\rm eff}$ sums to 7.6 arcmin⁻² instead of 4.08, with the same $n(z)$ per bin. Shear alone $\sigma(S_8)=0.0239$, $\sigma(\Omega_\mathrm{m})=0.073$, $\sigma(\sigma_8)=0.107$. 3×2pt 0.0200, 0.0352, 0.058, which is 2.4 % on $S_8$. One sampler seed, 16,000 effective samples each (26 November, fir).</li>
       <li><strong>With the bins' own densities</strong> — every other number in these notes: shear alone $\sigma(S_8)=0.0278$, $\sigma(\Omega_\mathrm{m})=0.098$, $\sigma(\sigma_8)=0.127$. 3×2pt 0.0218, 0.0379, 0.061 (2.6 %). A second sampler seed gives 0.0273 and 0.098, and 0.0215 and 0.0381, with 16,000 effective samples each. The $\Omega_\mathrm{m}$–$S_8$ figure of merit ($1/\sqrt{\det C}$) rises by a factor 3.0. The shear-only $\Omega_\mathrm{m}$ width is largely the prior's, so the gain on $\Omega_\mathrm{m}$ depends on it: $h<0.91$, $\ln(10^{10}A_s)<3.66$ and $0.085<\Omega_c h^2<0.2$ all cut that posterior. They do not cut the 3×2pt one.</li>
       <li><strong>With noise</strong> — twenty GLASS mocks (lognormal matter shells, lensing, intrinsic alignments, Poisson-sampled lenses, shape noise) measured with the same masked estimator and fitted with the same chain. The median width is 0.0220 on $S_8$ and 0.0386 on $\Omega_\mathrm{m}$, as forecast. The posterior means average $S_8=0.844\pm0.003$ and $\Omega_\mathrm{m}=0.321\pm0.009$ and scatter by 0.014 and 0.038; no mock is further than 1.7σ from the input. On one sky the $\Omega_\mathrm{m}$ width ranges from 0.030 to 0.060.</li>
       <li><strong>Scale cuts</strong> — shear uses $300<\ell<1600$, the cut on which the first release has B-modes consistent with zero. At $20<\ell<2000$ the 3×2pt gives 0.0211 and 0.0330, so its width changes by 3 % on $S_8$ and 13 % on $\Omega_\mathrm{m}$; the lenses already supply the large-scale information. Shear alone at that cut gives 0.0235 and 0.054, and at $100<\ell<1600$ 0.0274 and 0.070 (3×2pt 0.0214 and 0.035).</li>
