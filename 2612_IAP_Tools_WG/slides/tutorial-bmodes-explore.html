@@ -1,0 +1,28 @@
+<section data-layout="points">
+  <h2>Click a decision, prompt a universe, edit a plot</h2>
+  <div class="cols even">
+    <div>
+      <span class="kicker">1 · Explore &amp; click in Studio</span>
+      <ul>
+        <li>Inspect <strong>Decisions</strong>, <strong>Lineage graph</strong>, <strong>Provenance</strong>, and <strong>Bibliography</strong></li>
+        <li>Open <code>fig_cl_fiducial</code> → click <code>fiducial_catalog → initial</code> (~13 s live run)</li>
+        <li>Inspect the job in <strong>Queue</strong> and toggle back instantaneously</li>
+      </ul>
+    </div>
+    <div>
+      <span class="kicker">2 · Prompt your agent in paper-ii/</span>
+      <div class="prompt-box">
+        <p><strong>New universe:</strong> "Turn off PSF leakage correction and remake the pure E/B data vector figure. How do the B-mode PTEs change?"</p>
+        <p><strong>Code edit:</strong> "Add a shaded band for the fiducial scale cut on the Cℓ plot, commit, and rematerialize it."</p>
+      </div>
+    </div>
+  </div>
+  <p class="source">Supported live options: fiducial_catalog (size_cut, initial, masked, relaxed_flags) × leakage_correction (applied, uncorrected).</p>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Click-to-run</strong> — clicking a decision option in Studio (--run) creates a new universe, queues lc materialize local, swaps the figure on the exact frame it lands, and records the job's inputs, recipe and commit in Queue.</li>
+      <li><strong>Agentic modification</strong> — the repo's CLAUDE.md tells any coding agent which variations can run locally (~13 s for Cℓ, ~40–65 s for pure E/B or COSEBIs) and which require cluster mocks (such as another blind or adaptive quadrature), so agents decline impossible requests in seconds instead of hacking workarounds.</li>
+      <li><strong>Code edits</strong> — editing a plotting script, committing, and deleting the old output + manifest lets lc rematerialize a fresh figure tied to the new commit hash.</li>
+    </ul>
+  </aside>
+</section>

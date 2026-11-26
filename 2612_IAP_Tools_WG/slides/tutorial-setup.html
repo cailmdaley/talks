@@ -4,8 +4,8 @@
     <div>
       <span class="kicker">1 · Install CLI</span>
       <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh
-uv tool install lightcone-cli==0.5.1
-mkdir sn-cosmology &amp;&amp; cd sn-cosmology</code></pre>
+export PATH="$HOME/.local/bin:$PATH"
+uv tool install lightcone-cli==0.5.1</code></pre>
       <span class="kicker">2a · Claude Code (own or tutorial key)</span>
       <pre><code>export ANTHROPIC_API_KEY="sk-ant-…"
 claude plugin marketplace add LightconeResearch/agent-skills
@@ -23,7 +23,7 @@ codex plugin add lightcone@lightcone-research
 codex</code></pre>
     </div>
   </div>
-  <p class="source">lightcone-cli bundles git-annex · offline fallback kit in tutorial handout.</p>
+  <p class="source">Fallback kit &amp; handout: github.com/cailmdaley/talks/tree/main/2612_IAP_Tools_WG</p>
   <aside class="notes">
     <ul class="skim">
       <li><strong>Three agent paths</strong> — attendees with Claude Code (own account or one of Cail's tutorial API keys) or Codex get the full plugin including validate-on-save hooks; attendees carrying over OpenCode and Albert or free models from Guilhem's Tuesday session install the two portable skills via npx skills add (or copy SKILL.md into .opencode/skills/ if Node 22 is absent).</li>

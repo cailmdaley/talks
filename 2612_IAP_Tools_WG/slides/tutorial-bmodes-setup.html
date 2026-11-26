@@ -1,0 +1,34 @@
+<section data-layout="points">
+  <h2>Tutorial B: UNIONS-3500 B-modes in Lightcone Studio</h2>
+  <p class="small">Clone a full A&amp;A cosmology paper (Daley et al. 2026) with delivered data products and open the interactive viewer.</p>
+  <div class="cols even">
+    <div>
+      <span class="kicker">1 · Clone &amp; launch compute</span>
+      <pre><code>git clone -b laptop --single-branch \
+  https://github.com/cailmdaley/unions-bmodes-mystra paper-ii
+cd paper-ii
+lc init
+lc compute launch --wait</code></pre>
+    </div>
+    <div>
+      <span class="kicker">2 · Launch viewer (Studio or Lab)</span>
+      <pre><code># Lightcone Studio (live click-to-run)
+npx github:LightconeResearch/ui-prototype#click-decision --run
+
+# Public PyPI fallback: Lightcone Lab
+uv tool install jupyterlab --with "jupyterlab-lightcone[full]"
+jupyter-lab</code></pre>
+    </div>
+  </div>
+  <p class="source">Full clone (no --depth 1): lc checks commit provenance · Cℓ toggles ~13 s, pure E/B ~35 s.</p>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>What you get</strong> — the complete ASTRA hierarchy of UNIONS-3500 Paper II (B-mode validation for cosmic shear over 3,500 deg², accepted by A&amp;A), with delivered harmonic-space Cℓ and real-space ξ± measurements and covariances for every catalog and PSF-leakage variant.</li>
+      <li><strong>Why full clone</strong> — shallow clones break lc's commit-provenance check; --single-branch restricts the download to the laptop branch.</li>
+      <li><strong>Viewer access</strong> — Lightcone Studio (--run) adds click-a-decision-option execution and a Queue inspector; if LightconeResearch/ui-prototype is not yet public on workshop morning, Lightcone Lab (jupyterlab-lightcone on PyPI) opens the same ASTRA project locally while Studio runs live on the projector.</li>
+    </ul>
+    <details><summary>Sources</summary>
+      <p><a href="https://github.com/cailmdaley/unions-bmodes-mystra/tree/laptop">cailmdaley/unions-bmodes-mystra (laptop branch)</a>; static report at <a href="https://cailmdaley.github.io/unions-bmodes-mystra/report/">cailmdaley.github.io/unions-bmodes-mystra/report/</a>.</p>
+    </details>
+  </aside>
+</section>

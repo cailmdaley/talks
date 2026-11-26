@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Hands-on Tutorial: Dark Energy from Union2.1 SNe Ia with Lightcone</title>
+<title>Hands-on Tutorials: Union2.1 SNe Ia &amp; UNIONS Paper II B-modes with Lightcone</title>
 <style>
   :root {
     --ground: #F6F0E4;
@@ -22,14 +22,14 @@
     background: var(--ground); color: var(--ink);
     font: 18px/1.6 Georgia, "EB Garamond", serif;
   }
-  main { max-width: 860px; margin: 0 auto; }
+  main { max-width: 880px; margin: 0 auto; }
   header { border-bottom: 2px solid var(--rule); padding-bottom: 18px; margin-bottom: 28px; }
   .eyebrow {
     font: 600 13px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
     letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
   }
   h1 { font-size: 34px; line-height: 1.15; margin: 8px 0 10px; }
-  h2 { font-size: 24px; margin: 34px 0 10px; border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+  h2 { font-size: 25px; margin: 38px 0 10px; border-bottom: 1.5px solid var(--rule); padding-bottom: 6px; }
   h3 { font-size: 19px; margin: 22px 0 8px; color: var(--teal); }
   p { margin: 0 0 14px; }
   .meta { color: var(--muted); font-size: 16px; }
@@ -66,59 +66,63 @@
   a { color: var(--cobalt); }
   code { font: 0.88em ui-monospace, SFMono-Regular, Menlo, monospace; background: rgba(0,0,0,0.05); padding: 1px 5px; border-radius: 4px; }
   pre code { background: none; padding: 0; }
+  .toc { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; font: 14px ui-monospace, monospace; }
+  .toc a { text-decoration: none; background: var(--panel); border: 1px solid var(--rule); padding: 5px 11px; border-radius: 6px; color: var(--ink); }
 </style>
 </head>
 <body>
 <main>
 <header>
   <div class="eyebrow">GDR CoPhy Tools Working Group · IAP, Paris · Wednesday 2 December 2026</div>
-  <h1>Hands-on Tutorial: Dark Energy from 580 Supernovae with Lightcone</h1>
-  <p class="meta">Cail Daley (CosmoStat, CEA Paris-Saclay) · ~35–40 minutes · Runs on any laptop with <code>uv</code> and a coding agent.</p>
+  <h1>Hands-on Tutorials: Lightcone Research in Cosmology</h1>
+  <p class="meta">Cail Daley (CosmoStat, CEA Paris-Saclay) · Part A: Union2.1 SNe Ia (15–20 min) · Part B: UNIONS Paper II B-modes in Lightcone Studio (15–20 min).</p>
+  <nav class="toc">
+    <a href="#setup">0. Setup</a>
+    <a href="#part-a">Part A: Union2.1 from scratch</a>
+    <a href="#part-b">Part B: UNIONS Paper II in Studio</a>
+    <a href="#fallback">Offline fallback</a>
+  </nav>
 </header>
 
-<p>In this exercise you will build a reproducible flat-&Lambda;CDM fit to the 580 Type Ia supernovae of the Union2.1 compilation (<a href="https://arxiv.org/abs/1105.3470">Suzuki et al. 2012</a>), mechanically verify the published constraint against the cached PDF, discover why your initial uncertainty is three times too tight, and record the systematic covariance matrix as an explicit ASTRA decision across two universes.</p>
-
-<h2>0. Setup (5–8 minutes)</h2>
+<h2 id="setup">0. Setup (5 minutes)</h2>
 
 <h3>Install <code>uv</code> and <code>lightcone-cli</code></h3>
-<p><code>lightcone-cli</code> bundles <code>git-annex</code> and manages Python via <code>uv</code>. Make sure git knows your name and email (<code>git config --global user.name</code> / <code>user.email</code>).</p>
+<p><code>lightcone-cli</code> bundles <code>git-annex</code> and manages Python via <code>uv</code>. Ensure git knows your identity (<code>git config --global user.name</code> / <code>user.email</code>).</p>
 <div class="box"><button class="copy" onclick="cp(this)">Copy</button><pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh
 export PATH="$HOME/.local/bin:$PATH"
 uv tool install lightcone-cli==0.5.1
-lc --version
+lc --version</code></pre></div>
 
-mkdir sn-cosmology &amp;&amp; cd sn-cosmology</code></pre></div>
+<h3>Connect Lightcone skills to your coding agent (choose one)</h3>
 
-<h3>Connect the Lightcone skills to your coding agent (choose one path)</h3>
-
-<p><strong>Path A — Claude Code</strong> (your own account, or a tutorial API key handed out in the room):</p>
+<p><strong>Path A — Claude Code</strong> (own account, or a tutorial API key from the room):</p>
 <div class="box"><button class="copy" onclick="cp(this)">Copy</button><pre><code># If using a tutorial API key:
 export ANTHROPIC_API_KEY="sk-ant-..."
 
 claude plugin marketplace add LightconeResearch/agent-skills
-claude plugin install lightcone@lightcone-research
-claude --model sonnet</code></pre></div>
+claude plugin install lightcone@lightcone-research</code></pre></div>
 
 <p><strong>Path B — OpenCode</strong> (carrying over your free-model / Albert / OpenRouter / Ollama setup from Guilhem Lavaux's Tuesday session):</p>
 <div class="box"><button class="copy" onclick="cp(this)">Copy</button><pre><code># With Node.js 22+:
 npx skills add LightconeResearch/agent-skills --skill astra --skill lightcone -g -a opencode -y
-opencode
 
 # Without Node.js 22 (copies the two skills directly into your project):
 git clone --depth 1 https://github.com/LightconeResearch/agent-skills /tmp/lc-skills
 mkdir -p .opencode/skills
-cp -r /tmp/lc-skills/skills/astra /tmp/lc-skills/skills/lightcone .opencode/skills/
-opencode</code></pre></div>
+cp -r /tmp/lc-skills/skills/astra /tmp/lc-skills/skills/lightcone .opencode/skills/</code></pre></div>
 
 <p><strong>Path C — Codex CLI:</strong></p>
 <div class="box"><button class="copy" onclick="cp(this)">Copy</button><pre><code>codex plugin marketplace add LightconeResearch/agent-skills
-codex plugin add lightcone@lightcone-research
-codex</code></pre></div>
+codex plugin add lightcone@lightcone-research</code></pre></div>
 
-<div class="callout"><strong>Note on free / smaller models:</strong> Skills-only installs (OpenCode) do not run validate-on-save hooks automatically, and smaller models sometimes forget CLI flags. The prompts below name <code>lc</code> and <code>astra</code> commands explicitly so any model stays on track.</div>
+<div class="callout"><strong>Note on free / smaller models:</strong> Skills-only installs (OpenCode) do not fire validate-on-save hooks automatically, so the prompts below name <code>lc</code> and <code>astra</code> commands explicitly to keep any model on track.</div>
 
-<h2>1. Specify and materialize flat &Lambda;CDM (~10 min)</h2>
-<p>Paste this prompt into your coding agent (not your shell):</p>
+<h2 id="part-a">Part A: Build from scratch — Union2.1 Type Ia Supernovae (15–20 min)</h2>
+<p>Create a fresh folder and start your agent (<code>claude --model sonnet</code>, <code>opencode</code>, or <code>codex</code>):</p>
+<div class="box"><button class="copy" onclick="cp(this)">Copy</button><pre><code>mkdir sn-cosmology &amp;&amp; cd sn-cosmology
+claude --model sonnet   # or: opencode / codex</code></pre></div>
+
+<h3>Step A1 · Specify and materialize flat &Lambda;CDM</h3>
 <div class="box prompt"><button class="copy" onclick="cp(this)">Copy</button><pre>Start a new Lightcone analysis fitting a flat LCDM model to the Union2.1 supernova compilation to recover Omega_Lambda, holding H0 = 70 km/s/Mpc as given in the file's header.
 
 Download the data into data/:
@@ -129,24 +133,17 @@ Use numpy, scipy (scipy.integrate.quad for luminosity distance), and matplotlib.
 2. hubble_diagram (figure, format: png) — distance modulus vs redshift with best-fit LCDM and Einstein-de Sitter curves, plus residuals panel
 
 Don't add any decisions yet. Initialize with `lc init`, launch a local cluster with `lc compute launch --wait`, materialize both outputs with `lc materialize local`, and report the fitted Omega_Lambda.</pre></div>
-
-<p>You can inspect what Lightcone committed from a second terminal:</p>
-<div class="box"><button class="copy" onclick="cp(this)">Copy</button><pre><code>lc status
-cat results/baseline/best_fit.json</code></pre></div>
 <p>Expected result: <strong>&Omega;<sub>&Lambda;</sub> = 0.722 &plusmn; 0.013</strong> (&chi;<sup>2</sup>/dof = 562.2 / 579 = 0.97).</p>
 
-<h2>2. Verify the published constraint against the PDF (~8 min)</h2>
-<p>Paste into your agent:</p>
+<h3>Step A2 · Verify the published constraint against the PDF</h3>
 <div class="box prompt"><button class="copy" onclick="cp(this)">Copy</button><pre>The paper that published this catalogue is Suzuki et al. 2012, arXiv:1105.3470.
 
 Cache the paper with `uvx --from astra-tools==0.2.18 astra paper add 10.48550/arXiv.1105.3470`, locate their SNe-only flat-LCDM Omega_Lambda constraint (including systematics), record it in astra.yaml as a prior_insight with the exact quote and page number, and run `uvx --from astra-tools==0.2.18 astra validate astra.yaml --verify-evidence`.
 
 Then compare our constraint to theirs.</pre></div>
+<p>Suzuki et al. (2012), page 17, report <strong>&Omega;<sub>&Lambda;</sub> = 0.705<sup>+0.040</sup><sub>&minus;0.043</sub></strong> including systematics — central value agrees, error bar is <strong>3&times; too tight</strong>.</p>
 
-<p>Suzuki et al. (2012), page 17, report <strong>&Omega;<sub>&Lambda;</sub> = 0.705<sup>+0.040</sup><sub>&minus;0.043</sub></strong> including systematics. Our central value agrees, yet our uncertainty is <strong>three times tighter</strong> on the exact same 580 supernovae.</p>
-
-<h2>3. Diagnose systematics and record an ASTRA decision (~10 min)</h2>
-<p>Paste into your agent:</p>
+<h3>Step A3 · Diagnose systematics and record an ASTRA decision</h3>
 <div class="box prompt"><button class="copy" onclick="cp(this)">Copy</button><pre>Let's figure out why our error bars are 3x tighter than Suzuki et al. (2012). Download both Union2.1 covariance matrices into data/:
   https://supernova.lbl.gov/Union/figures/SCPUnion2.1_covmat_nosys.txt
   https://supernova.lbl.gov/Union/figures/SCPUnion2.1_covmat_sys.txt
@@ -156,26 +153,54 @@ Check which covariance matrix's diagonal matches the data table's error column. 
 <table>
   <thead><tr><th>Analysis</th><th>&Omega;<sub>&Lambda;</sub></th><th>&chi;<sup>2</sup> / dof</th></tr></thead>
   <tbody>
-    <tr><td>Statistical only (<code>stat_only</code>)</td><td>0.722 &plusmn; 0.013</td><td>562.2 / 579 (0.97)</td></tr>
-    <tr class="hl"><td>Statistical + systematic (<code>full</code>)</td><td>0.714 &plusmn; 0.030</td><td>545.2 / 579 (0.94)</td></tr>
+    <tr><td>Statistical only (<code>stat_only</code>, fixed <em>M</em>)</td><td>0.722 &plusmn; 0.013</td><td>562.2 / 579 (0.97)</td></tr>
+    <tr><td>Statistical + systematic (<code>full</code>, fixed <em>M</em>)</td><td>0.714 &plusmn; 0.030</td><td>545.2 / 579 (0.94)</td></tr>
+    <tr class="hl"><td>Stat + sys, marginalized over &Delta;<em>M</em> (bonus decision)</td><td>0.705 &plusmn; 0.041</td><td>545.1 / 578 (0.94)</td></tr>
     <tr><td>Suzuki et al. (2012), page 17</td><td>0.705 (+0.040, &minus;0.043)</td><td>—</td></tr>
   </tbody>
 </table>
-<p>The table's error column matches $\sqrt{\mathrm{diag}(C_{\mathrm{nosys}})}$ to 6.7&times;10<sup>&minus;12</sup> relative difference. Including the systematic covariance barely shifts the central value (0.008) while more than doubling the error bar, bringing the fit within 0.2&sigma; of the paper.</p>
+<p>The table error column matches &radic;diag(C<sub>nosys</sub>) to 6.7&times;10<sup>&minus;12</sup>. Including the systematic covariance doubles the error bar (0.013 &rarr; 0.030); adding a second ASTRA decision that marginalizes over the constant distance-modulus zero-point &Delta;<em>M</em> reproduces Suzuki et al.'s published constraint (0.705<sup>+0.040</sup><sub>&minus;0.043</sub>) to three significant figures.</p>
 
-<h2>4. Going further (if you finish early)</h2>
-<ul>
-  <li><strong>Redshift lever arm:</strong> add a <code>z_max</code> decision (<code>all</code> vs <code>z_lt_0.8</code>) and see how high-$z$ supernovae drive both precision and systematics.</li>
-  <li><strong>Dark energy equation of state:</strong> add a <code>de_model</code> decision (<code>lcdm</code> vs <code>wcdm</code>) and plot the $(\Omega_m, w)$ degeneracy.</li>
-  <li><strong>Visual inspection:</strong> install Lightcone Lab (<code>uv tool install jupyterlab --with "jupyterlab-lightcone[full]"</code>) and open <code>sn-cosmology/</code> in JupyterLab.</li>
-  <li><strong>Clean up:</strong> stop your local worker with <code>lc compute down local</code>.</li>
-</ul>
+<h2 id="part-b">Part B: Explore &amp; modify a published cosmology paper — UNIONS-3500 B-modes (15–20 min)</h2>
+<p>Now step up to a real published analysis: <em>UNIONS-3500 Weak Lensing: II. B-mode validation for cosmic shear</em> (Daley et al. 2026, accepted by A&amp;A). The <code>laptop</code> branch ships the measured harmonic-space <em>C</em><sub>&ell;</sub> and real-space &xi;<sub>&plusmn;</sub> bandpowers and covariances for every catalog and PSF-leakage variant so you can toggle decisions and remake figures on your laptop.</p>
 
-<h2>Offline / API-key fallback (no LLM required)</h2>
+<h3>Step B1 · Clone the full laptop branch and open the viewer</h3>
+<p>Run this in a parent folder (full clone without <code>--depth 1</code> so <code>lc</code> can verify commit provenance):</p>
+<div class="box"><button class="copy" onclick="cp(this)">Copy</button><pre><code>git clone -b laptop --single-branch https://github.com/cailmdaley/unions-bmodes-mystra paper-ii
+cd paper-ii
+lc init
+lc compute launch --wait
+
+# Option 1: Lightcone Studio (interactive click-to-run viewer)
+npx github:LightconeResearch/ui-prototype#click-decision --run
+
+# Option 2: Lightcone Lab in JupyterLab (public on PyPI)
+uv tool install jupyterlab --with "jupyterlab-lightcone[full]"
+jupyter-lab</code></pre></div>
+<p>You can also browse the published static report directly at <a href="https://cailmdaley.github.io/unions-bmodes-mystra/report/">cailmdaley.github.io/unions-bmodes-mystra/report/</a>.</p>
+
+<h3>Step B2 · Click a decision live in Studio (~13 s)</h3>
+<ol>
+  <li>Walk through the paper's <strong>Decisions</strong>, <strong>Lineage graph</strong>, <strong>Provenance</strong>, and <strong>Bibliography</strong> tabs.</li>
+  <li>Open <code>fig_cl_fiducial</code> (the 32-bin harmonic-space B-mode figure) and click <code>fiducial_catalog &rarr; initial</code> (or <code>masked</code>, <code>relaxed_flags</code>, <code>leakage_correction &rarr; uncorrected</code>).</li>
+  <li>Watch the pending state in the <strong>Queue</strong> tab while <code>lc materialize</code> runs (~13 s); once it lands, toggle between <code>baseline</code> and the new universe instantaneously.</li>
+</ol>
+
+<h3>Step B3 · Prompt your coding agent inside <code>paper-ii/</code></h3>
+<p>Open your agent inside <code>paper-ii/</code> (its <code>CLAUDE.md</code> documents every locally runnable decision and how to rematerialize) and try one or both prompts:</p>
+<div class="box prompt"><button class="copy" onclick="cp(this)">Copy</button><pre>Turn off PSF leakage correction (leakage_correction=uncorrected) and remake the pure E/B data vector figure in a new universe. Compare the B-mode PTEs to baseline and summarize what changed in 2–3 sentences.</pre></div>
+<div class="box prompt"><button class="copy" onclick="cp(this)">Copy</button><pre>Edit the harmonic-space C_ell data vector plotting script to highlight the fiducial scale cut with a subtle shaded band, commit the change, remove the old figure + manifest, and rematerialize baseline/significance.cl_data_vector_figure.</pre></div>
+<p>Try asking for something that <em>cannot</em> run on a laptop (e.g. "switch to Blind B" or "switch to adaptive quadrature") — watch the agent read the project constraints and decline cleanly in seconds rather than fabricating a workaround.</p>
+
+<h3>Clean up when done</h3>
+<div class="box"><button class="copy" onclick="cp(this)">Copy</button><pre><code>lc compute down local</code></pre></div>
+
+<h2 id="fallback">Offline / API-key fallback (no LLM required)</h2>
 <div class="warn">
-  If conference Wi-Fi or API keys fail, you can still run the entire Lightcone execution, provenance, and two-universe materialization directly from the bundled fallback kit (<code>tutorial-fallback/</code> beside this page):
+  If conference Wi-Fi or API keys fail during Part A, run the complete Union2.1 two-universe Lightcone materialization directly from the bundled fallback kit (<code>tutorial-fallback/</code> beside the deck):
 </div>
-<div class="box"><button class="copy" onclick="cp(this)">Copy</button><pre><code># Copy tutorial-fallback/ into a fresh directory and fetch the two covariance matrices if online
+<div class="box"><button class="copy" onclick="cp(this)">Copy</button><pre><code># Copy tutorial-fallback/ into a fresh directory (all Union2.1 data bundled!)
+tar xzf data/union21_covmats.tar.gz -C data/
 lc init
 uv add numpy scipy matplotlib
 git add -A &amp;&amp; git commit -m "Union2.1 fallback kit"

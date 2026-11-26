@@ -3,7 +3,7 @@
   "author": "Cail Daley",
   "venue": "GDR CoPhy Tools WG, IAP Paris",
   "date": "2026-12-02",
-  "description": "Agentic engineering principles for cosmology, Lightcone Research, and a hands-on Union2.1 supernova tutorial.",
+  "description": "Agentic engineering principles for cosmology, Lightcone Research, and two hands-on tutorials: Union2.1 supernovae and UNIONS Paper II B-modes.",
   "footer": "Cail Daley\u2003\u2003GDR CoPhy Tools WG · IAP\u2003\u20032 Dec 2026",
   "theme": "aquarelle",
   "css": "deck.css",
@@ -41,14 +41,22 @@
       ]
     },
     {
-      "title": "Interactive tutorial",
-      "outline": "Hands-on Union2.1 Type Ia supernova analysis using Lightcone tools: setup across Claude Code, OpenCode and Codex, fitting flat ΛCDM, verifying Suzuki et al. (2012) against the cached PDF, and recording systematic covariance as an ASTRA decision.",
+      "title": "Tutorial A: Union2.1",
+      "outline": "Build a Lightcone analysis from scratch on 580 Union2.1 Type Ia supernovae: setup across Claude Code, OpenCode and Codex, fit flat ΛCDM, verify Suzuki et al. (2012) against the cached PDF, and record systematic covariance as an ASTRA decision.",
       "slides": [
         "tutorial-overview",
         "tutorial-setup",
         "tutorial-step1",
         "tutorial-step2",
-        "tutorial-step3",
+        "tutorial-step3"
+      ]
+    },
+    {
+      "title": "Tutorial B: Paper II B-modes",
+      "outline": "Explore, click, and extend a published A&A cosmology analysis (UNIONS-3500 Paper II B-modes) in Lightcone Studio: clone the laptop branch, toggle decisions live, prompt a new universe, and edit a figure recipe.",
+      "slides": [
+        "tutorial-bmodes-setup",
+        "tutorial-bmodes-explore",
         "closing"
       ]
     },
