@@ -1,4 +1,14 @@
 {
+ "first_release_digitized": {
+  "S8": {
+   "mean": 0.8784,
+   "sigma": 0.0753
+  },
+  "Omega_m": {
+   "mean": 0.3003,
+   "sigma": 0.1182
+  }
+ },
  "est_first_3x2": {
   "sigma8": {
    "mean": 0.8271,
