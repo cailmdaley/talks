@@ -168,7 +168,7 @@
 .slide ul.marks > li > .mark { justify-self: start; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .slide ul.marks > li > .mark > img { width: 300px; margin-left: 8px; }
 .slide ul.marks > li > .mark > img.shot { width: 480px; margin-left: 0; mix-blend-mode: multiply; }
-.slide ul.marks a { font-size: var(--t-small); color: var(--muted); margin-left: 8px; }
+.slide ul.marks a { font-size: var(--t-fine); color: var(--muted); margin-left: 8px; }
 .slide h2.marque::after { display: none; }
 .slide figure.art > img.plate { opacity: 0.78;
   -webkit-mask-image: radial-gradient(circle at 100% 100%, #000 30%, transparent 56%); mask-image: radial-gradient(circle at 100% 100%, #000 30%, transparent 56%); }
