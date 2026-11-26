@@ -170,8 +170,8 @@
 .slide ul.marks a { font-size: var(--t-small); color: var(--muted); }
 .slide h2.marque::after { display: none; }
 .slide figure.art > img.plate { opacity: 0.78;
-  -webkit-mask-image: linear-gradient(to bottom right, transparent 6%, #000 52%); mask-image: linear-gradient(to bottom right, transparent 6%, #000 52%); }
-.slide figure.art > figcaption.plate-credit { right: 632px; bottom: 150px; font-style: italic; opacity: 0.6; }
+  -webkit-mask-image: radial-gradient(circle at 100% 100%, #000 30%, transparent 56%); mask-image: radial-gradient(circle at 100% 100%, #000 30%, transparent 56%); }
+.slide figure.art > figcaption.plate-credit { right: 105px; top: 192px; font-size: var(--t-foot); font-variant-caps: all-small-caps; letter-spacing: 0.08em; color: var(--muted); opacity: 0.75; }
 /* the live Studio slide shows no folio */
 [data-house-slide="lightcone"] .slide:not(.detail) > .foot > .num { visibility: hidden; }
 

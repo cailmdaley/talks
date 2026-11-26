@@ -18,7 +18,7 @@ import { loadDeck, parseSlide, buildDeck, BuildError, LAYOUTS, houseDecks } from
 
 const HOUSE = path.dirname(fileURLToPath(import.meta.url));
 const MIN_PX = 32;
-const FOOT_MIN_PX = 24;   // the footer's running line (who, where, the folio, its controls) may be set smaller
+const FOOT_MIN_PX = 24;   // the footer's running line (who, where, the folio, its controls) and a drawing's inscription may be set smaller
 const MIN_CONTRAST = 4.5;
 const MAX_WORDS = 60;
 
@@ -322,7 +322,7 @@ function measure({ MIN_PX, FOOT_MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
       const st = getComputedStyle(el);
       let size = parseFloat(st.fontSize);
       if (el.closest('svg')) { const m = el.getScreenCTM?.(); if (m) size *= Math.hypot(m.a, m.b) / scale; }
-      const floor = el.closest('.slide:not(.detail) > .foot, .slide > .variants') ? FOOT_MIN_PX : MIN_PX;
+      const floor = el.closest('.slide:not(.detail) > .foot, .slide > .variants, figure.art') ? FOOT_MIN_PX : MIN_PX;
       if (size < floor - 0.5) errors.push(`${label(el)} is set at ${size.toFixed(1)}px (minimum ${floor}px)`);
       if (!el.closest('svg') && !el.closest('.foot')) words += [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join(' ').split(/\s+/).filter(w => /\w/.test(w)).length;
       const fg = parse(st.color);

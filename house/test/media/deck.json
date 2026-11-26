@@ -1,4 +1,4 @@
 {
-  "title": "Media fixture", "author": "house test", "date": "2026-11-25", "footer": "fixture", "draft": true,
+  "title": "Media fixture", "author": "house test", "date": "2026-11-25", "footer": "fixture", "draft": true, "css": "deck.css",
   "sections": [{ "title": "Media", "outline": "A schematic drawn in pencil and glaze is painted at build; a drawing's inscription may be light.", "slides": ["drawn", "inscribed"] }]
 }
