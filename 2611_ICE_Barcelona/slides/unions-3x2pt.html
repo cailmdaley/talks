@@ -42,7 +42,7 @@
   <div class="text">
     <ul>
       <li>lenses: DESI Legacy imaging × SPHEREx redshifts on 4,100 deg² of v2</li>
-      <li>first chain on GLASS mocks (stand-in lens bins) recovers $\Omega_{\rm m}$</li>
+      <li>0.58 lenses per arcmin² (DES Y3: redMaGiC 0.17, MagLim 0.72)</li>
       <li class="fragment">next: real lens bins in the mocks, a blind, then data</li>
     </ul>
     <p class="source lead"><span class="who after">Led by Calum Murray<img src="images/collaborators/calum-murray.jpg" alt="Calum Murray"></span><span class="who after">and myself<img src="images/collaborators/cail-daley.jpg" alt="Cail Daley"></span></p>
@@ -50,7 +50,7 @@
   <aside class="notes">
     <ul class="skim">
       <li><strong>Figure</strong> — redshift from 0 to 1.6, each $n(z)$ scaled to a peak of one. In rose, the six lens bins of the SPHEREx all-sky sample (LSx v0.9), redrawn from Calum Murray's plot. Behind them in blue, the source redshift distribution of the first UNIONS release (ShapePipe v1.4.6.3, one bin, no tomography): the published $n(z)$, blind B of the three that analysis carried, mean redshift 0.60. 47 % of the sources lie beyond $z = 0.55$, behind every lens bin.</li>
-      <li><strong>Lens sample</strong> — Calum Murray's LSx v0.92, Legacy Surveys imaging with SPHEREx photometric redshifts: 8.53 million galaxies on the 4,099 deg² it shares with the v2 tomographic footprint. Each bin's clustering-redshift mean, measured against DESI DR1, is good to 0.005–0.011 and within 1.1σ of the photo-z expectation.</li>
+      <li><strong>Lens sample</strong> — Calum Murray's LSx v0.92, Legacy Surveys imaging with SPHEREx photometric redshifts: 8.53 million galaxies on the 4,099 deg² it shares with the v2 tomographic footprint. That is 0.58 per arcmin² at $z=0.05$–$0.55$. The DES Y3 lens samples have 2.6 million (redMaGiC, $z=0.15$–$0.9$) and 10.7 million galaxies (MagLim, $z=0.2$–$1.05$; Abbott et al. 2022) on 4,143 deg², 0.17 and 0.72 per arcmin²; the Y3 cosmology used the first four MagLim bins. Each bin's clustering-redshift mean, measured against DESI DR1, is good to 0.005–0.011 and within 1.1σ of the photo-z expectation.</li>
       <li><strong>Status</strong> — a first 3×2pt chain (shear, galaxy–galaxy lensing, clustering) runs on GLASS mocks and recovers $\Omega_{\rm m}$ and the lens biases; $S_8$ comes out $1\sigma$ low, half from prior volume and half from a 2 % excess in the mock's $w(\theta)$. It used seven stand-in lens bins and no nuisance parameters; the mock with the LSx bins, the blind and the data chain come next, from code that is part-built. No data shear has been measured for it.</li>
     </ul>
     <details><summary>Numbers</summary><p>Mean of 20 mock skies: $\Omega_{\rm m} = 0.3096 \pm 0.021$ against a truth of 0.3097, lens biases within 0.3σ, $S_8$ at −1σ, about half from prior volume and half from a 2 % excess in the mock's $w(\theta)$. Source-bin clustering means: 0.293, 0.428, 0.583, 0.924 (±0.021–0.026); the working $n(z)$, a different estimate that this deck does not show, gives 0.29, 0.45, 0.61, 0.93.</p></details>
