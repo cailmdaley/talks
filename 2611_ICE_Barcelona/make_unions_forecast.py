@@ -29,6 +29,7 @@ TRUTH = dict(Omega_m=0.3190, S8=0.8387)
 RELEASES = [('harmonic', 'first release, harmonic', style.MUTED, True),
             ('real', 'first release, real space', '#A08A6C', False)]
 LAYERS = [('v092f_first_LL_hi_s1', 'v2 cosmic shear', SHEAR), ('v092f_first_3x2_hi_s1', 'v2 3×2pt', JOINT)]
+PEAK = .36     # height of a marginal density in units of the row spacing, which leaves air above each curve
 SMOOTH = 5.   # degrees: width of the smoothing of a digitized contour around its centre
 
 
@@ -70,7 +71,9 @@ def add_releases(fig, n_chains):
             if not n_chains and data:
                 a.remove()
             elif isinstance(a, style.plt.Line2D) and data:
-                a.set_ydata(np.asarray(a.get_ydata(), float) + len(RELEASES))
+                y = np.asarray(a.get_ydata(), float)
+                base = np.floor(y.min() + 1e-9)
+                a.set_ydata(base + (y - base) * PEAK / .5 + len(RELEASES))
             elif isinstance(a, style.plt.Text):
                 a.set_y(a.get_position()[1] + len(RELEASES))
             elif data:
@@ -88,7 +91,7 @@ def add_releases(fig, n_chains):
         for ax, n in ((top, 'S8'), (right, 'Omega_m')):
             m, s = mom[n]
             x, p = np.array(r[n]['x']) - m, np.array(r[n]['p'])
-            ax.plot(x, row + .5 * p / p.max(), color=color, lw=3., zorder=2)
+            ax.plot(x, row + PEAK * p / p.max(), color=color, lw=3., zorder=2)
             ax.plot([-s, s], [row, row], color=color, lw=3., zorder=2)
             ax.plot([0], [row], 'o', color=color, ms=11, zorder=2.1)
             ax.text(0, row + pad, rf'$\pm {s:.3f}$', color=color, fontsize=size, ha='center', va='baseline', zorder=1.5,
