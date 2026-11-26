@@ -136,9 +136,10 @@ function lintBlock(el, where, vocab, out, isDetail) {
   }
   for (const fig of el.querySelectorAll('figure')) {
     if (fig.parentElement?.classList.contains('people')) continue;
-    // art: one image or a stack of layers, all shown at once
+    // art: one image or a stack of layers, all shown at once, and at most one inscription
     if (fig.classList.contains('art')) {
-      if (!fig.children.length || [...fig.children].some(c => c.localName !== 'img')) out.errors.push(`${where}: figure.art holds <img>s only, one or a stack of layers`);
+      const layers = [...fig.children].filter(c => c.localName === 'img'), rest = [...fig.children].filter(c => c.localName !== 'img');
+      if (!layers.length || rest.length > 1 || rest.some(c => c.localName !== 'figcaption')) out.errors.push(`${where}: figure.art holds <img>s, one or a stack of layers, and at most one <figcaption> inscription`);
       continue;
     }
     const visuals = [...fig.children].filter(c => c.localName === 'img' || c.localName === 'video' || c.localName === 'iframe' || c.localName === 'svg' || c.classList.contains('placeholder'));
@@ -328,9 +329,10 @@ function measure({ MIN_PX, FOOT_MIN_PX, MIN_CONTRAST, MAX_WORDS }) {
       let svgFill = null;
       if (el.closest('svg') && el.localName === 'text') svgFill = parse(st.fill || '');
       const ink = svgFill || fg;
-      // an inert variant segment (an axis the view does not use) is faded on purpose;
-      // inactive controls are exempt from contrast minimums (WCAG 1.4.3)
-      if (ink && !el.closest('.variants .seg.idle')) {
+      // an inert variant segment (an axis the view does not use) is faded on purpose, and an
+      // inscription inside a drawing (figure.art) is part of the picture; WCAG 1.4.3 exempts
+      // inactive controls and text that is part of a picture from contrast minimums
+      if (ink && !el.closest('.variants .seg.idle, figure.art')) {
         const bg = el.closest('svg') ? svgBackground(el) : background(el);
         const c = ratio(over({ ...ink, a: ink.a * opacity(el) * (svgFill ? parseFloat(st.fillOpacity || 1) : 1) }, bg), bg);
         if (c < MIN_CONTRAST - 0.005) errors.push(`${label(el)} has contrast ${c.toFixed(2)}:1 (minimum ${MIN_CONTRAST}:1)`);

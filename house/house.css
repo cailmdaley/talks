@@ -190,6 +190,8 @@ html, body, body.reveal-viewport, .reveal-viewport:fullscreen { background: var(
 /* a layer smaller than the frame says where it lies (data-at="x y w h", frame px; the build sets --x … --h) */
 .slide figure.art > img[data-at] { inset: auto; left: var(--x); top: var(--y); width: var(--w); height: var(--h); }
 .slide figure.art > img.wash { mix-blend-mode: multiply; }
+/* an inscription in the drawing (a credit, a signature): the deck's css says where it lies */
+.slide figure.art > figcaption { position: absolute; margin: 0; }
 /* on a title or section slide the drawing keeps the right of the frame; the text keeps the left */
 .slide:is([data-layout="title"], [data-layout="section"]):has(figure.art) :is(h1, h2, .subtitle, .body > p) { max-width: 1040px; }
 /* a layer may move, slowly and a little. .breathe: a wash laid lighter that comes to full strength and
