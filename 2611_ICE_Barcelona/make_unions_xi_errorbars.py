@@ -1,10 +1,16 @@
 """Non-tomographic UNIONS v2 xi+ and xi- (concealed) with two sets of error bars, coloured by
 release: the first release's covariance and v2's. Writes images/unions_xi_errorbars.png.
 
-The points and bars are read off the two frames images/unions_xi_blink_{old,new}.png (2400 x 1000,
-identical except the bars), whose axes are fixed: xi+ y in [0.3, 1.5], xi- y in [-0.15, 1.35],
-20 log bins in theta listed in THETA. Both frames show the full-area v2 sample (170.6 M galaxies,
-4690 deg^2) with OneCovariance Gaussian + non-Gaussian + SSC errors.
+The v2 points and bars come from unions_xi_alltiles.json: the blinded whole-sample cosmo_val run on
+the calibrated v2.0.0 sample (191.0 M galaxies, 5223 deg^2; Fir,
+analyses/cosmo-val-v2-alltiles-2d, sp_validation run/alltiles-2d @ a4257516), points from its
+concealed 20-bin xi sacc, bars from the square root of the diagonal of its OneCovariance matrix
+(Gaussian + non-Gaussian + SSC). Values are 10^4 theta xi with theta in arcmin, as concealed by the
+blind. `extract SACC DAT` rewrites the JSON from those two files (needs sacc).
+
+The first release's bars are read off the frame images/unions_xi_blink_old.png (2400 x 1000), whose
+axes are fixed: xi+ y in [0.3, 1.5], xi- y in [-0.15, 1.35], 20 log bins in theta listed in THETA.
+They are centred on the v2 points.
 
 Run: uv run --with numpy --with scipy --with pillow --with matplotlib --with fonttools --with brotli \
        python 2611_ICE_Barcelona/make_unions_xi_errorbars.py
@@ -12,6 +18,8 @@ Run: uv run --with numpy --with scipy --with pillow --with matplotlib --with fon
 from __future__ import annotations
 
 import importlib.util
+import json
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -54,9 +62,23 @@ def read_bars(path, half, rgb, yrange):
     for g in groups:
         c = g[np.argmax(height[g])]                          # the bar's own column
         r = np.where(mark[:, c])[0]
+        r = max(np.split(r, np.where(np.diff(r) > 1)[0] + 1), key=len)   # the bar, not a tick crossing it
         y = lambda row: yrange[0] + (bottom - row) / (bottom - top) * (yrange[1] - yrange[0])
         lo.append(y(r.max() + 0.5)); hi.append(y(r.min() - 0.5))
     return np.array(lo), np.array(hi)
+
+
+def extract(sacc_path, cov_path):
+    """Write unions_xi_alltiles.json from the run's concealed xi sacc and its OneCovariance matrix."""
+    import sacc
+    s = sacc.Sacc.load_fits(sacc_path)
+    sigma = np.sqrt(np.diag(np.loadtxt(cov_path)))           # xi+ bins, then xi- bins
+    out = {'catalogue': s.metadata['catalogue_version'], 'blind': s.metadata['blind']}
+    for i, (sign, dt) in enumerate((('+', 'galaxy_shear_xi_plus'), ('-', 'galaxy_shear_xi_minus'))):
+        theta, xi = s.get_theta_xi(dt, 'source_0', 'source_0')
+        out['theta'] = theta.tolist()
+        out[sign] = {'mid': (1e4 * theta * xi).tolist(), 'sigma': (1e4 * theta * sigma[20 * i:20 * (i + 1)]).tolist()}
+    (HERE / 'unions_xi_alltiles.json').write_text(json.dumps(out, indent=1) + '\n')
 
 
 def main():
@@ -69,12 +91,14 @@ def main():
                          'axes.spines.top': False, 'axes.spines.right': False})
     fig, axes = plt.subplots(2, 1, figsize=(1800 / 200, 1700 / 200), dpi=200, sharex=True)
     fig.subplots_adjust(left=0.105, right=0.985, top=0.985, bottom=0.2, hspace=0.09)
+    v2 = json.loads((HERE / 'unions_xi_alltiles.json').read_text())
     for ax, (sign, (rgb, yr)), half in zip(axes, PANELS.items(), (0, 1)):
         lo1, hi1 = read_bars(HERE / 'images/unions_xi_blink_old.png', half, rgb, yr)
-        lo2, hi2 = read_bars(HERE / 'images/unions_xi_blink_new.png', half, rgb, yr)
-        mid = 0.5 * (lo2 + hi2)
+        mid, sig2 = np.array(v2[sign]['mid']), np.array(v2[sign]['sigma'])
+        sig1 = 0.5 * (hi1 - lo1)
+        lo1, hi1, lo2, hi2 = mid - sig1, mid + sig1, mid - sig2, mid + sig2
         print(f'xi{sign}: sigma_v2/sigma_first, bins inside 12-83 arcmin:',
-              np.round(((hi2 - lo2) / (hi1 - lo1))[(THETA > 12) & (THETA < 83)], 2))
+              np.round((sig2 / sig1)[(THETA > 12) & (THETA < 83)], 2))
         if sign == '-':
             ax.axhline(0, color=MUTED, lw=1.2)
         ax.vlines(THETA, lo1, hi1, color=FIRST, lw=5, capstyle='butt')
@@ -93,4 +117,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    extract(*sys.argv[2:4]) if sys.argv[1:2] == ['extract'] else main()
