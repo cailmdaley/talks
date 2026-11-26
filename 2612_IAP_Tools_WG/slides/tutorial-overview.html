@@ -1,0 +1,23 @@
+<section data-layout="figure-text" data-split="60">
+  <h2>Hands-on tutorial: dark energy from 580 supernovae</h2>
+  <figure>
+    <img src="images/iap_union21_hubble_baseline.png" alt="Two-panel Hubble diagram for 580 Union2.1 Type Ia supernovae showing flat LCDM fit with systematic covariance versus Einstein-de Sitter and residuals below">
+    <span class="source">Union2.1 SNe Ia (Suzuki et al. 2012), materialized with lightcone-cli 0.5.1.</span>
+  </figure>
+  <div class="text">
+    <p class="kicker">35–40 minutes · real data</p>
+    <ol>
+      <li><strong>Specify &amp; run</strong> flat $\Lambda$CDM in ASTRA + <code>lc</code></li>
+      <li><strong>Verify quote</strong> against Suzuki et al. (2012) PDF</li>
+      <li><strong>Diagnose systematics</strong> and record a decision</li>
+    </ol>
+    <p class="small muted">Runs in seconds on any laptop; no HPC needed.</p>
+  </div>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Dataset</strong> — Union2.1 compilation (580 Type Ia supernovae, $z = 0.015\text{–}1.414$, calibrated to $h = 0.7$), Suzuki et al. 2012 (arXiv:1105.3470).</li>
+      <li><strong>Punchline</strong> — Step 1 recovers $\Omega_\Lambda = 0.722 \pm 0.013$ (statistical only); Step 2 catches that our error bar is 3× tighter than Suzuki et al.'s $0.705^{+0.040}_{-0.043}$; Step 3 switches to the full systematic covariance matrix, moving $\Omega_\Lambda$ to $0.714 \pm 0.030$ (within $0.2\sigma$ of the paper).</li>
+      <li><strong>Handout &amp; fallback</strong> — copy-paste prompts and a zero-agent offline fallback live in the companion tutorial page beside this deck.</li>
+    </ul>
+  </aside>
+</section>

@@ -1,0 +1,47 @@
+<section data-layout="figure-text" data-split="50" data-flip>
+  <h2>Separate review catches what checks miss</h2>
+  <figure>
+    <svg viewBox="0 0 820 680" role="img" aria-label="Implementation and independent review iterate in separate contexts, guided by accumulating testable requirements.">
+      <defs>
+        <marker id="iter-arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto-start-reverse">
+          <path d="M1 1 L8 5 L1 9" class="fill-none stroke-muted" stroke-width="1.8"></path>
+        </marker>
+      </defs>
+      <path d="M295 160 C375 95 445 95 525 160" class="fill-none stroke-muted" stroke-width="3" marker-end="url(#iter-arr)"></path>
+      <path d="M525 275 C445 340 375 340 295 275" class="fill-none stroke-muted" stroke-width="3" marker-end="url(#iter-arr)"></path>
+
+      <ellipse cx="195" cy="218" rx="165" ry="90" class="fill-cobalt" fill-opacity="0.08"></ellipse>
+      <ellipse cx="195" cy="218" rx="165" ry="90" class="fill-none stroke-cobalt" stroke-width="3"></ellipse>
+      <text x="195" y="230" text-anchor="middle" font-size="38" class="fill-cobalt">Implement</text>
+
+      <ellipse cx="625" cy="218" rx="165" ry="90" class="fill-teal" fill-opacity="0.08"></ellipse>
+      <ellipse cx="625" cy="218" rx="165" ry="90" class="fill-none stroke-teal" stroke-width="3"></ellipse>
+      <text x="625" y="210" text-anchor="middle" font-size="38" class="fill-teal">Independent</text>
+      <text x="625" y="252" text-anchor="middle" font-size="38" class="fill-teal">review</text>
+
+      <text x="410" y="400" text-anchor="middle" font-size="34" class="fill-muted">Fresh context · different model family</text>
+
+      <path d="M410 515 V426" class="fill-none stroke-muted" stroke-width="2.8" marker-end="url(#iter-arr)"></path>
+      <rect x="92" y="544" width="636" height="72" rx="8" class="fill-panel stroke-rule" stroke-width="2"></rect>
+      <rect x="82" y="532" width="656" height="72" rx="8" class="fill-panel stroke-rule" stroke-width="2"></rect>
+      <rect x="72" y="520" width="676" height="72" rx="8" class="fill-panel stroke-accent" stroke-width="2.5"></rect>
+      <text x="410" y="568" text-anchor="middle" font-size="36" class="fill-ink">Accumulate testable requirements</text>
+    </svg>
+  </figure>
+  <div class="text">
+    <p class="kicker">Failure modes to expect</p>
+    <ul>
+      <li><strong>Silent omissions:</strong> diagonal errors used when full covariance exists</li>
+      <li class="fragment"><strong>Weak checks:</strong> agents optimize the test instead of the physics</li>
+      <li class="fragment"><strong>Plausible drift:</strong> invented citations, stale plots, unverified numbers</li>
+      <li class="fragment"><strong>Core physics code</strong> still gets read by a human</li>
+    </ul>
+  </div>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Why separate contexts</strong> — an agent reviewing its own work inherits its own assumptions; a fresh-context reviewer (ideally a second model family) reads the code and outputs cold.</li>
+      <li><strong>Failure modes named plainly</strong> — agents happily drop systematics when a simpler file is handy, pass loose unit tests with wrong physics, or cite numbers from memory. Building checks into the environment catches the first two; quote verification and reading core physics code catch the rest.</li>
+      <li><strong>Bridge to Lightcone</strong> — even when every check passes, rapid iteration creates dozens of files whose provenance quickly tangles.</li>
+    </ul>
+  </aside>
+</section>

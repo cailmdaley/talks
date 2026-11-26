@@ -1,0 +1,48 @@
+<section data-layout="figure">
+  <h2>Workflows express loops and parallelism on the fly</h2>
+  <figure>
+    <svg viewBox="0 0 1600 660" role="img" aria-label="Task and criteria fan out to candidates A, B and C, merge into a plan, then iterate between implement and review.">
+      <defs>
+        <marker id="wf-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10" class="fill-none stroke-muted" stroke-width="1.8"></path>
+        </marker>
+      </defs>
+      <path d="M250 310 L345 165" class="fill-none stroke-muted" stroke-width="2.5" marker-end="url(#wf-arr)"></path>
+      <path d="M250 310 H345" class="fill-none stroke-muted" stroke-width="2.5" marker-end="url(#wf-arr)"></path>
+      <path d="M250 310 L345 455" class="fill-none stroke-muted" stroke-width="2.5" marker-end="url(#wf-arr)"></path>
+      <path d="M595 165 L695 310" class="fill-none stroke-muted" stroke-width="2.5" marker-end="url(#wf-arr)"></path>
+      <path d="M595 310 H695" class="fill-none stroke-muted" stroke-width="2.5" marker-end="url(#wf-arr)"></path>
+      <path d="M595 455 L695 310" class="fill-none stroke-muted" stroke-width="2.5" marker-end="url(#wf-arr)"></path>
+      <path d="M905 310 H1010" class="fill-none stroke-muted" stroke-width="2.5" marker-end="url(#wf-arr)"></path>
+      <path d="M1245 310 H1340" class="fill-none stroke-muted" stroke-width="2.5" marker-end="url(#wf-arr)"></path>
+
+      <rect x="20" y="266" width="230" height="88" rx="6" class="fill-panel stroke-accent" stroke-width="3"></rect>
+      <text x="135" y="322" text-anchor="middle" font-size="35" class="fill-accent">Task + criteria</text>
+
+      <rect x="345" y="121" width="250" height="88" rx="6" class="fill-panel stroke-cobalt" stroke-width="3"></rect>
+      <text x="470" y="177" text-anchor="middle" font-size="35" class="fill-cobalt">Candidate A</text>
+      <rect x="345" y="266" width="250" height="88" rx="6" class="fill-panel stroke-cobalt" stroke-width="3"></rect>
+      <text x="470" y="322" text-anchor="middle" font-size="35" class="fill-cobalt">Candidate B</text>
+      <rect x="345" y="411" width="250" height="88" rx="6" class="fill-panel stroke-cobalt" stroke-width="3"></rect>
+      <text x="470" y="467" text-anchor="middle" font-size="35" class="fill-cobalt">Candidate C</text>
+
+      <rect x="695" y="266" width="210" height="88" rx="6" class="fill-panel stroke-teal" stroke-width="3"></rect>
+      <text x="800" y="322" text-anchor="middle" font-size="35" class="fill-teal">Plan</text>
+
+      <rect x="1010" y="266" width="235" height="88" rx="6" class="fill-panel stroke-teal" stroke-width="3"></rect>
+      <text x="1127" y="322" text-anchor="middle" font-size="35" class="fill-teal">Implement</text>
+
+      <rect x="1340" y="266" width="235" height="88" rx="6" class="fill-panel stroke-cobalt" stroke-width="3"></rect>
+      <text x="1457" y="322" text-anchor="middle" font-size="35" class="fill-cobalt">Review</text>
+
+      <path d="M1457 362 V520 H1127 V362" class="fill-none stroke-muted" stroke-width="3" marker-end="url(#wf-arr)"></path>
+      <text x="1292" y="572" text-anchor="middle" font-size="38" class="fill-ink">Iterate</text>
+    </svg>
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Dynamic orchestration</strong> — fan out candidate approaches in parallel, synthesize a plan, then iterate between implementation and independent review.</li>
+      <li><strong>Inspectable as code</strong> — the orchestration script itself can be read, versioned and reused.</li>
+    </ul>
+  </aside>
+</section>

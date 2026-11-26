@@ -1,0 +1,33 @@
+<section data-layout="points">
+  <h2>Step 2: Verify published constraint against PDF</h2>
+  <div class="cols wide">
+    <div>
+      <span class="kicker">Paste into your agent</span>
+      <div class="prompt-box">
+        <p>The paper that published this catalogue is Suzuki et al. 2012, arXiv:1105.3470.</p>
+        <p>Cache the paper with astra paper add, verify their SNe-only flat-LCDM Omega_Lambda quote against the PDF, record it as a prior_insight, and compare to our fit.</p>
+      </div>
+      <p class="small accent fragment">Central value agrees — our error bar is 3× too tight!</p>
+    </div>
+    <div>
+      <span class="kicker">Mechanically checked evidence</span>
+      <pre><code>prior_insights:
+  suzuki_2012_result:
+    claim: "Omega_Lambda = 0.705 (+0.040, -0.043)"
+    evidence:
+      - doi: "10.48550/arXiv.1105.3470"
+        quote:
+          exact: "In a flat Universe, SNe Ia alone
+            constrain ... ΩΛ = 0.705+0.040−0.043
+            including systematics"
+        location: { value: "page=17" }</code></pre>
+      <p class="small teal">astra validate --verify-evidence → 1/1 verified</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Why quote verification</strong> — agents frequently recall paper numbers from training weights with wrong error bars or wrong assumptions. Running astra paper add caches the PDF and --verify-evidence searches the exact text on the cited page.</li>
+      <li><strong>Scientific tension</strong> — Suzuki et al. report $\Omega_\Lambda = 0.705^{+0.040}_{-0.043}$; our Step 1 fit gave $0.722 \pm 0.013$ on the same 580 supernovae. Something is missing, and it makes us overconfident by a factor of three.</li>
+    </ul>
+  </aside>
+</section>

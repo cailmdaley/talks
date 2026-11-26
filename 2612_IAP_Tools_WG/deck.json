@@ -1,0 +1,67 @@
+{
+  "title": "Scaling Scientific Labor with Agentic Engineering and Lightcone Research",
+  "author": "Cail Daley",
+  "venue": "GDR CoPhy Tools WG, IAP Paris",
+  "date": "2026-12-02",
+  "description": "Agentic engineering principles for cosmology, Lightcone Research, and a hands-on Union2.1 supernova tutorial.",
+  "footer": "Cail Daley\u2003\u2003GDR CoPhy Tools WG · IAP\u2003\u20032 Dec 2026",
+  "theme": "aquarelle",
+  "css": "deck.css",
+  "draft": true,
+  "noindex": true,
+  "local": [
+    { "url": "http://localhost:5318/", "start": "lightcone-demo studio" }
+  ],
+  "sections": [
+    {
+      "title": "Agentic engineering",
+      "outline": "Capabilities and falling token costs, new engineering constraints for astronomy, context and prompt caching, agent teams, searchable wikis, and simulation-based verification with its failure modes.",
+      "slides": [
+        "title",
+        "overview",
+        "metr",
+        "costs",
+        "agentic",
+        "context",
+        "prompt-caching",
+        "agent-teams",
+        "wiki",
+        "agents",
+        "verification-limits"
+      ]
+    },
+    {
+      "title": "Lightcone Research",
+      "outline": "Why high agent throughput needs structured provenance, the ASTRA specification and Lightcone stack, a live Lightcone Studio demonstration on UNIONS Paper II, and which scientific labor scales.",
+      "slides": [
+        "chaos",
+        "lightcone-research",
+        "lightcone",
+        "choice"
+      ]
+    },
+    {
+      "title": "Interactive tutorial",
+      "outline": "Hands-on Union2.1 Type Ia supernova analysis using Lightcone tools: setup across Claude Code, OpenCode and Codex, fitting flat ΛCDM, verifying Suzuki et al. (2012) against the cached PDF, and recording systematic covariance as an ASTRA decision.",
+      "slides": [
+        "tutorial-overview",
+        "tutorial-setup",
+        "tutorial-step1",
+        "tutorial-step2",
+        "tutorial-step3",
+        "closing"
+      ]
+    },
+    {
+      "title": "Backup",
+      "outline": "Cost versus intelligence benchmarks, harnesses as working environments, generated multi-agent workflows, HTML review reports, and optional Lightcone Lab setup in JupyterLab.",
+      "slides": [
+        "cost-performance",
+        "harnesses",
+        "generated-workflow",
+        "review-reports",
+        "tutorial-viewer"
+      ]
+    }
+  ]
+}

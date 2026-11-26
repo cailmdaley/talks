@@ -1,0 +1,57 @@
+<section data-layout="figure">
+  <h2>High throughput without provenance produces chaos</h2>
+  <figure>
+    <svg viewBox="0 0 1600 660" role="img" aria-label="A slop cannon scatters fit_v7.py, final2.ipynb, chain.npy and plots. An analysis record reconnects inputs, decisions, and recipe to outputs.">
+      <path d="M90 560 H790" class="fill-none stroke-rule" stroke-width="2.5"></path>
+      <g transform="translate(135 365) rotate(-19)">
+        <path d="M0 0 Q-45 65 0 125 L300 125 V0 Z" class="fill-rule stroke-ink" stroke-width="4"></path>
+        <ellipse cx="300" cy="62" rx="24" ry="64" class="fill-ink"></ellipse>
+        <ellipse cx="300" cy="62" rx="12" ry="47" class="fill-muted"></ellipse>
+        <path d="M25 15 H265 M25 108 H265" class="fill-none stroke-muted" stroke-width="3"></path>
+        <text x="136" y="78" font-size="38" text-anchor="middle" class="fill-ink">SLOP</text>
+      </g>
+      <path d="M190 450 L140 540 H360 L295 430" class="fill-muted stroke-ink" stroke-width="3"></path>
+      <circle cx="245" cy="514" r="48" class="fill-panel stroke-ink" stroke-width="5"></circle>
+      <circle cx="245" cy="514" r="9" class="fill-ink"></circle>
+      <path d="M245 466 V562 M197 514 H293 M211 480 L279 548 M211 548 L279 480" class="fill-none stroke-ink" stroke-width="2"></path>
+      <path d="M438 308 l40 -32 m-14 65 l42 -6 m-79 -64 l5 -40" class="fill-none stroke-accent" stroke-width="5" stroke-linecap="round"></path>
+
+      <g transform="translate(525 85) rotate(-14)">
+        <path d="M0 0 H125 L155 30 V140 H0 Z M125 0 V30 H155" class="fill-panel stroke-cobalt" stroke-width="2.5"></path>
+        <text x="14" y="70" font-size="33" class="fill-ink">fit_v7.py</text>
+        <path d="M18 94 H100 M18 110 H125" class="fill-none stroke-cobalt" stroke-width="3"></path>
+      </g>
+      <g transform="translate(735 198) rotate(16)">
+        <path d="M0 0 H125 L155 30 V140 H0 Z M125 0 V30 H155" class="fill-panel stroke-accent" stroke-width="2.5"></path>
+        <path d="M22 114 V46 M22 114 H129 M30 98 L49 88 L65 97 L87 58 L105 70 L122 40" class="fill-none stroke-accent" stroke-width="3.5"></path>
+      </g>
+      <g transform="translate(490 385) rotate(12)">
+        <path d="M0 0 H125 L155 30 V140 H0 Z M125 0 V30 H155" class="fill-panel stroke-muted" stroke-width="2.5"></path>
+        <text x="14" y="68" font-size="33" class="fill-ink">final2</text>
+        <text x="14" y="108" font-size="33" class="fill-ink">.ipynb</text>
+      </g>
+      <g transform="translate(775 430) rotate(-10)">
+        <path d="M0 0 H125 L155 30 V140 H0 Z M125 0 V30 H155" class="fill-panel stroke-teal" stroke-width="2.5"></path>
+        <text x="14" y="72" font-size="33" class="fill-ink">chain.npy</text>
+        <path d="M16 98 H129 M16 114 H129" class="fill-none stroke-teal" stroke-width="2.5"></path>
+      </g>
+
+      <text x="480" y="625" font-size="38" text-anchor="middle" class="fill-accent">100 files from 20 experiments</text>
+      <path d="M995 55 V600" class="fill-none stroke-rule" stroke-width="2.5"></path>
+
+      <g class="fragment" data-fragment-index="0">
+        <text x="1300" y="110" text-anchor="middle" font-size="42" font-weight="600" class="fill-ink">What belongs together?</text>
+        <path d="M1085 200 H1062 V476 H1085" class="fill-none stroke-muted" stroke-width="3"></path>
+        <text x="1115" y="242" font-size="40" class="fill-cobalt">Inputs &amp; data hashes</text>
+        <text x="1115" y="346" font-size="40" class="fill-accent">Methodological decisions</text>
+        <text x="1115" y="450" font-size="40" class="fill-teal">Recipes → committed outputs</text>
+      </g>
+    </svg>
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>The throughput problem</strong> — agents accelerate pipeline iteration, quickly scattering incompatible notebooks, scripts, chains and plots whose assumptions are no longer obvious.</li>
+      <li><strong>The remedy</strong> — bind every output to the exact inputs, decisions, code commit and recipe that produced it. That is what ASTRA and Lightcone formalize.</li>
+    </ul>
+  </aside>
+</section>

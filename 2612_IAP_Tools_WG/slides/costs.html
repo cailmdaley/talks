@@ -1,0 +1,30 @@
+<section data-layout="points">
+  <h2>Yesterday's frontier costs pennies today</h2>
+  <p>Navier–Stokes solution: 130B output tokens $\approx$ <strong>\$6.5M</strong> at retail output pricing.</p>
+  <div class="cols cost-grid fragment">
+    <div class="cost-card">
+      <span class="kicker">ARC-AGI-1 · semi-private</span>
+      <span class="small">o3-preview · Dec 2024</span>
+      <span class="big accent">\$4,560</span>
+      <span class="small muted">per task · 87.5%</span>
+    </div>
+    <div class="cost-arrow">→</div>
+    <div class="cost-card teal-top">
+      <span class="kicker">ARC-AGI-1 · semi-private</span>
+      <span class="small">DeepSeek-V4-Flash · Jul 2026</span>
+      <span class="big teal">\$0.021</span>
+      <span class="small muted">per task · 87.0%</span>
+    </div>
+  </div>
+  <p class="source">Sources: OpenAI Navier–Stokes report; ARC Prize semi-private evaluations.</p>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>ARC-AGI-1 comparison</strong> — near-equal accuracy on the same semi-private evaluation, across different models and inference budgets: o3-preview high-compute at a retrospective estimate of \$4,560/task (87.5%) versus DeepSeek-V4-Flash High at \$0.0214/task (87.0%), a factor of roughly $2.1 \times 10^5$.</li>
+      <li><strong>Navier–Stokes illustration</strong> — OpenAI reported 130 billion output tokens and 2.7 million messages; multiplying by Astra's \$50/M retail output price gives \$6.5M as an output-only retail illustration, not disclosed internal spend.</li>
+      <li><strong>Takeaway for scientists</strong> — separate the cost of first demonstrating a capability from its deployment cost a year or two later.</li>
+    </ul>
+    <details><summary>Sources</summary>
+      <p><a href="https://arcprize.org/blog/oai-o3-pub-breakthrough">ARC Prize: o3 score &amp; retrospective cost</a> (estimated using o3-pro pricing); <a href="https://arcprize.org/results/deepseek-v4-flash-0731">ARC Prize: DeepSeek-V4-Flash</a> (87.0% at \$0.021402901/task); <a href="https://openai.com/index/navier-stokes-solution/">OpenAI: Navier–Stokes solution</a>; <a href="https://developers.openai.com/api/docs/models/gpt-6-astra">Astra retail output price (\$50/M)</a>.</p>
+    </details>
+  </aside>
+</section>

@@ -1,0 +1,83 @@
+<section data-layout="figure">
+  <h2>Prompt caching governs real agent cost</h2>
+  <figure>
+    <svg viewBox="0 0 1600 720" role="img" aria-label="Turn-by-turn prompt caching cost illustration at $10 per million base input tokens: Turn 1 writes 100k prefix for $2.25; Turn 2 reuses prefix for $1.40; Turn 5 reuses 172k prefix for $1.47.">
+      <text x="800" y="40" text-anchor="middle" font-size="36" class="fill-ink">Base input $10 / Mtok · cache lifetime 5–60 min</text>
+      <text x="300" y="92" text-anchor="middle" font-size="35" class="fill-ink">Cache write 1.25×</text>
+      <text x="800" y="92" text-anchor="middle" font-size="35" class="fill-teal">Cache read 0.025–0.1×</text>
+      <text x="1320" y="92" text-anchor="middle" font-size="35" class="fill-cobalt">Output 5×</text>
+      <path d="M40 118 H1560" class="fill-none stroke-rule" stroke-width="2"></path>
+
+      <g class="fragment" data-fragment-index="0">
+        <text x="40" y="164" font-size="36" class="fill-ink">Turn 1</text>
+        <rect x="40" y="188" width="540" height="58" rx="4" class="fill-ochre" fill-opacity="0.16"></rect>
+        <rect x="40" y="188" width="540" height="58" rx="4" class="fill-none stroke-ochre" stroke-width="2"></rect>
+        <text x="310" y="228" text-anchor="middle" font-size="33" class="fill-ink">Instructions + tools + user (100k)</text>
+        <text x="310" y="286" text-anchor="middle" font-size="33" class="fill-ink">$1 × 1.25 = $1.25</text>
+
+        <text x="612" y="228" text-anchor="middle" font-size="36" class="fill-ink">→</text>
+
+        <rect x="646" y="188" width="160" height="58" rx="4" class="fill-cobalt" fill-opacity="0.14"></rect>
+        <rect x="646" y="188" width="160" height="58" rx="4" class="fill-none stroke-cobalt" stroke-width="2"></rect>
+        <text x="726" y="228" text-anchor="middle" font-size="33" class="fill-cobalt">Reply</text>
+        <text x="726" y="286" text-anchor="middle" font-size="33" class="fill-cobalt">$1.00</text>
+
+        <text x="842" y="228" font-size="38" font-weight="600" class="fill-ink">$2.25</text>
+      </g>
+
+      <g class="fragment" data-fragment-index="1">
+        <text x="40" y="362" font-size="36" class="fill-ink">Turn 2</text>
+        <rect x="40" y="386" width="540" height="58" rx="4" class="fill-teal" fill-opacity="0.14"></rect>
+        <rect x="40" y="386" width="540" height="58" rx="4" class="fill-none stroke-teal" stroke-width="2"></rect>
+        <text x="310" y="426" text-anchor="middle" font-size="33" class="fill-ink">Cached prefix (100k)</text>
+        <text x="310" y="484" text-anchor="middle" font-size="33" class="fill-teal">$1 × 0.1 = $0.10</text>
+
+        <rect x="580" y="386" width="185" height="58" rx="4" class="fill-ochre" fill-opacity="0.16"></rect>
+        <rect x="580" y="386" width="185" height="58" rx="4" class="fill-none stroke-ochre" stroke-width="2"></rect>
+        <text x="672" y="426" text-anchor="middle" font-size="33" class="fill-ink">New (24k)</text>
+        <text x="672" y="484" text-anchor="middle" font-size="33" class="fill-ink">$0.30</text>
+
+        <text x="795" y="426" text-anchor="middle" font-size="36" class="fill-ink">→</text>
+
+        <rect x="826" y="386" width="160" height="58" rx="4" class="fill-cobalt" fill-opacity="0.14"></rect>
+        <rect x="826" y="386" width="160" height="58" rx="4" class="fill-none stroke-cobalt" stroke-width="2"></rect>
+        <text x="906" y="426" text-anchor="middle" font-size="33" class="fill-cobalt">Reply</text>
+        <text x="906" y="484" text-anchor="middle" font-size="33" class="fill-cobalt">$1.00</text>
+
+        <text x="1018" y="426" font-size="38" font-weight="600" class="fill-ink">$1.40</text>
+      </g>
+
+      <g class="fragment" data-fragment-index="2">
+        <text x="40" y="560" font-size="36" class="fill-ink">Turn 5</text>
+        <rect x="40" y="584" width="880" height="58" rx="4" class="fill-teal" fill-opacity="0.14"></rect>
+        <rect x="40" y="584" width="880" height="58" rx="4" class="fill-none stroke-teal" stroke-width="2"></rect>
+        <text x="480" y="624" text-anchor="middle" font-size="33" class="fill-ink">Cached prefix (172k)</text>
+        <text x="480" y="682" text-anchor="middle" font-size="33" class="fill-teal">$0.172</text>
+
+        <rect x="920" y="584" width="185" height="58" rx="4" class="fill-ochre" fill-opacity="0.16"></rect>
+        <rect x="920" y="584" width="185" height="58" rx="4" class="fill-none stroke-ochre" stroke-width="2"></rect>
+        <text x="1012" y="624" text-anchor="middle" font-size="33" class="fill-ink">New (24k)</text>
+        <text x="1012" y="682" text-anchor="middle" font-size="33" class="fill-ink">$0.30</text>
+
+        <text x="1135" y="624" text-anchor="middle" font-size="36" class="fill-ink">→</text>
+
+        <rect x="1166" y="584" width="160" height="58" rx="4" class="fill-cobalt" fill-opacity="0.14"></rect>
+        <rect x="1166" y="584" width="160" height="58" rx="4" class="fill-none stroke-cobalt" stroke-width="2"></rect>
+        <text x="1246" y="624" text-anchor="middle" font-size="33" class="fill-cobalt">Reply</text>
+        <text x="1246" y="682" text-anchor="middle" font-size="33" class="fill-cobalt">$1.00</text>
+
+        <text x="1358" y="624" font-size="38" font-weight="600" class="fill-ink">$1.472</text>
+      </g>
+    </svg>
+    <span class="source">Illustrative accounting at Astra / Fable 5.1 rates (checked Sep 2026); warm cache keeps multi-turn loops affordable.</span>
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Why caching matters</strong> — every turn re-sends the whole conversation; a warm prefix cache discounts repeated input by 10×–40×, whereas a cold cache or mid-prefix edit forces a full re-read.</li>
+      <li><strong>Practical habit</strong> — keep tool lists and system prompts stable during a session, hand off to a fresh session once context grows large or goes cold, and delegate bulky exploration to sub-agents so it does not inflate the lead's prefix.</li>
+    </ul>
+    <details><summary>Sources</summary>
+      <p><a href="https://developers.openai.com/api/docs/guides/prompt-caching">OpenAI prompt caching</a>; <a href="https://developers.openai.com/api/docs/pricing#text-tokens">OpenAI pricing</a>; <a href="https://platform.claude.com/docs/en/about-claude/pricing">Claude pricing</a> (checked 17 Sep 2026). Rates shown for Astra and Fable 5.1: \$10/M base input, \$12.50/M short-cache write (1.25×), \$1/M or \$0.25/M cache read (0.1× or 0.025×), \$50/M output (5×). Example uses 100k initial prefix, +24k/turn, 20k output/turn at Astra 0.1× read rate.</p>
+    </details>
+  </aside>
+</section>

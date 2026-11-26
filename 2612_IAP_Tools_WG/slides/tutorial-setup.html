@@ -1,0 +1,37 @@
+<section data-layout="points">
+  <h2>Setup: uv, Lightcone CLI, and your coding agent</h2>
+  <div class="cols even">
+    <div>
+      <span class="kicker">1 · Install CLI</span>
+      <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh
+uv tool install lightcone-cli==0.5.1
+mkdir sn-cosmology &amp;&amp; cd sn-cosmology</code></pre>
+      <span class="kicker">2a · Claude Code (own or tutorial key)</span>
+      <pre><code>export ANTHROPIC_API_KEY="sk-ant-…"
+claude plugin marketplace add LightconeResearch/agent-skills
+claude plugin install lightcone@lightcone-research
+claude --model sonnet</code></pre>
+    </div>
+    <div>
+      <span class="kicker">2b · OpenCode (free models / Albert)</span>
+      <pre><code>npx skills add LightconeResearch/agent-skills \
+  --skill astra --skill lightcone -g -a opencode -y
+opencode</code></pre>
+      <span class="kicker">2c · Codex CLI</span>
+      <pre><code>codex plugin marketplace add LightconeResearch/agent-skills
+codex plugin add lightcone@lightcone-research
+codex</code></pre>
+    </div>
+  </div>
+  <p class="source">lightcone-cli bundles git-annex · offline fallback kit in tutorial handout.</p>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Three agent paths</strong> — attendees with Claude Code (own account or one of Cail's tutorial API keys) or Codex get the full plugin including validate-on-save hooks; attendees carrying over OpenCode and Albert or free models from Guilhem's Tuesday session install the two portable skills via npx skills add (or copy SKILL.md into .opencode/skills/ if Node 22 is absent).</li>
+      <li><strong>Git identity</strong> — lc init creates a git repository; ensure git user.name and user.email are configured.</li>
+      <li><strong>Fallback</strong> — if conference Wi-Fi or API quotas stall, the tutorial handout bundles the Union2.1 data files and reference scripts plus astra.yaml so every attendee can run lc materialize local directly.</li>
+    </ul>
+    <details><summary>Sources</summary>
+      <p><a href="https://github.com/LightconeResearch/agent-skills">LightconeResearch/agent-skills</a> (v0.0.10); <a href="https://pypi.org/project/lightcone-cli/0.5.1/">lightcone-cli 0.5.1</a>.</p>
+    </details>
+  </aside>
+</section>

@@ -1,0 +1,35 @@
+<section data-layout="points">
+  <h2>Step 1: Specify and materialize flat $\Lambda$CDM</h2>
+  <div class="cols wide">
+    <div>
+      <span class="kicker">Paste into your agent</span>
+      <div class="prompt-box">
+        <p>Start a new Lightcone analysis fitting flat LCDM to the Union2.1 supernova compilation to recover Omega_Lambda (H0 = 70 km/s/Mpc from the header).</p>
+        <p>Use numpy, scipy and matplotlib. Produce best_fit (JSON) and hubble_diagram (PNG, absolute + residuals). Don't add decisions yet.</p>
+        <p class="url">https://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt</p>
+      </div>
+    </div>
+    <div>
+      <span class="kicker">What Lightcone builds</span>
+      <pre><code>inputs:
+  - id: union21
+    source: data/union21.txt
+outputs:
+  - id: best_fit
+    format: json
+    inputs: [union21]
+    recipe: { command: python src/fit.py }
+  - id: hubble_diagram
+    format: png
+    inputs: [union21, best_fit]</code></pre>
+      <p class="small teal">Expected: $\Omega_\Lambda = 0.722 \pm 0.013$ ($\chi^2/\text{dof} = 0.97$)</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>What happens</strong> — the agent runs lc init, writes astra.yaml, adds numpy, scipy and matplotlib via uv add, launches a local cluster (lc compute launch --wait), and materializes both outputs into results/baseline/.</li>
+      <li><strong>Why numpy + scipy</strong> — installing astropy on 30 laptops over conference Wi-Fi is slow; a 5-line scipy.integrate.quad luminosity distance agrees with astropy FlatLambdaCDM to 7 digits and installs in under a second.</li>
+      <li><strong>Check yourself</strong> — run lc status in another terminal to see committed outputs and their git hashes.</li>
+    </ul>
+  </aside>
+</section>

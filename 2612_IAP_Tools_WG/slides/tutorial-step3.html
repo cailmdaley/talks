@@ -1,0 +1,34 @@
+<section data-layout="points">
+  <h2>Step 3: Diagnose systematics as an ASTRA decision</h2>
+  <div class="cols wide">
+    <div>
+      <span class="kicker">Paste into your agent</span>
+      <div class="prompt-box">
+        <p>Why are our error bars 3× tighter? Download both Union2.1 covariance matrices, check which matches the table errors, add a covariance decision, and materialize both universes:</p>
+        <p class="url">.../SCPUnion2.1_covmat_nosys.txt<br>.../SCPUnion2.1_covmat_sys.txt</p>
+      </div>
+    </div>
+    <div>
+      <span class="kicker">Measured across universes</span>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Analysis</th><th>$\Omega_\Lambda$</th><th>$\chi^2/\text{dof}$</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Stat only (stat_only)</td><td>$0.722 \pm 0.013$</td><td>0.97</td></tr>
+          <tr class="hl"><td>Stat + sys (full)</td><td>$0.714 \pm 0.030$</td><td>0.94</td></tr>
+          <tr><td>Suzuki et al. (2012)</td><td>$0.705^{+0.040}_{-0.043}$</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <p class="small muted">Extensions: $z \lt 0.8$ cut, optimiser check, or $w$CDM.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Diagnostic</strong> — the table's error column matches $\sqrt{\mathrm{diag}(C_{\text{nosys}})}$ to $6.7 \times 10^{-12}$ relative difference: our Step 1 fit was statistical-only.</li>
+      <li><strong>Payoff</strong> — switching to the full systematic covariance shifts $\Omega_\Lambda$ by only 0.008 ($0.722 \to 0.714$) while more than doubling the uncertainty ($\pm 0.013 \to \pm 0.030$), bringing our measurement within $0.2\sigma$ of Suzuki et al. (2012).</li>
+      <li><strong>Why ASTRA decisions matter</strong> — ranking choices by central value alone would have called this negligible; recording it as a decision preserves both universes side by side.</li>
+      <li><strong>Full URLs</strong> — https://supernova.lbl.gov/Union/figures/SCPUnion2.1_covmat_nosys.txt and SCPUnion2.1_covmat_sys.txt (copy-pasteable in the tutorial handout).</li>
+    </ul>
+  </aside>
+</section>

@@ -1,0 +1,21 @@
+<section data-layout="points">
+  <h2>Simulations are a verifiable environment for agents</h2>
+  <ul>
+    <li>mock inputs are a known quantity, so agents can check their own work</li>
+    <li class="fragment">designing analyses in a way that builds in verification pressure</li>
+    <li class="fragment">condition on observational properties as much as possible</li>
+  </ul>
+  <figure class="art">
+    <img src="images/ice_art/agents-wash.png" class="wash" data-at="818 628 285 285" alt="A known input spectrum in pencil, the sky simulated from it as a washed globe, and the measured bandpowers in ink lying on the same pencil curve">
+    <img src="images/ice_art/agents-lines.png" data-at="164 625 1596 291" alt="">
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Spoken, on the last line</strong> — in UNIONS the GLASS mocks start from the real shape catalog: positions, magnitudes, ellipticities and all of the PSF information are kept, the shapes are randomized and then sheared by a GLASS field. PSF leakage can then be injected with the actual PSF model. That playground is what the agents work in.</li>
+      <li><strong>Spoken, the bitter lesson</strong> — Richard Sutton's observation that methods which scale with search and learning end up beating hand-built expertise. You can build the experiment by hand, or build a program that learns from data by running experiments on simulations. We have historically designed estimators; the work may become mostly designing simulations that enable search and learning, and not at the level of parameter constraints but at the level of scaling the problem.</li>
+      <li><strong>The checking</strong> — against a simulation whose answer is known: input spectra recovered by the bandpower code, input cosmology recovered by the chains, an injected systematic recovered by its fit.</li>
+      <li><strong>Higher-level requirements</strong> — what the analysis must recover, to what accuracy and under which systematics, rather than how each step is coded.</li>
+      <li><strong>In this talk</strong> — in Cail's own work, the UNIONS v2 catalog production and the Euclid × CMB lensing data vectors, mocks and chains are built and run by coding agents, inside reproducible pipelines that record what each result came from.</li>
+    </ul>
+  </aside>
+</section>

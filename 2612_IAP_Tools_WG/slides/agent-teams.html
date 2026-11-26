@@ -1,0 +1,46 @@
+<section data-layout="figure">
+  <h2>Agent teams coordinate while work is running</h2>
+  <figure>
+    <svg viewBox="0 0 1600 680" role="img" aria-label="You communicate with a Lead agent, which exchanges ongoing messages with Search, Build, and Review worker agents.">
+      <defs>
+        <marker id="team-arr" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto-start-reverse">
+          <path d="M0 0 L8 4 L0 8" class="fill-none stroke-muted" stroke-width="1.8"></path>
+        </marker>
+      </defs>
+      <path d="M250 300 H505" class="fill-none stroke-muted" stroke-width="3" marker-start="url(#team-arr)" marker-end="url(#team-arr)"></path>
+      <circle cx="165" cy="300" r="80" class="fill-panel stroke-accent" stroke-width="3.5"></circle>
+      <text x="165" y="313" text-anchor="middle" font-size="38" class="fill-accent">You</text>
+
+      <circle cx="600" cy="300" r="90" class="fill-panel stroke-teal" stroke-width="3.5"></circle>
+      <text x="600" y="313" text-anchor="middle" font-size="38" class="fill-teal">Lead</text>
+
+      <g class="fragment" data-fragment-index="0">
+        <path d="M695 270 Q900 220 1055 130" class="fill-none stroke-muted" stroke-width="3" marker-start="url(#team-arr)" marker-end="url(#team-arr)"></path>
+        <circle cx="1145" cy="115" r="80" class="fill-panel stroke-cobalt" stroke-width="3.5"></circle>
+        <text x="1145" y="128" text-anchor="middle" font-size="38" class="fill-cobalt">Search</text>
+
+        <path d="M695 300 H1210" class="fill-none stroke-muted" stroke-width="3" marker-start="url(#team-arr)" marker-end="url(#team-arr)"></path>
+        <circle cx="1300" cy="300" r="80" class="fill-panel stroke-cobalt" stroke-width="3.5"></circle>
+        <text x="1300" y="313" text-anchor="middle" font-size="38" class="fill-cobalt">Build</text>
+
+        <path d="M695 330 Q900 380 1055 470" class="fill-none stroke-muted" stroke-width="3" marker-start="url(#team-arr)" marker-end="url(#team-arr)"></path>
+        <circle cx="1145" cy="485" r="80" class="fill-panel stroke-cobalt" stroke-width="3.5"></circle>
+        <text x="1145" y="498" text-anchor="middle" font-size="38" class="fill-cobalt">Review</text>
+
+        <path d="M1200 185 Q1255 210 1265 225" class="fill-none stroke-teal" stroke-width="2.5" stroke-dasharray="7 6"></path>
+        <path d="M1265 375 Q1255 390 1200 415" class="fill-none stroke-teal" stroke-width="2.5" stroke-dasharray="7 6"></path>
+        <text x="1420" y="210" font-size="34" class="fill-teal">peer</text>
+        <text x="1420" y="250" font-size="34" class="fill-teal">messages</text>
+      </g>
+
+      <text x="800" y="618" text-anchor="middle" font-size="38" class="fill-ink">Strong model holds judgment; scoped workers explore, implement and review in separate contexts</text>
+    </svg>
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Agent-to-agent messaging</strong> — unlike fire-and-forget sub-agents, a team lets the lead redirect workers mid-flight and lets peers hand off findings without routing every byte through one context window.</li>
+      <li><strong>Cost and context allocation</strong> — keep planning and scientific judgment in the lead; offload bulky log reading, codebase search, and independent code review to cheaper or fresh-context workers.</li>
+      <li><strong>Failure mode</strong> — more messages do not automatically mean better coordination; clear ownership and explicit done-conditions matter more than team size.</li>
+    </ul>
+  </aside>
+</section>

@@ -1,0 +1,82 @@
+<section data-layout="figure">
+  <h2>Context is finite working memory and compaction is lossy</h2>
+  <figure>
+    <svg viewBox="0 0 1600 720" role="img" aria-label="A session context fills with system prompt, tool definitions, AGENTS.md, user messages, model replies, tool results and read files. Compaction compresses earlier history into a lossy summary in a fresh context.">
+      <defs>
+        <marker id="ctx-arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+          <path d="M0 0 L8 4 L0 8" class="fill-none stroke-muted" stroke-width="2"></path>
+        </marker>
+      </defs>
+      <text x="40" y="52" font-size="40" class="fill-ink">Session context <tspan class="fill-muted">(typical ceiling: 1M tokens)</tspan></text>
+      <rect x="40" y="88" width="1520" height="140" rx="6" class="fill-none stroke-rule" stroke-width="3"></rect>
+
+      <rect x="40" y="88" width="210" height="140" class="fill-teal" fill-opacity="0.14"></rect>
+      <rect x="40" y="88" width="210" height="140" class="fill-none stroke-teal" stroke-width="2"></rect>
+      <text x="145" y="168" font-size="34" text-anchor="middle" class="fill-ink">System</text>
+
+      <rect x="250" y="88" width="210" height="140" class="fill-teal" fill-opacity="0.14"></rect>
+      <rect x="250" y="88" width="210" height="140" class="fill-none stroke-teal" stroke-width="2"></rect>
+      <text x="355" y="168" font-size="34" text-anchor="middle" class="fill-ink">Tools</text>
+
+      <rect x="460" y="88" width="240" height="140" class="fill-ochre" fill-opacity="0.16"></rect>
+      <rect x="460" y="88" width="240" height="140" class="fill-none stroke-ochre" stroke-width="2"></rect>
+      <text x="580" y="168" font-size="34" text-anchor="middle" class="fill-ink">AGENTS.md</text>
+
+      <rect x="700" y="88" width="135" height="140" class="fill-cobalt" fill-opacity="0.14"></rect>
+      <rect x="700" y="88" width="135" height="140" class="fill-none stroke-cobalt" stroke-width="2"></rect>
+      <text x="767" y="168" font-size="34" text-anchor="middle" class="fill-ink">User</text>
+
+      <rect x="835" y="88" width="175" height="140" class="fill-accent" fill-opacity="0.14"></rect>
+      <rect x="835" y="88" width="175" height="140" class="fill-none stroke-accent" stroke-width="2"></rect>
+      <text x="922" y="168" font-size="34" text-anchor="middle" class="fill-ink">Model</text>
+
+      <rect x="1010" y="88" width="210" height="140" class="fill-panel"></rect>
+      <rect x="1010" y="88" width="210" height="140" class="fill-none stroke-muted" stroke-width="2"></rect>
+      <text x="1115" y="168" font-size="34" text-anchor="middle" class="fill-ink">Tool output</text>
+
+      <g class="fragment" data-fragment-index="0">
+        <rect x="1220" y="88" width="230" height="140" class="fill-panel"></rect>
+        <rect x="1220" y="88" width="230" height="140" class="fill-none stroke-muted" stroke-width="2"></rect>
+        <text x="1335" y="168" font-size="34" text-anchor="middle" class="fill-ink">Read files</text>
+        <g class="fragment fade-out" data-fragment-index="1">
+          <path d="M1335 316 V246" class="fill-none stroke-muted" stroke-width="3" marker-end="url(#ctx-arrow)"></path>
+          <text x="1335" y="366" font-size="36" text-anchor="middle" class="fill-ink">Reading fills RAM</text>
+          <text x="1335" y="416" font-size="34" text-anchor="middle" class="fill-muted">no free() mid-session</text>
+        </g>
+      </g>
+
+      <g class="fragment" data-fragment-index="1">
+        <path d="M700 248 V278 H1450 V248 M1075 278 V318" class="fill-none stroke-muted" stroke-width="3"></path>
+        <text x="1075" y="366" font-size="38" text-anchor="middle" class="fill-accent">lossy compaction()</text>
+        <path d="M1075 390 V436 H900 V506" class="fill-none stroke-muted" stroke-width="3" marker-end="url(#ctx-arrow)"></path>
+        <text x="40" y="484" font-size="40" class="fill-ink">Fresh context</text>
+        <rect x="40" y="520" width="1520" height="140" rx="6" class="fill-none stroke-rule" stroke-width="3"></rect>
+
+        <rect x="40" y="520" width="210" height="140" class="fill-teal" fill-opacity="0.14"></rect>
+        <rect x="40" y="520" width="210" height="140" class="fill-none stroke-teal" stroke-width="2"></rect>
+        <text x="145" y="600" font-size="34" text-anchor="middle" class="fill-ink">System</text>
+
+        <rect x="250" y="520" width="210" height="140" class="fill-teal" fill-opacity="0.14"></rect>
+        <rect x="250" y="520" width="210" height="140" class="fill-none stroke-teal" stroke-width="2"></rect>
+        <text x="355" y="600" font-size="34" text-anchor="middle" class="fill-ink">Tools</text>
+
+        <rect x="460" y="520" width="240" height="140" class="fill-ochre" fill-opacity="0.16"></rect>
+        <rect x="460" y="520" width="240" height="140" class="fill-none stroke-ochre" stroke-width="2"></rect>
+        <text x="580" y="600" font-size="34" text-anchor="middle" class="fill-ink">AGENTS.md</text>
+
+        <rect x="700" y="520" width="380" height="140" class="fill-ochre" fill-opacity="0.16"></rect>
+        <rect x="700" y="520" width="380" height="140" class="fill-none stroke-ochre" stroke-width="2"></rect>
+        <text x="890" y="600" font-size="34" text-anchor="middle" class="fill-ink">Compacted summary</text>
+
+        <text x="1120" y="600" font-size="34" class="fill-muted">→ write decisions to disk</text>
+      </g>
+    </svg>
+  </figure>
+  <aside class="notes">
+    <ul class="skim">
+      <li><strong>Working memory</strong> — every tool output and read file appends to the session's finite context window.</li>
+      <li><strong>Compaction</strong> — when context fills, the harness summarizes earlier turns into a shorter block; nuance, exact numbers and caveats are often dropped.</li>
+      <li><strong>Consequence</strong> — anything worth keeping across turns or sessions belongs in durable files (wikis, specs, git commits), not in chat history.</li>
+    </ul>
+  </aside>
+</section>

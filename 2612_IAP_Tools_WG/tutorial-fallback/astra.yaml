@@ -1,0 +1,61 @@
+version: "0.0.14"
+name: "Cosmic expansion from Union2.1 Type Ia supernovae"
+description: "Flat-LCDM fit to 580 Union2.1 Type Ia supernovae comparing statistical-only and full systematic covariances against Suzuki et al. (2012)."
+
+inputs:
+  - id: union21
+    type: data
+    source: data/SCPUnion2.1_mu_vs_z.txt
+    description: "Union2.1 SN Ia compilation (580 supernovae, z = 0.015 to 1.414, M(h=0.7) calibration)."
+  - id: covmat_nosys
+    type: data
+    source: data/SCPUnion2.1_covmat_nosys.txt
+    description: "Union2.1 580x580 statistical-only covariance matrix."
+  - id: covmat_sys
+    type: data
+    source: data/SCPUnion2.1_covmat_sys.txt
+    description: "Union2.1 580x580 statistical plus systematic covariance matrix."
+
+prior_insights:
+  suzuki_2012_result:
+    label: "Union2.1 published dark-energy constraint"
+    claim: "Suzuki et al. (2012) constrain Omega_Lambda = 0.705 (+0.040, -0.043) in a flat Universe from SNe Ia alone including systematics."
+    created_at: "2026-11-26T18:00:00Z"
+    tags: [physics, priors]
+    evidence:
+      - id: suzuki_2012_sne_alone_flat_lcdm
+        doi: "10.48550/arXiv.1105.3470"
+        quote:
+          exact: "In a flat Universe, SNe Ia alone constrain the dark-energy density, ΩΛ, to be ΩΛ = 0.705+0.040−0.043 including systematics"
+        location:
+          value: "page=17"
+
+decisions:
+  covariance:
+    label: "Covariance treatment"
+    rationale: "The data table error column matches the diagonal of the statistical-only matrix; including off-diagonal systematic errors is required to compare with Suzuki et al. (2012)."
+    default: full
+    options:
+      stat_only:
+        label: "Statistical only"
+        description: "Uses SCPUnion2.1_covmat_nosys.txt."
+      full:
+        label: "Statistical + systematic"
+        description: "Uses SCPUnion2.1_covmat_sys.txt."
+
+outputs:
+  - id: best_fit
+    type: metric
+    format: json
+    description: "Best-fit flat-LCDM Omega_Lambda with 1-sigma uncertainty and chi2/dof."
+    inputs: [union21, covmat_nosys, covmat_sys]
+    decisions: [covariance]
+    recipe:
+      command: "python src/fit.py --data {inputs.union21} --cov-nosys {inputs.covmat_nosys} --cov-sys {inputs.covmat_sys} --covariance {decisions.covariance} --out {output}"
+  - id: hubble_diagram
+    type: figure
+    format: png
+    description: "Two-panel Hubble diagram and residuals against flat LCDM and Einstein-de Sitter."
+    inputs: [union21, best_fit]
+    recipe:
+      command: "python src/plot_hubble.py --data {inputs.union21} --fit {inputs.best_fit} --out {output}"
