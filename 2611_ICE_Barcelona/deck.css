@@ -192,3 +192,11 @@
 
 /* sbi: the last line keeps left of the drawing at the right */
 [data-house-slide="sbi"] .slide:not(.detail) > .body > ul > li:nth-child(3) { max-width: 1080px; }
+
+/* unions-bmodes: the last step replaces the slide's body with the mock calibration of the smallest PTE */
+[data-house-slide="unions-bmodes"] .slide .body { position: relative; }
+[data-house-slide="unions-bmodes"] .slide .text { position: static; }
+[data-house-slide="unions-bmodes"] .slide .cover { position: absolute; inset: 0; background: var(--ground); display: flex; align-items: center; gap: 70px; }
+[data-house-slide="unions-bmodes"] .slide .cover > img { height: 700px; mix-blend-mode: multiply; }
+[data-house-slide="unions-bmodes"] .slide .cover > ul { flex: 1; }
+[data-house-slide="unions-bmodes"] .slide .body:has(.cover.visible) > figure, [data-house-slide="unions-bmodes"] .slide .body:has(.cover.visible) .text > ul { visibility: hidden; }
