@@ -512,7 +512,7 @@ function tensions() {
 // The mock's own mark: the simulated sky as a small globe in the corner of the slide that tests the pipeline on it.
 function mockMark() {
   hand(61);
-  const cx = 1716, cy = 122, r = 82;
+  const cx = 1596, cy = 252, r = 212;
   return [
     { id: 'wash', cls: 'wash', dpr: 1, svg: mockSky(cx, cy, r) },
     { id: 'lines', svg: MEDIA + pencil(graticule(cx, cy, r)) },
