@@ -1,7 +1,7 @@
 <section data-layout="figure">
   <h2>One pipeline from catalogs to a blinded likelihood</h2>
   <figure>
-    <svg viewBox="0 0 1712 771" role="img" aria-label="Pipeline in three workstreams. Data vectors and systematics: Euclid catalogs, CMB lensing maps and systematics maps feed NaMaster pseudo-Cl bandpowers for six spectra, and the systematics maps also feed the null tests. Simulations and covariance: mocks feed the pseudo-Cl step and the covariance. Theory and likelihood: the blinded bandpowers and the covariance feed one box, theory and likelihood, built on CLOE with JAX patches: the 3x2pt setup plus kappa.">
+    <svg viewBox="0 0 1712 771" role="img" aria-label="Pipeline in three workstreams. Data vectors and systematics: Euclid catalogs, CMB lensing maps and systematics maps feed NaMaster pseudo-Cl bandpowers for six spectra, and the systematics maps also feed the null tests. Simulations and covariance: mocks and the pseudo-Cl step feed the covariance, and mocks feed the pseudo-Cl step. Theory and likelihood: one box, built on CLOE with JAX patches (the 3x2pt setup plus kappa), feeds the simulations and the blind and receives the covariance. The blind feeds the pseudo-Cl bandpowers.">
       <defs>
         <marker id="pipeline-arrow" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="9" markerHeight="8" orient="auto">
           <path d="M0 0.5 Q6 3.5 12 5 Q6 6.5 0 9.5" class="fill-none stroke-ink" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -78,6 +78,8 @@
           <path d="M1336 87 H704 Q664 87 664 127 V190" marker-end="url(#pipeline-arrow)"/>
           <path d="M1668 87 H1680 Q1700 87 1700 107 V661 Q1700 681 1680 681 H1488" marker-end="url(#pipeline-arrow)"/>
           <path d="M1092 681 H862" marker-end="url(#pipeline-arrow)"/>
+          <path d="M862 530 C980 530 1110 560 1140 614" marker-end="url(#pipeline-arrow)"/>
+          <path d="M1220 614 C1220 540 1100 500 1100 414" marker-end="url(#pipeline-arrow)"/>
         </g>
         <text x="1102" y="258" font-size="40" font-weight="700" text-anchor="middle">Theory &amp;</text>
         <text x="1102" y="302" font-size="40" font-weight="700" text-anchor="middle">likelihood</text>
@@ -94,7 +96,7 @@
         <rect x="1344" y="420" width="316" height="170" rx="3" class="glaze" fill="url(#pipeline-wash)"/>
         <g class="pencil fill-none stroke-ink" stroke-width="2.2" stroke-linecap="round">
           <path d="M1180 414 C1190 452 1270 474 1336 474" marker-end="url(#pipeline-arrow)"/>
-          <path d="M862 470 C1000 470 1150 534 1336 534" marker-end="url(#pipeline-arrow)"/>
+          <path d="M1336 534 C1150 534 1000 470 862 470" marker-end="url(#pipeline-arrow)"/>
         </g>
         <text x="1502" y="474" font-size="40" font-weight="700" text-anchor="middle">Blind</text>
         <text x="1502" y="522" font-size="32" class="fill-muted" text-anchor="middle">hidden cosmology</text>
