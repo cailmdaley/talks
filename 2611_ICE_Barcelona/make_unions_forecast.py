@@ -1,9 +1,10 @@
 """UNIONS v2 forecast in the (Omega_m, S8) plane: cosmic shear alone, then the 3x2pt with the LSx lenses.
 
 Reads the nested-sampling posteriors (slim_fir.npz: derived parameters and weights of each chain). The two drawn are
-chains on the model prediction with no noise added, run on fir (~/scratch/ufc there): v092f100_first_LL_hi_s1 and
-v092f100_first_3x2_hi_s1, in which the four source bins carry the whole v2 sample's shear weight (their densities
-times 1/0.54, as the slide's first bullet says). The v092f_* chains have the bins' own densities. Names without a prefix are the 25 November chains from Leonardo, mockg_* chains on noisy Gaussian
+chains on the model prediction with no noise added, run on fir (~/scratch/ufc there): v092f100_first_LL_dzrel_s1 and
+v092f100_first_3x2_dzrel_s1, in which the four source bins carry the whole v2 sample's shear weight (their densities
+times 1/0.54) and the prior on each bin's mean redshift is the release's own n(z) uncertainty, as the slide's bullets
+say. v092f100_*_hi_* keep the 0.024 redshift prior; the v092f_* chains also have the bins' own densities. Names without a prefix are the 25 November chains from Leonardo, mockg_* chains on noisy Gaussian
 skies and glass_* chains on GLASS mocks.
 The contours are drawn relative to the input cosmology. Under them are the first release's posteriors in harmonic
 and real space (unions_release_contours.json, read from the paper's figure by digitize_unions_release.py), each shifted
@@ -29,7 +30,7 @@ SHEAR, JOINT = '#3D5BA0', '#A8403A'
 TRUTH = dict(Omega_m=0.3190, S8=0.8387)
 RELEASES = [('harmonic', 'first release, harmonic', style.MUTED, True),
             ('real', 'first release, real space', '#A08A6C', False)]
-LAYERS = [('v092f100_first_LL_hi_s1', 'v2 cosmic shear', SHEAR), ('v092f100_first_3x2_hi_s1', 'v2 3×2pt', JOINT)]
+LAYERS = [('v092f100_first_LL_dzrel_s1', 'v2 cosmic shear', SHEAR), ('v092f100_first_3x2_dzrel_s1', 'v2 3×2pt', JOINT)]
 PEAK = .36     # height of a marginal density in units of the row spacing, which leaves air above each curve
 SMOOTH = 5.   # degrees: width of the smoothing of a digitized contour around its centre
 
